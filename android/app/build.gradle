@@ -1,6 +1,8 @@
+apply plugin: 'kotlin-android'
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
+import org.apache.tools.ant.taskdefs.condition.Os
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -81,7 +83,8 @@ project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
 ]
 
-apply from: "../../node_modules/react-native/react.gradle"
+// This method of including other gradle files is to support symlinks.
+apply from: new File(["node", "--print", "require.resolve('react-native/package.json')"].execute().text.trim(), "../react.gradle");
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -134,7 +137,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.bpartnersmobileapp"
+        applicationId "com.bpartnersmobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -151,13 +154,16 @@ android {
                         "GENERATED_SRC_DIR=$buildDir/generated/source",
                         "PROJECT_BUILD_DIR=$buildDir",
                         "REACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
-                        "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build",
-                        "NODE_MODULES_DIR=$rootDir/../node_modules"
+                        "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"
                     cFlags "-Wall", "-Werror", "-fexceptions", "-frtti", "-DWITH_INSPECTOR=1"
                     cppFlags "-std=c++17"
                     // Make sure this target name is the same you specify inside the
                     // src/main/jni/Android.mk file for the `LOCAL_MODULE` variable.
-                    targets "bpartnersmobileapp_appmodules"
+                    targets "bpartnersmobile_appmodules"
+                    // Fix for windows limit on number of character in file paths and in command lines
+                    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                        arguments "NDK_APP_SHORT_COMMANDS=true"
+                    }
                 }
             }
             if (!enableSeparateBuildPerCPUArchitecture) {
@@ -261,6 +267,31 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+    def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
+    def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
+    def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
+
+    // If your app supports Android versions before Ice Cream Sandwich (API level 14)
+    // All fresco packages should use the same version
+    if (isGifEnabled || isWebpEnabled) {
+        implementation 'com.facebook.fresco:fresco:2.0.0'
+        implementation 'com.facebook.fresco:imagepipeline-okhttp3:2.0.0'
+    }
+
+    if (isGifEnabled) {
+        // For animated gif support
+        implementation 'com.facebook.fresco:animated-gif:2.0.0'
+    }
+
+    if (isWebpEnabled) {
+        // For webp support
+        implementation 'com.facebook.fresco:webpsupport:2.0.0'
+        if (isWebpAnimatedEnabled) {
+            // Animated webp support
+            implementation 'com.facebook.fresco:animated-webp:2.0.0'
+        }
+    }
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
@@ -277,14 +308,16 @@ dependencies {
     }
 
     if (enableHermes) {
-        //noinspection GradleDynamicVersion
-        implementation("com.facebook.react:hermes-engine:+") { // From node_modules
-            exclude group:'com.facebook.fbjni'
-        }
+        def hermesPath = "../../node_modules/hermes-engine/android/";
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
         implementation jscFlavor
     }
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
 
 if (isNewArchitectureEnabled()) {
     // If new architecture is enabled, we let you build RN from source
@@ -293,11 +326,7 @@ if (isNewArchitectureEnabled()) {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute(module("com.facebook.react:react-native"))
-                    .using(project(":ReactAndroid"))
-                    .because("On New Architecture we're building React Native from source")
-            substitute(module("com.facebook.react:hermes-engine"))
-                    .using(project(":ReactAndroid:hermes-engine"))
-                    .because("On New Architecture we're building Hermes from source")
+                    .using(project(":ReactAndroid")).because("On New Architecture we're building React Native from source")
         }
     }
 }
@@ -309,7 +338,9 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+// This method of including other gradle files is to support symlinks.
+apply from: new File(["node", "--print", "require.resolve('@react-native-community/cli-platform-android/package.json')"].execute().text.trim(), "../native_modules.gradle");
+applyNativeModulesAppBuildGradle(project);
 
 def isNewArchitectureEnabled() {
     // To opt-in for the New Architecture, you can either:
