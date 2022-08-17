@@ -1,0 +1,14 @@
+{
+  "common": {
+    "ok": "OK!",
+    "cancel": "Annuler",
+    "back": "Précédent"
+  },
+  "errors": {
+    "invalidEmail": "Adresse e-mail invalide"
+  },
+  "transactionListScreen": {
+    "title": "Transactions",
+    "currency": "€"
+  },
+}
