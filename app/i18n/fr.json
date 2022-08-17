@@ -1,4 +1,5 @@
 {
+  "currency": "EUR",
   "common": {
     "ok": "OK!",
     "cancel": "Annuler",
@@ -8,7 +9,6 @@
     "invalidEmail": "Adresse e-mail invalide"
   },
   "transactionListScreen": {
-    "title": "Transactions",
-    "currency": "€"
-  },
+    "title": "Transactions"
+  }
 }

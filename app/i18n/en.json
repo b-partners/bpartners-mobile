@@ -1,4 +1,5 @@
 {
+  "currency": "USD",
   "common": {
     "ok": "OK!",
     "cancel": "Cancel",
@@ -25,8 +26,7 @@
     "windowsReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app."
   },
   "transactionListScreen": {
-    "title": "Transactions",
-    "currency": "$"
+    "title": "Transactions"
   },
   "errorScreen": {
     "title": "Something went wrong!",
