@@ -15,7 +15,7 @@ export const TransactionStoreModel = types
     },
   }))
   .actions((self) => ({
-    getCharacters: async () => {
+    getTransactions: async () => {
       const transactionApi = new TransactionApi(self.environment.api)
       const result = await transactionApi.getTransactions()
 
