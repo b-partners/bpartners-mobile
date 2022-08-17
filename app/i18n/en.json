@@ -25,7 +25,8 @@
     "windowsReactotronHint": "If this doesn't work, ensure the Reactotron desktop app is running and reload app."
   },
   "transactionListScreen": {
-    "title": "Transactions"
+    "title": "Transactions",
+    "currency": "$"
   },
   "errorScreen": {
     "title": "Something went wrong!",
