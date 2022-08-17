@@ -16,7 +16,7 @@ export class TransactionApi {
     try {
       // make the api call
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        "https://raw.githubusercontent.com/infinitered/ignite/master/data/rick-and-morty.json",
+        "transactions",
         { amount: API_PAGE_SIZE },
       )
 
@@ -25,8 +25,7 @@ export class TransactionApi {
         const problem = getGeneralApiProblem(response)
         if (problem) return problem
       }
-
-      const transactions = response.data.results
+      const transactions = response.data
 
       return { kind: "ok", transactions }
     } catch (e) {
