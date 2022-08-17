@@ -69,11 +69,11 @@ export function Switch(props: SwitchProps) {
       startAnimation(props.value)
       setPreviousValue(props.value)
     }
-  }, [props.value])
+  }, [props.value, previousValue, startAnimation])
 
   const handlePress = React.useMemo(
     () => () => props.onToggle && props.onToggle(!props.value),
-    [props.onToggle, props.value],
+    [props],
   )
 
   if (!timer) {
@@ -85,7 +85,7 @@ export function Switch(props: SwitchProps) {
     outputRange: [OFF_POSITION, ON_POSITION],
   })
 
-  const style = props.style
+  const { style } = props
 
   const trackStyle = [
     TRACK,

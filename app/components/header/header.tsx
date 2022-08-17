@@ -5,7 +5,7 @@ import { Button } from "../button/button"
 import { Text } from "../text/text"
 import { Icon } from "../icon/icon"
 import { spacing } from "../../theme"
-import { translate } from "../../i18n/"
+import { translate } from "../../i18n"
 
 // static styles
 const ROOT: ViewStyle = {

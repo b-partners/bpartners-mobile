@@ -1,5 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react-native/no-color-literals */
 
 import React from "react"
 import { View, ViewStyle } from "react-native"
@@ -24,7 +23,7 @@ storiesOf("Checkbox", module)
         </Toggle>
       </UseCase>
       <UseCase text="value = true" usage="This is permanently on.">
-        <Checkbox value={true} text="Always on" />
+        <Checkbox value text="Always on" />
       </UseCase>
       <UseCase text="value = false" usage="This is permanantly off.">
         <Checkbox value={false} text="Always off" />
@@ -38,7 +37,8 @@ storiesOf("Checkbox", module)
           {({ on, toggle }) => (
             <View>
               <Checkbox
-                text="We’re an App Design & Development Team. Experts in mobile & web technologies. We create beautiful, functional mobile apps and websites."
+                text="We’re an App Design & Development Team. Experts in mobile & web technologies.
+                        We create beautiful, functional mobile apps and websites."
                 value={on}
                 multiline
                 onToggle={toggle}

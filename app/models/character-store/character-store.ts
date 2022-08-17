@@ -30,7 +30,7 @@ export const CharacterStoreModel = types
     },
   }))
 
-export interface CharacterStore extends Instance<typeof CharacterStoreModel> {}
-export interface CharacterStoreSnapshotOut extends SnapshotOut<typeof CharacterStoreModel> {}
-export interface CharacterStoreSnapshotIn extends SnapshotIn<typeof CharacterStoreModel> {}
+export type CharacterStore = Instance<typeof CharacterStoreModel>
+export type CharacterStoreSnapshotOut = SnapshotOut<typeof CharacterStoreModel>
+export type CharacterStoreSnapshotIn = SnapshotIn<typeof CharacterStoreModel>
 export const createCharacterStoreDefaultModel = () => types.optional(CharacterStoreModel, {})

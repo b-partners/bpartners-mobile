@@ -1,12 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react-native/no-color-literals */
 
 import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { Text, FormRow } from "../"
-import { color } from "../../theme/color"
 import { ViewStyle } from "react-native"
+import { StoryScreen, Story, UseCase } from "../../../storybook/views"
+import { Text, FormRow } from ".."
+import { color } from "../../theme/color"
 
 declare let module
 

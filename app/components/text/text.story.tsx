@@ -1,5 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react-native/no-color-literals */
 
 import * as React from "react"
 import { View, ViewStyle } from "react-native"
@@ -24,8 +23,10 @@ storiesOf("Text", module)
         <View style={VIEWSTYLE}>
           <Text>Hello!</Text>
           <Text style={{ paddingTop: 10 }}>
-            Check out{"\n"}
-            my{"\n"}
+            Check out
+            {"\n"}
+            my
+            {"\n"}
             line height
           </Text>
           <Text style={{ paddingTop: 10 }}>The quick brown fox jumped over the slow lazy dog.</Text>

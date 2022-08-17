@@ -33,7 +33,7 @@ export type NavigatorParamList = {
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<NavigatorParamList>()
 
-const AppStack = () => {
+function AppStack() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -49,9 +49,9 @@ const AppStack = () => {
   )
 }
 
-interface NavigationProps extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 
-export const AppNavigator = (props: NavigationProps) => {
+export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme()
   useBackButtonHandler(canExit)
   return (
