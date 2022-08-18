@@ -49,7 +49,7 @@ export const TransactionListScreen: FC<StackScreenProps<NavigatorParamList, "tra
             }
 
             fetchData()
-        }, [characterStore])
+        }, [transactionStore])
 
         return (
             <View testID="TransactionListScreen" style={FULL}>
