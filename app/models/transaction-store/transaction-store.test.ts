@@ -1,7 +1,7 @@
-import { TransactionStoreModel } from "./transaction-store"
+import { TransactionStoreModel } from './transaction-store';
 
-test("can be created", () => {
-  const instance = TransactionStoreModel.create({})
+test('can be created', () => {
+  const instance = TransactionStoreModel.create({});
 
-  expect(instance).toBeTruthy()
-})
+  expect(instance).toBeTruthy();
+});

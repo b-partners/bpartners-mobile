@@ -125,12 +125,6 @@
     "@types/react": "^17",
     "@types/react-dom": "^17"
   },
-  "prettier": {
-    "printWidth": 100,
-    "semi": false,
-    "singleQuote": false,
-    "trailingComma": "all"
-  },
   "detox": {
     "test-runner": "jest",
     "configurations": {

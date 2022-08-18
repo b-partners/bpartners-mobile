@@ -1,7 +1,7 @@
-import { ApisauceInstance, create, ApiResponse } from "apisauce"
-import { getGeneralApiProblem } from "./api-problem"
-import { ApiConfig, DEFAULT_API_CONFIG } from "./api-config"
-import * as Types from "./api.types"
+import { ApisauceInstance, create, ApiResponse } from 'apisauce';
+import { getGeneralApiProblem } from './api-problem';
+import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
+import * as Types from './api.types';
 
 /**
  * Manages all requests to the API.
@@ -10,12 +10,12 @@ export class Api {
   /**
    * The underlying apisauce instance which performs the requests.
    */
-  apisauce: ApisauceInstance
+  apisauce: ApisauceInstance;
 
   /**
    * Configurable options.
    */
-  config: ApiConfig
+  config: ApiConfig;
 
   /**
    * Creates the api.
@@ -23,7 +23,7 @@ export class Api {
    * @param config The configuration to use.
    */
   constructor(config: ApiConfig = DEFAULT_API_CONFIG) {
-    this.config = config
+    this.config = config;
   }
 
   /**
@@ -39,9 +39,9 @@ export class Api {
       baseURL: this.config.url,
       timeout: this.config.timeout,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
-    })
+    });
   }
 
   /**
@@ -49,26 +49,26 @@ export class Api {
    */
   async getUsers(): Promise<Types.GetUsersResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get("/users")
+    const response: ApiResponse<any> = await this.apisauce.get('/users');
 
     // the typical ways to die when calling an api
     if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
+      const problem = getGeneralApiProblem(response);
+      if (problem) return problem;
     }
 
-    const convertUser = (raw) => ({
+    const convertUser = raw => ({
       id: raw.id,
       name: raw.name,
-    })
+    });
 
     // transform the data into the format we are expecting
     try {
-      const rawUsers = response.data
-      const resultUsers: Types.User[] = rawUsers.map(convertUser)
-      return { kind: "ok", users: resultUsers }
+      const rawUsers = response.data;
+      const resultUsers: Types.User[] = rawUsers.map(convertUser);
+      return { kind: 'ok', users: resultUsers };
     } catch {
-      return { kind: "bad-data" }
+      return { kind: 'bad-data' };
     }
   }
 
@@ -78,12 +78,12 @@ export class Api {
 
   async getUser(id: string): Promise<Types.GetUserResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get(`/users/${id}`)
+    const response: ApiResponse<any> = await this.apisauce.get(`/users/${id}`);
 
     // the typical ways to die when calling an api
     if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
+      const problem = getGeneralApiProblem(response);
+      if (problem) return problem;
     }
 
     // transform the data into the format we are expecting
@@ -91,10 +91,10 @@ export class Api {
       const resultUser: Types.User = {
         id: response.data.id,
         name: response.data.name,
-      }
-      return { kind: "ok", user: resultUser }
+      };
+      return { kind: 'ok', user: resultUser };
     } catch {
-      return { kind: "bad-data" }
+      return { kind: 'bad-data' };
     }
   }
 }

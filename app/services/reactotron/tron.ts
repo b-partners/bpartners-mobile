@@ -1,2 +1,2 @@
-import Reactotron from "reactotron-react-native"
-export const Tron = Reactotron
+import Reactotron from 'reactotron-react-native';
+export const Tron = Reactotron;
