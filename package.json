@@ -25,7 +25,8 @@
     "build-ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
     "build-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "clean": "react-native-clean-project",
-    "clean-all": "npx react-native clean-project-auto"
+    "clean-all": "npx react-native clean-project-auto",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.3",
@@ -95,6 +96,7 @@
     "eslint-plugin-react-native": "4.0.0",
     "expo-modules-autolinking": "^0.8.1",
     "fbjs-scripts": "3.0.1",
+    "husky": "^8.0.0",
     "jest": "26",
     "jest-circus": "26",
     "jest-environment-node": "26",
