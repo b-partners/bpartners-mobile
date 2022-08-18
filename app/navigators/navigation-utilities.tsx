@@ -16,7 +16,6 @@ export const RootNavigation = {
   },
   dispatch(_action: NavigationAction) {},
 }
-/* eslint-enable */
 
 export const navigationRef = createNavigationContainerRef()
 

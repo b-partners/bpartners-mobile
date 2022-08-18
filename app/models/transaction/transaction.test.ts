@@ -5,7 +5,7 @@ test("can be created", () => {
     id: 1,
     amount: 1000,
     paymentReqId: 1,
-    updateDateTime: new Date()
+    updateDateTime: new Date(),
   })
 
   expect(instance).toBeTruthy()

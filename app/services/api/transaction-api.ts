@@ -15,10 +15,9 @@ export class TransactionApi {
   async getTransactions(): Promise<GetTransactionsResult> {
     try {
       // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.get(
-        "transactions",
-        { amount: API_PAGE_SIZE },
-      )
+      const response: ApiResponse<any> = await this.api.apisauce.get("transactions", {
+        amount: API_PAGE_SIZE,
+      })
 
       // the typical ways to die when calling an api
       if (!response.ok) {

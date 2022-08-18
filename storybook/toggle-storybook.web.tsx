@@ -20,7 +20,7 @@ export const ToggleStorybook = (props) => {
     if (__DEV__) {
       setQueryParams(QueryString.parse(window.location.search))
     }
-  }, [window.location.search])
+  }, [])
 
   if (queryParams?.storybook) {
     return StorybookUIRoot ? <StorybookUIRoot /> : null
