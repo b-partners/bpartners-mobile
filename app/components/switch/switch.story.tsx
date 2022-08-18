@@ -1,5 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react-native/no-color-literals */
 
 import * as React from "react"
 import { View, ViewStyle } from "react-native"
@@ -58,7 +57,7 @@ storiesOf("Switch", module)
         </Toggle>
       </UseCase>
       <UseCase text="value = true" usage="This is permanently on.">
-        <Switch value={true} />
+        <Switch value />
       </UseCase>
       <UseCase text="value = false" usage="This is permanantly off.">
         <Switch value={false} />

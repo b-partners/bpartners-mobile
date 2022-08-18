@@ -66,12 +66,12 @@ export interface ErrorComponentProps {
 /**
  * Describe your component here
  */
-export const ErrorComponent = (props: ErrorComponentProps) => {
+export function ErrorComponent(props: ErrorComponentProps) {
   return (
     <View style={CONTAINER}>
       <Icon style={ICON} icon="bug" />
-      <Text style={TITLE_ERROR} tx={"errorScreen.title"} />
-      <Text style={FRIENDLY_SUBTITLE} tx={"errorScreen.friendlySubtitle"} />
+      <Text style={TITLE_ERROR} tx="errorScreen.title" />
+      <Text style={FRIENDLY_SUBTITLE} tx="errorScreen.friendlySubtitle" />
       <View style={ERROR_DETAILS_CONTAINER}>
         <ScrollView>
           <Text selectable style={CONTENT_ERROR} text={`${props.error}`} />

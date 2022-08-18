@@ -55,7 +55,7 @@ export const DemoListScreen: FC<StackScreenProps<NavigatorParamList, "demoList">
       }
 
       fetchData()
-    }, [])
+    }, [characterStore])
 
     return (
       <View testID="DemoListScreen" style={FULL}>

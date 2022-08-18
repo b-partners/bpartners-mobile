@@ -106,7 +106,6 @@ function ScreenWithScrolling(props: ScreenProps) {
 export function Screen(props: ScreenProps) {
   if (isNonScrolling(props.preset)) {
     return <ScreenWithoutScrolling {...props} />
-  } else {
-    return <ScreenWithScrolling {...props} />
   }
+  return <ScreenWithScrolling {...props} />
 }

@@ -122,7 +122,9 @@ export const DemoScreen: FC<StackScreenProps<NavigatorParamList, "demo">> = obse
           preview: "More control with display()",
           important: true,
           image: {
-            uri: "https://avatars2.githubusercontent.com/u/3902527?s=200&u=a0d16b13ed719f35d95ca0f4440f5d07c32c349a&v=4",
+            uri:
+              "https://avatars2.githubusercontent.com/u" +
+              "/3902527?s=200&u=a0d16b13ed719f35d95ca0f4440f5d07c32c349a&v=4",
           },
         })
         // make an API call for the demo
@@ -151,9 +153,13 @@ export const DemoScreen: FC<StackScreenProps<NavigatorParamList, "demo">> = obse
           <Text style={TAGLINE} tx="demoScreen.tagLine" />
           <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, and i18n." />
           <BulletItem
-            text={`To run Storybook, press ${platformCommand} or shake the device to show the developer menu, then select "Toggle Storybook"`}
+            text={`To run Storybook, press ${platformCommand}
+            or shake the device to show the developer menu, then select "Toggle Storybook"`}
           />
-          <BulletItem text="Load up Reactotron! You can inspect your app, view the events, interact, and so much more!" />
+          <BulletItem
+            text="Load up Reactotron! You can inspect your app,
+          view the events, interact, and so much more!"
+          />
           <View>
             <Button
               style={DEMO}

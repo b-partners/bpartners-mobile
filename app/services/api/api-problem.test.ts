@@ -1,5 +1,5 @@
-import { getGeneralApiProblem } from "./api-problem"
 import { ApiErrorResponse } from "apisauce"
+import { getGeneralApiProblem } from "./api-problem"
 
 test("handles connection errors", () => {
   expect(getGeneralApiProblem({ problem: "CONNECTION_ERROR" } as ApiErrorResponse<null>)).toEqual({

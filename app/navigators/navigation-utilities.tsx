@@ -7,7 +7,6 @@ import {
   createNavigationContainerRef,
 } from "@react-navigation/native"
 
-/* eslint-disable */
 export const RootNavigation = {
   navigate(_name: string, _params?: any) {},
   goBack() {},
@@ -120,9 +119,14 @@ export function useNavigationPersistence(storage: any, persistenceKey: string) {
 
   useEffect(() => {
     if (!isRestored) restoreState()
-  }, [isRestored])
+  })
 
-  return { onNavigationStateChange, restoreState, isRestored, initialNavigationState }
+  return {
+    onNavigationStateChange,
+    restoreState,
+    isRestored,
+    initialNavigationState,
+  }
 }
 
 /**

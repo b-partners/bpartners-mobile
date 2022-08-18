@@ -58,7 +58,7 @@ function App() {
     <ToggleStorybook>
       <RootStoreProvider value={rootStore}>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <ErrorBoundary catchErrors={"always"}>
+          <ErrorBoundary catchErrors="always">
             <AppNavigator
               initialState={initialNavigationState}
               onStateChange={onNavigationStateChange}
