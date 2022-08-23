@@ -1,5 +1,3 @@
-# Access Key	: w2dYFSWTiv4hWWXRCPxt
-
 name: Build Android and iOS
 on:
   push:
