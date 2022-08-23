@@ -43,7 +43,7 @@ build-ios:
           xcodebuild -exportArchive -archivePath ./myapp.xcarchive -exportPath . -exportOptionsPlist myapp/Info.plist
           mv myapp.ipa ../myapp.ipa
 
-      - name: Upload APK to BrowserStack
+      - name: Upload IOS application to BrowserStack
         uses: shreyanshp/upload-app-browserstack@v3
         with:
         app-path: ios/build/
