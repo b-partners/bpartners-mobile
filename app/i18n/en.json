@@ -9,11 +9,10 @@
     "invalidEmail": "Invalid email address."
   },
   "welcomeScreen": {
-    "poweredBy": "POWERED BY IGNITE",
+    "poweredBy": "POWERED BY NUMER",
     "readyForLaunch": "Ready for launch.",
-    "continue": "CONTINUE",
-    "login": "Login",
-    "start": "Start"
+    "start": "SIGN IN",
+    "login": "LOGIN"
   },
   "demoScreen": {
     "howTo": "HOW TO",
