@@ -5,8 +5,9 @@ on:
   push:
     branches:
       - '*'
-  workflow_dispatch:    
-
+  workflow_dispatch: 
+  
+jobs:
 build-android:
     needs: install-and-test
     runs-on: ubuntu-latest
@@ -17,8 +18,7 @@ build-android:
           npm install
       - name: Build Android Release
         run: |
-          cd android && ./gradlew assembleRelease -PMYAPP_UPLOAD_STORE_PASSWORD='${{ secrets.KEYSTORE_PASSWORD }}' -PMYAPP_UPLOAD_KEY_PASSWORD='${{ secrets.KEYSTORE_PASSWORD }}'
-   
+          cd android && ./gradlew assembleRelease 
       - name: Upload APK to BrowserStack
         uses: shreyanshp/upload-app-browserstack@v3
         with:
