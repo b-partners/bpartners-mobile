@@ -1,4 +1,4 @@
-name: Build Android and iOS
+name: browserstack-deploy
 on:
   push:
     branches:
@@ -6,23 +6,11 @@ on:
   workflow_dispatch: 
   
 jobs:
-install-and-test:
-    runs-on: ubuntu-latest
-    steps: 
-      - uses: actions/checkout@v2
-      - name: Install npm dependencies
-        run: |
-          npm install
-      - name: Run tests
-        run: |
-          npm test
-          
 build-android:
-    needs: install-and-test
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v2
-      
+
       - name: Install npm dependencies
         run: |
           npm install
@@ -30,11 +18,8 @@ build-android:
       - name: Build Android Release
         run: |
           cd android && ./gradlew assembleRelease 
-            - name: test before Upload
-
-      - name: Test before upload 
-        run: |
-          yarn test 
+      
+      - run: yarn test 
 
       - name: Upload APK to BrowserStack
         uses: shreyanshp/upload-app-browserstack@v3
@@ -44,7 +29,6 @@ build-android:
         browserstack-accesskey: ${{ secrets.BROWSERSTACK_ACCESSKEY }}
 
 build-ios:
-    needs: install-and-test
     runs-on: [self-hosted, macos]
     steps: 
       - uses: actions/checkout@v2
@@ -63,9 +47,7 @@ build-ios:
           xcodebuild -exportArchive -archivePath ./myapp.xcarchive -exportPath . -exportOptionsPlist myapp/Info.plist
           mv myapp.ipa ../myapp.ipa
 
-      - name: test before Upload
-        run: |
-          yarn test 
+      - run: yarn test 
 
       - name: Upload IOS application to BrowserStack
         uses: shreyanshp/upload-app-browserstack@v3
