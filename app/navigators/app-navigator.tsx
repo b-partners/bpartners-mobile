@@ -33,7 +33,7 @@ export type NavigatorParamList = {
 };
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createNativeStackNavigator<NavigatorParamList>();
+const Stack = createNativeStackNavigator<NavigatorParamList>()
 
 function AppStack() {
   return (
@@ -41,7 +41,7 @@ function AppStack() {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName='welcome'
+      initialRouteName="welcome"
     >
       <Stack.Screen name='welcome' component={WelcomeScreen} />
       <Stack.Screen name='onboarding' component={OnboardingScreen} />
@@ -49,22 +49,26 @@ function AppStack() {
       <Stack.Screen name="connexion" component={ConnexionScreen} />
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
-  );
+  )
 }
 
-type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>;
+type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 
 export function AppNavigator(props: NavigationProps) {
-  const colorScheme = useColorScheme();
-  useBackButtonHandler(canExit);
+  const colorScheme = useColorScheme()
+  useBackButtonHandler(canExit)
   return (
-    <NavigationContainer ref={navigationRef} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} {...props}>
+    <NavigationContainer
+      ref={navigationRef}
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+      {...props}
+    >
       <AppStack />
     </NavigationContainer>
-  );
+  )
 }
 
-AppNavigator.displayName = 'AppNavigator';
+AppNavigator.displayName = "AppNavigator"
 
 /**
  * A list of routes from which we're allowed to leave the app when
@@ -75,5 +79,5 @@ AppNavigator.displayName = 'AppNavigator';
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-const exitRoutes = ['welcome'];
-export const canExit = (routeName: string) => exitRoutes.includes(routeName);
+const exitRoutes = ["welcome"]
+export const canExit = (routeName: string) => exitRoutes.includes(routeName)
