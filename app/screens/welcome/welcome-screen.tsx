@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
-import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from 'react-native';
+import React, { FC, useCallback } from 'react';
+import { View, ViewStyle, TextStyle, SafeAreaView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
-import { Button, Header, Screen, Text, GradientBackground, AutoImage as Image } from '../../components';
+import { Button, Header, Screen, Text, GradientBackground } from '../../components';
 import { color, spacing, typography } from '../../theme';
 import { NavigatorParamList } from '../../navigators';
-
-const bowserLogo = require('./bowser.png');
+import { Linking } from 'react-native';
 
 const FULL: ViewStyle = { flex: 1 };
 const CONTAINER: ViewStyle = {
@@ -48,24 +47,12 @@ const ALMOST: TextStyle = {
   fontSize: 26,
   fontStyle: 'italic',
 };
-const BOWSER: ImageStyle = {
-  alignSelf: 'center',
-  marginVertical: spacing[5],
-  maxWidth: '100%',
-  width: 343,
-  height: 230,
-};
-const CONTENT: TextStyle = {
-  ...TEXT,
-  color: '#BAB6C8',
-  fontSize: 15,
-  lineHeight: 22,
-  marginBottom: spacing[5],
-};
 const CONTINUE: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
   backgroundColor: color.palette.deepPurple,
+  width: 180,
+  marginRight: spacing[2],
 };
 const CONTINUE_TEXT: TextStyle = {
   ...TEXT,
@@ -77,10 +64,17 @@ const FOOTER: ViewStyle = { backgroundColor: '#20162D' };
 const FOOTER_CONTENT: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
+  flexDirection: 'row',
+  justifyContent: 'space-between',
 };
 
 export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ navigation }) => {
   const nextScreen = () => navigation.navigate('demo');
+  const url: string = 'https://onboarding.sandbox.swan.io/projects/df47a093-efda-4802-b7ff-8d4946545a5e/onboardings/60b947c4-c3cf-4647-9a5d-cd9d9ce39810';
+
+  const handlePress = useCallback(async () => {
+    await Linking.openURL(url);
+  }, [url]);
 
   return (
     <View testID='WelcomeScreen' style={FULL}>
@@ -89,20 +83,15 @@ export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> 
         <Header headerTx='welcomeScreen.poweredBy' style={HEADER} titleStyle={HEADER_TITLE} />
         <Text style={TITLE_WRAPPER}>
           <Text style={TITLE} text='Your new app, ' />
-          <Text style={ALMOST} text='almost' />
+          <Text style={ALMOST} text='B Partners' />
           <Text style={TITLE} text='!' />
         </Text>
         <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
-        <Image source={bowserLogo} style={BOWSER} />
-        <Text style={CONTENT}>
-          This probably isn't what your app is going to look like. Unless your designer handed you this screen and, in that case, congrats! You're ready to
-          ship.
-        </Text>
-        <Text style={CONTENT}>For everyone else, this is where you'll see a live preview of your fully functioning app using Ignite.</Text>
       </Screen>
       <SafeAreaView style={FOOTER}>
         <View style={FOOTER_CONTENT}>
-          <Button testID='next-screen-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.continue' onPress={nextScreen} />
+          <Button testID='next-screen-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={nextScreen} />
+          <Button testID='next-screen-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={() => handlePress()} />
         </View>
       </SafeAreaView>
     </View>

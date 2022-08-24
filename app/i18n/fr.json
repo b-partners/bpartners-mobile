@@ -10,5 +10,12 @@
   },
   "transactionListScreen": {
     "title": "Transactions"
+  },
+  "welcomeScreen": {
+    "poweredBy": "POWERED BY IGNITE",
+    "readyForLaunch": "Ready for launch.",
+    "continue": "CONTINUE",
+    "login": "Login",
+    "start": "Start"
   }
 }

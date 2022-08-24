@@ -11,7 +11,9 @@
   "welcomeScreen": {
     "poweredBy": "POWERED BY IGNITE",
     "readyForLaunch": "Ready for launch.",
-    "continue": "CONTINUE"
+    "continue": "CONTINUE",
+    "login": "Login",
+    "start": "Start"
   },
   "demoScreen": {
     "howTo": "HOW TO",
