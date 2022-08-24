@@ -8,7 +8,7 @@ export const OnboardingStoreModel = types
     url: types.optional(types.string, ''),
   })
   .extend(withEnvironment)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   .actions(self => ({
     saveUrl: (url: string) => {
       self.url = url;
