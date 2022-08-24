@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite';
 import { Button, Header, Screen, Text, GradientBackground } from '../../components';
 import { color, spacing, typography } from '../../theme';
 import { NavigatorParamList } from '../../navigators';
-import { Linking } from 'react-native';
 
 const FULL: ViewStyle = { flex: 1 };
 const CONTAINER: ViewStyle = {
@@ -70,11 +69,12 @@ const FOOTER_CONTENT: ViewStyle = {
 
 export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ navigation }) => {
   const nextScreen = () => navigation.navigate('demo');
-  const url: string = 'https://onboarding.sandbox.swan.io/projects/df47a093-efda-4802-b7ff-8d4946545a5e/onboardings/60b947c4-c3cf-4647-9a5d-cd9d9ce39810';
+  // const url: string = 'https://onboarding.sandbox.swan.io/projects/df47a093-efda-4802-b7ff-8d4946545a5e/onboardings/60b947c4-c3cf-4647-9a5d-cd9d9ce39810';
 
   const handlePress = useCallback(async () => {
-    await Linking.openURL(url);
-  }, [url]);
+    // await Linking.openURL(url);
+    navigation.navigate('onboarding');
+  }, [navigation]);
 
   return (
     <View testID='WelcomeScreen' style={FULL}>

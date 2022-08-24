@@ -8,8 +8,9 @@ import React from 'react';
 import { useColorScheme } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { WelcomeScreen, DemoScreen, TransactionListScreen } from '../screens';
+import { WelcomeScreen, TransactionListScreen } from '../screens';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
+import { OnboardingScreen } from '../screens/onboarding/onboarding-screen';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -26,6 +27,7 @@ import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 export type NavigatorParamList = {
   welcome: undefined;
   demo: undefined;
+  onboarding: undefined;
   transactionList: undefined;
   // 🔥 Your screens go here
 };
@@ -42,7 +44,7 @@ function AppStack() {
       initialRouteName='welcome'
     >
       <Stack.Screen name='welcome' component={WelcomeScreen} />
-      <Stack.Screen name='demo' component={DemoScreen} />
+      <Stack.Screen name='onboarding' component={OnboardingScreen} />
       <Stack.Screen name='transactionList' component={TransactionListScreen} />
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
