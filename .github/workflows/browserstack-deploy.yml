@@ -6,7 +6,16 @@ on:
   workflow_dispatch: 
   
 jobs:
+  install-and-test:
+      runs-on: ubuntu-latest
+      steps: 
+        - uses: actions/checkout@v2
+        - run: npm install
+        - run: npm test
+
+
   build-android:
+      needs: install-and-test
       runs-on: ubuntu-latest
       steps: 
         - uses: actions/checkout@v2
@@ -27,6 +36,7 @@ jobs:
             browserstack-accesskey: ${{ secrets.BROWSERSTACK_ACCESSKEY }}
 
   build-ios:
+      needs: install-and-test
       runs-on: [self-hosted, macos]
       steps: 
         - uses: actions/checkout@v2
