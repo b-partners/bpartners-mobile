@@ -1,10 +1,11 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { View, ViewStyle, TextStyle, SafeAreaView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import { Button, Header, Screen, Text, GradientBackground } from '../../components';
 import { color, spacing, typography } from '../../theme';
 import { NavigatorParamList } from '../../navigators';
+import { useStores } from '../../models';
 
 const FULL: ViewStyle = { flex: 1 };
 const CONTAINER: ViewStyle = {
@@ -19,7 +20,7 @@ const BOLD: TextStyle = { fontWeight: 'bold' };
 const HEADER: TextStyle = {
   paddingTop: spacing[3],
   paddingBottom: spacing[4] + spacing[1],
-  paddingHorizontal: 0,
+  paddingHorizontal: spacing[5],
 };
 const HEADER_TITLE: TextStyle = {
   ...TEXT,
@@ -68,13 +69,14 @@ const FOOTER_CONTENT: ViewStyle = {
 };
 
 export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ navigation }) => {
-  const nextScreen = () => navigation.navigate('demo');
-  // const url: string = 'https://onboarding.sandbox.swan.io/projects/df47a093-efda-4802-b7ff-8d4946545a5e/onboardings/60b947c4-c3cf-4647-9a5d-cd9d9ce39810';
+  const login = () => navigation.navigate('demo');
+  const { onboardingStore } = useStores();
 
-  const handlePress = useCallback(async () => {
-    // await Linking.openURL(url);
-    navigation.navigate('onboarding');
-  }, [navigation]);
+  const createAccount = async () => {
+    await onboardingStore.getOnboardingUrl();
+    const { url } = onboardingStore;
+    navigation.navigate('onboarding', { url });
+  };
 
   return (
     <View testID='WelcomeScreen' style={FULL}>
@@ -83,15 +85,15 @@ export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> 
         <Header headerTx='welcomeScreen.poweredBy' style={HEADER} titleStyle={HEADER_TITLE} />
         <Text style={TITLE_WRAPPER}>
           <Text style={TITLE} text='Your new app, ' />
-          <Text style={ALMOST} text='B Partners' />
+          <Text style={ALMOST} text='BPartners' />
           <Text style={TITLE} text='!' />
         </Text>
         <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
       </Screen>
       <SafeAreaView style={FOOTER}>
         <View style={FOOTER_CONTENT}>
-          <Button testID='next-screen-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={nextScreen} />
-          <Button testID='next-screen-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={() => handlePress()} />
+          <Button testID='next-screen-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={login} />
+          <Button testID='next-screen-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={createAccount} />
         </View>
       </SafeAreaView>
     </View>

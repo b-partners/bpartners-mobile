@@ -1,4 +1,4 @@
-const API_URL = 'https://0ab7a008-e878-40a8-a61f-670accce50fe.mock.pstmn.io';
+const API_URL = 'https://api-dev.bpartners.app';
 
 /**
  * The options used to configure the API.

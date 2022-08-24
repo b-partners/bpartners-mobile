@@ -11,6 +11,9 @@
   "transactionListScreen": {
     "title": "Transactions"
   },
+  "onboardingScreen": {
+    "title": "Créer un compte"
+  },
   "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",
     "readyForLaunch": "Prêt pour le lancement.",

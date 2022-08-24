@@ -11,3 +11,5 @@ export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type GetTransactionsResult = { kind: 'ok'; transactions: Transaction[] } | GeneralApiProblem;
 export type GetTransactionResult = { kind: 'ok'; transaction: Transaction } | GeneralApiProblem;
+
+export type GetOnboardingURL = { kind: 'ok'; url: string } | GeneralApiProblem;

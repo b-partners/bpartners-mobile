@@ -25,11 +25,10 @@ import { OnboardingScreen } from '../screens/onboarding/onboarding-screen';
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type NavigatorParamList = {
-  welcome: undefined;
+  welcome: { url: string };
   demo: undefined;
-  onboarding: undefined;
+  onboarding: { url: string };
   transactionList: undefined;
-  // 🔥 Your screens go here
 };
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
