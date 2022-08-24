@@ -11,7 +11,7 @@
   "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",
     "readyForLaunch": "Ready for launch.",
-    "start": "SIGN IN",
+    "start": "CREATE AN ACCOUNT",
     "login": "LOGIN"
   },
   "demoScreen": {
