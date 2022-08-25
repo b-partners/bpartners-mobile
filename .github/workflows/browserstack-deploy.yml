@@ -20,7 +20,7 @@ jobs:
       steps: 
         - uses: actions/checkout@v2
 
-        - run: npm install
+        - run: npm install --force
 
         - name: Build Android Release
           run: npm build-android
@@ -40,7 +40,7 @@ jobs:
       steps: 
         - uses: actions/checkout@v2
 
-        - run: npm install
+        - run: npm install --force
 
         - run: cd ios && pod install
 
