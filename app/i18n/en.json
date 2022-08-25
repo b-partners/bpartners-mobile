@@ -36,7 +36,10 @@
     "title": "Connect to BPartner",
     "description": "Enter the phone number you used when you registered",
     "hint": "Phone Number",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "labels": {
+      "phoneNumber": "Phone number"
+    }
   },
   "errorScreen": {
     "title": "Something went wrong!",

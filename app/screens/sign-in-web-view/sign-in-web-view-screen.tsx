@@ -31,7 +31,7 @@ const HEADER_TITLE: TextStyle = {
   letterSpacing: 1.5,
 };
 
-export const OnboardingScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
+export const SignInWebViewScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
   const { url } = route.params;
 
   return (

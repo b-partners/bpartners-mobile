@@ -19,5 +19,14 @@
     "readyForLaunch": "Prêt pour le lancement.",
     "start": "OUVRIR UN COMPTE",
     "login": "SE CONNECTER"
+  },
+  "signInScreen": {
+    "title": "Connect to BPartner",
+    "description": "Enter the phone number you used when you registered",
+    "hint": "Phone Number",
+    "confirm": "Confirm",
+    "labels": {
+      "phoneNumber": "Phone number"
+    }
   }
 }
