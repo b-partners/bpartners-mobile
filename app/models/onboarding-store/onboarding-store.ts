@@ -5,22 +5,26 @@ import { OnboardingApi } from '../../services/api/onboarding-api';
 export const OnboardingStoreModel = types
   .model('Onboarding')
   .props({
-    url: types.optional(types.string, ''),
+    redirectionUrl: types.optional(types.string, ''),
+    successUrl: types.optional(types.string, ''),
+    failureUrl: types.optional(types.string, ''),
   })
   .extend(withEnvironment)
 
   .actions(self => ({
-    saveUrl: (url: string) => {
-      self.url = url;
+    getOnboardingUrlSuccess: urls => {
+      self.redirectionUrl = urls.redirectionUrl;
+      self.successUrl = urls.successUrl;
+      self.failureUrl = urls.failureUrl;
     },
   }))
   .actions(self => ({
     getOnboardingUrl: async () => {
       const onboardingApi = new OnboardingApi(self.environment.api);
       const result = await onboardingApi.getOnboardingUrl();
-
-      if (result.kind === 'ok') {
-        self.saveUrl(result.url);
+      const { kind, ...urls } = result;
+      if (kind === 'ok') {
+        self.getOnboardingUrlSuccess(urls);
       } else {
         __DEV__ && console.tron.log(result.kind);
       }

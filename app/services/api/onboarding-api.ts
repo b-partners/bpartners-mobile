@@ -13,9 +13,9 @@ export class OnboardingApi {
   async getOnboardingUrl(): Promise<GetOnboardingURL> {
     try {
       // make the api call
-      // TODO: Delete query params
-      const response: ApiResponse<any> = await this.api.apisauce.get('onboarding', {
-        type: 'COMPANY',
+      const response: ApiResponse<any> = await this.api.apisauce.post('onboarding', {
+        successUrl: 'https://dashboard-dev.bpartners.app',
+        failureUrl: 'https://dashboard-dev.bpartners.app/error',
       });
 
       // the typical ways to die when calling an api
@@ -23,9 +23,8 @@ export class OnboardingApi {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-      const url = response.data;
 
-      return { kind: 'ok', url };
+      return { kind: 'ok', ...response.data };
     } catch (e) {
       return { kind: 'bad-data' };
     }

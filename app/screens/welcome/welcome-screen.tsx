@@ -74,8 +74,8 @@ export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'signIn'>> =
 
   const createAccount = async () => {
     await onboardingStore.getOnboardingUrl();
-    const { url } = onboardingStore;
-    navigation.navigate('onboarding', { url });
+    const { redirectionUrl } = onboardingStore;
+    navigation.navigate('onboarding', { url: redirectionUrl });
   };
 
   return (
