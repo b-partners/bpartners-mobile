@@ -23,7 +23,7 @@ jobs:
         - run: npm install --force
 
         - name: Build Android Release
-          run: npm build-android
+          run: npm run build-android
         
         - run: yarn test 
 
@@ -45,7 +45,7 @@ jobs:
         - run: cd ios && pod install
 
         - name: Build app
-          run: npm build-ios
+          run: npm run build-ios
 
         - run: yarn test 
 
