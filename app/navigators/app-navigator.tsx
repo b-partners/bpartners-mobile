@@ -8,7 +8,7 @@ import React from 'react';
 import { useColorScheme } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { WelcomeScreen, TransactionListScreen, ConnexionScreen } from '../screens';
+import { WelcomeScreen, TransactionListScreen, SigninScreen } from '../screens';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { OnboardingScreen } from '../screens/onboarding/onboarding-screen';
 
@@ -29,7 +29,7 @@ export type NavigatorParamList = {
   demo: undefined;
   onboarding: { url: string };
   transactionList: undefined;
-  connexion: undefined;
+  signIn: undefined;
 };
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
@@ -46,7 +46,7 @@ function AppStack() {
       <Stack.Screen name='welcome' component={WelcomeScreen} />
       <Stack.Screen name='onboarding' component={OnboardingScreen} />
       <Stack.Screen name='transactionList' component={TransactionListScreen} />
-      <Stack.Screen name="connexion" component={ConnexionScreen} />
+      <Stack.Screen name='signIn' component={SigninScreen} />
       {/** 🔥 Your screens go here */}
     </Stack.Navigator>
   );

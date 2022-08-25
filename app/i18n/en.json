@@ -32,7 +32,7 @@
   "onboardingScreen": {
     "title": "Onboarding"
   },
-  "connexionScreen": {
+  "signInScreen": {
     "title": "Connect to BPartner",
     "description": "Enter the phone number you used when you registered",
     "hint": "Phone Number",

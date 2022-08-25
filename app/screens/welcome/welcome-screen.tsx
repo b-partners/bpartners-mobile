@@ -68,7 +68,7 @@ const FOOTER_CONTENT: ViewStyle = {
   justifyContent: 'space-between',
 };
 
-export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'connexion'>> = observer(({ navigation }) => {
+export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
   const login = () => navigation.navigate('demo');
   const { onboardingStore } = useStores();
 

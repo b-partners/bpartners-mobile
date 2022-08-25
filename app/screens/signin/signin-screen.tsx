@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 });
 const DISABLE = { opacity: 0.6 };
 
-export const ConnexionScreen: FC<StackScreenProps<NavigatorParamList, 'connexion'>> = observer(({ navigation }) => {
+export const SigninScreen: FC<StackScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
   const goBack = () => navigation.goBack();
 
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -74,16 +74,16 @@ export const ConnexionScreen: FC<StackScreenProps<NavigatorParamList, 'connexion
   };
 
   return (
-    <View testID='ConnexionScreen' style={FULL}>
+    <View testID='SigninScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
         <Header leftIcon='back' onLeftPress={goBack} style={HEADER} />
         <View>
-          <Text style={TITLE} preset='header' tx='connexionScreen.title' />
-          <Text tx='connexionScreen.description' style={CONTENT} />
+          <Text style={TITLE} preset='header' tx='signInScreen.title' />
+          <Text tx='signInScreen.description' style={CONTENT} />
           <TextField
             inputStyle={styles.phoneInput}
-            placeholderTx='connexionScreen.hint'
+            placeholderTx='signInScreen.hint'
             keyboardType='phone-pad'
             label='Phone number'
             onChangeText={newValue => handleChange(newValue)}
@@ -94,7 +94,7 @@ export const ConnexionScreen: FC<StackScreenProps<NavigatorParamList, 'connexion
               testID='next-screen-button'
               style={[CONTINUE]}
               textStyle={CONTINUE_TEXT}
-              tx='connexionScreen.confirm'
+              tx='signInScreen.confirm'
               onPress={handlePress}
               disabled={phoneNumber.length <= 10}
             />
