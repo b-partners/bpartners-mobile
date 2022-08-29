@@ -6,14 +6,6 @@ on:
   workflow_dispatch: 
   
 jobs:
-  install-and-test:
-      runs-on: ubuntu-latest
-      steps: 
-        - uses: actions/checkout@v2
-        - run: npm install --force
-        - run: npm test
-
-
   build-android:
       needs: install-and-test
       runs-on: ubuntu-latest
