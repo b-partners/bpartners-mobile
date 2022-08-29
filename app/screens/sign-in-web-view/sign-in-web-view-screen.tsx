@@ -33,13 +33,20 @@ const HEADER_TITLE: TextStyle = {
 
 export const SignInWebViewScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
   const { url } = route.params;
+  const onNavigationStateChange = webViewState => {
+    // TODO: make a better regex for matching the url
+    if (webViewState.url.includes('https://dashboard-dev.bpartners.app/?code=')) {
+      return navigation.navigate('transactionList');
+    }
+    // TODO: error handling
+  };
 
   return (
     <View testID='SignInWebViewScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <SafeAreaView />
       <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
-      <WebView source={{ uri: url }} />
+      <WebView source={{ uri: url }} onNavigationStateChange={onNavigationStateChange} />
     </View>
   );
 });
