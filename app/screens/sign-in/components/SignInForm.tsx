@@ -47,7 +47,7 @@ const INVALID_PHONE_NUMBER = {
 };
 
 export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => void }>> = props => {
-  const { signInStore } = useStores();
+  const { authStore } = useStores();
   const { next } = props;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -57,8 +57,8 @@ export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => 
       initialValues={{ phoneNumber: '' }}
       onSubmit={async ({ phoneNumber }) => {
         setIsLoading(true);
-        await signInStore.signIn(phoneNumber);
-        const { redirectionUrl } = signInStore;
+        await authStore.signIn(phoneNumber);
+        const { redirectionUrl } = authStore;
         if (redirectionUrl) setIsLoading(false);
         next(redirectionUrl);
       }}
@@ -72,7 +72,7 @@ export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => 
               inputStyle={[PHONE_NUMBER_STYLE, errors.phoneNumber && INVALID_PHONE_NUMBER]}
               placeholderTx='signInScreen.hint'
               keyboardType='phone-pad'
-              label={'phoneNumber'}
+              labelTx='signInScreen.labels.phoneNumber'
             />
             <Button testID='next-screen-button' style={[CONTINUE]} textStyle={CONTINUE_TEXT} tx='signInScreen.confirm' onPress={() => handleSubmit()} />
           </>

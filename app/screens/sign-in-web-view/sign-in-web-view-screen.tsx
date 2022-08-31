@@ -6,6 +6,9 @@ import WebView from 'react-native-webview';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header } from '../../components';
 import { color, spacing, typography } from '../../theme';
+import env from '../../config/env';
+import getQueryParams from '../../utils/get-query-params';
+import { useStores } from '../../models';
 
 const FULL: ViewStyle = { flex: 1 };
 
@@ -33,19 +36,26 @@ const HEADER_TITLE: TextStyle = {
 
 export const SignInWebViewScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
   const { url } = route.params;
-  const onNavigationStateChange = webViewState => {
-    // TODO: make a better regex for matching the url
-    if (webViewState.url.includes('https://dashboard-dev.bpartners.app/?code=')) {
-      return navigation.navigate('transactionList');
+  const { authStore } = useStores();
+
+  const onNavigationStateChange = async webViewState => {
+    const { url: currentUrl } = webViewState;
+    if (!currentUrl.includes(env.successUrl)) {
+      return;
     }
-    // TODO: error handling
+    const code = getQueryParams(currentUrl)['code'];
+    if (!code) {
+      return;
+    }
+    await authStore.getToken(code);
+    navigation.navigate('transactionList');
   };
 
   return (
     <View testID='SignInWebViewScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <SafeAreaView />
-      <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
+      <Header headerTx='signInScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
       <WebView source={{ uri: url }} onNavigationStateChange={onNavigationStateChange} />
     </View>
   );
