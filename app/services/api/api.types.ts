@@ -6,6 +6,10 @@ export interface User {
   name: string;
 }
 
+export interface Whoami {
+  user: any;
+}
+
 export type GetUsersResult = { kind: 'ok'; users: User[] } | GeneralApiProblem;
 export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
@@ -15,3 +19,5 @@ export type GetTransactionResult = { kind: 'ok'; transaction: Transaction } | Ge
 export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
 
 export type SignInResult = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
+
+export type GetTokenResult = { kind: 'ok'; accessToken: string; refreshToken: string; whoami: Whoami } | GeneralApiProblem;

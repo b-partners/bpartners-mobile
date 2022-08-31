@@ -1,15 +1,16 @@
-import React, { FC, PropsWithoutRef } from 'react';
+import React, { FC, PropsWithoutRef, useState } from 'react';
 import { Formik } from 'formik';
-import { TextStyle, View, ViewStyle } from 'react-native';
-import { Button, TextField } from '../../../components';
+import { TextStyle, ViewStyle, ActivityIndicator } from 'react-native';
+import { Button } from '../../../components';
 import { color, spacing, typography } from '../../../theme';
 import { useStores } from '../../../models';
+import * as yup from 'yup';
+import FormField from './FormField';
 
 const PHONE_NUMBER_STYLE: TextStyle = {
   borderRadius: 10,
-  color: color.palette.black,
   padding: spacing[3],
-  marginBottom: spacing[5],
+  color: color.palette.black,
 };
 
 const TEXT: TextStyle = {
@@ -31,32 +32,52 @@ const CONTINUE_TEXT: TextStyle = {
   letterSpacing: 2,
 };
 
+const validationSchema = yup.object().shape({
+  phoneNumber: yup
+    .string()
+    .required()
+    .matches(/^[+]?[(]?\d{3}[)]?[-\s.]?\d{3}[-\s.]?\d{4,6}$/, 'Phone number is not valid')
+    .min(10)
+    .max(15)
+    .label('Phone number'),
+});
+const INVALID_PHONE_NUMBER = {
+  borderColor: '#FF5983',
+  borderWidth: 2,
+};
+
 export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => void }>> = props => {
-  const { signInStore } = useStores();
+  const { authStore } = useStores();
   const { next } = props;
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Formik
+      validationSchema={validationSchema}
       initialValues={{ phoneNumber: '' }}
       onSubmit={async ({ phoneNumber }) => {
-        await signInStore.signIn(phoneNumber);
-        const { redirectionUrl } = signInStore;
+        setIsLoading(true);
+        await authStore.signIn(phoneNumber);
+        const { redirectionUrl } = authStore;
+        if (redirectionUrl) setIsLoading(false);
         next(redirectionUrl);
       }}
     >
-      {({ handleSubmit, handleChange, handleBlur }) => (
-        <View>
-          <TextField
-            inputStyle={PHONE_NUMBER_STYLE}
-            placeholderTx='signInScreen.hint'
-            keyboardType='phone-pad'
-            labelTx='signInScreen.labels.phoneNumber'
-            onChangeText={handleChange('phoneNumber')}
-            onBlur={handleBlur('phoneNumber')}
-          />
-          <Button testID='next-screen-button' style={[CONTINUE]} textStyle={CONTINUE_TEXT} tx='signInScreen.confirm' onPress={() => handleSubmit()} />
-        </View>
-      )}
+      {({ handleSubmit, errors }) => {
+        return (
+          <>
+            {isLoading && <ActivityIndicator size='small' />}
+            <FormField
+              name='phoneNumber'
+              inputStyle={[PHONE_NUMBER_STYLE, errors.phoneNumber && INVALID_PHONE_NUMBER]}
+              placeholderTx='signInScreen.hint'
+              keyboardType='phone-pad'
+              labelTx='signInScreen.labels.phoneNumber'
+            />
+            <Button testID='next-screen-button' style={[CONTINUE]} textStyle={CONTINUE_TEXT} tx='signInScreen.confirm' onPress={() => handleSubmit()} />
+          </>
+        );
+      }}
     </Formik>
   );
 };
