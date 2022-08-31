@@ -21,12 +21,12 @@
     "login": "SE CONNECTER"
   },
   "signInScreen": {
-    "title": "Connect to BPartner",
-    "description": "Enter the phone number you used when you registered",
-    "hint": "Phone Number",
-    "confirm": "Confirm",
+    "title": "Connectez-vous à BPartner",
+    "description": "Entrez le numéro de téléphone que vous avez utilisé lors de votre inscription",
+    "hint": "Téléphone",
+    "confirm": "Se connecter",
     "labels": {
-      "phoneNumber": "Phone number"
+      "phoneNumber": "Téléphone"
     }
   }
 }
