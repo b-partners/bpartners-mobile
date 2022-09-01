@@ -48,7 +48,7 @@ export class Api {
         return;
       }
       const accessToken = await AsyncStorage.getItem('accessToken');
-      request.headers['Authorization'] = `Bearer ${accessToken}`;
+      request.headers.Authorization = `Bearer ${accessToken}`;
     });
   }
 
