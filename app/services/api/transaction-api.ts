@@ -2,8 +2,7 @@ import { ApiResponse } from 'apisauce';
 import { Api } from './api';
 import { GetTransactionsResult } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
-
-const API_PAGE_SIZE = 50;
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export class TransactionApi {
   private api: Api;
@@ -15,9 +14,9 @@ export class TransactionApi {
   async getTransactions(): Promise<GetTransactionsResult> {
     try {
       // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.get('transactions', {
-        amount: API_PAGE_SIZE,
-      });
+      const response: ApiResponse<any> = await this.api.apisauce.get('transactions');
+      const accessToken = await AsyncStorage.getItem('token');
+      console.log(accessToken);
 
       // the typical ways to die when calling an api
       if (!response.ok) {

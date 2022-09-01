@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { withEnvironment } from '../extensions/with-environment';
 import { AuthApi } from '../../services/api/auth-api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -32,9 +33,16 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
-    getTokenSuccess: ({ accessToken, refreshToken }) => {
+    getTokenSuccess: async ({ accessToken, refreshToken }) => {
       self.accessToken = accessToken;
       self.refreshToken = refreshToken;
+      console.tron.log(`Saving access token: ${accessToken}`);
+      try {
+        await AsyncStorage.setItem('accessToken', accessToken);
+        await AsyncStorage.setItem('refreshToken', refreshToken);
+      } catch (e) {
+        console.tron.error(e.message, e);
+      }
     },
   }))
   .actions(self => ({

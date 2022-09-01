@@ -2,6 +2,8 @@ import { ApisauceInstance, create, ApiResponse } from 'apisauce';
 import { getGeneralApiProblem } from './api-problem';
 import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
 import * as Types from './api.types';
+import env from '../../config/env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * Manages all requests to the API.
@@ -35,12 +37,18 @@ export class Api {
    */
   setup() {
     // construct the apisauce instance
+    const headers: object = { Accept: 'application/json' };
     this.apisauce = create({
       baseURL: this.config.url,
       timeout: this.config.timeout,
-      headers: {
-        Accept: 'application/json',
-      },
+      headers,
+    });
+    this.apisauce.addAsyncRequestTransform(async request => {
+      if (env.endpointWhiteList.includes(request.url)) {
+        return;
+      }
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      request.headers['Authorization'] = `Bearer ${accessToken}`;
     });
   }
 

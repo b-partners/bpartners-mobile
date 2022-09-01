@@ -13,6 +13,8 @@ export interface ApiConfig {
    * Milliseconds before we timeout the request.
    */
   timeout: number;
+
+  token?: string;
 }
 
 /**
@@ -21,4 +23,5 @@ export interface ApiConfig {
 export const DEFAULT_API_CONFIG: ApiConfig = {
   url: env.apiBaseUrl || '',
   timeout: 10000,
+  token: undefined,
 };

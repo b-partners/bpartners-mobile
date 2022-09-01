@@ -10,7 +10,7 @@ export const TransactionStoreModel = types
   })
   .extend(withEnvironment)
   .actions(self => ({
-    saveTransactions: (transactionSnapshotOuts: TransactionSnapshotOut[]) => {
+    getTransactionsSuccess: (transactionSnapshotOuts: TransactionSnapshotOut[]) => {
       self.transactions.replace(transactionSnapshotOuts);
     },
   }))
@@ -20,7 +20,7 @@ export const TransactionStoreModel = types
       const result = await transactionApi.getTransactions();
 
       if (result.kind === 'ok') {
-        self.saveTransactions(result.transactions);
+        self.getTransactionsSuccess(result.transactions);
       } else {
         __DEV__ && console.tron.log(result.kind);
       }
@@ -28,6 +28,9 @@ export const TransactionStoreModel = types
   }));
 
 export interface TransactionStore extends Instance<typeof TransactionStoreModel> {}
+
 export interface TransactionStoreSnapshotOut extends SnapshotOut<typeof TransactionStoreModel> {}
+
 export interface TransactionStoreSnapshotIn extends SnapshotIn<typeof TransactionStoreModel> {}
+
 export const createTransactionStoreDefaultModel = () => types.optional(TransactionStoreModel, {});
