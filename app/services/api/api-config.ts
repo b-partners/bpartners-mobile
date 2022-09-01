@@ -1,4 +1,4 @@
-const API_URL = 'https://api-dev.bpartners.app';
+import env from '../../config/env';
 
 /**
  * The options used to configure the API.
@@ -19,6 +19,6 @@ export interface ApiConfig {
  * The default configuration for the app.
  */
 export const DEFAULT_API_CONFIG: ApiConfig = {
-  url: API_URL || 'https://jsonplaceholder.typicode.com',
+  url: env.apiBaseUrl || '',
   timeout: 10000,
 };
