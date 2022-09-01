@@ -29,7 +29,7 @@ const TRANSACTION_RIGHT_SIDE: ViewStyle = {
 
 export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
   const { item } = props;
-  const date = new Date(item.updateDateTime);
+  // const date = new Date(item.paymentDateTime);
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: translate('currency'),
@@ -39,8 +39,8 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
   return (
     <View style={LIST_CONTAINER}>
       <View style={TRANSACTION_LEFT_SIDE}>
-        <Text style={{ ...LIST_TEXT }}>{item.title}</Text>
-        <Text style={{ ...LIST_TEXT }}>{date.toISOString().split('T')[0]}</Text>
+        <Text style={{ ...LIST_TEXT }}>{item.label}</Text>
+        <Text style={{ ...LIST_TEXT }}>{item.category.label}</Text>
       </View>
       <View style={TRANSACTION_RIGHT_SIDE}>
         <Text style={TRANSACTION_AMOUNT}>{formatter.format(item.amount)}</Text>

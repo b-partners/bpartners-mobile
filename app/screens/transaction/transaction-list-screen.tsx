@@ -57,7 +57,6 @@ export const TransactionListScreen: FC<StackScreenProps<NavigatorParamList, 'tra
         <FlatList
           contentContainerStyle={FLAT_LIST}
           data={[...transactions]}
-          keyExtractor={item => String(item.id)}
           renderItem={({ item }) => {
             return <Transaction item={item} />;
           }}
