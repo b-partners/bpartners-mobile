@@ -6,6 +6,9 @@ import WebView from 'react-native-webview';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header } from '../../components';
 import { color, spacing, typography } from '../../theme';
+import env from '../../config/env';
+import getQueryParams from '../../utils/get-query-params';
+import { useStores } from '../../models';
 
 const FULL: ViewStyle = { flex: 1 };
 
@@ -33,13 +36,27 @@ const HEADER_TITLE: TextStyle = {
 
 export const OnboardingScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
   const { url } = route.params;
+  const { authStore } = useStores();
+
+  const onNavigationStateChange = async webViewState => {
+    const { url: currentUrl } = webViewState;
+    if (!currentUrl.includes(env.successUrl)) {
+      return;
+    }
+    const { code } = getQueryParams(currentUrl);
+    if (!code) {
+      return;
+    }
+    await authStore.getToken(code);
+    navigation.navigate('transactionList');
+  };
 
   return (
     <View testID='SignInWebViewScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <SafeAreaView />
       <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
-      <WebView source={{ uri: url }} />
+      <WebView source={{ uri: url }} onNavigationStateChange={onNavigationStateChange} />
     </View>
   );
 });
