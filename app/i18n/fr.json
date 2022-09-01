@@ -21,7 +21,7 @@
     "login": "SE CONNECTER"
   },
   "signInScreen": {
-    "title": "Connectez-vous à BPartner",
+    "title": "Connectez-vous à BPartners",
     "description": "Entrez le numéro de téléphone que vous avez utilisé lors de votre inscription",
     "hint": "Téléphone",
     "confirm": "Se connecter",
