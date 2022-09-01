@@ -43,7 +43,7 @@ export const SignInWebViewScreen: FC<StackScreenProps<NavigatorParamList, 'welco
     if (!currentUrl.includes(env.successUrl)) {
       return;
     }
-    const code = getQueryParams(currentUrl).code;
+    const { code } = getQueryParams(currentUrl);
     if (!code) {
       return;
     }
