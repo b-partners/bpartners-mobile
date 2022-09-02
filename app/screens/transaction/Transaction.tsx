@@ -21,7 +21,7 @@ const LIST_CONTAINER: ViewStyle = {
   alignItems: 'center',
   flexDirection: 'column',
   padding: spacing[2],
-  marginTop: spacing[2]
+  marginTop: spacing[2],
 };
 
 const TRANSACTION_LEFT_SIDE: ViewStyle = {
@@ -43,6 +43,8 @@ const DROPDOWN_PICKER_STYLE = { flex: 1 };
 
 const ICON_STYLE = { flex: 1, marginHorizontal: spacing[1] };
 
+const TRANSACTION_DETAILS_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', paddingHorizontal: spacing[2] };
+
 export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
   const { item } = props;
   const [open, setOpen] = useState<boolean>(false);
@@ -56,7 +58,7 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
 
   return (
     <View style={LIST_CONTAINER}>
-      <View style={{ display: 'flex', flexDirection: 'row', paddingHorizontal: spacing[2] }}>
+      <View style={TRANSACTION_DETAILS_STYLE}>
         <View style={TRANSACTION_LEFT_SIDE}>
           <Text style={LIST_TEXT}>{datePipe(item.paymentDatetime)}</Text>
           <Text style={{ ...LIST_TEXT }}>
