@@ -18,7 +18,6 @@ export const TransactionStoreModel = types
     getTransactions: async () => {
       const transactionApi = new TransactionApi(self.environment.api);
       const result = await transactionApi.getTransactions();
-
       if (result.kind === 'ok') {
         self.getTransactionsSuccess(result.transactions);
       } else {
