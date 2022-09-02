@@ -1,49 +1,20 @@
 import React, { PropsWithoutRef, useEffect, useState } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import { Icon, Text } from '../../components';
-import { color, spacing } from '../../theme';
 import { Transaction as ITransaction } from '../../models/transaction/transaction';
 import { currencyPipe, datePipe } from '../../utils/pipes';
 import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
-
-const TRANSACTION_AMOUNT = (amount: number): TextStyle => ({
-  fontSize: 19,
-  fontWeight: 'bold',
-  color: amount > 0 ? color.palette.green : color.palette.angry,
-  textAlign: 'right',
-});
-
-const LIST_TEXT: TextStyle = {
-  fontWeight: 'bold',
-};
-
-const LIST_CONTAINER: ViewStyle = {
-  alignItems: 'center',
-  flexDirection: 'column',
-  padding: spacing[2],
-  marginTop: spacing[2],
-};
-
-const TRANSACTION_LEFT_SIDE: ViewStyle = {
-  flex: 2,
-};
-
-const TRANSACTION_RIGHT_SIDE: ViewStyle = {
-  flex: 1,
-  marginLeft: 'auto',
-};
-
-const TRANSACTION_ACTIONS: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  padding: spacing[5],
-};
-
-const DROPDOWN_PICKER_STYLE = { flex: 1 };
-
-const ICON_STYLE = { flex: 1, marginHorizontal: spacing[1] };
-
-const TRANSACTION_DETAILS_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', paddingHorizontal: spacing[2] };
+import {
+  DROPDOWN_PICKER_STYLE,
+  ICON_STYLE,
+  LIST_CONTAINER,
+  LIST_TEXT,
+  TRANSACTION_ACTIONS,
+  TRANSACTION_AMOUNT,
+  TRANSACTION_DETAILS_STYLE,
+  TRANSACTION_LEFT_SIDE,
+  TRANSACTION_RIGHT_SIDE,
+} from './styles';
 
 export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
   const { item } = props;
