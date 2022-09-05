@@ -1,4 +1,4 @@
-import { StackScreenProps } from '@react-navigation/stack';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
@@ -42,7 +42,7 @@ const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[4],
 };
 
-export const SignInScreen: FC<StackScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
+export const SignInScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
   const goBack = () => navigation.goBack();
   const next = (redirectionUrl: string) => navigation.navigate('signInWebView', { url: redirectionUrl });
 

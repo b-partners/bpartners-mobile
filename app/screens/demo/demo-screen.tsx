@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ImageStyle, Platform, TextStyle, View, ViewStyle } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import { BulletItem, Button, Header, Text, Screen, AutoImage as Image, GradientBackground } from '../../components';
 import { NavigatorParamList } from '../../navigators';
@@ -85,7 +85,7 @@ const platformCommand = Platform.select({
   android: 'Cmd/Ctrl + M',
 });
 
-export const DemoScreen: FC<StackScreenProps<NavigatorParamList, 'demo'>> = observer(({ navigation }) => {
+export const DemoScreen: FC<DrawerScreenProps<NavigatorParamList, 'demo'>> = observer(({ navigation }) => {
   const goBack = () => navigation.goBack();
 
   const demoReactotron = React.useMemo(

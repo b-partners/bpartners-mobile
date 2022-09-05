@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import WebView from 'react-native-webview';
 import { NavigatorParamList } from '../../navigators';
@@ -34,7 +34,7 @@ const HEADER_TITLE: TextStyle = {
   letterSpacing: 1.5,
 };
 
-export const SignInWebViewScreen: FC<StackScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
+export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
   const { url } = route.params;
   const { authStore } = useStores();
 

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { View, ViewStyle, TextStyle, SafeAreaView } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import { Button, Header, Screen, Text, GradientBackground } from '../../components';
 import { color, spacing, typography } from '../../theme';
@@ -68,7 +68,7 @@ const FOOTER_CONTENT: ViewStyle = {
   justifyContent: 'space-between',
 };
 
-export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
+export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
   const signIn = () => navigation.navigate('signIn');
   const { onboardingStore } = useStores();
 

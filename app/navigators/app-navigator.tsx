@@ -7,10 +7,10 @@
 import React from 'react';
 import { useColorScheme } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen } from '../screens';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-view-screen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -33,24 +33,22 @@ export type NavigatorParamList = {
   signInWebView: { url: string };
 };
 
-// Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createNativeStackNavigator<NavigatorParamList>();
+const Drawer = createDrawerNavigator<NavigatorParamList>();
 
 function AppStack() {
   return (
-    <Stack.Navigator
+    <Drawer.Navigator
       screenOptions={{
         headerShown: false,
       }}
       initialRouteName='welcome'
     >
-      <Stack.Screen name='welcome' component={WelcomeScreen} />
-      <Stack.Screen name='signIn' component={SignInScreen} />
-      <Stack.Screen name='signInWebView' component={SignInWebViewScreen} />
-      <Stack.Screen name='onboarding' component={OnboardingScreen} />
-      <Stack.Screen name='transactionList' component={TransactionListScreen} />
-      {/** 🔥 Your screens go here */}
-    </Stack.Navigator>
+      <Drawer.Screen name='welcome' component={WelcomeScreen} />
+      <Drawer.Screen name='signIn' component={SignInScreen} />
+      <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} />
+      <Drawer.Screen name='onboarding' component={OnboardingScreen} />
+      <Drawer.Screen name='transactionList' component={TransactionListScreen} />
+    </Drawer.Navigator>
   );
 }
 

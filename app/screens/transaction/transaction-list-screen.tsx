@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import { GradientBackground, Header, Screen, Separator } from '../../components';
 import { color, spacing } from '../../theme';
@@ -35,7 +35,7 @@ const FLAT_LIST: ViewStyle = {
   margin: spacing[3],
 };
 
-export const TransactionListScreen: FC<StackScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
+export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
   const goBack = () => navigation.goBack();
 
   const { transactionStore } = useStores();
