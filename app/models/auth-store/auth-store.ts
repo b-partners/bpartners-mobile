@@ -23,7 +23,7 @@ export const AuthStoreModel = types
   .actions(self => ({
     signIn: async (phoneNumber: string) => {
       const signInApi = new AuthApi(self.environment.api);
-      const result = await signInApi.signIn(phoneNumber);
+      const result = await signInApi.signIn(phoneNumber.replace('+', '%2B'));
       const { kind, ...url } = result;
       if (kind === 'ok') {
         self.signInSuccess(url);
