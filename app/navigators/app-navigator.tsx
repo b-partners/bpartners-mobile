@@ -11,6 +11,7 @@ import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen } 
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-view-screen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { translate } from '../i18n';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -26,9 +27,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
  */
 export type NavigatorParamList = {
   welcome: { url: string };
-  demo: undefined;
   onboarding: { url: string };
-  transactionList: undefined;
+  transactionList: { url: string };
   signIn: { url: string };
   signInWebView: { url: string };
 };
@@ -36,6 +36,14 @@ export type NavigatorParamList = {
 const Drawer = createDrawerNavigator<NavigatorParamList>();
 
 function AppStack() {
+  const HIDE_SCREEN_OPTIONS: any = {
+    swipeEnabled: false,
+    drawerLabel: () => null,
+    drawerIcon: () => null,
+    title: null,
+    drawerItemStyle: { display: 'none' },
+  };
+
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -43,11 +51,11 @@ function AppStack() {
       }}
       initialRouteName='welcome'
     >
-      <Drawer.Screen name='welcome' component={WelcomeScreen} />
-      <Drawer.Screen name='signIn' component={SignInScreen} />
-      <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} />
-      <Drawer.Screen name='onboarding' component={OnboardingScreen} />
-      <Drawer.Screen name='transactionList' component={TransactionListScreen} />
+      <Drawer.Screen name='onboarding' component={OnboardingScreen} options={HIDE_SCREEN_OPTIONS} />
+      <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_SCREEN_OPTIONS} />
+      <Drawer.Screen name='signIn' component={SignInScreen} options={HIDE_SCREEN_OPTIONS} />
+      <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={HIDE_SCREEN_OPTIONS} />
+      <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
     </Drawer.Navigator>
   );
 }
