@@ -12,10 +12,9 @@ jobs:
       steps: 
         - uses: actions/checkout@v2
 
-        - run: npm install --force
+        - run: yarn install
 
-        - name: Build Android Release
-          run: npm run build-android
+        - run: cd android && ./gradlew assembleRealease
         
         - run: yarn test 
 

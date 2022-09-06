@@ -136,6 +136,15 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    signingConfigs {
+        release {
+            storeFile file('bpartner-mobile')
+            storePassword 'dinasoa'
+            keyAlias 'bpartner-m'
+            keyPassword 'dinasoa'
+        }
+    }
+
     defaultConfig {
         applicationId "com.bpartnersmobile"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -234,6 +243,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
