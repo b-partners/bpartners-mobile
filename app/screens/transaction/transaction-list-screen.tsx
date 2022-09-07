@@ -35,7 +35,7 @@ const FLAT_LIST: ViewStyle = {
   margin: spacing[3],
 };
 
-export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
+export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(() => {
   const { transactionStore } = useStores();
   const { transactions } = transactionStore;
 
