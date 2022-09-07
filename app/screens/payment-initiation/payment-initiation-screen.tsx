@@ -25,11 +25,7 @@ const HEADER_TITLE: TextStyle = {
   textAlign: 'center',
 };
 
-export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({
-  navigation,
-}) {
-  const goBack = () => navigation.goBack();
-
+export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen() {
   return (
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
