@@ -31,6 +31,11 @@
     "paymentInitiationScreen": {
       "label": "Paiement",
       "title": "Initier un paiement"
+    },
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "phone": "Numéro de téléphone"
     }
   }
 }

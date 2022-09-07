@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { withEnvironment } from '../extensions/with-environment';
 import { AuthApi } from '../../services/api/auth-api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserModel } from '../user/user';
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -11,6 +12,7 @@ export const AuthStoreModel = types
     failureUrl: types.optional(types.string, ''),
     refreshToken: types.optional(types.string, ''),
     accessToken: types.optional(types.string, ''),
+    currentUser: types.optional(UserModel, {}),
   })
   .extend(withEnvironment)
   .actions(self => ({
@@ -51,6 +53,23 @@ export const AuthStoreModel = types
       const result = await signInApi.getToken(code);
       if (result.kind === 'ok') {
         self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+      }
+    },
+  }))
+  .actions(self => ({
+    whoamiSuccess: currentUser => {
+      const user = UserModel.create(currentUser);
+      self.currentUser = { ...user };
+    },
+  }))
+  .actions(self => ({
+    whoami: async () => {
+      const signInApi = new AuthApi(self.environment.api);
+      const result = await signInApi.whoami();
+      if (result.kind === 'ok') {
+        self.whoamiSuccess(result.user);
       } else {
         __DEV__ && console.tron.log(result.kind);
       }

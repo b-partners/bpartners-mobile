@@ -57,6 +57,11 @@
   },
   "profileScreen": {
     "label": "Profile",
-    "title": "Profile"
+    "title": "Profile",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone number"
+    }
   }
 }
