@@ -54,7 +54,15 @@
   },
   "paymentInitiationScreen": {
     "label": "Payment",
-    "title": "Init a payment"
+    "title": "Init a payment",
+    "fields": {
+      "label": "Label",
+      "reference": "Reference",
+      "amount": "Amount",
+      "payerName": "Payer name",
+      "payerEmail": "Payer email",
+      "submit": "Confirm"
+    }
   },
   "profileScreen": {
     "label": "Profile",

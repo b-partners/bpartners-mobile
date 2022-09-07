@@ -31,7 +31,15 @@
     },
     "paymentInitiationScreen": {
       "label": "Paiement",
-      "title": "Initier un paiement"
+      "title": "Initier un paiement",
+      "fields": {
+        "label": "Label",
+        "reference": "Référence",
+        "amount": "Total",
+        "payerName": "Nom du payeur",
+        "payerEmail": "Email du payeur",
+        "submit": "Confirmer"
+      }
     },
     "fields": {
       "firstName": "Prénom",
