@@ -1,26 +1,26 @@
 import { ApiResponse } from 'apisauce';
 import { Api } from './api';
-import { GetTransactionsResult } from './api.types';
+import { GetUserAccount } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
 
-export class TransactionApi {
+export class AccountApi {
   private api: Api;
 
   constructor(api: Api) {
     this.api = api;
   }
 
-  async getTransactions(accountId: string): Promise<GetTransactionsResult> {
+  async getAccounts(userId: string): Promise<GetUserAccount> {
     try {
       // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactions`);
+      const response: ApiResponse<any> = await this.api.apisauce.get(`users/${userId}/accounts`);
       // the typical ways to die when calling an api
       if (!response.ok) {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-      const transactions = response.data;
-      return { kind: 'ok', transactions };
+      const [account] = response.data;
+      return { kind: 'ok', account };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
       return { kind: 'bad-data' };

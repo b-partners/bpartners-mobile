@@ -15,7 +15,7 @@ export const AuthStoreModel = types
   .extend(withEnvironment)
   .actions(self => ({
     signInSuccess: urls => {
-      self.successUrl = urls.successUrl.replace('+', '%2B');
+      self.successUrl = urls.successUrl && urls.successUrl.replace('+', '%2B');
       self.failureUrl = urls.failureUrl;
       self.redirectionUrl = urls.redirectionUrl;
     },
@@ -24,9 +24,9 @@ export const AuthStoreModel = types
     signIn: async (phoneNumber: string) => {
       const signInApi = new AuthApi(self.environment.api);
       const result = await signInApi.signIn(phoneNumber.replace('+', '%2B'));
-      const { kind, ...url } = result;
+      const { kind, ...urls } = result;
       if (kind === 'ok') {
-        self.signInSuccess(url);
+        self.signInSuccess(urls);
       } else {
         __DEV__ && console.tron.log(result.kind);
       }

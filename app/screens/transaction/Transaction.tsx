@@ -15,6 +15,7 @@ import {
   TRANSACTION_LEFT_SIDE,
   TRANSACTION_RIGHT_SIDE,
 } from './styles';
+import { translate } from '../../i18n';
 
 export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
   const { item } = props;
@@ -37,7 +38,7 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
           </Text>
         </View>
         <View style={TRANSACTION_RIGHT_SIDE}>
-          <Text style={TRANSACTION_AMOUNT(item.amount)}>{currencyPipe(item.currency).format(item.amount)}</Text>
+          <Text style={TRANSACTION_AMOUNT(item.amount)}>{currencyPipe(translate('currency')).format(item.amount)}</Text>
         </View>
       </View>
       <View style={TRANSACTION_ACTIONS}>

@@ -36,8 +36,6 @@ const FLAT_LIST: ViewStyle = {
 };
 
 export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
-  const goBack = () => navigation.goBack();
-
   const { transactionStore } = useStores();
   const { transactions } = transactionStore;
 
@@ -47,13 +45,13 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
     }
 
     fetchData();
-  }, [transactionStore]);
+  });
 
   return (
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-        <Header headerTx='transactionListScreen.title' leftIcon='back' onLeftPress={goBack} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='transactionListScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
         <FlatList
           contentContainerStyle={FLAT_LIST}
           data={[...transactions]}

@@ -2,6 +2,8 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { TransactionModel, TransactionSnapshotOut } from '../transaction/transaction';
 import { TransactionApi } from '../../services/api/transaction-api';
 import { withEnvironment } from '../extensions/with-environment';
+import { AccountApi } from '../../services/api/account-api';
+import { AuthApi } from '../../services/api/auth-api';
 
 export const TransactionStoreModel = types
   .model('Transaction')
@@ -16,12 +18,24 @@ export const TransactionStoreModel = types
   }))
   .actions(self => ({
     getTransactions: async () => {
+      const authApi = new AuthApi(self.environment.api);
+      const getWhoamiResult = await authApi.whoami();
+      if (getWhoamiResult.kind !== 'ok') {
+        console.tron.log(`[auth] bad data`);
+        return;
+      }
+      const accountApi = new AccountApi(self.environment.api);
+      const getAccountResult = await accountApi.getAccounts(getWhoamiResult.user.id);
+      if (getAccountResult.kind !== 'ok') {
+        console.tron.log(`[account] bad data`);
+        return;
+      }
       const transactionApi = new TransactionApi(self.environment.api);
-      const result = await transactionApi.getTransactions();
-      if (result.kind === 'ok') {
-        self.getTransactionsSuccess(result.transactions);
+      const getTransactionsResult = await transactionApi.getTransactions(getAccountResult.account.id);
+      if (getTransactionsResult.kind === 'ok') {
+        self.getTransactionsSuccess(getTransactionsResult.transactions);
       } else {
-        __DEV__ && console.tron.log(result.kind);
+        __DEV__ && console.tron.log(getTransactionsResult.kind);
       }
     },
   }));

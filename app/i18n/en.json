@@ -50,5 +50,9 @@
   "storybook": {
     "placeholder": "Placeholder",
     "field": "Field"
+  },
+  "paymentInitiation": {
+    "label": "Payment",
+    "title": "Init a payment"
   }
 }

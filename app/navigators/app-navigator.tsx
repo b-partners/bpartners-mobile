@@ -7,7 +7,7 @@
 import React from 'react';
 import { useColorScheme } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen } from '../screens';
+import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen, PaymentInitiationScreen } from '../screens';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-view-screen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -31,12 +31,13 @@ export type NavigatorParamList = {
   transactionList: { url: string };
   signIn: { url: string };
   signInWebView: { url: string };
+  paymentInitiation: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
 
 function AppStack() {
-  const HIDE_SCREEN_OPTIONS: any = {
+  const PROTECTED_ROUTE_OPTIONS: any = {
     swipeEnabled: false,
     drawerLabel: () => null,
     drawerIcon: () => null,
@@ -51,11 +52,12 @@ function AppStack() {
       }}
       initialRouteName='welcome'
     >
-      <Drawer.Screen name='onboarding' component={OnboardingScreen} options={HIDE_SCREEN_OPTIONS} />
-      <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_SCREEN_OPTIONS} />
-      <Drawer.Screen name='signIn' component={SignInScreen} options={HIDE_SCREEN_OPTIONS} />
-      <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={HIDE_SCREEN_OPTIONS} />
       <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
+      <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiation.label') }} />
+      <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={PROTECTED_ROUTE_OPTIONS} />
     </Drawer.Navigator>
   );
 }

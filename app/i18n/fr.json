@@ -27,6 +27,10 @@
     "confirm": "Se connecter",
     "labels": {
       "phoneNumber": "Téléphone"
+    },
+    "paymentInitiation": {
+      "label": "Paiement",
+      "title": "Initier un paiement"
     }
   }
 }
