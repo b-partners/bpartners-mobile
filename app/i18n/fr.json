@@ -9,7 +9,8 @@
     "invalidEmail": "Adresse e-mail invalide"
   },
   "transactionListScreen": {
-    "title": "Transactions"
+    "title": "Transactions",
+    "balance": "Balance"
   },
   "onboardingScreen": {
     "title": "Créer un compte"
