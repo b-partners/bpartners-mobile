@@ -51,8 +51,12 @@
     "placeholder": "Placeholder",
     "field": "Field"
   },
-  "paymentInitiation": {
+  "paymentInitiationScreen": {
     "label": "Payment",
     "title": "Init a payment"
+  },
+  "profileScreen": {
+    "label": "Profile",
+    "title": "Profile"
   }
 }

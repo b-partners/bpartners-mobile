@@ -28,7 +28,7 @@
     "labels": {
       "phoneNumber": "Téléphone"
     },
-    "paymentInitiation": {
+    "paymentInitiationScreen": {
       "label": "Paiement",
       "title": "Initier un paiement"
     }

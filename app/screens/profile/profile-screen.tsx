@@ -1,36 +1,37 @@
-import React, { FC } from "react"
-import { observer } from "mobx-react-lite"
-import { ViewStyle } from "react-native"
-import { StackScreenProps } from "@react-navigation/stack"
-import { NavigatorParamList } from "../../navigators"
-import { Screen, Text } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
-import { color } from "../../theme"
+import React, { FC } from 'react';
+import { observer } from 'mobx-react-lite';
+import { TextStyle, View, ViewStyle } from 'react-native';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { NavigatorParamList } from '../../navigators';
+import { GradientBackground, Header, Screen } from '../../components';
+import { color, spacing } from '../../theme';
 
-const ROOT: ViewStyle = {
-  backgroundColor: color.palette.black,
+const FULL: ViewStyle = {
   flex: 1,
-}
+};
+const CONTAINER: ViewStyle = {
+  backgroundColor: color.transparent,
+};
+const HEADER: TextStyle = {
+  paddingBottom: spacing[5] - 1,
+  paddingHorizontal: spacing[4],
+  paddingTop: spacing[3],
+};
+const HEADER_TITLE: TextStyle = {
+  fontSize: 12,
+  fontWeight: 'bold',
+  letterSpacing: 1.5,
+  lineHeight: 15,
+  textAlign: 'center',
+};
 
-// STOP! READ ME FIRST!
-// To fix the TS error below, you'll need to add the following things in your navigation config:
-// - Add `profile: undefined` to NavigatorParamList
-// - Import your screen, and add it to the stack:
-//     `<Stack.Screen name="profile" component={ProfileScreen} />`
-// Hint: Look for the 🔥!
-
-// REMOVE ME! ⬇️ This TS ignore will not be necessary after you've added the correct navigator param type
-// @ts-ignore
-export const ProfileScreen: FC<StackScreenProps<NavigatorParamList, "profile">> = observer(function ProfileScreen() {
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
-
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
+export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen() {
   return (
-    <Screen style={ROOT} preset="scroll">
-      <Text preset="header" text="profile" />
-    </Screen>
-  )
-})
+    <View testID='TransactionListScreen' style={FULL}>
+      <GradientBackground colors={['#422443', '#281b34']} />
+      <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
+        <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
+      </Screen>
+    </View>
+  );
+});
