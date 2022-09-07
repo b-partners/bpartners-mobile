@@ -34,7 +34,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-        <Header headerTx='paymentInitiation.title' leftIcon='back' onLeftPress={goBack} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='paymentInitiation.title' style={HEADER} titleStyle={HEADER_TITLE} />
       </Screen>
     </View>
   );
