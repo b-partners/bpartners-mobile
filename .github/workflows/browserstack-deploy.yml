@@ -7,16 +7,15 @@ on:
   
 jobs:
   build-android:
-      needs: install-and-test
       runs-on: ubuntu-latest
       steps: 
         - uses: actions/checkout@v2
 
-        - run: yarn install
+        - run: npm install --force
 
         - run: cd android && ./gradlew assembleRealease
         
-        - run: yarn test 
+        - run: npm test
 
         - name: Upload APK to BrowserStack
           uses: shreyanshp/upload-app-browserstack@v3
