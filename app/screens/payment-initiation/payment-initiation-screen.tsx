@@ -43,7 +43,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
           <PaymentInitiationForm />
           {paymentUrl && (
             <View style={QRCODE_CONTAINER_STYLE}>
-              <QRCode value={paymentUrl} size={100}></QRCode>
+              <QRCode value={paymentUrl} size={100} />
             </View>
           )}
         </View>

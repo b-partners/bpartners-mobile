@@ -6,6 +6,7 @@ import { translate } from '../../i18n';
 import * as yup from 'yup';
 import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
+import uuid from 'react-native-uuid';
 
 const FORM_FIELD_STYLE: TextStyle = { color: color.palette.black, paddingHorizontal: spacing[2], paddingBottom: 0 };
 const INVALID_FORM_FIELD = {
@@ -29,7 +30,7 @@ export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
       validationSchema={validationSchema}
       onSubmit={async values => {
         try {
-          await paymentInitiationStore.init({ id: undefined, ...values });
+          await paymentInitiationStore.init({ id: uuid.v4() as string, ...values });
         } catch (e) {
           console.tron.log(e);
         }
