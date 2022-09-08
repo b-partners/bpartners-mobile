@@ -1,8 +1,8 @@
-import { AccountModel } from './payment-initiation';
+import { PaymentInitiationModel } from './payment-initiation';
 import uuid from 'react-native-uuid';
 
 test('can be created', () => {
-  const instance = AccountModel.create({
+  const instance = PaymentInitiationModel.create({
     id: uuid.v4() as string,
     name: 'Lorem',
     BIC: 'CCBPFRPPTLS',

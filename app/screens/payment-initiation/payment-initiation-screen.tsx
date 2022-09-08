@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen } from '../../components';
 import { color, spacing } from '../../theme';
-import { translate } from '../../i18n';
-import { Formik } from 'formik';
-import FormField from '../sign-in/components/FormField';
-import * as yup from 'yup';
+import { useStores } from '../../models';
+import QRCode from 'react-native-qrcode-svg';
+import { PaymentInitiationForm } from './PaymentInitiationForm';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -28,19 +27,12 @@ const HEADER_TITLE: TextStyle = {
   lineHeight: 15,
   textAlign: 'center',
 };
-const FORM_FIELD_STYLE: TextStyle = { color: color.palette.black, paddingHorizontal: spacing[2], paddingBottom: 0 };
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
-const INVALID_FORM_FIELD = {
-  borderColor: '#FF5983',
-  borderWidth: 2,
-};
+const QRCODE_CONTAINER_STYLE: ViewStyle = { display: 'flex', alignItems: 'center', marginTop: 25 };
 
-const validationSchema = yup.object().shape({
-  amount: yup.number().required().label(translate('paymentInitiationScreen.fields.amount')),
-});
-
-export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen() {
-  const initialValues = { label: '', reference: '', amount: null, payerName: '', payerEmail: '' };
+export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({}) {
+  const { paymentInitiationStore } = useStores();
+  const { paymentUrl } = paymentInitiationStore;
 
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
@@ -48,35 +40,12 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
       <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
         <Header headerTx='paymentInitiationScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
         <View style={FORM_FIELD_CONTAINER}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={async values => {
-              console.tron.log(values);
-            }}
-          >
-            {({ handleSubmit, errors }) => {
-              return (
-                <>
-                  <FormField name='label' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.label' />
-                  <FormField name='reference' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.reference' />
-                  <FormField
-                    name='amount'
-                    inputStyle={[FORM_FIELD_STYLE, errors.amount && INVALID_FORM_FIELD]}
-                    placeholderTx='paymentInitiationScreen.fields.amount'
-                    keyboardType='phone-pad'
-                  />
-                  <FormField name='payerName' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.payerName' />
-                  <FormField name='payerEmail' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.payerEmail' />
-                  <View>
-                    <Button title={translate('paymentInitiationScreen.fields.submit')} onPress={() => handleSubmit()}>
-                      {translate('paymentInitiationScreen.fields.submit')}
-                    </Button>
-                  </View>
-                </>
-              );
-            }}
-          </Formik>
+          <PaymentInitiationForm />
+          {paymentUrl && (
+            <View style={QRCODE_CONTAINER_STYLE}>
+              <QRCode value={paymentUrl} size={100}></QRCode>
+            </View>
+          )}
         </View>
       </Screen>
     </View>

@@ -1,7 +1,5 @@
-import { ApisauceInstance, create, ApiResponse } from 'apisauce';
-import { getGeneralApiProblem } from './api-problem';
+import { ApisauceInstance, create } from 'apisauce';
 import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
-import * as Types from './api.types';
 import env from '../../config/env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -44,65 +42,11 @@ export class Api {
       headers,
     });
     this.apisauce.addAsyncRequestTransform(async request => {
+      const accessToken = await AsyncStorage.getItem('accessToken');
       if (env.endpointWhiteList.includes(request.url)) {
         return;
       }
-      const accessToken = await AsyncStorage.getItem('accessToken');
       request.headers.Authorization = `Bearer ${accessToken}`;
     });
-  }
-
-  /**
-   * Gets a list of users.
-   */
-  async getUsers(): Promise<Types.GetUsersResult> {
-    // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get('/users');
-
-    // the typical ways to die when calling an api
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response);
-      if (problem) return problem;
-    }
-
-    const convertUser = raw => ({
-      id: raw.id,
-      name: raw.name,
-    });
-
-    // transform the data into the format we are expecting
-    try {
-      const rawUsers = response.data;
-      const resultUsers: Types.User[] = rawUsers.map(convertUser);
-      return { kind: 'ok', users: resultUsers };
-    } catch {
-      return { kind: 'bad-data' };
-    }
-  }
-
-  /**
-   * Gets a single user by ID
-   */
-
-  async getUser(id: string): Promise<Types.GetUserResult> {
-    // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get(`/users/${id}`);
-
-    // the typical ways to die when calling an api
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response);
-      if (problem) return problem;
-    }
-
-    // transform the data into the format we are expecting
-    try {
-      const resultUser: Types.User = {
-        id: response.data.id,
-        name: response.data.name,
-      };
-      return { kind: 'ok', user: resultUser };
-    } catch {
-      return { kind: 'bad-data' };
-    }
   }
 }
