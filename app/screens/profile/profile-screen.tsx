@@ -8,6 +8,7 @@ import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
 import { User } from '../../models/user/user';
 import { AccountHolder } from '../../models/account-holder/account-holder';
+import { FileUpload } from '../../components/file-upload/file-upload';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -53,6 +54,10 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
+        <View style={FORM_FIELD_CONTAINER}>
+          <Text style={SECTION_STYLE} tx={'profileScreen.fields.logo'} />
+          <FileUpload onUploadFile={() => {}} uploadFileTx={'profileScreen.fields.uploadFileButton'} selectFileTx={'profileScreen.fields.selectFileButton'} />
+        </View>
         {currentUser && (
           <View style={FORM_FIELD_CONTAINER}>
             <Text style={SECTION_STYLE} tx={'profileScreen.fields.user.section'} />
@@ -100,6 +105,15 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             </View>
           </View>
         )}
+        <View style={FORM_FIELD_CONTAINER}>
+          <Text style={SECTION_STYLE} text={'My subscription'} />
+          <View>
+            <Text style={SECTION_STYLE}>L'ambitieux</Text>
+            <View>
+              <Text>Tous les services franchir un pallier dans votre croissance et automatiser votre forte activité d’artisan & d'indépendant</Text>
+            </View>
+          </View>
+        </View>
       </Screen>
     </View>
   );

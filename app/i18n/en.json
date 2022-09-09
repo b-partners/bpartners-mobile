@@ -68,6 +68,10 @@
     "label": "Profile",
     "title": "Profile",
     "fields": {
+      "logo": "Logo",
+      "selectFileButton": "Select file",
+      "uploadFileButton": "Upload file",
+      "removeFileButton": "Remove file",
       "user": {
         "section": "My Identity",
         "firstName": "First name",

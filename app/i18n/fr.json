@@ -45,6 +45,10 @@
       "label": "Paiement",
       "title": "Initier un paiement",
       "fields": {
+        "logo": "Logo",
+        "selectFileButton": "Sélectionner un fichier",
+        "uploadFileButton": "Téléverser le fichier",
+        "uploadFileButton": "Supprimer le fichier",
         "user": {
           "section": "Mon identité",
           "firstName": "Prénom",

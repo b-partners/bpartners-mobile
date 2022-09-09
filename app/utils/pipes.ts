@@ -6,4 +6,4 @@ export const currencyPipe = currency => {
   });
 };
 
-export const datePipe = utcDateString => new Date(utcDateString).toLocaleDateString();
+export const datePipe = utcDateString => `${new Date(utcDateString).toLocaleDateString()} ${new Date(utcDateString).toLocaleTimeString()}`;

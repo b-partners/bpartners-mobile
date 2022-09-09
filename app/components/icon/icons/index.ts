@@ -4,6 +4,7 @@ export const icons = {
   bug: require('./ladybug.png'),
   check: require('./check.png'),
   upload: require('./upload.png'),
+  cross: require('./cross.png'),
 };
 
 export type IconTypes = keyof typeof icons;
