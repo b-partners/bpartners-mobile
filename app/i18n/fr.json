@@ -41,6 +41,26 @@
         "submit": "Confirmer"
       }
     },
+    "profileScreen": {
+      "label": "Paiement",
+      "title": "Initier un paiement",
+      "fields": {
+        "user": {
+          "section": "Mon identité",
+          "firstName": "Prénom",
+          "lastName": "Nom",
+          "phone": "Téléphone"
+        },
+        "accountHolder": {
+          "section": "Ma société",
+          "name": "Nom",
+          "address": "Adresse",
+          "city": "Ville",
+          "country": "Pays",
+          "postalCode": "Code postal"
+        }
+      }
+    },
     "fields": {
       "firstName": "Prénom",
       "lastName": "Nom",

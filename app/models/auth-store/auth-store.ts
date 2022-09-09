@@ -3,6 +3,8 @@ import { withEnvironment } from '../extensions/with-environment';
 import { AuthApi } from '../../services/api/auth-api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserModel } from '../user/user';
+import { AccountHolderModel } from '../account-holder/account-holder';
+import { AccountApi } from '../../services/api/account-api';
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -13,6 +15,7 @@ export const AuthStoreModel = types
     refreshToken: types.optional(types.string, ''),
     accessToken: types.optional(types.string, ''),
     currentUser: types.optional(UserModel, {}),
+    currentAccountHolder: types.optional(AccountHolderModel, {}),
   })
   .extend(withEnvironment)
   .actions(self => ({
@@ -59,20 +62,33 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
-    whoamiSuccess: currentUser => {
+    whoamiSuccess: (currentUser, currentAccountHolder) => {
       const user = UserModel.create(currentUser);
+      const accountHolder = AccountHolderModel.create(currentAccountHolder);
       self.currentUser = { ...user };
+      self.currentAccountHolder = { ...accountHolder };
     },
   }))
   .actions(self => ({
     whoami: async () => {
       const signInApi = new AuthApi(self.environment.api);
-      const result = await signInApi.whoami();
-      if (result.kind === 'ok') {
-        self.whoamiSuccess(result.user);
-      } else {
-        __DEV__ && console.tron.log(result.kind);
+      const whoAmiResult = await signInApi.whoami();
+      if (whoAmiResult.kind !== 'ok') {
+        __DEV__ && console.tron.log(whoAmiResult.kind);
+        return;
       }
+      const accountApi = new AccountApi(self.environment.api);
+      const getAccountResult = await accountApi.getAccounts(whoAmiResult.user.id);
+      if (getAccountResult.kind !== 'ok') {
+        __DEV__ && console.tron.log(getAccountResult.kind);
+        return;
+      }
+      const getAccountHolderResult = await accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
+      if (getAccountHolderResult.kind !== 'ok') {
+        __DEV__ && console.tron.log(getAccountHolderResult.kind);
+        return;
+      }
+      self.whoamiSuccess(whoAmiResult.user, getAccountHolderResult.accountHolder);
     },
   }));
 

@@ -68,9 +68,20 @@
     "label": "Profile",
     "title": "Profile",
     "fields": {
-      "firstName": "First name",
-      "lastName": "Last name",
-      "phone": "Phone number"
+      "user": {
+        "section": "My Identity",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "phone": "Phone"
+      },
+      "accountHolder": {
+        "section": "My society",
+        "name": "Name",
+        "address": "Address",
+        "city": "City",
+        "country": "Country",
+        "postalCode": "Postal code"
+      }
     }
   }
 }

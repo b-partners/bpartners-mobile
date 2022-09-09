@@ -2,6 +2,7 @@ import { GeneralApiProblem } from './api-problem';
 import { Transaction } from '../../models/transaction/transaction';
 import { Account } from '../../models/account/account';
 import { User } from '../../models/user/user';
+import { AccountHolder } from '../../models/account-holder/account-holder';
 
 export interface Whoami {
   user: any;
@@ -29,5 +30,7 @@ export type GetTokenResult = { kind: 'ok'; accessToken: string; refreshToken: st
 export type GetWhoAmIResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type GetUserAccount = { kind: 'ok'; account: Account } | GeneralApiProblem;
+
+export type GetAccountHolderResult = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
 
 export type InitPaymentResult = { kind: 'ok'; paymentInitiation: { id: string } & RedirectionUrlsStatus } | GeneralApiProblem;
