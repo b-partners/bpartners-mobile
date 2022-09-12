@@ -1,5 +1,5 @@
 export const currencyPipe = currency => {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency,
     maximumFractionDigits: 0,
