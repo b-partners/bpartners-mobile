@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { NavigatorParamList } from '../../navigators';
-import { GradientBackground, Header, Screen } from '../../components';
+import { GradientBackground, Header, Screen, Text } from '../../components';
 import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
 import QRCode from 'react-native-qrcode-svg';
@@ -29,6 +29,11 @@ const HEADER_TITLE: TextStyle = {
 };
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
 const QRCODE_CONTAINER_STYLE: ViewStyle = { display: 'flex', alignItems: 'center', marginTop: 25 };
+const PAYMENT_LINK_STYLE: TextStyle = {
+  marginBottom: spacing[3],
+  textAlign: 'center',
+  textDecorationLine: 'underline',
+};
 
 export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({}) {
   const { paymentInitiationStore } = useStores();
@@ -43,6 +48,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
           <PaymentInitiationForm />
           {paymentUrl && (
             <View style={QRCODE_CONTAINER_STYLE}>
+              <Text text={paymentUrl} style={PAYMENT_LINK_STYLE} />
               <QRCode value={paymentUrl} size={100} />
             </View>
           )}
