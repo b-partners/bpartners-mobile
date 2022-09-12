@@ -5,7 +5,7 @@ import { Button } from '../../../components';
 import { color, spacing, typography } from '../../../theme';
 import { useStores } from '../../../models';
 import * as yup from 'yup';
-import FormField from './FormField';
+import FormField from './form-field';
 
 const PHONE_NUMBER_STYLE: TextStyle = {
   borderRadius: 10,

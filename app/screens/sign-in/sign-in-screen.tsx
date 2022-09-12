@@ -5,7 +5,7 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 import { color, spacing, typography } from '../../theme';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen, Text } from '../../components';
-import { SignInForm } from './components/SignInForm';
+import { SignInForm } from './components/sign-in-form';
 
 const FULL: ViewStyle = {
   flex: 1,

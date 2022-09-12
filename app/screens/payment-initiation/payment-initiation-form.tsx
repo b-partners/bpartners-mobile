@@ -1,6 +1,6 @@
 import React, { FC, PropsWithoutRef } from 'react';
 import { Formik } from 'formik';
-import FormField from '../sign-in/components/FormField';
+import FormField from '../sign-in/components/form-field';
 import { Button, TextStyle, View } from 'react-native';
 import { translate } from '../../i18n';
 import * as yup from 'yup';

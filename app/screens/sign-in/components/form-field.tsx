@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, TextField, TextFieldProps } from '../../../components';
-import ErrorMessage from './ErrorMessage';
+import ErrorMessage from './error-message';
 import { useFormikContext } from 'formik';
 import { TxKeyPath } from '../../../i18n';
 import { View } from 'react-native';

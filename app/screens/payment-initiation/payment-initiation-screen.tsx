@@ -7,7 +7,7 @@ import { GradientBackground, Header, Screen } from '../../components';
 import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
 import QRCode from 'react-native-qrcode-svg';
-import { PaymentInitiationForm } from './PaymentInitiationForm';
+import { PaymentInitiationForm } from './payment-initiation-form';
 
 const FULL: ViewStyle = {
   flex: 1,
