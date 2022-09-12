@@ -58,10 +58,10 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
   };
 
   return (
-    <View testID='SignInWebViewScreen' style={FULL}>
+    <View testID='OnboardingScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <SafeAreaView />
-      <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
+      <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.navigate('welcome')} style={HEADER} titleStyle={HEADER_TITLE} />
       <WebView source={{ uri: url }} onNavigationStateChange={onNavigationStateChange} />
     </View>
   );

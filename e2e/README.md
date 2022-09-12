@@ -51,7 +51,7 @@ NOTE: as of October 2021, do not set the iOS value to `15.0` or higher, or a Det
 
 ## Adding tests
 
-We've gotten you started with `./e2e/firstTest.spec.js`, which tests that the two main example screens render properly.
+We've gotten you started with `./e2e/welcome.spec.js`, which tests that the two main example screens render properly.
 
 Note that in order to pick up elements by ID, we've added the `testID` prop to the component.
 

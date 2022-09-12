@@ -43,7 +43,7 @@ const CONTAINER: ViewStyle = {
 };
 
 export const SignInScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
-  const goBack = () => navigation.goBack();
+  const goBack = () => navigation.navigate('welcome');
   const next = (redirectionUrl: string) => navigation.navigate('signInWebView', { url: redirectionUrl });
 
   return (
