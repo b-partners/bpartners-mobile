@@ -1,4 +1,7 @@
 export const currencyPipe = currency => {
+  if (!currency) {
+    return '';
+  }
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency,
@@ -6,4 +9,5 @@ export const currencyPipe = currency => {
   });
 };
 
-export const datePipe = utcDateString => `${new Date(utcDateString).toLocaleDateString()} ${new Date(utcDateString).toLocaleTimeString()}`;
+export const datePipe = utcDateString =>
+  utcDateString ? `${new Date(utcDateString).toLocaleDateString()} ${new Date(utcDateString).toLocaleTimeString()}` : '';
