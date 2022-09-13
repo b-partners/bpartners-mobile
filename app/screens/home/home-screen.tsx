@@ -134,7 +134,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
           />
         </View>
       </View>
-      <View></View>
+      <View />
     </View>
   );
 });
