@@ -42,6 +42,7 @@ export class Api {
       headers,
     });
     this.apisauce.addAsyncRequestTransform(async request => {
+      //TODO: Abstract this in a specific caching layer
       const accessToken = await AsyncStorage.getItem('accessToken');
       if (env.endpointWhiteList.includes(request.url)) {
         return;

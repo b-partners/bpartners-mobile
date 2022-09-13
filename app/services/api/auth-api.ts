@@ -58,6 +58,7 @@ export class AuthApi {
   }
 
   async whoami(): Promise<GetWhoAmIResult> {
+    //TODO: Abstract this in a specific caching layer
     const cachedUser = await AsyncStorage.getItem('user');
     if (cachedUser) {
       console.tron.log(`Returning cached user`);
@@ -71,6 +72,7 @@ export class AuthApi {
         if (problem) return problem;
       }
       const { user } = response.data;
+      //TODO: Abstract this in a specific caching layer
       await AsyncStorage.setItem('user', JSON.stringify(user));
       return { kind: 'ok', user };
     } catch (e) {

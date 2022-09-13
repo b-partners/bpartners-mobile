@@ -40,6 +40,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
 
   useEffect(() => {
     async function fetchUserData() {
+      // TODO: Error handling
       await authStore.whoami();
       const { currentUser: user, currentAccountHolder: accountHolder } = authStore;
       setCurrentUser(user);

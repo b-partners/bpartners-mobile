@@ -44,6 +44,7 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
     if (!currentUrl.includes(env.successUrl)) {
       return;
     }
+    // TODO: Find a cleaner way to avoid calling the API multiple times
     const cachedCode = await AsyncStorage.getItem('code');
     if (cachedCode) {
       return;
