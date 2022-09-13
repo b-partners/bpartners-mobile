@@ -61,7 +61,7 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
     <View testID='SignInWebViewScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <SafeAreaView />
-      <Header headerTx='signInScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
+      <Header headerTx='signInScreen.title' leftIcon='back' onLeftPress={() => navigation.navigate('signIn')} style={HEADER} titleStyle={HEADER_TITLE} />
       <WebView source={{ uri: url }} onNavigationStateChange={onNavigationStateChange} />
     </View>
   );
