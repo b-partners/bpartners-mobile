@@ -54,7 +54,7 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
     }
     await AsyncStorage.setItem('code', code);
     await authStore.getToken(code);
-    navigation.navigate('transactionList');
+    navigation.navigate('home');
   };
 
   return (

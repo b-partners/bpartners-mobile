@@ -7,7 +7,7 @@
 import React from 'react';
 import { useColorScheme } from 'react-native';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen, PaymentInitiationScreen, ProfileScreen } from '../screens';
+import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen, PaymentInitiationScreen, ProfileScreen, HomeScreen } from '../screens';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-view-screen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -27,6 +27,7 @@ import { translate } from '../i18n';
  */
 export type NavigatorParamList = {
   welcome: { url: string };
+  home: undefined;
   onboarding: { url: string };
   transactionList: { url: string };
   signIn: { url: string };
@@ -60,6 +61,7 @@ function AppStack() {
       <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='home' component={HomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
     </Drawer.Navigator>
   );
 }

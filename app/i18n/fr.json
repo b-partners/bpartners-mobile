@@ -70,5 +70,18 @@
       "lastName": "Nom",
       "phone": "Numéro de téléphone"
     }
+  },
+  "homeScreen": {
+    "title": "Bienvenue sur BPartners",
+    "labels": {
+      "collectPayment": "Collecter un paiement",
+      "balance": "Solde au",
+      "activity": "Activité",
+      "quotationAndInvoice": "Devis / Facture",
+      "payment": "Virement",
+      "settings": "Paramètres",
+      "frequency": "Fréquence",
+      "boostYourResults": "Booster vos résultats"
+    }
   }
 }
