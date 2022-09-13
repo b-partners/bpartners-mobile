@@ -17,6 +17,7 @@ interface ErrorMessageProps {
   error: string;
 }
 
+// TODO: make this component more generic
 function ErrorMessage({ error }: ErrorMessageProps) {
   if (!error) return null;
   return (

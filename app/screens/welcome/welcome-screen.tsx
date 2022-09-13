@@ -75,6 +75,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> 
   const createAccount = async () => {
     await onboardingStore.getOnboardingUrl();
     const { redirectionUrl } = onboardingStore;
+    // TODO: Connecting routing to mobx-state-tree and pass query params to store
     navigation.navigate('onboarding', { url: redirectionUrl });
   };
 

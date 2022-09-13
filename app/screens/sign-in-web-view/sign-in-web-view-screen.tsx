@@ -44,6 +44,7 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
     if (!currentUrl.includes(env.successUrl)) {
       return;
     }
+    // TODO: Find a cleaner way to avoid calling the API multiple times
     const cachedCode = await AsyncStorage.getItem('code');
     if (cachedCode) {
       return;

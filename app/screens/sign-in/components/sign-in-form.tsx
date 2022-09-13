@@ -57,6 +57,7 @@ export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => 
       initialValues={{ phoneNumber: '' }}
       onSubmit={async ({ phoneNumber }) => {
         setIsLoading(true);
+        // TODO: Error handling
         await authStore.signIn(phoneNumber);
         const { redirectionUrl } = authStore;
         if (redirectionUrl) setIsLoading(false);
