@@ -33,6 +33,7 @@ const HEADER_TITLE: TextStyle = {
   letterSpacing: 1.5,
 };
 
+const LOGO_STYLE: TextStyle = { color: '#fff' };
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(() => {
   const screenWidth = Dimensions.get('window').width;
 
@@ -42,7 +43,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       <SafeAreaView />
       <Header style={HEADER} titleStyle={HEADER_TITLE} />
       <View>
-        <Text text='LOGO' style={{ color: '#fff' }} />
+        <Text text='LOGO' style={LOGO_STYLE} />
         <Button tx='homeScreen.labels.collectPayment' />
       </View>
       <View>
