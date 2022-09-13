@@ -22,7 +22,9 @@ function ErrorMessage({ error }: ErrorMessageProps) {
   return (
     <View style={ERROR_MESSAGE_CONTAINER}>
       <Ionicons color='yellow' name='warning' size={16} />
-      <Text style={ERROR_TEXT}>{error}</Text>
+      <Text style={ERROR_TEXT} testID='error-message'>
+        {error}
+      </Text>
     </View>
   );
 }

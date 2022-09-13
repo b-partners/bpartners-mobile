@@ -73,8 +73,9 @@ export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => 
               placeholderTx='signInScreen.hint'
               keyboardType='phone-pad'
               labelTx='signInScreen.labels.phoneNumber'
+              testID='phone-number'
             />
-            <Button testID='next-screen-button' style={[CONTINUE]} textStyle={CONTINUE_TEXT} tx='signInScreen.confirm' onPress={() => handleSubmit()} />
+            <Button testID='submit-button' style={[CONTINUE]} textStyle={CONTINUE_TEXT} tx='signInScreen.confirm' onPress={() => handleSubmit()} />
           </>
         );
       }}
