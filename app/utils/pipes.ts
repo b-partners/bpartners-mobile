@@ -1,6 +1,6 @@
-export const currencyPipe = currency => {
+export const currencyPipe = (currency: string): Intl.NumberFormat => {
   if (!currency) {
-    return '';
+    return null;
   }
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
