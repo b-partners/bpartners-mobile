@@ -32,11 +32,11 @@ jobs:
 
       - run: npm install --force
 
+      - run:  npm install --location=global react-native-cli
+
       - run: react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
 
       - run: cd ios && pod install
-
-      - run:  npm install --location=global react-native-cli
 
       - run: npm test 
 
