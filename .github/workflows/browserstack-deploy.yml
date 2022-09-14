@@ -7,43 +7,45 @@ on:
   
 jobs:
   build-android:
-      needs: install-and-test
-      runs-on: ubuntu-latest
-      steps: 
-        - uses: actions/checkout@v2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-        - run: npm install --force
+      - run: npm install --force
 
-        - name: Build Android Release
-          run: npm run build-android
-        
-        - run: yarn test 
+      - run: cd android && ./gradlew assembleRelease
 
-        - name: Upload APK to BrowserStack
-          uses: shreyanshp/upload-app-browserstack@v3
-          with:
-            app-path: android/app/build/outputs/apk/release/
-            browserstack-username: ${{ secrets.BROWSERSTACK_USERNAME }}
-            browserstack-accesskey: ${{ secrets.BROWSERSTACK_ACCESSKEY }}
+      - run: npm test
 
-  build-ios:
-      needs: install-and-test
-      runs-on: [self-hosted, macos]
-      steps: 
-        - uses: actions/checkout@v2
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-release.apk
+          path: android/app/build/outputs/apk/release/
 
-        - run: npm install --force
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/app-release.apk"
 
-        - run: cd ios && pod install
+  build-ios: 
+    runs-on: macos-latest
+    steps: 
+      - uses: actions/checkout@v2
 
-        - name: Build app
-          run: npm run build-ios
+      - run: npm install --force
 
-        - run: yarn test 
+      - run: react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
 
-        - name: Upload IOS application to BrowserStack
-          uses: shreyanshp/upload-app-browserstack@v3
-          with:
-            app-path: ios/build/
-            browserstack-username: ${{ secrets.BROWSERSTACK_USERNAME }}
-            browserstack-accesskey: ${{ secrets.BROWSERSTACK_ACCESSKEY }}
+      - run: cd ios && pod install
+
+      - run:  npm install --location=global react-native-cli
+
+      - run: npm test 
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: ios-app-release
+          path: |
+            ios/build/myapp.ipa
+      
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@ios/build/myapp.ipa"
+
+      
