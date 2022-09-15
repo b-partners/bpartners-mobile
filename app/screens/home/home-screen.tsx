@@ -94,6 +94,7 @@ const CHART_DATA = [
 const width = Dimensions.get('window').width;
 const height = 220;
 
+const FOOTER_STYLE = { position: 'absolute', bottom: 0, right: spacing[6] };
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(() => {
   const { transactionStore } = useStores();
   const { transactions } = transactionStore;
@@ -160,7 +161,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
             ItemSeparatorComponent={() => <Separator />}
           />
         </View>
-        <View style={{ position: 'absolute', bottom: 0, right: spacing[6] }}>
+        <View style={FOOTER_STYLE}>
           <ActionButton buttonColor={color.palette.orange} />
         </View>
       </View>
