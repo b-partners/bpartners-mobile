@@ -35,11 +35,7 @@ jobs:
       - run:  npm install --location=global react-native-cli
 
       - run: react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
-      
-      - run: xcodebuild -project BpartnersMobile.xcodeproj -scheme BpartnersMobile.xscheme -archivePath ios/BpartnersMobile/app.xcarchive archive
 
-      - run: xcodebuild -exportArchive -archivePath ios/BpartnersMobile/app.xcarchive -exportPath ios/BpartnersMobile/app -exportOptionsPlist ios/BpartnersMobile.xcworkspace/exportPlist
-      
       - run: cd ios && pod install
 
       - run: npm run ci:test:e2e 
