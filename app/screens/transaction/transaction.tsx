@@ -24,8 +24,8 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
   const [categories, setCategories] = useState<ItemType<string>[]>([]);
 
   useEffect(() => {
-    setCategory(item.category.id);
-    setCategories([{ label: item.category.label, value: item.category.id }]);
+    setCategory(item.category?.id);
+    setCategories([{ label: item.category?.label, value: item?.category?.id }]);
   }, [item.category]);
 
   return (
