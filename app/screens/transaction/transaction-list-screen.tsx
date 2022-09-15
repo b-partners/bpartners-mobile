@@ -7,7 +7,7 @@ import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
-import { Transaction } from './transaction';
+import { Transaction } from './components/transaction';
 
 const FULL: ViewStyle = {
   flex: 1,

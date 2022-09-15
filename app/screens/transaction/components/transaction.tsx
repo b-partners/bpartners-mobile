@@ -1,8 +1,8 @@
 import React, { PropsWithoutRef, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Icon, Text } from '../../components';
-import { Transaction as ITransaction } from '../../models/transaction/transaction';
-import { currencyPipe, datePipe } from '../../utils/pipes';
+import { Icon, Text } from '../../../components';
+import { Transaction as ITransaction } from '../../../models/transaction/transaction';
+import { currencyPipe, datePipe } from '../../../utils/pipes';
 import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
 import {
   DROPDOWN_PICKER_STYLE,
@@ -14,8 +14,8 @@ import {
   TRANSACTION_DETAILS_STYLE,
   TRANSACTION_LEFT_SIDE,
   TRANSACTION_RIGHT_SIDE,
-} from './styles';
-import { translate } from '../../i18n';
+} from '../styles';
+import { translate } from '../../../i18n';
 
 export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
   const { item } = props;
