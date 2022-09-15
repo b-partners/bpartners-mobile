@@ -94,7 +94,8 @@ const CHART_DATA = [
 const width = Dimensions.get('window').width;
 const height = 220;
 
-const FOOTER_STYLE = { position: 'absolute', bottom: 0, right: spacing[6] };
+const FOOTER_STYLE: ViewStyle = { position: 'absolute', bottom: 0, right: spacing[6] };
+
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(() => {
   const { transactionStore } = useStores();
   const { transactions } = transactionStore;
@@ -152,15 +153,17 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
           <Button tx='homeScreen.labels.frequency' style={{ ...CHART_BUTTON_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
           <Button tx='homeScreen.labels.boostYourResults' style={{ ...CHART_BUTTON_STYLE, ...CHART_BUTTON_MARGIN_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
         </View>
-        <View>
-          <FlatList
-            data={transactions}
-            renderItem={({ item }) => {
-              return <Transaction item={item} />;
-            }}
-            ItemSeparatorComponent={() => <Separator />}
-          />
-        </View>
+        {!!transactions.length && (
+          <View>
+            <FlatList
+              data={[...transactions]}
+              renderItem={({ item }) => {
+                return <Transaction item={item} />;
+              }}
+              ItemSeparatorComponent={() => <Separator />}
+            />
+          </View>
+        )}
         <View style={FOOTER_STYLE}>
           <ActionButton buttonColor={color.palette.orange} />
         </View>
