@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from 'react';
-import { FlatList, SafeAreaView, ScrollView, TextStyle, View, ViewStyle } from 'react-native';
+import { FlatList, ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import ActionButton from 'react-native-action-button';
 import { NavigatorParamList } from '../../navigators';
-import { Text, GradientBackground, Button, Icon, Separator } from '../../components';
+import { Screen, Text, GradientBackground, Button, Icon, Separator } from '../../components';
 import { Dimensions } from 'react-native';
 import { Transaction } from '../transaction/transaction';
 import { currencyPipe, datePipe } from '../../utils/pipes';
@@ -46,6 +46,7 @@ const BUTTON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row
 const CHART_BUTTON_CONTAINER_STYLE: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
+  marginBottom: spacing[4],
 };
 
 const CHART_BUTTON_STYLE: ViewStyle = {
@@ -109,76 +110,77 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   return (
     <View testID='SignInWebViewScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
-      <SafeAreaView />
-      <View style={HEADER_STYLE}>
-        <Text text='LOGO' style={LOGO_STYLE} />
-        <Button tx='homeScreen.labels.collectPayment' textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('paymentInitiation')} />
-      </View>
-      {transactions && (
-        <View style={BALANCE_CONTAINER_STYLE}>
-          <View style={BALANCE_STYLE}>
-            <Text tx='homeScreen.labels.balance' style={BALANCE_TEXT_STYLE} />
-            <Text text={datePipe(new Date().toISOString())} style={BALANCE_TEXT_STYLE} />
-          </View>
-          <View>
-            <Text style={BALANCE_TEXT_STYLE} text={currencyPipe(translate('currency')).format(transactions.reduce((a, c) => a + c.amount, 0))} />
-          </View>
+      <Screen preset='auto' backgroundColor={color.transparent}>
+        <View style={HEADER_STYLE}>
+          <Text text='LOGO' style={LOGO_STYLE} />
+          <Button tx='homeScreen.labels.collectPayment' textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('paymentInitiation')} />
         </View>
-      )}
-      <View style={BUTTON_CONTAINER_STYLE}>
-        <ScrollView horizontal={true}>
-          <Button tx='homeScreen.labels.activity' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
-          <Button tx='homeScreen.labels.quotationAndInvoice' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
-          <Button tx='homeScreen.labels.payment' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
-          <Button tx='homeScreen.labels.settings' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
-          <Button style={{ ...BUTTON_STYLE, ...BULLET_BUTTON_STYLE, ...BUTTON_STYLE_NO_MARGIN_STYLE }}>
-            <Icon icon='bullet' />
-            <Icon icon='bullet' style={BULLET_BUTTON} />
-            <Icon icon='bullet' />
-          </Button>
-        </ScrollView>
-      </View>
-      <View>
-        <View>
-          <PieChart
-            backgroundColor='transparent'
-            paddingLeft='0'
-            data={CHART_DATA}
-            height={height}
-            width={width}
-            chartConfig={CHART_CONFIG}
-            accessor='value'
-            style={GRAPH_STYLE}
-          />
-        </View>
-        <View style={CHART_BUTTON_CONTAINER_STYLE}>
-          <Button tx='homeScreen.labels.frequency' style={{ ...CHART_BUTTON_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
-          <Button tx='homeScreen.labels.boostYourResults' style={{ ...CHART_BUTTON_STYLE, ...CHART_BUTTON_MARGIN_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
-        </View>
-        {!!transactions.length && (
-          <View>
-            <View style={TRANSACTION_BUTTONS_STYLE}>
-              <Button
-                tx='homeScreen.labels.allTransactions'
-                style={BUTTON_STYLE}
-                textStyle={BUTTON_TEXT_STYLE}
-                onPress={() => navigation.navigate('transactionList')}
-              ></Button>
+        {transactions && (
+          <View style={BALANCE_CONTAINER_STYLE}>
+            <View style={BALANCE_STYLE}>
+              <Text tx='homeScreen.labels.balance' style={BALANCE_TEXT_STYLE} />
+              <Text text={datePipe(new Date().toISOString())} style={BALANCE_TEXT_STYLE} />
             </View>
-            <FlatList
-              data={[...transactions]}
-              renderItem={({ item }) => {
-                return <Transaction item={item} />;
-              }}
-              ItemSeparatorComponent={() => <Separator />}
-            />
+            <View>
+              <Text style={BALANCE_TEXT_STYLE} text={currencyPipe(translate('currency')).format(transactions.reduce((a, c) => a + c.amount, 0))} />
+            </View>
           </View>
         )}
-        <View style={FOOTER_STYLE}>
-          <ActionButton buttonColor={color.palette.orange} />
+        <View style={BUTTON_CONTAINER_STYLE}>
+          <ScrollView horizontal={true}>
+            <Button tx='homeScreen.labels.activity' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+            <Button tx='homeScreen.labels.quotationAndInvoice' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+            <Button tx='homeScreen.labels.payment' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+            <Button tx='homeScreen.labels.settings' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+            <Button style={{ ...BUTTON_STYLE, ...BULLET_BUTTON_STYLE, ...BUTTON_STYLE_NO_MARGIN_STYLE }}>
+              <Icon icon='bullet' />
+              <Icon icon='bullet' style={BULLET_BUTTON} />
+              <Icon icon='bullet' />
+            </Button>
+          </ScrollView>
         </View>
-      </View>
-      <View />
+        <View>
+          <View>
+            <PieChart
+              backgroundColor='transparent'
+              paddingLeft='0'
+              data={CHART_DATA}
+              height={height}
+              width={width}
+              chartConfig={CHART_CONFIG}
+              accessor='value'
+              style={GRAPH_STYLE}
+            />
+          </View>
+          <View style={CHART_BUTTON_CONTAINER_STYLE}>
+            <Button tx='homeScreen.labels.frequency' style={{ ...CHART_BUTTON_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
+            <Button tx='homeScreen.labels.boostYourResults' style={{ ...CHART_BUTTON_STYLE, ...CHART_BUTTON_MARGIN_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
+          </View>
+          {transactions.length && (
+            <View>
+              <View style={TRANSACTION_BUTTONS_STYLE}>
+                <Button
+                  tx='homeScreen.labels.allTransactions'
+                  style={BUTTON_STYLE}
+                  textStyle={BUTTON_TEXT_STYLE}
+                  onPress={() => navigation.navigate('transactionList')}
+                ></Button>
+              </View>
+              <FlatList
+                data={[...transactions]}
+                renderItem={({ item }) => {
+                  return <Transaction item={item} />;
+                }}
+                ItemSeparatorComponent={() => <Separator />}
+              />
+            </View>
+          )}
+          <View style={FOOTER_STYLE}>
+            <ActionButton buttonColor={color.palette.orange} />
+          </View>
+        </View>
+        <View />
+      </Screen>
     </View>
   );
 });
