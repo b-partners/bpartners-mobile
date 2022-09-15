@@ -1,63 +1,35 @@
 import React, { FC, useEffect } from 'react';
-import { FlatList, ScrollView, TextStyle, View, ViewStyle } from 'react-native';
+import { Dimensions, FlatList, ScrollView, View } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import ActionButton from 'react-native-action-button';
 import { NavigatorParamList } from '../../navigators';
-import { Screen, Text, GradientBackground, Button, Icon, Separator } from '../../components';
-import { Dimensions } from 'react-native';
+import { Button, GradientBackground, Icon, Screen, Separator, Text } from '../../components';
 import { Transaction } from '../transaction/transaction';
 import { currencyPipe, datePipe } from '../../utils/pipes';
 import { useStores } from '../../models';
 import { translate } from '../../i18n';
-import { color, spacing } from '../../theme';
+import { color } from '../../theme';
 import { PieChart } from 'react-native-chart-kit';
-
-const FULL: ViewStyle = { flex: 1, padding: spacing[3], display: 'flex', flexDirection: 'column' };
-
-const LOGO_STYLE: TextStyle = { color: '#fff' };
-
-const HEADER_STYLE: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: spacing[8],
-};
-
-const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
-const BUTTON_STYLE: ViewStyle = { marginRight: spacing[2], width: 150 };
-const BUTTON_STYLE_NO_MARGIN_STYLE: ViewStyle = { marginRight: 0 };
-const BULLET_BUTTON_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
-const BULLET_BUTTON = { marginHorizontal: spacing[1] };
-
-const BALANCE_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', marginBottom: spacing[2] };
-
-const BALANCE_CONTAINER_STYLE: ViewStyle = {
-  marginBottom: spacing[3],
-  borderWidth: 2,
-  borderColor: color.palette.white,
-  padding: spacing[3],
-  borderRadius: 2,
-};
-
-const BUTTON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', marginBottom: spacing[5] };
-
-const CHART_BUTTON_CONTAINER_STYLE: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  marginBottom: spacing[4],
-};
-
-const CHART_BUTTON_STYLE: ViewStyle = {
-  flex: 1,
-};
-
-const CHART_BUTTON_MARGIN_STYLE = {
-  marginLeft: spacing[1],
-};
-
-const BALANCE_TEXT_STYLE: TextStyle = { fontSize: 16, fontWeight: 'bold' };
+import {
+  BALANCE_CONTAINER_STYLE,
+  BALANCE_STYLE,
+  BALANCE_TEXT_STYLE,
+  BULLET_BUTTON,
+  BULLET_BUTTON_STYLE,
+  BUTTON_CONTAINER_STYLE,
+  BUTTON_STYLE,
+  BUTTON_STYLE_NO_MARGIN_STYLE,
+  BUTTON_TEXT_STYLE,
+  CHART_BUTTON_CONTAINER_STYLE,
+  CHART_BUTTON_MARGIN_STYLE,
+  CHART_BUTTON_STYLE,
+  FOOTER_STYLE,
+  FULL,
+  HEADER_STYLE,
+  LOGO_STYLE,
+  TRANSACTION_BUTTONS_STYLE,
+} from './styles';
 
 const CHART_CONFIG = {
   backgroundColor: '#022173',
@@ -94,10 +66,6 @@ const CHART_DATA = [
 
 const width = Dimensions.get('window').width;
 const height = 220;
-
-const FOOTER_STYLE: ViewStyle = { position: 'absolute', bottom: 0, right: spacing[6] };
-
-const TRANSACTION_BUTTONS_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' };
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
