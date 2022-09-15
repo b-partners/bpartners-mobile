@@ -81,7 +81,8 @@
       "payment": "Virement",
       "settings": "Paramètres",
       "frequency": "Fréquence",
-      "boostYourResults": "Booster vos résultats"
+      "boostYourResults": "Booster vos résultats",
+      "allTransactions": "Tout voir"
     }
   }
 }

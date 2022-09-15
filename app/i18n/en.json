@@ -98,7 +98,8 @@
       "payment": "Payment",
       "settings": "Settings",
       "frequency": "Frequency",
-      "boostYourResults": "Boost your results"
+      "boostYourResults": "Boost your results",
+      "allTransactions": "See all transactions"
     }
   }
 }

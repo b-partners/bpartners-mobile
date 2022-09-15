@@ -96,7 +96,9 @@ const height = 220;
 
 const FOOTER_STYLE: ViewStyle = { position: 'absolute', bottom: 0, right: spacing[6] };
 
-export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(() => {
+const TRANSACTION_BUTTONS_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' };
+
+export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
   const { transactions } = transactionStore;
 
@@ -110,7 +112,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       <SafeAreaView />
       <View style={HEADER_STYLE}>
         <Text text='LOGO' style={LOGO_STYLE} />
-        <Button tx='homeScreen.labels.collectPayment' textStyle={BUTTON_TEXT_STYLE} />
+        <Button tx='homeScreen.labels.collectPayment' textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('paymentInitiation')} />
       </View>
       {transactions && (
         <View style={BALANCE_CONTAINER_STYLE}>
@@ -155,6 +157,14 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
         </View>
         {!!transactions.length && (
           <View>
+            <View style={TRANSACTION_BUTTONS_STYLE}>
+              <Button
+                tx='homeScreen.labels.allTransactions'
+                style={BUTTON_STYLE}
+                textStyle={BUTTON_TEXT_STYLE}
+                onPress={() => navigation.navigate('transactionList')}
+              ></Button>
+            </View>
             <FlatList
               data={[...transactions]}
               renderItem={({ item }) => {
