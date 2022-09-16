@@ -16,7 +16,7 @@ export function HomeLatestTransaction(props: { transactions: ITransaction[]; onP
         renderItem={({ item }) => {
           return <Transaction item={item} />;
         }}
-        ItemSeparatorComponent={() => <Separator />}
+        ItemSeparatorComponent={Separator}
       />
     </View>
   );
