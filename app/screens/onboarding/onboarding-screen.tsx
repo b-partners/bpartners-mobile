@@ -53,7 +53,13 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
       return;
     }
     await AsyncStorage.setItem('code', code);
-    await authStore.getToken(code);
+    try {
+      await authStore.getToken(code);
+      navigation.navigate('home');
+    } catch (e) {
+      navigation.navigate('signIn');
+      console.tron.log(`Sign in error`);
+    }
     navigation.navigate('home');
   };
 

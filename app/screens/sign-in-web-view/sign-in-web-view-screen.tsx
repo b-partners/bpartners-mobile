@@ -53,8 +53,13 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
       return;
     }
     await AsyncStorage.setItem('code', code);
-    await authStore.getToken(code);
-    navigation.navigate('home');
+    try {
+      await authStore.getToken(code);
+      navigation.navigate('home');
+    } catch (e) {
+      navigation.navigate('signIn');
+      console.tron.log(`Sign in error`);
+    }
   };
 
   return (

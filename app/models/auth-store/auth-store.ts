@@ -58,6 +58,7 @@ export const AuthStoreModel = types
         self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
       } else {
         __DEV__ && console.tron.log(result.kind);
+        throw new Error(result.kind);
       }
     },
   }))
@@ -75,17 +76,20 @@ export const AuthStoreModel = types
       const whoAmiResult = await signInApi.whoami();
       if (whoAmiResult.kind !== 'ok') {
         __DEV__ && console.tron.log(whoAmiResult.kind);
+        throw new Error(whoAmiResult.kind);
         return;
       }
       const accountApi = new AccountApi(self.environment.api);
       const getAccountResult = await accountApi.getAccounts(whoAmiResult.user.id);
       if (getAccountResult.kind !== 'ok') {
         __DEV__ && console.tron.log(getAccountResult.kind);
+        throw new Error(getAccountResult.kind);
         return;
       }
       const getAccountHolderResult = await accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
       if (getAccountHolderResult.kind !== 'ok') {
         __DEV__ && console.tron.log(getAccountHolderResult.kind);
+        throw new Error(getAccountHolderResult.kind);
         return;
       }
       self.whoamiSuccess(whoAmiResult.user, getAccountHolderResult.accountHolder);
