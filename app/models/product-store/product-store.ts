@@ -42,8 +42,8 @@ export const ProductStoreModel = types
 
 export interface ProductStore extends Instance<typeof ProductStoreModel> {}
 
-export interface TransactionStoreSnapshotOut extends SnapshotOut<typeof ProductStoreModel> {}
+export interface ProductStoreSnapshotOut extends SnapshotOut<typeof ProductStoreModel> {}
 
-export interface TransactionStoreSnapshotIn extends SnapshotIn<typeof ProductStoreModel> {}
+export interface ProductStoreSnapshotIn extends SnapshotIn<typeof ProductStoreModel> {}
 
-export const createTransactionStoreDefaultModel = () => types.optional(ProductStoreModel, {});
+export const createProductStoreDefaultModel = () => types.optional(ProductStoreModel, {});
