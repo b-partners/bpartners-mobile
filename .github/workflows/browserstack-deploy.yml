@@ -91,11 +91,13 @@ jobs:
       - run: react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
       
       - name: Clean and build script 
+        working-directory: ios
         run: |
             xcodebuild clean -project BpartnersMobile.xcodeproj -configuration Release -alltargets 
             xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive 
       
       - name: Archive and export ipa file
+        working-directory: ios
         run: |
           xcodebuild -exportArchive -archivePath BpartnersMobile.xcarchive -exportPath BpartnersMobile -exportFormat ipa -exportProvisioningProfile "iOSTeam Provisioning Profile: *"
 
