@@ -44,7 +44,7 @@ jobs:
 
       - name: Create an archive
         working-directory: ios
-        run: xcodebuild -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive archive
+        run: xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive archive
   
       - name: Export ipa file
         working-directory: ios
