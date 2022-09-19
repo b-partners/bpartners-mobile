@@ -4,6 +4,8 @@ import { Account } from '../../models/account/account';
 import { User } from '../../models/user/user';
 import { AccountHolder } from '../../models/account-holder/account-holder';
 import { TransactionCategory } from '../../models/transaction-category/transaction-category';
+import { Customer } from '../../models/customer/customer';
+import { Product } from '../../models/product/product';
 
 export interface Whoami {
   user: any;
@@ -35,6 +37,10 @@ export type GetTokenResult = { kind: 'ok'; accessToken: string; refreshToken: st
 export type GetWhoAmIResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type GetUserAccount = { kind: 'ok'; account: Account } | GeneralApiProblem;
+
+export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem;
+
+export type GetProductsResult = { kind: 'ok'; products: Product[] } | GeneralApiProblem;
 
 export type GetAccountHolderResult = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
 
