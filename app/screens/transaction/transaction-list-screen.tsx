@@ -46,7 +46,7 @@ const FLAT_LIST: ViewStyle = {
   margin: spacing[3],
 };
 
-export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(() => {
+export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
   const { transactions } = transactionStore;
 
@@ -62,7 +62,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-        <Header headerTx='transactionListScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='transactionListScreen.title' style={HEADER} titleStyle={HEADER_TITLE} onLeftPress={() => navigation.navigate('home')} />
         <View style={SUB_HEADER}>
           <Text tx={'transactionListScreen.balance'} style={SUB_HEADER_TITLE} />
           <Text style={SUB_HEADER_TITLE}>{transactions.reduce((a, c) => a + c.amount, 0)} €</Text>
