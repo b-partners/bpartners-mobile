@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  install-and-test:
-      runs-on: ubuntu-latest
+  CI:
+      runs-on: macos-latest
       steps: 
         - uses: actions/checkout@v2
         - run: npm install --force
