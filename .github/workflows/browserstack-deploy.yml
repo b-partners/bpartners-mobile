@@ -1,3 +1,56 @@
+# name: browserstack-deploy
+# on:
+#   push:
+#     branches:
+#       - '*'
+#   workflow_dispatch: 
+  
+# jobs:
+#   build-android:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+
+#       - run: npm install --force
+
+#       - run: cd android && ./gradlew assembleRelease
+
+#       - run: npm test
+
+#       - name: Upload Artifact
+#         uses: actions/upload-artifact@v1
+#         with:
+#           name: app-release.apk
+#           path: android/app/build/outputs/apk/release/
+
+#       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/app-release.apk"
+
+#   build-ios: 
+#     runs-on: macos-latest
+#     steps: 
+#       - uses: actions/checkout@v2
+
+#       - run: npm install --force
+
+#       - run:  npm install --location=global react-native-cli
+
+#       - run: react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
+      
+#       - name: Clean and build script project 
+#         run: |
+#             xcodebuild clean -project BpartnersMobile.xcodeproj -configuration Release -alltargets 
+#             xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive 
+      
+#       - name: archive and export ipa file
+#         run: |
+#           xcodebuild -exportArchive -archivePath BpartnersMobile.xcarchive -exportPath BpartnersMobile -exportFormat ipa -exportProvisioningProfile "iOSTeam Provisioning Profile: *"
+
+#       - run: cd ios && pod install
+
+#       - run: npm test 
+
+#       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@ios/build/myapp.ipa"
+
 name: browserstack-deploy
 on:
   push:
@@ -16,12 +69,6 @@ jobs:
       - run: cd android && ./gradlew assembleRelease
 
       - run: npm test
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: app-release.apk
-          path: android/app/build/outputs/apk/release/
 
       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/app-release.apk"
 
@@ -43,6 +90,15 @@ jobs:
 
       - run: react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
       
+      - name: Clean and build script 
+        run: |
+            xcodebuild clean -project BpartnersMobile.xcodeproj -configuration Release -alltargets 
+            xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive 
+      
+      - name: Archive and export ipa file
+        run: |
+          xcodebuild -exportArchive -archivePath BpartnersMobile.xcarchive -exportPath BpartnersMobile -exportFormat ipa -exportProvisioningProfile "iOSTeam Provisioning Profile: *"
+
       - run: cd ios && pod install
 
       - run: npm run ci:build:e2e
