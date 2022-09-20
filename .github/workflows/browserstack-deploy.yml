@@ -44,10 +44,10 @@ jobs:
 
       - working-directory: ios
         run: xcodebuild -list
-        
+
       - name: Create an archive
         working-directory: ios
-        run: xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile.xschemes -archivePath BpartnersMobile.xcarchive -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+        run: xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 
       - name: Export ipa file
         working-directory: ios
