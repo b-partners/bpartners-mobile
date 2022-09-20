@@ -5,9 +5,18 @@ on:
     branches:
       - '*'
   workflow_dispatch: 
-  
+    inputs: 
+     platform: 
+       type: choice
+       description: 'Platform'
+       options:
+         - all
+         - android
+         - ios
+       required: true
 jobs:
   build-android:
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,10 +25,12 @@ jobs:
 
       - run: cd android && ./gradlew assembleRelease
 
+      - run: npm test
 
       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/app-release.apk"
 
   build-ios: 
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
     runs-on: macos-latest
     steps: 
       - uses: actions/checkout@v2
@@ -44,11 +55,14 @@ jobs:
       - working-directory: ios
         run: xcodebuild -list
 
-      - working-directory: ios
-        run:  xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile.xschemes -archivePath BpartnersMobile.xcarchive -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+      - name: Create an archive
+        working-directory: ios
+        run: xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 
-      - working-directory: ios
-        run: xcodebuild -exportArchive -exportFormat ipa  -archivePath BpartnersMobile.xcarchive -exportPath BpartnersMobile 
+      - name: Export ipa file
+        working-directory: ios
+        run: |
+          xcodebuild -exportArchive -exportFormat ipa  -archivePath BpartnersMobile.xcarchive -exportPath BpartnersMobile 
 
       - run: cd ios && pod install
 
