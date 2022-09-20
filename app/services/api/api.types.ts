@@ -3,6 +3,7 @@ import { Transaction } from '../../models/transaction/transaction';
 import { Account } from '../../models/account/account';
 import { User } from '../../models/user/user';
 import { AccountHolder } from '../../models/account-holder/account-holder';
+import { TransactionCategory } from '../../models/transaction-category/transaction-category';
 
 export interface Whoami {
   user: any;
@@ -20,6 +21,8 @@ export type GetUsersResult = { kind: 'ok'; users: User[] } | GeneralApiProblem;
 export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type GetTransactionsResult = { kind: 'ok'; transactions: Transaction[] } | GeneralApiProblem;
+
+export type GetTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 
 export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
 
