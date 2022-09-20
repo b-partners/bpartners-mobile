@@ -14,7 +14,7 @@ export function HomeLatestTransaction(props: { transactions: ITransaction[]; onP
       <FlatList
         data={[...props.transactions]}
         renderItem={({ item }) => {
-          return <Transaction item={item} />;
+          return <Transaction item={item} key={item.id} />;
         }}
         ItemSeparatorComponent={Separator}
       />

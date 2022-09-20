@@ -1,11 +1,12 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import { TransactionCategoryModel } from '../transaction-category/transaction-category';
 
 export const TransactionModel = types.model('Transaction').props({
   id: types.maybe(types.identifier),
   label: types.maybe(types.string),
   reference: types.maybe(types.string),
   amount: types.maybe(types.number),
-  category: types.maybeNull(types.model({ id: types.string, label: types.string })),
+  category: types.maybeNull(types.array(TransactionCategoryModel)),
   paymentDatetime: types.maybe(types.string),
 });
 
