@@ -46,26 +46,6 @@ jobs:
             brew tap wix/brew
             brew install applesimutils
 
-      - run: react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
-      
-      - name: Clean project
-        working-directory: ios
-        run: xcodebuild clean -workspace BpartnersMobile.xcworkspace -scheme BpartnersMobile
-
-      - working-directory: ios
-        run: xcodebuild -list
-
-      - name: Create an archive
-        working-directory: ios
-        run: xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
-
-      - name: Export ipa file
-        working-directory: ios
-        run: |
-          xcodebuild -exportArchive -exportFormat ipa  -archivePath BpartnersMobile.xcarchive -exportPath BpartnersMobile 
-
-      - run: cd ios && pod install
-
       - run: npm run ci:build:e2e
       
       - run: npm run ci:test:e2e 
