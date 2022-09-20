@@ -44,12 +44,12 @@ jobs:
 
       - name: Create an archive
         working-directory: ios
-        run: xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive archive
-  
+        run: xcodebuild archive -project BpartnersMobile.xcodeproj -scheme BpartnersMobile -archivePath BpartnersMobile.xcarchive 
+
       - name: Export ipa file
         working-directory: ios
         run: |
-          xcodebuild -exportArchive -archivePath BpartnersMobile.xcarchive -exportPath BpartnersMobile -exportFormat ipa -exportProvisioningProfile "iOSTeam Provisioning Profile: *"
+          xcodebuild -exportArchive -exportFormat ipa  -archivePath BpartnersMobile.xcarchive -exportPath BpartnersMobile 
 
       - run: cd ios && pod install
 
