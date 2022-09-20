@@ -2,13 +2,12 @@ import { TransactionModel } from './transaction';
 
 test('can be created', () => {
   const instance = TransactionModel.create({
-    id: 1,
-    label: null,
-    reference: null,
-    amount: null,
+    id: '',
+    label: '',
+    reference: '',
+    amount: 0,
     category: null,
-    swanTransactionId: null,
-    paymentDateTime: null,
+    paymentDatetime: '',
   });
 
   expect(instance).toBeTruthy();
