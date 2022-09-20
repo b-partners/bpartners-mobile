@@ -2,9 +2,9 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export const TransactionCategoryModel = types.model('TransactionCategory').props({
   id: types.maybe(types.identifier),
-  userDefined: types.maybe(types.boolean),
-  type: types.maybe(types.string),
-  vat: types.maybe(types.number),
+  userDefined: types.maybeNull(types.boolean),
+  type: types.maybeNull(types.string),
+  vat: types.maybeNull(types.number),
 });
 
 export interface TransactionCategory extends Instance<typeof TransactionCategoryModel> {}
