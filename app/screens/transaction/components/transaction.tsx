@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Icon, Text } from '../../../components';
 import { Transaction as ITransaction } from '../../../models/transaction/transaction';
 import { currencyPipe, datePipe } from '../../../utils/pipes';
-import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
+import DropDownPicker, { ValueType } from 'react-native-dropdown-picker';
 import {
   DROPDOWN_PICKER_STYLE,
   ICON_STYLE,
@@ -16,17 +16,28 @@ import {
   TRANSACTION_RIGHT_SIDE,
 } from '../styles';
 import { translate } from '../../../i18n';
+import { TransactionCategory } from '../../../models/transaction-category/transaction-category';
 
-export const Transaction = (props: PropsWithoutRef<{ item: ITransaction }>) => {
-  const { item } = props;
+export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[] }>) => {
+  const { item, transactionCategories } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [category, setCategory] = useState<ValueType>();
-  const [categories, setCategories] = useState<ItemType<string>[]>([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    setCategory(item.category?.id);
-    setCategories([{ label: item.category?.label, value: item?.category?.id }]);
+    if (item.category) {
+      setCategory(item.category[0].id);
+    }
   }, [item.category]);
+
+  useEffect(() => {
+    setCategories(
+      (transactionCategories || []).map(transactionCategory => ({
+        value: transactionCategory.id,
+        label: transactionCategory.type,
+      }))
+    );
+  }, [transactionCategories]);
 
   return (
     <View style={LIST_CONTAINER}>

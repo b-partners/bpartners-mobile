@@ -27,10 +27,13 @@ export class TransactionApi {
     }
   }
 
-  async getTransactionCategories(accountId: string): Promise<GetTransactionCategoriesResult> {
+  async getTransactionCategories(accountId: string, unique = false, userDefined = true): Promise<GetTransactionCategoriesResult> {
     try {
       // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionCategories`);
+      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionCategories`, {
+        userDefined,
+        unique,
+      });
       // the typical ways to die when calling an api
       if (!response.ok) {
         const problem = getGeneralApiProblem(response);

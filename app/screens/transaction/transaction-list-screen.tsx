@@ -48,11 +48,12 @@ const FLAT_LIST: ViewStyle = {
 
 export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
-  const { transactions } = transactionStore;
+  const { transactions, transactionCategories } = transactionStore;
 
   useEffect(() => {
     async function fetchData() {
       await transactionStore.getTransactions();
+      await transactionStore.getTransactionCategories();
     }
 
     fetchData();
@@ -71,7 +72,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           contentContainerStyle={FLAT_LIST}
           data={[...transactions]}
           renderItem={({ item }) => {
-            return <Transaction item={item} />;
+            return <Transaction item={item} transactionCategories={transactionCategories} />;
           }}
           ItemSeparatorComponent={() => <Separator />}
         />
