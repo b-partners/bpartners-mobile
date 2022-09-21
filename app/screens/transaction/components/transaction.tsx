@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Icon, Text } from '../../../components';
 import { Transaction as ITransaction } from '../../../models/transaction/transaction';
 import { currencyPipe, datePipe } from '../../../utils/pipes';
-import DropDownPicker, { ValueType } from 'react-native-dropdown-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
   DROPDOWN_PICKER_STYLE,
   ICON_STYLE,
@@ -17,23 +17,26 @@ import {
 } from '../styles';
 import { translate } from '../../../i18n';
 import { TransactionCategory } from '../../../models/transaction-category/transaction-category';
+import { useStores } from '../../../models';
 
 export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[] }>) => {
+  const { transactionStore } = useStores();
+
   const { item, transactionCategories } = props;
   const [open, setOpen] = useState<boolean>(false);
-  const [category, setCategory] = useState<ValueType>();
+  const [category, setCategory] = useState(null);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     if (item.category) {
-      setCategory(item.category[0].id);
+      setCategory(item.category[0]);
     }
   }, [item.category]);
 
   useEffect(() => {
     setCategories(
       (transactionCategories || []).map(transactionCategory => ({
-        value: transactionCategory.id,
+        value: transactionCategory,
         label: transactionCategory.type,
       }))
     );
@@ -62,6 +65,9 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transac
           setItems={setCategories}
           mode='SIMPLE'
           style={DROPDOWN_PICKER_STYLE}
+          onChangeValue={transactionCategory => {
+            transactionStore.updateTransactionCategory(item.id, transactionCategory);
+          }}
         />
         <Icon icon={category ? 'check' : 'bullet'} style={ICON_STYLE} />
         <Icon icon='upload' style={ICON_STYLE} />

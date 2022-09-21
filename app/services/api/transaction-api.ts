@@ -2,6 +2,7 @@ import { ApiResponse } from 'apisauce';
 import { Api } from './api';
 import { GetTransactionCategoriesResult, GetTransactionsResult } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
+import { TransactionCategory } from '../../models/transaction-category/transaction-category';
 
 export class TransactionApi {
   private api: Api;
@@ -34,6 +35,29 @@ export class TransactionApi {
         userDefined,
         unique,
       });
+      // the typical ways to die when calling an api
+      if (!response.ok) {
+        const problem = getGeneralApiProblem(response);
+        if (problem) return problem;
+      }
+      const transactionCategories = response.data;
+      return { kind: 'ok', transactionCategories };
+    } catch (e) {
+      __DEV__ && console.tron.log(e.message);
+      return { kind: 'bad-data' };
+    }
+  }
+
+  async updateTransactionCategories(
+    accountId: string,
+    transactionId: string,
+    transactionCategory: TransactionCategory
+  ): Promise<GetTransactionCategoriesResult> {
+    try {
+      // make the api call
+      const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/transactions/${transactionId}/transactionCategories`, [
+        transactionCategory,
+      ]);
       // the typical ways to die when calling an api
       if (!response.ok) {
         const problem = getGeneralApiProblem(response);
