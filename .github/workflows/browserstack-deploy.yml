@@ -36,12 +36,6 @@ jobs:
     timeout-minutes: 60
     steps: 
       - uses: actions/checkout@v2
-      
-      - uses: futureware-tech/simulator-action@v1
-        with:
-         model: 'iPhone 13'
-      - run: flutter drive
-          
 
       - run: npm install --force
 
@@ -55,6 +49,12 @@ jobs:
             brew install applesimutils
 
       - run: npm run ci:build:e2e
+      
+      - name: Launch iOS Simulator
+        uses: futureware-tech/simulator-action@v1
+        with:
+          model: 'iPhone 13'
+          shutdown_after_job: true
       
       - run: npm test 
 
