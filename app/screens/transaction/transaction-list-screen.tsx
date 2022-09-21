@@ -52,8 +52,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
 
   useEffect(() => {
     async function fetchData() {
-      await transactionStore.getTransactions();
-      await transactionStore.getTransactionCategories();
+      await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
     }
 
     fetchData();

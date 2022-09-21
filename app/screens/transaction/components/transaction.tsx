@@ -29,15 +29,16 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transac
 
   useEffect(() => {
     if (item.category) {
-      setCategory(item.category[0]);
+      setCategory(item.category[0].id);
     }
   }, [item.category]);
 
   useEffect(() => {
     setCategories(
       (transactionCategories || []).map(transactionCategory => ({
-        value: transactionCategory,
+        value: transactionCategory.id,
         label: transactionCategory.type,
+        category: transactionCategory,
       }))
     );
   }, [transactionCategories]);
@@ -65,8 +66,8 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transac
           setItems={setCategories}
           mode='SIMPLE'
           style={DROPDOWN_PICKER_STYLE}
-          onChangeValue={transactionCategory => {
-            transactionStore.updateTransactionCategory(item.id, transactionCategory);
+          onSelectItem={transactionCategory => {
+            transactionStore.updateTransactionCategory(item.id, transactionCategory.category);
           }}
         />
         <Icon icon={category ? 'check' : 'bullet'} style={ICON_STYLE} />
