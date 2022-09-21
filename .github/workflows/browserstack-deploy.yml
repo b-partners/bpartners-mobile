@@ -37,7 +37,10 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       
-      - run: xcversion simulators --install='iOS 15.0'
+      - uses: futureware-tech/simulator-action@v1
+        with:
+         model: 'iPhone 13'
+      - run: flutter drive
           
 
       - run: npm install --force
