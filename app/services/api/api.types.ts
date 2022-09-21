@@ -6,6 +6,7 @@ import { AccountHolder } from '../../models/entities/account-holder/account-hold
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { Customer } from '../../models/entities/customer/customer';
 import { Product } from '../../models/entities/product/product';
+import { File } from '../../models/File/File';
 
 export interface Whoami {
   user: any;
@@ -45,3 +46,7 @@ export type GetProductsResult = { kind: 'ok'; products: Product[] } | GeneralApi
 export type GetAccountHolderResult = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
 
 export type InitPaymentResult = { kind: 'ok'; paymentInitiation: { id: string } & RedirectionUrlsStatus } | GeneralApiProblem;
+
+export type GetFileInformation = { kind: 'ok'; fileInfos: File } | GeneralApiProblem;
+
+export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProblem;
