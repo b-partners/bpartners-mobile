@@ -36,6 +36,11 @@ jobs:
     timeout-minutes: 60
     steps: 
       - uses: actions/checkout@v2
+      
+      - name: Install ios simulator
+        run: |
+          xcode-select --install
+          xcversion simulators --install='iOS 15.5'
 
       - run: npm install --force
 
