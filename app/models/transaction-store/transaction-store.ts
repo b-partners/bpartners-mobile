@@ -65,7 +65,8 @@ export const TransactionStoreModel = types
   }))
   .actions(self => ({
     getTransactionsSuccess: (transactionSnapshotOuts: TransactionSnapshotOut[]) => {
-      self.transactions.replace(transactionSnapshotOuts);
+      // TODO: correctly type this
+      self.transactions.replace(transactionSnapshotOuts as any);
     },
   }))
   .actions(self => ({
