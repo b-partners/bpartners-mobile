@@ -42,7 +42,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
         <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
         <View style={FORM_FIELD_CONTAINER}>
           <Text style={SECTION_STYLE} tx={'profileScreen.fields.logo'} />
-          <FileUpload onUploadFile={() => {}} uploadFileTx={'profileScreen.fields.uploadFileButton'} selectFileTx={'profileScreen.fields.selectFileButton'} />
+          <FileUpload onUploadFile={() => {}} uploadFileTx={'profileScreen.fields.uploadFileButton'} selectFileTx={'profileScreen.fields.selectFileButton'}  fileId={currentUser.logoFileId}/>
         </View>
         {currentUser && (
           <View style={FORM_FIELD_CONTAINER}>
