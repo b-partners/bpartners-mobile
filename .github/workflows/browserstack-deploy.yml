@@ -37,7 +37,7 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       
-      - run: xcversion simulators --install='iOS 15.5'
+      - run: xcversion simulators --install='iOS 15.0'
           
 
       - run: npm install --force
