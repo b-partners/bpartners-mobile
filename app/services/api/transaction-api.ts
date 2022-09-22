@@ -28,12 +28,12 @@ export class TransactionApi {
     }
   }
 
-  async getTransactionCategories(accountId: string, unique = false, userDefined = true): Promise<GetTransactionCategoriesResult> {
+  async getTransactionCategories(accountId: string, unique = true, userDefined = undefined): Promise<GetTransactionCategoriesResult> {
     try {
       // make the api call
       const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionCategories`, {
-        userDefined,
         unique,
+        userDefined,
       });
       // the typical ways to die when calling an api
       if (!response.ok) {

@@ -26,9 +26,10 @@ export const TRANSACTION_RIGHT_SIDE: ViewStyle = {
 export const TRANSACTION_ACTIONS: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
-  padding: spacing[5],
+  padding: spacing[0],
+  position: 'relative',
 };
-export const DROPDOWN_PICKER_STYLE = { flex: 1 };
+export const DROPDOWN_PICKER_STYLE: ViewStyle = { flex: 1 };
 export const ICON_STYLE = { flex: 1, marginHorizontal: spacing[1] };
 export const TRANSACTION_DETAILS_STYLE: ViewStyle = {
   display: 'flex',

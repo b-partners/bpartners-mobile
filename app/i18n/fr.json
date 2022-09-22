@@ -10,7 +10,14 @@
   },
   "transactionListScreen": {
     "title": "Transactions",
-    "balance": "Balance"
+    "balance": "Balance",
+    "userDefinedCategoryForm": {
+      "labels": {
+        "type": "Type",
+        "vat": "TVA",
+        "submit": "Mettre à jour"
+      }
+    }
   },
   "onboardingScreen": {
     "title": "Créer un compte"

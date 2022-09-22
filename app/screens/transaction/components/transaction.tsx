@@ -1,5 +1,5 @@
 import React, { PropsWithoutRef, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Icon, Text } from '../../../components';
 import { Transaction as ITransaction } from '../../../models/transaction/transaction';
 import { currencyPipe, datePipe } from '../../../utils/pipes';
@@ -18,9 +18,16 @@ import {
 import { translate } from '../../../i18n';
 import { TransactionCategory } from '../../../models/transaction-category/transaction-category';
 import { useStores } from '../../../models';
+import { UserDefinedCategoryForm } from './user-defined-category-form';
+import { spacing } from '../../../theme';
+
+const DROPDOWN_PICKER_CONTAINER_STYLE = { flex: 1, paddingTop: spacing[2], paddingRight: spacing[2] };
+
+const ICON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };
 
 export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[] }>) => {
   const { transactionStore } = useStores();
+  const [userDefinedCategory, setUserDefinedCategory] = useState(false);
 
   const { item, transactionCategories } = props;
   const [open, setOpen] = useState<boolean>(false);
@@ -57,21 +64,47 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transac
         </View>
       </View>
       <View style={TRANSACTION_ACTIONS}>
-        <DropDownPicker
-          open={open}
-          value={category}
-          items={categories}
-          setOpen={setOpen}
-          setValue={setCategory}
-          setItems={setCategories}
-          mode='SIMPLE'
-          style={DROPDOWN_PICKER_STYLE}
-          onSelectItem={transactionCategory => {
-            transactionStore.updateTransactionCategory(item.id, transactionCategory.category);
-          }}
-        />
-        <Icon icon={category ? 'check' : 'bullet'} style={ICON_STYLE} />
-        <Icon icon='upload' style={ICON_STYLE} />
+        {!userDefinedCategory ? (
+          <DropDownPicker
+            open={open}
+            value={category}
+            items={categories}
+            setOpen={setOpen}
+            setValue={setCategory}
+            setItems={setCategories}
+            mode='SIMPLE'
+            style={DROPDOWN_PICKER_STYLE}
+            containerStyle={DROPDOWN_PICKER_CONTAINER_STYLE}
+            onSelectItem={transactionCategory => {
+              transactionStore.updateTransactionCategory(item.id, transactionCategory.category);
+            }}
+          />
+        ) : (
+          <UserDefinedCategoryForm
+            onSubmit={async transactionCategory => {
+              try {
+                await transactionStore.updateTransactionCategory(item.id, transactionCategory as any);
+              } catch (e) {
+                console.tron.log(e);
+                throw new Error(e);
+              } finally {
+                await transactionStore.getTransactionCategories();
+                setUserDefinedCategory(false);
+              }
+            }}
+          />
+        )}
+        {!userDefinedCategory ? (
+          <TouchableOpacity onPress={() => setUserDefinedCategory(true)} style={ICON_CONTAINER_STYLE}>
+            <Icon icon='upload' style={ICON_STYLE} />
+          </TouchableOpacity>
+        ) : null}
+        <TouchableOpacity style={ICON_CONTAINER_STYLE}>
+          <Icon icon={category ? 'check' : 'bullet'} style={ICON_STYLE} />
+        </TouchableOpacity>
+        <TouchableOpacity style={ICON_CONTAINER_STYLE}>
+          <Icon icon='upload' style={ICON_STYLE} />
+        </TouchableOpacity>
       </View>
     </View>
   );

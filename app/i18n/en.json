@@ -28,7 +28,14 @@
   },
   "transactionListScreen": {
     "title": "Transactions",
-    "balance": "Balance"
+    "balance": "Balance",
+    "userDefinedCategoryForm": {
+      "labels": {
+        "type": "Type",
+        "vat": "VAT",
+        "submitButton": "Update"
+      }
+    }
   },
   "onboardingScreen": {
     "title": "Onboarding"
