@@ -148,7 +148,7 @@
     "test-runner": "jest",
     "configurations": {
       "ios.sim.debug": {
-        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/BpartnersMobile.ipa",
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/BpartnersMobile.app",
         "build": "xcodebuild -workspace ios/BpartnersMobile.xcworkspace -scheme BpartnersMobile -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -destination 'name=iPhone 11'",
         "type": "ios.simulator",
         "device": {
@@ -157,7 +157,7 @@
         }
       },
       "ios.sim.release": {
-        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/BpartnersMobile.ipa",
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/BpartnersMobile.app",
         "build": "xcodebuild -workspace ios/BpartnersMobile.xcworkspace -scheme BpartnersMobile -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -destination 'name=iPhone 11'",
         "type": "ios.simulator",
         "device": {
