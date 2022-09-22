@@ -10,7 +10,7 @@ type FileUploadProps = {
   selectFileTx: TxKeyPath;
   uploadFileTx: TxKeyPath;
   onUploadFile: () => void;
-  fileId: string;
+  fileId?: string;
 };
 
 const BUTTON_STYLE = { backgroundColor: color.palette.lighterGrey, flex: 1 };
