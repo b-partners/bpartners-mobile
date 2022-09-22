@@ -71,7 +71,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           contentContainerStyle={FLAT_LIST}
           data={[...transactions]}
           renderItem={({ item }) => {
-            return <Transaction item={item} transactionCategories={transactionCategories} />;
+            return <Transaction item={item} transactionCategories={transactionCategories} showTransactionCategory={true} />;
           }}
           ItemSeparatorComponent={() => <Separator />}
         />

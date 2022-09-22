@@ -25,11 +25,13 @@ const DROPDOWN_PICKER_CONTAINER_STYLE = { flex: 1, paddingTop: spacing[2], paddi
 
 const ICON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };
 
-export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[] }>) => {
+export const Transaction = (
+  props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[]; showTransactionCategory?: boolean }>
+) => {
   const { transactionStore } = useStores();
   const [userDefinedCategory, setUserDefinedCategory] = useState(false);
 
-  const { item, transactionCategories } = props;
+  const { item, transactionCategories, showTransactionCategory } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [category, setCategory] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -63,50 +65,52 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transac
           <Text style={TRANSACTION_AMOUNT(item.amount)}>{currencyPipe(translate('currency')).format(item.amount)}</Text>
         </View>
       </View>
-      <View style={TRANSACTION_ACTIONS}>
-        {!userDefinedCategory ? (
-          <DropDownPicker
-            open={open}
-            value={category}
-            items={categories}
-            setOpen={setOpen}
-            setValue={setCategory}
-            setItems={setCategories}
-            mode='SIMPLE'
-            style={DROPDOWN_PICKER_STYLE}
-            containerStyle={DROPDOWN_PICKER_CONTAINER_STYLE}
-            onSelectItem={transactionCategory => {
-              transactionStore.updateTransactionCategory(item.id, transactionCategory.category);
-            }}
-          />
-        ) : (
-          <UserDefinedCategoryForm
-            onSubmit={async transactionCategory => {
-              try {
-                await transactionStore.updateTransactionCategory(item.id, transactionCategory as any);
-              } catch (e) {
-                console.tron.log(e);
-                throw new Error(e);
-              } finally {
-                await transactionStore.getTransactionCategories();
-                setUserDefinedCategory(false);
-              }
-            }}
-            onCancel={() => setUserDefinedCategory(false)}
-          />
-        )}
-        {!userDefinedCategory ? (
-          <TouchableOpacity onPress={() => setUserDefinedCategory(true)} style={ICON_CONTAINER_STYLE}>
+      {showTransactionCategory ? (
+        <View style={TRANSACTION_ACTIONS}>
+          {!userDefinedCategory ? (
+            <DropDownPicker
+              open={open}
+              value={category}
+              items={categories}
+              setOpen={setOpen}
+              setValue={setCategory}
+              setItems={setCategories}
+              mode='SIMPLE'
+              style={DROPDOWN_PICKER_STYLE}
+              containerStyle={DROPDOWN_PICKER_CONTAINER_STYLE}
+              onSelectItem={transactionCategory => {
+                transactionStore.updateTransactionCategory(item.id, transactionCategory.category);
+              }}
+            />
+          ) : (
+            <UserDefinedCategoryForm
+              onSubmit={async transactionCategory => {
+                try {
+                  await transactionStore.updateTransactionCategory(item.id, transactionCategory as any);
+                } catch (e) {
+                  console.tron.log(e);
+                  throw new Error(e);
+                } finally {
+                  await transactionStore.getTransactionCategories();
+                  setUserDefinedCategory(false);
+                }
+              }}
+              onCancel={() => setUserDefinedCategory(false)}
+            />
+          )}
+          {!userDefinedCategory ? (
+            <TouchableOpacity onPress={() => setUserDefinedCategory(true)} style={ICON_CONTAINER_STYLE}>
+              <Icon icon='upload' style={ICON_STYLE} />
+            </TouchableOpacity>
+          ) : null}
+          <TouchableOpacity style={ICON_CONTAINER_STYLE}>
+            <Icon icon={category ? 'check' : 'bullet'} style={ICON_STYLE} />
+          </TouchableOpacity>
+          <TouchableOpacity style={ICON_CONTAINER_STYLE}>
             <Icon icon='upload' style={ICON_STYLE} />
           </TouchableOpacity>
-        ) : null}
-        <TouchableOpacity style={ICON_CONTAINER_STYLE}>
-          <Icon icon={category ? 'check' : 'bullet'} style={ICON_STYLE} />
-        </TouchableOpacity>
-        <TouchableOpacity style={ICON_CONTAINER_STYLE}>
-          <Icon icon='upload' style={ICON_STYLE} />
-        </TouchableOpacity>
-      </View>
+        </View>
+      ) : null}
     </View>
   );
 };
