@@ -42,19 +42,8 @@ jobs:
       - run:  npm install --location=global react-native-cli
       
       - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      
-      - name: Install applesimutils
-        run: |
-            brew tap wix/brew
-            brew install applesimutils
-
-      - name: Launch iOS Simulator
-        uses: futureware-tech/simulator-action@v1
-        with:
-          model: 'iPhone 13'
-          shutdown_after_job: true
-      
-      - run: npm run ci:test:e2e
+            
+      - run: npm run ci:build:e2e
 
       - name: change extension app to ipa
         run: |
