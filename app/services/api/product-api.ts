@@ -20,7 +20,7 @@ export class ProductApi {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-      const [products] = response.data;
+      const products = response.data;
       return { kind: 'ok', products };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);

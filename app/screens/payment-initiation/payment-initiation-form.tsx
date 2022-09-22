@@ -22,6 +22,7 @@ export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
   const initialValues = { label: '', reference: '', amount: null, payerName: '', payerEmail: '' };
 
   const { paymentInitiationStore } = useStores();
+  const { products, customers } = paymentInitiationStore;
 
   const validationSchema = yup.object().shape({
     amount: yup.number().required().label(translate('paymentInitiationScreen.fields.amount')),
@@ -30,8 +31,6 @@ export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
 
   const [labelValue, setLabelValue] = useState<string>();
   const [payerNameValue, setPayerNameValue] = useState<string>();
-  const [products] = useState(new Array(5).fill(null).map((_, i) => ({ description: `Test ${i}` })));
-  const [customers] = useState(new Array(5).fill(null).map((_, i) => ({ name: `Payer ${i}` })));
 
   return (
     <Formik
@@ -50,10 +49,10 @@ export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
           <>
             <AutocompletionFormField
               data={[...products]}
-              hideResults={!products.length}
               value={labelValue}
-              onChangeText={label => {
+              onChangeText={async label => {
                 setLabelValue(label);
+                await paymentInitiationStore.getProducts(label);
               }}
               keyExtractor={(item, i) => i}
               renderItem={({ item }) => (
@@ -81,6 +80,7 @@ export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
               value={payerNameValue}
               onChangeText={name => {
                 setPayerNameValue(name);
+                paymentInitiationStore.getCustomers(name);
               }}
               keyExtractor={(item, i) => i}
               renderItem={({ item }) => (

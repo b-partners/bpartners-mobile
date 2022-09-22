@@ -20,7 +20,7 @@ export class CustomerApi {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-      const [customers] = response.data;
+      const customers = response.data;
       return { kind: 'ok', customers };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
