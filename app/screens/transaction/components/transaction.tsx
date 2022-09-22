@@ -92,6 +92,7 @@ export const Transaction = (props: PropsWithoutRef<{ item: ITransaction; transac
                 setUserDefinedCategory(false);
               }
             }}
+            onCancel={() => setUserDefinedCategory(false)}
           />
         )}
         {!userDefinedCategory ? (

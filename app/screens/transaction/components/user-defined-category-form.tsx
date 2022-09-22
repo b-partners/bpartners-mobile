@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import { Formik } from 'formik';
 import { Button, TextField } from '../../../components';
 import React from 'react';
@@ -11,16 +11,20 @@ const TEXT_FIELD_INPUT_STYLE = {
   paddingHorizontal: spacing[3],
   color: color.palette.black,
 };
-const SUBMIT_BUTTON_CONTAINER_STYLE = { width: 100, marginTop: spacing[3] };
+const SUBMIT_BUTTON_CONTAINER_STYLE: ViewStyle = {
+  marginTop: spacing[3],
+  display: 'flex',
+  flexDirection: 'row',
+};
 
 const FORM_CONTAINER_STYLE = { flex: 1, paddingRight: spacing[2] };
 
 const SUBMIT_BUTTON_TEXT_STYLE = { fontSize: 13 };
 
-type UserDefinedCategoryFormProps = { onSubmit: (category: { type: string; vat: number }) => void };
+type UserDefinedCategoryFormProps = { onSubmit: (category: { type: string; vat: number }) => void; onCancel: () => void };
 
 export function UserDefinedCategoryForm(props: UserDefinedCategoryFormProps) {
-  const { onSubmit } = props;
+  const { onSubmit, onCancel } = props;
 
   return (
     <View style={FORM_CONTAINER_STYLE}>
@@ -46,7 +50,9 @@ export function UserDefinedCategoryForm(props: UserDefinedCategoryFormProps) {
                 onPress={() => handleSubmit()}
                 tx={'transactionListScreen.userDefinedCategoryForm.labels.submitButton'}
                 textStyle={SUBMIT_BUTTON_TEXT_STYLE}
-              ></Button>
+                style={{ marginRight: spacing[3] }}
+              />
+              <Button onPress={onCancel} tx={'transactionListScreen.userDefinedCategoryForm.labels.cancelButton'} textStyle={SUBMIT_BUTTON_TEXT_STYLE} />
             </View>
           </>
         )}

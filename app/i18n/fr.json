@@ -15,7 +15,8 @@
       "labels": {
         "type": "Type",
         "vat": "TVA",
-        "submit": "Mettre à jour"
+        "submitButton": "Mettre à jour",
+        "cancelButton": "Annuler"
       }
     }
   },
