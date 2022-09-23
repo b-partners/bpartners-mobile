@@ -16,5 +16,12 @@ jobs:
       steps: 
         - uses: actions/checkout@v2
         - run: npm install --force
+        - name: Lauch  iOS Simulator
+          uses: futureware-tech/simulator-action@v1
+          with: 
+            model: 'iPhone 13'
+            os: 'iOS'
+            os_version: '15.5'
+            shutdown_after_job: true
         - run: npm run ci:test:e2e
 
