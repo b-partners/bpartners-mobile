@@ -21,5 +21,11 @@ jobs:
           with: 
             model: 'iPhone 13'
             shutdown_after_job: true
+        - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      
+        - name: Install applesimutils
+          run: |
+              brew tap wix/brew
+              brew install applesimutils
         - run: npm run ci:test:e2e
 
