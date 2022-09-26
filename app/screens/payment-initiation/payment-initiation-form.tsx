@@ -5,9 +5,10 @@ import { Button, TextStyle, TouchableOpacity, View } from 'react-native';
 import { translate } from '../../i18n';
 import * as yup from 'yup';
 import { color, spacing } from '../../theme';
-import { useStores } from '../../models';
 import uuid from 'react-native-uuid';
 import { AutocompletionFormField, Text } from '../../components';
+import { Product } from '../../models/product/product';
+import { Customer } from '../../models/customer/customer';
 
 const FORM_FIELD_STYLE: TextStyle = { color: color.palette.black, paddingHorizontal: spacing[2], paddingBottom: 0 };
 const INVALID_FORM_FIELD = {
@@ -18,11 +19,16 @@ const INVALID_FORM_FIELD = {
 const AUTOCOMPLETION_CONTAINER_STYLE = { paddingVertical: spacing[2], backgroundColor: color.palette.white };
 
 const AUTOCOMPLETION_ITEM_TEXT_STYLE = { color: color.palette.black, paddingHorizontal: spacing[2] };
-export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
+export const PaymentInitiationForm: FC<
+  PropsWithoutRef<{
+    products: Product[];
+    customers: Customer[];
+    init: (values: unknown) => void;
+    getProducts: (description: string) => void;
+    getCustomers: (name: string) => void;
+  }>
+> = props => {
   const initialValues = { label: '', reference: '', amount: null, payerName: '', payerEmail: '' };
-
-  const { paymentInitiationStore } = useStores();
-  const { products, customers } = paymentInitiationStore;
 
   const validationSchema = yup.object().shape({
     amount: yup.number().required().label(translate('paymentInitiationScreen.fields.amount')),
@@ -32,13 +38,15 @@ export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
   const [labelValue, setLabelValue] = useState<string>();
   const [payerNameValue, setPayerNameValue] = useState<string>();
 
+  const { products, customers, init, getProducts, getCustomers } = props;
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={async values => {
         try {
-          await paymentInitiationStore.init({ id: uuid.v4() as string, ...values });
+          await init({ id: uuid.v4() as string, ...values });
         } catch (e) {
           console.tron.log(e);
         }
@@ -52,7 +60,7 @@ export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
               value={labelValue}
               onChangeText={async label => {
                 setLabelValue(label);
-                await paymentInitiationStore.getProducts(label);
+                getProducts(label);
               }}
               keyExtractor={(item, i) => i}
               renderItem={({ item }) => (
@@ -80,7 +88,7 @@ export const PaymentInitiationForm: FC<PropsWithoutRef<any>> = () => {
               value={payerNameValue}
               onChangeText={name => {
                 setPayerNameValue(name);
-                paymentInitiationStore.getCustomers(name);
+                getCustomers(name);
               }}
               keyExtractor={(item, i) => i}
               renderItem={({ item }) => (

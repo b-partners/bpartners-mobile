@@ -37,7 +37,7 @@ const PAYMENT_LINK_STYLE: TextStyle = {
 
 export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({}) {
   const { paymentInitiationStore } = useStores();
-  const { paymentUrl } = paymentInitiationStore;
+  const { paymentUrl, products, customers } = paymentInitiationStore;
 
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
@@ -45,7 +45,13 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
       <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
         <Header headerTx='paymentInitiationScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
         <View style={FORM_FIELD_CONTAINER}>
-          <PaymentInitiationForm />
+          <PaymentInitiationForm
+            init={paymentInitiationStore.init}
+            getCustomers={paymentInitiationStore.getCustomers}
+            getProducts={paymentInitiationStore.getProducts}
+            products={products}
+            customers={customers}
+          />
           {paymentUrl && (
             <View style={QRCODE_CONTAINER_STYLE}>
               <Text text={paymentUrl} style={PAYMENT_LINK_STYLE} />
