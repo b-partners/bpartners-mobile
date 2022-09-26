@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, View, ViewStyle, Image, ImageStyle, ImageSourcePropType } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen, Separator, Text, TextField } from '../../components';
@@ -30,24 +30,46 @@ const HEADER_TITLE: TextStyle = {
 const SECTION_STYLE: TextStyle = { fontSize: 16, fontWeight: 'bold', marginBottom: spacing[2] };
 const FORM_FIELD_STYLE: TextStyle = { color: color.palette.black, paddingHorizontal: spacing[2], paddingBottom: 0 };
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3], marginBottom: spacing[4] };
+const LOGO_CONTAINER: ViewStyle = {
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+};
 
+const LOGO_ICON_STYLE: ImageStyle = {
+  borderRadius: 50,
+  width: 70,
+  height: 70,
+  marginRight: 15,
+};
+
+const DEFAULT_LOGO_SOURCE = require('./default_avatar.jpg');
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen() {
   const { authStore } = useStores();
   const { currentUser, currentAccountHolder } = authStore;
-
+  const [logoSource, setLogoSource] = useState<ImageSourcePropType>(DEFAULT_LOGO_SOURCE);
+  useEffect(() => {
+    currentUser &&
+    setLogoSource({
+      uri: `${process.env.API_URL}/${currentUser.logoFileId}/raw`,
+    });
+  },[currentUser]);
   return (
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
-        <View style={FORM_FIELD_CONTAINER}>
-          <Text style={SECTION_STYLE} tx={'profileScreen.fields.logo'} />
-          <FileUpload
-            onUploadFile={() => {}}
-            uploadFileTx={'profileScreen.fields.uploadFileButton'}
-            selectFileTx={'profileScreen.fields.selectFileButton'}
-            fileId={currentUser?.logoFileId}
-          />
+        <View style={LOGO_CONTAINER}>
+          <View style={FORM_FIELD_CONTAINER}>
+            <Text style={SECTION_STYLE} tx={'profileScreen.fields.logo'} />
+            <FileUpload
+              onUploadFile={() => {}}
+              uploadFileTx={'profileScreen.fields.uploadFileButton'}
+              selectFileTx={'profileScreen.fields.selectFileButton'}
+              fileId={currentUser?.logoFileId}
+            />
+          </View>
+          <Image defaultSource={DEFAULT_LOGO_SOURCE} source={logoSource} style={LOGO_ICON_STYLE} resizeMode={'contain'}  />
         </View>
         {currentUser && (
           <View style={FORM_FIELD_CONTAINER}>
