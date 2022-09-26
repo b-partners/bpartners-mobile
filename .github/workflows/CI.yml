@@ -16,11 +16,8 @@ jobs:
       steps: 
         - uses: actions/checkout@v2
         - run: npm install --force
-        - name: Lauch  iOS Simulator
-          uses: futureware-tech/simulator-action@v1
-          with: 
-            model: 'iPhone 13'
-            shutdown_after_job: true
+        - run: npm install --location=global react-native-cli
+        - run: npm run ci:build:e2e
         - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       
         - name: Install applesimutils
