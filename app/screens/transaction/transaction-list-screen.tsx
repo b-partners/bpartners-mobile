@@ -62,7 +62,13 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-        <Header headerTx='transactionListScreen.title' style={HEADER} titleStyle={HEADER_TITLE} onLeftPress={() => navigation.navigate('home')} />
+        <Header
+          headerTx='transactionListScreen.title'
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+          onLeftPress={() => navigation.navigate('home')}
+          leftIcon={'back'}
+        />
         <View style={SUB_HEADER}>
           <Text tx={'transactionListScreen.balance'} style={SUB_HEADER_TITLE} />
           <Text style={SUB_HEADER_TITLE}>{transactions.reduce((a, c) => a + c.amount, 0)} €</Text>

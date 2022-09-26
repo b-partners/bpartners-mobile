@@ -35,7 +35,9 @@ const PAYMENT_LINK_STYLE: TextStyle = {
   textDecorationLine: 'underline',
 };
 
-export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({}) {
+export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({
+  navigation,
+}) {
   const { paymentInitiationStore } = useStores();
   const { paymentUrl, products, customers } = paymentInitiationStore;
 
@@ -43,7 +45,13 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-        <Header headerTx='paymentInitiationScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header
+          headerTx='paymentInitiationScreen.title'
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+          leftIcon={'back'}
+          onLeftPress={() => navigation.navigate('home')}
+        />
         <View style={FORM_FIELD_CONTAINER}>
           <PaymentInitiationForm
             init={paymentInitiationStore.init}
