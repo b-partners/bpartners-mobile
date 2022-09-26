@@ -69,7 +69,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               fileId={currentUser?.logoFileId}
             />
           </View>
-          <Image defaultSource={DEFAULT_LOGO_SOURCE} source={logoSource} style={LOGO_ICON_STYLE} resizeMode={'contain'}  />
+          <Image defaultSource={DEFAULT_LOGO_SOURCE} source={logoSource} style={LOGO_ICON_STYLE} resizeMode={'contain'} />
         </View>
         {currentUser && (
           <View style={FORM_FIELD_CONTAINER}>
