@@ -5,6 +5,7 @@ import { User, UserModel } from '../user/user';
 import { AccountHolder, AccountHolderModel } from '../account-holder/account-holder';
 import { AccountApi } from '../../services/api/account-api';
 import { Account, AccountModel } from '../account/account';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -71,9 +72,18 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
+    setCachedCredentials: flow(function* () {
+      yield AsyncStorage.multiSet([
+        ['accessToken', self.accessToken],
+        ['refreshToken', self.refreshToken],
+      ]);
+    }),
+  }))
+  .actions(self => ({
     getTokenSuccess: ({ accessToken, refreshToken }) => {
       self.accessToken = accessToken;
       self.refreshToken = refreshToken;
+      self.setCachedCredentials();
     },
   }))
   .actions(self => ({

@@ -1,5 +1,6 @@
 import { ApisauceInstance, create } from 'apisauce';
 import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * Manages all requests to the API.
@@ -38,6 +39,21 @@ export class Api {
       baseURL: this.config.url,
       timeout: this.config.timeout,
       headers,
+    });
+    this.setupJwtTokenInterceptor();
+  }
+
+  setupJwtTokenInterceptor() {
+    this.apisauce.addAsyncRequestTransform(async request => {
+      if (this.config.tokenWhiteList.includes(request.url)) {
+        try {
+          const accessToken = await AsyncStorage.getItem('accessToken');
+          request.headers['Authorization'] = `Bearer ${accessToken}`;
+        } catch (e) {
+          console.tron.log(`Can't fetch access token`);
+          throw new Error(e);
+        }
+      }
     });
   }
 }
