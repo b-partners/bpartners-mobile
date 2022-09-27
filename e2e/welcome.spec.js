@@ -15,7 +15,6 @@ describe('Welcome', () => {
   });
 
   it('Should go to onboarding screen', async () => {
-    await element(by.id('header-left-button')).tap();
     await element(by.id('onboarding-button')).tap();
     await expect(element(by.id('OnboardingScreen'))).toBeVisible();
   });
