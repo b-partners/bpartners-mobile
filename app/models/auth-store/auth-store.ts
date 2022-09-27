@@ -1,10 +1,10 @@
 import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { withEnvironment } from '../extensions/with-environment';
 import { AuthApi } from '../../services/api/auth-api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserModel } from '../user/user';
-import { AccountHolderModel } from '../account-holder/account-holder';
+import { User, UserModel } from '../user/user';
+import { AccountHolder, AccountHolderModel } from '../account-holder/account-holder';
 import { AccountApi } from '../../services/api/account-api';
+import { Account, AccountModel } from '../account/account';
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -15,6 +15,7 @@ export const AuthStoreModel = types
     refreshToken: types.optional(types.string, ''),
     accessToken: types.optional(types.string, ''),
     currentUser: types.optional(UserModel, {}),
+    currentAccount: types.optional(AccountModel, {}),
     currentAccountHolder: types.optional(AccountHolderModel, {}),
   })
   .extend(withEnvironment)
@@ -38,35 +39,12 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    getTokenSuccess: async ({ accessToken, refreshToken }) => {
-      self.accessToken = accessToken;
-      self.refreshToken = refreshToken;
-      console.tron.log(`Saving access token: ${accessToken}`);
-      try {
-        await AsyncStorage.setItem('accessToken', accessToken);
-        await AsyncStorage.setItem('refreshToken', refreshToken);
-      } catch (e) {
-        console.tron.error(e.message, e);
-      }
-    },
-  }))
-  .actions(self => ({
-    getToken: flow(function* (code) {
-      const signInApi = new AuthApi(self.environment.api);
-      const result = yield signInApi.getToken(code);
-      if (result.kind === 'ok') {
-        self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
-      } else {
-        __DEV__ && console.tron.log(result.kind);
-        throw new Error(result.kind);
-      }
-    }),
-  }))
-  .actions(self => ({
-    whoamiSuccess: (currentUser, currentAccountHolder) => {
+    whoamiSuccess: (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
       const user = UserModel.create(currentUser);
+      const account = AccountModel.create(currentAccount);
       const accountHolder = AccountHolderModel.create(currentAccountHolder);
       self.currentUser = { ...user };
+      self.currentAccount = { ...account };
       self.currentAccountHolder = { ...accountHolder };
     },
   }))
@@ -89,7 +67,25 @@ export const AuthStoreModel = types
         __DEV__ && console.tron.log(getAccountHolderResult.kind);
         throw new Error(getAccountHolderResult.kind);
       }
-      self.whoamiSuccess(whoAmiResult.user, getAccountHolderResult.accountHolder);
+      self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
+    }),
+  }))
+  .actions(self => ({
+    getTokenSuccess: ({ accessToken, refreshToken }) => {
+      self.accessToken = accessToken;
+      self.refreshToken = refreshToken;
+    },
+  }))
+  .actions(self => ({
+    getToken: flow(function* (code) {
+      const signInApi = new AuthApi(self.environment.api);
+      const result = yield signInApi.getToken(code);
+      if (result.kind === 'ok') {
+        self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        throw new Error(result.kind);
+      }
     }),
   }));
 

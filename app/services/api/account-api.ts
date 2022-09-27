@@ -13,7 +13,6 @@ export class AccountApi {
   async getAccounts(userId: string): Promise<GetUserAccount> {
     try {
       // make the api call
-      console.tron.log(`Fetching ${userId}'s account`);
       const response: ApiResponse<any> = await this.api.apisauce.get(`users/${userId}/accounts`);
       // the typical ways to die when calling an api
       if (!response.ok) {

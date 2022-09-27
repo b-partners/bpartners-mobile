@@ -4,7 +4,6 @@ import { GetTokenResult, GetWhoAmIResult, SignInResult } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
 import env from '../../config/env';
 import { v4 as uuid } from 'uuid';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export class AuthApi {
   private api: Api;
@@ -58,13 +57,6 @@ export class AuthApi {
   }
 
   async whoami(): Promise<GetWhoAmIResult> {
-    //TODO: Abstract this in a specific caching layer
-    const cachedUser = await AsyncStorage.getItem('user');
-    if (cachedUser) {
-      console.tron.log(`Returning cached user`);
-      return { kind: 'ok', user: JSON.parse(cachedUser) };
-    }
-    console.tron.log(`Fetching current user`);
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get('whoami');
       if (!response.ok) {
@@ -72,8 +64,6 @@ export class AuthApi {
         if (problem) return problem;
       }
       const { user } = response.data;
-      //TODO: Abstract this in a specific caching layer
-      await AsyncStorage.setItem('user', JSON.stringify(user));
       return { kind: 'ok', user };
     } catch (e) {
       return { kind: 'bad-data' };

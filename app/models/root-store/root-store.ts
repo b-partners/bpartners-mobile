@@ -1,8 +1,11 @@
-import { Instance, SnapshotOut, types } from 'mobx-state-tree';
+import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { TransactionStoreModel } from '../transaction-store/transaction-store';
 import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
 import { AuthStoreModel } from '../auth-store/auth-store';
 import { PaymentInitiationStoreModel } from '../payment-initiation-store/payment-initiation-store';
+import { AccountHolder } from '../account-holder/account-holder';
+import { Account } from '../account/account';
+import { User } from '../user/user';
 
 /**
  * A RootStore model.
@@ -13,7 +16,28 @@ export const RootStoreModel = types.model('RootStore').props({
     onboardingStore: types.optional(OnboardingStoreModel, {} as any),
     authStore: types.optional(AuthStoreModel, {} as any),
     paymentInitiationStore: types.optional(PaymentInitiationStoreModel, {} as any)
-});
+}).views(self => ({
+    get accessToken(): string {
+        return self?.authStore?.accessToken;
+    },
+    get refreshToken(): string {
+        return self?.authStore?.refreshToken;
+    },
+    get currentUser(): User {
+        return self?.authStore?.currentUser;
+    },
+    get currentAccount(): Account {
+        return self?.authStore?.currentAccount;
+    },
+    get currentAccountHolder(): AccountHolder {
+        return self?.authStore?.currentAccountHolder;
+    }
+}))
+    .actions(self => ({
+        whoami: flow(function* () {
+            yield self.authStore.whoami(self.accessToken);
+        })
+    }));
 
 /**
  * The RootStore instance.
