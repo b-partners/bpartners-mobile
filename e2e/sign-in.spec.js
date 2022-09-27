@@ -13,7 +13,7 @@ describe('Sign in', () => {
   });
 
   it('should display form validation error', async () => {
-    await element(by.id('header-left-button')).tap();
+    await element(by.id('sign-in-button')).tap();
     await element(by.id('phone-number')).typeText('lorem');
     await element(by.id('submit-button')).tap();
     await expect(element(by.id('error-message'))).toBeVisible();
