@@ -1,4 +1,4 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { withEnvironment } from '../extensions/with-environment';
 import { AuthApi } from '../../services/api/auth-api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,16 +26,16 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
-    signIn: async (phoneNumber: string) => {
+    signIn: flow(function* (phoneNumber: string) {
       const signInApi = new AuthApi(self.environment.api);
-      const result = await signInApi.signIn(phoneNumber);
+      const result = yield signInApi.signIn(phoneNumber);
       const { kind, ...urls } = result;
       if (kind === 'ok') {
         self.signInSuccess(urls);
       } else {
         __DEV__ && console.tron.log(result.kind);
       }
-    },
+    }),
   }))
   .actions(self => ({
     getTokenSuccess: async ({ accessToken, refreshToken }) => {
@@ -51,16 +51,16 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
-    getToken: async code => {
+    getToken: flow(function* (code) {
       const signInApi = new AuthApi(self.environment.api);
-      const result = await signInApi.getToken(code);
+      const result = yield signInApi.getToken(code);
       if (result.kind === 'ok') {
         self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
       } else {
         __DEV__ && console.tron.log(result.kind);
         throw new Error(result.kind);
       }
-    },
+    }),
   }))
   .actions(self => ({
     whoamiSuccess: (currentUser, currentAccountHolder) => {
@@ -71,26 +71,26 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
-    whoami: async () => {
+    whoami: flow(function* () {
       const signInApi = new AuthApi(self.environment.api);
-      const whoAmiResult = await signInApi.whoami();
+      const whoAmiResult = yield signInApi.whoami();
       if (whoAmiResult.kind !== 'ok') {
         __DEV__ && console.tron.log(whoAmiResult.kind);
         throw new Error(whoAmiResult.kind);
       }
       const accountApi = new AccountApi(self.environment.api);
-      const getAccountResult = await accountApi.getAccounts(whoAmiResult.user.id);
+      const getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
       if (getAccountResult.kind !== 'ok') {
         __DEV__ && console.tron.log(getAccountResult.kind);
         throw new Error(getAccountResult.kind);
       }
-      const getAccountHolderResult = await accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
+      const getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
       if (getAccountHolderResult.kind !== 'ok') {
         __DEV__ && console.tron.log(getAccountHolderResult.kind);
         throw new Error(getAccountHolderResult.kind);
       }
       self.whoamiSuccess(whoAmiResult.user, getAccountHolderResult.accountHolder);
-    },
+    }),
   }));
 
 export interface AuthStore extends Instance<typeof AuthStoreModel> {}
