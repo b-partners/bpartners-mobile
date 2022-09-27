@@ -1,7 +1,5 @@
 import { ApisauceInstance, create } from 'apisauce';
 import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
-import env from '../../config/env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * Manages all requests to the API.
@@ -40,14 +38,6 @@ export class Api {
       baseURL: this.config.url,
       timeout: this.config.timeout,
       headers,
-    });
-    this.apisauce.addAsyncRequestTransform(async request => {
-      //TODO: Abstract this in a specific caching layer
-      const accessToken = await AsyncStorage.getItem('accessToken');
-      if (env.endpointWhiteList.includes(request.url)) {
-        return;
-      }
-      request.headers.Authorization = `Bearer ${accessToken}`;
     });
   }
 }
