@@ -35,4 +35,4 @@ jobs:
           node-version: 17.x
 
       - run: npm install --location=global prettier
-      - run: prettier --check "src/**/*.{js,ts,tsx}" "./**/*.{json,yml,yaml}"
+      - run: prettier --check "app/**/*.{js,ts,tsx}" "./**/*.{json,yml,yaml}"
