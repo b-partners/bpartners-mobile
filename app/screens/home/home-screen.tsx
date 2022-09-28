@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { View } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
@@ -17,10 +17,6 @@ import { HomeFooter } from './components/home-footer';
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
   const { transactions } = transactionStore;
-
-  useEffect(() => {
-    transactionStore.getTransactions();
-  });
 
   return (
     <View testID='SignInWebViewScreen' style={FULL}>
