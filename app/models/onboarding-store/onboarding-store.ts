@@ -1,4 +1,4 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { withEnvironment } from '../extensions/with-environment';
 import { OnboardingApi } from '../../services/api/onboarding-api';
 
@@ -19,16 +19,16 @@ export const OnboardingStoreModel = types
     },
   }))
   .actions(self => ({
-    getOnboardingUrl: async () => {
+    getOnboardingUrl: flow(function* () {
       const onboardingApi = new OnboardingApi(self.environment.api);
-      const result = await onboardingApi.getOnboardingUrl();
+      const result = yield onboardingApi.getOnboardingUrl();
       const { kind, ...urls } = result;
       if (kind === 'ok') {
         self.getOnboardingUrlSuccess(urls);
       } else {
         __DEV__ && console.tron.log(result.kind);
       }
-    },
+    }),
   }));
 
 export interface OnboardingStore extends Instance<typeof OnboardingStoreModel> {}
