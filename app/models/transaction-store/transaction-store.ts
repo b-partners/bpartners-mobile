@@ -1,10 +1,9 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { TransactionModel, TransactionSnapshotOut } from '../transaction/transaction';
 import { TransactionApi } from '../../services/api/transaction-api';
 import { withEnvironment } from '../extensions/with-environment';
-import { AccountApi } from '../../services/api/account-api';
-import { AuthApi } from '../../services/api/auth-api';
 import { TransactionCategory, TransactionCategoryModel, TransactionCategorySnapshotOut } from '../transaction-category/transaction-category';
+import { withCredentials } from '../extensions/with-credentials';
 
 export const TransactionStoreModel = types
   .model('Transaction')
@@ -13,27 +12,16 @@ export const TransactionStoreModel = types
     transactionCategories: types.optional(types.array(TransactionCategoryModel), []),
   })
   .extend(withEnvironment)
+  .extend(withCredentials)
   .actions(self => ({
-    updateTransactionCategory: async (transactionId: string, transactionCategory: TransactionCategory) => {
-      const authApi = new AuthApi(self.environment.api);
-      const getWhoamiResult = await authApi.whoami();
-      if (getWhoamiResult.kind !== 'ok') {
-        console.tron.log(`[auth] bad data`);
-        return;
-      }
-      const accountApi = new AccountApi(self.environment.api);
-      const getAccountResult = await accountApi.getAccounts(getWhoamiResult.user.id);
-      if (getAccountResult.kind !== 'ok') {
-        console.tron.log(`[account] bad data`);
-        return;
-      }
+    updateTransactionCategory: flow(function* (transactionId: string, transactionCategory: TransactionCategory) {
       const transactionApi = new TransactionApi(self.environment.api);
-      const updateTransactionCategoryResult = await transactionApi.updateTransactionCategories(getAccountResult.account.id, transactionId, transactionCategory);
+      const updateTransactionCategoryResult = yield transactionApi.updateTransactionCategories(self.currentAccount.id, transactionId, transactionCategory);
       if (updateTransactionCategoryResult.kind !== 'ok') {
         __DEV__ && console.tron.log(updateTransactionCategoryResult.kind);
         throw new Error(updateTransactionCategoryResult.kind);
       }
-    },
+    }),
   }))
   .actions(self => ({
     getTransactionCategoriesSuccess: (transactionCategoriesSnapshotOuts: TransactionCategorySnapshotOut[]) => {
@@ -41,27 +29,15 @@ export const TransactionStoreModel = types
     },
   }))
   .actions(self => ({
-    getTransactionCategories: async () => {
-      const authApi = new AuthApi(self.environment.api);
-      const getWhoamiResult = await authApi.whoami();
-      if (getWhoamiResult.kind !== 'ok') {
-        console.tron.log(`[auth] bad data`);
-        return;
-      }
-      const accountApi = new AccountApi(self.environment.api);
-      const getAccountResult = await accountApi.getAccounts(getWhoamiResult.user.id);
-      if (getAccountResult.kind !== 'ok') {
-        console.tron.log(`[account] bad data`);
-        return;
-      }
+    getTransactionCategories: flow(function* () {
       const transactionApi = new TransactionApi(self.environment.api);
-      const getTransactionCategoriesResult = await transactionApi.getTransactionCategories(getAccountResult.account.id);
+      const getTransactionCategoriesResult = yield transactionApi.getTransactionCategories(self.currentAccount.id);
       if (getTransactionCategoriesResult.kind === 'ok') {
         self.getTransactionCategoriesSuccess(getTransactionCategoriesResult.transactionCategories);
       } else {
         __DEV__ && console.tron.log(getTransactionCategoriesResult.kind);
       }
-    },
+    }),
   }))
   .actions(self => ({
     getTransactionsSuccess: (transactionSnapshotOuts: TransactionSnapshotOut[]) => {
@@ -70,27 +46,15 @@ export const TransactionStoreModel = types
     },
   }))
   .actions(self => ({
-    getTransactions: async () => {
-      const authApi = new AuthApi(self.environment.api);
-      const getWhoamiResult = await authApi.whoami();
-      if (getWhoamiResult.kind !== 'ok') {
-        console.tron.log(`[auth] bad data`);
-        return;
-      }
-      const accountApi = new AccountApi(self.environment.api);
-      const getAccountResult = await accountApi.getAccounts(getWhoamiResult.user.id);
-      if (getAccountResult.kind !== 'ok') {
-        console.tron.log(`[account] bad data`);
-        return;
-      }
+    getTransactions: flow(function* () {
       const transactionApi = new TransactionApi(self.environment.api);
-      const getTransactionsResult = await transactionApi.getTransactions(getAccountResult.account.id);
+      const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id);
       if (getTransactionsResult.kind === 'ok') {
         self.getTransactionsSuccess(getTransactionsResult.transactions);
       } else {
         __DEV__ && console.tron.log(getTransactionsResult.kind);
       }
-    },
+    }),
   }));
 
 export interface TransactionStore extends Instance<typeof TransactionStoreModel> {}
