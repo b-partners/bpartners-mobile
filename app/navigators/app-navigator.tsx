@@ -6,12 +6,13 @@
  */
 import React from 'react';
 import { useColorScheme } from 'react-native';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, NavigationState } from '@react-navigation/native';
 import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen, PaymentInitiationScreen, ProfileScreen, HomeScreen } from '../screens';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-view-screen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { translate } from '../i18n';
+import { useStores } from '../models';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -71,8 +72,19 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
+  const { transactionStore } = useStores();
+
+  const onStateChange = async (state: NavigationState) => {
+    const route = state.routeNames[state.index];
+    switch (route) {
+      case 'home':
+        await transactionStore.getTransactions();
+        break;
+    }
+  };
+
   return (
-    <NavigationContainer ref={navigationRef} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} {...props}>
+    <NavigationContainer ref={navigationRef} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} {...props} onStateChange={onStateChange}>
       <AppStack />
     </NavigationContainer>
   );
