@@ -1,6 +1,6 @@
 import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { withEnvironment } from '../extensions/with-environment';
-import { OnboardingApi } from '../../services/api/onboarding-api';
+import { withEnvironment } from '../../extensions/with-environment';
+import { OnboardingApi } from '../../../services/api/onboarding-api';
 
 export const OnboardingStoreModel = types
   .model('Onboarding')

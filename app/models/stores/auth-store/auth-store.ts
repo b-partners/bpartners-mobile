@@ -1,10 +1,10 @@
 import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { withEnvironment } from '../extensions/with-environment';
-import { AuthApi } from '../../services/api/auth-api';
-import { User, UserModel } from '../user/user';
-import { AccountHolder, AccountHolderModel } from '../account-holder/account-holder';
-import { AccountApi } from '../../services/api/account-api';
-import { Account, AccountModel } from '../account/account';
+import { withEnvironment } from '../../extensions/with-environment';
+import { AuthApi } from '../../../services/api/auth-api';
+import { User, UserModel } from '../../entities/user/user';
+import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
+import { AccountApi } from '../../../services/api/account-api';
+import { Account, AccountModel } from '../../entities/account/account';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthStoreModel = types

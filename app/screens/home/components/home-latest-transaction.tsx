@@ -1,4 +1,4 @@
-import { Transaction as ITransaction } from '../../../models/transaction/transaction';
+import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { View } from 'react-native';
 import { BUTTON_STYLE, BUTTON_TEXT_STYLE, TRANSACTION_BUTTONS_STYLE } from '../styles';
 import { Button } from '../../../components';

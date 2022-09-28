@@ -2,7 +2,7 @@ import { ApiResponse } from 'apisauce';
 import { Api } from './api';
 import { GetTransactionCategoriesResult, GetTransactionsResult } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
-import { TransactionCategory } from '../../models/transaction-category/transaction-category';
+import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 
 export class TransactionApi {
   private api: Api;

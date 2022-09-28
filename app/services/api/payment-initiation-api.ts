@@ -2,7 +2,7 @@ import { ApiResponse } from 'apisauce';
 import { Api } from './api';
 import { InitPaymentResult } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
-import { PaymentInitiation } from '../../models/payment-initiation/payment-initiation';
+import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
 import env from '../../config/env';
 
 export class PaymentInitiationApi {

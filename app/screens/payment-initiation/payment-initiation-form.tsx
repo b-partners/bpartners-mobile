@@ -7,8 +7,8 @@ import * as yup from 'yup';
 import { color, spacing } from '../../theme';
 import uuid from 'react-native-uuid';
 import { AutocompletionFormField, Text } from '../../components';
-import { Product } from '../../models/product/product';
-import { Customer } from '../../models/customer/customer';
+import { Product } from '../../models/entities/product/product';
+import { Customer } from '../../models/entities/customer/customer';
 
 const FORM_FIELD_STYLE: TextStyle = { color: color.palette.black, paddingHorizontal: spacing[2], paddingBottom: 0 };
 const INVALID_FORM_FIELD = {

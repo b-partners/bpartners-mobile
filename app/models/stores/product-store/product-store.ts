@@ -1,8 +1,8 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { withEnvironment } from '../extensions/with-environment';
-import { ProductModel, ProductSnapshotOut } from '../product/product';
-import { ProductApi } from '../../services/api/product-api';
-import { withCredentials } from '../extensions/with-credentials';
+import { withEnvironment } from '../../extensions/with-environment';
+import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
+import { ProductApi } from '../../../services/api/product-api';
+import { withCredentials } from '../../extensions/with-credentials';
 
 export const ProductStoreModel = types
   .model('Product')

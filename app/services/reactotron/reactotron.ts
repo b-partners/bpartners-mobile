@@ -4,7 +4,7 @@ import { onSnapshot } from 'mobx-state-tree';
 import { mst } from 'reactotron-mst';
 import { Platform } from 'react-native';
 import { Tron } from './tron';
-import { RootStore } from '../../models/root-store/root-store';
+import { RootStore } from '../../models/stores/root-store/root-store';
 import { ReactotronConfig, DEFAULT_REACTOTRON_CONFIG } from './reactotron-config';
 import { clear } from '../../utils/storage';
 import { goBack, resetRoot, navigate } from '../../navigators/navigation-utilities';

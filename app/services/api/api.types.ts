@@ -1,11 +1,11 @@
 import { GeneralApiProblem } from './api-problem';
-import { Transaction } from '../../models/transaction/transaction';
-import { Account } from '../../models/account/account';
-import { User } from '../../models/user/user';
-import { AccountHolder } from '../../models/account-holder/account-holder';
-import { TransactionCategory } from '../../models/transaction-category/transaction-category';
-import { Customer } from '../../models/customer/customer';
-import { Product } from '../../models/product/product';
+import { Transaction } from '../../models/entities/transaction/transaction';
+import { Account } from '../../models/entities/account/account';
+import { User } from '../../models/entities/user/user';
+import { AccountHolder } from '../../models/entities/account-holder/account-holder';
+import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
+import { Customer } from '../../models/entities/customer/customer';
+import { Product } from '../../models/entities/product/product';
 
 export interface Whoami {
   user: any;

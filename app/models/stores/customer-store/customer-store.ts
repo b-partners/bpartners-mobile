@@ -1,8 +1,8 @@
 import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { withEnvironment } from '../extensions/with-environment';
-import { CustomerModel, CustomerSnapshotOut } from '../customer/customer';
-import { CustomerApi } from '../../services/api/customer-api';
-import { withCredentials } from '../extensions/with-credentials';
+import { withEnvironment } from '../../extensions/with-environment';
+import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
+import { CustomerApi } from '../../../services/api/customer-api';
+import { withCredentials } from '../../extensions/with-credentials';
 
 export const CustomerStoreModel = types
   .model('Customer')

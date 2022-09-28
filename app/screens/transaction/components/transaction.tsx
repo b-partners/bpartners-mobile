@@ -1,7 +1,7 @@
 import React, { PropsWithoutRef, useState } from 'react';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Icon, Text } from '../../../components';
-import { Transaction as ITransaction } from '../../../models/transaction/transaction';
+import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { currencyPipe, datePipe } from '../../../utils/pipes';
 import {
   ICON_STYLE,
@@ -14,7 +14,7 @@ import {
   TRANSACTION_RIGHT_SIDE,
 } from '../styles';
 import { translate } from '../../../i18n';
-import { TransactionCategory } from '../../../models/transaction-category/transaction-category';
+import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
 import { useStores } from '../../../models';
 import { UserDefinedCategoryForm } from './user-defined-category-form';
 import { Dropdown } from '../../../components/dropdown/dropdown';

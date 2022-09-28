@@ -1,12 +1,12 @@
 import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { PaymentInitiation } from '../payment-initiation/payment-initiation';
-import { withEnvironment } from '../extensions/with-environment';
-import { PaymentInitiationApi } from '../../services/api/payment-initiation-api';
-import { ProductModel, ProductSnapshotOut } from '../product/product';
-import { CustomerModel, CustomerSnapshotOut } from '../customer/customer';
-import { ProductApi } from '../../services/api/product-api';
-import { CustomerApi } from '../../services/api/customer-api';
-import { withCredentials } from '../extensions/with-credentials';
+import { PaymentInitiation } from '../../entities/payment-initiation/payment-initiation';
+import { withEnvironment } from '../../extensions/with-environment';
+import { PaymentInitiationApi } from '../../../services/api/payment-initiation-api';
+import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
+import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
+import { ProductApi } from '../../../services/api/product-api';
+import { CustomerApi } from '../../../services/api/customer-api';
+import { withCredentials } from '../../extensions/with-credentials';
 
 export const PaymentInitiationStoreModel = types
   .model('Transaction')

@@ -3,9 +3,9 @@ import { TransactionStoreModel } from '../transaction-store/transaction-store';
 import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
 import { AuthStoreModel } from '../auth-store/auth-store';
 import { PaymentInitiationStoreModel } from '../payment-initiation-store/payment-initiation-store';
-import { AccountHolder } from '../account-holder/account-holder';
-import { Account } from '../account/account';
-import { User } from '../user/user';
+import { AccountHolder } from '../../entities/account-holder/account-holder';
+import { Account } from '../../entities/account/account';
+import { User } from '../../entities/user/user';
 
 /**
  * A RootStore model.

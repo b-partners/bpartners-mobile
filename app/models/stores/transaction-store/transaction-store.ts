@@ -1,9 +1,9 @@
 import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { TransactionModel, TransactionSnapshotOut } from '../transaction/transaction';
-import { TransactionApi } from '../../services/api/transaction-api';
-import { withEnvironment } from '../extensions/with-environment';
-import { TransactionCategory, TransactionCategoryModel, TransactionCategorySnapshotOut } from '../transaction-category/transaction-category';
-import { withCredentials } from '../extensions/with-credentials';
+import { TransactionModel, TransactionSnapshotOut } from '../../entities/transaction/transaction';
+import { TransactionApi } from '../../../services/api/transaction-api';
+import { withEnvironment } from '../../extensions/with-environment';
+import { TransactionCategory, TransactionCategoryModel, TransactionCategorySnapshotOut } from '../../entities/transaction-category/transaction-category';
+import { withCredentials } from '../../extensions/with-credentials';
 
 export const TransactionStoreModel = types
   .model('Transaction')
