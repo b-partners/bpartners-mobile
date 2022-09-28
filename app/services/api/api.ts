@@ -45,7 +45,7 @@ export class Api {
 
   setupJwtTokenInterceptor() {
     this.apisauce.addAsyncRequestTransform(async request => {
-      if (this.config.tokenWhiteList.includes(request.url)) {
+      if (!this.config.tokenWhiteList.includes(request.url)) {
         try {
           const accessToken = await AsyncStorage.getItem('accessToken');
           request.headers['Authorization'] = `Bearer ${accessToken}`;
