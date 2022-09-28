@@ -5,6 +5,7 @@ export const icons = {
   check: require('./check.png'),
   upload: require('./upload.png'),
   cross: require('./cross.png'),
+  plus: require('./plus.png'),
 };
 
 export type IconTypes = keyof typeof icons;

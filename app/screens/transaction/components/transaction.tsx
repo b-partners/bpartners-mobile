@@ -70,7 +70,7 @@ export const Transaction = (
           )}
           {!userDefinedCategory ? (
             <TouchableOpacity onPress={() => setUserDefinedCategory(true)} style={ICON_CONTAINER_STYLE}>
-              <Icon icon='upload' style={ICON_STYLE} />
+              <Icon icon='plus' style={ICON_STYLE} />
             </TouchableOpacity>
           ) : null}
           <TouchableOpacity style={ICON_CONTAINER_STYLE}>
