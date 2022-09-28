@@ -6,7 +6,7 @@ export const TransactionModel = types.model('Transaction').props({
   label: types.maybe(types.string),
   reference: types.maybe(types.string),
   amount: types.maybe(types.number),
-  category: types.maybeNull(types.array(TransactionCategoryModel)),
+  category: types.maybeNull(TransactionCategoryModel),
   paymentDatetime: types.maybe(types.string),
 });
 

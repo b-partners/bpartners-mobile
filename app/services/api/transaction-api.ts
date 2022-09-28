@@ -20,7 +20,10 @@ export class TransactionApi {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-      const transactions = response.data;
+      const transactions = response.data.map(item => ({
+        ...item,
+        category: item.category.length ? item.category[0] : null,
+      }));
       return { kind: 'ok', transactions };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
