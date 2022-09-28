@@ -66,6 +66,7 @@
     "react-native-screens": "3.13.1",
     "react-native-svg": "^13.1.0",
     "react-native-uuid": "^2.0.1",
+    "react-native-vector-icons": "^9.2.0",
     "react-native-webview": "^11.23.0",
     "reactotron-mst": "3.1.4",
     "reactotron-react-js": "^3.3.7",
