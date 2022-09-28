@@ -48,7 +48,7 @@ export class Api {
       if (!this.config.tokenWhiteList.includes(request.url)) {
         try {
           const accessToken = await AsyncStorage.getItem('accessToken');
-          request.headers['Authorization'] = `Bearer ${accessToken}`;
+          request.headers.Authorization = `Bearer ${accessToken}`;
         } catch (e) {
           console.tron.log(`Can't fetch access token`);
           throw new Error(e);
