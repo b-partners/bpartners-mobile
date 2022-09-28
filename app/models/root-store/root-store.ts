@@ -1,4 +1,4 @@
-import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { TransactionStoreModel } from '../transaction-store/transaction-store';
 import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
 import { AuthStoreModel } from '../auth-store/auth-store';
@@ -32,12 +32,7 @@ export const RootStoreModel = types.model('RootStore').props({
     get currentAccountHolder(): AccountHolder {
         return self?.authStore?.currentAccountHolder;
     }
-}))
-    .actions(self => ({
-        whoami: flow(function* () {
-            yield self.authStore.whoami(self.accessToken);
-        })
-    }));
+}));
 
 /**
  * The RootStore instance.
