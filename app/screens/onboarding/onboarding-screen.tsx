@@ -44,13 +44,13 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
     if (!currentUrl.includes(env.successUrl)) {
       return;
     }
-    // TODO: Find a cleaner way to avoid calling the API multiple times
-    const cachedCode = await AsyncStorage.getItem('code');
-    if (cachedCode) {
-      return;
-    }
     const { code } = getQueryParams(currentUrl);
     if (!code) {
+      return;
+    }
+    // TODO: Find a cleaner way to avoid calling the API multiple times
+    const cachedCode = await AsyncStorage.getItem('code');
+    if (cachedCode && cachedCode === code) {
       return;
     }
     await AsyncStorage.setItem('code', code);
