@@ -49,11 +49,11 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const { currentUser, currentAccountHolder } = authStore;
   const [logoSource, setLogoSource] = useState<ImageSourcePropType>(DEFAULT_LOGO_SOURCE);
   useEffect(() => {
-    currentUser &&
-    setLogoSource({
-      uri: `${process.env.API_URL}/${currentUser.logoFileId}/raw`,
-    });
-  },[currentUser]);
+    currentUser.logoFileId &&
+      setLogoSource({
+        uri: `${process.env.API_URL}/${currentUser.logoFileId}/raw`,
+      });
+  }, [currentUser]);
   return (
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
