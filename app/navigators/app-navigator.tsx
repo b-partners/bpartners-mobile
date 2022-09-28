@@ -80,6 +80,9 @@ export function AppNavigator(props: NavigationProps) {
       case 'home':
         await transactionStore.getTransactions();
         break;
+      case 'transactionList':
+        await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
+        break;
     }
   };
 

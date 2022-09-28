@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
@@ -49,14 +49,6 @@ const FLAT_LIST: ViewStyle = {
 export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
   const { transactions, transactionCategories } = transactionStore;
-
-  useEffect(() => {
-    async function fetchData() {
-      await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
-    }
-
-    fetchData();
-  });
 
   return (
     <View testID='TransactionListScreen' style={FULL}>
