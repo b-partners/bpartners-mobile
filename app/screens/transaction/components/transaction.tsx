@@ -1,4 +1,4 @@
-import React, { PropsWithoutRef, useCallback, useState } from 'react';
+import React, { PropsWithoutRef, useEffect, useState } from 'react';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Icon, Text } from '../../../components';
 import { Transaction as ITransaction } from '../../../models/transaction/transaction';
@@ -36,13 +36,13 @@ export const Transaction = (
   const [category, setCategory] = useState(null);
   const [categories, setCategories] = useState([]);
 
-  useCallback(() => {
+  useEffect(() => {
     if (item.category) {
       setCategory(item.category[0].id);
     }
   }, [item.category]);
 
-  useCallback(() => {
+  useEffect(() => {
     setCategories(
       (transactionCategories || []).map(transactionCategory => ({
         value: transactionCategory.id,
