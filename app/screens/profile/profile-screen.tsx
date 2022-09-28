@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
@@ -6,8 +6,6 @@ import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen, Separator, Text, TextField } from '../../components';
 import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
-import { User } from '../../models/user/user';
-import { AccountHolder } from '../../models/account-holder/account-holder';
 import { FileUpload } from '../../components/file-upload/file-upload';
 
 const FULL: ViewStyle = {
@@ -35,20 +33,7 @@ const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3], marginB
 
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen() {
   const { authStore } = useStores();
-  const [currentUser, setCurrentUser] = useState<User>(undefined);
-  const [currentAccountHolder, setCurrentAccountHolder] = useState<AccountHolder>(undefined);
-
-  useEffect(() => {
-    async function fetchUserData() {
-      // TODO: Error handling
-      await authStore.whoami();
-      const { currentUser: user, currentAccountHolder: accountHolder } = authStore;
-      setCurrentUser(user);
-      setCurrentAccountHolder(accountHolder);
-    }
-
-    fetchUserData();
-  });
+  const { currentUser, currentAccountHolder } = authStore;
 
   return (
     <View testID='TransactionListScreen' style={FULL}>
