@@ -9,7 +9,6 @@ import { color, spacing, typography } from '../../theme';
 import env from '../../config/env';
 import getQueryParams from '../../utils/get-query-params';
 import { useStores } from '../../models';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FULL: ViewStyle = { flex: 1 };
 
@@ -38,9 +37,11 @@ const HEADER_TITLE: TextStyle = {
 export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
   const { url } = route.params;
   const { authStore } = useStores();
+  let webview: WebView;
 
   const onNavigationStateChange = async webViewState => {
     const { url: currentUrl } = webViewState;
+    console.tron.log(`Navigating to ${currentUrl}`);
     if (!currentUrl.includes(env.successUrl)) {
       return;
     }
@@ -48,14 +49,10 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
     if (!code) {
       return;
     }
-    // TODO: Find a cleaner way to avoid calling the API multiple times
-    const cachedCode = await AsyncStorage.getItem('code');
-    if (cachedCode && cachedCode === code) {
-      return;
-    }
-    await AsyncStorage.setItem('code', code);
     try {
       await authStore.getToken(code);
+      webview.stopLoading();
+      await authStore.whoami();
       navigation.navigate('home');
     } catch (e) {
       navigation.navigate('signIn');
@@ -69,7 +66,13 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
       <GradientBackground colors={['#422443', '#281b34']} />
       <SafeAreaView />
       <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.navigate('welcome')} style={HEADER} titleStyle={HEADER_TITLE} />
-      <WebView source={{ uri: url }} onNavigationStateChange={onNavigationStateChange} />
+      <WebView
+        ref={ref => {
+          webview = ref;
+        }}
+        source={{ uri: url }}
+        onNavigationStateChange={onNavigationStateChange}
+      />
     </View>
   );
 });
