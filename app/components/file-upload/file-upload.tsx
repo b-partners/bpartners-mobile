@@ -19,7 +19,7 @@ const BUTTON_TEXT_STYLE = { fontSize: 16 };
 
 const CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
 
-const FLEX_ITEM_STYLE = {  };
+const FLEX_ITEM_STYLE = {};
 
 export function FileUpload(props: FileUploadProps) {
   const [fileToUpload, setFileToUpload] = useState<File>(null);
