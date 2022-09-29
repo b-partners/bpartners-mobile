@@ -9,6 +9,7 @@ import { color, spacing, typography } from '../../theme';
 import env from '../../config/env';
 import getQueryParams from '../../utils/get-query-params';
 import { useStores } from '../../models';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FULL: ViewStyle = { flex: 1 };
 
@@ -49,10 +50,15 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
     if (!code) {
       return;
     }
+    const cachedCode = await AsyncStorage.getItem('code');
+    if (cachedCode && cachedCode === code) {
+      return;
+    }
     try {
       await authStore.getToken(code);
       webview.stopLoading();
       await authStore.whoami();
+      await AsyncStorage.setItem('code', code);
       navigation.navigate('home');
     } catch (e) {
       navigation.navigate('signIn');
