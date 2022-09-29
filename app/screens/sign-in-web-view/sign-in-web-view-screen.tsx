@@ -54,11 +54,11 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
     if (cachedCode && cachedCode === code) {
       return;
     }
+    await AsyncStorage.setItem('code', code);
     try {
       await authStore.getToken(code);
       webview.stopLoading();
       await authStore.whoami();
-      await AsyncStorage.setItem('code', code);
       navigation.navigate('home');
     } catch (e) {
       navigation.navigate('signIn');
