@@ -37,6 +37,7 @@ export const TransactionStoreModel = types
   }))
   .actions(self => ({
     getTransactions: flow(function* () {
+      self.transactions.replace([]);
       const transactionApi = new TransactionApi(self.environment.api);
       const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id);
       if (getTransactionsResult.kind === 'ok') {
