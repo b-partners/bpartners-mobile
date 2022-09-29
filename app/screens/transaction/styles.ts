@@ -36,3 +36,6 @@ export const TRANSACTION_DETAILS_STYLE: ViewStyle = {
   flexDirection: 'row',
   paddingHorizontal: spacing[2],
 };
+
+export const ICON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };
+export const TRANSACTION_BOTTOM_SIDE: ViewStyle = { flex: 1, display: 'flex', width: '100%' };

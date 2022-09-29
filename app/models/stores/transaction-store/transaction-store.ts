@@ -14,16 +14,6 @@ export const TransactionStoreModel = types
   .extend(withEnvironment)
   .extend(withCredentials)
   .actions(self => ({
-    updateTransactionCategory: flow(function* (transactionId: string, transactionCategory: TransactionCategory) {
-      const transactionApi = new TransactionApi(self.environment.api);
-      const updateTransactionCategoryResult = yield transactionApi.updateTransactionCategories(self.currentAccount.id, transactionId, transactionCategory);
-      if (updateTransactionCategoryResult.kind !== 'ok') {
-        __DEV__ && console.tron.log(updateTransactionCategoryResult.kind);
-        throw new Error(updateTransactionCategoryResult.kind);
-      }
-    }),
-  }))
-  .actions(self => ({
     getTransactionCategoriesSuccess: (transactionCategoriesSnapshotOuts: TransactionCategorySnapshotOut[]) => {
       self.transactionCategories.replace(transactionCategoriesSnapshotOuts);
     },
@@ -54,6 +44,17 @@ export const TransactionStoreModel = types
       } else {
         __DEV__ && console.tron.log(getTransactionsResult.kind);
       }
+    }),
+  }))
+  .actions(self => ({
+    updateTransactionCategory: flow(function* (transactionId: string, transactionCategory: TransactionCategory) {
+      const transactionApi = new TransactionApi(self.environment.api);
+      const updateTransactionCategoryResult = yield transactionApi.updateTransactionCategories(self.currentAccount.id, transactionId, transactionCategory);
+      if (updateTransactionCategoryResult.kind !== 'ok') {
+        __DEV__ && console.tron.log(updateTransactionCategoryResult.kind);
+        throw new Error(updateTransactionCategoryResult.kind);
+      }
+      yield self.getTransactions();
     }),
   }));
 
