@@ -56,6 +56,7 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
       await AsyncStorage.setItem('code', code);
       await authStore.getToken(code);
       await authStore.whoami();
+      await AsyncStorage.setItem('code', code);
       navigation.navigate('home');
     } catch (e) {
       navigation.navigate('signIn');
