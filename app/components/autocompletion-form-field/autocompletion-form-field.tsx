@@ -1,28 +1,23 @@
-import React from 'react';
-import Autocomplete from 'react-native-autocomplete-input';
+import React, { useEffect, useState } from 'react';
+import { AutocompleteDropdown, TAutocompleteDropdownItem } from 'react-native-autocomplete-dropdown';
 
-type AutocompletionFormFieldProps = {
+interface AutocompletionFormFieldProps<T> {
   data: any[];
-  hideResults?: boolean;
   value: string;
+  selectTitle: (item: T) => TAutocompleteDropdownItem;
   onChangeText: (text: string) => void;
-  keyExtractor: (item: any, index: any) => any;
-  renderItem: (props: any) => JSX.Element;
-};
+  onSelectItem: (item: TAutocompleteDropdownItem) => void;
+}
 
-export const AutocompletionFormField: React.FC<AutocompletionFormFieldProps> = props => {
-  const { data, value, onChangeText, keyExtractor, renderItem, hideResults } = props;
+export function AutocompletionFormField<T>(props: AutocompletionFormFieldProps<T>) {
+  const { data, selectTitle, value, onChangeText, onSelectItem } = props;
+  const [dataSet, setDataSet] = useState<TAutocompleteDropdownItem[]>([]);
+
+  useEffect(() => {
+    setDataSet(data.map(item => selectTitle(item)));
+  }, [data, selectTitle]);
 
   return (
-    <Autocomplete
-      data={data}
-      value={value}
-      onChangeText={onChangeText}
-      flatListProps={{
-        keyExtractor,
-        renderItem,
-      }}
-      hideResults={hideResults}
-    />
+    <AutocompleteDropdown dataSet={dataSet} initialValue={value} onChangeText={onChangeText} onSelectItem={item => onSelectItem(item)}></AutocompleteDropdown>
   );
-};
+}

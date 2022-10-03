@@ -1,12 +1,12 @@
 import React, { FC, PropsWithoutRef, useState } from 'react';
 import { Formik } from 'formik';
 import FormField from '../sign-in/components/form-field';
-import { Button, TextStyle, TouchableOpacity, View } from 'react-native';
+import { Button, TextStyle, View } from 'react-native';
 import { translate } from '../../i18n';
 import * as yup from 'yup';
 import { color, spacing } from '../../theme';
 import uuid from 'react-native-uuid';
-import { AutocompletionFormField, Text } from '../../components';
+import { AutocompletionFormField } from '../../components';
 import { Product } from '../../models/entities/product/product';
 import { Customer } from '../../models/entities/customer/customer';
 
@@ -16,9 +16,6 @@ const INVALID_FORM_FIELD = {
   borderWidth: 2,
 };
 
-const AUTOCOMPLETION_CONTAINER_STYLE = { paddingVertical: spacing[2], backgroundColor: color.palette.white };
-
-const AUTOCOMPLETION_ITEM_TEXT_STYLE = { color: color.palette.black, paddingHorizontal: spacing[2] };
 export const PaymentInitiationForm: FC<
   PropsWithoutRef<{
     products: Product[];
@@ -55,25 +52,17 @@ export const PaymentInitiationForm: FC<
       {({ handleSubmit, errors, setFieldValue }) => {
         return (
           <>
-            <AutocompletionFormField
+            <AutocompletionFormField<Product>
               data={[...products]}
               value={labelValue}
               onChangeText={async label => {
                 setLabelValue(label);
                 getProducts(label);
               }}
-              keyExtractor={(item, i) => i}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setLabelValue(item.description);
-                    setFieldValue('item', item.description);
-                  }}
-                  style={AUTOCOMPLETION_CONTAINER_STYLE}
-                >
-                  <Text text={item.description} style={{ ...FORM_FIELD_STYLE, ...AUTOCOMPLETION_ITEM_TEXT_STYLE }} />
-                </TouchableOpacity>
-              )}
+              onSelectItem={item => {
+                setFieldValue('label', item.title);
+              }}
+              selectTitle={item => ({ id: item.id, title: `${item.description}` })}
             />
             <FormField name='reference' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.reference' />
             <FormField
@@ -82,26 +71,17 @@ export const PaymentInitiationForm: FC<
               placeholderTx='paymentInitiationScreen.fields.amount'
               keyboardType='phone-pad'
             />
-            <AutocompletionFormField
+            <AutocompletionFormField<Customer>
               data={[...customers]}
-              hideResults={!customers.length}
               value={payerNameValue}
               onChangeText={name => {
                 setPayerNameValue(name);
                 getCustomers(name);
               }}
-              keyExtractor={(item, i) => i}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setPayerNameValue(item.name);
-                    setFieldValue('payerName', item.name);
-                  }}
-                  style={AUTOCOMPLETION_CONTAINER_STYLE}
-                >
-                  <Text text={item.name} style={{ ...FORM_FIELD_STYLE, ...AUTOCOMPLETION_ITEM_TEXT_STYLE }} />
-                </TouchableOpacity>
-              )}
+              onSelectItem={item => {
+                setFieldValue('payerName', item.title);
+              }}
+              selectTitle={item => ({ id: item.id, title: `${item.name}` })}
             />
             <FormField
               name='payerEmail'
