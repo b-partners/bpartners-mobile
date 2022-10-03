@@ -17,7 +17,5 @@ export function AutocompletionFormField<T>(props: AutocompletionFormFieldProps<T
     setDataSet(data.map(item => selectTitle(item)));
   }, [data, selectTitle]);
 
-  return (
-    <AutocompleteDropdown dataSet={dataSet} initialValue={value} onChangeText={onChangeText} onSelectItem={item => onSelectItem(item)}></AutocompleteDropdown>
-  );
+  return <AutocompleteDropdown dataSet={dataSet} initialValue={value} onChangeText={onChangeText} onSelectItem={item => onSelectItem(item)} />;
 }
