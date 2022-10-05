@@ -6,7 +6,7 @@ import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen, Separator, Text, TextField } from '../../components';
 import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
-import { FileUpload } from '../../components/file-upload/file-upload';
+import env from '../../config/env';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -34,6 +34,8 @@ const LOGO_CONTAINER: ViewStyle = {
   flexDirection: 'row',
   alignItems: 'flex-start',
   justifyContent: 'space-between',
+  marginBottom: spacing[3],
+  marginLeft: spacing[3],
 };
 
 const LOGO_ICON_STYLE: ImageStyle = {
@@ -51,7 +53,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   useEffect(() => {
     currentUser.logoFileId &&
       setLogoSource({
-        uri: `${process.env.API_URL}/${currentUser.logoFileId}/raw`,
+        uri: `${env.apiBaseUrl}/${currentUser.logoFileId}/raw`,
       });
   }, [currentUser]);
   return (
@@ -60,15 +62,6 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
         <View style={LOGO_CONTAINER}>
-          <View style={FORM_FIELD_CONTAINER}>
-            <Text style={SECTION_STYLE} tx={'profileScreen.fields.logo'} />
-            <FileUpload
-              onUploadFile={() => {}}
-              uploadFileTx={'profileScreen.fields.uploadFileButton'}
-              selectFileTx={'profileScreen.fields.selectFileButton'}
-              fileId={currentUser?.logoFileId}
-            />
-          </View>
           <Image defaultSource={DEFAULT_LOGO_SOURCE} source={logoSource} style={LOGO_ICON_STYLE} resizeMode={'contain'} />
         </View>
         {currentUser && (
