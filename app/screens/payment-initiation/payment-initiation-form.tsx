@@ -60,7 +60,7 @@ export const PaymentInitiationForm: FC<
                 getProducts(label);
               }}
               onSelectItem={item => {
-                setFieldValue('label', item.title);
+                setFieldValue('label', item && item.title);
               }}
               selectTitle={item => ({ id: item.id, title: `${item.description}` })}
             />
@@ -79,7 +79,7 @@ export const PaymentInitiationForm: FC<
                 getCustomers(name);
               }}
               onSelectItem={item => {
-                setFieldValue('payerName', item.title);
+                setFieldValue('payerName', item && item.title);
               }}
               selectTitle={item => ({ id: item.id, title: `${item.name}` })}
             />
