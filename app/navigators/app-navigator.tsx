@@ -62,7 +62,7 @@ function AppStack() {
       <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='home' component={HomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='home' component={HomeScreen} />
     </Drawer.Navigator>
   );
 }
