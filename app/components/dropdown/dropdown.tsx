@@ -43,6 +43,8 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
       onChangeValue={onChangeValue}
       max={DEFAULT_MAX_VALUE || max}
       containerStyle={CONTAINER_STYLE}
+      dropDownDirection={'TOP'}
+      listMode={'SCROLLVIEW'}
     />
   );
 };
