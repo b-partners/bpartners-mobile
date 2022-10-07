@@ -56,7 +56,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
       uri,
     });
     console.tron.log(`Logo source: ${(logoSource as ImageURISource).uri}`);
-  }, [currentUser, currentAccount]);
+  }, [logoSource, accessToken, currentUser, currentAccount]);
   return (
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
