@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { TextStyle, View, ViewStyle, Image, ImageStyle, ImageSourcePropType, ImageURISource } from 'react-native';
+import { TextStyle, View, ViewStyle, Image, ImageStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen, Separator, Text, TextField } from '../../components';
@@ -45,25 +45,21 @@ const LOGO_ICON_STYLE: ImageStyle = {
   marginRight: 15,
 };
 
-const DEFAULT_LOGO_SOURCE = require('./default_avatar.jpg');
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen() {
   const { authStore } = useStores();
   const { currentUser, currentAccount, currentAccountHolder, accessToken } = authStore;
-  const [logoSource, setLogoSource] = useState<ImageSourcePropType>(DEFAULT_LOGO_SOURCE);
-  useEffect(() => {
-    const uri = `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/logo.jpeg/raw?accessToken=${accessToken}`;
-    setLogoSource({
-      uri,
-    });
-    console.tron.log(`Logo source: ${(logoSource as ImageURISource).uri}`);
-  }, [logoSource, accessToken, currentUser, currentAccount]);
+
   return (
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
         <View style={LOGO_CONTAINER}>
-          <Image source={logoSource} style={LOGO_ICON_STYLE} resizeMode={'contain'} />
+          <Image
+            source={{ uri: `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/logo.jpeg/raw?accessToken=${accessToken}` }}
+            style={LOGO_ICON_STYLE}
+            resizeMode={'contain'}
+          />
         </View>
         {currentUser && (
           <View style={FORM_FIELD_CONTAINER}>
