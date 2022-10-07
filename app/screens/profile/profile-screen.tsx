@@ -49,6 +49,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const { authStore } = useStores();
   const { currentUser, currentAccount, currentAccountHolder, accessToken } = authStore;
 
+  // TODO: change filename
   return (
     <View testID='TransactionListScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
