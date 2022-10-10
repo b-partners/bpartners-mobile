@@ -35,6 +35,7 @@ export type NavigatorParamList = {
   signInWebView: { url: string };
   paymentInitiation: undefined;
   profile: undefined;
+  createInvoice: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
@@ -58,11 +59,11 @@ function AppStack() {
       <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
       <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
       <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+      <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
       <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='home' component={HomeScreen} />
     </Drawer.Navigator>
   );
 }
