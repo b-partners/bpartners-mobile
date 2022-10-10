@@ -9,7 +9,7 @@ export function HomeLatestTransaction(props: { transactions: ITransaction[]; onP
   return (
     <View>
       <View style={TRANSACTION_BUTTONS_STYLE}>
-        <Button tx='homeScreen.labels.allTransactions' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={props.onPress} />
+        <Button tx='welcomeScreen.labels.allTransactions' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={props.onPress} />
       </View>
       {props.transactions.map(item => (
         <Transaction key={item.id} item={item} transactionCategories={[]} showTransactionCategory={false} />

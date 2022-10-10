@@ -92,5 +92,7 @@
       "boostYourResults": "Booster vos résultats",
       "allTransactions": "Tout voir"
     }
+  },
+  "homeScreen": {
+    "title": "Accueil"
   }
-}
