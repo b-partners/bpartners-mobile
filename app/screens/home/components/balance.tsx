@@ -11,7 +11,7 @@ export function Balance(props: { balance: number }) {
   return (
     <View style={BALANCE_CONTAINER_STYLE}>
       <View style={BALANCE_STYLE}>
-        <Text tx='welcomeScreen.labels.balance' style={BALANCE_TEXT_STYLE} />
+        <Text tx='homeScreen.labels.balance' style={BALANCE_TEXT_STYLE} />
         <Text text={datePipe(new Date().toISOString())} style={BALANCE_TEXT_STYLE} />
       </View>
       <View>

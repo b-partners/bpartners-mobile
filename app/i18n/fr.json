@@ -23,7 +23,7 @@
   "onboardingScreen": {
     "title": "Créer un compte"
   },
-  "welcomeScreen": {
+  "homeScreen": {
     "poweredBy": "POWERED BY NUMER",
     "readyForLaunch": "Prêt pour le lancement.",
     "start": "OUVRIR UN COMPTE",
@@ -80,7 +80,7 @@
     }
   },
   "homeScreen": {
-    "title": "Bienvenue sur BPartners",
+    "title": "Accueil",
     "labels": {
       "collectPayment": "Collecter un paiement",
       "balance": "Solde au",
@@ -92,7 +92,5 @@
       "boostYourResults": "Booster vos résultats",
       "allTransactions": "Tout voir"
     }
-  },
-  "homeScreen": {
-    "title": "Accueil"
   }
+}

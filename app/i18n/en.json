@@ -96,8 +96,8 @@
       }
     }
   },
-  "welcomeScreen": {
-    "title": "Welcome on BPartners",
+  "homeScreen": {
+    "title": "Home",
     "labels": {
       "collectPayment": "Collect a payment",
       "balance": "Balance as of",
@@ -109,8 +109,5 @@
       "boostYourResults": "Boost your results",
       "allTransactions": "See all transactions"
     }
-  },
-  "homeScreen": {
-    "title": "Home"
   }
 }

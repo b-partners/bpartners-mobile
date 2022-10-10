@@ -7,10 +7,10 @@ export function HomeNavbar() {
   return (
     <View style={BUTTON_CONTAINER_STYLE}>
       <ScrollView horizontal={true}>
-        <Button tx='welcomeScreen.labels.activity' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
-        <Button tx='welcomeScreen.labels.quotationAndInvoice' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
-        <Button tx='welcomeScreen.labels.payment' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
-        <Button tx='welcomeScreen.labels.settings' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+        <Button tx='homeScreen.labels.activity' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+        <Button tx='homeScreen.labels.quotationAndInvoice' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+        <Button tx='homeScreen.labels.payment' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+        <Button tx='homeScreen.labels.settings' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
         <Button style={{ ...BUTTON_STYLE, ...BULLET_BUTTON_STYLE, ...BUTTON_STYLE_NO_MARGIN_STYLE }}>
           <Icon icon='bullet' />
           <Icon icon='bullet' style={BULLET_BUTTON} />
