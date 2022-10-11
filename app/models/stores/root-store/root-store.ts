@@ -7,6 +7,7 @@ import { FileStoreModel } from '../file-store/file-store';
 import { AccountHolder } from '../../entities/account-holder/account-holder';
 import { Account } from '../../entities/account/account';
 import { User } from '../../entities/user/user';
+import { InvoiceStoreModel } from '../invoice-store/invoice-store';
 
 /**
  * A RootStore model.
@@ -18,6 +19,7 @@ export const RootStoreModel = types.model('RootStore').props({
     authStore: types.optional(AuthStoreModel, {} as any),
     paymentInitiationStore: types.optional(PaymentInitiationStoreModel, {} as any),
     fileStore: types.optional(FileStoreModel, {} as any),
+    invoiceStore: types.optional(InvoiceStoreModel, {} as any),
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;
