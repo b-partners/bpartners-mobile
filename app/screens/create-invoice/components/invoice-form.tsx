@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import { AutocompletionFormField, Separator, Text, TextField } from '../../../components';
 import { Customer } from '../../../models/entities/customer/customer';
 import { Product } from '../../../models/entities/product/product';
@@ -17,6 +17,8 @@ import {
 } from '../styles';
 
 type InvoiceFormProps = { customers: Customer[]; products: Product[] };
+
+const TOTAL_SECTION_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' };
 
 export function InvoiceForm(props: InvoiceFormProps) {
   const { customers, products } = props;
@@ -80,7 +82,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
           );
         }}
       />
-      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={TOTAL_SECTION_STYLE}>
         <Text text={`${translate('invoiceScreen.labels.totalSection')}: `} style={SECTION_STYLE} />
         <Text
           text={currencyPipe(translate('currency')).format(
@@ -88,7 +90,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
               return a + c.totalPriceWithVat * c.quantity;
             }, 0)
           )}
-        ></Text>
+        />
       </View>
       <Separator style={{ marginBottom: spacing[4] }} />
     </View>
