@@ -74,7 +74,7 @@ export function TextField(props: TextFieldProps) {
 
   return (
     <View style={containerStyles}>
-      <Text preset='fieldLabel' tx={labelTx} text={label} />
+      {(labelTx || label) && <Text preset='fieldLabel' tx={labelTx} text={label} />}
       <TextInput
         placeholder={actualPlaceholder}
         placeholderTextColor={color.palette.lighterGrey}
