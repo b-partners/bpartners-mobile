@@ -75,7 +75,7 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore } = useStores();
+  const { transactionStore, invoiceStore } = useStores();
 
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
@@ -85,6 +85,9 @@ export function AppNavigator(props: NavigationProps) {
         break;
       case 'transactionList':
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
+        break;
+      case 'createInvoice':
+        await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
         break;
     }
   };
