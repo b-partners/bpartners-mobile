@@ -92,5 +92,10 @@
       "boostYourResults": "Booster vos résultats",
       "allTransactions": "Tout voir"
     }
+  },
+  "invoiceScreen": {
+    "title": "Devis / Facturation",
+    "labels": {
+    }
   }
 }

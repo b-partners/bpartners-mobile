@@ -1,20 +1,26 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { NavigatorParamList } from '../../navigators';
-import { Screen, Text } from '../../components';
+import { GradientBackground, Header, Screen } from '../../components';
 import { color } from '../../theme';
+import { HEADER, HEADER_TITLE } from '../index';
 
-const ROOT: ViewStyle = {
-  backgroundColor: color.palette.black,
+const FULL: ViewStyle = {
   flex: 1,
 };
+const CONTAINER: ViewStyle = {
+  backgroundColor: color.transparent,
+};
 
-export const CreateInvoiceScreen: FC<StackScreenProps<NavigatorParamList, 'createInvoice'>> = observer(function CreateInvoiceScreen() {
+export const CreateInvoiceScreen: FC<StackScreenProps<NavigatorParamList, 'createInvoice'>> = observer(function CreateInvoiceScreen({ navigation }) {
   return (
-    <Screen style={ROOT} preset='scroll'>
-      <Text preset='header' text='createInvoice' />
-    </Screen>
+    <View testID='PaymentInitiationScreen' style={FULL}>
+      <GradientBackground colors={['#422443', '#281b34']} />
+      <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
+        <Header headerTx='invoiceScreen.title' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
+      </Screen>
+    </View>
   );
 });

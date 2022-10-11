@@ -109,5 +109,10 @@
       "boostYourResults": "Boost your results",
       "allTransactions": "See all transactions"
     }
+  },
+  "invoiceScreen": {
+    "title": "Invoice",
+    "labels": {
+    }
   }
 }

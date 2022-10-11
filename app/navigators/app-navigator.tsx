@@ -13,6 +13,7 @@ import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-vie
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { translate } from '../i18n';
 import { useStores } from '../models';
+import { CreateInvoiceScreen } from '../screens/create-invoice/create-invoice-screen';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -60,6 +61,7 @@ function AppStack() {
       <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
       <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
       <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+      <Drawer.Screen name='createInvoice' component={CreateInvoiceScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
