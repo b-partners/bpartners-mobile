@@ -113,10 +113,13 @@
   "invoiceScreen": {
     "title": "Invoice",
     "labels": {
+      "customerSection": "Customer",
       "productSection": "Items",
+      "totalSection": "Total",
       "addItem": "Add item",
       "ref": "Ref",
-      "title": "Title"
+      "title": "Title",
+      "vat": "VTA"
     }
   }
 }

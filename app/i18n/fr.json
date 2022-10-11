@@ -96,10 +96,13 @@
   "invoiceScreen": {
     "title": "Devis / Facturation",
     "labels": {
+      "customerSection": "Client",
       "productSection": "Produits",
+      "totalSection": "Total",
       "addItem": "Add item",
       "ref": "Référence",
-      "title": "Titre"
+      "title": "Titre",
+      "vat": "TVA"
     }
   }
 }
