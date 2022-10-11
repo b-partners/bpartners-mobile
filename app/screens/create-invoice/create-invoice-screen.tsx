@@ -6,7 +6,7 @@ import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen } from '../../components';
 import { color } from '../../theme';
 import { HEADER, HEADER_TITLE } from '../index';
-import { InvoiceForm } from './invoice-form';
+import { InvoiceForm } from './components/invoice-form';
 import { useStores } from '../../models';
 
 const FULL: ViewStyle = {

@@ -1,11 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { FlatList, ListRenderItem, TextStyle, View, ViewStyle } from 'react-native';
-import { AutocompletionFormField, Separator, TextField, Text, Button } from '../../components';
-import { Customer } from '../../models/entities/customer/customer';
-import { Product } from '../../models/entities/product/product';
-import { currencyPipe } from '../../utils/pipes';
-import { translate } from '../../i18n';
-import { spacing } from '../../theme';
+import { AutocompletionFormField, Separator, TextField, Text, Button } from '../../../components';
+import { Customer } from '../../../models/entities/customer/customer';
+import { Product } from '../../../models/entities/product/product';
+import { currencyPipe } from '../../../utils/pipes';
+import { translate } from '../../../i18n';
+import { spacing } from '../../../theme';
 
 type InvoiceFormProps = { customers: Customer[]; products: Product[] };
 
