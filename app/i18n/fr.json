@@ -96,6 +96,10 @@
   "invoiceScreen": {
     "title": "Devis / Facturation",
     "labels": {
+      "productSection": "Produits",
+      "addItem": "Add item",
+      "ref": "Référence",
+      "title": "Titre"
     }
   }
 }
