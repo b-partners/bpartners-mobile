@@ -8,7 +8,7 @@ interface AutocompletionFormFieldProps<T> {
   selectTitle: (item: T) => TAutocompleteDropdownItem;
   onChangeText: (text: string) => void;
   onSelectItem: (item: TAutocompleteDropdownItem) => void;
-  onClear: () => void;
+  onClear?: () => void;
   containerStyle?: ViewStyle;
   inputContainerStyle?: ViewStyle;
 }
