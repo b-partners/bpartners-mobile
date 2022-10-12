@@ -1,5 +1,10 @@
 {
   "currency": "EUR",
+  "components": {
+    "datePicker": {
+      "pickADate": "Sélectionner une date"
+    }
+  },
   "common": {
     "ok": "OK!",
     "cancel": "Annuler",
@@ -102,7 +107,9 @@
       "addItem": "Add item",
       "ref": "Référence",
       "title": "Titre",
-      "vat": "TVA"
+      "vat": "TVA",
+      "sendingDate": "Date d'envoi",
+      "toPayAt": "Limite de paiement"
     }
   }
 }

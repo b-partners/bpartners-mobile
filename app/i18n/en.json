@@ -1,5 +1,10 @@
 {
   "currency": "USD",
+  "components": {
+    "datePicker": {
+      "pickADate": "Pick a date"
+    }
+  },
   "common": {
     "ok": "OK!",
     "cancel": "Cancel",
@@ -119,7 +124,9 @@
       "addItem": "Add item",
       "ref": "Ref",
       "title": "Title",
-      "vat": "VTA"
+      "vat": "VTA",
+      "sendingDate": "Sending date",
+      "toPayAt": "To pay at"
     }
   }
 }
