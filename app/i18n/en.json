@@ -126,7 +126,8 @@
       "title": "Title",
       "vat": "VTA",
       "sendingDate": "Sending date",
-      "toPayAt": "To pay at"
+      "toPayAt": "To pay at",
+      "createInvoice": "Create invoice"
     }
   }
 }
