@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { FlatList, ListRenderItem, View, ViewStyle } from 'react-native';
+import { FlatList, ListRenderItem, TextStyle, View, ViewStyle } from 'react-native';
 import { AutocompletionFormField, Button } from '../../../components';
 import { Product } from '../../../models/entities/product/product';
 
@@ -14,14 +14,16 @@ type AddItemProps = {
   containerStyle?: ViewStyle;
 };
 
+const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
+
 export function AddItem<T extends { id: string }>(props: AddItemProps) {
   const { renderItem, data, onClear, selectTitle, onChangeText, containerStyle, selectedItems, setSelectedItems } = props;
   const [addItem, setAddItem] = useState(false);
 
   return (
     <View style={containerStyle}>
-      <FlatList data={selectedItems} renderItem={renderItem} />
-      {!addItem && <Button tx='invoiceScreen.labels.addItem' onPress={() => setAddItem(true)} />}
+      <FlatList<T> data={selectedItems} renderItem={renderItem} />
+      {!addItem && <Button tx='invoiceScreen.labels.addItem' onPress={() => setAddItem(true)} textStyle={BUTTON_TEXT_STYLE} />}
       {addItem && (
         <AutocompletionFormField<Product>
           onSelectItem={selectedItem => {
