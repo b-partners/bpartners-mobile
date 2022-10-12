@@ -6,19 +6,19 @@ import { Product } from '../../../models/entities/product/product';
 type AddItemProps = {
   selectedItems: any[];
   setSelectedItems: Dispatch<SetStateAction<any>>;
-  setFieldValue: (...args: any) => any;
   onChangeText: () => void;
   selectTitle: (item) => { id: any; title: any };
   data: any[];
   onClear: () => void;
   renderItem: ListRenderItem<any>;
   containerStyle?: ViewStyle;
+  onChange?: (items: any) => void;
 };
 
 const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 
 export function AddItem<T extends { id: string }>(props: AddItemProps) {
-  const { renderItem, data, onClear, selectTitle, onChangeText, containerStyle, selectedItems, setSelectedItems, setFieldValue } = props;
+  const { renderItem, data, onClear, selectTitle, onChangeText, containerStyle, selectedItems, setSelectedItems, onChange } = props;
   const [addItem, setAddItem] = useState(false);
 
   return (
@@ -34,7 +34,7 @@ export function AddItem<T extends { id: string }>(props: AddItemProps) {
             const item = data.find(i => i.id === selectedItem.id);
             setSelectedItems(prevState => [...prevState, item]);
             setAddItem(false);
-            setFieldValue && setFieldValue(selectedItems);
+            onChange && onChange(selectedItems);
           }}
           onChangeText={onChangeText}
           selectTitle={selectTitle}
