@@ -21,6 +21,8 @@ const LABEL_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 13 }
 const LABEL_CONTAINER_STYLE: ViewStyle = { marginBottom: spacing[2] };
 
 const DATE_PICKER_CONTAINER_STYLE = { flex: 1 };
+const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
+const BUTTON_STYLE: ViewStyle = { marginTop: spacing[2] };
 
 export function DatePicker(props: DatePickerProps) {
   const { value, setValue, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange } = props;
@@ -31,12 +33,7 @@ export function DatePicker(props: DatePickerProps) {
     <View style={DATE_PICKER_CONTAINER_STYLE}>
       <View style={[LABEL_CONTAINER_STYLE, labelContainerStyleOverride]}>
         <Text text={labelText} tx={labelTx} style={[LABEL_TEXT_STYLE, labelStyleOverride]} />
-        <Button
-          text={date || translate('components.datePicker.pickADate')}
-          onPress={() => setOpen(true)}
-          textStyle={{ fontSize: 14 }}
-          style={{ marginTop: spacing[2] }}
-        />
+        <Button text={date || translate('components.datePicker.pickADate')} onPress={() => setOpen(true)} textStyle={BUTTON_TEXT_STYLE} style={BUTTON_STYLE} />
       </View>
       <DatePickerInput
         modal
