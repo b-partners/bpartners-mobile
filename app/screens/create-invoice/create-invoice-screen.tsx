@@ -23,7 +23,7 @@ export const CreateInvoiceScreen: FC<StackScreenProps<NavigatorParamList, 'creat
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
+      <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         <Header headerTx='invoiceScreen.title' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
         <InvoiceForm customers={customers} products={products} />
       </Screen>
