@@ -15,9 +15,9 @@ type AddItemProps = {
 };
 
 export function AddItem<T extends { id: string }>(props: AddItemProps) {
-  const { renderItem, data, onClear, selectTitle, onChangeText, containerStyle } = props;
+  const { renderItem, data, onClear, selectTitle, onChangeText, containerStyle, selectedItems, setSelectedItems } = props;
   const [addItem, setAddItem] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<T[]>([]);
+
   return (
     <View style={containerStyle}>
       <FlatList data={selectedItems} renderItem={renderItem} />
