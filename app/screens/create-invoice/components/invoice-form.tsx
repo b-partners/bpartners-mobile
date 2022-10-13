@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 import { AutocompletionFormField, Button, Separator, Text, TextField } from '../../../components';
 import { Customer } from '../../../models/entities/customer/customer';
@@ -8,7 +8,7 @@ import { translate } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { AddItem } from './add-item';
 import { INPUT_LABEL_STYLE, INPUT_TEXT_STYLE, LABEL_CONTAINER_STYLE, SECTION_STYLE, TEXT_FIELD_STYLE, TOTAL_SECTION_STYLE } from '../styles';
-import { Formik } from 'formik';
+import { Formik, FormikProps, FormikValues } from 'formik';
 import uuid from 'react-native-uuid';
 import { DatePicker } from '../../../components/date-picker';
 import { ProductFormField } from './product-form-field';
@@ -28,9 +28,9 @@ const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
 
 export function InvoiceForm(props: InvoiceFormProps) {
   const { customers, products } = props;
+
   const [sendingDate, setSendingDate] = useState<Date>(new Date());
   const [toPayAt, setToPayAt] = useState<Date>(new Date());
-  const [selectedCustomers, setSelectedCustomers] = useState<Customer[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
 
   const paymentTotal = currencyPipe(translate('currency')).format(
@@ -38,6 +38,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
       return a + c.totalPriceWithVat * c.quantity;
     }, 0)
   );
+
+  const formRef = useRef<FormikProps<FormikValues>>(null);
 
   const onClearProducts = () => {
     setSelectedProducts([]);
@@ -47,6 +49,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
     const deleteProduct = () => {
       setSelectedProducts(prevSelectedProducts => [...prevSelectedProducts.filter(p => p.id !== item.id)]);
     };
+
     const onChangeQuantity = quantity => {
       setSelectedProducts(prevSelectedProducts => [
         ...prevSelectedProducts.map(p =>
@@ -63,17 +66,22 @@ export function InvoiceForm(props: InvoiceFormProps) {
     return <ProductFormField item={item} onDeleteProduct={deleteProduct} onQuantityChange={onChangeQuantity} />;
   };
 
+  useEffect(() => {
+    formRef.current.setFieldValue('products', selectedProducts);
+  }, [selectedProducts]);
+
   return (
     <View style={{ paddingHorizontal: spacing[3] }}>
       <Formik
+        innerRef={formRef}
         initialValues={{
           iid: uuid.v4(),
           ref: '',
           title: '',
           sendingDate: '',
           toPayAt: '',
-          customers: selectedCustomers,
-          products: selectedProducts,
+          customers: null,
+          products: [],
         }}
         onSubmit={async values => {
           try {
@@ -144,7 +152,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 value={''}
                 data={customers}
                 onClear={() => {
-                  setSelectedCustomers([]);
                   setFieldValue('customer', null);
                 }}
               />
@@ -157,10 +164,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 containerStyle={{ marginBottom: spacing[4] }}
                 selectedItems={selectedProducts}
                 setSelectedItems={setSelectedProducts}
-                onChange={(items: Product[]) => {
-                  setFieldValue('products', items);
-                }}
-                onChangeText={() => {}}
                 selectTitle={item => ({ id: item.id, title: item.description })}
                 data={products}
                 onClear={onClearProducts}
