@@ -3,15 +3,15 @@ import { BULLET_BUTTON, BULLET_BUTTON_STYLE, BUTTON_CONTAINER_STYLE, BUTTON_STYL
 import { Button, Icon } from '../../../components';
 import React from 'react';
 
-type HomeNavbarProps = { createInvoice: () => void };
+type HomeNavbarProps = { goToInvoices: () => void };
 
 export function HomeNavbar(props: HomeNavbarProps) {
-  const { createInvoice } = props;
+  const { goToInvoices } = props;
   return (
     <View style={BUTTON_CONTAINER_STYLE}>
       <ScrollView horizontal={true}>
         <Button tx='homeScreen.labels.activity' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
-        <Button tx='homeScreen.labels.quotationAndInvoice' onPress={createInvoice} style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+        <Button tx='homeScreen.labels.quotationAndInvoice' onPress={goToInvoices} style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
         <Button tx='homeScreen.labels.payment' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
         <Button tx='homeScreen.labels.settings' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
         <Button style={{ ...BUTTON_STYLE, ...BULLET_BUTTON_STYLE, ...BUTTON_STYLE_NO_MARGIN_STYLE }}>

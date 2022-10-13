@@ -25,8 +25,8 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
         <HomeHeader onPress={() => navigation.navigate('paymentInitiation')} />
         {transactions && <Balance balance={transactions.reduce((a, c) => a + c.amount, 0)} />}
         <HomeNavbar
-          createInvoice={() => {
-            navigation.navigate('createInvoice');
+          goToInvoices={() => {
+            navigation.navigate('invoices');
           }}
         />
         <TransactionSummary />
