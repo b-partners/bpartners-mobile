@@ -14,6 +14,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { CreateInvoiceScreen } from '../screens/create-invoice/create-invoice-screen';
+import { CriteriaModel } from '../models/entities/criteria/criteria';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -87,7 +88,8 @@ export function AppNavigator(props: NavigationProps) {
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
         break;
       case 'createInvoice':
-        await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
+        const criteria = CriteriaModel.create({ pageSize: 15, page: 1 });
+        await Promise.all([invoiceStore.getInvoices(criteria), invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
         break;
     }
   };

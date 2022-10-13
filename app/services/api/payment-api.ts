@@ -5,6 +5,7 @@ import { getGeneralApiProblem } from './api-problem';
 import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
 import env from '../../config/env';
 import { Invoice } from '../../models/entities/invoice/invoice';
+import { Criteria } from '../../models/entities/criteria/criteria';
 
 export class PaymentApi {
   private api: Api;
@@ -55,7 +56,7 @@ export class PaymentApi {
   async getInvoice(accountId: string, invoiceId: string): Promise<GetInvoiceResult> {
     try {
       // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.put(`accounts/${accountId}/invoices/${invoiceId}`);
+      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoices/${invoiceId}`);
       // the typical ways to die when calling an api
       if (!response.ok) {
         const problem = getGeneralApiProblem(response);
@@ -69,10 +70,10 @@ export class PaymentApi {
     }
   }
 
-  async getInvoices(accountId: string): Promise<GetInvoicesResult> {
+  async getInvoices(accountId: string, criteria: Criteria): Promise<GetInvoicesResult> {
     try {
       // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.put(`accounts/${accountId}/invoices`);
+      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoices`, criteria);
       // the typical ways to die when calling an api
       if (!response.ok) {
         const problem = getGeneralApiProblem(response);

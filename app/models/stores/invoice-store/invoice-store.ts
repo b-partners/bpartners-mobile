@@ -7,6 +7,7 @@ import { CustomerApi } from '../../../services/api/customer-api';
 import { withCredentials } from '../../extensions/with-credentials';
 import { Invoice, InvoiceModel } from '../../entities/invoice/invoice';
 import { PaymentApi } from '../../../services/api/payment-api';
+import { Criteria } from '../../entities/criteria/criteria';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
@@ -56,9 +57,9 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
-    getInvoices: flow(function* () {
+    getInvoices: flow(function* (criteria: Criteria) {
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id);
+      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
       if (getInvoicesResult.kind === 'ok') {
         self.getInvoicesSuccess(getInvoicesResult.invoices);
       } else {
