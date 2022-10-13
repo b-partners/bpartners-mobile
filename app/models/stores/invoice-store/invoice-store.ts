@@ -81,6 +81,7 @@ export const InvoiceStoreModel = types
         self.getInvoiceSuccess(getInvoiceResult.invoice);
       } else {
         __DEV__ && console.tron.log(getInvoiceResult.kind);
+        throw new Error(getInvoiceResult.kind);
       }
     }),
   }))

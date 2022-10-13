@@ -42,7 +42,20 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
           contentContainerStyle={INVOICES_STYLE}
           data={[...invoices]}
           renderItem={({ item }) => {
-            return <Invoice item={item} text={format(item.totalPriceWithVat)} />;
+            return (
+              <Invoice
+                item={item}
+                text={format(item.totalPriceWithVat)}
+                editInvoice={async () => {
+                  try {
+                    await invoiceStore.getInvoice(item.id);
+                    navigation.navigate('createInvoice');
+                  } catch (e) {
+                    console.tron.log(e);
+                  }
+                }}
+              />
+            );
           }}
           ItemSeparatorComponent={() => <Separator />}
         />

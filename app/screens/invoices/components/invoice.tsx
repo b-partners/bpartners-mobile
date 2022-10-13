@@ -7,9 +7,12 @@ import React from 'react';
 import { BODY_TEXT_STYLE, CENTERED_ROW, HEADER_TEXT_STYLE, ROW_STYLE } from '../styles';
 import { spacing } from '../../../theme';
 
-export function Invoice(props: { item: IInvoice; text: string }) {
+type InvoiceProps = { item: IInvoice; text: string; editInvoice: () => void };
+
+export const Invoice: React.FC<InvoiceProps> = props => {
+  const { editInvoice } = props;
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => editInvoice()}>
       <View style={{ paddingVertical: spacing[2] }}>
         <View style={{ ...ROW_STYLE, ...{ marginBottom: spacing[1] } }}>
           <Text text={props.item.customer.name} style={HEADER_TEXT_STYLE} />
@@ -35,4 +38,4 @@ export function Invoice(props: { item: IInvoice; text: string }) {
       </View>
     </TouchableOpacity>
   );
-}
+};

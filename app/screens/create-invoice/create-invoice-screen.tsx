@@ -18,8 +18,8 @@ const CONTAINER: ViewStyle = {
 
 export const CreateInvoiceScreen: FC<StackScreenProps<NavigatorParamList, 'createInvoice'>> = observer(function CreateInvoiceScreen({ navigation }) {
   const { invoiceStore } = useStores();
-  const { products, customers } = invoiceStore;
-
+  const { products, customers, invoice } = invoiceStore;
+  console.tron.log({ invoice });
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
