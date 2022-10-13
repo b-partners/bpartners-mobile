@@ -16,7 +16,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
       <View style={{ paddingVertical: spacing[2] }}>
         <View style={{ ...ROW_STYLE, ...{ marginBottom: spacing[1] } }}>
           <Text text={props.item.customer.name} style={HEADER_TEXT_STYLE} />
-          <Text text={props.text} style={HEADER_TEXT_STYLE}></Text>
+          <Text text={props.text} style={HEADER_TEXT_STYLE} />
         </View>
         <View
           style={{
@@ -26,12 +26,12 @@ export const Invoice: React.FC<InvoiceProps> = props => {
               alignItems: 'center',
             },
           }}
-        ></View>
+        />
         <View style={{ ...ROW_STYLE }}>
           <View style={{ ...ROW_STYLE, ...CENTERED_ROW }}>
-            <Text text={`#${props.item.ref}`} style={BODY_TEXT_STYLE}></Text>
+            <Text text={`#${props.item.ref}`} style={BODY_TEXT_STYLE} />
             <BulletSeparator />
-            <Text text={datePipe(props.item.sendingDate)} style={BODY_TEXT_STYLE}></Text>
+            <Text text={datePipe(props.item.sendingDate)} style={BODY_TEXT_STYLE} />
           </View>
           <Text text={props.item.status} />
         </View>
