@@ -90,9 +90,12 @@ export function AppNavigator(props: NavigationProps) {
       case 'transactionList':
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
         break;
-      case 'createInvoice':
+      case 'invoices':
         const criteria = CriteriaModel.create({ pageSize: 15, page: 1 });
-        await Promise.all([invoiceStore.getInvoices(criteria), invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
+        await Promise.all([invoiceStore.getInvoices(criteria)]);
+        break;
+      case 'createInvoice':
+        await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
         break;
     }
   };
