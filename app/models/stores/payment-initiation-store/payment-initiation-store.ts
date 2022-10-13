@@ -1,7 +1,7 @@
 import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { PaymentInitiation } from '../../entities/payment-initiation/payment-initiation';
 import { withEnvironment } from '../../extensions/with-environment';
-import { PaymentInitiationApi } from '../../../services/api/payment-initiation-api';
+import { PaymentApi } from '../../../services/api/payment-api';
 import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
 import { ProductApi } from '../../../services/api/product-api';
@@ -62,7 +62,7 @@ export const PaymentInitiationStoreModel = types
     init: flow(function* (payload: PaymentInitiation) {
       self.initiatingPayment = true;
       self.paymentUrl = null;
-      const paymentInitiationApi = new PaymentInitiationApi(self.environment.api);
+      const paymentInitiationApi = new PaymentApi(self.environment.api);
       const initPaymentResult = yield paymentInitiationApi.init(self.currentAccount.id, payload);
       if (initPaymentResult.kind === 'ok') {
         console.tron.log(`Payment ${initPaymentResult.paymentInitiation.id} initiated`);

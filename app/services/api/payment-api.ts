@@ -5,7 +5,7 @@ import { getGeneralApiProblem } from './api-problem';
 import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
 import env from '../../config/env';
 
-export class PaymentInitiationApi {
+export class PaymentApi {
   private api: Api;
 
   constructor(api: Api) {
