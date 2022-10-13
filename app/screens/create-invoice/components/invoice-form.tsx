@@ -41,6 +41,16 @@ export function InvoiceForm(props: InvoiceFormProps) {
 
   const formRef = useRef<FormikProps<FormikValues>>(null);
 
+  const initialValues = {
+    iid: uuid.v4(),
+    ref: '',
+    title: '',
+    sendingDate: '',
+    toPayAt: '',
+    customer: null,
+    products: [],
+  };
+
   const onClearProducts = () => {
     setSelectedProducts([]);
   };
@@ -69,20 +79,11 @@ export function InvoiceForm(props: InvoiceFormProps) {
   useEffect(() => {
     formRef.current.setFieldValue('products', selectedProducts);
   }, [selectedProducts]);
-
   return (
     <View style={{ paddingHorizontal: spacing[3] }}>
       <Formik
         innerRef={formRef}
-        initialValues={{
-          iid: uuid.v4(),
-          ref: '',
-          title: '',
-          sendingDate: '',
-          toPayAt: '',
-          customers: null,
-          products: [],
-        }}
+        initialValues={initialValues}
         onSubmit={async values => {
           try {
             console.tron.log({ values });
