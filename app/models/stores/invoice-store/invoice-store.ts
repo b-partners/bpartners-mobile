@@ -5,12 +5,16 @@ import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/cust
 import { ProductApi } from '../../../services/api/product-api';
 import { CustomerApi } from '../../../services/api/customer-api';
 import { withCredentials } from '../../extensions/with-credentials';
+import { Invoice, InvoiceModel } from '../../entities/invoice/invoice';
+import { PaymentApi } from '../../../services/api/payment-api';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
   .props({
     products: types.optional(types.array(ProductModel), []),
     customers: types.optional(types.array(CustomerModel), []),
+    invoices: types.optional(types.array(InvoiceModel), []),
+    invoice: types.optional(InvoiceModel, {}),
   })
   .extend(withEnvironment)
   .extend(withCredentials)
@@ -43,6 +47,56 @@ export const InvoiceStoreModel = types
         self.getProductsSuccess(getProductsResult.products);
       } else {
         __DEV__ && console.tron.log(getProductsResult.kind);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getInvoicesSuccess: (invoices: InvoiceStoreSnapshotOut[]) => {
+      self.invoices.replace(invoices as any);
+    },
+  }))
+  .actions(self => ({
+    getInvoices: flow(function* () {
+      const paymentApi = new PaymentApi(self.environment.api);
+      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id);
+      if (getInvoicesResult.kind === 'ok') {
+        self.getInvoicesSuccess(getInvoicesResult.invoices);
+      } else {
+        __DEV__ && console.tron.log(getInvoicesResult.kind);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getInvoiceSuccess: (invoice: Invoice) => {
+      const invoiceModel = InvoiceModel.create(invoice);
+      self.invoice = invoiceModel;
+    },
+  }))
+  .actions(self => ({
+    getInvoice: flow(function* (invoiceId: string) {
+      const paymentApi = new PaymentApi(self.environment.api);
+      const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
+      if (getInvoiceResult.kind === 'ok') {
+        self.getInvoiceSuccess(getInvoiceResult.invoice);
+      } else {
+        __DEV__ && console.tron.log(getInvoiceResult.kind);
+      }
+    }),
+  }))
+  .actions(self => ({
+    createOrUpdateInvoiceSuccess: (invoice: Invoice) => {
+      const invoiceModel = InvoiceModel.create(invoice);
+      self.invoice = invoiceModel;
+    },
+  }))
+  .actions(self => ({
+    createOrUpdateInvoice: flow(function* (invoice: Invoice) {
+      const paymentApi = new PaymentApi(self.environment.api);
+      const createOrUpdateInvoiceResult = yield paymentApi.createOrUpdateInvoice(self.currentAccount.id, invoice);
+      if (createOrUpdateInvoiceResult.kind === 'ok') {
+        self.getInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
+      } else {
+        __DEV__ && console.tron.log(createOrUpdateInvoiceResult.kind);
       }
     }),
   }));
