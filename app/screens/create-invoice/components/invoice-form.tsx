@@ -137,8 +137,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     return;
                   }
                   const c = customers.find(customer => item.id === customer.id);
-                  setSelectedCustomers([c]);
-                  setFieldValue('customers', selectedCustomers);
+                  setFieldValue('customer', c);
                 }}
                 onChangeText={() => {}}
                 selectTitle={item => ({ id: item.id, title: item.name })}
@@ -146,6 +145,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 data={customers}
                 onClear={() => {
                   setSelectedCustomers([]);
+                  setFieldValue('customer', null);
                 }}
               />
 

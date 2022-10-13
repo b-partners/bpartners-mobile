@@ -4,7 +4,7 @@ import { ViewStyle } from 'react-native';
 
 interface AutocompletionFormFieldProps<T> {
   data: any[];
-  value: string;
+  value: any;
   selectTitle: (item: T) => TAutocompleteDropdownItem;
   onChangeText: (text: string) => void;
   onSelectItem: (item: TAutocompleteDropdownItem) => void;
