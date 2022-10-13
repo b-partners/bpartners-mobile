@@ -29,7 +29,15 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-        <Header headerTx='invoiceScreen.title' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
+        <Header
+          headerTx='invoiceScreen.title'
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+          leftIcon={'back'}
+          onLeftPress={() => navigation.navigate('home')}
+          rightIcon={'plus'}
+          onRightPress={() => navigation.navigate('createInvoice')}
+        />
         <FlatList<IInvoice>
           contentContainerStyle={INVOICES_STYLE}
           data={[...invoices]}
