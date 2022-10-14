@@ -52,8 +52,10 @@ export const PaymentInitiationForm: FC<
       {({ handleSubmit, errors, setFieldValue }) => {
         return (
           <>
-            <AutocompletionFormField<Product>
-              data={[...products]}
+            <AutocompletionFormField
+              data={products}
+              idKey={"id"}
+              titleKey={"title"}
               value={labelValue}
               onSearch={async label => {
                 setLabelValue(label);
@@ -62,7 +64,6 @@ export const PaymentInitiationForm: FC<
               onSelectItem={item => {
                 setFieldValue('label', item && item.title);
               }}
-              selectTitle={item => ({ id: item.id, title: `${item.description}` })}
             />
             <FormField name='reference' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.reference' />
             <FormField
@@ -71,8 +72,10 @@ export const PaymentInitiationForm: FC<
               placeholderTx='paymentInitiationScreen.fields.amount'
               keyboardType='phone-pad'
             />
-            <AutocompletionFormField<Customer>
-              data={[...customers]}
+            <AutocompletionFormField
+              data={customers}
+              idKey={"id"}
+              titleKey={"name"}
               value={payerNameValue}
               onSearch={name => {
                 setPayerNameValue(name);
@@ -81,7 +84,6 @@ export const PaymentInitiationForm: FC<
               onSelectItem={item => {
                 setFieldValue('payerName', item && item.title);
               }}
-              selectTitle={item => ({ id: item.id, title: `${item.name}` })}
             />
             <FormField
               name='payerEmail'
