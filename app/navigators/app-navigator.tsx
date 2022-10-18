@@ -13,7 +13,7 @@ import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-vie
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { translate } from '../i18n';
 import { useStores } from '../models';
-import { CreateInvoiceScreen } from '../screens/create-invoice/create-invoice-screen';
+import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { CriteriaModel } from '../models/entities/criteria/criteria';
 import { InvoicesScreen } from '../screens/invoices/Invoices-screen';
 
@@ -65,7 +65,7 @@ function AppStack() {
       <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
       <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
       <Drawer.Screen name='invoices' component={InvoicesScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='createInvoice' component={CreateInvoiceScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='createInvoice' component={InvoiceFormScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />

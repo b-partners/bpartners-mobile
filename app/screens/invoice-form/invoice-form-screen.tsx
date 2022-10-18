@@ -16,7 +16,7 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 };
 
-export const CreateInvoiceScreen: FC<StackScreenProps<NavigatorParamList, 'createInvoice'>> = observer(function CreateInvoiceScreen({ navigation }) {
+export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'createInvoice'>> = observer(function CreateInvoiceScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { products, customers, invoice } = invoiceStore;
   console.tron.log({ invoice });
