@@ -11,8 +11,9 @@ import uuid from 'react-native-uuid';
 import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
 import { currencyPipe } from '../../../utils/pipes';
 import { ProductFormField } from './product-form-field';
+import { InvoiceSnapshotIn } from '../../../models/entities/invoice/invoice';
 
-type InvoiceFormProps = { customers: Customer[]; products: Product[] };
+type InvoiceFormProps = { customers: Customer[]; products: Product[]; onSaveInvoice: (invoice: Partial<InvoiceSnapshotIn>) => Promise<void> };
 
 const DATEPICKER_ROW_STYLE: ViewStyle = {
   display: 'flex',
@@ -26,13 +27,13 @@ const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
 };
 
 export function InvoiceForm(props: InvoiceFormProps) {
-  const { customers, products } = props;
+  const { customers, products, onSaveInvoice } = props;
 
   const defaultCustomer = createCustomerDefaultModel();
   const { format } = currencyPipe(translate('currency'));
 
   const initialValues = {
-    id: uuid.v4(),
+    id: uuid.v4().toString(),
     ref: '',
     title: '',
     sendingDate: new Date(),
@@ -46,8 +47,11 @@ export function InvoiceForm(props: InvoiceFormProps) {
       <Formik
         initialValues={initialValues}
         onSubmit={async values => {
+          const sendingDate = values.sendingDate.toISOString().split('T')[0];
+          const toPayAt = values.toPayAt.toISOString().split('T')[0];
+
           try {
-            console.tron.log({ values });
+            await onSaveInvoice({ ...values, sendingDate, toPayAt });
           } catch (e) {
             console.tron.log(e);
           }
