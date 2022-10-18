@@ -6,6 +6,10 @@ export const CustomerModel = types.model('Customer').props({
   email: types.maybe(types.string),
   phone: types.maybe(types.string),
   address: types.maybe(types.string),
+  website: types.maybe(types.string),
+  zipCode: types.maybe(types.string),
+  city: types.maybe(types.string),
+  country: types.maybe(types.string),
 });
 
 export interface Customer extends Instance<typeof CustomerModel> {}
