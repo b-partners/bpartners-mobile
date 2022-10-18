@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DatePickerInput from 'react-native-date-picker';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
-import { Button, Text } from '../components';
-import { translate, TxKeyPath } from '../i18n';
-import { spacing } from '../theme';
-import { palette } from '../theme/palette';
+import { Button, Text } from '../index';
+import { translate, TxKeyPath } from '../../i18n';
+import { spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 
 type DatePickerProps = {
   value: Date;
@@ -29,6 +29,11 @@ export function DatePicker(props: DatePickerProps) {
   const [open, setOpen] = useState(false);
   const [date] = value.toISOString().split('T');
 
+  useEffect(() => {
+    onDateChange(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
   return (
     <View style={DATE_PICKER_CONTAINER_STYLE}>
       <View style={[LABEL_CONTAINER_STYLE, labelContainerStyleOverride]}>
@@ -40,7 +45,6 @@ export function DatePicker(props: DatePickerProps) {
         open={open}
         date={value}
         onConfirm={selectedDate => {
-          onDateChange(selectedDate);
           setValue(selectedDate);
           setOpen(false);
         }}
