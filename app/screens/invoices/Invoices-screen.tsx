@@ -36,7 +36,7 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
           leftIcon={'back'}
           onLeftPress={() => navigation.navigate('home')}
           rightIcon={'plus'}
-          onRightPress={() => navigation.navigate('createInvoice')}
+          onRightPress={() => navigation.navigate('invoiceForm')}
         />
         <FlatList<IInvoice>
           contentContainerStyle={INVOICES_STYLE}
@@ -49,7 +49,7 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
                 editInvoice={async () => {
                   try {
                     await invoiceStore.getInvoice(item.id);
-                    navigation.navigate('createInvoice');
+                    navigation.navigate('invoiceForm');
                   } catch (e) {
                     console.tron.log(e);
                   }

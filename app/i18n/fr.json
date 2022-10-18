@@ -110,7 +110,7 @@
       "vat": "TVA",
       "sendingDate": "Date d'envoi",
       "toPayAt": "Limite de paiement",
-      "createInvoice": "Créer un devis"
+      "invoiceForm": "Créer un devis"
     }
   }
 }

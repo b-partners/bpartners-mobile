@@ -39,7 +39,7 @@ export type NavigatorParamList = {
   paymentInitiation: undefined;
   profile: undefined;
   invoices: undefined;
-  createInvoice: undefined;
+  invoiceForm: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
@@ -65,7 +65,7 @@ function AppStack() {
       <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
       <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
       <Drawer.Screen name='invoices' component={InvoicesScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='createInvoice' component={InvoiceFormScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
@@ -94,7 +94,7 @@ export function AppNavigator(props: NavigationProps) {
         const criteria = CriteriaModel.create({ pageSize: 15, page: 1 });
         await Promise.all([invoiceStore.getInvoices(criteria)]);
         break;
-      case 'createInvoice':
+      case 'invoiceForm':
         await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
         break;
     }

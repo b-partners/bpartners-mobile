@@ -24,7 +24,7 @@ const DATE_PICKER_CONTAINER_STYLE = { flex: 1 };
 const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 const BUTTON_STYLE: ViewStyle = { marginTop: spacing[2] };
 
-export function DatePicker(props: DatePickerProps) {
+export function DatePickerField(props: DatePickerProps) {
   const { value, setValue, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange } = props;
   const [open, setOpen] = useState(false);
   const [date] = value.toISOString().split('T');

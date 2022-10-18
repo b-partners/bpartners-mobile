@@ -10,8 +10,8 @@ import { AddItem } from './add-item';
 import { INPUT_LABEL_STYLE, INPUT_TEXT_STYLE, LABEL_CONTAINER_STYLE, SECTION_STYLE, TEXT_FIELD_STYLE, TOTAL_SECTION_STYLE } from '../styles';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import uuid from 'react-native-uuid';
-import { DatePicker } from '../../../components/date-picker';
 import { ProductFormField } from './product-form-field';
+import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
 
 type InvoiceFormProps = { customers: Customer[]; products: Product[] };
 
@@ -118,7 +118,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
               />
 
               <View style={DATEPICKER_ROW_STYLE}>
-                <DatePicker
+                <DatePickerField
                   labelTx='invoiceScreen.labels.sendingDate'
                   value={sendingDate}
                   setValue={setSendingDate}
@@ -127,7 +127,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
               </View>
 
               <View style={DATEPICKER_ROW_STYLE}>
-                <DatePicker
+                <DatePickerField
                   labelTx='invoiceScreen.labels.toPayAt'
                   value={toPayAt}
                   setValue={setToPayAt}
@@ -179,7 +179,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
               <Separator style={{ marginBottom: spacing[4] }} />
 
               <View>
-                <Button tx='invoiceScreen.labels.createInvoice' textStyle={SUBMIT_BUTTON_TEXT_STYLE} onPress={() => handleSubmit()} />
+                <Button tx='invoiceScreen.labels.invoiceForm' textStyle={SUBMIT_BUTTON_TEXT_STYLE} onPress={() => handleSubmit()} />
               </View>
             </>
           );
