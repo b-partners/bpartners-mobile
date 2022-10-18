@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import DatePickerInput from 'react-native-date-picker';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 import { Button, Text } from '../index';
 import { translate, TxKeyPath } from '../../i18n';
@@ -9,7 +9,6 @@ import { palette } from '../../theme/palette';
 
 type DatePickerProps = {
   value: Date;
-  setValue: Dispatch<SetStateAction<Date>>;
   labelTx?: TxKeyPath;
   labelText?: string;
   labelStyle?: TextStyle;
@@ -25,9 +24,9 @@ const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 const BUTTON_STYLE: ViewStyle = { marginTop: spacing[2] };
 
 export function DatePickerField(props: DatePickerProps) {
-  const { value, setValue, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange } = props;
+  const { value, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange } = props;
   const [open, setOpen] = useState(false);
-  const [date] = value.toISOString().split('T');
+  const [date] = value && value.toISOString().split('T');
 
   useEffect(() => {
     onDateChange(value);
@@ -45,8 +44,8 @@ export function DatePickerField(props: DatePickerProps) {
         open={open}
         date={value}
         onConfirm={selectedDate => {
-          setValue(selectedDate);
           setOpen(false);
+          onDateChange(selectedDate);
         }}
         onCancel={() => setOpen(false)}
         textColor={palette.white}
