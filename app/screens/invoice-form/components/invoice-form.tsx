@@ -1,6 +1,6 @@
 import React from 'react';
-import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { AutocompletionFormField, Button, Icon, Separator, Text, TextField } from '../../../components';
+import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
+import { AutocompletionFormField, Button, Separator, Text, TextField } from '../../../components';
 import { createCustomerDefaultModel, Customer } from '../../../models/entities/customer/customer';
 import { Product } from '../../../models/entities/product/product';
 import { translate } from '../../../i18n';
@@ -10,6 +10,7 @@ import { Formik } from 'formik';
 import uuid from 'react-native-uuid';
 import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
 import { currencyPipe } from '../../../utils/pipes';
+import { ProductFormField } from './product-form-field';
 
 type InvoiceFormProps = { customers: Customer[]; products: Product[] };
 
@@ -23,43 +24,6 @@ const DATEPICKER_ROW_STYLE: ViewStyle = {
 const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
   fontSize: 14,
 };
-
-function ProductFormField(props: { product: Product; onQuantityChange: (quantity: number) => void; onRemoveProduct: (product: Product) => void }) {
-  const { format } = currencyPipe(translate('currency'));
-  const { product, onQuantityChange, onRemoveProduct } = props;
-  const lineTotal = product.quantity * product.totalPriceWithVat;
-
-  const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };
-  const QUANTITY_FIELD_STYLE: ViewStyle = { width: 75 };
-
-  return (
-    <View>
-      <View style={{ ...ROW_STYLE, ...{ justifyContent: 'space-between' } }}>
-        <Text text={product.description} />
-        <View style={{ ...ROW_STYLE }}>
-          <Text text={format(lineTotal)}></Text>
-          <TouchableOpacity onPress={() => onRemoveProduct(product)}>
-            <Icon icon='cross' containerStyle={{ marginHorizontal: spacing[1] }} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={{ ...ROW_STYLE, ...{ marginTop: spacing[1] } }}>
-        <Text tx={'invoiceScreen.labels.vat'} />
-        <Text text={format(product.totalVat)} style={{ marginHorizontal: spacing[1] }}></Text>
-      </View>
-      <View style={{ ...ROW_STYLE }}>
-        <TextField
-          value={product.quantity.toString()}
-          style={QUANTITY_FIELD_STYLE}
-          inputStyle={{ ...INPUT_TEXT_STYLE }}
-          onChangeText={quantity => onQuantityChange(+quantity)}
-        />
-        <Text text={'X'} style={{ marginHorizontal: spacing[1] }} />
-        <Text text={format(product.unitPrice)} />
-      </View>
-    </View>
-  );
-}
 
 export function InvoiceForm(props: InvoiceFormProps) {
   const { customers, products } = props;
