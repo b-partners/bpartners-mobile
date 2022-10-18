@@ -143,7 +143,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   }}
                   onSearch={() => {}}
                   onClear={() => {}}
-                ></AutocompletionFormField>
+                />
                 <View style={{ marginTop: spacing[4] }}>
                   <FlatList<Product>
                     data={values.products}
@@ -170,7 +170,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                         }}
                       />
                     )}
-                  ></FlatList>
+                  />
                 </View>
               </View>
 

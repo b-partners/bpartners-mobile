@@ -22,7 +22,7 @@ export function ProductFormField(props: ProductFormFieldProps) {
       <View style={{ ...ROW_STYLE, ...{ justifyContent: 'space-between' } }}>
         <Text text={product.description} />
         <View style={{ ...ROW_STYLE }}>
-          <Text text={format(lineTotal)}></Text>
+          <Text text={format(lineTotal)} />
           <TouchableOpacity onPress={() => onRemoveProduct(product)}>
             <Icon icon='cross' containerStyle={{ marginHorizontal: spacing[1] }} />
           </TouchableOpacity>
@@ -30,7 +30,7 @@ export function ProductFormField(props: ProductFormFieldProps) {
       </View>
       <View style={{ ...ROW_STYLE, ...{ marginTop: spacing[1] } }}>
         <Text tx={'invoiceScreen.labels.vat'} />
-        <Text text={format(product.totalVat)} style={{ marginHorizontal: spacing[1] }}></Text>
+        <Text text={format(product.totalVat)} style={{ marginHorizontal: spacing[1] }} />
       </View>
       <View style={{ ...ROW_STYLE }}>
         <TextField
