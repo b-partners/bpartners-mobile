@@ -3,7 +3,7 @@ import { AutocompleteDropdown, TAutocompleteDropdownItem } from 'react-native-au
 import { ViewStyle } from 'react-native';
 import { observer } from 'mobx-react-lite';
 
-interface AutocompletionFormFieldProps<T> {
+export interface AutocompletionFormFieldProps<T> {
   containerStyle?: ViewStyle;
   inputContainerStyle?: ViewStyle;
   data: T[];
