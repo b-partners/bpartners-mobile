@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import {ScrollView, TextStyle, View, ViewStyle} from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen, Text } from '../../components';
@@ -35,7 +35,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
           leftIcon={'back'}
           onLeftPress={() => navigation.navigate('home')}
         />
-        <View style={FORM_FIELD_CONTAINER}>
+        <ScrollView style={FORM_FIELD_CONTAINER}>
           <PaymentInitiationForm
             init={paymentInitiationStore.init}
             getCustomers={paymentInitiationStore.getCustomers}
@@ -49,7 +49,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
               <QRCode value={paymentUrl} size={100} />
             </View>
           )}
-        </View>
+        </ScrollView>
       </Screen>
     </View>
   );
