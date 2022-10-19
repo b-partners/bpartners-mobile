@@ -86,13 +86,13 @@ export const InvoiceStoreModel = types
     }),
   }))
   .actions(self => ({
-    createOrUpdateInvoiceSuccess: (invoice: Invoice) => {
+    saveInvoiceSuccess: (invoice: Invoice) => {
       const invoiceModel = InvoiceModel.create(invoice);
       self.invoice = invoiceModel;
     },
   }))
   .actions(self => ({
-    createOrUpdateInvoice: flow(function* (invoice: Invoice) {
+    saveInvoice: flow(function* (invoice: Invoice) {
       const paymentApi = new PaymentApi(self.environment.api);
       const createOrUpdateInvoiceResult = yield paymentApi.createOrUpdateInvoice(self.currentAccount.id, invoice);
       if (createOrUpdateInvoiceResult.kind === 'ok') {
@@ -101,6 +101,9 @@ export const InvoiceStoreModel = types
         __DEV__ && console.tron.log(createOrUpdateInvoiceResult.kind);
       }
     }),
+  }))
+  .actions(self => ({
+    createInvoice: () => {},
   }));
 
 export interface InvoiceStore extends Instance<typeof InvoiceStoreModel> {}
@@ -109,4 +112,10 @@ export interface InvoiceStoreSnapshotOut extends SnapshotOut<typeof InvoiceStore
 
 export interface InvoiceStoreSnapshotIn extends SnapshotIn<typeof InvoiceStoreModel> {}
 
-export const createInvoiceStoreDefaultModel = () => types.optional(InvoiceStoreModel, {});
+export const createInvoiceStoreDefaultModel = () =>
+  types.optional(InvoiceStoreModel, {
+    invoices: [],
+    invoice: {},
+    products: [],
+    customers: [],
+  });

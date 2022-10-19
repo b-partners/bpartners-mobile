@@ -37,4 +37,9 @@ export interface OnboardingStoreSnapshotOut extends SnapshotOut<typeof Onboardin
 
 export interface OnboardingStoreSnapshotIn extends SnapshotIn<typeof OnboardingStoreModel> {}
 
-export const createOnboardingStoreDefaultModel = () => types.optional(OnboardingStoreModel, {});
+export const createOnboardingStoreDefaultModel = () =>
+  types.optional(OnboardingStoreModel, {
+    failureUrl: null,
+    successUrl: null,
+    redirectionUrl: null,
+  });

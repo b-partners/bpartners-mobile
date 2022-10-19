@@ -34,4 +34,7 @@ export interface ProductStoreSnapshotOut extends SnapshotOut<typeof ProductStore
 
 export interface ProductStoreSnapshotIn extends SnapshotIn<typeof ProductStoreModel> {}
 
-export const createProductStoreDefaultModel = () => types.optional(ProductStoreModel, {});
+export const createProductStoreDefaultModel = () =>
+  types.optional(ProductStoreModel, {
+    products: [],
+  });

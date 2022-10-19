@@ -80,4 +80,10 @@ export interface TransactionStoreSnapshotOut extends SnapshotOut<typeof PaymentI
 
 export interface TransactionStoreSnapshotIn extends SnapshotIn<typeof PaymentInitiationStoreModel> {}
 
-export const createTransactionStoreDefaultModel = () => types.optional(PaymentInitiationStoreModel, {});
+export const createTransactionStoreDefaultModel = () =>
+  types.optional(PaymentInitiationStoreModel, {
+    customers: [],
+    products: [],
+    paymentUrl: null,
+    initiatingPayment: false,
+  });

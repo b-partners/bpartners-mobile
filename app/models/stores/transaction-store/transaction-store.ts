@@ -65,4 +65,8 @@ export interface TransactionStoreSnapshotOut extends SnapshotOut<typeof Transact
 
 export interface TransactionStoreSnapshotIn extends SnapshotIn<typeof TransactionStoreModel> {}
 
-export const createTransactionStoreDefaultModel = () => types.optional(TransactionStoreModel, {});
+export const createTransactionStoreDefaultModel = () =>
+  types.optional(TransactionStoreModel, {
+    transactions: [],
+    transactionCategories: [],
+  });

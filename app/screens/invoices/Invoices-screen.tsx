@@ -16,6 +16,7 @@ import { Invoice } from './components/invoice';
 const FULL: ViewStyle = {
   flex: 1,
 };
+
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 };
@@ -36,7 +37,14 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
           leftIcon={'back'}
           onLeftPress={() => navigation.navigate('home')}
           rightIcon={'plus'}
-          onRightPress={() => navigation.navigate('invoiceForm')}
+          onRightPress={async () => {
+            try {
+              await invoiceStore.createInvoice();
+              navigation.navigate('invoiceForm');
+            } catch (e) {
+              console.tron.log(e);
+            }
+          }}
         />
         <FlatList<IInvoice>
           contentContainerStyle={INVOICES_STYLE}

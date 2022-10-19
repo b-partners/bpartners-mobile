@@ -105,4 +105,14 @@ export interface AuthStoreSnapshotOut extends SnapshotOut<typeof AuthStoreModel>
 
 export interface AuthStoreSnapshotIn extends SnapshotIn<typeof AuthStoreModel> {}
 
-export const createAuthStoreDefaultModel = () => types.optional(AuthStoreModel, {});
+export const createAuthStoreDefaultModel = () =>
+  types.optional(AuthStoreModel, {
+    accessToken: null,
+    currentAccountHolder: null,
+    currentAccount: null,
+    currentUser: null,
+    successUrl: null,
+    refreshToken: null,
+    failureUrl: null,
+    redirectionUrl: null,
+  });
