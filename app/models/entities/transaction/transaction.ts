@@ -16,4 +16,11 @@ export interface TransactionSnapshotOut extends SnapshotOut<typeof TransactionMo
 
 export interface TransactionSnapshotIn extends SnapshotIn<typeof TransactionModel> {}
 
-export const createTransactionDefaultModel = () => types.optional(TransactionModel, {});
+export const createTransactionDefaultModel = () =>
+  types.optional(TransactionModel, {
+    label: null,
+    reference: null,
+    amount: null,
+    paymentDatetime: null,
+    category: null,
+  });

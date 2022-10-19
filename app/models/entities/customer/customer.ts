@@ -18,4 +18,14 @@ export interface CustomerSnapshotOut extends SnapshotOut<typeof CustomerModel> {
 
 export interface CustomerSnapshotIn extends SnapshotIn<typeof CustomerModel> {}
 
-export const createCustomerDefaultModel = () => types.optional(CustomerModel, {});
+export const createCustomerDefaultModel = () =>
+  types.optional(CustomerModel, {
+    name: null,
+    email: null,
+    phone: null,
+    address: null,
+    website: null,
+    zipCode: null,
+    city: null,
+    country: null,
+  });

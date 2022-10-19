@@ -1,6 +1,13 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { CustomerModel } from '../customer/customer';
+import { createCustomerDefaultModel, CustomerModel } from '../customer/customer';
 import { ProductModel } from '../product/product';
+import uuid from 'react-native-uuid';
+
+export enum InvoiceStatus {
+  CONFIRMED = 'CONFIRMED',
+  DRAFT = 'DRAFT',
+  PROPOSAL = 'PROPOSAL',
+}
 
 export const InvoiceModel = types.model('Invoice').props({
   id: types.maybe(types.string),
@@ -15,7 +22,7 @@ export const InvoiceModel = types.model('Invoice').props({
   totalVat: types.maybeNull(types.number),
   totalPriceWithVat: types.maybeNull(types.number),
   totalPriceWithoutVat: types.maybeNull(types.number),
-  status: types.maybeNull(types.enumeration(['CONFIRMED', 'DRAFT', 'PROPOSAL'])),
+  status: types.maybeNull(types.enumeration(Object.values(InvoiceStatus))),
 });
 
 export interface Invoice extends Instance<typeof InvoiceModel> {}
@@ -24,4 +31,14 @@ export interface InvoiceSnapshotOut extends SnapshotOut<typeof InvoiceModel> {}
 
 export interface InvoiceSnapshotIn extends SnapshotIn<typeof InvoiceModel> {}
 
-export const createInvoiceDefaultModel = () => types.optional(InvoiceModel, {});
+export const createInvoiceDefaultModel = () =>
+  types.optional(InvoiceModel, {
+    id: uuid.v4().toString(),
+    title: null,
+    ref: null,
+    sendingDate: null,
+    toPayAt: null,
+    customer: createCustomerDefaultModel(),
+    products: [],
+    status: InvoiceStatus.DRAFT,
+  });

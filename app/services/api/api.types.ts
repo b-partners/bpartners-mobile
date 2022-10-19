@@ -6,7 +6,7 @@ import { AccountHolder } from '../../models/entities/account-holder/account-hold
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { Customer } from '../../models/entities/customer/customer';
 import { Product } from '../../models/entities/product/product';
-import { File } from '../../models/entities/file/File';
+import { File } from '../../models/entities/file/file';
 import { Invoice } from '../../models/entities/invoice/invoice';
 
 export interface Whoami {

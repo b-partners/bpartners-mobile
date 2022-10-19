@@ -19,13 +19,20 @@ const CONTAINER: ViewStyle = {
 export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function CreateInvoiceScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { products, customers, invoice } = invoiceStore;
-  console.tron.log({ invoice });
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-        <Header headerTx='invoiceScreen.title' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('invoices')} />
-        <InvoiceForm customers={customers} products={products} onSaveInvoice={invoiceStore.createOrUpdateInvoice} />
+        <Header
+          headerTx='invoiceScreen.title'
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+          leftIcon={'back'}
+          onLeftPress={async () => {
+            navigation.navigate('invoices');
+          }}
+        />
+        <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={invoiceStore.saveInvoice} />
       </Screen>
     </View>
   );
