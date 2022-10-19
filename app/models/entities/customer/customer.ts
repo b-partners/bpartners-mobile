@@ -7,7 +7,7 @@ export const CustomerModel = types.model('Customer').props({
   phone: types.maybe(types.string),
   address: types.maybe(types.string),
   website: types.maybe(types.string),
-  zipCode: types.maybe(types.string),
+  zipCode: types.maybe(types.number),
   city: types.maybe(types.string),
   country: types.maybe(types.string),
 });
