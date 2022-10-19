@@ -38,12 +38,8 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
           onLeftPress={() => navigation.navigate('home')}
           rightIcon={'plus'}
           onRightPress={async () => {
-            try {
-              await invoiceStore.createInvoice();
-              navigation.navigate('invoiceForm');
-            } catch (e) {
-              console.tron.log(e);
-            }
+            await invoiceStore.createInvoice();
+            navigation.navigate('invoiceForm');
           }}
         />
         <FlatList<IInvoice>

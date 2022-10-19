@@ -27,14 +27,16 @@ export function AutocompletionFormField<T>(props: AutocompletionFormFieldProps<T
   }, [value]);
 
   return (
-    <AutocompleteDropdown
-      containerStyle={containerStyle}
-      inputContainerStyle={inputContainerStyle}
-      dataSet={dataSet}
-      initialValue={value}
-      onChangeText={onSearch}
-      onSelectItem={item => onValueChange(item)}
-      onClear={onClear}
-    />
+    <>
+      <AutocompleteDropdown
+        containerStyle={containerStyle}
+        inputContainerStyle={inputContainerStyle}
+        dataSet={dataSet}
+        initialValue={value}
+        onChangeText={onSearch}
+        onSelectItem={item => onValueChange(item)}
+        onClear={onClear}
+      />
+    </>
   );
 }

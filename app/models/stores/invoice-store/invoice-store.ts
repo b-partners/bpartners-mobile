@@ -103,7 +103,9 @@ export const InvoiceStoreModel = types
     }),
   }))
   .actions(self => ({
-    createInvoice: () => {},
+    createInvoice: () => {
+      self.invoice = InvoiceModel.create();
+    },
   }));
 
 export interface InvoiceStore extends Instance<typeof InvoiceStoreModel> {}
