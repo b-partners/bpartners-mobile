@@ -40,13 +40,14 @@ export const AutocompletionFormField = observer(<T extends { id: string }>(props
 
   return (
     <AutocompleteDropdown
+      containerStyle={containerStyle}
+      inputContainerStyle={inputContainerStyle}
       controller={controller => {
         dropdownController.current = controller;
       }}
-      containerStyle={containerStyle}
-      inputContainerStyle={inputContainerStyle}
-      dataSet={dataSet}
+      closeOnBlur={true}
       initialValue={value}
+      dataSet={dataSet}
       onChangeText={onSearch}
       onSelectItem={item => onValueChange(item)}
       onClear={onClear}
