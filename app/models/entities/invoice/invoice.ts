@@ -15,7 +15,7 @@ export const InvoiceModel = types.model('Invoice').props({
   totalVat: types.maybeNull(types.number),
   totalPriceWithVat: types.maybeNull(types.number),
   totalPriceWithoutVat: types.maybeNull(types.number),
-  status: types.maybeNull(types.enumeration(['CONFIRMED'])),
+  status: types.maybeNull(types.enumeration(['CONFIRMED', 'DRAFT', 'PROPOSAL'])),
 });
 
 export interface Invoice extends Instance<typeof InvoiceModel> {}
