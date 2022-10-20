@@ -8,7 +8,7 @@ import { color } from '../../theme';
 import { HEADER, HEADER_TITLE } from '../index';
 import { useStores } from '../../models';
 import { INVOICES_STYLE } from './styles';
-import { Invoice as IInvoice } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { Invoice } from './components/invoice';
 
 const FULL: ViewStyle = {
@@ -47,14 +47,26 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
               <Invoice
                 item={item}
                 editInvoice={async () => {
-                  if (item.status !== 'DRAFT') {
+                  if (item.status !== InvoiceStatus.DRAFT) {
                     return;
                   }
                   try {
                     await invoiceStore.getInvoice(item.id);
                     navigation.navigate('invoiceForm');
                   } catch (e) {
-                    console.tron.log(e);
+                    console.tron.log(`Failed to edit invoice, ${e}`);
+                  }
+                }}
+                markAsProposal={async () => {
+                  if (item.status === InvoiceStatus.CONFIRMED) {
+                    return;
+                  }
+                  try {
+                    const editedItem = { ...item, status: InvoiceStatus.PROPOSAL };
+                    await invoiceStore.saveInvoice(editedItem);
+                    await invoiceStore.getInvoices({ page: 1, pageSize: 15 });
+                  } catch (e) {
+                    console.tron.log(`Failed to convert invoice, ${e}`);
                   }
                 }}
               />

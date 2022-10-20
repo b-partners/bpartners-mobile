@@ -115,6 +115,9 @@
     "errors": {
       "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
       "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
+    },
+    "menu": {
+      "markAsProposal": "Proposer au client"
     }
   }
 }
