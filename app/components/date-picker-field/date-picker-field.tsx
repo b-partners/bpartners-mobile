@@ -14,6 +14,7 @@ type DatePickerProps = {
   labelStyle?: TextStyle;
   labelContainerStyle?: ViewStyle;
   onDateChange?: (date: Date) => void;
+  validationError?: string;
 };
 
 const LABEL_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 13 };
@@ -24,7 +25,7 @@ const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 const BUTTON_STYLE: ViewStyle = { marginTop: spacing[2] };
 
 export function DatePickerField(props: DatePickerProps) {
-  const { value, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange } = props;
+  const { value, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange, validationError } = props;
   const [open, setOpen] = useState(false);
   const [date] = value && value.toISOString().split('T');
 
@@ -51,6 +52,11 @@ export function DatePickerField(props: DatePickerProps) {
         textColor={palette.white}
         mode='date'
       />
+      {validationError && (
+        <View>
+          <Text text={validationError}></Text>
+        </View>
+      )}
     </View>
   );
 }

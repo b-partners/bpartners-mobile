@@ -11,7 +11,7 @@ import uuid from 'react-native-uuid';
 import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
 import { currencyPipe } from '../../../utils/pipes';
 import { ProductFormField } from './product-form-field';
-import { InvoiceSnapshotIn, InvoiceStatus } from '../../../models/entities/invoice/invoice';
+import { Invoice, InvoiceSnapshotIn, InvoiceStatus } from '../../../models/entities/invoice/invoice';
 
 type InvoiceFormProps = {
   invoice: Partial<InvoiceSnapshotIn>;
@@ -35,6 +35,20 @@ export function InvoiceForm(props: InvoiceFormProps) {
   const { invoice, customers, products, onSaveInvoice } = props;
 
   const { format } = currencyPipe(translate('currency'));
+
+  const validate = values => {
+    const errors: Partial<Record<keyof Invoice, string>> = {};
+    const [sendingDate] = values.sendingDate.toISOString().split('T');
+    const [today] = new Date().toISOString().split('T');
+
+    if (sendingDate === today) {
+      errors.sendingDate = translate('invoiceScreen.errors.sendingDateLaterThanToday');
+    }
+    if (values.sendingDate > values.toPayAt) {
+      errors.sendingDate = translate('invoiceScreen.errors.sendingDateLaterThanToPayAt');
+    }
+    return errors;
+  };
 
   const [initialValues, setInitialValues] = useState({
     id: uuid.v4().toString(),
@@ -72,8 +86,9 @@ export function InvoiceForm(props: InvoiceFormProps) {
             console.tron.log(e);
           }
         }}
+        validate={validate}
       >
-        {({ handleSubmit, setFieldValue, values }) => {
+        {({ errors, handleSubmit, setFieldValue, values }) => {
           const total = (values.products as Product[]).reduce((a, c) => {
             return a + c.totalPriceWithVat * c.quantity;
           }, 0);
@@ -109,11 +124,17 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   labelTx='invoiceScreen.labels.sendingDate'
                   value={values.sendingDate}
                   onDateChange={date => setFieldValue('sendingDate', date)}
+                  validationError={errors.sendingDate as string}
                 />
               </View>
 
               <View style={DATEPICKER_ROW_STYLE}>
-                <DatePickerField labelTx='invoiceScreen.labels.toPayAt' value={values.toPayAt} onDateChange={date => setFieldValue('toPayAt', date)} />
+                <DatePickerField
+                  labelTx='invoiceScreen.labels.toPayAt'
+                  value={values.toPayAt}
+                  onDateChange={date => setFieldValue('toPayAt', date)}
+                  validationError={errors.toPayAt as string}
+                />
               </View>
 
               <Text tx='invoiceScreen.labels.customerSection' style={SECTION_STYLE} />
@@ -201,7 +222,12 @@ export function InvoiceForm(props: InvoiceFormProps) {
               <Separator style={{ marginBottom: spacing[4] }} />
 
               <View>
-                <Button tx='invoiceScreen.labels.invoiceForm' textStyle={SUBMIT_BUTTON_TEXT_STYLE} onPress={() => handleSubmit()} />
+                <Button
+                  disabled={!!Object.keys(errors).length}
+                  tx='invoiceScreen.labels.invoiceForm'
+                  textStyle={SUBMIT_BUTTON_TEXT_STYLE}
+                  onPress={() => handleSubmit()}
+                />
               </View>
             </>
           );
