@@ -47,6 +47,9 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
               <Invoice
                 item={item}
                 editInvoice={async () => {
+                  if (item.status !== 'DRAFT') {
+                    return;
+                  }
                   try {
                     await invoiceStore.getInvoice(item.id);
                     navigation.navigate('invoiceForm');

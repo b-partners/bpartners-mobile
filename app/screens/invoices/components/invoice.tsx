@@ -1,4 +1,4 @@
-import { Invoice as IInvoice } from '../../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { TouchableOpacity, View } from 'react-native';
 import { Text } from '../../../components';
 import { BulletSeparator } from '../../../components/bullet-separator/bullet-separator';
@@ -16,7 +16,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
   const totalPriceWithVat = format(item.totalPriceWithVat);
 
   return (
-    <TouchableOpacity onPress={() => editInvoice()}>
+    <TouchableOpacity onPress={() => editInvoice()} disabled={item.status !== InvoiceStatus.DRAFT}>
       <View style={{ paddingVertical: spacing[2] }}>
         <View style={{ ...ROW_STYLE, ...{ marginBottom: spacing[1] } }}>
           <Text text={props.item.customer.name} style={HEADER_TEXT_STYLE} />
