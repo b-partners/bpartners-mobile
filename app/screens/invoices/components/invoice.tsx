@@ -2,21 +2,25 @@ import { Invoice as IInvoice } from '../../../models/entities/invoice/invoice';
 import { TouchableOpacity, View } from 'react-native';
 import { Text } from '../../../components';
 import { BulletSeparator } from '../../../components/bullet-separator/bullet-separator';
-import { datePipe } from '../../../utils/pipes';
+import { currencyPipe, datePipe } from '../../../utils/pipes';
 import React from 'react';
 import { BODY_TEXT_STYLE, CENTERED_ROW, HEADER_TEXT_STYLE, ROW_STYLE } from '../styles';
 import { spacing } from '../../../theme';
+import { translate } from '../../../i18n';
 
-type InvoiceProps = { item: IInvoice; text: string; editInvoice: () => void };
+type InvoiceProps = { item: IInvoice; editInvoice: () => void };
 
 export const Invoice: React.FC<InvoiceProps> = props => {
-  const { editInvoice } = props;
+  const { editInvoice, item } = props;
+  const { format } = currencyPipe(translate('currency'));
+  const totalPriceWithVat = format(item.totalPriceWithVat);
+
   return (
     <TouchableOpacity onPress={() => editInvoice()}>
       <View style={{ paddingVertical: spacing[2] }}>
         <View style={{ ...ROW_STYLE, ...{ marginBottom: spacing[1] } }}>
           <Text text={props.item.customer.name} style={HEADER_TEXT_STYLE} />
-          <Text text={props.text} style={HEADER_TEXT_STYLE} />
+          <Text text={totalPriceWithVat} style={HEADER_TEXT_STYLE} />
         </View>
         <View
           style={{

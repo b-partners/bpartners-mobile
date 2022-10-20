@@ -9,8 +9,6 @@ import { HEADER, HEADER_TITLE } from '../index';
 import { useStores } from '../../models';
 import { INVOICES_STYLE } from './styles';
 import { Invoice as IInvoice } from '../../models/entities/invoice/invoice';
-import { currencyPipe } from '../../utils/pipes';
-import { translate } from '../../i18n';
 import { Invoice } from './components/invoice';
 
 const FULL: ViewStyle = {
@@ -24,7 +22,6 @@ const CONTAINER: ViewStyle = {
 export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { invoices } = invoiceStore;
-  const { format } = currencyPipe(translate('currency'));
 
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
@@ -49,7 +46,6 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
             return (
               <Invoice
                 item={item}
-                text={format(item.totalPriceWithVat)}
                 editInvoice={async () => {
                   try {
                     await invoiceStore.getInvoice(item.id);
