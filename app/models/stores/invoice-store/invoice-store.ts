@@ -95,7 +95,7 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     saveInvoice: flow(function* (invoice: Invoice) {
       const paymentApi = new PaymentApi(self.environment.api);
-      const createOrUpdateInvoiceResult = yield paymentApi.createOrUpdateInvoice(self.currentAccount.id, invoice);
+      const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
       if (createOrUpdateInvoiceResult.kind === 'ok') {
         self.getInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
       } else {
