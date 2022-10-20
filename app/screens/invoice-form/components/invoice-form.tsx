@@ -81,7 +81,15 @@ export function InvoiceForm(props: InvoiceFormProps) {
         initialValues={initialValues}
         onSubmit={async values => {
           try {
-            await onSaveInvoice({ ...values });
+            await onSaveInvoice({
+              ...values,
+              products: values.products.map(item => ({
+                description: item.description,
+                unitPrice: item.unitPrice,
+                vatPercent: item.vatPercent,
+                quantity: item.quantity,
+              })),
+            });
           } catch (e) {
             console.tron.log(e);
           }
