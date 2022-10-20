@@ -36,7 +36,7 @@ export class PaymentApi {
     }
   }
 
-  async createOrUpdateInvoice(accountId: string, payload: Invoice): Promise<CrupdateInvoiceResult> {
+  async saveInvoice(accountId: string, payload: Invoice): Promise<CrupdateInvoiceResult> {
     try {
       // make the api call
       const response: ApiResponse<any> = await this.api.apisauce.put(`accounts/${accountId}/invoices/${payload.id}`, payload);
@@ -45,7 +45,11 @@ export class PaymentApi {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-      const invoice = response.data;
+      const invoice = {
+        ...response.data,
+        sendingDate: new Date(response.data.sendingDate),
+        toPayAt: new Date(response.data.toPayAt),
+      };
       return { kind: 'ok', invoice };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
@@ -67,7 +71,6 @@ export class PaymentApi {
         sendingDate: new Date(response.data.sendingDate),
         toPayAt: new Date(response.data.toPayAt),
       };
-      console.tron.log(invoice);
       return { kind: 'ok', invoice };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
