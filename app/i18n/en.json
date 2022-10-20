@@ -128,6 +128,10 @@
       "sendingDate": "Sending date",
       "toPayAt": "To pay at",
       "invoiceForm": "Create invoice"
+    },
+    "errors": {
+      "sendingDateLaterThanToday": "Invoice can not be sent no later than today.",
+      "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date."
     }
   }
 }

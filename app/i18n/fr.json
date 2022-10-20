@@ -111,6 +111,10 @@
       "sendingDate": "Date d'envoi",
       "toPayAt": "Limite de paiement",
       "invoiceForm": "Créer un devis"
+    },
+    "errors": {
+      "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
+      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
     }
   }
 }
