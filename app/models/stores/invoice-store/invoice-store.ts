@@ -99,6 +99,7 @@ export const InvoiceStoreModel = types
       if (createOrUpdateInvoiceResult.kind === 'ok') {
         self.getInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
       } else {
+        throw new Error(createOrUpdateInvoiceResult);
         __DEV__ && console.tron.log(createOrUpdateInvoiceResult.kind);
       }
     }),

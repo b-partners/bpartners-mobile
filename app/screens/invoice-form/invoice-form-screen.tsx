@@ -8,6 +8,7 @@ import { color } from '../../theme';
 import { HEADER, HEADER_TITLE } from '../index';
 import { InvoiceForm } from './components/invoice-form';
 import { useStores } from '../../models';
+import { Invoice } from '../../models/entities/invoice/invoice';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -19,6 +20,16 @@ const CONTAINER: ViewStyle = {
 export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { products, customers, invoice } = invoiceStore;
+
+  const saveInvoice = async (values: Invoice) => {
+    try {
+      await invoiceStore.saveInvoice(values);
+      navigation.navigate('invoices');
+    } catch (e) {
+      console.tron.log(e);
+    }
+  };
+
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
@@ -32,7 +43,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
             navigation.navigate('invoices');
           }}
         />
-        <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={invoiceStore.saveInvoice} />
+        <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
       </Screen>
     </View>
   );
