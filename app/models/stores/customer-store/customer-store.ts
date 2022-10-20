@@ -34,6 +34,7 @@ export interface CustomerStoreSnapshotOut extends SnapshotOut<typeof CustomerSto
 
 export interface CustomerStoreSnapshotIn extends SnapshotIn<typeof CustomerStoreModel> {}
 
-export const createCustomerStoreDefaultModel = () => types.optional(CustomerStoreModel, {
-  customers: []
-});
+export const createCustomerStoreDefaultModel = () =>
+  types.optional(CustomerStoreModel, {
+    customers: [],
+  });
