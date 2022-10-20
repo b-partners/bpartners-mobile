@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { AutocompleteDropdown, TAutocompleteDropdownItem } from 'react-native-autocomplete-dropdown';
 import { ViewStyle } from 'react-native';
+import { observer } from 'mobx-react-lite';
 
 interface AutocompletionFormFieldProps<T> {
   containerStyle?: ViewStyle;
@@ -13,22 +14,26 @@ interface AutocompletionFormFieldProps<T> {
   onClear?: () => void;
 }
 
-export function AutocompletionFormField<T>(props: AutocompletionFormFieldProps<T>) {
-  const { data, selectTitle, value, onSearch, onClear, containerStyle, inputContainerStyle, onValueChange } = props;
-  const [dataSet, setDataSet] = useState<TAutocompleteDropdownItem[]>([]);
+export const AutocompletionFormField: FC<AutocompletionFormFieldProps<any>> = observer(
+  ({ data, selectTitle, value, onSearch, onClear, containerStyle, inputContainerStyle, onValueChange }) => {
+    const [dataSet, setDataSet] = useState<TAutocompleteDropdownItem[]>([]);
+    const dropdownController = useRef(null);
 
-  useEffect(() => {
-    setDataSet(data.map(item => selectTitle(item)));
-  }, [data, selectTitle]);
+    useEffect(() => {
+      setDataSet(data.map(item => selectTitle(item)));
+    }, [data, selectTitle]);
 
-  useEffect(() => {
-    onValueChange(value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+    useEffect(() => {
+      onValueChange(value);
+      value && dropdownController.current.setItem(selectTitle(value));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
 
-  return (
-    <>
+    return (
       <AutocompleteDropdown
+        controller={controller => {
+          dropdownController.current = controller;
+        }}
         containerStyle={containerStyle}
         inputContainerStyle={inputContainerStyle}
         dataSet={dataSet}
@@ -37,6 +42,6 @@ export function AutocompletionFormField<T>(props: AutocompletionFormFieldProps<T
         onSelectItem={item => onValueChange(item)}
         onClear={onClear}
       />
-    </>
-  );
-}
+    );
+  }
+);

@@ -1,13 +1,14 @@
-import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import { detach, flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { withEnvironment } from '../../extensions/with-environment';
 import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
 import { ProductApi } from '../../../services/api/product-api';
 import { CustomerApi } from '../../../services/api/customer-api';
 import { withCredentials } from '../../extensions/with-credentials';
-import { Invoice, InvoiceModel } from '../../entities/invoice/invoice';
+import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
+import uuid from 'react-native-uuid';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
@@ -104,7 +105,17 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     createInvoice: () => {
-      self.invoice = InvoiceModel.create();
+      detach(self.invoice);
+      self.invoice = InvoiceModel.create({
+        id: uuid.v4().toString(),
+        title: null,
+        ref: null,
+        sendingDate: new Date(),
+        toPayAt: new Date(),
+        products: [],
+        customer: {},
+        status: InvoiceStatus.DRAFT,
+      });
     },
   }));
 

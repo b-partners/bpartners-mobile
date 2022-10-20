@@ -66,11 +66,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
         enableReinitialize
         initialValues={initialValues}
         onSubmit={async values => {
-          const sendingDate = values.sendingDate.toISOString().split('T')[0];
-          const toPayAt = values.toPayAt.toISOString().split('T')[0];
-
           try {
-            await onSaveInvoice({ ...values, sendingDate, toPayAt });
+            await onSaveInvoice({ ...values });
           } catch (e) {
             console.tron.log(e);
           }
@@ -123,7 +120,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
 
               <Separator style={{ marginBottom: spacing[4] }} />
 
-              <AutocompletionFormField<Customer>
+              <AutocompletionFormField
                 containerStyle={{ marginBottom: spacing[4] }}
                 selectTitle={item => ({ id: item.id, title: item.name })}
                 value={values.customer}
@@ -144,7 +141,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
               <Text tx='invoiceScreen.labels.productSection' style={SECTION_STYLE} />
 
               <View>
-                <AutocompletionFormField<Product>
+                <AutocompletionFormField
                   value={''}
                   data={products.filter(item => {
                     const selectedProducts = values.products.map(p => p.id);

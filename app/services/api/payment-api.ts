@@ -62,7 +62,12 @@ export class PaymentApi {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-      const invoice = response.data;
+      const invoice = {
+        ...response.data,
+        sendingDate: new Date(response.data.sendingDate),
+        toPayAt: new Date(response.data.toPayAt),
+      };
+      console.tron.log(invoice);
       return { kind: 'ok', invoice };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
@@ -79,7 +84,11 @@ export class PaymentApi {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-      const invoices = response.data;
+      const invoices = response.data.map(item => ({
+        ...item,
+        sendingDate: new Date(item.sendingDate),
+        toPayAt: new Date(item.toPayAt),
+      }));
       return { kind: 'ok', invoices };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
