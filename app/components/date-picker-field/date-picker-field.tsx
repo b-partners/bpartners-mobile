@@ -54,7 +54,7 @@ export function DatePickerField(props: DatePickerProps) {
       />
       {validationError && (
         <View>
-          <Text text={validationError}></Text>
+          <Text text={validationError} />
         </View>
       )}
     </View>
