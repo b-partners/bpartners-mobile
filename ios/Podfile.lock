@@ -311,6 +311,8 @@ PODS:
     - React-Core
   - react-native-document-picker (8.1.1):
     - React-Core
+  - react-native-menu (0.6.0):
+    - React
   - react-native-safe-area-context (4.3.1):
     - RCT-Folly
     - RCTRequired
@@ -485,6 +487,7 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - "react-native-menu (from `../node_modules/@react-native-menu/menu`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -589,6 +592,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-menu:
+    :path: "../node_modules/@react-native-menu/menu"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
@@ -679,6 +684,7 @@ SPEC CHECKSUMS:
   react-native-config: 7cd105e71d903104e8919261480858940a6b9c0e
   react-native-date-picker: 55193347d8d0f40948f441ffd4e5db6f0a8fbe13
   react-native-document-picker: f68191637788994baed5f57d12994aa32cf8bf88
+  react-native-menu: 70abb500b554975e437d5d706c8640f3e8b93006
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   react-native-webview: e771bc375f789ebfa02a26939a57dbc6fa897336
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
