@@ -20,7 +20,7 @@ const CONTAINER_STYLE: ViewStyle = { flex: 1, marginVertical: spacing[2] };
 const DROPDOWN_LIST_STYLE: ViewStyle = { position: 'relative', top: 0 };
 
 export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
-  const { items, selectValue, selectLabel, value, onSelectItem, max } = props;
+  const { items, selectValue, selectLabel, value, onChangeValue, onSelectItem, max } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [itemTypes, setItemTypes] = useState<Array<ItemType<ValueType>>>([]);
   const [dropdownValue, setDropdownValue] = useState();
@@ -41,7 +41,7 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
       value={dropdownValue}
       setValue={setDropdownValue}
       onSelectItem={item => onSelectItem(item.raw)}
-      onChangeValue={x => setDropdownValue(x)}
+      onChangeValue={onChangeValue}
       max={DEFAULT_MAX_VALUE || max}
       containerStyle={CONTAINER_STYLE}
       dropDownContainerStyle={DROPDOWN_LIST_STYLE}
