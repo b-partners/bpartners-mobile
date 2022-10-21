@@ -10,6 +10,8 @@ import { useStores } from '../../models';
 import { INVOICES_STYLE } from './styles';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { Invoice } from './components/invoice';
+import { showMessage } from '../../utils/snackbar';
+import { translate } from '../../i18n';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -65,6 +67,7 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
                     const editedItem = { ...item, status: InvoiceStatus.PROPOSAL };
                     await invoiceStore.saveInvoice(editedItem);
                     await invoiceStore.getInvoices({ page: 1, pageSize: 15 });
+                    showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
                   } catch (e) {
                     console.tron.log(`Failed to convert invoice, ${e}`);
                   }
