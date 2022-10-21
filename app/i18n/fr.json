@@ -118,6 +118,9 @@
     },
     "menu": {
       "markAsProposal": "Proposer au client"
+    },
+    "messages": {
+      "successfullyMarkAsProposal": "Devis envoyé au client."
     }
   }
 }

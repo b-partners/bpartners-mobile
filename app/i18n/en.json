@@ -135,6 +135,9 @@
     },
     "menu": {
       "markAsProposal": "Propose to client"
+    },
+    "messages": {
+      "successfullyMarkAsProposal": "Invoice proposed to customer."
     }
   }
 }
