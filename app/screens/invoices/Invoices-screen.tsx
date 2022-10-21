@@ -23,6 +23,15 @@ const CONTAINER: ViewStyle = {
   flexDirection: 'column',
 };
 
+const ACTIVITY_INDICATOR_CONTAINER_STYLE: ViewStyle = {
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 700,
+};
+
 export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { invoices, loading } = invoiceStore;
@@ -81,16 +90,7 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
             ItemSeparatorComponent={() => <Separator />}
           />
         ) : (
-          <View
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: 700,
-            }}
-          >
+          <View style={ACTIVITY_INDICATOR_CONTAINER_STYLE}>
             <ActivityIndicator size='large' />
           </View>
         )}
