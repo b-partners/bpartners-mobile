@@ -9,6 +9,8 @@ import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/inv
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
 import uuid from 'react-native-uuid';
+import { showMessage } from '../../../utils/snackbar';
+import { translate } from '../../../i18n';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
@@ -17,6 +19,7 @@ export const InvoiceStoreModel = types
     customers: types.optional(types.array(CustomerModel), []),
     invoices: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
+    loading: types.optional(types.boolean, false),
   })
   .extend(withEnvironment)
   .extend(withCredentials)
@@ -60,11 +63,15 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     getInvoices: flow(function* (criteria: Criteria) {
       detach(self.invoices);
+      self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
       const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
       if (getInvoicesResult.kind === 'ok') {
+        self.loading = false;
         self.getInvoicesSuccess(getInvoicesResult.invoices);
       } else {
+        self.loading = false;
+        showMessage(translate('errors.somethingWentWrong'));
         __DEV__ && console.tron.log(getInvoicesResult.kind);
       }
     }),

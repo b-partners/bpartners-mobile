@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { FlatList, View, ViewStyle } from 'react-native';
+import { ActivityIndicator, FlatList, View, ViewStyle } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen, Separator } from '../../components';
@@ -19,11 +19,13 @@ const FULL: ViewStyle = {
 
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
+  display: 'flex',
+  flexDirection: 'column',
 };
 
 export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
-  const { invoices } = invoiceStore;
+  const { invoices, loading } = invoiceStore;
 
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
@@ -41,42 +43,57 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
             navigation.navigate('invoiceForm');
           }}
         />
-        <FlatList<IInvoice>
-          contentContainerStyle={INVOICES_STYLE}
-          data={[...invoices]}
-          renderItem={({ item }) => {
-            return (
-              <Invoice
-                item={item}
-                editInvoice={async () => {
-                  if (item.status !== InvoiceStatus.DRAFT) {
-                    return;
-                  }
-                  try {
-                    await invoiceStore.getInvoice(item.id);
-                    navigation.navigate('invoiceForm');
-                  } catch (e) {
-                    console.tron.log(`Failed to edit invoice, ${e}`);
-                  }
-                }}
-                markAsProposal={async () => {
-                  if (item.status === InvoiceStatus.CONFIRMED) {
-                    return;
-                  }
-                  try {
-                    const editedItem = { ...item, status: InvoiceStatus.PROPOSAL };
-                    await invoiceStore.saveInvoice(editedItem);
-                    await invoiceStore.getInvoices({ page: 1, pageSize: 15 });
-                    showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
-                  } catch (e) {
-                    console.tron.log(`Failed to convert invoice, ${e}`);
-                  }
-                }}
-              />
-            );
-          }}
-          ItemSeparatorComponent={() => <Separator />}
-        />
+        {!loading ? (
+          <FlatList<IInvoice>
+            contentContainerStyle={INVOICES_STYLE}
+            data={[...invoices]}
+            renderItem={({ item }) => {
+              return (
+                <Invoice
+                  item={item}
+                  editInvoice={async () => {
+                    if (item.status !== InvoiceStatus.DRAFT) {
+                      return;
+                    }
+                    try {
+                      await invoiceStore.getInvoice(item.id);
+                      navigation.navigate('invoiceForm');
+                    } catch (e) {
+                      console.tron.log(`Failed to edit invoice, ${e}`);
+                    }
+                  }}
+                  markAsProposal={async () => {
+                    if (item.status === InvoiceStatus.CONFIRMED) {
+                      return;
+                    }
+                    try {
+                      const editedItem = { ...item, status: InvoiceStatus.PROPOSAL };
+                      await invoiceStore.saveInvoice(editedItem);
+                      await invoiceStore.getInvoices({ page: 1, pageSize: 15 });
+                      showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
+                    } catch (e) {
+                      console.tron.log(`Failed to convert invoice, ${e}`);
+                    }
+                  }}
+                />
+              );
+            }}
+            ItemSeparatorComponent={() => <Separator />}
+          />
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 700,
+            }}
+          >
+            <ActivityIndicator size='large' />
+          </View>
+        )}
       </Screen>
     </View>
   );
