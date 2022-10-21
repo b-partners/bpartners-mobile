@@ -43,8 +43,8 @@ export const Invoice: React.FC<InvoiceProps> = props => {
             ...POSITION_STYLE,
           }}
         />
-        <View style={{ ...ROW_STYLE }}>
-          <View style={{ ...ROW_STYLE, ...CENTERED_ROW }}>
+        <View style={{ ...ROW_STYLE, ...{ flex: 1 } }}>
+          <View style={{ ...ROW_STYLE, ...CENTERED_ROW, ...{ flex: 1, flexWrap: 'wrap' } }}>
             <Text text={`#${props.item.ref}`} style={BODY_TEXT_STYLE} />
             <BulletSeparator />
             <Text text={datePipe(props.item.sendingDate)} style={BODY_TEXT_STYLE} />
