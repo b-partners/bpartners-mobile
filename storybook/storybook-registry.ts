@@ -10,3 +10,4 @@ require('../app/components/wallpaper/wallpaper.story');
 require('../app/components/gradient-background/gradient-background.story');
 require('../app/components/icon/icon.story');
 require('../app/components/header/header.story');
+require('../app/components/dropdown/dropdown.story');
