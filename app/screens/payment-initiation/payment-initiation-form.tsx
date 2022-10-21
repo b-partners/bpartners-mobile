@@ -55,7 +55,7 @@ export const PaymentInitiationForm: FC<
             <AutocompletionFormField<Product>
               data={[...products]}
               value={labelValue}
-              onChangeText={async label => {
+              onSearch={async label => {
                 setLabelValue(label);
                 getProducts(label);
               }}
@@ -74,7 +74,7 @@ export const PaymentInitiationForm: FC<
             <AutocompletionFormField<Customer>
               data={[...customers]}
               value={payerNameValue}
-              onChangeText={name => {
+              onSearch={name => {
                 setPayerNameValue(name);
                 getCustomers(name);
               }}

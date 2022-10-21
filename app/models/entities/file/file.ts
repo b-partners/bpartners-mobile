@@ -14,4 +14,11 @@ export interface FileSnapshotOut extends SnapshotOut<typeof FileModel> {}
 
 export interface FileSnapshotIn extends SnapshotIn<typeof FileModel> {}
 
-export const createFileDefaultModel = () => types.optional(FileModel, {});
+export const createFileDefaultModel = () =>
+  types.optional(FileModel, {
+    id: null,
+    uploadedAt: null,
+    uploadedByUserId: null,
+    sizeInKB: null,
+    sha256: null,
+  });

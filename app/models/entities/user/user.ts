@@ -20,4 +20,16 @@ export interface UserSnapshotOut extends SnapshotOut<typeof UserModel> {}
 
 export interface UserSnapshotIn extends SnapshotIn<typeof UserModel> {}
 
-export const createUserDefaultModel = () => types.optional(UserModel, {});
+export const createUserDefaultModel = () =>
+  types.optional(UserModel, {
+    firstName: null,
+    lastName: null,
+    birthDate: null,
+    idVerified: null,
+    identificationStatus: null,
+    nationalityCCA3: null,
+    phone: null,
+    monthlySubscriptionAmount: null,
+    logoFileId: null,
+    status: null,
+  });

@@ -1,12 +1,18 @@
 {
   "currency": "EUR",
+  "components": {
+    "datePicker": {
+      "pickADate": "Sélectionner une date"
+    }
+  },
   "common": {
     "ok": "OK!",
     "cancel": "Annuler",
     "back": "Précédent"
   },
   "errors": {
-    "invalidEmail": "Adresse e-mail invalide"
+    "invalidEmail": "Adresse e-mail invalide",
+    "somethingWentWrong": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement."
   },
   "transactionListScreen": {
     "title": "Transactions",
@@ -23,7 +29,7 @@
   "onboardingScreen": {
     "title": "Créer un compte"
   },
-  "welcomeScreen": {
+  "homeScreen": {
     "poweredBy": "POWERED BY NUMER",
     "readyForLaunch": "Prêt pour le lancement.",
     "start": "OUVRIR UN COMPTE",
@@ -80,7 +86,7 @@
     }
   },
   "homeScreen": {
-    "title": "Bienvenue sur BPartners",
+    "title": "Accueil",
     "labels": {
       "collectPayment": "Collecter un paiement",
       "balance": "Solde au",
@@ -91,6 +97,32 @@
       "frequency": "Fréquence",
       "boostYourResults": "Booster vos résultats",
       "allTransactions": "Tout voir"
+    }
+  },
+  "invoiceScreen": {
+    "title": "Devis / Facturation",
+    "labels": {
+      "customerSection": "Client",
+      "productSection": "Produits",
+      "totalSection": "Total",
+      "addItem": "Add item",
+      "ref": "Référence",
+      "title": "Titre",
+      "vat": "TVA",
+      "sendingDate": "Date d'envoi",
+      "toPayAt": "Limite de paiement",
+      "invoiceForm": "Créer un devis",
+      "comment": "Commentaire"
+    },
+    "errors": {
+      "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
+      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
+    },
+    "menu": {
+      "markAsProposal": "Proposer au client"
+    },
+    "messages": {
+      "successfullyMarkAsProposal": "Devis envoyé au client."
     }
   }
 }

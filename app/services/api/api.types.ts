@@ -6,7 +6,8 @@ import { AccountHolder } from '../../models/entities/account-holder/account-hold
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { Customer } from '../../models/entities/customer/customer';
 import { Product } from '../../models/entities/product/product';
-import { File } from '../../models/entities/file/File';
+import { File } from '../../models/entities/file/file';
+import { Invoice } from '../../models/entities/invoice/invoice';
 
 export interface Whoami {
   user: any;
@@ -42,6 +43,12 @@ export type GetUserAccount = { kind: 'ok'; account: Account } | GeneralApiProble
 export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem;
 
 export type GetProductsResult = { kind: 'ok'; products: Product[] } | GeneralApiProblem;
+
+export type GetInvoicesResult = { kind: 'ok'; invoices: Invoice[] } | GeneralApiProblem;
+
+export type GetInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
+
+export type CrupdateInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
 
 export type GetAccountHolderResult = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
 

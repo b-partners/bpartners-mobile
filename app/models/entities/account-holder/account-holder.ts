@@ -15,4 +15,11 @@ export interface AccountSnapshotOut extends SnapshotOut<typeof AccountHolderMode
 
 export interface AccountSnapshotIn extends SnapshotIn<typeof AccountHolderModel> {}
 
-export const createAccountDefaultModel = () => types.optional(AccountHolderModel, {});
+export const createAccountDefaultModel = () =>
+  types.optional(AccountHolderModel, {
+    name: null,
+    address: null,
+    city: null,
+    country: null,
+    postalCode: null,
+  });

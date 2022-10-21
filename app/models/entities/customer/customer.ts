@@ -6,6 +6,10 @@ export const CustomerModel = types.model('Customer').props({
   email: types.maybe(types.string),
   phone: types.maybe(types.string),
   address: types.maybe(types.string),
+  website: types.maybe(types.string),
+  zipCode: types.maybe(types.number),
+  city: types.maybe(types.string),
+  country: types.maybe(types.string),
 });
 
 export interface Customer extends Instance<typeof CustomerModel> {}
@@ -14,4 +18,14 @@ export interface CustomerSnapshotOut extends SnapshotOut<typeof CustomerModel> {
 
 export interface CustomerSnapshotIn extends SnapshotIn<typeof CustomerModel> {}
 
-export const createCustomerDefaultModel = () => types.optional(CustomerModel, {});
+export const createCustomerDefaultModel = () =>
+  types.optional(CustomerModel, {
+    name: null,
+    email: null,
+    phone: null,
+    address: null,
+    website: null,
+    zipCode: null,
+    city: null,
+    country: null,
+  });

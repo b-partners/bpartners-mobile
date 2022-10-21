@@ -2,8 +2,11 @@ import { View, ViewStyle } from 'react-native';
 import { palette } from '../../theme/palette';
 import React from 'react';
 
-export function Separator() {
-  const STYLE: ViewStyle = { borderTopWidth: 1, borderStyle: 'solid', borderColor: palette.white };
+type SeparatorProps = { style?: ViewStyle };
 
-  return <View style={STYLE} />;
+export function Separator(props: SeparatorProps) {
+  const STYLE: ViewStyle = { borderTopWidth: 1, borderStyle: 'solid', borderColor: palette.white };
+  const { style: styleOverrides } = props;
+
+  return <View style={[STYLE, styleOverrides]} />;
 }

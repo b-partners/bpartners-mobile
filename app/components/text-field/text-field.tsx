@@ -60,13 +60,29 @@ export interface TextFieldProps extends TextInputProps {
   preset?: keyof typeof PRESETS;
 
   forwardedRef?: any;
+
+  labelContainerStyle?: ViewStyle;
+
+  labelStyle?: TextStyle;
 }
 
 /**
  * A component which has a label and an input together.
  */
 export function TextField(props: TextFieldProps) {
-  const { placeholderTx, placeholder, labelTx, label, preset = 'default', style: styleOverride, inputStyle: inputStyleOverride, forwardedRef, ...rest } = props;
+  const {
+    placeholderTx,
+    placeholder,
+    labelTx,
+    label,
+    preset = 'default',
+    style: styleOverride,
+    inputStyle: inputStyleOverride,
+    forwardedRef,
+    labelContainerStyle,
+    labelStyle,
+    ...rest
+  } = props;
 
   const containerStyles = [CONTAINER, PRESETS[preset], styleOverride];
   const inputStyles = [INPUT, inputStyleOverride];
@@ -74,7 +90,11 @@ export function TextField(props: TextFieldProps) {
 
   return (
     <View style={containerStyles}>
-      <Text preset='fieldLabel' tx={labelTx} text={label} />
+      {(labelTx || label) && (
+        <View style={labelContainerStyle}>
+          <Text preset='fieldLabel' tx={labelTx} text={label} style={labelStyle} />
+        </View>
+      )}
       <TextInput
         placeholder={actualPlaceholder}
         placeholderTextColor={color.palette.lighterGrey}

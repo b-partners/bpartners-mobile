@@ -13,6 +13,9 @@ import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-vie
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { translate } from '../i18n';
 import { useStores } from '../models';
+import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
+import { CriteriaModel } from '../models/entities/criteria/criteria';
+import { InvoicesScreen } from '../screens/invoices/Invoices-screen';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -35,6 +38,8 @@ export type NavigatorParamList = {
   signInWebView: { url: string };
   paymentInitiation: undefined;
   profile: undefined;
+  invoices: undefined;
+  invoiceForm: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
@@ -55,14 +60,16 @@ function AppStack() {
       }}
       initialRouteName='welcome'
     >
+      <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
       <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
       <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
       <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+      <Drawer.Screen name='invoices' component={InvoicesScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='home' component={HomeScreen} />
     </Drawer.Navigator>
   );
 }
@@ -72,7 +79,7 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore } = useStores();
+  const { transactionStore, invoiceStore } = useStores();
 
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
@@ -82,6 +89,13 @@ export function AppNavigator(props: NavigationProps) {
         break;
       case 'transactionList':
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
+        break;
+      case 'invoices':
+        const criteria = CriteriaModel.create({ pageSize: 15, page: 1 });
+        await Promise.all([invoiceStore.getInvoices(criteria)]);
+        break;
+      case 'invoiceForm':
+        await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
         break;
     }
   };

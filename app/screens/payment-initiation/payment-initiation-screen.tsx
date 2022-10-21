@@ -8,25 +8,8 @@ import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
 import QRCode from 'react-native-qrcode-svg';
 import { PaymentInitiationForm } from './payment-initiation-form';
+import { CONTAINER, FULL, HEADER, HEADER_TITLE } from '../index';
 
-const FULL: ViewStyle = {
-  flex: 1,
-};
-const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
-};
-const HEADER: TextStyle = {
-  paddingBottom: spacing[5] - 1,
-  paddingHorizontal: spacing[4],
-  paddingTop: spacing[3],
-};
-const HEADER_TITLE: TextStyle = {
-  fontSize: 12,
-  fontWeight: 'bold',
-  letterSpacing: 1.5,
-  lineHeight: 15,
-  textAlign: 'center',
-};
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
 const QRCODE_CONTAINER_STYLE: ViewStyle = { display: 'flex', alignItems: 'center', marginTop: 25 };
 const PAYMENT_LINK_STYLE: TextStyle = {

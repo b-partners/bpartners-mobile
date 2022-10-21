@@ -13,4 +13,9 @@ export interface TransactionCategorySnapshotOut extends SnapshotOut<typeof Trans
 
 export interface TransactionCategorySnapshotIn extends SnapshotIn<typeof TransactionCategoryModel> {}
 
-export const createTransactionCategoryDefaultModel = () => types.optional(TransactionCategoryModel, {});
+export const createTransactionCategoryDefaultModel = () =>
+  types.optional(TransactionCategoryModel, {
+    type: null,
+    vat: null,
+    userDefined: false,
+  });

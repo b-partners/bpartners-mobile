@@ -1,12 +1,18 @@
 {
   "currency": "USD",
+  "components": {
+    "datePicker": {
+      "pickADate": "Pick a date"
+    }
+  },
   "common": {
     "ok": "OK!",
     "cancel": "Cancel",
     "back": "Back"
   },
   "errors": {
-    "invalidEmail": "Invalid email address."
+    "invalidEmail": "Invalid email address.",
+    "somethingWentWrong": "Something went wrong. Please retry later."
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",
@@ -97,7 +103,7 @@
     }
   },
   "homeScreen": {
-    "title": "Welcome on BPartners",
+    "title": "Home",
     "labels": {
       "collectPayment": "Collect a payment",
       "balance": "Balance as of",
@@ -108,6 +114,32 @@
       "frequency": "Frequency",
       "boostYourResults": "Boost your results",
       "allTransactions": "See all transactions"
+    }
+  },
+  "invoiceScreen": {
+    "title": "Invoice",
+    "labels": {
+      "customerSection": "Customer",
+      "productSection": "Items",
+      "totalSection": "Total",
+      "addItem": "Add item",
+      "ref": "Ref",
+      "title": "Title",
+      "vat": "VTA",
+      "sendingDate": "Sending date",
+      "toPayAt": "To pay at",
+      "invoiceForm": "Create invoice",
+      "comment": "Comment"
+    },
+    "errors": {
+      "sendingDateLaterThanToday": "Invoice can not be sent no later than today.",
+      "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date."
+    },
+    "menu": {
+      "markAsProposal": "Propose to client"
+    },
+    "messages": {
+      "successfullyMarkAsProposal": "Invoice proposed to customer."
     }
   }
 }
