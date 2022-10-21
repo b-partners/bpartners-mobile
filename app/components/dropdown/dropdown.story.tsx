@@ -27,7 +27,7 @@ const MockData: TransactionCategory[] = [
   },
 ];
 
-const test1: TransactionCategory = {
+const MockCategory: TransactionCategory = {
   id: '2',
   userDefined: false,
   type: 'Item 2',
@@ -39,9 +39,9 @@ storiesOf('Dropdown', module)
   .add('Style Presets', () => (
     <Story>
       <UseCase text='With require()'>
-        <Dropdown<TransactionCategory>
+        <Dropdown
           items={MockData}
-          value={test1}
+          value={MockCategory}
           selectValue={transactionCategory => transactionCategory.id}
           selectLabel={transactionCategory => transactionCategory.type}
           onSelectItem={() => null}
