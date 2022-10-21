@@ -13608,6 +13608,11 @@ react-native-screens@3.13.1:
   resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.4.0.tgz#01bfd0d59454318f4e0b13fe9c1eb0523d70f2e0"
   integrity sha512-8/C0htHrFWeUm9N8JegmadovUfgTWkGBkDPZ1N3YkXtDWb+98Ya2gThiKcu445r8c7YhcrBfnHz/mYsXIusaOQ==
 
+react-native-snackbar@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-snackbar/-/react-native-snackbar-2.4.0.tgz#dd9687f5228e379ecd57678a921e546331681bcf"
+  integrity sha512-xEDIDxw0ubBHrsvzaMfrZlFoy+ai1WEJZQwyAsG55fqYxUfQM20h+V4v25u+/H/YKY7ZCRMdCZ8zB5JOnbvCQw==
+
 react-native-svg@^13.1.0:
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-13.1.0.tgz#2bad1dbee4c093af4abf45b356571715ae5f1c17"
