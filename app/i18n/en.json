@@ -11,7 +11,8 @@
     "back": "Back"
   },
   "errors": {
-    "invalidEmail": "Invalid email address."
+    "invalidEmail": "Invalid email address.",
+    "somethingWentWrong": "Something went wrong. Please retry later."
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",

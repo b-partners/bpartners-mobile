@@ -11,7 +11,8 @@
     "back": "Précédent"
   },
   "errors": {
-    "invalidEmail": "Adresse e-mail invalide"
+    "invalidEmail": "Adresse e-mail invalide",
+    "somethingWentWrong": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement."
   },
   "transactionListScreen": {
     "title": "Transactions",
