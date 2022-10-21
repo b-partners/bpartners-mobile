@@ -59,6 +59,7 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     getInvoices: flow(function* (criteria: Criteria) {
+      detach(self.invoices);
       const paymentApi = new PaymentApi(self.environment.api);
       const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
       if (getInvoicesResult.kind === 'ok') {

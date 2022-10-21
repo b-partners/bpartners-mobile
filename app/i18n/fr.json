@@ -110,7 +110,8 @@
       "vat": "TVA",
       "sendingDate": "Date d'envoi",
       "toPayAt": "Limite de paiement",
-      "invoiceForm": "Créer un devis"
+      "invoiceForm": "Créer un devis",
+      "comment": "Commentaire"
     },
     "errors": {
       "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",

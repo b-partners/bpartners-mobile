@@ -38,12 +38,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
 
   const validate = values => {
     const errors: Partial<Record<keyof Invoice, string>> = {};
-    const [sendingDate] = values.sendingDate.toISOString().split('T');
-    const [today] = new Date().toISOString().split('T');
 
-    if (sendingDate === today) {
-      errors.sendingDate = translate('invoiceScreen.errors.sendingDateLaterThanToday');
-    }
     if (values.sendingDate > values.toPayAt) {
       errors.sendingDate = translate('invoiceScreen.errors.sendingDateLaterThanToPayAt');
     }
@@ -54,6 +49,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
     id: uuid.v4().toString(),
     ref: '',
     title: '',
+    comment: null,
     sendingDate: new Date(),
     toPayAt: new Date(),
     customer: {},
@@ -66,6 +62,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
       id: uuid.v4().toString(),
       ref: invoice.ref,
       title: invoice.title,
+      comment: null,
       customer: invoice.customer,
       products: invoice.products,
       sendingDate: new Date(invoice.sendingDate),
@@ -155,10 +152,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 value={values.customer}
                 data={customers}
                 onValueChange={item => {
-                  if (!customers || !item) {
-                    return;
-                  }
-                  const c = customers.find(customer => item.id === customer.id);
+                  const c = (customers || []).find(customer => item && item.id === customer.id);
                   setFieldValue('customer', c);
                 }}
                 onSearch={() => {}}
@@ -228,6 +222,18 @@ export function InvoiceForm(props: InvoiceFormProps) {
               </View>
 
               <Separator style={{ marginBottom: spacing[4] }} />
+
+              <TextField
+                testID='comment'
+                nativeID='comment'
+                style={TEXT_FIELD_STYLE}
+                labelContainerStyle={LABEL_CONTAINER_STYLE}
+                labelStyle={INPUT_LABEL_STYLE}
+                inputStyle={INPUT_TEXT_STYLE}
+                labelTx='invoiceScreen.labels.comment'
+                value={values.comment}
+                onChangeText={comment => setFieldValue('comment', comment)}
+              />
 
               <View>
                 <Button

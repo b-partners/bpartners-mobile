@@ -127,7 +127,8 @@
       "vat": "VTA",
       "sendingDate": "Sending date",
       "toPayAt": "To pay at",
-      "invoiceForm": "Create invoice"
+      "invoiceForm": "Create invoice",
+      "comment": "Comment"
     },
     "errors": {
       "sendingDateLaterThanToday": "Invoice can not be sent no later than today.",
