@@ -72,11 +72,16 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
                     }
                   }}
                   markAsProposal={async () => {
-                    if (item.status === InvoiceStatus.CONFIRMED) {
+                    if (item.status === InvoiceStatus.PROPOSAL || item.status === InvoiceStatus.CONFIRMED) {
                       return;
                     }
                     try {
-                      const editedItem = { ...item, status: InvoiceStatus.PROPOSAL };
+                      const editedItem = {
+                        ...item,
+                        ref: item.ref.replace('-TMP', ''),
+                        title: item.title.replace('-TMP', ''),
+                        status: InvoiceStatus.PROPOSAL,
+                      };
                       await invoiceStore.saveInvoice(editedItem);
                       await invoiceStore.getInvoices({ page: 1, pageSize: 15 });
                       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
