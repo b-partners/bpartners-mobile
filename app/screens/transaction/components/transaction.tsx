@@ -28,7 +28,6 @@ export const Transaction = (
   const [userDefinedCategory, setUserDefinedCategory] = useState(false);
 
   const { item, transactionCategories, showTransactionCategory } = props;
-  console.tron.log(item.category);
 
   return (
     <View style={LIST_CONTAINER}>
