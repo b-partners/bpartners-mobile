@@ -22,7 +22,7 @@ export class TransactionApi {
       }
       const transactions = response.data.map(item => ({
         ...item,
-        category: item.category.length ? item.category[0] : null,
+        category: item.category && item.category.length ? item.category[0] : null,
       }));
       return { kind: 'ok', transactions };
     } catch (e) {
