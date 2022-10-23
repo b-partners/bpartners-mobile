@@ -148,7 +148,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
 
               <AutocompletionFormField
                 containerStyle={{ marginBottom: spacing[4] }}
-                selectTitle={item => ({ id: item.id, title: item.name })}
+                id='id'
+                title='name'
                 value={values.customer}
                 data={customers}
                 onValueChange={item => {
@@ -170,10 +171,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     const selectedProducts = values.products.map(p => p.id);
                     return !selectedProducts.includes(item.id);
                   })}
-                  selectTitle={item => ({
-                    id: item.id,
-                    title: item.description,
-                  })}
+                  id='id'
+                  title='description'
                   onValueChange={item => {
                     if (!item) {
                       return;
