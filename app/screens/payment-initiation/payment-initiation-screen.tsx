@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import {ScrollView, TextStyle, View, ViewStyle} from 'react-native';
+import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { NavigatorParamList } from '../../navigators';
 import { GradientBackground, Header, Screen, Text } from '../../components';

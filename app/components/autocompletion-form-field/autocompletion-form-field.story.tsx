@@ -1,19 +1,19 @@
 import * as React from 'react';
-import {storiesOf} from '@storybook/react-native';
-import {Story, StoryScreen, UseCase} from '../../../storybook/views';
-import {TAutocompleteDropdownItem} from 'react-native-autocomplete-dropdown';
-import {AutocompletionFormField} from './autocompletion-form-field';
+import { storiesOf } from '@storybook/react-native';
+import { Story, StoryScreen, UseCase } from '../../../storybook/views';
+import { TAutocompleteDropdownItem } from 'react-native-autocomplete-dropdown';
+import { AutocompletionFormField } from './autocompletion-form-field';
 
 declare let module;
 
 const dataSet = [
-  {id: '1', title: 'Alpha', description: 'description1'},
-  {id: '2', title: 'Beta', description: 'description2'},
-  {id: '3', title: 'Gamma', description: 'description3'},
-  {id: '4', title: 'Epsilon', description: 'description4'},
+  { id: '1', title: 'Alpha', description: 'description1' },
+  { id: '2', title: 'Beta', description: 'description2' },
+  { id: '3', title: 'Gamma', description: 'description3' },
+  { id: '4', title: 'Epsilon', description: 'description4' },
 ];
 
-const USE_CASE_STYLE = {paddingBottom: '50%'};
+const USE_CASE_STYLE = { paddingBottom: '50%' };
 storiesOf('AutocompletionFormField', module)
   .addDecorator(fn => <StoryScreen>{fn()}</StoryScreen>)
   .add('Behaviour', () => (

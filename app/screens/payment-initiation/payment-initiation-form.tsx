@@ -54,8 +54,8 @@ export const PaymentInitiationForm: FC<
           <>
             <AutocompletionFormField
               data={products}
-              idKey={"id"}
-              titleKey={"description"}
+              idKey={'id'}
+              titleKey={'description'}
               value={labelValue}
               onSearch={async label => {
                 setLabelValue(label);
@@ -74,8 +74,8 @@ export const PaymentInitiationForm: FC<
             />
             <AutocompletionFormField
               data={customers}
-              idKey={"id"}
-              titleKey={"name"}
+              idKey={'id'}
+              titleKey={'name'}
               value={payerNameValue}
               onSearch={name => {
                 setPayerNameValue(name);
