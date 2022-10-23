@@ -36,6 +36,37 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
   const { invoiceStore } = useStores();
   const { invoices, loading } = invoiceStore;
 
+  const editInvoice = async item => {
+    if (item.status !== InvoiceStatus.DRAFT) {
+      return;
+    }
+    try {
+      await invoiceStore.getInvoice(item.id);
+      navigation.navigate('invoiceForm');
+    } catch (e) {
+      console.tron.log(`Failed to edit invoice, ${e}`);
+    }
+  };
+
+  const markAsProposal = async (item: IInvoice) => {
+    if (item.status === InvoiceStatus.PROPOSAL || item.status === InvoiceStatus.CONFIRMED) {
+      return;
+    }
+    try {
+      const editedItem = {
+        ...item,
+        ref: item.ref.replace('-TMP', ''),
+        title: item.title.replace('-TMP', ''),
+        status: InvoiceStatus.PROPOSAL,
+      };
+      await invoiceStore.saveInvoice(editedItem);
+      await invoiceStore.getInvoices({ page: 1, pageSize: 15 });
+      showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
+    } catch (e) {
+      console.tron.log(`Failed to convert invoice, ${e}`);
+    }
+  };
+
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
@@ -57,40 +88,7 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
             contentContainerStyle={INVOICES_STYLE}
             data={[...invoices]}
             renderItem={({ item }) => {
-              return (
-                <Invoice
-                  item={item}
-                  editInvoice={async () => {
-                    if (item.status !== InvoiceStatus.DRAFT) {
-                      return;
-                    }
-                    try {
-                      await invoiceStore.getInvoice(item.id);
-                      navigation.navigate('invoiceForm');
-                    } catch (e) {
-                      console.tron.log(`Failed to edit invoice, ${e}`);
-                    }
-                  }}
-                  markAsProposal={async () => {
-                    if (item.status === InvoiceStatus.PROPOSAL || item.status === InvoiceStatus.CONFIRMED) {
-                      return;
-                    }
-                    try {
-                      const editedItem = {
-                        ...item,
-                        ref: item.ref.replace('-TMP', ''),
-                        title: item.title.replace('-TMP', ''),
-                        status: InvoiceStatus.PROPOSAL,
-                      };
-                      await invoiceStore.saveInvoice(editedItem);
-                      await invoiceStore.getInvoices({ page: 1, pageSize: 15 });
-                      showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
-                    } catch (e) {
-                      console.tron.log(`Failed to convert invoice, ${e}`);
-                    }
-                  }}
-                />
-              );
+              return <Invoice item={item} editInvoice={() => editInvoice(item)} markAsProposal={() => markAsProposal(item)} />;
             }}
             ItemSeparatorComponent={() => <Separator />}
           />
