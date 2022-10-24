@@ -3,9 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { ActivityIndicator, FlatList, View, ViewStyle } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { NavigatorParamList } from '../../navigators';
-import { GradientBackground, Header, Screen, Separator } from '../../components';
+import { GradientBackground, Screen, Separator } from '../../components';
 import { color } from '../../theme';
-import { HEADER, HEADER_TITLE } from '../index';
 import { useStores } from '../../models';
 import { INVOICES_STYLE } from './styles';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
@@ -15,6 +14,7 @@ import { translate } from '../../i18n';
 
 const FULL: ViewStyle = {
   flex: 1,
+  position: 'relative',
 };
 
 const CONTAINER: ViewStyle = {
@@ -32,7 +32,7 @@ const ACTIVITY_INDICATOR_CONTAINER_STYLE: ViewStyle = {
   height: 700,
 };
 
-export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const InvoiceQuotationScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { invoices, loading } = invoiceStore;
 
@@ -71,18 +71,6 @@ export const InvoicesScreen: FC<StackScreenProps<NavigatorParamList, 'invoices'>
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-        <Header
-          headerTx='invoiceScreen.title'
-          style={HEADER}
-          titleStyle={HEADER_TITLE}
-          leftIcon={'back'}
-          onLeftPress={() => navigation.navigate('home')}
-          rightIcon={'plus'}
-          onRightPress={async () => {
-            await invoiceStore.createInvoice();
-            navigation.navigate('invoiceForm');
-          }}
-        />
         {!loading ? (
           <FlatList<IInvoice>
             contentContainerStyle={INVOICES_STYLE}

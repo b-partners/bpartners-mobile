@@ -40,7 +40,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
           titleStyle={HEADER_TITLE}
           leftIcon={'back'}
           onLeftPress={async () => {
-            navigation.navigate('invoices');
+            navigation.navigate('paymentList');
           }}
         />
         <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
