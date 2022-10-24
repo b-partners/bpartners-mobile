@@ -1,4 +1,4 @@
-import { Invoice as IInvoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
+import { Invoice as IInvoice } from '../../../models/entities/invoice/invoice';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Icon, Text } from '../../../components';
 import { BulletSeparator } from '../../../components/bullet-separator/bullet-separator';
@@ -9,7 +9,7 @@ import { spacing } from '../../../theme';
 import { translate } from '../../../i18n';
 import { Menu, MenuAction, MenuItem } from '../../../components/menu/menu';
 
-type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction; editInvoice?: () => Promise<void> };
+type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction };
 
 const INVOICE_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
 const INVOICE_STYLE: ViewStyle = { paddingVertical: spacing[2], flex: 1 };
@@ -26,14 +26,14 @@ const MENU_CONTAINER_STYLE: ViewStyle = {
 };
 
 export const Invoice: React.FC<InvoiceProps> = props => {
-  const { item, editInvoice, menuItems, menuAction } = props;
+  const { item, menuItems, menuAction } = props;
 
   const { format } = currencyPipe(translate('currency'));
   const totalPriceWithVat = format(item.totalPriceWithVat);
 
   return (
     <View style={INVOICE_CONTAINER_STYLE}>
-      <TouchableOpacity onPress={() => editInvoice()} disabled={item.status !== InvoiceStatus.DRAFT} style={INVOICE_STYLE}>
+      <TouchableOpacity style={INVOICE_STYLE}>
         <View style={{ ...ROW_STYLE, ...BOTTOM_MARGIN_STYLE }}>
           <Text text={props.item.customer.name} style={HEADER_TEXT_STYLE} />
           <Text text={totalPriceWithVat} style={HEADER_TEXT_STYLE} />

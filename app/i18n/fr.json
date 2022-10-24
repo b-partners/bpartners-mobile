@@ -120,7 +120,8 @@
     },
     "menu": {
       "markAsProposal": "Transformer en devis",
-      "downloadInvoice": "Télécharger la facture "
+      "downloadInvoice": "Télécharger la facture ",
+      "editInvoice": "Modifier la facture"
     },
     "messages": {
       "successfullyMarkAsProposal": "Devis envoyé au client."
@@ -128,6 +129,7 @@
   },
   "paymentListScreen": {
     "tabs": {
+      "drafts": "Brouillons",
       "invoices": "Factures",
       "quotations": "Devis"
     }

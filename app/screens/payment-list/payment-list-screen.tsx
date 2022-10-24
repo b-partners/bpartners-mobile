@@ -13,6 +13,7 @@ import { color, spacing } from '../../theme';
 import { InvoicesScreen } from '../invoice-quotation/invoices-screen';
 import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
 import { useStores } from '../../models';
+import { DraftsScreen } from '../invoice-quotation/drafts-screen';
 
 const FLOATING_ACTION_BUTTON_STYLE: ViewStyle = {
   position: 'absolute',
@@ -26,7 +27,8 @@ export const PaymentListScreen: FC<StackScreenProps<NavigatorParamList, 'payment
 
   return (
     <Screen>
-      <Tab.Navigator>
+      <Tab.Navigator initialRouteName={translate('paymentListScreen.tabs.drafts')}>
+        <Tab.Screen name={translate('paymentListScreen.tabs.drafts')} component={DraftsScreen} />
         <Tab.Screen name={translate('paymentListScreen.tabs.quotations')} component={QuotationsScreen} />
         <Tab.Screen name={translate('paymentListScreen.tabs.invoices')} component={InvoicesScreen} />
       </Tab.Navigator>

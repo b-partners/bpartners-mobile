@@ -5,29 +5,30 @@ module.exports = {
     es2021: true,
     jest: true,
   },
-  extends: ["@react-native-community", "plugin:react/recommended", "prettier"],
-  parser: "@typescript-eslint/parser",
+  extends: ['@react-native-community', 'plugin:react/recommended', 'prettier'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
-  plugins: ["react", "@typescript-eslint", "react-native", "react-hooks"],
+  plugins: ['react', '@typescript-eslint', 'react-native', 'react-hooks'],
   overrides: [
     {
-      files: ["*.ts", "*.tsx"],
+      files: ['*.ts', '*.tsx'],
       rules: {
-        "@typescript-eslint/no-shadow": ["error"],
-        "no-shadow": "off",
-        "no-undef": "off",
-        "import/prefer-default-export": "off",
-        "react/no-unescaped-entities": "off",
-        "max-len": ["error", { code: 160 }],
-        "react-native/no-inline-styles": "error",
-        "react-hooks/rules-of-hooks": "off",
-        "react/prop-types": "off",
+        '@typescript-eslint/no-shadow': ['error'],
+        'no-shadow': 'off',
+        'no-undef': 'off',
+        'import/prefer-default-export': 'off',
+        'react/no-unescaped-entities': 'off',
+        'max-len': ['error', { code: 160 }],
+        'react-native/no-inline-styles': 'error',
+        'react-hooks/rules-of-hooks': 'off',
+        'react/prop-types': 'off',
+        'react-hooks/exhaustive-deps': 'warn',
       },
     },
   ],
@@ -36,7 +37,7 @@ module.exports = {
   },
   settings: {
     react: {
-      version: "detect",
+      version: 'detect',
     },
   },
-}
+};

@@ -19,6 +19,7 @@ export const InvoiceStoreModel = types
     customers: types.optional(types.array(CustomerModel), []),
     invoices: types.optional(types.array(InvoiceModel), []),
     quotations: types.optional(types.array(InvoiceModel), []),
+    drafts: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loading: types.optional(types.boolean, false),
   })
@@ -53,6 +54,27 @@ export const InvoiceStoreModel = types
         self.getProductsSuccess(getProductsResult.products);
       } else {
         __DEV__ && console.tron.log(getProductsResult.kind);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getDraftsSuccess: (invoices: InvoiceStoreSnapshotOut[]) => {
+      self.drafts.replace(invoices as any);
+    },
+  }))
+  .actions(self => ({
+    getDrafts: flow(function* (criteria: Criteria) {
+      detach(self.invoices);
+      self.loading = true;
+      const paymentApi = new PaymentApi(self.environment.api);
+      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
+      if (getInvoicesResult.kind === 'ok') {
+        self.loading = false;
+        self.getDraftsSuccess(getInvoicesResult.invoices);
+      } else {
+        self.loading = false;
+        showMessage(translate('errors.somethingWentWrong'));
+        __DEV__ && console.tron.log(getInvoicesResult.kind);
       }
     }),
   }))

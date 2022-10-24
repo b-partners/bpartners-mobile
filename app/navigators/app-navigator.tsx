@@ -14,7 +14,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
-import { CriteriaModel } from '../models/entities/criteria/criteria';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
 import { InvoiceStatus } from '../models/entities/invoice/invoice';
@@ -95,9 +94,7 @@ export function AppNavigator(props: NavigationProps) {
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
         break;
       case 'paymentList':
-        const invoiceCriteria = CriteriaModel.create({ pageSize: 15, page: 1, status: InvoiceStatus.CONFIRMED });
-        const quotationCriteria = CriteriaModel.create({ pageSize: 15, page: 1, status: InvoiceStatus.DRAFT });
-        await Promise.all([invoiceStore.getInvoices(invoiceCriteria), invoiceStore.getQuotations(quotationCriteria)]);
+        await Promise.all([invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 15 })]);
         break;
       case 'invoiceForm':
         await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
