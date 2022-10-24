@@ -124,5 +124,11 @@
     "messages": {
       "successfullyMarkAsProposal": "Devis envoyé au client."
     }
+  },
+  "paymentListScreen": {
+    "tabs": {
+      "invoices": "Factures",
+      "quotations": "Devis"
+    }
   }
 }

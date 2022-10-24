@@ -141,5 +141,11 @@
     "messages": {
       "successfullyMarkAsProposal": "Invoice proposed to customer."
     }
+  },
+  "paymentListScreen": {
+    "tabs": {
+      "invoices": "Invoices",
+      "quotations": "Quotations"
+    }
   }
 }
