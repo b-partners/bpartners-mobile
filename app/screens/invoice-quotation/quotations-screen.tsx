@@ -44,7 +44,7 @@ export const QuotationsScreen: FC<StackScreenProps<NavigatorParamList, 'invoices
         status: InvoiceStatus.PROPOSAL,
       };
       await invoiceStore.saveInvoice(editedItem);
-      await invoiceStore.getQuotations({ page: 1, pageSize: 15 });
+      await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {
       console.tron.log(`Failed to convert invoice, ${e}`);

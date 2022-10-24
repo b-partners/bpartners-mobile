@@ -17,6 +17,7 @@ import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { CriteriaModel } from '../models/entities/criteria/criteria';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
+import { InvoiceStatus } from '../models/entities/invoice/invoice';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -94,8 +95,8 @@ export function AppNavigator(props: NavigationProps) {
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
         break;
       case 'paymentList':
-        const invoiceCriteria = CriteriaModel.create({ pageSize: 15, page: 1 });
-        const quotationCriteria = CriteriaModel.create({ pageSize: 15, page: 1 });
+        const invoiceCriteria = CriteriaModel.create({ pageSize: 15, page: 1, status: InvoiceStatus.CONFIRMED });
+        const quotationCriteria = CriteriaModel.create({ pageSize: 15, page: 1, status: InvoiceStatus.DRAFT });
         await Promise.all([invoiceStore.getInvoices(invoiceCriteria), invoiceStore.getQuotations(quotationCriteria)]);
         break;
       case 'invoiceForm':
