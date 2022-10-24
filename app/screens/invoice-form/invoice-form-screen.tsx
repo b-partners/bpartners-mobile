@@ -24,7 +24,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
   const saveInvoice = async (values: Invoice) => {
     try {
       await invoiceStore.saveInvoice(values);
-      navigation.navigate('invoices');
+      navigation.navigate('paymentList');
     } catch (e) {
       console.tron.log(e);
     }

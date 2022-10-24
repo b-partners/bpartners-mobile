@@ -119,7 +119,8 @@
       "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
     },
     "menu": {
-      "markAsProposal": "Proposer au client"
+      "markAsProposal": "Transformer en devis",
+      "downloadInvoice": "Télécharger la facture "
     },
     "messages": {
       "successfullyMarkAsProposal": "Devis envoyé au client."

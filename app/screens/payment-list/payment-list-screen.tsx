@@ -3,12 +3,16 @@ import { observer } from 'mobx-react-lite';
 import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ActionButton from 'react-native-action-button';
+import { Dimensions, View, ViewStyle } from 'react-native';
+
 import { NavigatorParamList } from '../../navigators';
 import { Screen } from '../../components';
-import { InvoiceQuotationScreen } from '../invoice-quotation/invoice-quotation-screen';
+
 import { translate } from '../../i18n';
-import { Dimensions, View, ViewStyle } from 'react-native';
 import { color, spacing } from '../../theme';
+import { InvoicesScreen } from '../invoice-quotation/invoices-screen';
+import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
+import { useStores } from '../../models';
 
 const FLOATING_ACTION_BUTTON_STYLE: ViewStyle = {
   position: 'absolute',
@@ -18,15 +22,22 @@ const FLOATING_ACTION_BUTTON_STYLE: ViewStyle = {
 
 export const PaymentListScreen: FC<StackScreenProps<NavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
+  const { invoiceStore } = useStores();
 
   return (
     <Screen>
       <Tab.Navigator>
-        <Tab.Screen name={translate('paymentListScreen.tabs.invoices')} component={InvoiceQuotationScreen} />
-        <Tab.Screen name={translate('paymentListScreen.tabs.quotations')} component={InvoiceQuotationScreen} />
+        <Tab.Screen name={translate('paymentListScreen.tabs.quotations')} component={QuotationsScreen} />
+        <Tab.Screen name={translate('paymentListScreen.tabs.invoices')} component={InvoicesScreen} />
       </Tab.Navigator>
       <View style={FLOATING_ACTION_BUTTON_STYLE}>
-        <ActionButton buttonColor={color.palette.orange} onPress={() => navigation.navigate('invoiceForm')} />
+        <ActionButton
+          buttonColor={color.palette.orange}
+          onPress={async () => {
+            await invoiceStore.createInvoice();
+            navigation.navigate('invoiceForm');
+          }}
+        />
       </View>
     </Screen>
   );

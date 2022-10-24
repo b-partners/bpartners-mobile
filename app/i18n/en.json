@@ -136,7 +136,8 @@
       "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date."
     },
     "menu": {
-      "markAsProposal": "Propose to client"
+      "markAsProposal": "Propose to client",
+      "downloadInvoice": "Download"
     },
     "messages": {
       "successfullyMarkAsProposal": "Invoice proposed to customer."

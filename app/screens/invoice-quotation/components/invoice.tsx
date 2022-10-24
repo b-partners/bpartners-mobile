@@ -7,9 +7,9 @@ import React from 'react';
 import { BODY_TEXT_STYLE, CENTERED_ROW, HEADER_TEXT_STYLE, ROW_STYLE } from '../styles';
 import { spacing } from '../../../theme';
 import { translate } from '../../../i18n';
-import { Menu } from '../../../components/menu/menu';
+import { Menu, MenuAction, MenuItem } from '../../../components/menu/menu';
 
-type InvoiceProps = { item: IInvoice; editInvoice: () => Promise<void>; markAsProposal: () => Promise<void> };
+type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction; editInvoice?: () => Promise<void> };
 
 const INVOICE_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
 const INVOICE_STYLE: ViewStyle = { paddingVertical: spacing[2], flex: 1 };
@@ -26,7 +26,8 @@ const MENU_CONTAINER_STYLE: ViewStyle = {
 };
 
 export const Invoice: React.FC<InvoiceProps> = props => {
-  const { editInvoice, item, markAsProposal } = props;
+  const { item, editInvoice, menuItems, menuAction } = props;
+
   const { format } = currencyPipe(translate('currency'));
   const totalPriceWithVat = format(item.totalPriceWithVat);
 
@@ -53,12 +54,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
         </View>
       </TouchableOpacity>
       <View style={MENU_CONTAINER_STYLE}>
-        <Menu
-          items={[{ id: 'markAsProposal', title: translate('invoiceScreen.menu.markAsProposal') }]}
-          actions={{
-            markAsProposal,
-          }}
-        >
+        <Menu items={menuItems} actions={menuAction}>
           <Icon icon='menu' />
         </Menu>
       </View>

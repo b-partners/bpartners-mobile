@@ -1,5 +1,5 @@
 import { TextStyle, ViewStyle } from 'react-native';
-import { spacing } from '../../theme';
+import { color, spacing } from '../../theme';
 
 export const INVOICES_STYLE: ViewStyle = {
   paddingHorizontal: spacing[3],
@@ -9,3 +9,23 @@ export const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', jus
 export const CENTERED_ROW: ViewStyle = { justifyContent: 'flex-start', alignItems: 'center' };
 export const HEADER_TEXT_STYLE: TextStyle = { fontSize: 16, fontWeight: 'bold' };
 export const BODY_TEXT_STYLE: TextStyle = { fontSize: 14 };
+
+export const FULL: ViewStyle = {
+  flex: 1,
+  position: 'relative',
+};
+
+export const CONTAINER: ViewStyle = {
+  backgroundColor: color.transparent,
+  display: 'flex',
+  flexDirection: 'column',
+};
+
+export const ACTIVITY_INDICATOR_CONTAINER_STYLE: ViewStyle = {
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 700,
+};

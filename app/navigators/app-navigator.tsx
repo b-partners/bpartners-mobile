@@ -15,7 +15,7 @@ import { translate } from '../i18n';
 import { useStores } from '../models';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { CriteriaModel } from '../models/entities/criteria/criteria';
-import { InvoiceQuotationScreen } from '../screens/invoice-quotation/invoice-quotation-screen';
+import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
 
 /**
@@ -67,7 +67,7 @@ function AppStack() {
       <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
       <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
       <Drawer.Screen name='paymentList' component={PaymentListScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='invoices' component={InvoiceQuotationScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      <Drawer.Screen name='invoices' component={InvoicesScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
       <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
@@ -94,8 +94,9 @@ export function AppNavigator(props: NavigationProps) {
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
         break;
       case 'paymentList':
-        const criteria = CriteriaModel.create({ pageSize: 15, page: 1 });
-        await Promise.all([invoiceStore.getInvoices(criteria)]);
+        const invoiceCriteria = CriteriaModel.create({ pageSize: 15, page: 1 });
+        const quotationCriteria = CriteriaModel.create({ pageSize: 15, page: 1 });
+        await Promise.all([invoiceStore.getInvoices(invoiceCriteria), invoiceStore.getQuotations(quotationCriteria)]);
         break;
       case 'invoiceForm':
         await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
