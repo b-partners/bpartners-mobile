@@ -1,10 +1,11 @@
 import React from 'react';
-import { Product } from '../../../models/entities/product/product';
-import { currencyPipe } from '../../../utils/pipes';
-import { translate } from '../../../i18n';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
+
 import { Icon, Text, TextField } from '../../../components';
+import { translate } from '../../../i18n';
+import { Product } from '../../../models/entities/product/product';
 import { spacing } from '../../../theme';
+import { currencyPipe } from '../../../utils/pipes';
 import { INPUT_TEXT_STYLE } from '../styles';
 
 const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };

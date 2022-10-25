@@ -1,8 +1,9 @@
+import React from 'react';
 import { Dimensions, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
-import { BUTTON_TEXT_STYLE, CHART_BUTTON_CONTAINER_STYLE, CHART_BUTTON_MARGIN_STYLE, CHART_BUTTON_STYLE } from '../styles';
+
 import { Button } from '../../../components';
-import React from 'react';
+import { BUTTON_TEXT_STYLE, CHART_BUTTON_CONTAINER_STYLE, CHART_BUTTON_MARGIN_STYLE, CHART_BUTTON_STYLE } from '../styles';
 
 const CHART_CONFIG = {
   backgroundColor: '#022173',

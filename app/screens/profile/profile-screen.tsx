@@ -1,12 +1,13 @@
-import React, { FC } from 'react';
-import { observer } from 'mobx-react-lite';
-import { TextStyle, View, ViewStyle, Image, ImageStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { NavigatorParamList } from '../../navigators';
+import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { Image, ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
+
 import { GradientBackground, Header, Screen, Separator, Text, TextField } from '../../components';
-import { color, spacing } from '../../theme';
-import { useStores } from '../../models';
 import env from '../../config/env';
+import { useStores } from '../../models';
+import { NavigatorParamList } from '../../navigators';
+import { color, spacing } from '../../theme';
 
 const FULL: ViewStyle = {
   flex: 1,

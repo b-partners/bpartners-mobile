@@ -1,18 +1,19 @@
-import React, { FC } from 'react';
-import { View } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import { NavigatorParamList } from '../../navigators';
+import React, { FC } from 'react';
+import { View } from 'react-native';
+
 import { GradientBackground, Screen } from '../../components';
 import { useStores } from '../../models';
+import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
-import { FULL } from './styles';
 import { Balance } from './components/balance';
+import { HomeFooter } from './components/home-footer';
 import { HomeHeader } from './components/home-header';
+import { HomeLatestTransaction } from './components/home-latest-transaction';
 import { HomeNavbar } from './components/home-navbar';
 import { TransactionSummary } from './components/transaction-summary';
-import { HomeLatestTransaction } from './components/home-latest-transaction';
-import { HomeFooter } from './components/home-footer';
+import { FULL } from './styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();

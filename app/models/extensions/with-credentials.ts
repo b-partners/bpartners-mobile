@@ -1,8 +1,9 @@
-import { getRoot, IStateTreeNode } from 'mobx-state-tree';
-import { RootStoreModel } from '../stores/root-store/root-store';
-import { User } from '../entities/user/user';
+import { IStateTreeNode, getRoot } from 'mobx-state-tree';
+
 import { AccountHolder } from '../entities/account-holder/account-holder';
 import { Account } from '../entities/account/account';
+import { User } from '../entities/user/user';
+import { RootStoreModel } from '../stores/root-store/root-store';
 
 export const withCredentials = (self: IStateTreeNode) => ({
   views: {

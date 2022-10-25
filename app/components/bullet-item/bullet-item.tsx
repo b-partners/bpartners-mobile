@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { View, ViewStyle, ImageStyle, TextStyle } from 'react-native';
-import { Text } from '../text/text';
-import { Icon } from '../icon/icon';
+import { ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
+
 import { spacing, typography } from '../../theme';
+import { Icon } from '../icon/icon';
+import { Text } from '../text/text';
 
 const BULLET_ITEM: ViewStyle = {
   flexDirection: 'row',

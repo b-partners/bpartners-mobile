@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
-import { View, ViewStyle, TextStyle, SafeAreaView } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import { Button, Header, Screen, Text, GradientBackground } from '../../components';
-import { color, spacing, typography } from '../../theme';
-import { NavigatorParamList } from '../../navigators';
+import React, { FC } from 'react';
+import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
+
+import { Button, GradientBackground, Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
+import { NavigatorParamList } from '../../navigators';
+import { color, spacing, typography } from '../../theme';
 
 const FULL: ViewStyle = { flex: 1 };
 const CONTAINER: ViewStyle = {

@@ -1,4 +1,5 @@
 import { TextStyle, ViewStyle } from 'react-native';
+
 import { color, spacing } from '../theme';
 
 export * from './welcome/welcome-screen';

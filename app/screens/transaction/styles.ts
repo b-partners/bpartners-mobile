@@ -1,5 +1,6 @@
-import { color, spacing } from '../../theme';
 import { TextStyle, ViewStyle } from 'react-native';
+
+import { color, spacing } from '../../theme';
 
 export const TRANSACTION_AMOUNT = (amount: number): TextStyle => ({
   fontSize: 19,

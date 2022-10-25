@@ -1,7 +1,8 @@
 import { ApiResponse } from 'apisauce';
+
 import { Api } from './api';
-import { GetFileInformation, UploadFileResult } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
+import { GetFileInformation, UploadFileResult } from './api.types';
 
 export class FileApi {
   private api: Api;

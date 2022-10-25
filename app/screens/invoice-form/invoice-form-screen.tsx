@@ -1,14 +1,15 @@
-import React, { FC } from 'react';
-import { observer } from 'mobx-react-lite';
-import { View, ViewStyle } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { NavigatorParamList } from '../../navigators';
+import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { View, ViewStyle } from 'react-native';
+
 import { GradientBackground, Header, Screen } from '../../components';
+import { useStores } from '../../models';
+import { Invoice } from '../../models/entities/invoice/invoice';
+import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { HEADER, HEADER_TITLE } from '../index';
 import { InvoiceForm } from './components/invoice-form';
-import { useStores } from '../../models';
-import { Invoice } from '../../models/entities/invoice/invoice';
 
 const FULL: ViewStyle = {
   flex: 1,

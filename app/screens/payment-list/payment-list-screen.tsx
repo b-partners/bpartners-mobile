@@ -1,19 +1,18 @@
-import React, { FC } from 'react';
-import { observer } from 'mobx-react-lite';
-import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ActionButton from 'react-native-action-button';
+import { StackScreenProps } from '@react-navigation/stack';
+import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
 import { Dimensions, View, ViewStyle } from 'react-native';
+import ActionButton from 'react-native-action-button';
 
-import { NavigatorParamList } from '../../navigators';
 import { Screen } from '../../components';
-
 import { translate } from '../../i18n';
+import { useStores } from '../../models';
+import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
+import { DraftsScreen } from '../invoice-quotation/drafts-screen';
 import { InvoicesScreen } from '../invoice-quotation/invoices-screen';
 import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
-import { useStores } from '../../models';
-import { DraftsScreen } from '../invoice-quotation/drafts-screen';
 
 const FLOATING_ACTION_BUTTON_STYLE: ViewStyle = {
   position: 'absolute',

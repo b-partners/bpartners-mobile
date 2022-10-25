@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
 import { ViewStyle } from 'react-native';
+import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
+
 import { spacing } from '../../theme';
 
 const DEFAULT_MAX_VALUE = 30;

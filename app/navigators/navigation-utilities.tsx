@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { NavigationAction, NavigationState, PartialState, createNavigationContainerRef } from '@react-navigation/native';
+import { useEffect, useRef, useState } from 'react';
 import { BackHandler } from 'react-native';
-import { PartialState, NavigationState, NavigationAction, createNavigationContainerRef } from '@react-navigation/native';
 
 export const RootNavigation = {
   navigate(_name: string, _params?: any) {},

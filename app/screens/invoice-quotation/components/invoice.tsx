@@ -1,13 +1,14 @@
-import { Invoice as IInvoice } from '../../../models/entities/invoice/invoice';
+import React from 'react';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
+
 import { Icon, Text } from '../../../components';
 import { BulletSeparator } from '../../../components/bullet-separator/bullet-separator';
-import { currencyPipe, datePipe } from '../../../utils/pipes';
-import React from 'react';
-import { BODY_TEXT_STYLE, CENTERED_ROW, HEADER_TEXT_STYLE, ROW_STYLE } from '../styles';
-import { spacing } from '../../../theme';
-import { translate } from '../../../i18n';
 import { Menu, MenuAction, MenuItem } from '../../../components/menu/menu';
+import { translate } from '../../../i18n';
+import { Invoice as IInvoice } from '../../../models/entities/invoice/invoice';
+import { spacing } from '../../../theme';
+import { currencyPipe, datePipe } from '../../../utils/pipes';
+import { BODY_TEXT_STYLE, CENTERED_ROW, HEADER_TEXT_STYLE, ROW_STYLE } from '../styles';
 
 type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction };
 

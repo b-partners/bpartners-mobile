@@ -1,4 +1,5 @@
 import { TextStyle, ViewStyle } from 'react-native';
+
 import { color, spacing } from '../../theme';
 
 export const FULL: ViewStyle = { flex: 1, padding: spacing[3], display: 'flex', flexDirection: 'column' };

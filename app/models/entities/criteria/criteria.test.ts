@@ -1,5 +1,6 @@
-import { CriteriaModel } from './criteria';
 import uuid from 'react-native-uuid';
+
+import { CriteriaModel } from './criteria';
 
 test('can be created', () => {
   const instance = CriteriaModel.create({

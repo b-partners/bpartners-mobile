@@ -1,9 +1,10 @@
-import { View } from 'react-native';
-import { BALANCE_CONTAINER_STYLE, BALANCE_STYLE, BALANCE_TEXT_STYLE } from '../styles';
-import { Text } from '../../../components';
-import { currencyPipe, datePipe } from '../../../utils/pipes';
-import { translate } from '../../../i18n';
 import React from 'react';
+import { View } from 'react-native';
+
+import { Text } from '../../../components';
+import { translate } from '../../../i18n';
+import { currencyPipe, datePipe } from '../../../utils/pipes';
+import { BALANCE_CONTAINER_STYLE, BALANCE_STYLE, BALANCE_TEXT_STYLE } from '../styles';
 
 export function Balance(props: { balance: number }) {
   const { balance } = props;

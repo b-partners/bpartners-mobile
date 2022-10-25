@@ -1,7 +1,8 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { createCustomerDefaultModel, CustomerModel } from '../customer/customer';
-import { ProductModel } from '../product/product';
 import uuid from 'react-native-uuid';
+
+import { CustomerModel, createCustomerDefaultModel } from '../customer/customer';
+import { ProductModel } from '../product/product';
 
 export enum InvoiceStatus {
   CONFIRMED = 'CONFIRMED',

@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
-import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
+
 import { GradientBackground, Header, Screen, Separator, Text } from '../../components';
-import { color, spacing } from '../../theme';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
+import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { Transaction } from './components/transaction';
 

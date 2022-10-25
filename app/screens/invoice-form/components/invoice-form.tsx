@@ -1,17 +1,18 @@
+import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
-import { AutocompletionFormField, Button, Separator, Text, TextField } from '../../../components';
-import { Customer } from '../../../models/entities/customer/customer';
-import { Product } from '../../../models/entities/product/product';
-import { translate } from '../../../i18n';
-import { spacing } from '../../../theme';
-import { INPUT_LABEL_STYLE, INPUT_TEXT_STYLE, LABEL_CONTAINER_STYLE, SECTION_STYLE, TEXT_FIELD_STYLE, TOTAL_SECTION_STYLE } from '../styles';
-import { Formik } from 'formik';
 import uuid from 'react-native-uuid';
+
+import { AutocompletionFormField, Button, Separator, Text, TextField } from '../../../components';
 import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
-import { currencyPipe } from '../../../utils/pipes';
-import { ProductFormField } from './product-form-field';
+import { translate } from '../../../i18n';
+import { Customer } from '../../../models/entities/customer/customer';
 import { Invoice, InvoiceSnapshotIn, InvoiceStatus } from '../../../models/entities/invoice/invoice';
+import { Product } from '../../../models/entities/product/product';
+import { spacing } from '../../../theme';
+import { currencyPipe } from '../../../utils/pipes';
+import { INPUT_LABEL_STYLE, INPUT_TEXT_STYLE, LABEL_CONTAINER_STYLE, SECTION_STYLE, TEXT_FIELD_STYLE, TOTAL_SECTION_STYLE } from '../styles';
+import { ProductFormField } from './product-form-field';
 
 type InvoiceFormProps = {
   invoice: Partial<InvoiceSnapshotIn>;

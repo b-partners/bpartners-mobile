@@ -1,14 +1,15 @@
-import React, { FC } from 'react';
-import { observer } from 'mobx-react-lite';
-import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { NavigatorParamList } from '../../navigators';
-import { GradientBackground, Header, Screen, Text } from '../../components';
-import { color, spacing } from '../../theme';
-import { useStores } from '../../models';
+import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { PaymentInitiationForm } from './payment-initiation-form';
+
+import { GradientBackground, Header, Screen, Text } from '../../components';
+import { useStores } from '../../models';
+import { NavigatorParamList } from '../../navigators';
+import { color, spacing } from '../../theme';
 import { CONTAINER, FULL, HEADER, HEADER_TITLE } from '../index';
+import { PaymentInitiationForm } from './payment-initiation-form';
 
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
 const QRCODE_CONTAINER_STYLE: ViewStyle = { display: 'flex', alignItems: 'center', marginTop: 25 };

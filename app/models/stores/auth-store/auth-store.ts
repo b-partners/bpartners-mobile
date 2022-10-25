@@ -1,11 +1,12 @@
-import { flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { withEnvironment } from '../../extensions/with-environment';
-import { AuthApi } from '../../../services/api/auth-api';
-import { User, UserModel } from '../../entities/user/user';
-import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
-import { AccountApi } from '../../../services/api/account-api';
-import { Account, AccountModel } from '../../entities/account/account';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
+
+import { AccountApi } from '../../../services/api/account-api';
+import { AuthApi } from '../../../services/api/auth-api';
+import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
+import { Account, AccountModel } from '../../entities/account/account';
+import { User, UserModel } from '../../entities/user/user';
+import { withEnvironment } from '../../extensions/with-environment';
 
 export const AuthStoreModel = types
   .model('SignIn')

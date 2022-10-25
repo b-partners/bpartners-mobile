@@ -1,11 +1,12 @@
 import { ApiResponse } from 'apisauce';
-import { Api } from './api';
-import { CrupdateInvoiceResult, GetInvoiceResult, GetInvoicesResult, InitPaymentResult } from './api.types';
-import { getGeneralApiProblem } from './api-problem';
-import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
+
 import env from '../../config/env';
-import { Invoice } from '../../models/entities/invoice/invoice';
 import { Criteria } from '../../models/entities/criteria/criteria';
+import { Invoice } from '../../models/entities/invoice/invoice';
+import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
+import { Api } from './api';
+import { getGeneralApiProblem } from './api-problem';
+import { CrupdateInvoiceResult, GetInvoiceResult, GetInvoicesResult, InitPaymentResult } from './api.types';
 
 export class PaymentApi {
   private api: Api;

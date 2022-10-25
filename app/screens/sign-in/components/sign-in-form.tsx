@@ -1,10 +1,11 @@
-import React, { FC, PropsWithoutRef, useState } from 'react';
 import { Formik } from 'formik';
-import { TextStyle, ViewStyle, ActivityIndicator } from 'react-native';
-import { Button } from '../../../components';
-import { color, spacing, typography } from '../../../theme';
-import { useStores } from '../../../models';
+import React, { FC, PropsWithoutRef, useState } from 'react';
+import { ActivityIndicator, TextStyle, ViewStyle } from 'react-native';
 import * as yup from 'yup';
+
+import { Button } from '../../../components';
+import { useStores } from '../../../models';
+import { color, spacing, typography } from '../../../theme';
 import FormField from './form-field';
 
 const PHONE_NUMBER_STYLE: TextStyle = {

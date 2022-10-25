@@ -1,5 +1,5 @@
-import React from 'react';
 import { MenuView } from '@react-native-menu/menu';
+import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
 export type MenuItem = { id: string; title: string; subItems?: MenuItem[] };

@@ -1,7 +1,8 @@
 import { ApiResponse } from 'apisauce';
+
 import { Api } from './api';
-import { GetAccountHolderResult, GetUserAccount } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
+import { GetAccountHolderResult, GetUserAccount } from './api.types';
 
 export class AccountApi {
   private api: Api;

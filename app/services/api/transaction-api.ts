@@ -1,8 +1,9 @@
 import { ApiResponse } from 'apisauce';
-import { Api } from './api';
-import { GetTransactionCategoriesResult, GetTransactionsResult } from './api.types';
-import { getGeneralApiProblem } from './api-problem';
+
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
+import { Api } from './api';
+import { getGeneralApiProblem } from './api-problem';
+import { GetTransactionCategoriesResult, GetTransactionsResult } from './api.types';
 
 export class TransactionApi {
   private api: Api;

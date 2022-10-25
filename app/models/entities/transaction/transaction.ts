@@ -1,4 +1,5 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+
 import { TransactionCategoryModel } from '../transaction-category/transaction-category';
 
 export const TransactionModel = types.model('Transaction').props({

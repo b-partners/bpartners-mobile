@@ -1,9 +1,10 @@
 import { ApiResponse } from 'apisauce';
-import { Api } from './api';
-import { GetTokenResult, GetWhoAmIResult, SignInResult } from './api.types';
-import { getGeneralApiProblem } from './api-problem';
-import env from '../../config/env';
 import { v4 as uuid } from 'uuid';
+
+import env from '../../config/env';
+import { Api } from './api';
+import { getGeneralApiProblem } from './api-problem';
+import { GetTokenResult, GetWhoAmIResult, SignInResult } from './api.types';
 
 export class AuthApi {
   private api: Api;

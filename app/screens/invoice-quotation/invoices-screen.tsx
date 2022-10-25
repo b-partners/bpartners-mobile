@@ -1,16 +1,17 @@
-import React, { FC, useEffect } from 'react';
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
-import { NavigatorParamList } from '../../navigators';
+
 import { GradientBackground, Screen, Separator } from '../../components';
-import { color } from '../../theme';
-import { useStores } from '../../models';
-import { ACTIVITY_INDICATOR_CONTAINER_STYLE, CONTAINER, FULL, INVOICES_STYLE } from './styles';
-import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { Invoice } from './components/invoice';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { useStores } from '../../models';
+import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { NavigatorParamList } from '../../navigators';
+import { color } from '../../theme';
+import { Invoice } from './components/invoice';
+import { ACTIVITY_INDICATOR_CONTAINER_STYLE, CONTAINER, FULL, INVOICES_STYLE } from './styles';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();

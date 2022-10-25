@@ -1,7 +1,8 @@
-import { View } from 'react-native';
-import { BUTTON_TEXT_STYLE, HEADER_STYLE, LOGO_STYLE } from '../styles';
-import { Button, Text } from '../../../components';
 import React from 'react';
+import { View } from 'react-native';
+
+import { Button, Text } from '../../../components';
+import { BUTTON_TEXT_STYLE, HEADER_STYLE, LOGO_STYLE } from '../styles';
 
 export function HomeHeader(props: { onPress: () => void }) {
   return (

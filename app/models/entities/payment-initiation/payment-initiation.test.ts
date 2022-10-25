@@ -1,5 +1,6 @@
-import { PaymentInitiationModel } from './payment-initiation';
 import uuid from 'react-native-uuid';
+
+import { PaymentInitiationModel } from './payment-initiation';
 
 test('can be created', () => {
   const instance = PaymentInitiationModel.create({

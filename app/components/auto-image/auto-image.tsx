@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { Image as RNImage, ImageProps as DefaultImageProps, ImageURISource, Platform } from 'react-native';
+import { ImageProps as DefaultImageProps, ImageURISource, Platform, Image as RNImage } from 'react-native';
 
 type ImageProps = DefaultImageProps & {
   source: ImageURISource;

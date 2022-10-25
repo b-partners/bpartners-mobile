@@ -1,7 +1,8 @@
+import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
+
 import { spacing } from '../../theme';
 import { Text } from '../text/text';
-import React from 'react';
 
 const CONTAINER_STYLE: ViewStyle = { marginHorizontal: spacing[1] };
 const BULLET_STYLE: TextStyle = { fontSize: 8 };

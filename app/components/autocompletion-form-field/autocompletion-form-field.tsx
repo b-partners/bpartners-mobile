@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { AutocompleteDropdown, TAutocompleteDropdownItem } from 'react-native-autocomplete-dropdown';
-import { ViewStyle } from 'react-native';
 import { observer } from 'mobx-react-lite';
+import React, { useEffect, useRef } from 'react';
+import { ViewStyle } from 'react-native';
+import { AutocompleteDropdown, TAutocompleteDropdownItem } from 'react-native-autocomplete-dropdown';
 
 export interface AutocompletionFormFieldProps<T> {
   containerStyle?: ViewStyle;

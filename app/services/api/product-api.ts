@@ -1,7 +1,8 @@
 import { ApiResponse } from 'apisauce';
+
 import { Api } from './api';
-import { GetProductsResult } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
+import { GetProductsResult } from './api.types';
 
 export class ProductApi {
   private api: Api;

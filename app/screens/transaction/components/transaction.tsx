@@ -1,6 +1,11 @@
 import React, { PropsWithoutRef, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+
 import { Icon, Text } from '../../../components';
+import { Dropdown } from '../../../components/dropdown/dropdown';
+import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
+import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { currencyPipe, datePipe } from '../../../utils/pipes';
 import {
@@ -15,11 +20,7 @@ import {
   TRANSACTION_LEFT_SIDE,
   TRANSACTION_RIGHT_SIDE,
 } from '../styles';
-import { translate } from '../../../i18n';
-import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
-import { useStores } from '../../../models';
 import { UserDefinedCategoryForm } from './user-defined-category-form';
-import { Dropdown } from '../../../components/dropdown/dropdown';
 
 export const Transaction = (
   props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[]; showTransactionCategory?: boolean }>

@@ -4,19 +4,20 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@react-navigation/native';
 import React from 'react';
 import { useColorScheme } from 'react-native';
-import { NavigationContainer, DefaultTheme, DarkTheme, NavigationState } from '@react-navigation/native';
-import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen, PaymentInitiationScreen, ProfileScreen, HomeScreen } from '../screens';
-import { navigationRef, useBackButtonHandler } from './navigation-utilities';
-import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-view-screen';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+
 import { translate } from '../i18n';
 import { useStores } from '../models';
+import { InvoiceStatus } from '../models/entities/invoice/invoice';
+import { HomeScreen, OnboardingScreen, PaymentInitiationScreen, ProfileScreen, SignInScreen, TransactionListScreen, WelcomeScreen } from '../screens';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
-import { InvoiceStatus } from '../models/entities/invoice/invoice';
+import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-view-screen';
+import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator

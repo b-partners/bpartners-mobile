@@ -1,5 +1,6 @@
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
+
 import en from './en.json';
 import fr from './fr.json';
 import ja from './ja.json';

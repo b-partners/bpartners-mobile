@@ -2,9 +2,10 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
-import { color, spacing, typography } from '../../theme';
-import { NavigatorParamList } from '../../navigators';
+
 import { GradientBackground, Header, Screen, Text } from '../../components';
+import { NavigatorParamList } from '../../navigators';
+import { color, spacing, typography } from '../../theme';
 import { SignInForm } from './components/sign-in-form';
 
 const FULL: ViewStyle = {

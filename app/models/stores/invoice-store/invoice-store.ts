@@ -1,16 +1,17 @@
-import { detach, flow, Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { withEnvironment } from '../../extensions/with-environment';
-import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
-import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
-import { ProductApi } from '../../../services/api/product-api';
-import { CustomerApi } from '../../../services/api/customer-api';
-import { withCredentials } from '../../extensions/with-credentials';
-import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
-import { PaymentApi } from '../../../services/api/payment-api';
-import { Criteria } from '../../entities/criteria/criteria';
+import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
 import uuid from 'react-native-uuid';
-import { showMessage } from '../../../utils/snackbar';
+
 import { translate } from '../../../i18n';
+import { CustomerApi } from '../../../services/api/customer-api';
+import { PaymentApi } from '../../../services/api/payment-api';
+import { ProductApi } from '../../../services/api/product-api';
+import { showMessage } from '../../../utils/snackbar';
+import { Criteria } from '../../entities/criteria/criteria';
+import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
+import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
+import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
+import { withCredentials } from '../../extensions/with-credentials';
+import { withEnvironment } from '../../extensions/with-environment';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')

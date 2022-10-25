@@ -1,4 +1,5 @@
-import { getEnv, IStateTreeNode } from 'mobx-state-tree';
+import { IStateTreeNode, getEnv } from 'mobx-state-tree';
+
 import { Environment } from '../environment';
 
 /**

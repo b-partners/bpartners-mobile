@@ -1,7 +1,8 @@
 import { ApiResponse } from 'apisauce';
+
 import { Api } from './api';
-import { GetOnboardingURL } from './api.types';
 import { getGeneralApiProblem } from './api-problem';
+import { GetOnboardingURL } from './api.types';
 
 export class OnboardingApi {
   private api: Api;

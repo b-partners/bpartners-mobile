@@ -1,7 +1,8 @@
-import * as React from 'react';
 import { storiesOf } from '@storybook/react-native';
-import { Story, StoryScreen, UseCase } from '../../../storybook/views';
+import * as React from 'react';
 import { TAutocompleteDropdownItem } from 'react-native-autocomplete-dropdown';
+
+import { Story, StoryScreen, UseCase } from '../../../storybook/views';
 import { AutocompletionFormField } from './autocompletion-form-field';
 
 declare let module;

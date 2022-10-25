@@ -1,14 +1,15 @@
-import React, { FC } from 'react';
-import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 import WebView from 'react-native-webview';
-import { NavigatorParamList } from '../../navigators';
+
 import { GradientBackground, Header } from '../../components';
-import { color, spacing, typography } from '../../theme';
 import env from '../../config/env';
-import getQueryParams from '../../utils/get-query-params';
 import { useStores } from '../../models';
+import { NavigatorParamList } from '../../navigators';
+import { color, spacing, typography } from '../../theme';
+import getQueryParams from '../../utils/get-query-params';
 
 const FULL: ViewStyle = { flex: 1 };
 
