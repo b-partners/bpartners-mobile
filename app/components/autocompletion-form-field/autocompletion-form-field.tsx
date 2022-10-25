@@ -35,7 +35,6 @@ export const AutocompletionFormField = observer(<T extends { id: string }>(props
         id: value[id || DEFAULT_ID_KEY],
         title: value[title || DEFAULT_TITLE_KEY],
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

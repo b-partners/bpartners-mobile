@@ -31,7 +31,6 @@ export function DatePickerField(props: DatePickerProps) {
 
   useEffect(() => {
     onDateChange(value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (
