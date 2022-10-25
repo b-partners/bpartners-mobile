@@ -28,7 +28,7 @@ module.exports = {
         'react-native/no-inline-styles': 'error',
         'react-hooks/rules-of-hooks': 'off',
         'react/prop-types': 'off',
-        'react-hooks/exhaustive-deps': 'warn',
+        'react-hooks/exhaustive-deps': 'off',
       },
     },
   ],
