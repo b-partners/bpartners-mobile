@@ -13,7 +13,7 @@ const ACTION_BUTTON_STYLE: ViewStyle = {
 export function HomeFooter() {
   return (
     <View style={ACTION_BUTTON_STYLE}>
-      <ActionButton buttonColor={color.palette.orange}></ActionButton>
+      <ActionButton buttonColor={color.palette.orange} />
     </View>
   );
 }

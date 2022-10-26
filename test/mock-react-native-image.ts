@@ -1,4 +1,5 @@
 import * as ReactNative from 'react-native';
+
 import mockFile from './mock-file';
 
 jest.doMock('react-native', () => {

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import * as QueryString from 'query-string';
+import React, { useEffect, useState } from 'react';
 
 interface StorybookQueryParams {
   storybook?: boolean;
