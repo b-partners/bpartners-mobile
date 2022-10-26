@@ -37,5 +37,4 @@ export const CHART_BUTTON_MARGIN_STYLE = {
   marginLeft: spacing[1],
 };
 export const BALANCE_TEXT_STYLE: TextStyle = { fontSize: 16, fontWeight: 'bold' };
-export const FOOTER_STYLE: ViewStyle = { position: 'absolute', bottom: 0, right: spacing[6] };
 export const TRANSACTION_BUTTONS_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' };

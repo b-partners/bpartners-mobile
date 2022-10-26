@@ -9,6 +9,8 @@ install! 'cocoapods', :deterministic_uuids => false
 
 target 'BpartnersMobile' do
   use_expo_modules!
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   post_integrate do |installer|
     begin
       expo_patch_react_imports!(installer)
