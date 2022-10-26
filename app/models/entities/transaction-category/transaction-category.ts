@@ -5,7 +5,7 @@ export const TransactionCategoryModel = types.model('TransactionCategory').props
   userDefined: types.maybeNull(types.boolean),
   type: types.maybeNull(types.string),
   vat: types.maybeNull(types.number),
-  count: types.number
+  count: types.number,
 });
 
 export interface TransactionCategory extends Instance<typeof TransactionCategoryModel> {}
