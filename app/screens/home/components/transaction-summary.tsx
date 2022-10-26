@@ -1,9 +1,15 @@
 import React from 'react';
-import { Dimensions, View } from 'react-native';
-import { PieChart } from 'react-native-chart-kit';
-
-import { Button } from '../../../components';
-import { BUTTON_TEXT_STYLE, CHART_BUTTON_CONTAINER_STYLE, CHART_BUTTON_MARGIN_STYLE, CHART_BUTTON_STYLE } from '../styles';
+import {Dimensions, View} from 'react-native';
+import {PieChart} from 'react-native-chart-kit';
+import {
+  BUTTON_TEXT_STYLE,
+  CHART_BUTTON_CONTAINER_STYLE,
+  CHART_BUTTON_MARGIN_STYLE,
+  CHART_BUTTON_STYLE,
+} from '../styles';
+import {Button} from '../../../components';
+import {observer} from 'mobx-react-lite';
+import {TransactionCategory} from '../../../models/entities/transaction-category/transaction-category';
 
 const CHART_CONFIG = {
   backgroundColor: '#022173',
@@ -20,28 +26,43 @@ const GRAPH_STYLE = {
   ...CHART_CONFIG.style,
 };
 
-const CHART_DATA = [
-  {
-    name: `CA ${new Date().getMonth()}`,
-    value: 21500000,
-    color: 'rgb(166,210,198)',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-  { name: 'Trésorerie Disponible', value: 2800000, color: '#9d8d8d', legendFontColor: '#7F7F7F', legendFontSize: 15 },
-  {
-    name: `Dépense ${new Date().getMonth()}`,
-    value: 527612,
-    color: '#508cc4',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-];
-
 const width = Dimensions.get('window').width;
 const height = 220;
 
-export function TransactionSummary() {
+interface ITransactionSummary {
+  transactionCategories: Array<TransactionCategory>
+}
+
+const TransactionSummary = ({transactionCategories}: ITransactionSummary) => {
+  const CHART_DATA = []
+  const PIE_CHART_COLOURS = [
+    'rgb(0, 63, 92)',
+    'rgb(88, 80, 141)',
+    'rgb(188, 80, 144)',
+    'rgb(255, 99, 97)',
+    'rgb(255, 166, 0)',
+    'rgb(254, 174, 101)',
+    'rgb(55, 123, 43)',
+    'rgb(122,193, 66)',
+    'rgb(45, 135, 187)',
+    'rgb(134, 134, 134)'
+  ]
+
+  for (let i = 0; i < transactionCategories.length; i++) {
+    const category = transactionCategories[i];
+    const color = PIE_CHART_COLOURS[i];
+
+    CHART_DATA.push({
+      name: category.type,
+      value:category.count,
+      color,
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+    })
+
+  }
+
+
   return (
     <View>
       <PieChart
@@ -55,9 +76,12 @@ export function TransactionSummary() {
         style={GRAPH_STYLE}
       />
       <View style={CHART_BUTTON_CONTAINER_STYLE}>
-        <Button tx='homeScreen.labels.frequency' style={{ ...CHART_BUTTON_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
-        <Button tx='homeScreen.labels.boostYourResults' style={{ ...CHART_BUTTON_STYLE, ...CHART_BUTTON_MARGIN_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
+        <Button tx='homeScreen.labels.frequency' style={{...CHART_BUTTON_STYLE}} textStyle={BUTTON_TEXT_STYLE} />
+        <Button tx='homeScreen.labels.boostYourResults' style={{...CHART_BUTTON_STYLE, ...CHART_BUTTON_MARGIN_STYLE}}
+                textStyle={BUTTON_TEXT_STYLE} />
       </View>
     </View>
   );
 }
+
+export default observer(TransactionSummary)
