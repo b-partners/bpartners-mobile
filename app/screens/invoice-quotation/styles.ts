@@ -21,12 +21,3 @@ export const CONTAINER: ViewStyle = {
   display: 'flex',
   flexDirection: 'column',
 };
-
-export const ACTIVITY_INDICATOR_CONTAINER_STYLE: ViewStyle = {
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: 700,
-};

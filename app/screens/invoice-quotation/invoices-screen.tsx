@@ -1,9 +1,10 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { GradientBackground, Screen, Separator } from '../../components';
+import { Loader } from '../../components/loader/loader';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -11,7 +12,7 @@ import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoic
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { Invoice } from './components/invoice';
-import { ACTIVITY_INDICATOR_CONTAINER_STYLE, CONTAINER, FULL, INVOICES_STYLE } from './styles';
+import { CONTAINER, FULL, INVOICES_STYLE } from './styles';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
@@ -42,9 +43,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
             ItemSeparatorComponent={() => <Separator />}
           />
         ) : (
-          <View style={ACTIVITY_INDICATOR_CONTAINER_STYLE}>
-            <ActivityIndicator size='large' />
-          </View>
+          <Loader size='large' />
         )}
       </Screen>
     </View>
