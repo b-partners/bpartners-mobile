@@ -2,14 +2,14 @@ name: deploy
 on:
   workflow_dispatch:
     inputs:
-      platform:
-        type: choice
-        description: 'Platform'
-        options:
-          - all
-          - android-store
-          - ios-store
-        required: true
+     platform:
+       type: choice
+       description: 'Platform'
+       options:
+         - all
+         - android-store
+         - ios-store
+       required: true
 jobs:
   android-browserstack:
     if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-store'
@@ -55,7 +55,7 @@ jobs:
           mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/${{env.appName}}.aab
       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
 
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.appName }}.aab"     
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.appName }}.aab"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
@@ -68,6 +68,10 @@ jobs:
         run: |
           aws s3 cp android/app/build/outputs/apk/release/${{env.appName}}.apk s3://mobile-bpartners/android/
           aws s3 cp android/app/build/outputs/bundle/release/${{env.appName}}.aab s3://mobile-bpartners/android/
+
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
+
+
   ios-browserstack:
     env:
       AWS_REGION: eu-west-3
@@ -84,16 +88,14 @@ jobs:
       - run: npm install --force
 
       - run: npm install --location=global react-native-cli
-
       - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-      - run: brew update 
+- run: brew update
 
       - run: brew upgrade
-      
+
       - run: npm run ci:build:e2e
 
-      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | shasum | awk '{print $1}')" >> $GITHUB_ENV
+      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
 
       - name: change extension app to ipa
         run: |
@@ -101,11 +103,13 @@ jobs:
           mv ios/build/Build/Products/Release-iphonesimulator/BpartnersMobile.app Payload/
           zip -r ${{ env.ipaName }}.ipa Payload
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
-        with:
+          uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
+          with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@Payload.ipa"
 
       - run: aws s3 cp ${{ env.ipaName }}.ipa s3://mobile-bpartners/ios/
 
