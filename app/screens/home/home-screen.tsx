@@ -17,7 +17,7 @@ import { FULL } from './styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
-  const { transactions } = transactionStore;
+  const { transactions, loadingTransactions } = transactionStore;
 
   return (
     <View testID='SignInWebViewScreen' style={FULL}>
@@ -31,7 +31,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
           }}
         />
         <TransactionSummary />
-        <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={true} />
+        <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
         <HomeFooter />
       </Screen>
     </View>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 import { Button } from '../../../components';
 import { Loader } from '../../../components/loader/loader';
@@ -8,6 +8,8 @@ import { Transaction } from '../../transaction/components/transaction';
 import { BUTTON_STYLE, BUTTON_TEXT_STYLE, TRANSACTION_BUTTONS_STYLE } from '../styles';
 
 type HomeLatestTransactionProps = { transactions: ITransaction[]; onPress: () => void; loading?: boolean };
+
+const LOADER_STYLE: ViewStyle = { height: 200 };
 
 export function HomeLatestTransaction(props: HomeLatestTransactionProps) {
   const { loading } = props;
@@ -20,7 +22,7 @@ export function HomeLatestTransaction(props: HomeLatestTransactionProps) {
       {!loading ? (
         props.transactions.map(item => <Transaction key={item.id} item={item} transactionCategories={[]} showTransactionCategory={false} />)
       ) : (
-        <Loader size='large' />
+        <Loader size='large' containerStyle={LOADER_STYLE} />
       )}
     </View>
   );
