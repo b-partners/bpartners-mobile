@@ -31,7 +31,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
           }}
         />
         <TransactionSummary />
-        <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} />
+        <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={true} />
         <HomeFooter />
       </Screen>
     </View>

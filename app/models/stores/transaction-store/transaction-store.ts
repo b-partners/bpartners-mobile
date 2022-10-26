@@ -11,6 +11,8 @@ export const TransactionStoreModel = types
   .props({
     transactions: types.optional(types.array(TransactionModel), []),
     transactionCategories: types.optional(types.array(TransactionCategoryModel), []),
+    loadingTransactions: types.optional(types.boolean, false),
+    loadingTransactionCategories: types.optional(types.boolean, false),
   })
   .extend(withEnvironment)
   .extend(withCredentials)
@@ -22,11 +24,14 @@ export const TransactionStoreModel = types
   .actions(self => ({
     getTransactionCategories: flow(function* () {
       const transactionApi = new TransactionApi(self.environment.api);
-      const getTransactionCategoriesResult = yield transactionApi.getTransactionCategories(self.currentAccount.id);
-      if (getTransactionCategoriesResult.kind === 'ok') {
+      self.loadingTransactionCategories = true;
+      try {
+        const getTransactionCategoriesResult = yield transactionApi.getTransactionCategories(self.currentAccount.id);
         self.getTransactionCategoriesSuccess(getTransactionCategoriesResult.transactionCategories);
-      } else {
-        __DEV__ && console.tron.log(getTransactionCategoriesResult.kind);
+      } catch (e) {
+        console.tron.log(`Failing to fetch transaction categories, ${e}`);
+      } finally {
+        self.loadingTransactionCategories = false;
       }
     }),
   }))
@@ -39,12 +44,15 @@ export const TransactionStoreModel = types
   .actions(self => ({
     getTransactions: flow(function* () {
       self.transactions.replace([]);
+      self.loadingTransactions = true;
       const transactionApi = new TransactionApi(self.environment.api);
-      const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id);
-      if (getTransactionsResult.kind === 'ok') {
+      try {
+        const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id);
         self.getTransactionsSuccess(getTransactionsResult.transactions);
-      } else {
-        __DEV__ && console.tron.log(getTransactionsResult.kind);
+      } catch (e) {
+        console.tron.log(`Failing to fetch transactions, ${e}`);
+      } finally {
+        self.loadingTransactions = false;
       }
     }),
   }))

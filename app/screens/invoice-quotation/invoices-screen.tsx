@@ -12,7 +12,7 @@ import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoic
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { Invoice } from './components/invoice';
-import { CONTAINER, FULL, INVOICES_STYLE } from './styles';
+import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
@@ -43,7 +43,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
             ItemSeparatorComponent={() => <Separator />}
           />
         ) : (
-          <Loader size='large' />
+          <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
       </Screen>
     </View>

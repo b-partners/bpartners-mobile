@@ -28,7 +28,7 @@ export class TransactionApi {
       return { kind: 'ok', transactions };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
-      return { kind: 'bad-data' };
+      throw new Error('bad-data');
     }
   }
 
@@ -48,7 +48,7 @@ export class TransactionApi {
       return { kind: 'ok', transactionCategories };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
-      return { kind: 'bad-data' };
+      throw new Error('bad-data');
     }
   }
 

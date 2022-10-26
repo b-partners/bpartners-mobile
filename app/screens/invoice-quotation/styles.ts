@@ -11,6 +11,10 @@ export const CENTERED_ROW: ViewStyle = { justifyContent: 'flex-start', alignItem
 export const HEADER_TEXT_STYLE: TextStyle = { fontSize: 16, fontWeight: 'bold' };
 export const BODY_TEXT_STYLE: TextStyle = { fontSize: 14 };
 
+export const LOADER_STYLE: ViewStyle = {
+  height: 700,
+};
+
 export const FULL: ViewStyle = {
   flex: 1,
   position: 'relative',

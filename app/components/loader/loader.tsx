@@ -8,7 +8,6 @@ export const ACTIVITY_INDICATOR_CONTAINER_STYLE: ViewStyle = {
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  height: 700,
 };
 export const Loader: React.FC<LoaderProps> = props => {
   const { containerStyle, ...rest } = props;
