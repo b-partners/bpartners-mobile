@@ -1,8 +1,5 @@
 name: deploy
 on:
-  push:
-    branches:
-      - '*'
   workflow_dispatch:
     inputs:
       platform:
@@ -13,7 +10,6 @@ on:
           - android-store
           - ios-store
         required: true
-
 jobs:
   android-browserstack:
     if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-store'
