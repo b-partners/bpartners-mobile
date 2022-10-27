@@ -1,0 +1,66 @@
+
+name: deploy
+on:
+  workflow_dispatch: 
+    inputs: 
+     platform: 
+       type: choice
+       description: 'Platform'
+       options:
+         - all
+         - android
+         - ios
+         - android-store
+       required: true
+       
+jobs:
+  android-browserstack:
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android' || github.event.inputs.platform == 'android-store'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: npm install --force
+
+      - run: cd android && ./gradlew assembleRelease
+
+      - run: npm test
+
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/app-release.apk"
+
+  ios-browserstack: 
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps: 
+      - uses: actions/checkout@v2
+
+      - run: npm install --force
+
+      - run:  npm install --location=global react-native-cli
+      
+      - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            
+      - run: npm run ci:build:e2e
+
+      - name: change extension app to ipa
+        run: |
+          mkdir Payload
+          mv ios/build/Build/Products/Release-iphonesimulator/BpartnersMobile.app Payload/ 
+          zip -r Payload.ipa Payload 
+
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@Payload.ipa"
+
+  playstore-googleplay-release:
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-store' 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Deploy apk to playstore
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: service-account.json
+          packageName: com.bpartnersmobile
+          releaseFiles: android/app/build/outputs/apk/release/${{env.name}}.apk
+          track: beta      
+
