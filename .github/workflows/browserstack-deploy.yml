@@ -11,8 +11,8 @@ on:
        description: 'Platform'
        options:
          - all
-         - android
-         - ios
+         - android-store
+         - ios-store
        required: true
 jobs:
   build-android:
@@ -35,7 +35,7 @@ jobs:
     env:
       AWS_REGION: eu-west-3
 
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios-store'
 
     runs-on: macos-latest
 
@@ -61,8 +61,8 @@ jobs:
           zip -r ${{ env.ipaName }}.ipa Payload
 
       - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
-          with:
+        uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
+        with:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{ env.AWS_REGION }}
