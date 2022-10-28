@@ -33,7 +33,7 @@ interface ITransactionSummary {
 }
 
 const TransactionSummary = ({ transactionCategories }: ITransactionSummary) => {
-  const CHART_DATA = [];
+  const chartData = [];
   const PIE_CHART_COLOURS = [
     palette.midnightGreen,
     palette.purpleNavy,
@@ -50,7 +50,7 @@ const TransactionSummary = ({ transactionCategories }: ITransactionSummary) => {
     const category = transactionCategories[i];
     const color = PIE_CHART_COLOURS[i];
 
-    CHART_DATA.push({
+    chartData.push({
       name: category.type,
       value: category.count,
       color,
@@ -64,7 +64,7 @@ const TransactionSummary = ({ transactionCategories }: ITransactionSummary) => {
       <PieChart
         backgroundColor='transparent'
         paddingLeft='0'
-        data={CHART_DATA}
+        data={chartData}
         height={height}
         width={width}
         chartConfig={CHART_CONFIG}
