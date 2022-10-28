@@ -22,6 +22,11 @@ export const AuthStoreModel = types
     currentAccountHolder: types.optional(AccountHolderModel, {}),
   })
   .extend(withEnvironment)
+  .actions(() => ({
+    signInFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     signInSuccess: urls => {
       self.successUrl = urls.successUrl && urls.successUrl.replace('+', '%2B');
@@ -32,12 +37,14 @@ export const AuthStoreModel = types
   .actions(self => ({
     signIn: flow(function* (phoneNumber: string) {
       const signInApi = new AuthApi(self.environment.api);
-      const result = yield signInApi.signIn(phoneNumber);
-      const { kind, ...urls } = result;
-      if (kind === 'ok') {
+      try {
+        const result = yield signInApi.signIn(phoneNumber);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { kind, ...urls } = result;
         self.signInSuccess(urls);
-      } else {
-        __DEV__ && console.tron.log(result.kind);
+      } catch (e) {
+        self.signInFail(e);
+        throw e;
       }
     }),
   }))

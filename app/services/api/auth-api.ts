@@ -31,8 +31,7 @@ export class AuthApi {
 
       return { kind: 'ok', redirectionUrl, successUrl, failureUrl };
     } catch (e) {
-      console.tron.log(e);
-      return { kind: 'bad-data' };
+      throw new Error('bad-data');
     }
   }
 

@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
-import React, { FC, PropsWithoutRef, useState } from 'react';
-import { ActivityIndicator, TextStyle, ViewStyle } from 'react-native';
+import React, { FC, PropsWithoutRef } from 'react';
+import { TextStyle, ViewStyle } from 'react-native';
 import * as yup from 'yup';
 
 import { Button } from '../../../components';
@@ -50,25 +50,20 @@ const INVALID_PHONE_NUMBER = {
 export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => void }>> = props => {
   const { authStore } = useStores();
   const { next } = props;
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Formik
       validationSchema={validationSchema}
       initialValues={{ phoneNumber: '' }}
       onSubmit={async ({ phoneNumber }) => {
-        setIsLoading(true);
-        // TODO: Error handling
         await authStore.signIn(phoneNumber);
         const { redirectionUrl } = authStore;
-        if (redirectionUrl) setIsLoading(false);
         next(redirectionUrl);
       }}
     >
       {({ handleSubmit, errors }) => {
         return (
           <>
-            {isLoading && <ActivityIndicator size='small' />}
             <FormField
               name='phoneNumber'
               inputStyle={[PHONE_NUMBER_STYLE, errors.phoneNumber && INVALID_PHONE_NUMBER]}
