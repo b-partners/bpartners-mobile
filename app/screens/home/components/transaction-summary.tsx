@@ -1,14 +1,14 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Dimensions, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
-import { BUTTON_TEXT_STYLE, CHART_BUTTON_CONTAINER_STYLE, CHART_BUTTON_MARGIN_STYLE, CHART_BUTTON_STYLE } from '../styles';
-import { Button } from '../../../components';
-import { observer } from 'mobx-react-lite';
-import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
-import {palette} from '../../../theme/palette';
+import { AbstractChartProps } from 'react-native-chart-kit/dist/AbstractChart';
+import { PieChartProps } from 'react-native-chart-kit/dist/PieChart';
 
-import {AbstractChartProps} from 'react-native-chart-kit/dist/AbstractChart';
-import {PieChartProps} from 'react-native-chart-kit/dist/PieChart';
+import { Button } from '../../../components';
+import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
+import { palette } from '../../../theme/palette';
+import { BUTTON_TEXT_STYLE, CHART_BUTTON_CONTAINER_STYLE, CHART_BUTTON_MARGIN_STYLE, CHART_BUTTON_STYLE } from '../styles';
 
 const CHART_CONFIG: AbstractChartProps['chartConfig'] = {
   backgroundColor: '#022173',
@@ -32,7 +32,7 @@ interface ITransactionSummary {
   transactionCategories: Array<TransactionCategory>;
 }
 
-const TransactionSummary = ({ transactionCategories }: ITransactionSummary) => {
+export const TransactionSummary: React.FC<ITransactionSummary> = observer(({ transactionCategories }) => {
   const chartData = [];
   const PIE_CHART_COLOURS = [
     palette.midnightGreen,
@@ -43,7 +43,7 @@ const TransactionSummary = ({ transactionCategories }: ITransactionSummary) => {
     palette.saffron,
     palette.japaneseLaurel,
     palette.green,
-    palette.deepPurple
+    palette.deepPurple,
   ];
 
   for (let i = 0; i < transactionCategories.length; i++) {
@@ -77,6 +77,4 @@ const TransactionSummary = ({ transactionCategories }: ITransactionSummary) => {
       </View>
     </View>
   );
-}
-
-export default observer(TransactionSummary);
+});

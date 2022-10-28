@@ -17,7 +17,7 @@ import { FULL } from './styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
-  const { transactions, loadingTransactions, categories, currentBalance } = transactionStore;
+  const { transactions, loadingTransactions, currentBalance, transactionCategories: categories } = transactionStore;
 
   useEffect(() => {
     transactionStore.getTransactions();
@@ -34,7 +34,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
             navigation.navigate('paymentList');
           }}
         />
-        {transactions && <TransactionSummary transactionCategories={categories} />}
+        {categories && <TransactionSummary transactionCategories={categories} />}
         <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
         <HomeFooter />
       </Screen>
