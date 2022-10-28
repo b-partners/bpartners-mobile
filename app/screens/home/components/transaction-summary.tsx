@@ -6,7 +6,10 @@ import { Button } from '../../../components';
 import { observer } from 'mobx-react-lite';
 import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
 
-const CHART_CONFIG = {
+import {AbstractChartProps} from 'react-native-chart-kit/dist/AbstractChart';
+import {PieChartProps} from 'react-native-chart-kit/dist/PieChart';
+
+const CHART_CONFIG: AbstractChartProps['chartConfig'] = {
   backgroundColor: '#022173',
   backgroundGradientFrom: '#022173',
   backgroundGradientTo: '#1b3fa0',
@@ -16,7 +19,7 @@ const CHART_CONFIG = {
   },
 };
 
-const GRAPH_STYLE = {
+const GRAPH_STYLE: PieChartProps['style'] = {
   marginVertical: 8,
   ...CHART_CONFIG.style,
 };
