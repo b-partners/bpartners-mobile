@@ -63,26 +63,25 @@ export const AuthStoreModel = types
       save('currentAccountHolder', currentAccountHolder);
     },
   }))
+  .actions(() => ({
+    whoamiFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     whoami: flow(function* () {
       const signInApi = new AuthApi(self.environment.api);
-      const whoAmiResult = yield signInApi.whoami();
-      if (whoAmiResult.kind !== 'ok') {
-        __DEV__ && console.tron.log(whoAmiResult.kind);
-        throw new Error(whoAmiResult.kind);
-      }
       const accountApi = new AccountApi(self.environment.api);
-      const getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
-      if (getAccountResult.kind !== 'ok') {
-        __DEV__ && console.tron.log(getAccountResult.kind);
-        throw new Error(getAccountResult.kind);
+      let whoAmiResult, getAccountResult, getAccountHolderResult;
+      try {
+        whoAmiResult = yield signInApi.whoami();
+        getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
+        getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
+        self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
+      } catch (e) {
+        self.whoamiFail(e);
+        throw e;
       }
-      const getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
-      if (getAccountHolderResult.kind !== 'ok') {
-        __DEV__ && console.tron.log(getAccountHolderResult.kind);
-        throw new Error(getAccountHolderResult.kind);
-      }
-      self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
     }),
   }))
   .actions(self => ({
@@ -92,6 +91,11 @@ export const AuthStoreModel = types
         ['refreshToken', self.refreshToken],
       ]);
     }),
+  }))
+  .actions(() => ({
+    getTokenFail: error => {
+      console.tron.log(error);
+    },
   }))
   .actions(self => ({
     logout: () => {
@@ -112,12 +116,12 @@ export const AuthStoreModel = types
   .actions(self => ({
     getToken: flow(function* (code) {
       const signInApi = new AuthApi(self.environment.api);
-      const result = yield signInApi.getToken(code);
-      if (result.kind === 'ok') {
+      try {
+        const result = yield signInApi.getToken(code);
         self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
-      } else {
-        __DEV__ && console.tron.log(result.kind);
-        throw new Error(result.kind);
+      } catch (e) {
+        self.getTokenFail(e);
+        throw e;
       }
     }),
   }));

@@ -31,6 +31,7 @@ export class AuthApi {
 
       return { kind: 'ok', redirectionUrl, successUrl, failureUrl };
     } catch (e) {
+      console.tron.log(e);
       throw new Error('bad-data');
     }
   }
@@ -52,7 +53,8 @@ export class AuthApi {
 
       return { kind: 'ok', accessToken, refreshToken, whoami };
     } catch (e) {
-      return { kind: 'bad-data' };
+      console.tron.log(e);
+      throw new Error('bad-data');
     }
   }
 
@@ -66,7 +68,8 @@ export class AuthApi {
       const { user } = response.data;
       return { kind: 'ok', user };
     } catch (e) {
-      return { kind: 'bad-data' };
+      console.tron.log(e);
+      throw new Error('bad-data');
     }
   }
 }
