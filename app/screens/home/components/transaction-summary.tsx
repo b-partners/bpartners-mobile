@@ -5,6 +5,7 @@ import { BUTTON_TEXT_STYLE, CHART_BUTTON_CONTAINER_STYLE, CHART_BUTTON_MARGIN_ST
 import { Button } from '../../../components';
 import { observer } from 'mobx-react-lite';
 import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
+import {palette} from '../../../theme/palette';
 
 import {AbstractChartProps} from 'react-native-chart-kit/dist/AbstractChart';
 import {PieChartProps} from 'react-native-chart-kit/dist/PieChart';
@@ -34,16 +35,15 @@ interface ITransactionSummary {
 const TransactionSummary = ({ transactionCategories }: ITransactionSummary) => {
   const CHART_DATA = [];
   const PIE_CHART_COLOURS = [
-    'rgb(0, 63, 92)',
-    'rgb(88, 80, 141)',
-    'rgb(188, 80, 144)',
-    'rgb(255, 99, 97)',
-    'rgb(255, 166, 0)',
-    'rgb(254, 174, 101)',
-    'rgb(55, 123, 43)',
-    'rgb(122,193, 66)',
-    'rgb(45, 135, 187)',
-    'rgb(134, 134, 134)',
+    palette.midnightGreen,
+    palette.purpleNavy,
+    palette.mulberry,
+    palette.pastelRed,
+    palette.cheese,
+    palette.saffron,
+    palette.japaneseLaurel,
+    palette.green,
+    palette.deepPurple
   ];
 
   for (let i = 0; i < transactionCategories.length; i++) {
