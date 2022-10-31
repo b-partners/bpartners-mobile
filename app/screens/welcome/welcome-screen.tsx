@@ -7,6 +7,7 @@ import { Button, GradientBackground, Header, Screen, Text } from '../../componen
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
+import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = { flex: 1 };
 const CONTAINER: ViewStyle = {
@@ -81,23 +82,25 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> 
   };
 
   return (
-    <View testID='WelcomeScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
-        <Header headerTx='welcomeScreen.poweredBy' style={HEADER} titleStyle={HEADER_TITLE} />
-        <Text style={TITLE_WRAPPER}>
-          <Text style={TITLE} text='Your new app, ' />
-          <Text style={ALMOST} text='BPartners' />
-          <Text style={TITLE} text='!' />
-        </Text>
-        <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
-      </Screen>
-      <SafeAreaView style={FOOTER}>
-        <View style={FOOTER_CONTENT}>
-          <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} />
-          <Button testID='onboarding-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={createAccount} />
-        </View>
-      </SafeAreaView>
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='WelcomeScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
+          <Header headerTx='welcomeScreen.poweredBy' style={HEADER} titleStyle={HEADER_TITLE} />
+          <Text style={TITLE_WRAPPER}>
+            <Text style={TITLE} text='Your new app, ' />
+            <Text style={ALMOST} text='BPartners' />
+            <Text style={TITLE} text='!' />
+          </Text>
+          <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
+        </Screen>
+        <SafeAreaView style={FOOTER}>
+          <View style={FOOTER_CONTENT}>
+            <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} />
+            <Button testID='onboarding-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={createAccount} />
+          </View>
+        </SafeAreaView>
+      </View>
+    </ErrorBoundary>
   );
 });

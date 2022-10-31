@@ -8,7 +8,7 @@ import { GradientBackground, Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
-import { CONTAINER, FULL, HEADER, HEADER_TITLE } from '../index';
+import { CONTAINER, ErrorBoundary, FULL, HEADER, HEADER_TITLE } from '../index';
 import { PaymentInitiationForm } from './payment-initiation-form';
 
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
@@ -26,32 +26,34 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
   const { paymentUrl, products, customers } = paymentInitiationStore;
 
   return (
-    <View testID='PaymentInitiationScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-        <Header
-          headerTx='paymentInitiationScreen.title'
-          style={HEADER}
-          titleStyle={HEADER_TITLE}
-          leftIcon={'back'}
-          onLeftPress={() => navigation.navigate('home')}
-        />
-        <ScrollView style={FORM_FIELD_CONTAINER}>
-          <PaymentInitiationForm
-            init={paymentInitiationStore.init}
-            getCustomers={paymentInitiationStore.getCustomers}
-            getProducts={paymentInitiationStore.getProducts}
-            products={products}
-            customers={customers}
+    <ErrorBoundary catchErrors='always'>
+      <View testID='PaymentInitiationScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
+          <Header
+            headerTx='paymentInitiationScreen.title'
+            style={HEADER}
+            titleStyle={HEADER_TITLE}
+            leftIcon={'back'}
+            onLeftPress={() => navigation.navigate('home')}
           />
-          {paymentUrl && (
-            <View style={QRCODE_CONTAINER_STYLE}>
-              <Text text={paymentUrl} style={PAYMENT_LINK_STYLE} />
-              <QRCode value={paymentUrl} size={100} />
-            </View>
-          )}
-        </ScrollView>
-      </Screen>
-    </View>
+          <ScrollView style={FORM_FIELD_CONTAINER}>
+            <PaymentInitiationForm
+              init={paymentInitiationStore.init}
+              getCustomers={paymentInitiationStore.getCustomers}
+              getProducts={paymentInitiationStore.getProducts}
+              products={products}
+              customers={customers}
+            />
+            {paymentUrl && (
+              <View style={QRCODE_CONTAINER_STYLE}>
+                <Text text={paymentUrl} style={PAYMENT_LINK_STYLE} />
+                <QRCode value={paymentUrl} size={100} />
+              </View>
+            )}
+          </ScrollView>
+        </Screen>
+      </View>
+    </ErrorBoundary>
   );
 });

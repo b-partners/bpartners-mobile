@@ -8,6 +8,7 @@ import env from '../../config/env';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
+import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -52,74 +53,76 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
 
   // TODO: change filename
   return (
-    <View testID='TransactionListScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-        <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
-        <View style={LOGO_CONTAINER}>
-          <Image
-            source={{ uri: `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/logo.jpeg/raw?accessToken=${accessToken}` }}
-            style={LOGO_ICON_STYLE}
-            resizeMode={'contain'}
-          />
-        </View>
-        {currentUser && (
+    <ErrorBoundary catchErrors='always'>
+      <View testID='TransactionListScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
+          <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
+          <View style={LOGO_CONTAINER}>
+            <Image
+              source={{ uri: `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/logo.jpeg/raw?accessToken=${accessToken}` }}
+              style={LOGO_ICON_STYLE}
+              resizeMode={'contain'}
+            />
+          </View>
+          {currentUser && (
+            <View style={FORM_FIELD_CONTAINER}>
+              <Text style={SECTION_STYLE} tx={'profileScreen.fields.user.section'} />
+              <View>
+                <View>
+                  <Text tx={'profileScreen.fields.user.firstName'} />
+                  <TextField value={currentUser.firstName} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.user.lastName'} />
+                  <TextField value={currentUser.lastName} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.user.phone'} />
+                  <TextField value={currentUser.phone} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+              </View>
+              <Separator />
+            </View>
+          )}
+          {currentAccountHolder && (
+            <View style={FORM_FIELD_CONTAINER}>
+              <Text style={SECTION_STYLE} tx={'profileScreen.fields.accountHolder.section'} />
+              <View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.name'} />
+                  <TextField value={currentAccountHolder.name} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.address'} />
+                  <TextField value={currentAccountHolder.address} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.city'} />
+                  <TextField value={currentAccountHolder.city} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.country'} />
+                  <TextField value={currentAccountHolder.country} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.postalCode'} />
+                  <TextField value={currentAccountHolder.postalCode} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+              </View>
+            </View>
+          )}
           <View style={FORM_FIELD_CONTAINER}>
-            <Text style={SECTION_STYLE} tx={'profileScreen.fields.user.section'} />
+            <Text style={SECTION_STYLE} text={'My subscription'} />
             <View>
+              <Text style={SECTION_STYLE}>L'ambitieux</Text>
               <View>
-                <Text tx={'profileScreen.fields.user.firstName'} />
-                <TextField value={currentUser.firstName} inputStyle={FORM_FIELD_STYLE} />
-              </View>
-              <View>
-                <Text tx={'profileScreen.fields.user.lastName'} />
-                <TextField value={currentUser.lastName} inputStyle={FORM_FIELD_STYLE} />
-              </View>
-              <View>
-                <Text tx={'profileScreen.fields.user.phone'} />
-                <TextField value={currentUser.phone} inputStyle={FORM_FIELD_STYLE} />
-              </View>
-            </View>
-            <Separator />
-          </View>
-        )}
-        {currentAccountHolder && (
-          <View style={FORM_FIELD_CONTAINER}>
-            <Text style={SECTION_STYLE} tx={'profileScreen.fields.accountHolder.section'} />
-            <View>
-              <View>
-                <Text tx={'profileScreen.fields.accountHolder.name'} />
-                <TextField value={currentAccountHolder.name} inputStyle={FORM_FIELD_STYLE} />
-              </View>
-              <View>
-                <Text tx={'profileScreen.fields.accountHolder.address'} />
-                <TextField value={currentAccountHolder.address} inputStyle={FORM_FIELD_STYLE} />
-              </View>
-              <View>
-                <Text tx={'profileScreen.fields.accountHolder.city'} />
-                <TextField value={currentAccountHolder.city} inputStyle={FORM_FIELD_STYLE} />
-              </View>
-              <View>
-                <Text tx={'profileScreen.fields.accountHolder.country'} />
-                <TextField value={currentAccountHolder.country} inputStyle={FORM_FIELD_STYLE} />
-              </View>
-              <View>
-                <Text tx={'profileScreen.fields.accountHolder.postalCode'} />
-                <TextField value={currentAccountHolder.postalCode} inputStyle={FORM_FIELD_STYLE} />
+                <Text>Tous les services franchir un pallier dans votre croissance et automatiser votre forte activité d’artisan & d'indépendant</Text>
               </View>
             </View>
           </View>
-        )}
-        <View style={FORM_FIELD_CONTAINER}>
-          <Text style={SECTION_STYLE} text={'My subscription'} />
-          <View>
-            <Text style={SECTION_STYLE}>L'ambitieux</Text>
-            <View>
-              <Text>Tous les services franchir un pallier dans votre croissance et automatiser votre forte activité d’artisan & d'indépendant</Text>
-            </View>
-          </View>
-        </View>
-      </Screen>
-    </View>
+        </Screen>
+      </View>
+    </ErrorBoundary>
   );
 });
