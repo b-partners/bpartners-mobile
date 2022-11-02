@@ -24,7 +24,16 @@ jobs:
 
       - run: npm install --force
 
-      - run: cd android && ./gradlew assembleRelease
+      - run: npm run build-android
+
+      - run: | 
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
+          
+      - run: |
+          export APP_UPLOAD_STORE_PASSWORD=${{secrets.APP_UPLOAD_STORE}}
+          cd android 
+          ./gradlew assembleRelease
 
       - run: npm test
 
