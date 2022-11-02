@@ -83,6 +83,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
+    bundleInRelease: true,
 ]
 
 // This method of including other gradle files is to support symlinks.
