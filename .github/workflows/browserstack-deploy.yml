@@ -31,7 +31,9 @@ jobs:
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
           
       - run: |
-          export APP_UPLOAD_STORE_PASSWORD=${{secrets.APP_UPLOAD_STORE}}
+          export APP_UPLOAD_STORE_PASSWORD=${{secrets.APP_UPLOAD_STORE_PASSWORD}}
+          export APP_UPLOAD_KEY_ALIAS=${{secrets.APP_UPLOAD_KEY_ALIAS}}
+          export APP_UPLOAD_KEY_PASSWORD=${{secrets.APP_UPLOAD_KEY_PASSWORD}}
           cd android 
           ./gradlew assembleRelease
 
