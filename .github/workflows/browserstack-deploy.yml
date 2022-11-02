@@ -40,7 +40,6 @@ jobs:
         run: |
           cd android 
           ./gradlew assembleRelease
-          ./gradlew bundleRelease
 
       - run: npm test
 
