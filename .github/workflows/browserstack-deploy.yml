@@ -35,7 +35,7 @@ jobs:
         run: |
           cd android/app
           touch release.keystore
-          base64 -d ${{ secrets.KEYSTORE }} >> release.keystore
+          echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
 
       - name: Setting up the environment variables
         run: |
