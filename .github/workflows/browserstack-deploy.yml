@@ -26,16 +26,21 @@ jobs:
 
       - run: npm run build-android
 
-      - run: | 
+      - name: Remove duplicated ressources
+        run: |
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
-          
-      - run: |
-          export APP_UPLOAD_STORE_PASSWORD=${{secrets.APP_UPLOAD_STORE_PASSWORD}}
-          export APP_UPLOAD_KEY_ALIAS=${{secrets.APP_UPLOAD_KEY_ALIAS}}
-          export APP_UPLOAD_KEY_PASSWORD=${{secrets.APP_UPLOAD_KEY_PASSWORD}}
+
+      - name: Setting up the environment variables
+        run: |
+          mkdir ~/.gradle
+          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
+
+      - name: Build release app and bundle app
+        run: |
           cd android 
           ./gradlew assembleRelease
+          ./gradlew bundleRelease
 
       - run: npm test
 
