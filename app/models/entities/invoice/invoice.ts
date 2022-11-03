@@ -12,7 +12,7 @@ export enum InvoiceStatus {
 
 export const InvoiceModel = types.model('Invoice').props({
   id: types.maybe(types.string),
-  fileId: types.maybe(types.string),
+  fileId: types.maybeNull(types.string),
   ref: types.maybeNull(types.string),
   title: types.maybeNull(types.string),
   comment: types.maybeNull(types.string),
