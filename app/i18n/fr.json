@@ -126,7 +126,10 @@
     },
     "messages": {
       "successfullyMarkAsProposal": "Devis envoyé au client.",
-      "successfullyMarkAsInvoice": "Devis transformé en facture."
+      "successfullyMarkAsInvoice": "Devis transformé en facture.",
+      "downloadingInvoice": "Téléchargement de la facture en cours",
+      "invoiceSuccessfullyDownload": "Facture téléchargée.",
+      "downloadingInvoiceFailed": "Un problème est survenu durant le téléchargement de la facture."
     }
   },
   "paymentListScreen": {

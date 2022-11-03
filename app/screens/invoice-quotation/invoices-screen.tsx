@@ -6,17 +6,21 @@ import { FlatList, View } from 'react-native';
 import { GradientBackground, Screen, Separator } from '../../components';
 import { Loader } from '../../components/loader/loader';
 import { MenuItem } from '../../components/menu/menu';
+import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
+import { downloadFile } from '../../utils/download-file';
+import { showMessage } from '../../utils/snackbar';
 import { Invoice } from './components/invoice';
 import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-  const { invoiceStore } = useStores();
+  const { invoiceStore, authStore } = useStores();
   const { invoices, loading } = invoiceStore;
+  const { currentAccount, accessToken } = authStore;
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', () => {
@@ -27,7 +31,20 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
 
   const items: MenuItem[] = [{ id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') }];
 
-  const downloadInvoice = () => console.tron.log('Downloading invoice');
+  const downloadInvoice = async (item: IInvoice) => {
+    try {
+      showMessage(translate('invoiceScreen.messages.downloadingInvoice'));
+      await downloadFile({
+        url: `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`,
+        fileName: `${item.ref}.pdf`,
+      });
+      showMessage(translate('invoiceScreen.messages.invoiceSuccessfullyDownload'));
+    } catch (e) {
+      showMessage(translate('invoiceScreen.messages.downloadingInvoiceFailed'));
+      console.tron.log(e);
+      throw e;
+    }
+  };
 
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
@@ -38,7 +55,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
             contentContainerStyle={INVOICES_STYLE}
             data={[...invoices]}
             renderItem={({ item }) => {
-              return <Invoice item={item} menuItems={items} menuAction={{ downloadInvoice }} />;
+              return <Invoice item={item} menuItems={items} menuAction={{ downloadInvoice: () => downloadInvoice(item) }} />;
             }}
             ItemSeparatorComponent={() => <Separator />}
           />

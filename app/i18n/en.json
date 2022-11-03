@@ -143,7 +143,10 @@
     },
     "messages": {
       "successfullyMarkAsProposal": "Invoice proposed to customer.",
-      "successfullyMarkAsInvoice": "Quotation successfully transformed as invoice."
+      "successfullyMarkAsInvoice": "Quotation successfully transformed as invoice.",
+      "downloadingInvoice": "Downloading invoice",
+      "invoiceSuccessfullyDownload": "Invoice downloaded",
+      "downloadingInvoiceFailed": "Something went wrong while downloading invoice"
     }
   },
   "paymentListScreen": {
