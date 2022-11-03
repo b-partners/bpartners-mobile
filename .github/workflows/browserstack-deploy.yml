@@ -31,6 +31,12 @@ jobs:
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
 
+      - name: Decode keystore
+        run: |
+          cd android/app
+          touch release.keystore
+          base64 -d ${{ secrets.KEYSTORE }} >> release.keystore
+
       - name: Setting up the environment variables
         run: |
           mkdir ~/.gradle
