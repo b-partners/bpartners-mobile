@@ -112,18 +112,24 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
+    getInvoicesFail: error => {
+      console.tron.log(error);
+    },
+  }))
+
+  .actions(self => ({
     getInvoices: flow(function* (criteria: Criteria) {
       detach(self.invoices);
       self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-      if (getInvoicesResult.kind === 'ok') {
+      try {
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         self.loading = false;
         self.getInvoicesSuccess(getInvoicesResult.invoices);
-      } else {
+      } catch (e) {
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
-        __DEV__ && console.tron.log(getInvoicesResult.kind);
+        self.getInvoicesFail(e.message);
       }
     }),
   }))
@@ -134,14 +140,19 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
+    getInvoiceFail: error => {
+      console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
     getInvoice: flow(function* (invoiceId: string) {
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
-      if (getInvoiceResult.kind === 'ok') {
+      try {
+        const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
         self.getInvoiceSuccess(getInvoiceResult.invoice);
-      } else {
-        __DEV__ && console.tron.log(getInvoiceResult.kind);
-        throw new Error(getInvoiceResult.kind);
+      } catch (e) {
+        self.getInvoiceFail(e.message);
+        throw e;
       }
     }),
   }))
