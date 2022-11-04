@@ -18,13 +18,19 @@ export const CustomerStoreModel = types
     },
   }))
   .actions(self => ({
+    getCustomerFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
     getCustomers: flow(function* (name: string) {
       const customerApi = new CustomerApi(self.environment.api);
-      const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
-      if (getCustomersResult.kind === 'ok') {
+      try {
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
         self.getCustomersSuccess(getCustomersResult.customers);
-      } else {
-        __DEV__ && console.tron.log(getCustomersResult.kind);
+      } catch (e) {
+        self.getCustomerFail(e.message);
+        throw e;
       }
     }),
   }));
