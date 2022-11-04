@@ -77,7 +77,7 @@ jobs:
     env:
       AWS_REGION: eu-west-3
 
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios-store'
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
 
     runs-on: macos-latest
 
