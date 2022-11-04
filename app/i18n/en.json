@@ -155,5 +155,8 @@
       "invoices": "Invoices",
       "quotations": "Quotations"
     }
+  },
+  "logoutScreen": {
+    "title": "Logout"
   }
 }
