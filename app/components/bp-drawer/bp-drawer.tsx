@@ -9,7 +9,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
 
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props}></DrawerItemList>
+      <DrawerItemList {...props} />
       <DrawerItem
         label={translate('logoutScreen.title')}
         onPress={() => {
