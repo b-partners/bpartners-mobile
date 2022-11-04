@@ -45,12 +45,15 @@ jobs:
           mkdir ~/.gradle
           sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
 
-      - name: Build release and bundle app
+      - name: Build release app
         run: |
           cd android 
           ./gradlew assembleRelease
 
-      - run: ./gradlew bundleRelease
+      - name: Build bundle app
+        run: |
+          cd android
+          ./gradlew bundleRelease
 
       - run: echo "appName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
 
