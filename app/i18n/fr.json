@@ -133,5 +133,8 @@
       "invoices": "Factures",
       "quotations": "Devis"
     }
+  },
+  "logoutScreen": {
+    "title": "Se déconnecter"
   }
 }

@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { View } from 'react-native';
 
 import { GradientBackground, Screen } from '../../components';
@@ -18,6 +18,10 @@ import { FULL } from './styles';
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
   const { transactions, loadingTransactions } = transactionStore;
+
+  useEffect(() => {
+    transactionStore.getTransactions();
+  }, []);
 
   return (
     <View testID='SignInWebViewScreen' style={FULL}>
