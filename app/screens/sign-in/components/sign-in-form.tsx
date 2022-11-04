@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import React, { FC, PropsWithoutRef } from 'react';
+import React, { FC, PropsWithoutRef, useState } from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
 import * as yup from 'yup';
 
@@ -50,13 +50,19 @@ const INVALID_PHONE_NUMBER = {
 export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => void }>> = props => {
   const { authStore } = useStores();
   const { next } = props;
+  const [error, setError] = useState<Error>(null);
+  if (error) throw error;
 
   return (
     <Formik
       validationSchema={validationSchema}
       initialValues={{ phoneNumber: '' }}
       onSubmit={async ({ phoneNumber }) => {
-        await authStore.signIn(phoneNumber);
+        try {
+          await authStore.signIn(phoneNumber);
+        } catch (e) {
+          setError(e);
+        }
         const { redirectionUrl } = authStore;
         next(redirectionUrl);
       }}
