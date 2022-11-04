@@ -152,14 +152,19 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
+    saveInvoiceFail: error => {
+      console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
     saveInvoice: flow(function* (invoice: Invoice) {
       const paymentApi = new PaymentApi(self.environment.api);
-      const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
-      if (createOrUpdateInvoiceResult.kind === 'ok') {
+      try {
+        const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
         self.saveInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
-      } else {
-        __DEV__ && console.tron.log(createOrUpdateInvoiceResult.kind);
-        throw new Error(createOrUpdateInvoiceResult);
+      } catch (e) {
+        self.saveInvoiceFail(e.message);
+        throw e;
       }
     }),
   }))
