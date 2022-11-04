@@ -54,13 +54,20 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
+    getProductsFail: error => {
+      console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
     getProducts: flow(function* (description: string) {
       const productApi = new ProductApi(self.environment.api);
-      const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
-      if (getProductsResult.kind === 'ok') {
+      try {
+        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
+
         self.getProductsSuccess(getProductsResult.products);
-      } else {
-        __DEV__ && console.tron.log(getProductsResult.kind);
+      } catch (e) {
+        self.getProductsFail(e.message);
+        throw e;
       }
     }),
   }))
@@ -70,18 +77,23 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
+    getDraftsFail: error => {
+      console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
     getDrafts: flow(function* (criteria: Criteria) {
       detach(self.invoices);
       self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-      if (getInvoicesResult.kind === 'ok') {
+      try {
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         self.loading = false;
         self.getDraftsSuccess(getInvoicesResult.invoices);
-      } else {
+      } catch (e) {
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
-        __DEV__ && console.tron.log(getInvoicesResult.kind);
+        self.getDraftsFail(e.message);
       }
     }),
   }))
@@ -91,18 +103,22 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
+    getQuotationsFail: error => {
+      console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
     getQuotations: flow(function* (criteria: Criteria) {
       detach(self.invoices);
       self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-      if (getInvoicesResult.kind === 'ok') {
+      try {
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         self.loading = false;
         self.getQuotationsSuccess(getInvoicesResult.invoices);
-      } else {
+      } catch (e) {
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
-        __DEV__ && console.tron.log(getInvoicesResult.kind);
       }
     }),
   }))
