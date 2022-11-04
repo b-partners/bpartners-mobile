@@ -16,25 +16,20 @@ export class PaymentApi {
   }
 
   async init(accountId: string, payload: PaymentInitiation): Promise<InitPaymentResult> {
-    try {
-      // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/paymentInitiations`, [
-        {
-          ...payload,
-          redirectionStatusUrls: { successUrl: env.successUrl, failureUrl: env.failureUrl },
-        },
-      ]);
-      // the typical ways to die when calling an api
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const [paymentInitiation] = response.data;
-      return { kind: 'ok', paymentInitiation };
-    } catch (e) {
-      __DEV__ && console.tron.log(e.message);
-      return { kind: 'bad-data' };
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/paymentInitiations`, [
+      {
+        ...payload,
+        redirectionStatusUrls: { successUrl: env.successUrl, failureUrl: env.failureUrl },
+      },
+    ]);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const [paymentInitiation] = response.data;
+    return { kind: 'ok', paymentInitiation };
   }
 
   async saveInvoice(accountId: string, payload: Invoice): Promise<CrupdateInvoiceResult> {

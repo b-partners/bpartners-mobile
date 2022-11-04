@@ -60,17 +60,23 @@ export const PaymentInitiationStoreModel = types
     },
   }))
   .actions(self => ({
+    initFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
     init: flow(function* (payload: PaymentInitiation) {
       self.initiatingPayment = true;
       self.paymentUrl = null;
       const paymentInitiationApi = new PaymentApi(self.environment.api);
-      const initPaymentResult = yield paymentInitiationApi.init(self.currentAccount.id, payload);
-      if (initPaymentResult.kind === 'ok') {
-        console.tron.log(`Payment ${initPaymentResult.paymentInitiation.id} initiated`);
+      try {
+        const initPaymentResult = yield paymentInitiationApi.init(self.currentAccount.id, payload);
+        __DEV__ && console.tron.log(`Payment ${initPaymentResult.paymentInitiation.id} initiated`);
         self.initSuccess(initPaymentResult.paymentInitiation.redirectionUrl);
-      } else {
-        __DEV__ && console.tron.log(initPaymentResult.kind);
+      } catch (e) {
+        self.initFail(e.message);
         self.initiatingPayment = false;
+        throw e;
       }
     }),
   }));
