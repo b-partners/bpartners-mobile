@@ -20,14 +20,22 @@ export const OnboardingStoreModel = types
     },
   }))
   .actions(self => ({
+    getOnboardingUrlFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
     getOnboardingUrl: flow(function* () {
       const onboardingApi = new OnboardingApi(self.environment.api);
-      const result = yield onboardingApi.getOnboardingUrl();
-      const { kind, ...urls } = result;
-      if (kind === 'ok') {
-        self.getOnboardingUrlSuccess(urls);
-      } else {
-        __DEV__ && console.tron.log(result.kind);
+      try {
+        const result = yield onboardingApi.getOnboardingUrl();
+        const { kind, ...urls } = result;
+        if (kind === 'ok') {
+          self.getOnboardingUrlSuccess(urls);
+        }
+      } catch (e) {
+        self.getOnboardingUrlFail(e.message);
+        throw e;
       }
     }),
   }));
