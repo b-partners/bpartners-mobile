@@ -6,9 +6,11 @@
  */
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useColorScheme } from 'react-native';
 
+import { BpDrawer } from '../components';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { InvoiceStatus } from '../models/entities/invoice/invoice';
@@ -47,8 +49,8 @@ export type NavigatorParamList = {
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
 
-function AppStack() {
-  const PROTECTED_ROUTE_OPTIONS: any = {
+const AppStack = observer(function () {
+  const HIDE_DRAWER_OPTIONS: any = {
     swipeEnabled: false,
     drawerLabel: () => null,
     drawerIcon: () => null,
@@ -56,27 +58,38 @@ function AppStack() {
     drawerItemStyle: { display: 'none' },
   };
 
+  const { authStore } = useStores();
+  const { accessToken } = authStore;
+
   return (
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName='welcome'
+      initialRouteName={!!accessToken ? 'home' : 'welcome'}
+      drawerContent={props => <BpDrawer {...props} />}
     >
-      <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
-      <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
-      <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-      <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-      <Drawer.Screen name='paymentList' component={PaymentListScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='invoices' component={InvoicesScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      {!!accessToken ? (
+        <>
+          <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+          <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
+          <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+          <Drawer.Screen name='paymentList' component={PaymentListScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='onboarding' component={OnboardingScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      ) : (
+        <>
+          <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='signIn' component={SignInScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      )}
     </Drawer.Navigator>
   );
-}
+});
 
 type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>;
 
@@ -88,9 +101,6 @@ export function AppNavigator(props: NavigationProps) {
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
     switch (route) {
-      case 'home':
-        await transactionStore.getTransactions();
-        break;
       case 'transactionList':
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
         break;

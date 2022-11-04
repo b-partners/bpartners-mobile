@@ -3,6 +3,7 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree'
 
 import { AccountApi } from '../../../services/api/account-api';
 import { AuthApi } from '../../../services/api/auth-api';
+import { save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountModel } from '../../entities/account/account';
 import { User, UserModel } from '../../entities/user/user';
@@ -45,9 +46,14 @@ export const AuthStoreModel = types
       const user = UserModel.create(currentUser);
       const account = AccountModel.create(currentAccount);
       const accountHolder = AccountHolderModel.create(currentAccountHolder);
+
       self.currentUser = { ...user };
       self.currentAccount = { ...account };
       self.currentAccountHolder = { ...accountHolder };
+
+      save('currentUser', currentUser);
+      save('currentAccount', currentAccount);
+      save('currentAccountHolder', currentAccountHolder);
     },
   }))
   .actions(self => ({
@@ -79,6 +85,15 @@ export const AuthStoreModel = types
         ['refreshToken', self.refreshToken],
       ]);
     }),
+  }))
+  .actions(self => ({
+    logout: () => {
+      self.accessToken = undefined;
+      self.refreshToken = undefined;
+      self.currentUser = undefined;
+      self.currentAccount = undefined;
+      self.currentAccountHolder = undefined;
+    },
   }))
   .actions(self => ({
     getTokenSuccess: ({ accessToken, refreshToken }) => {
