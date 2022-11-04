@@ -28,6 +28,10 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     transactionStore.getTransactionsSummary(date.getFullYear());
   }, []);
 
+  useEffect(() => {
+    transactionStore.getTransactions();
+  }, []);
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='SignInWebViewScreen' style={FULL}>
