@@ -66,10 +66,10 @@ const AppStack = observer(function () {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={!!accessToken ? 'home' : 'welcome'}
+      initialRouteName={accessToken ? 'home' : 'welcome'}
       drawerContent={props => <BpDrawer {...props} />}
     >
-      {!!accessToken ? (
+      {accessToken ? (
         <>
           <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
