@@ -24,7 +24,7 @@ export const AuthStoreModel = types
   .extend(withEnvironment)
   .actions(() => ({
     signInFail: error => {
-      console.tron.log(error);
+      console.tron.log(error.message);
     },
   }))
   .actions(self => ({
