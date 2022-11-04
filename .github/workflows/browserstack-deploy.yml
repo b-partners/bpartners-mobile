@@ -46,14 +46,10 @@ jobs:
           sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
 
       - name: Build release app
-        run: |
-          cd android 
-          ./gradlew assembleRelease
+        run: cd android && ./gradlew assembleRelease
 
       - name: Build bundle app
-        run: |
-          cd android
-          ./gradlew bundleRelease
+        run: cd android && ./gradlew bundleRelease
 
       - run: echo "appName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
 
@@ -68,7 +64,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - run: |
+      - name: Upload apps to amazon S3
+        run: |
           aws s3 cp android/app/build/outputs/apk/release/${{env.appName}}.apk s3://mobile-bpartners/android/
           aws s3 cp android/app/build/outputs/bundle/release/${{env.appName}}.aab s3://mobile-bpartners/android/
 
