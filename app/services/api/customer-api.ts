@@ -22,8 +22,8 @@ export class CustomerApi {
         __DEV__ && console.tron.log(problem.kind);
         throw new Error(problem.kind);
       }
-      const customers = response.data;
-      return { kind: 'ok', customers };
     }
+    const customers = response.data;
+    return { kind: 'ok', customers };
   }
 }

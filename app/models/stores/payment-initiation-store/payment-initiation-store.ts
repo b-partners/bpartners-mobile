@@ -24,15 +24,21 @@ export const PaymentInitiationStoreModel = types
       self.customers.replace(customers);
     },
   }))
+  .actions(() => ({
+    getCustomersFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     getCustomers: flow(function* (name: string) {
       const customerApi = new CustomerApi(self.environment.api);
-      const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
-      if (getCustomersResult.kind === 'ok') {
-        self.getCustomersSuccess(getCustomersResult.customers);
-      } else {
-        __DEV__ && console.tron.log(getCustomersResult.kind);
+      try {
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
+        if (getCustomersResult.kind === 'ok') self.getCustomersSuccess(getCustomersResult.customers);
+      } catch (e) {
+        self.getCustomersFail(e.message);
         self.initiatingPayment = false;
+        throw e;
       }
     }),
   }))
