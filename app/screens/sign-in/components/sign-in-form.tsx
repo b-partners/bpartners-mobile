@@ -1,9 +1,10 @@
 import { Formik } from 'formik';
-import React, { FC, PropsWithoutRef, useState } from 'react';
+import React, { FC, PropsWithoutRef } from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
 import * as yup from 'yup';
 
 import { Button } from '../../../components';
+import { useError } from '../../../hook';
 import { useStores } from '../../../models';
 import { color, spacing, typography } from '../../../theme';
 import FormField from './form-field';
@@ -50,8 +51,7 @@ const INVALID_PHONE_NUMBER = {
 export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => void }>> = props => {
   const { authStore } = useStores();
   const { next } = props;
-  const [error, setError] = useState<Error>(null);
-  if (error) throw error;
+  const { setError } = useError();
 
   return (
     <Formik
@@ -61,7 +61,7 @@ export const SignInForm: FC<PropsWithoutRef<{ next: (redirectionUrl: string) => 
         try {
           await authStore.signIn(phoneNumber);
         } catch (e) {
-          setError(e);
+          return setError(e);
         }
         const { redirectionUrl } = authStore;
         next(redirectionUrl);
