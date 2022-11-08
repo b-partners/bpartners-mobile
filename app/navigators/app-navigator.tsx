@@ -59,7 +59,7 @@ const AppStack = observer(function () {
   };
 
   const { authStore } = useStores();
-  const { accessToken } = authStore;
+  const { accessToken, currentAccount, currentAccountHolder, currentUser } = authStore;
 
   return (
     <Drawer.Navigator
@@ -69,7 +69,7 @@ const AppStack = observer(function () {
       initialRouteName={accessToken ? 'home' : 'welcome'}
       drawerContent={props => <BpDrawer {...props} />}
     >
-      {accessToken ? (
+      {!!accessToken && !!currentAccount.id && !!currentAccountHolder.id && !!currentUser.id ? (
         <>
           <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
