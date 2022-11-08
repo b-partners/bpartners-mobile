@@ -64,24 +64,19 @@ export class TransactionApi {
     transactionCategory: TransactionCategory
   ): Promise<GetTransactionCategoriesResult> {
     const { type, vat } = transactionCategory;
-    try {
-      // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/transactions/${transactionId}/transactionCategories`, [
-        {
-          type,
-          vat,
-        },
-      ]);
-      // the typical ways to die when calling an api
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const transactionCategories = response.data;
-      return { kind: 'ok', transactionCategories };
-    } catch (e) {
-      __DEV__ && console.tron.log(e.message);
-      return { kind: 'bad-data' };
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/transactions/${transactionId}/transactionCategories`, [
+      {
+        type,
+        vat,
+      },
+    ]);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const transactionCategories = response.data;
+    return { kind: 'ok', transactionCategories };
   }
 }
