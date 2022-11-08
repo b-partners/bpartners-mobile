@@ -13,23 +13,18 @@ export class TransactionApi {
   }
 
   async getTransactions(accountId: string): Promise<GetTransactionsResult> {
-    try {
-      // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactions`);
-      // the typical ways to die when calling an api
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const transactions = response.data.map(item => ({
-        ...item,
-        category: item.category && item.category.length ? item.category[0] : null,
-      }));
-      return { kind: 'ok', transactions };
-    } catch (e) {
-      __DEV__ && console.tron.log(e.message);
-      throw new Error('bad-data');
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactions`);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const transactions = response.data.map(item => ({
+      ...item,
+      category: item.category && item.category.length ? item.category[0] : null,
+    }));
+    return { kind: 'ok', transactions };
   }
 
   async getTransactionCategories(

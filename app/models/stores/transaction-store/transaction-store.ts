@@ -41,6 +41,11 @@ export const TransactionStoreModel = types
       self.transactions.replace(transactionSnapshotOuts as any);
     },
   }))
+  .actions(() => ({
+    getTransactionsFail: error => {
+      console.tron.log(`Failing to fetch transactions, ${error}`);
+    },
+  }))
   .actions(self => ({
     getTransactions: flow(function* () {
       self.transactions.replace([]);
@@ -50,7 +55,8 @@ export const TransactionStoreModel = types
         const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id);
         self.getTransactionsSuccess(getTransactionsResult.transactions);
       } catch (e) {
-        console.tron.log(`Failing to fetch transactions, ${e}`);
+        self.getTransactionsFail(e.message);
+        throw e;
       } finally {
         self.loadingTransactions = false;
       }
