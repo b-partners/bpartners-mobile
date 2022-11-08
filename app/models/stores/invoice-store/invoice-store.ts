@@ -31,7 +31,7 @@ export const InvoiceStoreModel = types
       self.customers.replace(customers);
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     getCustomersFail: error => {
       __DEV__ && console.tron.log(error);
     },
@@ -53,7 +53,7 @@ export const InvoiceStoreModel = types
       self.products.replace(products);
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     getProductsFail: error => {
       console.tron.log(error);
     },
@@ -76,7 +76,7 @@ export const InvoiceStoreModel = types
       self.drafts.replace(invoices as any);
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     getDraftsFail: error => {
       console.tron.log(error);
     },
@@ -102,7 +102,7 @@ export const InvoiceStoreModel = types
       self.quotations.replace(invoices as any);
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     getQuotationsFail: error => {
       console.tron.log(error);
     },
@@ -127,7 +127,7 @@ export const InvoiceStoreModel = types
       self.invoices.replace(invoices as any);
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     getInvoicesFail: error => {
       console.tron.log(error);
     },
@@ -155,7 +155,7 @@ export const InvoiceStoreModel = types
       self.invoice = invoiceModel;
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     getInvoiceFail: error => {
       console.tron.log(error);
     },
@@ -178,7 +178,7 @@ export const InvoiceStoreModel = types
       self.invoice = invoiceModel;
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     saveInvoiceFail: error => {
       console.tron.log(error);
     },

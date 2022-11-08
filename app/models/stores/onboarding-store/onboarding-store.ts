@@ -19,7 +19,7 @@ export const OnboardingStoreModel = types
       self.failureUrl = urls.failureUrl;
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     getOnboardingUrlFail: error => {
       __DEV__ && console.tron.log(error);
     },

@@ -17,7 +17,7 @@ export const CustomerStoreModel = types
       self.customers.replace(customerSnapshotOuts);
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     getCustomerFail: error => {
       __DEV__ && console.tron.log(error);
     },
