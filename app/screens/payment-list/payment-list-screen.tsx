@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import { Dimensions, View, ViewStyle } from 'react-native';
 import ActionButton from 'react-native-action-button';
 
-import { Screen } from '../../components';
+import { GradientBackground, Header, Screen } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
@@ -26,6 +26,8 @@ export const PaymentListScreen: FC<StackScreenProps<NavigatorParamList, 'payment
 
   return (
     <Screen>
+      <GradientBackground colors={['#422443', '#281b34']} />
+      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back'></Header>
       <Tab.Navigator initialRouteName={translate('paymentListScreen.tabs.drafts')}>
         <Tab.Screen name={translate('paymentListScreen.tabs.drafts')} component={DraftsScreen} />
         <Tab.Screen name={translate('paymentListScreen.tabs.quotations')} component={QuotationsScreen} />
