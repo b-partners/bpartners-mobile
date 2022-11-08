@@ -6,6 +6,7 @@ import WebView from 'react-native-webview';
 
 import { GradientBackground, Header } from '../../components';
 import env from '../../config/env';
+import { useError } from '../../hook';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
@@ -40,6 +41,7 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
   const { url } = route.params;
   const { authStore } = useStores();
   let webview: WebView;
+  const { setError } = useError();
 
   const onNavigationStateChange = async webViewState => {
     const { url: currentUrl } = webViewState;
@@ -59,6 +61,7 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
     } catch (e) {
       navigation.navigate('signIn');
       console.tron.log(`Sign in error`);
+      return setError(e);
     }
     navigation.navigate('home');
   };

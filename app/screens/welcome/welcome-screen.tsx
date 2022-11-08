@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Button, GradientBackground, Header, Screen, Text } from '../../components';
+import { useError } from '../../hook';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
@@ -73,12 +74,17 @@ const FOOTER_CONTENT: ViewStyle = {
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
   const signIn = () => navigation.navigate('signIn');
   const { onboardingStore } = useStores();
+  const { setError } = useError();
 
   const createAccount = async () => {
-    await onboardingStore.getOnboardingUrl();
-    const { redirectionUrl } = onboardingStore;
-    // TODO: Connecting routing to mobx-state-tree and pass query params to store
-    navigation.navigate('onboarding', { url: redirectionUrl });
+    try {
+      await onboardingStore.getOnboardingUrl();
+      const { redirectionUrl } = onboardingStore;
+      // TODO: Connecting routing to mobx-state-tree and pass query params to store
+      navigation.navigate('onboarding', { url: redirectionUrl });
+    } catch (e) {
+      setError(e);
+    }
   };
 
   return (
