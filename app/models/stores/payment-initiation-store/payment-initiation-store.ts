@@ -55,8 +55,8 @@ export const PaymentInitiationStoreModel = types
   .actions(self => ({
     getProducts: flow(function* (description: string) {
       const productApi = new ProductApi(self.environment.api);
-      const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
       try {
+        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
         self.getProductsSuccess(getProductsResult.products);
       } catch (e) {
         self.getProductsFail(e.message);
