@@ -92,14 +92,14 @@ jobs:
       
       - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             
-      - run: npm run build:e2e
+      - run: npm run ci:build:e2e
 
-      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
+      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | shasum | awk '{print $1}')" >> $GITHUB_ENV
 
       - name: change extension app to ipa
         run: |
           mkdir Payload
-          mv ios/build/Build/Products/Debug-iphonesimulator/BpartnersMobile.app Payload/
+          mv ios/build/Build/Products/Release-iphonesimulator/BpartnersMobile.app Payload/
           zip -r ${{ env.ipaName }}.ipa Payload
 
       - name: Configure AWS credentials
