@@ -13,7 +13,6 @@ import { useColorScheme } from 'react-native';
 import { BpDrawer } from '../components';
 import { translate } from '../i18n';
 import { useStores } from '../models';
-import { InvoiceStatus } from '../models/entities/invoice/invoice';
 import { HomeScreen, OnboardingScreen, PaymentInitiationScreen, ProfileScreen, SignInScreen, TransactionListScreen, WelcomeScreen } from '../screens';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
@@ -103,9 +102,6 @@ export function AppNavigator(props: NavigationProps) {
     switch (route) {
       case 'transactionList':
         await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
-        break;
-      case 'paymentList':
-        await Promise.all([invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 15 })]);
         break;
       case 'invoiceForm':
         await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
