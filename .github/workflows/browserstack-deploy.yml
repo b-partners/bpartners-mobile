@@ -1,5 +1,5 @@
 
-name: browserstack-deploy
+name: deploy
 on:
   push:
     branches:
@@ -11,12 +11,13 @@ on:
        description: 'Platform'
        options:
          - all
-         - android
-         - ios
+         - android-store
+         - ios-store
        required: true
+       
 jobs:
-  build-android:
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android'
+  android-browserstack:
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-store'
 
     runs-on: ubuntu-latest
 
@@ -72,12 +73,12 @@ jobs:
       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
 
     
-  build-ios:
+  ios-browserstack:
 
     env:
       AWS_REGION: eu-west-3
 
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios-store'
 
     runs-on: macos-latest
 
@@ -92,14 +93,14 @@ jobs:
       
       - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             
-      - run: npm run build:e2e
+      - run: npm run ci:build:e2e
 
-      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
+      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | shasum | awk '{print $1}')" >> $GITHUB_ENV
 
       - name: change extension app to ipa
         run: |
           mkdir Payload
-          mv ios/build/Build/Products/Debug-iphonesimulator/BpartnersMobile.app Payload/
+          mv ios/build/Build/Products/Release-iphonesimulator/BpartnersMobile.app Payload/
           zip -r ${{ env.ipaName }}.ipa Payload
 
       - name: Configure AWS credentials
