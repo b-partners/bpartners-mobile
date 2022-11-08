@@ -21,6 +21,11 @@ export const TransactionStoreModel = types
       self.transactionCategories.replace(transactionCategoriesSnapshotOuts);
     },
   }))
+  .actions(() => ({
+    getTransactionCategoriesFail: error => {
+      console.tron.log(`Failing to fetch transaction categories, ${error}`);
+    },
+  }))
   .actions(self => ({
     getTransactionCategories: flow(function* () {
       const transactionApi = new TransactionApi(self.environment.api);
@@ -29,7 +34,8 @@ export const TransactionStoreModel = types
         const getTransactionCategoriesResult = yield transactionApi.getTransactionCategories(self.currentAccount.id);
         self.getTransactionCategoriesSuccess(getTransactionCategoriesResult.transactionCategories);
       } catch (e) {
-        console.tron.log(`Failing to fetch transaction categories, ${e}`);
+        self.getTransactionCategoriesFail(e.message);
+        throw e;
       } finally {
         self.loadingTransactionCategories = false;
       }

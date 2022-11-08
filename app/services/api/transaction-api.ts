@@ -42,25 +42,20 @@ export class TransactionApi {
     to = to || DEFAULT_ENDING_DATE;
     from = from || DEFAULT_STARTING_DATE;
 
-    try {
-      // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionCategories`, {
-        unique,
-        userDefined,
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionCategories`, {
+      unique,
+      userDefined,
         from,
         to,
-      });
-      // the typical ways to die when calling an api
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const transactionCategories = response.data;
-      return { kind: 'ok', transactionCategories };
-    } catch (e) {
-      __DEV__ && console.tron.log(e.message);
-      throw new Error('bad-data');
+    });
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const transactionCategories = response.data;
+    return { kind: 'ok', transactionCategories };
   }
 
   async updateTransactionCategories(
