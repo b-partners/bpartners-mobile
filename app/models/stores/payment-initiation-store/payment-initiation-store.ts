@@ -41,15 +41,21 @@ export const PaymentInitiationStoreModel = types
       self.products.replace(products);
     },
   }))
+  .actions(() => ({
+    getProductsFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     getProducts: flow(function* (description: string) {
       const productApi = new ProductApi(self.environment.api);
       const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
-      if (getProductsResult.kind === 'ok') {
+      try {
         self.getProductsSuccess(getProductsResult.products);
-      } else {
-        __DEV__ && console.tron.log(getProductsResult.kind);
+      } catch (e) {
+        self.getProductsFail(e.message);
         self.initiatingPayment = false;
+        throw e;
       }
     }),
   }))
@@ -59,7 +65,7 @@ export const PaymentInitiationStoreModel = types
       self.paymentUrl = paymentUrl;
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     initFail: error => {
       __DEV__ && console.tron.log(error);
     },

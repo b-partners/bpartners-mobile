@@ -17,14 +17,20 @@ export const ProductStoreModel = types
       self.products.replace(productSnapshotOuts);
     },
   }))
+  .actions(() => ({
+    getProductsFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     getProducts: async (description: string) => {
       const productApi = new ProductApi(self.environment.api);
       const getProductsResults = await productApi.getProducts(self.currentAccount.id, description);
-      if (getProductsResults.kind === 'ok') {
-        self.getProductsSuccess(getProductsResults.products);
-      } else {
-        __DEV__ && console.tron.log(getProductsResults.kind);
+      try {
+        if (getProductsResults.kind === 'ok') self.getProductsSuccess(getProductsResults.products);
+      } catch (e) {
+        self.getProductsFail(e.message);
+        throw e;
       }
     },
   }));
