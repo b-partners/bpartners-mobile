@@ -11,9 +11,20 @@ import React from 'react';
 import { useColorScheme } from 'react-native';
 
 import { BpDrawer } from '../components';
+import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
-import { HomeScreen, OnboardingScreen, PaymentInitiationScreen, ProfileScreen, SignInScreen, TransactionListScreen, WelcomeScreen } from '../screens';
+import { InvoiceStatus } from '../models/entities/invoice/invoice';
+import {
+  ErrorBoundary,
+  HomeScreen,
+  OnboardingScreen,
+  PaymentInitiationScreen,
+  ProfileScreen,
+  SignInScreen,
+  TransactionListScreen,
+  WelcomeScreen,
+} from '../screens';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
@@ -96,23 +107,46 @@ export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
   const { transactionStore, invoiceStore } = useStores();
+  const { setError } = useError();
+
+  const handleError = async (asyncFunc: () => any) => {
+    try {
+      await asyncFunc();
+    } catch (e) {
+      setError(e);
+    }
+  };
 
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
     switch (route) {
       case 'transactionList':
-        await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
+        await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
+        break;
+      case 'paymentList':
+        await handleError(
+          async () =>
+            await Promise.all([
+              invoiceStore.getDrafts({
+                status: InvoiceStatus.DRAFT,
+                page: 1,
+                pageSize: 15,
+              }),
+            ])
+        );
         break;
       case 'invoiceForm':
-        await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]);
+        await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));
         break;
     }
   };
 
   return (
-    <NavigationContainer ref={navigationRef} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} {...props} onStateChange={onStateChange}>
-      <AppStack />
-    </NavigationContainer>
+    <ErrorBoundary catchErrors={'always'}>
+      <NavigationContainer ref={navigationRef} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} {...props} onStateChange={onStateChange}>
+        <AppStack />
+      </NavigationContainer>
+    </ErrorBoundary>
   );
 }
 
