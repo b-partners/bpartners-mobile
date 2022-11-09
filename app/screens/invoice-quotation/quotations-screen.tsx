@@ -12,7 +12,7 @@ import { color } from '../../theme';
 import { Invoice } from './components/invoice';
 import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
 
-export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore } = useStores();
   const { quotations, loading } = invoiceStore;
 

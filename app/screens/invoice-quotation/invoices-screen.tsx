@@ -14,7 +14,7 @@ import { color } from '../../theme';
 import { Invoice } from './components/invoice';
 import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
 
-export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore } = useStores();
   const { invoices, loading } = invoiceStore;
 

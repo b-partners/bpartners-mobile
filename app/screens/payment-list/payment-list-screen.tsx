@@ -28,7 +28,7 @@ export const PaymentListScreen: FC<StackScreenProps<NavigatorParamList, 'payment
   return (
     <Screen>
       <GradientBackground colors={['#422443', '#281b34']} />
-      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back'></Header>
+      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' />
       <Tab.Navigator initialRouteName={translate('paymentListScreen.tabs.drafts')}>
         <Tab.Screen
           name={translate('paymentListScreen.tabs.drafts')}
