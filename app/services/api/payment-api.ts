@@ -90,6 +90,9 @@ export class PaymentApi {
       }
       const invoices = response.data.map(item => ({
         ...item,
+        toPayAt: new Date(item.toPayAt),
+        sendingDate: new Date(item.sendingDate),
+        updatedAt: item.updatedAt && new Date(item.updatedAt),
       }));
       return { kind: 'ok', invoices };
     } catch (e) {
