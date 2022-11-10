@@ -1,7 +1,7 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { FlatList, SafeAreaView, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { GradientBackground, Screen, Separator } from '../../components';
 import { Loader } from '../../components/loader/loader';
@@ -27,7 +27,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         {!loading ? (
-          <SafeAreaView>
+          <View>
             <FlatList<IInvoice>
               horizontal={false}
               contentContainerStyle={INVOICES_STYLE}
@@ -37,7 +37,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
               }}
               ItemSeparatorComponent={() => <Separator />}
             />
-          </SafeAreaView>
+          </View>
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
