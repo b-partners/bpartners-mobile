@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree'
 
 import { OnboardingApi } from '../../../services/api/onboarding-api';
 import { withEnvironment } from '../../extensions/with-environment';
+import {withRootStore} from '../../extensions/with-root-store';
 
 export const OnboardingStoreModel = types
   .model('Onboarding')
@@ -11,7 +12,10 @@ export const OnboardingStoreModel = types
     failureUrl: types.optional(types.string, ''),
   })
   .extend(withEnvironment)
-
+  .extend(withRootStore)
+  .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
   .actions(self => ({
     getOnboardingUrlSuccess: urls => {
       self.redirectionUrl = urls.redirectionUrl;
@@ -35,7 +39,7 @@ export const OnboardingStoreModel = types
         }
       } catch (e) {
         self.getOnboardingUrlFail(e.message);
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }));
