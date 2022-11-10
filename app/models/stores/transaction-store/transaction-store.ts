@@ -66,6 +66,14 @@ export const TransactionStoreModel = types
       }
       yield self.getTransactions();
     }),
+  }))
+  .views(self => ({
+    get categories() {
+      return self.transactions.map(transaction => transaction.category);
+    },
+    get currentBalance() {
+      return self.transactions.reduce((a, c) => a + c.amount, 0);
+    },
   }));
 
 export interface TransactionStore extends Instance<typeof TransactionStoreModel> {}

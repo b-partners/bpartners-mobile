@@ -20,6 +20,7 @@ export const InvoiceModel = types.model('Invoice').props({
   products: types.optional(types.array(ProductModel), []),
   sendingDate: types.maybeNull(types.Date),
   toPayAt: types.maybeNull(types.Date),
+  updatedAt: types.maybeNull(types.Date),
   paymentUrl: types.maybeNull(types.string),
   totalVat: types.maybeNull(types.number),
   totalPriceWithVat: types.maybeNull(types.number),

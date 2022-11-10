@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { FlatList, View } from 'react-native';
 
 import { GradientBackground, Screen, Separator } from '../../components';
@@ -9,7 +9,7 @@ import { MenuItem } from '../../components/menu/menu';
 import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { downloadFile } from '../../utils/download-file';
@@ -17,17 +17,10 @@ import { showMessage } from '../../utils/snackbar';
 import { Invoice } from './components/invoice';
 import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
 
-export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore, authStore } = useStores();
   const { invoices, loading } = invoiceStore;
   const { currentAccount, accessToken } = authStore;
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('tabPress', () => {
-      invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 30 });
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   const items: MenuItem[] = [{ id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') }];
 
