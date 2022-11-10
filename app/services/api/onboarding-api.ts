@@ -12,22 +12,18 @@ export class OnboardingApi {
   }
 
   async getOnboardingUrl(): Promise<GetOnboardingURL> {
-    try {
-      // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.post('onboarding', {
-        successUrl: 'https://dashboard-dev.bpartners.app',
-        failureUrl: 'https://dashboard-dev.bpartners.app/error',
-      });
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.post('onboarding', {
+      successUrl: 'https://dashboard-dev.bpartners.app',
+      failureUrl: 'https://dashboard-dev.bpartners.app/error',
+    });
 
-      // the typical ways to die when calling an api
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-
-      return { kind: 'ok', ...response.data };
-    } catch (e) {
-      return { kind: 'bad-data' };
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+
+    return { kind: 'ok', ...response.data };
   }
 }

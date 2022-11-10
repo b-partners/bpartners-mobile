@@ -13800,6 +13800,11 @@ react-native-dropdown-picker@^5.4.2:
   resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.2.tgz#3d17de3d8a84cb8e74a2ffda6be417d287245b81"
   integrity sha512-cZBPyN+k52jA9XguFnKoF5tLf31z6gjZ8GijO/pfVNSSEtPwZ14UTUrr87JiiOnMh5K/O2kRzZ/jZN8D0MmUMA==
 
+react-native-error-boundary@^1.1.16:
+  version "1.1.16"
+  resolved "https://registry.yarnpkg.com/react-native-error-boundary/-/react-native-error-boundary-1.1.16.tgz#a95334b932982965fcab33d4f1a7d2aa75bcf551"
+  integrity sha512-yCbKhjGo2kMJBoUdy503L3oaInrLo1gychGr5e/IrezfPhfUGhfr8EtG2EKgZDcSfmvodBXvARq942hWis5sUA==
+
 react-native-flipper@^0.34.0:
   version "0.34.0"
   resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.34.0.tgz#7df1f38ba5d97a9321125fe0fccbe47d99e6fa1d"

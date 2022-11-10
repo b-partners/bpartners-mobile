@@ -13,23 +13,18 @@ export class TransactionApi {
   }
 
   async getTransactions(accountId: string): Promise<GetTransactionsResult> {
-    try {
-      // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactions`);
-      // the typical ways to die when calling an api
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const transactions = response.data.map(item => ({
-        ...item,
-        category: item.category && item.category.length ? item.category[0] : null,
-      }));
-      return { kind: 'ok', transactions };
-    } catch (e) {
-      __DEV__ && console.tron.log(e.message);
-      throw new Error('bad-data');
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactions`);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const transactions = response.data.map(item => ({
+      ...item,
+      category: item.category && item.category.length ? item.category[0] : null,
+    }));
+    return { kind: 'ok', transactions };
   }
 
   async getTransactionCategories(
@@ -47,25 +42,20 @@ export class TransactionApi {
     to = to || DEFAULT_ENDING_DATE;
     from = from || DEFAULT_STARTING_DATE;
 
-    try {
-      // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionCategories`, {
-        unique,
-        userDefined,
-        from,
-        to,
-      });
-      // the typical ways to die when calling an api
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const transactionCategories = response.data;
-      return { kind: 'ok', transactionCategories };
-    } catch (e) {
-      __DEV__ && console.tron.log(e.message);
-      throw new Error('bad-data');
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionCategories`, {
+      unique,
+      userDefined,
+      from,
+      to,
+    });
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const transactionCategories = response.data;
+    return { kind: 'ok', transactionCategories };
   }
 
   async updateTransactionCategories(
@@ -74,24 +64,19 @@ export class TransactionApi {
     transactionCategory: TransactionCategory
   ): Promise<GetTransactionCategoriesResult> {
     const { type, vat } = transactionCategory;
-    try {
-      // make the api call
-      const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/transactions/${transactionId}/transactionCategories`, [
-        {
-          type,
-          vat,
-        },
-      ]);
-      // the typical ways to die when calling an api
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const transactionCategories = response.data;
-      return { kind: 'ok', transactionCategories };
-    } catch (e) {
-      __DEV__ && console.tron.log(e.message);
-      return { kind: 'bad-data' };
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/transactions/${transactionId}/transactionCategories`, [
+      {
+        type,
+        vat,
+      },
+    ]);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const transactionCategories = response.data;
+    return { kind: 'ok', transactionCategories };
   }
 }

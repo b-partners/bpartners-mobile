@@ -14,60 +14,47 @@ export class AuthApi {
   }
 
   async signIn(phone: string): Promise<SignInResult> {
-    try {
-      const response: ApiResponse<any> = await this.api.apisauce.post('authInitiation', {
-        phone,
-        state: uuid(),
-        redirectionStatusUrls: {
-          successUrl: env.successUrl,
-          failureUrl: env.failureUrl,
-        },
-      });
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const { redirectionUrl, successUrl, failureUrl } = response.data;
-
-      return { kind: 'ok', redirectionUrl, successUrl, failureUrl };
-    } catch (e) {
-      console.tron.log(e);
-      return { kind: 'bad-data' };
+    const response: ApiResponse<any> = await this.api.apisauce.post('authInitiation', {
+      phone,
+      state: uuid(),
+      redirectionStatusUrls: {
+        successUrl: env.successUrl,
+        failureUrl: env.failureUrl,
+      },
+    });
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const { redirectionUrl, successUrl, failureUrl } = response.data;
+
+    return { kind: 'ok', redirectionUrl, successUrl, failureUrl };
   }
 
   async getToken(code: string): Promise<GetTokenResult> {
-    try {
-      const response: ApiResponse<any> = await this.api.apisauce.post('token', {
-        code,
-        redirectionStatusUrls: {
-          successUrl: env.successUrl,
-          failureUrl: env.failureUrl,
-        },
-      });
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const { accessToken, refreshToken, whoami } = response.data;
-
-      return { kind: 'ok', accessToken, refreshToken, whoami };
-    } catch (e) {
-      return { kind: 'bad-data' };
+    const response: ApiResponse<any> = await this.api.apisauce.post('token', {
+      code,
+      redirectionStatusUrls: {
+        successUrl: env.successUrl,
+        failureUrl: env.failureUrl,
+      },
+    });
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const { accessToken, refreshToken, whoami } = response.data;
+
+    return { kind: 'ok', accessToken, refreshToken, whoami };
   }
 
   async whoami(): Promise<GetWhoAmIResult> {
-    try {
-      const response: ApiResponse<any> = await this.api.apisauce.get('whoami');
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-      const { user } = response.data;
-      return { kind: 'ok', user };
-    } catch (e) {
-      return { kind: 'bad-data' };
+    const response: ApiResponse<any> = await this.api.apisauce.get('whoami');
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
     }
+    const { user } = response.data;
+    return { kind: 'ok', user };
   }
 }

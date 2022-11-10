@@ -14,6 +14,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { downloadFile } from '../../utils/download-file';
 import { showMessage } from '../../utils/snackbar';
+import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
 import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
 
@@ -40,22 +41,24 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   };
 
   return (
-    <View testID='PaymentInitiationScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-        {!loading ? (
-          <FlatList<IInvoice>
-            contentContainerStyle={INVOICES_STYLE}
-            data={[...invoices]}
-            renderItem={({ item }) => {
-              return <Invoice item={item} menuItems={items} menuAction={{ downloadInvoice: () => downloadInvoice(item) }} />;
-            }}
-            ItemSeparatorComponent={() => <Separator />}
-          />
-        ) : (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
-        )}
-      </Screen>
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='PaymentInitiationScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
+          {!loading ? (
+            <FlatList<IInvoice>
+              contentContainerStyle={INVOICES_STYLE}
+              data={[...invoices]}
+              renderItem={({ item }) => {
+                return <Invoice item={item} menuItems={items} menuAction={{ downloadInvoice: () => downloadInvoice(item) }} />;
+              }}
+              ItemSeparatorComponent={() => <Separator />}
+            />
+          ) : (
+            <Loader size='large' containerStyle={LOADER_STYLE} />
+          )}
+        </Screen>
+      </View>
+    </ErrorBoundary>
   );
 });

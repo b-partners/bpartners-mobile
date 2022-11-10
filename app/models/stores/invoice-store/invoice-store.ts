@@ -12,6 +12,7 @@ import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/inv
 import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
+import { withRootStore } from '../../extensions/with-root-store';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
@@ -24,21 +25,31 @@ export const InvoiceStoreModel = types
     invoice: types.optional(InvoiceModel, {}),
     loading: types.optional(types.boolean, false),
   })
+  .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
+  .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
   .actions(self => ({
     getCustomersSuccess: (customers: CustomerSnapshotOut[]) => {
       self.customers.replace(customers);
     },
   }))
+  .actions(() => ({
+    getCustomersFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     getCustomers: flow(function* (name: string) {
       const customerApi = new CustomerApi(self.environment.api);
-      const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
-      if (getCustomersResult.kind === 'ok') {
+      try {
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
         self.getCustomersSuccess(getCustomersResult.customers);
-      } else {
-        __DEV__ && console.tron.log(getCustomersResult.kind);
+      } catch (e) {
+        self.getCustomersFail(e.message);
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -47,14 +58,21 @@ export const InvoiceStoreModel = types
       self.products.replace(products);
     },
   }))
+  .actions(() => ({
+    getProductsFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     getProducts: flow(function* (description: string) {
       const productApi = new ProductApi(self.environment.api);
-      const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
-      if (getProductsResult.kind === 'ok') {
+      try {
+        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
+
         self.getProductsSuccess(getProductsResult.products);
-      } else {
-        __DEV__ && console.tron.log(getProductsResult.kind);
+      } catch (e) {
+        self.getProductsFail(e.message);
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -63,19 +81,25 @@ export const InvoiceStoreModel = types
       self.drafts.replace(invoices as any);
     },
   }))
+  .actions(() => ({
+    getDraftsFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     getDrafts: flow(function* (criteria: Criteria) {
       detach(self.invoices);
       self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-      if (getInvoicesResult.kind === 'ok') {
+      try {
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         self.loading = false;
         self.getDraftsSuccess(getInvoicesResult.invoices);
-      } else {
+      } catch (e) {
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
-        __DEV__ && console.tron.log(getInvoicesResult.kind);
+        self.catchOrThrow(e);
+        self.getDraftsFail(e.message);
       }
     }),
   }))
@@ -84,19 +108,24 @@ export const InvoiceStoreModel = types
       self.quotations.replace(invoices as any);
     },
   }))
+  .actions(() => ({
+    getQuotationsFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     getQuotations: flow(function* (criteria: Criteria) {
       detach(self.invoices);
       self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-      if (getInvoicesResult.kind === 'ok') {
+      try {
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         self.loading = false;
         self.getQuotationsSuccess(getInvoicesResult.invoices);
-      } else {
+      } catch (e) {
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
-        __DEV__ && console.tron.log(getInvoicesResult.kind);
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -105,19 +134,26 @@ export const InvoiceStoreModel = types
       self.invoices.replace(invoices as any);
     },
   }))
+  .actions(() => ({
+    getInvoicesFail: error => {
+      console.tron.log(error);
+    },
+  }))
+
   .actions(self => ({
     getInvoices: flow(function* (criteria: Criteria) {
       detach(self.invoices);
       self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-      if (getInvoicesResult.kind === 'ok') {
+      try {
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         self.loading = false;
         self.getInvoicesSuccess(getInvoicesResult.invoices);
-      } else {
+      } catch (e) {
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
-        __DEV__ && console.tron.log(getInvoicesResult.kind);
+        self.getInvoicesFail(e.message);
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -127,15 +163,20 @@ export const InvoiceStoreModel = types
       self.invoice = invoiceModel;
     },
   }))
+  .actions(() => ({
+    getInvoiceFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     getInvoice: flow(function* (invoiceId: string) {
       const paymentApi = new PaymentApi(self.environment.api);
-      const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
-      if (getInvoiceResult.kind === 'ok') {
+      try {
+        const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
         self.getInvoiceSuccess(getInvoiceResult.invoice);
-      } else {
-        __DEV__ && console.tron.log(getInvoiceResult.kind);
-        throw new Error(getInvoiceResult.kind);
+      } catch (e) {
+        self.getInvoiceFail(e.message);
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -145,15 +186,20 @@ export const InvoiceStoreModel = types
       self.invoice = invoiceModel;
     },
   }))
+  .actions(() => ({
+    saveInvoiceFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     saveInvoice: flow(function* (invoice: Invoice) {
       const paymentApi = new PaymentApi(self.environment.api);
-      const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
-      if (createOrUpdateInvoiceResult.kind === 'ok') {
+      try {
+        const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
         self.saveInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
-      } else {
-        __DEV__ && console.tron.log(createOrUpdateInvoiceResult.kind);
-        throw new Error(createOrUpdateInvoiceResult);
+      } catch (e) {
+        self.saveInvoiceFail(e.message);
+        self.catchOrThrow(e);
       }
     }),
   }))

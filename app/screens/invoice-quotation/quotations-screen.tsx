@@ -12,6 +12,7 @@ import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoic
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { showMessage } from '../../utils/snackbar';
+import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
 import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
 
@@ -41,22 +42,24 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   const items: MenuItem[] = [{ id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') }];
 
   return (
-    <View testID='PaymentInitiationScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-        {!loading ? (
-          <FlatList<IInvoice>
-            contentContainerStyle={INVOICES_STYLE}
-            data={[...quotations]}
-            renderItem={({ item }) => {
-              return <Invoice item={item} menuItems={items} menuAction={{ markAsInvoice: () => markAsInvoice(item) }} />;
-            }}
-            ItemSeparatorComponent={() => <Separator />}
-          />
-        ) : (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
-        )}
-      </Screen>
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='PaymentInitiationScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
+          {!loading ? (
+            <FlatList<IInvoice>
+              contentContainerStyle={INVOICES_STYLE}
+              data={[...quotations]}
+              renderItem={({ item }) => {
+                return <Invoice item={item} menuItems={items} menuAction={{ markAsInvoice: () => markAsInvoice(item) }} />;
+              }}
+              ItemSeparatorComponent={() => <Separator />}
+            />
+          ) : (
+            <Loader size='large' containerStyle={LOADER_STYLE} />
+          )}
+        </Screen>
+      </View>
+    </ErrorBoundary>
   );
 });
