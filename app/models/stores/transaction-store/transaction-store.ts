@@ -1,10 +1,11 @@
-import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
+import { Instance, SnapshotIn, SnapshotOut, flow, getRoot, types } from 'mobx-state-tree';
 
 import { TransactionApi } from '../../../services/api/transaction-api';
 import { TransactionCategory, TransactionCategoryModel, TransactionCategorySnapshotOut } from '../../entities/transaction-category/transaction-category';
 import { TransactionModel, TransactionSnapshotOut } from '../../entities/transaction/transaction';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
+import { RootStoreModel } from '../root-store/root-store';
 
 export const TransactionStoreModel = types
   .model('Transaction')
@@ -35,6 +36,7 @@ export const TransactionStoreModel = types
         self.getTransactionCategoriesSuccess(getTransactionCategoriesResult.transactionCategories);
       } catch (e) {
         self.getTransactionCategoriesFail(e.message);
+        if (e.message === 'forbidden') return getRoot<typeof RootStoreModel>(self).authStore.reset();
         throw e;
       } finally {
         self.loadingTransactionCategories = false;
@@ -62,7 +64,7 @@ export const TransactionStoreModel = types
         self.getTransactionsSuccess(getTransactionsResult.transactions);
       } catch (e) {
         self.getTransactionsFail(e.message);
-        throw e;
+        getRoot<typeof RootStoreModel>(self).authStore.catchOrThrow(e);
       } finally {
         self.loadingTransactions = false;
       }
@@ -80,7 +82,7 @@ export const TransactionStoreModel = types
         yield transactionApi.updateTransactionCategories(self.currentAccount.id, transactionId, transactionCategory);
       } catch (e) {
         self.updateTransactionCategoryFail(e.message);
-        throw e;
+        getRoot<typeof RootStoreModel>(self).authStore.catchOrThrow(e);
       }
       yield self.getTransactions();
     }),
