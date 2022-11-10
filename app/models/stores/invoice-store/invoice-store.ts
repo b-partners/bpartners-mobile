@@ -12,7 +12,7 @@ import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/inv
 import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
-import {withRootStore} from '../../extensions/with-root-store';
+import { withRootStore } from '../../extensions/with-root-store';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')

@@ -46,8 +46,8 @@ export class TransactionApi {
     const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionCategories`, {
       unique,
       userDefined,
-        from,
-        to,
+      from,
+      to,
     });
     // the typical ways to die when calling an api
     if (!response.ok) {
