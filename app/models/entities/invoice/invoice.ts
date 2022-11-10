@@ -12,7 +12,7 @@ export enum InvoiceStatus {
 
 export const InvoiceModel = types.model('Invoice').props({
   id: types.maybe(types.string),
-  fileId: types.maybe(types.string),
+  fileId: types.maybeNull(types.string),
   ref: types.maybeNull(types.string),
   title: types.maybeNull(types.string),
   comment: types.maybeNull(types.string),
@@ -20,6 +20,7 @@ export const InvoiceModel = types.model('Invoice').props({
   products: types.optional(types.array(ProductModel), []),
   sendingDate: types.maybeNull(types.Date),
   toPayAt: types.maybeNull(types.Date),
+  updatedAt: types.maybeNull(types.Date),
   paymentUrl: types.maybeNull(types.string),
   totalVat: types.maybeNull(types.number),
   totalPriceWithVat: types.maybeNull(types.number),

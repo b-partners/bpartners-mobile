@@ -5,9 +5,10 @@ import React, { FC } from 'react';
 import { Dimensions, View, ViewStyle } from 'react-native';
 import ActionButton from 'react-native-action-button';
 
-import { Screen } from '../../components';
+import { GradientBackground, Header, Screen } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
+import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { DraftsScreen } from '../invoice-quotation/drafts-screen';
@@ -26,10 +27,39 @@ export const PaymentListScreen: FC<StackScreenProps<NavigatorParamList, 'payment
 
   return (
     <Screen>
+      <GradientBackground colors={['#422443', '#281b34']} />
+      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' />
       <Tab.Navigator initialRouteName={translate('paymentListScreen.tabs.drafts')}>
-        <Tab.Screen name={translate('paymentListScreen.tabs.drafts')} component={DraftsScreen} />
-        <Tab.Screen name={translate('paymentListScreen.tabs.quotations')} component={QuotationsScreen} />
-        <Tab.Screen name={translate('paymentListScreen.tabs.invoices')} component={InvoicesScreen} />
+        <Tab.Screen
+          name={translate('paymentListScreen.tabs.drafts')}
+          component={DraftsScreen}
+          navigationKey='drafts'
+          listeners={{
+            focus: () => {
+              invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 15 });
+            },
+          }}
+        />
+        <Tab.Screen
+          name={translate('paymentListScreen.tabs.quotations')}
+          component={QuotationsScreen}
+          navigationKey='quotations'
+          listeners={{
+            focus: () => {
+              invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 15 });
+            },
+          }}
+        />
+        <Tab.Screen
+          name={translate('paymentListScreen.tabs.invoices')}
+          component={InvoicesScreen}
+          navigationKey='invoices'
+          listeners={{
+            focus: () => {
+              invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 15 });
+            },
+          }}
+        />
       </Tab.Navigator>
       <View style={FLOATING_ACTION_BUTTON_STYLE}>
         <ActionButton

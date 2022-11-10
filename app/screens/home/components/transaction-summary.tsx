@@ -1,11 +1,16 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Dimensions, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
+import { AbstractChartProps } from 'react-native-chart-kit/dist/AbstractChart';
+import { PieChartProps } from 'react-native-chart-kit/dist/PieChart';
 
 import { Button } from '../../../components';
+import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
+import { palette } from '../../../theme/palette';
 import { BUTTON_TEXT_STYLE, CHART_BUTTON_CONTAINER_STYLE, CHART_BUTTON_MARGIN_STYLE, CHART_BUTTON_STYLE } from '../styles';
 
-const CHART_CONFIG = {
+const CHART_CONFIG: AbstractChartProps['chartConfig'] = {
   backgroundColor: '#022173',
   backgroundGradientFrom: '#022173',
   backgroundGradientTo: '#1b3fa0',
@@ -15,39 +20,51 @@ const CHART_CONFIG = {
   },
 };
 
-const GRAPH_STYLE = {
+const GRAPH_STYLE: PieChartProps['style'] = {
   marginVertical: 8,
   ...CHART_CONFIG.style,
 };
 
-const CHART_DATA = [
-  {
-    name: `CA ${new Date().getMonth()}`,
-    value: 21500000,
-    color: 'rgb(166,210,198)',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-  { name: 'Trésorerie Disponible', value: 2800000, color: '#9d8d8d', legendFontColor: '#7F7F7F', legendFontSize: 15 },
-  {
-    name: `Dépense ${new Date().getMonth()}`,
-    value: 527612,
-    color: '#508cc4',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
-];
-
 const width = Dimensions.get('window').width;
 const height = 220;
 
-export function TransactionSummary() {
+interface ITransactionSummary {
+  transactionCategories: Array<TransactionCategory>;
+}
+
+export const TransactionSummary: React.FC<ITransactionSummary> = observer(({ transactionCategories }) => {
+  const chartData = [];
+  const PIE_CHART_COLOURS = [
+    palette.midnightGreen,
+    palette.purpleNavy,
+    palette.mulberry,
+    palette.pastelRed,
+    palette.cheese,
+    palette.saffron,
+    palette.japaneseLaurel,
+    palette.green,
+    palette.deepPurple,
+  ];
+
+  for (let i = 0; i < transactionCategories.length; i++) {
+    const category = transactionCategories[i];
+    const color = PIE_CHART_COLOURS[i];
+
+    chartData.push({
+      name: category.type,
+      value: category.count,
+      color,
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+    });
+  }
+
   return (
     <View>
       <PieChart
         backgroundColor='transparent'
         paddingLeft='0'
-        data={CHART_DATA}
+        data={chartData}
         height={height}
         width={width}
         chartConfig={CHART_CONFIG}
@@ -60,4 +77,4 @@ export function TransactionSummary() {
       </View>
     </View>
   );
-}
+});
