@@ -8,6 +8,7 @@ import { PaymentInitiation } from '../../entities/payment-initiation/payment-ini
 import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
+import { withRootStore } from '../../extensions/with-root-store';
 
 export const PaymentInitiationStoreModel = types
   .model('Transaction')
@@ -17,8 +18,12 @@ export const PaymentInitiationStoreModel = types
     products: types.optional(types.array(ProductModel), []),
     customers: types.optional(types.array(CustomerModel), []),
   })
+  .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
+  .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
   .actions(self => ({
     getCustomersSuccess: (customers: CustomerSnapshotOut[]) => {
       self.customers.replace(customers);
@@ -38,7 +43,7 @@ export const PaymentInitiationStoreModel = types
       } catch (e) {
         self.getCustomersFail(e.message);
         self.initiatingPayment = false;
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -61,7 +66,7 @@ export const PaymentInitiationStoreModel = types
       } catch (e) {
         self.getProductsFail(e.message);
         self.initiatingPayment = false;
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -88,7 +93,7 @@ export const PaymentInitiationStoreModel = types
       } catch (e) {
         self.initFail(e.message);
         self.initiatingPayment = false;
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }));
