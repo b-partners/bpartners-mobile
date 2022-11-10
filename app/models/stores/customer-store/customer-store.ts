@@ -4,14 +4,19 @@ import { CustomerApi } from '../../../services/api/customer-api';
 import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
+import { withRootStore } from '../../extensions/with-root-store';
 
 export const CustomerStoreModel = types
   .model('Customer')
   .props({
     customers: types.optional(types.array(CustomerModel), []),
   })
+  .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
+  .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
   .actions(self => ({
     getCustomersSuccess: (customerSnapshotOuts: CustomerSnapshotOut[]) => {
       self.customers.replace(customerSnapshotOuts);
@@ -30,7 +35,7 @@ export const CustomerStoreModel = types
         self.getCustomersSuccess(getCustomersResult.customers);
       } catch (e) {
         self.getCustomerFail(e.message);
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }));
