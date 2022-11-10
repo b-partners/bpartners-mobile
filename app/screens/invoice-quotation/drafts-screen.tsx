@@ -60,23 +60,23 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         {!loading ? (
-            <FlatList<IInvoice>
-              contentContainerStyle={INVOICES_STYLE}
-              data={[...drafts]}
-              renderItem={({ item }) => {
-                return (
-                  <Invoice
-                    item={item}
-                    menuItems={items}
-                    menuAction={{
-                      editInvoice: () => editInvoice(item),
-                      markAsProposal: () => markAsProposal(item),
-                    }}
-                  />
-                );
-              }}
-              ItemSeparatorComponent={() => <Separator />}
-            />
+          <FlatList<IInvoice>
+            contentContainerStyle={INVOICES_STYLE}
+            data={[...drafts]}
+            renderItem={({ item }) => {
+              return (
+                <Invoice
+                  item={item}
+                  menuItems={items}
+                  menuAction={{
+                    editInvoice: () => editInvoice(item),
+                    markAsProposal: () => markAsProposal(item),
+                  }}
+                />
+              );
+            }}
+            ItemSeparatorComponent={() => <Separator />}
+          />
         ) : (
           <Loader containerStyle={LOADER_STYLE} size='large' />
         )}
