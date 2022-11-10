@@ -35,10 +35,10 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
-    catchOrThrow: error => {
+    catchOrThrow: (error: Error) => {
       const errorMessage = error.message;
       if (errorMessage === 'forbidden') return self.reset();
-      throw errorMessage;
+      throw error;
     },
   }))
   .actions(() => ({
