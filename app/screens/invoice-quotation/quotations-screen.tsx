@@ -22,6 +22,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         {!loading ? (
           <FlatList<IInvoice>
+            horizontal={false}
             contentContainerStyle={INVOICES_STYLE}
             data={[...quotations]}
             renderItem={({ item }) => {

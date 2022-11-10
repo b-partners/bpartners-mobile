@@ -1,7 +1,7 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, SafeAreaView, View } from 'react-native';
 
 import { GradientBackground, Screen, Separator } from '../../components';
 import { Loader } from '../../components/loader/loader';
@@ -22,17 +22,14 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
 
   const downloadInvoice = () => console.tron.log('Downloading invoice');
 
-  const VirtualizedList = ({ children }) => {
-    return <FlatList data={[]} keyExtractor={() => 'key'} renderItem={null} ListHeaderComponent={<>{children}</>} />;
-  };
-
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         {!loading ? (
-          <VirtualizedList>
+          <SafeAreaView>
             <FlatList<IInvoice>
+              horizontal={false}
               contentContainerStyle={INVOICES_STYLE}
               data={[...invoices]}
               renderItem={({ item }) => {
@@ -40,7 +37,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
               }}
               ItemSeparatorComponent={() => <Separator />}
             />
-          </VirtualizedList>
+          </SafeAreaView>
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
