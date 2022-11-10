@@ -22,9 +22,28 @@ export const AuthStoreModel = types
     currentAccountHolder: types.optional(AccountHolderModel, {}),
   })
   .extend(withEnvironment)
+  .actions(self => ({
+    reset: () => {
+      self.accessToken = undefined;
+      self.currentAccountHolder = undefined;
+      self.currentAccount = undefined;
+      self.currentUser = undefined;
+      self.successUrl = undefined;
+      self.refreshToken = undefined;
+      self.failureUrl = undefined;
+      self.redirectionUrl = undefined;
+    },
+  }))
+  .actions(self => ({
+    catchOrThrow: error => {
+      const errorMessage = error.message;
+      if (errorMessage === 'forbidden') return self.reset();
+      throw errorMessage;
+    },
+  }))
   .actions(() => ({
     signInFail: error => {
-      console.tron.log(error.message);
+      console.tron.log(error);
     },
   }))
   .actions(self => ({
@@ -44,7 +63,7 @@ export const AuthStoreModel = types
         self.signInSuccess(urls);
       } catch (e) {
         self.signInFail(e);
-        throw e;
+        self.catchOrThrow(e.message);
       }
     }),
   }))
@@ -80,7 +99,7 @@ export const AuthStoreModel = types
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
         self.whoamiFail(e);
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -121,7 +140,7 @@ export const AuthStoreModel = types
         self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
       } catch (e) {
         self.getTokenFail(e);
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }));
