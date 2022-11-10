@@ -8,6 +8,7 @@ import { PaymentInitiation } from '../../entities/payment-initiation/payment-ini
 import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
+import { withRootStore } from '../../extensions/with-root-store';
 
 export const PaymentInitiationStoreModel = types
   .model('Transaction')
@@ -17,8 +18,18 @@ export const PaymentInitiationStoreModel = types
     products: types.optional(types.array(ProductModel), []),
     customers: types.optional(types.array(CustomerModel), []),
   })
+  .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
+  .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
+  .actions(() => ({
+    actionFail: (error, additionalMessage?: string) => {
+      console.tron.log(error);
+      console.tron.log(additionalMessage);
+    },
+  }))
   .actions(self => ({
     getCustomersSuccess: (customers: CustomerSnapshotOut[]) => {
       self.customers.replace(customers);
@@ -27,12 +38,13 @@ export const PaymentInitiationStoreModel = types
   .actions(self => ({
     getCustomers: flow(function* (name: string) {
       const customerApi = new CustomerApi(self.environment.api);
-      const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
-      if (getCustomersResult.kind === 'ok') {
-        self.getCustomersSuccess(getCustomersResult.customers);
-      } else {
-        __DEV__ && console.tron.log(getCustomersResult.kind);
+      try {
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
+        if (getCustomersResult.kind === 'ok') self.getCustomersSuccess(getCustomersResult.customers);
+      } catch (e) {
+        self.actionFail(e.message);
         self.initiatingPayment = false;
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -44,12 +56,13 @@ export const PaymentInitiationStoreModel = types
   .actions(self => ({
     getProducts: flow(function* (description: string) {
       const productApi = new ProductApi(self.environment.api);
-      const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
-      if (getProductsResult.kind === 'ok') {
+      try {
+        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
         self.getProductsSuccess(getProductsResult.products);
-      } else {
-        __DEV__ && console.tron.log(getProductsResult.kind);
+      } catch (e) {
+        self.actionFail(e.message);
         self.initiatingPayment = false;
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -64,13 +77,14 @@ export const PaymentInitiationStoreModel = types
       self.initiatingPayment = true;
       self.paymentUrl = null;
       const paymentInitiationApi = new PaymentApi(self.environment.api);
-      const initPaymentResult = yield paymentInitiationApi.init(self.currentAccount.id, payload);
-      if (initPaymentResult.kind === 'ok') {
-        console.tron.log(`Payment ${initPaymentResult.paymentInitiation.id} initiated`);
+      try {
+        const initPaymentResult = yield paymentInitiationApi.init(self.currentAccount.id, payload);
+        __DEV__ && console.tron.log(`Payment ${initPaymentResult.paymentInitiation.id} initiated`);
         self.initSuccess(initPaymentResult.paymentInitiation.redirectionUrl);
-      } else {
-        __DEV__ && console.tron.log(initPaymentResult.kind);
+      } catch (e) {
+        self.actionFail(e.message);
         self.initiatingPayment = false;
+        self.catchOrThrow(e);
       }
     }),
   }));

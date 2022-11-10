@@ -8,7 +8,7 @@ import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
-import { HEADER, HEADER_TITLE } from '../index';
+import { ErrorBoundary, HEADER, HEADER_TITLE } from '../index';
 import { InvoiceForm } from './components/invoice-form';
 
 const FULL: ViewStyle = {
@@ -32,20 +32,22 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
   };
 
   return (
-    <View testID='PaymentInitiationScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-        <Header
-          headerTx='invoiceScreen.title'
-          style={HEADER}
-          titleStyle={HEADER_TITLE}
-          leftIcon={'back'}
-          onLeftPress={async () => {
-            navigation.navigate('paymentList');
-          }}
-        />
-        <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
-      </Screen>
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='PaymentInitiationScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
+          <Header
+            headerTx='invoiceScreen.title'
+            style={HEADER}
+            titleStyle={HEADER_TITLE}
+            leftIcon={'back'}
+            onLeftPress={async () => {
+              navigation.navigate('paymentList');
+            }}
+          />
+          <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
+        </Screen>
+      </View>
+    </ErrorBoundary>
   );
 });

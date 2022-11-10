@@ -6,6 +6,7 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 import { GradientBackground, Header, Screen, Text } from '../../components';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
+import { ErrorBoundary } from '../error/error-boundary';
 import { SignInForm } from './components/sign-in-form';
 
 const FULL: ViewStyle = {
@@ -48,16 +49,18 @@ export const SignInScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> =
   const next = (redirectionUrl: string) => navigation.navigate('signInWebView', { url: redirectionUrl });
 
   return (
-    <View testID='SignInScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
-        <Header leftIcon='back' onLeftPress={goBack} style={HEADER} />
-        <View>
-          <Text style={TITLE} preset='header' tx='signInScreen.title' />
-          <Text tx='signInScreen.description' style={CONTENT} />
-        </View>
-        <SignInForm next={next} />
-      </Screen>
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='SignInScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
+          <Header leftIcon='back' onLeftPress={goBack} style={HEADER} />
+          <View>
+            <Text style={TITLE} preset='header' tx='signInScreen.title' />
+            <Text tx='signInScreen.description' style={CONTENT} />
+          </View>
+          <SignInForm next={next} />
+        </Screen>
+      </View>
+    </ErrorBoundary>
   );
 });

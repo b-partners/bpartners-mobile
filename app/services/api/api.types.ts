@@ -40,7 +40,7 @@ export type GetWhoAmIResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type GetUserAccount = { kind: 'ok'; account: Account } | GeneralApiProblem;
 
-export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem;
+export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem | void;
 
 export type GetProductsResult = { kind: 'ok'; products: Product[] } | GeneralApiProblem;
 

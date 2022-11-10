@@ -6,10 +6,12 @@ import WebView from 'react-native-webview';
 
 import { GradientBackground, Header } from '../../components';
 import env from '../../config/env';
+import { useError } from '../../hook';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
 import getQueryParams from '../../utils/get-query-params';
+import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = { flex: 1 };
 
@@ -39,6 +41,7 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
   const { url } = route.params;
   const { authStore } = useStores();
   let webview: WebView;
+  const { setError } = useError();
 
   const onNavigationStateChange = async webViewState => {
     const { url: currentUrl } = webViewState;
@@ -58,22 +61,25 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
     } catch (e) {
       navigation.navigate('signIn');
       console.tron.log(`Sign in error`);
+      return setError(e);
     }
     navigation.navigate('home');
   };
 
   return (
-    <View testID='OnboardingScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <SafeAreaView />
-      <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.navigate('welcome')} style={HEADER} titleStyle={HEADER_TITLE} />
-      <WebView
-        ref={ref => {
-          webview = ref;
-        }}
-        source={{ uri: url }}
-        onNavigationStateChange={onNavigationStateChange}
-      />
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='OnboardingScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <SafeAreaView />
+        <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.navigate('welcome')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <WebView
+          ref={ref => {
+            webview = ref;
+          }}
+          source={{ uri: url }}
+          onNavigationStateChange={onNavigationStateChange}
+        />
+      </View>
+    </ErrorBoundary>
   );
 });

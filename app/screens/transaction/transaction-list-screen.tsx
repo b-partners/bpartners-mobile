@@ -8,6 +8,7 @@ import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { ErrorBoundary } from '../error/error-boundary';
 import { Transaction } from './components/transaction';
 
 const FULL: ViewStyle = {
@@ -52,29 +53,31 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
   const { transactions, transactionCategories } = transactionStore;
 
   return (
-    <View testID='TransactionListScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-        <Header
-          headerTx='transactionListScreen.title'
-          style={HEADER}
-          titleStyle={HEADER_TITLE}
-          onLeftPress={() => navigation.navigate('home')}
-          leftIcon={'back'}
-        />
-        <View style={SUB_HEADER}>
-          <Text tx={'transactionListScreen.balance'} style={SUB_HEADER_TITLE} />
-          <Text style={SUB_HEADER_TITLE}>{transactions.reduce((a, c) => a + c.amount, 0)} €</Text>
-        </View>
-        <FlatList
-          contentContainerStyle={FLAT_LIST}
-          data={[...transactions]}
-          renderItem={({ item }) => {
-            return <Transaction key={item.id} item={item} transactionCategories={transactionCategories} showTransactionCategory={true} />;
-          }}
-          ItemSeparatorComponent={() => <Separator />}
-        />
-      </Screen>
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='TransactionListScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
+          <Header
+            headerTx='transactionListScreen.title'
+            style={HEADER}
+            titleStyle={HEADER_TITLE}
+            onLeftPress={() => navigation.navigate('home')}
+            leftIcon={'back'}
+          />
+          <View style={SUB_HEADER}>
+            <Text tx={'transactionListScreen.balance'} style={SUB_HEADER_TITLE} />
+            <Text style={SUB_HEADER_TITLE}>{transactions.reduce((a, c) => a + c.amount, 0)} €</Text>
+          </View>
+          <FlatList
+            contentContainerStyle={FLAT_LIST}
+            data={[...transactions]}
+            renderItem={({ item }) => {
+              return <Transaction key={item.id} item={item} transactionCategories={transactionCategories} showTransactionCategory={true} />;
+            }}
+            ItemSeparatorComponent={() => <Separator />}
+          />
+        </Screen>
+      </View>
+    </ErrorBoundary>
   );
 });
