@@ -29,19 +29,25 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
 
   const downloadInvoice = () => console.tron.log('Downloading invoice');
 
+  const VirtualizedList = ({ children }) => {
+    return <FlatList data={[]} keyExtractor={() => 'key'} renderItem={null} ListHeaderComponent={<>{children}</>} />;
+  };
+
   return (
     <View testID='PaymentInitiationScreen' style={FULL}>
       <GradientBackground colors={['#422443', '#281b34']} />
       <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
         {!loading ? (
-          <FlatList<IInvoice>
-            contentContainerStyle={INVOICES_STYLE}
-            data={[...invoices]}
-            renderItem={({ item }) => {
-              return <Invoice item={item} menuItems={items} menuAction={{ downloadInvoice }} />;
-            }}
-            ItemSeparatorComponent={() => <Separator />}
-          />
+          <VirtualizedList>
+            <FlatList<IInvoice>
+              contentContainerStyle={INVOICES_STYLE}
+              data={[...invoices]}
+              renderItem={({ item }) => {
+                return <Invoice item={item} menuItems={items} menuAction={{ downloadInvoice }} />;
+              }}
+              ItemSeparatorComponent={() => <Separator />}
+            />
+          </VirtualizedList>
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
