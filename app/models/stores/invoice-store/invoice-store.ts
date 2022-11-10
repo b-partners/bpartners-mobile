@@ -12,6 +12,7 @@ import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/inv
 import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
+import {withRootStore} from '../../extensions/with-root-store';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
@@ -24,8 +25,12 @@ export const InvoiceStoreModel = types
     invoice: types.optional(InvoiceModel, {}),
     loading: types.optional(types.boolean, false),
   })
+  .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
+  .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
   .actions(self => ({
     getCustomersSuccess: (customers: CustomerSnapshotOut[]) => {
       self.customers.replace(customers);
@@ -44,7 +49,7 @@ export const InvoiceStoreModel = types
         self.getCustomersSuccess(getCustomersResult.customers);
       } catch (e) {
         self.getCustomersFail(e.message);
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -67,7 +72,7 @@ export const InvoiceStoreModel = types
         self.getProductsSuccess(getProductsResult.products);
       } catch (e) {
         self.getProductsFail(e.message);
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -93,6 +98,7 @@ export const InvoiceStoreModel = types
       } catch (e) {
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
+        self.catchOrThrow(e);
         self.getDraftsFail(e.message);
       }
     }),
@@ -119,6 +125,7 @@ export const InvoiceStoreModel = types
       } catch (e) {
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -146,6 +153,7 @@ export const InvoiceStoreModel = types
         self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
         self.getInvoicesFail(e.message);
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -168,7 +176,7 @@ export const InvoiceStoreModel = types
         self.getInvoiceSuccess(getInvoiceResult.invoice);
       } catch (e) {
         self.getInvoiceFail(e.message);
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -191,7 +199,7 @@ export const InvoiceStoreModel = types
         self.saveInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
       } catch (e) {
         self.saveInvoiceFail(e.message);
-        throw e;
+        self.catchOrThrow(e);
       }
     }),
   }))
