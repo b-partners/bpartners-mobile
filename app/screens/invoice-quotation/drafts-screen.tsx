@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { FlatList, View } from 'react-native';
 
 import { GradientBackground, Screen, Separator } from '../../components';
@@ -18,13 +18,6 @@ import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
 export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { drafts, loading } = invoiceStore;
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('tabPress', () => {
-      invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   const editInvoice = async (item: IInvoice) => {
     if (item.status !== InvoiceStatus.DRAFT) {

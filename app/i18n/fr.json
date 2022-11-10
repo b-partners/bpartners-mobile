@@ -29,7 +29,7 @@
   "onboardingScreen": {
     "title": "Créer un compte"
   },
-  "homeScreen": {
+  "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",
     "readyForLaunch": "Prêt pour le lancement.",
     "start": "OUVRIR UN COMPTE",
@@ -128,6 +128,7 @@
     }
   },
   "paymentListScreen": {
+    "title": "Devis / Factures",
     "tabs": {
       "drafts": "Brouillons",
       "invoices": "Factures",
