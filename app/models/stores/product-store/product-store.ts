@@ -4,14 +4,19 @@ import { ProductApi } from '../../../services/api/product-api';
 import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
+import { withRootStore } from '../../extensions/with-root-store';
 
 export const ProductStoreModel = types
   .model('Product')
   .props({
     products: types.optional(types.array(ProductModel), []),
   })
+  .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
+  .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
   .actions(self => ({
     getProductsSuccess: (productSnapshotOuts: ProductSnapshotOut[]) => {
       self.products.replace(productSnapshotOuts);
@@ -30,7 +35,7 @@ export const ProductStoreModel = types
         if (getProductsResults.kind === 'ok') self.getProductsSuccess(getProductsResults.products);
       } catch (e) {
         self.getProductsFail(e.message);
-        throw e;
+        self.catchOrThrow(e);
       }
     },
   }));
