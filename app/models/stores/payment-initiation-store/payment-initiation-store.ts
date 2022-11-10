@@ -24,14 +24,15 @@ export const PaymentInitiationStoreModel = types
   .actions(self => ({
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
+  .actions(() => ({
+    actionFail: (error, additionalMessage?: string) => {
+      console.tron.log(error);
+      console.tron.log(additionalMessage);
+    },
+  }))
   .actions(self => ({
     getCustomersSuccess: (customers: CustomerSnapshotOut[]) => {
       self.customers.replace(customers);
-    },
-  }))
-  .actions(() => ({
-    getCustomersFail: error => {
-      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
@@ -41,7 +42,7 @@ export const PaymentInitiationStoreModel = types
         const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
         if (getCustomersResult.kind === 'ok') self.getCustomersSuccess(getCustomersResult.customers);
       } catch (e) {
-        self.getCustomersFail(e.message);
+        self.actionFail(e.message);
         self.initiatingPayment = false;
         self.catchOrThrow(e);
       }
@@ -52,11 +53,6 @@ export const PaymentInitiationStoreModel = types
       self.products.replace(products);
     },
   }))
-  .actions(() => ({
-    getProductsFail: error => {
-      __DEV__ && console.tron.log(error);
-    },
-  }))
   .actions(self => ({
     getProducts: flow(function* (description: string) {
       const productApi = new ProductApi(self.environment.api);
@@ -64,7 +60,7 @@ export const PaymentInitiationStoreModel = types
         const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
         self.getProductsSuccess(getProductsResult.products);
       } catch (e) {
-        self.getProductsFail(e.message);
+        self.actionFail(e.message);
         self.initiatingPayment = false;
         self.catchOrThrow(e);
       }
@@ -74,11 +70,6 @@ export const PaymentInitiationStoreModel = types
     initSuccess: paymentUrl => {
       self.initiatingPayment = false;
       self.paymentUrl = paymentUrl;
-    },
-  }))
-  .actions(() => ({
-    initFail: error => {
-      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
@@ -91,7 +82,7 @@ export const PaymentInitiationStoreModel = types
         __DEV__ && console.tron.log(`Payment ${initPaymentResult.paymentInitiation.id} initiated`);
         self.initSuccess(initPaymentResult.paymentInitiation.redirectionUrl);
       } catch (e) {
-        self.initFail(e.message);
+        self.actionFail(e.message);
         self.initiatingPayment = false;
         self.catchOrThrow(e);
       }
