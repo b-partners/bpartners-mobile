@@ -68,13 +68,19 @@ export const TransactionStoreModel = types
       }
     }),
   }))
+  .actions(() => ({
+    updateTransactionCategoryFail: error => {
+      console.tron.log(error);
+    },
+  }))
   .actions(self => ({
     updateTransactionCategory: flow(function* (transactionId: string, transactionCategory: TransactionCategory) {
       const transactionApi = new TransactionApi(self.environment.api);
-      const updateTransactionCategoryResult = yield transactionApi.updateTransactionCategories(self.currentAccount.id, transactionId, transactionCategory);
-      if (updateTransactionCategoryResult.kind !== 'ok') {
-        __DEV__ && console.tron.log(updateTransactionCategoryResult.kind);
-        throw new Error(updateTransactionCategoryResult.kind);
+      try {
+        yield transactionApi.updateTransactionCategories(self.currentAccount.id, transactionId, transactionCategory);
+      } catch (e) {
+        self.updateTransactionCategoryFail(e.message);
+        throw e;
       }
       yield self.getTransactions();
     }),
