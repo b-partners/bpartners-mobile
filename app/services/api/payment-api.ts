@@ -1,4 +1,4 @@
-import { ApiResponse } from 'apisauce';
+import { ApiErrorResponse, ApiOkResponse, ApiResponse } from 'apisauce';
 
 import env from '../../config/env';
 import { Criteria } from '../../models/entities/criteria/criteria';
@@ -13,6 +13,30 @@ export class PaymentApi {
 
   constructor(api: Api) {
     this.api = api;
+  }
+
+  private mapInvoice(item: Invoice): Invoice {
+    return {
+      ...item,
+      toPayAt: new Date(item.toPayAt),
+      sendingDate: new Date(item.sendingDate),
+      updatedAt: item.updatedAt && new Date(item.updatedAt),
+      customer: {
+        id: item.customer ? item.customer.id : null,
+        name: item.customer ? item.customer.name : null,
+        address: item.customer ? item.customer.address : null,
+        city: item.customer ? item.customer.city : null,
+        country: item.customer ? item.customer.country : null,
+        email: item.customer ? item.customer.email : null,
+        phone: item.customer ? item.customer.phone : null,
+        website: item.customer ? item.customer.website : null,
+        zipCode: item.customer ? item.customer.zipCode : null,
+      },
+    };
+  }
+
+  private mapInvoices(response: ApiErrorResponse<Invoice[]> | ApiOkResponse<Invoice[]>) {
+    return response.data.map(item => this.mapInvoice(item));
   }
 
   async init(accountId: string, payload: PaymentInitiation): Promise<InitPaymentResult> {
@@ -40,11 +64,7 @@ export class PaymentApi {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);
     }
-    const invoice = {
-      ...response.data,
-      sendingDate: new Date(response.data.sendingDate),
-      toPayAt: new Date(response.data.toPayAt),
-    };
+    const invoice = this.mapInvoice(response.data);
     return { kind: 'ok', invoice };
   }
 
@@ -56,11 +76,7 @@ export class PaymentApi {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);
     }
-    const invoice = {
-      ...response.data,
-      sendingDate: new Date(response.data.sendingDate),
-      toPayAt: new Date(response.data.toPayAt),
-    };
+    const invoice = this.mapInvoice(response.data);
     return { kind: 'ok', invoice };
   }
 
@@ -72,12 +88,7 @@ export class PaymentApi {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);
     }
-    const invoices = response.data.map(item => ({
-      ...item,
-      toPayAt: new Date(item.toPayAt),
-      sendingDate: new Date(item.sendingDate),
-      updatedAt: item.updatedAt && new Date(item.updatedAt),
-    }));
+    const invoices = this.mapInvoices(response);
     return { kind: 'ok', invoices };
   }
 }
