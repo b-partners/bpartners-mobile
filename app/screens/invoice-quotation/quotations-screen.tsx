@@ -8,7 +8,7 @@ import { Loader } from '../../components/loader/loader';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { showMessage } from '../../utils/snackbar';
