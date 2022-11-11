@@ -35,7 +35,7 @@ export const AutocompletionFormField = observer(<T extends { id: string }>(props
         id: value[id || DEFAULT_ID_KEY],
         title: value[title || DEFAULT_TITLE_KEY],
       });
-  }, [value]);
+  }, [dropdownController, value]);
 
   return (
     <AutocompleteDropdown
