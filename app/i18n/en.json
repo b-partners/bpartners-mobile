@@ -136,12 +136,17 @@
       "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date."
     },
     "menu": {
+      "markAsInvoice": "Mark as invoice",
       "markAsProposal": "Mark as proposal",
       "downloadInvoice": "Download",
       "editInvoice": "Edit"
     },
     "messages": {
-      "successfullyMarkAsProposal": "Invoice proposed to customer."
+      "successfullyMarkAsProposal": "Invoice proposed to customer.",
+      "successfullyMarkAsInvoice": "Quotation successfully transformed as invoice.",
+      "downloadingInvoice": "Downloading invoice",
+      "invoiceSuccessfullyDownload": "Invoice downloaded",
+      "downloadingInvoiceFailed": "Something went wrong while downloading invoice"
     }
   },
   "paymentListScreen": {
