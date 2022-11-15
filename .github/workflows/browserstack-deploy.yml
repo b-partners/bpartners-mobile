@@ -44,8 +44,9 @@ jobs:
       - name: Setting up the environment variables
         run: |
           mkdir ~/.gradle
-          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
-
+          touch .env
+          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }} ${{secrets.API_URL}} ${{secrets.SUCCESS_URL}} ${{secrets.FAILURE_URL}}
+          
       - name: Build release app
         run: cd android && ./gradlew assembleRelease
 
