@@ -22,6 +22,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
   useEffect(() => {
     transactionStore.getTransactions();
+    transactionStore.getTransactionCategories();
   }, []);
 
   return (
