@@ -16,7 +16,7 @@ export const InvoiceModel = types.model('Invoice').props({
   ref: types.maybeNull(types.string),
   title: types.maybeNull(types.string),
   comment: types.maybeNull(types.string),
-  customer: types.optional(CustomerModel, {}),
+  customer: types.maybe(types.maybeNull(CustomerModel)),
   products: types.optional(types.array(ProductModel), []),
   sendingDate: types.maybeNull(types.Date),
   toPayAt: types.maybeNull(types.Date),

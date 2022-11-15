@@ -12,7 +12,7 @@ import { useStores } from '../../models';
 import { Invoice as IInvoice } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
-import { downloadFile } from '../../utils/download-file';
+import { fetchBinaryFile } from '../../utils/fetch-binary-file';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
@@ -25,12 +25,12 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
 
   const items: MenuItem[] = [{ id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') }];
 
-  const downloadInvoice = async (item: IInvoice) => {
+  const downloadInvoice = async (url: string, fileName: string) => {
     try {
       showMessage(translate('invoiceScreen.messages.downloadingInvoice'));
-      await downloadFile({
-        url: `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`,
-        fileName: `${item.ref}.pdf`,
+      await fetchBinaryFile({
+        url,
+        fileName,
       });
       showMessage(translate('invoiceScreen.messages.invoiceSuccessfullyDownload'));
     } catch (e) {
@@ -50,7 +50,19 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
               contentContainerStyle={INVOICES_STYLE}
               data={[...invoices]}
               renderItem={({ item }) => {
-                return <Invoice item={item} menuItems={items} menuAction={{ downloadInvoice: () => downloadInvoice(item) }} />;
+                return (
+                  <Invoice
+                    item={item}
+                    menuItems={items}
+                    menuAction={{
+                      downloadInvoice: () =>
+                        downloadInvoice(
+                          `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`,
+                          `${item.ref}.pdf`
+                        ),
+                    }}
+                  />
+                );
               }}
               ItemSeparatorComponent={() => <Separator />}
             />
