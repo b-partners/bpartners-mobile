@@ -16,7 +16,7 @@ export function HomeHeader() {
 
   return (
     <View style={HEADER_STYLE}>
-      <AutoImage source={{ uri: logo }} style={LOGO_STYLE} resizeMethod='resize'></AutoImage>
+      <AutoImage source={{ uri: logo }} style={LOGO_STYLE} resizeMethod='resize' />
       <TouchableOpacity>
         <View>
           <View style={BULLET_STYLE}>
