@@ -30,14 +30,14 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       <View testID='SignInWebViewScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen preset='auto' backgroundColor={color.transparent}>
-          <HomeHeader onPress={() => navigation.navigate('paymentInitiation')} />
+          <HomeHeader />
           {transactions && <Balance balance={currentBalance} />}
+          {categories && <TransactionSummary transactionCategories={categories} />}
           <HomeNavbar
             goToInvoices={() => {
               navigation.navigate('paymentList');
             }}
           />
-          {categories && <TransactionSummary transactionCategories={categories} />}
           <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
           <HomeFooter />
         </Screen>
