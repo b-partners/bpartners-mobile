@@ -8,6 +8,7 @@ import { TransactionCategory } from '../../models/entities/transaction-category/
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
 import { GeneralApiProblem } from './api-problem';
+import {LegalFile} from '../../models/entities/legal-file/legal-file';
 
 export interface Whoami {
   user: any;
@@ -59,3 +60,5 @@ export type InitPaymentResult = { kind: 'ok'; paymentInitiation: { id: string } 
 export type GetFileInformation = { kind: 'ok'; fileInfos: File } | GeneralApiProblem;
 
 export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProblem;
+
+export type GetLegalFilesResult = {kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;
