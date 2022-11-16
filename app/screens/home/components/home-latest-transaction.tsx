@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { Icon, Text } from '../../../components';
 import { Loader } from '../../../components/loader/loader';
@@ -11,21 +11,23 @@ type HomeLatestTransactionProps = { transactions: ITransaction[]; onPress: () =>
 
 const LOADER_STYLE: ViewStyle = { height: 200 };
 
+const LAST_TRANSACTIONS_SECTION: ViewStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginBottom: spacing[2],
+};
+
+const LAST_TRANSACTIONS_TEXT_STYLE: TextStyle = { textTransform: 'uppercase' };
+
 export function HomeLatestTransaction(props: HomeLatestTransactionProps) {
   const { loading } = props;
 
   return (
     <View>
       <View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: spacing[2],
-          }}
-        >
-          <Text tx='homeScreen.summary.lastTransactions' style={{ textTransform: 'uppercase' }} />
+        <View style={LAST_TRANSACTIONS_SECTION}>
+          <Text tx='homeScreen.summary.lastTransactions' style={LAST_TRANSACTIONS_TEXT_STYLE} />
           <TouchableOpacity>
             <Icon icon='settings' />
           </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
 
 import { Icon, Text } from '../../../components';
@@ -42,20 +42,22 @@ type DonutChartProps = {
   summary: ITransactionSummary;
 };
 
+const TITLE_CONTAINER_STYLE: ViewStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginBottom: spacing[8],
+};
+
+const SUMMARY_TITLE_STYLE: TextStyle = { textTransform: 'uppercase' };
+
 export const DonutChart: React.FC<DonutChartProps> = props => {
   const { summary } = props;
 
   return (
     <View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom: spacing[8],
-        }}
-      >
-        <Text tx='homeScreen.summary.title' style={{ textTransform: 'uppercase' }} />
+      <View style={TITLE_CONTAINER_STYLE}>
+        <Text tx='homeScreen.summary.title' style={SUMMARY_TITLE_STYLE} />
         <TouchableOpacity>
           <Icon icon='settings' />
         </TouchableOpacity>
