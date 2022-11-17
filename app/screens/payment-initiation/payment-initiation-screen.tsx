@@ -1,7 +1,9 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, View, ViewStyle } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import { ScrollView } from 'react-native-virtualized-view';
 
 // import QRCode from 'react-native-qrcode-svg';
 import { GradientBackground, Header, Screen, Text } from '../../components';
@@ -49,6 +51,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
             {paymentUrl && (
               <View style={QRCODE_CONTAINER_STYLE}>
                 <Text text={paymentUrl} style={PAYMENT_LINK_STYLE} />
+                <QRCode value={paymentUrl} size={100} />
               </View>
             )}
           </ScrollView>
