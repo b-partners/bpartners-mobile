@@ -39,6 +39,7 @@
     "@react-navigation/native": "~6.0.1",
     "@react-navigation/native-stack": "^6.0.2",
     "@react-navigation/stack": "~6.2.1",
+    "@sentry/react-native": "^4.8.0",
     "apisauce": "2.1.5",
     "eslint-config-react-native-prettier": "^1.0.1",
     "eslint-plugin-no-inline-styles": "^1.0.5",

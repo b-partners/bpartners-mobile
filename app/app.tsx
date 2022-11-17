@@ -9,6 +9,7 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
+import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
@@ -27,6 +28,13 @@ import * as storage from './utils/storage';
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
+
+Sentry.init({
+  dsn: 'https://3ed8ba2521a74559815da267b36f276d@o1341863.ingest.sentry.io/4504173590151168',
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+});
 
 /**
  * This is the root component of our app.
@@ -69,4 +77,4 @@ function App() {
   );
 }
 
-export default App;
+export default Sentry.wrap(App);
