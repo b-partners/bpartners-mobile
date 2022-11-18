@@ -5,9 +5,10 @@ import { PaymentInitiationModel } from './payment-initiation';
 test('can be created', () => {
   const instance = PaymentInitiationModel.create({
     id: uuid.v4() as string,
-    name: 'Lorem',
-    BIC: 'CCBPFRPPTLS',
-    IBAN: 'FR6414508000406328997474V02',
+    label: null,
+    amount: 1,
+    payerName: 'Lorem',
+    payerEmail: null,
   });
 
   expect(instance).toBeTruthy();

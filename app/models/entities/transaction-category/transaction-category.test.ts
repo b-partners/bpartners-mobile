@@ -6,6 +6,7 @@ test('can be created', () => {
     userDefined: false,
     type: '',
     vat: 0,
+    count: 0,
   });
 
   expect(instance).toBeTruthy();
