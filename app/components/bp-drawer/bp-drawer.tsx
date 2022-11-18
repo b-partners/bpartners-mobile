@@ -7,6 +7,8 @@ import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 
+const URL = 'https://banking.sandbox.swan.io/projects/4aff311f-c33f-4726-bf7f-b476d251d499/login';
+
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
 
