@@ -6,9 +6,7 @@
   "singleQuote": true,
   "arrowParens": "avoid",
   "jsxSingleQuote": true,
-  "importOrder": [
-    "^[./]"
-  ],
+  "importOrder": ["^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

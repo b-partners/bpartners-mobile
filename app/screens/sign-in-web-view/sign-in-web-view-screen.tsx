@@ -11,6 +11,7 @@ import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
 import getQueryParams from '../../utils/get-query-params';
+import { save } from '../../utils/storage';
 import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = { flex: 1 };
@@ -55,7 +56,7 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
     }
     await webview.stopLoading();
     try {
-      await AsyncStorage.setItem('code', code);
+      await save('code', code);
       await authStore.getToken(code);
       await authStore.whoami();
     } catch (e) {
