@@ -1,4 +1,4 @@
-import { InvoiceModel } from './invoice';
+import { InvoiceModel, InvoiceStatus } from './invoice';
 
 test('can be created', () => {
   const instance = InvoiceModel.create({
@@ -9,9 +9,9 @@ test('can be created', () => {
     customer: {},
     products: [],
     paymentUrl: '',
-    status: 'CONFIRMED',
-    toPayAt: '',
-    sendingDate: '',
+    status: InvoiceStatus.CONFIRMED,
+    toPayAt: null,
+    sendingDate: null,
     totalVat: 0,
     totalPriceWithoutVat: 0,
     totalPriceWithVat: 0,
