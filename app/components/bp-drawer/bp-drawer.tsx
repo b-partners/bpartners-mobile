@@ -17,7 +17,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
     } else {
       Alert.alert(translate('errors.somethingWentWrong'));
     }
-  }, [URL]);
+  }, [env.swanUrl]);
 
   return (
     <DrawerContentScrollView {...props}>
