@@ -31,7 +31,7 @@ export const LegalFileStoreModel = LegalFileModel
       const legalFileApi = new LegalFileApi(self.environment.api);
       try {
         const result = yield legalFileApi.getLegalFiles(self.currentUser.id);
-        const {kind, ...legalFile} = result;
+        const { ...legalFile } = result;
         self.getLegalFileSuccess(legalFile);
       } catch (e) {
         self.getLegalFileFail(e.message);
