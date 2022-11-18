@@ -7,8 +7,8 @@ test('can be created', () => {
     id: uuid.v4() as string,
     label: null,
     amount: 1,
-    payerName: "Lorem",
-    payerEmail: null
+    payerName: 'Lorem',
+    payerEmail: null,
   });
 
   expect(instance).toBeTruthy();

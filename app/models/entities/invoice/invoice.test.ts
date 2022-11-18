@@ -1,4 +1,4 @@
-import {InvoiceModel, InvoiceStatus} from './invoice';
+import { InvoiceModel, InvoiceStatus } from './invoice';
 
 test('can be created', () => {
   const instance = InvoiceModel.create({

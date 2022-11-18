@@ -4,7 +4,7 @@ test('can be created', () => {
   const instance = CriteriaModel.create({
     page: 1,
     pageSize: 1,
-    status: null
+    status: null,
   });
 
   expect(instance).toBeTruthy();
