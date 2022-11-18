@@ -6,7 +6,6 @@ import { Alert } from 'react-native';
 import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import env from "../../config/env";
 
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
