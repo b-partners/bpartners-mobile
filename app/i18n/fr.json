@@ -154,6 +154,7 @@
   },
   "logoutScreen": {
     "title": "Déconnexion",
+    "swan": "Ouvrir Swan",
     "swan": "Ouvrir Swan"
   }
 }
