@@ -158,6 +158,7 @@
     }
   },
   "logoutScreen": {
-    "title": "Logout"
+    "title": "Logout",
+    "swan": "Open Swan"
   }
 }
