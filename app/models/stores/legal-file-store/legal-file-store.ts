@@ -1,13 +1,12 @@
-import {types, flow} from 'mobx-state-tree';
+import {flow} from 'mobx-state-tree';
 import {LegalFileModel, LegalFileSnapshotOut} from '../../entities/legal-file/legal-file';
 import {LegalFileApi} from '../../../services/api/legal-file-api';
-import {withEnvironment, withRootStore} from '../..';
+import {withEnvironment} from '../../extensions/with-environment';
+import {withRootStore} from '../../extensions/with-root-store';
 import {withCredentials} from '../../extensions/with-credentials';
 
-export const LegalFileStoreModel = types.model('LegalFile')
-  .props({
-    legalFile: types.optional(LegalFileModel, {}),
-  })
+
+export const LegalFileStoreModel = LegalFileModel
   .extend(withRootStore)
   .extend(withCredentials)
   .extend(withEnvironment)
@@ -16,7 +15,10 @@ export const LegalFileStoreModel = types.model('LegalFile')
   }))
   .actions(self => ({
     getLegalFileSuccess: (legalFile: LegalFileSnapshotOut) => {
-      self.legalFile = {...legalFile};
+      self.id = legalFile.id;
+      self.name = legalFile.name;
+      self.fileUrl = legalFile.fileUrl;
+      self.approvalDatetime = legalFile.approvalDatetime;
     },
   }))
   .actions(() => ({
@@ -38,16 +40,16 @@ export const LegalFileStoreModel = types.model('LegalFile')
     }),
   }))
   .actions(self => ({
-    approveLegalFileSuccess: () =>{
+    approveLegalFileSuccess: () => {
       // get the updated legal file and replace
       // the legalFile on the store to the new one
       self.getLegalFile();
-    }
+    },
   }))
   .actions(() => ({
-    approveLegalFileFail: (error)=>{
+    approveLegalFileFail: (error) => {
       __DEV__ && console.tron.log(error);
-    }
+    },
   }))
   .actions(self => ({
     approveLegalFile: flow(function* (lId: string) {
