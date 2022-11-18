@@ -5,16 +5,15 @@ import { Alert } from 'react-native';
 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-
-const URL = 'https://banking.sandbox.swan.io/projects/4aff311f-c33f-4726-bf7f-b476d251d499/login';
+import env from "../../config/env";
 
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
 
   const handlePress = useCallback(async () => {
-    const supported = await Linking.canOpenURL(URL);
+    const supported = await Linking.canOpenURL(env.swanUrl);
     if (supported) {
-      await Linking.openURL(URL);
+      await Linking.openURL(env.swanUrl);
     } else {
       Alert.alert(translate('errors.somethingWentWrong'));
     }
