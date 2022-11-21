@@ -99,7 +99,6 @@ export const AuthStoreModel = types
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
         self.whoamiFail(e);
-        self.catchOrThrow(e);
       }
     }),
   }))
@@ -139,8 +138,8 @@ export const AuthStoreModel = types
         const result = yield signInApi.getToken(code);
         self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
       } catch (e) {
+        console.tron.log(e);
         self.getTokenFail(e);
-        self.catchOrThrow(e);
       }
     }),
   }));
