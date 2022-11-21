@@ -1,17 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 import WebView from 'react-native-webview';
 
 import { GradientBackground, Header } from '../../components';
-import env from '../../config/env';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
 import getQueryParams from '../../utils/get-query-params';
-import { save } from '../../utils/storage';
 import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = { flex: 1 };
@@ -42,28 +39,20 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
   const { url } = route.params;
   const { authStore } = useStores();
   let webview: WebView;
+  const [code, setCode] = useState<string>();
 
-  const onNavigationStateChange = async webViewState => {
-    const { url: currentUrl } = webViewState;
-    console.tron.log(`Navigating to ${currentUrl}`);
-    if (!currentUrl.includes(env.successUrl)) {
-      return;
+  useEffect(() => {
+    async function resumeAuth() {
+      try {
+        await authStore.getToken(code);
+        await authStore.whoami();
+      } catch (e) {
+        navigation.navigate('signIn');
+      }
     }
-    const { code } = getQueryParams(currentUrl);
-    const cachedCode = await AsyncStorage.getItem('code');
-    if (!code || cachedCode === code) {
-      return;
-    }
-    await webview.stopLoading();
-    try {
-      await save('code', code);
-      await authStore.getToken(code);
-      await authStore.whoami();
-    } catch (e) {
-      navigation.navigate('signIn');
-      console.tron.log(`Sign in error`);
-    }
-  };
+
+    resumeAuth();
+  }, [code]);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -73,7 +62,14 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
         <Header headerTx='signInScreen.title' leftIcon='back' onLeftPress={() => navigation.navigate('signIn')} style={HEADER} titleStyle={HEADER_TITLE} />
         <WebView
           source={{ uri: url }}
-          onNavigationStateChange={onNavigationStateChange}
+          onNavigationStateChange={async event => {
+            const { url: webViewCurrentUrl } = event;
+            const { code: value } = getQueryParams(webViewCurrentUrl);
+            if (value) {
+              await webview.stopLoading();
+              setCode(value);
+            }
+          }}
           ref={ref => {
             webview = ref;
           }}
