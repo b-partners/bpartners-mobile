@@ -3,7 +3,7 @@
   "displayName": "BpartnersMobile",
   "expo": {
     "name": "BpartnersMobile",
-    "slug": "BpartnersMobile",
+    "slug": "bpartners",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon-all.png",
@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
       "icon": "./assets/images/app-icon-android-legacy.png",
       "adaptiveIcon": {
@@ -29,6 +31,12 @@
     },
     "web": {
       "favicon": "./assets/images/app-icon-web-favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fdc9c73b-c2cd-4a53-a7f5-9a489d249336"
+      }
+    },
+    "owner": "ny.hasina"
   }
 }
