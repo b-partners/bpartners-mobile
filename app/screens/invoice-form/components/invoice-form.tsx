@@ -89,7 +89,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
               })),
             });
           } catch (e) {
-            console.tron.log(e);
+            __DEV__ && console.tron.log(e);
           }
         }}
         validate={validate}

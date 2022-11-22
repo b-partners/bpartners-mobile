@@ -26,8 +26,8 @@ export const PaymentInitiationStoreModel = types
   }))
   .actions(() => ({
     actionFail: (error, additionalMessage?: string) => {
-      console.tron.log(error);
-      console.tron.log(additionalMessage);
+      __DEV__ && console.tron.log(error);
+      __DEV__ && console.tron.log(additionalMessage);
     },
   }))
   .actions(self => ({

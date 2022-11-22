@@ -35,7 +35,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
       showMessage(translate('invoiceScreen.messages.invoiceSuccessfullyDownload'));
     } catch (e) {
       showMessage(translate('invoiceScreen.messages.downloadingInvoiceFailed'));
-      console.tron.log(e);
+      __DEV__ && console.tron.log(e);
       throw e;
     }
   };

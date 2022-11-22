@@ -24,7 +24,7 @@ export const ProductStoreModel = types
   }))
   .actions(() => ({
     getProductsFail: error => {
-      console.tron.log(error);
+      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({

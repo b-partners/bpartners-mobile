@@ -25,7 +25,7 @@ export const TransactionStoreModel = types
   }))
   .actions(() => ({
     getTransactionCategoriesFail: error => {
-      console.tron.log(`Failing to fetch transaction categories, ${error}`);
+      __DEV__ && console.tron.log(`Failing to fetch transaction categories, ${error}`);
     },
   }))
   .actions(self => ({
@@ -51,7 +51,7 @@ export const TransactionStoreModel = types
   }))
   .actions(() => ({
     getTransactionsFail: error => {
-      console.tron.log(`Failing to fetch transactions, ${error}`);
+      __DEV__ && console.tron.log(`Failing to fetch transactions, ${error}`);
     },
   }))
   .actions(self => ({
@@ -72,7 +72,7 @@ export const TransactionStoreModel = types
   }))
   .actions(() => ({
     updateTransactionCategoryFail: error => {
-      console.tron.log(error);
+      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({

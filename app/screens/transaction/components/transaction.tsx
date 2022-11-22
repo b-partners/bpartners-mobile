@@ -72,7 +72,7 @@ export const Transaction = (
                   try {
                     await transactionStore.updateTransactionCategory(item.id, transactionCategory as any);
                   } catch (e) {
-                    console.tron.log(e);
+                    __DEV__ && console.tron.log(e);
                     throw new Error(e);
                   } finally {
                     await transactionStore.getTransactionCategories();

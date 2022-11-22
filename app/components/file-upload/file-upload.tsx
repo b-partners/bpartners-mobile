@@ -28,7 +28,7 @@ export function FileUpload(props: FileUploadProps) {
 
   const uploadFile = () => {
     if (!fileToUpload) {
-      console.tron.log('Please select a file', fileToUpload);
+      __DEV__ && console.tron.log('Please select a file', fileToUpload);
       return;
     }
 
@@ -40,7 +40,7 @@ export function FileUpload(props: FileUploadProps) {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      console.tron.log(`Picking file`, result);
+      __DEV__ && console.tron.log(`Picking file`, result);
       const documentPickerResponse = result[0];
 
       // get the file from the file system
@@ -50,9 +50,9 @@ export function FileUpload(props: FileUploadProps) {
       setFileToUpload(file);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        console.tron.log(`Canceling upload`);
+        __DEV__ && console.tron.log(`Canceling upload`);
       } else {
-        console.tron.log(`Error while uploading file, ${err}`);
+        __DEV__ && console.tron.log(`Error while uploading file, ${err}`);
         throw err;
       }
     }
@@ -74,7 +74,7 @@ export function FileUpload(props: FileUploadProps) {
             style={BUTTON_STYLE}
             textStyle={BUTTON_TEXT_STYLE}
             onPress={() => {
-              console.tron.log(`Deleting file`);
+              __DEV__ && console.tron.log(`Deleting file`);
               setFileToUpload(null);
             }}
             tx={'profileScreen.fields.removeFileButton'}

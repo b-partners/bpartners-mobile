@@ -28,7 +28,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
       await invoiceStore.saveInvoice(values);
       navigation.navigate('paymentList');
     } catch (e) {
-      console.tron.log(e);
+      __DEV__ && console.tron.log(e);
     }
   };
 
