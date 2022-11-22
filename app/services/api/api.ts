@@ -51,7 +51,7 @@ export class Api {
           const accessToken = await AsyncStorage.getItem('accessToken');
           request.headers.Authorization = `Bearer ${accessToken}`;
         } catch (e) {
-          console.tron.log(`Can't fetch access token`);
+          __DEV__ && console.tron.log(`Can't fetch access token`);
           throw new Error(e);
         }
       }

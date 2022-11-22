@@ -45,7 +45,7 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
 
   const onNavigationStateChange = async webViewState => {
     const { url: currentUrl } = webViewState;
-    console.tron.log(`Navigating to ${currentUrl}`);
+    __DEV__ && console.tron.log(`Navigating to ${currentUrl}`);
     if (!currentUrl.includes(env.successUrl)) {
       return;
     }
@@ -60,7 +60,7 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
       navigation.navigate('home');
     } catch (e) {
       navigation.navigate('signIn');
-      console.tron.log(`Sign in error`);
+      __DEV__ && console.tron.log(`Sign in error`);
       return setError(e);
     }
     navigation.navigate('home');

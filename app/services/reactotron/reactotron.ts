@@ -25,7 +25,7 @@ const noop = () => undefined;
 
 // in dev, we attach Reactotron, in prod we attach a interface-compatible mock.
 if (__DEV__) {
-  console.tron = Tron; // attach reactotron to `console.tron`
+  console.tron = Tron; // attach reactotron to `__DEV__ && console.tron`
 } else {
   // attach a mock so if things sneaky by our __DEV__ guards, we won't crash.
   console.tron = {
@@ -53,7 +53,7 @@ if (__DEV__) {
 
 /**
  * You'll probably never use the service like this since we hang the Reactotron
- * instance off of `console.tron`. This is only to be consistent with the other
+ * instance off of `__DEV__ && console.tron`. This is only to be consistent with the other
  * services.
  */
 export class Reactotron {
@@ -95,16 +95,16 @@ export class Reactotron {
 
       // logging features
       if (initial) {
-        console.tron.display({ name, value: initialData, preview: 'Initial State' });
+        __DEV__ && console.tron.display({ name, value: initialData, preview: 'Initial State' });
       }
       // log state changes?
       if (snapshots) {
         onSnapshot(rootStore, snapshot => {
-          console.tron.display({ name, value: snapshot, preview: 'New State' });
+          __DEV__ && console.tron.display({ name, value: snapshot, preview: 'New State' });
         });
       }
 
-      console.tron.trackMstNode(rootStore);
+      __DEV__ && console.tron.trackMstNode(rootStore);
     }
   }
 
@@ -149,7 +149,7 @@ export class Reactotron {
         description: 'Resets the MST store',
         command: 'resetStore',
         handler: () => {
-          console.tron.log('resetting store');
+          __DEV__ && console.tron.log('resetting store');
           clear();
         },
       });
@@ -159,7 +159,7 @@ export class Reactotron {
         description: 'Resets the navigation state',
         command: 'resetNavigation',
         handler: () => {
-          console.tron.log('resetting navigation state');
+          __DEV__ && console.tron.log('resetting navigation state');
           resetRoot({ index: 0, routes: [] });
         },
       });
@@ -190,7 +190,7 @@ export class Reactotron {
         description: 'Goes back',
         command: 'goBack',
         handler: () => {
-          console.tron.log('Going back');
+          __DEV__ && console.tron.log('Going back');
           goBack();
         },
       });
