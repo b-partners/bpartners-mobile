@@ -7,8 +7,9 @@ import { GradientBackground, Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
-import { CONTAINER, ErrorBoundary, FULL, HEADER, HEADER_TITLE } from '../index';
+import { ErrorBoundary } from '../error/error-boundary';
 import { PaymentInitiationForm } from './payment-initiation-form';
+import { CONTAINER, FULL, HEADER, HEADER_TITLE } from './style';
 
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
 const QRCODE_CONTAINER_STYLE: ViewStyle = { display: 'flex', alignItems: 'center', marginTop: 25 };

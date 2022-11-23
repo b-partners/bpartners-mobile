@@ -8,7 +8,8 @@ import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
-import { ErrorBoundary, HEADER, HEADER_TITLE } from '../index';
+import { ErrorBoundary } from '../index';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { InvoiceForm } from './components/invoice-form';
 
 const FULL: ViewStyle = {
@@ -27,7 +28,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
       await invoiceStore.saveInvoice(values);
       navigation.navigate('paymentList');
     } catch (e) {
-      console.tron.log(e);
+      __DEV__ && console.tron.log(e);
     }
   };
 

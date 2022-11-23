@@ -43,7 +43,7 @@ export const AuthStoreModel = types
   }))
   .actions(() => ({
     signInFail: error => {
-      console.tron.log(error);
+      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
@@ -84,7 +84,7 @@ export const AuthStoreModel = types
   }))
   .actions(() => ({
     whoamiFail: error => {
-      console.tron.log(error);
+      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
@@ -99,7 +99,6 @@ export const AuthStoreModel = types
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
         self.whoamiFail(e);
-        self.catchOrThrow(e);
       }
     }),
   }))
@@ -113,7 +112,7 @@ export const AuthStoreModel = types
   }))
   .actions(() => ({
     getTokenFail: error => {
-      console.tron.log(error);
+      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
@@ -139,8 +138,8 @@ export const AuthStoreModel = types
         const result = yield signInApi.getToken(code);
         self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
       } catch (e) {
+        __DEV__ && console.tron.log(e);
         self.getTokenFail(e);
-        self.catchOrThrow(e);
       }
     }),
   }));

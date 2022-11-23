@@ -141,6 +141,7 @@
     }
   },
   "logoutScreen": {
-    "title": "Se déconnecter"
+    "title": "Se déconnecter",
+    "swan": "Ouvrir Swan"
   }
 }

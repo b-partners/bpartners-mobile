@@ -41,7 +41,7 @@
   bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
 #endif
 
-  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"BpartnersMobile", nil);
+  UIView *rootView = [self.reactDelegate createRootViewWithBridge:bridge moduleName:@"BpartnersMobile" initialProperties:nil];
 
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];

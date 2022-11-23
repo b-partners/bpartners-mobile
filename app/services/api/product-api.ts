@@ -13,7 +13,7 @@ export class ProductApi {
 
   async getProducts(account: string, description = ''): Promise<GetProductsResult> {
     // make the api call
-    console.tron.log(`Fetching account's products`);
+    __DEV__ && console.tron.log(`Fetching account's products`);
     const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/products`, { description });
     // the typical ways to die when calling an api
     if (!response.ok) {
