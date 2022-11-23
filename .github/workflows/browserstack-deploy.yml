@@ -20,19 +20,12 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    timeout-minutes: 60
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v2
 
       - run: npm install --force
-
-      - run: npm run build-android
-
-      - name: Remove duplicated ressources
-        run: |
-          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
-          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
 
       - name: Decode keystore
         run: |
@@ -46,13 +39,13 @@ jobs:
           touch ~/.env
           sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }} ${{secrets.API_URL}} ${{secrets.SUCCESS_URL}} ${{secrets.FAILURE_URL}}
 
-      - name: Build release app
-        run: cd android && ./gradlew assembleRelease
+      - run: cd android && ./gradlew clean
 
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/app-release.apk"
+      - name: Build release app
+        run: cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets
 
       - name: Build bundle app
-        run: cd android && ./gradlew bundleRelease
+        run: cd android && ./gradlew bundleRelease -x bundleReleaseJsAndAssets
 
       - run: echo "appName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
 
@@ -72,6 +65,9 @@ jobs:
           aws s3 cp android/app/build/outputs/apk/release/${{env.appName}}.apk s3://mobile-bpartners/android/
           aws s3 cp android/app/build/outputs/bundle/release/${{env.appName}}.aab s3://mobile-bpartners/android/
 
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
+
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.appName }}.aab"     
 
   ios-browserstack:
     env:
@@ -92,6 +88,10 @@ jobs:
 
       - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+      - run: brew update 
+
+      - run: brew upgrade
+      
       - run: npm run ci:build:e2e
 
       - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | shasum | awk '{print $1}')" >> $GITHUB_ENV
