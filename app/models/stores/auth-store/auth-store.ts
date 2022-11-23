@@ -99,7 +99,7 @@ export const AuthStoreModel = types
         getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
-        self.whoamiFail(e);
+        self.whoamiFail(e.message);
       }
     }),
   }))
