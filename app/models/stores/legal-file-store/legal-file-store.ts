@@ -1,8 +1,8 @@
-import {flow} from 'mobx-state-tree';
+import { flow, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
 import {LegalFileModel, LegalFileSnapshotOut} from '../../entities/legal-file/legal-file';
 import {LegalFileApi} from '../../../services/api/legal-file-api';
-import {withEnvironment} from '../../extensions/with-environment';
-import {withRootStore} from '../../extensions/with-root-store';
+import {withEnvironment} from "../..";
+import {withRootStore} from "../..";
 import {withCredentials} from '../../extensions/with-credentials';
 
 
@@ -64,3 +64,18 @@ export const LegalFileStoreModel = LegalFileModel
     }),
   }))
 ;
+
+export interface LegalFileStore extends Instance<typeof LegalFileStoreModel> {}
+
+export interface LegalFileStoreSnapshotOut extends SnapshotOut<typeof LegalFileStoreModel> {}
+
+export interface LegalFileStoreSnapshotIn extends SnapshotIn<typeof LegalFileStoreModel> {}
+
+export const createLegalFileStoreDefaultModel = () =>
+  types.optional(LegalFileStoreModel, {
+    id: '',
+    fileUrl: '',
+    approvalDatetime: '',
+    name: ''
+  });
+
