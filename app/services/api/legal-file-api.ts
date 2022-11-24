@@ -13,7 +13,7 @@ export class LegalFileApi {
 
   async getLegalFiles(id: string): Promise<GetLegalFilesResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.api.apisauce.get(`users/${id}/legalDocuments`);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`users/${id}/legalFiles`);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
@@ -22,8 +22,8 @@ export class LegalFileApi {
         throw new Error(problem.kind);
       }
     }
-    const {data} = response;
-    return {kind: 'ok', legalFile: data};
+    const { data } = response;
+    return { kind: 'ok', legalFiles: data };
   }
 
   async approveLegalFiles(uId: string, lId: string): Promise<ApproveLegalFileResult> {
