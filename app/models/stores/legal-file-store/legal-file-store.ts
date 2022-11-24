@@ -43,11 +43,11 @@ export const LegalFileStoreModel = types
     approveLegalFileSuccess: () => {
       // get the updated legal file and replace
       // the legalFile on the store to the new one
-      self.getLegalFile();
+      self.getLegalFiles();
     },
   }))
   .actions(() => ({
-    approveLegalFileFail: (error) => {
+    approveLegalFileFail: error => {
       __DEV__ && console.tron.log(error);
     },
   }))
@@ -63,7 +63,11 @@ export const LegalFileStoreModel = types
       }
     }),
   }))
-;
+  .views(self => ({
+    get unApprovedFiles() {
+      return self.legalFiles.filter(legalFile => !legalFile.approvalDatetime);
+    },
+  }));
 
 export interface LegalFileStore extends Instance<typeof LegalFileStoreModel> {}
 
@@ -73,9 +77,5 @@ export interface LegalFileStoreSnapshotIn extends SnapshotIn<typeof LegalFileSto
 
 export const createLegalFileStoreDefaultModel = () =>
   types.optional(LegalFileStoreModel, {
-    id: '',
-    fileUrl: '',
-    approvalDatetime: '',
-    name: ''
+    legalFiles: [],
   });
-
