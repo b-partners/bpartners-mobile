@@ -16,7 +16,15 @@ import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { InvoiceStatus } from '../models/entities/invoice/invoice';
-import { ErrorBoundary, HomeScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen } from '../screens';
+import {
+  ErrorBoundary,
+  HomeScreen,
+  LegalFileScreen,
+  PaymentInitiationScreen,
+  ProfileScreen,
+  TransactionListScreen,
+  WelcomeScreen,
+} from '../screens';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
@@ -45,6 +53,7 @@ export type NavigatorParamList = {
   invoices: undefined;
   invoiceForm: undefined;
   paymentList: undefined;
+  legalFile: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
@@ -75,11 +84,12 @@ const AppStack = observer(function () {
           width: windowWidth,
         },
       }}
-      initialRouteName={accessToken ? 'home' : 'welcome'}
+      initialRouteName={accessToken ? 'legalFile' : 'welcome'}
       drawerContent={props => <BpDrawer {...props} />}
     >
       {isAuthenticated ? (
         <>
+          <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
