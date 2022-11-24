@@ -1,8 +1,8 @@
-import {ApiResponse} from 'apisauce';
+import { ApiResponse } from 'apisauce';
 
-import {Api} from './api';
-import {getGeneralApiProblem} from './api-problem';
-import {GetLegalFilesResult} from './api.types';
+import { Api } from './api';
+import { getGeneralApiProblem } from './api-problem';
+import { ApproveLegalFileResult, GetLegalFilesResult } from './api.types';
 
 export class LegalFileApi {
   private api: Api;
@@ -26,8 +26,7 @@ export class LegalFileApi {
     return {kind: 'ok', legalFile: data};
   }
 
-
-  async approveLegalFiles(uId: string, lId: string): Promise<GetLegalFilesResult> {
+  async approveLegalFiles(uId: string, lId: string): Promise<ApproveLegalFileResult> {
     const response: ApiResponse<any> = await this.api.apisauce.put(`users/${uId}/legalFiles/${lId}`);
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
@@ -36,7 +35,7 @@ export class LegalFileApi {
         throw new Error(problem.kind);
       }
     }
-    const {data} = response;
-    return {kind: 'ok', legalFile: data};
+    const { data } = response;
+    return { kind: 'ok', legalFile: data };
   }
 }
