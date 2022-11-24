@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect} from 'react';
+import React, { FC, useEffect } from 'react';
 import { View } from 'react-native';
 
 import { GradientBackground, Screen } from '../../components';
@@ -13,10 +13,9 @@ import { HomeHeader } from './components/home-header';
 import { HomeLatestTransaction } from './components/home-latest-transaction';
 import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
-import { LegalFileView } from "./components/legal-file-view";
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFileStore } = useStores();
+  const { transactionStore } = useStores();
 
   const { transactions, loadingTransactions, currentBalance, currentMonthSummary } = transactionStore;
 
@@ -24,7 +23,6 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     const date = new Date();
     transactionStore.getTransactions();
     transactionStore.getTransactionsSummary(date.getFullYear());
-    legalFileStore.getLegalFile();
   }, []);
 
   return (
@@ -37,7 +35,6 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
           <TransactionSummary summary={currentMonthSummary} />
           <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
         </Screen>
-        <LegalFileView legalFile={legalFileStore} />
       </View>
     </ErrorBoundary>
   );
