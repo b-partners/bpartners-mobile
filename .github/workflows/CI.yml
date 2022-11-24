@@ -19,7 +19,6 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-      -
       - uses: actions/checkout@v2
 
       - name: Install dependencies
@@ -45,7 +44,6 @@ jobs:
   style:
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/checkout@v2
 
       - name: Setup Node.js

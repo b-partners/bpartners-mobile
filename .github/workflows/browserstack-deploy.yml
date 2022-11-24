@@ -72,7 +72,6 @@ jobs:
           aws s3 cp android/app/build/outputs/apk/release/${{env.appName}}.apk s3://mobile-bpartners/android/
           aws s3 cp android/app/build/outputs/bundle/release/${{env.appName}}.aab s3://mobile-bpartners/android/
 
-
   ios-browserstack:
     env:
       AWS_REGION: eu-west-3
