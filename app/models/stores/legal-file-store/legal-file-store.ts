@@ -1,12 +1,16 @@
-import { flow, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
-import {LegalFileModel, LegalFileSnapshotOut} from '../../entities/legal-file/legal-file';
-import {LegalFileApi} from '../../../services/api/legal-file-api';
-import {withEnvironment} from "../..";
-import {withRootStore} from "../..";
-import {withCredentials} from '../../extensions/with-credentials';
+import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
+import { withEnvironment } from '../..';
+import { withRootStore } from '../..';
+import { LegalFileApi } from '../../../services/api/legal-file-api';
+import { LegalFileModel, LegalFileSnapshotOut } from '../../entities/legal-file/legal-file';
+import { withCredentials } from '../../extensions/with-credentials';
 
-export const LegalFileStoreModel = LegalFileModel
+export const LegalFileStoreModel = types
+  .model('LegalFiles')
+  .props({
+    legalFiles: types.optional(types.array(LegalFileModel), []),
+  })
   .extend(withRootStore)
   .extend(withCredentials)
   .extend(withEnvironment)
@@ -14,11 +18,8 @@ export const LegalFileStoreModel = LegalFileModel
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    getLegalFileSuccess: (legalFile: LegalFileSnapshotOut) => {
-      self.id = legalFile.id;
-      self.name = legalFile.name;
-      self.fileUrl = legalFile.fileUrl;
-      self.approvalDatetime = legalFile.approvalDatetime;
+    getLegalFileSuccess: (legalFiles: LegalFileSnapshotOut[]) => {
+      self.legalFiles.replace(legalFiles);
     },
   }))
   .actions(() => ({
@@ -27,15 +28,14 @@ export const LegalFileStoreModel = LegalFileModel
     },
   }))
   .actions(self => ({
-    getLegalFile: flow(function* () {
+    getLegalFiles: flow(function* () {
       const legalFileApi = new LegalFileApi(self.environment.api);
       try {
         const result = yield legalFileApi.getLegalFiles(self.currentUser.id);
-        const { ...legalFile } = result;
-        self.getLegalFileSuccess(legalFile);
+        self.getLegalFileSuccess(result.legalFiles);
       } catch (e) {
         self.getLegalFileFail(e.message);
-        self.catchOrThrow(e);
+        // self.catchOrThrow(e);
       }
     }),
   }))

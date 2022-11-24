@@ -22,7 +22,7 @@ export const RootStoreModel = types.model('RootStore').props({
     paymentInitiationStore: types.optional(PaymentInitiationStoreModel, {} as any),
     fileStore: types.optional(FileStoreModel, {} as any),
     invoiceStore: types.optional(InvoiceStoreModel, {} as any),
-    legalFileStore: types.optional(LegalFileStoreModel, {} as any)
+    legalFilesStore: types.optional(LegalFileStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;
