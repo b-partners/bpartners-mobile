@@ -1,11 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
-import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
+import { ActivityIndicator, SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Button, Checkbox, PDFView, Text } from '../../../components';
 import { CheckboxProps } from '../../../components/checkbox/checkbox.props';
-import { Loader } from '../../../components/loader/loader';
 import { useStores } from '../../../models';
 import { LegalFile } from '../../../models/entities/legal-file/legal-file';
 import { navigate } from '../../../navigators';
@@ -49,7 +48,8 @@ const FOOTER_ACCEPT_TEXT_STYLE: TextStyle = {
   color: 'black',
 };
 
-const PAGE_NUMBERS_STYLE: TextStyle = { color: 'black', position: 'absolute' };
+const PAGE_NUMBERS_STYLE: TextStyle = { color: 'black', position: 'absolute', zIndex: 999 };
+const LOADER_STYLE: ViewStyle = { position: 'absolute', zIndex: 999, top: '30%' };
 
 export const LegalFileView = observer(function LegalFileView(props: ILegalFileView) {
   const { legalFilesStore } = useStores();
@@ -61,10 +61,13 @@ export const LegalFileView = observer(function LegalFileView(props: ILegalFileVi
   const [contentLoaded, setContentLoaded] = useState<boolean>(false);
 
   const acceptCGUAndContinue = async () => {
+    setContentLoaded(false);
+    setAccepted(false);
     await legalFilesStore.approveLegalFile(id);
     // in case if there are others cgu that was no approved
     navigate('legalFile');
     onApprove();
+    setContentLoaded(true);
   };
   const handleLoaCompletedState = (numberOfPages: number) => {
     setContentLoaded(true);
@@ -76,21 +79,21 @@ export const LegalFileView = observer(function LegalFileView(props: ILegalFileVi
     <View style={FULL}>
       <View style={PDF_CONTAINER}>
         <Text text={`${currentPage}/${lastPageNumber}`} style={PAGE_NUMBERS_STYLE} />
-        {!contentLoaded && <Loader size='large' animating={true} />}
+        <ActivityIndicator animating={!contentLoaded} style={LOADER_STYLE} />
         <PDFView source={{ uri: legalFile?.fileUrl, cache: true }} onPageChanged={page => setCurrentPage(page)} onLoadComplete={handleLoaCompletedState} />
       </View>
 
       <SafeAreaView>
         <View style={FOOTER_CONTENT}>
           <View style={CHECKBOX_CONTAINER}>
-            <Text text={'Accept'} style={FOOTER_ACCEPT_TEXT_STYLE} />
+            <Text tx='legalFileScreen.accept' style={FOOTER_ACCEPT_TEXT_STYLE} />
             <Checkbox onToggle={() => setAccepted(!accepted)} value={accepted} style={CHECKBOX_STYLE} />
           </View>
 
           <Button onPress={acceptCGUAndContinue} disabled={!accepted} style={CONTINUE_BUTTON_STYLE}>
             <Text text={`${legalFilesStore.unApprovedFiles.length}/${legalFilesStore.legalFiles.length}`} />
             <Text
-              text='Continue'
+              tx='legalFileScreen.continue'
               style={{
                 marginHorizontal: spacing[2],
                 color: accepted ? palette.white : palette.lighterGrey,

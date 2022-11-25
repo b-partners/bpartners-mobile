@@ -172,5 +172,9 @@
   "logoutScreen": {
     "title": "Logout",
     "swan": "Open Swan"
+  },
+  "legalFileScreen": {
+    "accept": "Accept",
+    "continue": "Continue"
   }
 }
