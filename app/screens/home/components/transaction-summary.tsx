@@ -19,7 +19,7 @@ const BOOST_MY_RESULT_BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary }) => {
   return (
     <View>
-      <DonutChart summary={summary} />
+      {summary && <DonutChart summary={summary} />}
       <GoalProgressBar />
       <Button tx='homeScreen.summary.boostMyResult' style={BOOST_MY_RESULT_BUTTON_STYLE} textStyle={BOOST_MY_RESULT_BUTTON_TEXT_STYLE} />
     </View>
