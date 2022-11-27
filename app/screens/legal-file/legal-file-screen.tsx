@@ -26,7 +26,7 @@ const HEADER_TEXT_STYLE: TextStyle = {
   textAlign: 'center',
 };
 
-export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFile'>> = observer(({ navigation }) => {
+export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFile'>> = observer(({}) => {
   const { legalFilesStore, transactionStore, authStore } = useStores();
   const { unApprovedFiles } = legalFilesStore;
 
@@ -45,8 +45,7 @@ export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFil
 
     if (unApprovedFiles.length <= 0) {
       fetchUserData();
-      __DEV__ && console.tron.log('no unapproved files anymore navigating to home');
-      navigation.navigate('home');
+      __DEV__ && console.tron.log('no unapproved files anymore navigating');
     }
   }, [unApprovedFiles]);
 
