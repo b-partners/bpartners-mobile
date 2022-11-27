@@ -175,6 +175,8 @@
   },
   "legalFileScreen": {
     "accept": "Accept",
-    "continue": "Continue"
+    "continue": "Continue",
+    "reload": "Reload",
+    "errorMessage": "An error occurred while loading"
   }
 }

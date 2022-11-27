@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Button, Checkbox, PDFView, Text } from '../../../components';
@@ -49,21 +49,79 @@ const FOOTER_ACCEPT_TEXT_STYLE: TextStyle = {
 };
 
 const PAGE_NUMBERS_STYLE: TextStyle = { color: 'black', position: 'absolute', zIndex: 999 };
-const LOADER_STYLE: ViewStyle = { position: 'absolute', zIndex: 999, top: '30%' };
+const ERROR_MESSAGE_STYLE: TextStyle = { fontSize: 21, color: 'black', margin: spacing[7], fontWeight: 'bold' };
+
+function renderFooter(
+  setAccepted: (value: ((prevState: boolean) => boolean) | boolean) => void,
+  accepted: boolean,
+  acceptCGUAndContinue: () => Promise<void>,
+  legalFilesStore
+) {
+  return (
+    <SafeAreaView>
+      <View style={FOOTER_CONTENT}>
+        <View style={CHECKBOX_CONTAINER}>
+          <Text tx='legalFileScreen.accept' style={FOOTER_ACCEPT_TEXT_STYLE} />
+          <Checkbox onToggle={() => setAccepted(!accepted)} value={accepted} style={CHECKBOX_STYLE} />
+        </View>
+
+        <Button onPress={acceptCGUAndContinue} disabled={!accepted} style={CONTINUE_BUTTON_STYLE}>
+          <Text text={`${legalFilesStore.unApprovedFiles.length}/${legalFilesStore.legalFiles.length}`} />
+          <Text
+            tx='legalFileScreen.continue'
+            style={{
+              marginHorizontal: spacing[2],
+              color: accepted ? palette.white : palette.lighterGrey,
+            }}
+          />
+          <MaterialCommunityIcons name='arrow-right-circle' size={24} color={accepted ? palette.white : palette.lighterGrey} />
+        </Button>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+function renderErrorMessage(error: boolean, handleReloadPress: () => Promise<void>) {
+  return (
+    <>
+      {error && (
+        <>
+          <Text tx='legalFileScreen.errorMessage' style={ERROR_MESSAGE_STYLE} />
+          <Button tx='legalFileScreen.reload' onPress={handleReloadPress} />
+        </>
+      )}
+    </>
+  );
+}
 
 export const LegalFileView = observer(function LegalFileView(props: ILegalFileView) {
   const { legalFilesStore } = useStores();
   const { legalFile, onApprove } = props;
   const { id } = legalFile;
+
   const [accepted, setAccepted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPageNumber, setLastPageNumber] = useState<number>(1);
   const [contentLoaded, setContentLoaded] = useState<boolean>(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    // do not display the activity indicator
+    // if there was error
+    if (error) setContentLoaded(true);
+  }, [error]);
 
   const acceptCGUAndContinue = async () => {
     setContentLoaded(false);
-    setAccepted(false);
-    await legalFilesStore.approveLegalFile(id);
+
+    try {
+      await legalFilesStore.approveLegalFile(id);
+    } catch (e) {
+      setError(true);
+      throw e;
+    } finally {
+      setAccepted(false);
+    }
     // in case if there are others cgu that was no approved
     navigate('legalFile');
     onApprove();
@@ -72,37 +130,37 @@ export const LegalFileView = observer(function LegalFileView(props: ILegalFileVi
   const handleLoaCompletedState = (numberOfPages: number) => {
     setContentLoaded(true);
     setLastPageNumber(numberOfPages);
-    console.log(contentLoaded, currentPage, numberOfPages);
   };
+  const handleReloadPress = async () => {
+    setContentLoaded(false);
+    setError(false);
 
+    try {
+      await legalFilesStore.getLegalFiles();
+    } catch (e) {
+      setError(true);
+      console.tron.log('error fetching ...' + e.message);
+      throw e;
+    }
+
+    setContentLoaded(true);
+    setError(false);
+  };
   return (
     <View style={FULL}>
       <View style={PDF_CONTAINER}>
-        <Text text={`${currentPage}/${lastPageNumber}`} style={PAGE_NUMBERS_STYLE} />
-        <ActivityIndicator animating={!contentLoaded} style={LOADER_STYLE} />
-        <PDFView source={{ uri: legalFile?.fileUrl, cache: true }} onPageChanged={page => setCurrentPage(page)} onLoadComplete={handleLoaCompletedState} />
+        {renderErrorMessage(error, handleReloadPress)}
+        {contentLoaded && !error && <Text text={`${currentPage}/${lastPageNumber}`} style={PAGE_NUMBERS_STYLE} />}
+        <PDFView
+          source={{ uri: legalFile?.fileUrl, cache: true }}
+          onPageChanged={page => setCurrentPage(page)}
+          onLoadComplete={handleLoaCompletedState}
+          onError={() => setError(true)}
+          renderActivityIndicator={() => <ActivityIndicator animating={!contentLoaded} />}
+        />
       </View>
 
-      <SafeAreaView>
-        <View style={FOOTER_CONTENT}>
-          <View style={CHECKBOX_CONTAINER}>
-            <Text tx='legalFileScreen.accept' style={FOOTER_ACCEPT_TEXT_STYLE} />
-            <Checkbox onToggle={() => setAccepted(!accepted)} value={accepted} style={CHECKBOX_STYLE} />
-          </View>
-
-          <Button onPress={acceptCGUAndContinue} disabled={!accepted} style={CONTINUE_BUTTON_STYLE}>
-            <Text text={`${legalFilesStore.unApprovedFiles.length}/${legalFilesStore.legalFiles.length}`} />
-            <Text
-              tx='legalFileScreen.continue'
-              style={{
-                marginHorizontal: spacing[2],
-                color: accepted ? palette.white : palette.lighterGrey,
-              }}
-            />
-            <MaterialCommunityIcons name='arrow-right-circle' size={24} color={accepted ? palette.white : palette.lighterGrey} />
-          </Button>
-        </View>
-      </SafeAreaView>
+      {contentLoaded && !error && renderFooter(setAccepted, accepted, acceptCGUAndContinue, legalFilesStore)}
     </View>
   );
 });

@@ -159,6 +159,7 @@
   },
   "legalFileScreen": {
     "accept": "Accept",
-    "continue": "Continue"
+    "continue": "Continue",
+    "reload": "recharger"
   }
 }
