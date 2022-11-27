@@ -32,7 +32,11 @@ export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFil
 
   useEffect(() => {
     const fetchLegalFiles = async () => {
-      await legalFilesStore.getLegalFiles();
+      try {
+        await legalFilesStore.getLegalFiles();
+      } catch (e) {
+        throw e;
+      }
     };
 
     fetchLegalFiles();
