@@ -66,7 +66,7 @@ function renderFooter(
         </View>
 
         <Button onPress={acceptCGUAndContinue} disabled={!accepted} style={CONTINUE_BUTTON_STYLE}>
-          <Text text={`${legalFilesStore.unApprovedFiles.length}/${legalFilesStore.legalFiles.length}`} />
+          <Text text={`${legalFilesStore.legalFiles.length - legalFilesStore.unApprovedFiles.length + 1}/${legalFilesStore.legalFiles.length}`} />
           <Text
             tx='legalFileScreen.continue'
             style={{
