@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
-import { withEnvironment } from '../..';
+import { withEnvironment, withRootStore } from '../..';
 import { AccountApi } from '../../../services/api/account-api';
 import { AuthApi } from '../../../services/api/auth-api';
 import { clear, save } from '../../../utils/storage';
@@ -22,6 +22,7 @@ export const AuthStoreModel = types
     currentAccountHolder: types.maybe(types.maybeNull(AccountHolderModel)),
   })
   .extend(withEnvironment)
+  .extend(withRootStore)
   .actions(self => ({
     reset: () => {
       self.accessToken = undefined;
@@ -101,6 +102,7 @@ export const AuthStoreModel = types
       } catch (e) {
         self.whoamiFail(e.message);
       }
+      self.rootStore.legalFilesStore.getLegalFiles();
     }),
   }))
   .actions(self => ({
