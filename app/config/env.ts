@@ -6,7 +6,6 @@ export default {
   failureUrl: config.FAILURE_URL || '',
   swanUrl: config.SWAN_URL || '',
   endpointWhiteList: ['auth', 'token'],
-  sentryDSN: config.SENTRY_ENV || '' ,
-  sentryENV: config.SENTRY_DSN || '' ,
-
+  sentryDSN: config.SENTRY_ENV || '',
+  sentryENV: config.SENTRY_DSN || '',
 };
