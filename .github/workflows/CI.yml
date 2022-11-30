@@ -40,7 +40,7 @@ jobs:
         run: npm run test:ios:release:e2e
 
   test-android-app:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -53,7 +53,13 @@ jobs:
         run: npm run build:android:release:e2e
 
       - name: Run end to end tests
-        run: npm run test:android:release:e2e
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          target: google_apis
+          profile: pixel_5
+          avd-name: Pixel_5_API_31
+          script: npm run test:android:release:e2e
 
   style:
     runs-on: ubuntu-latest
