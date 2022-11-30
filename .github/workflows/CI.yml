@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test ios app:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -29,7 +29,8 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
-      - run: npm run ci:build:e2e
+      - name: Build release app for ios
+        run: npm run build:ios:release:e2e
 
       - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -38,8 +39,22 @@ jobs:
           brew tap wix/brew
           brew install applesimutils
 
-      - name: Test Run End to End tests
-        run: npm run ci:test:e2e
+      - name: Run end to end tests
+        run: npm run test:ios:release:e2e
+
+  test android app:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        npm install --force
+        npm install --location=global react-native-cli
+
+    - name: Build release app for android
+      run: npm run build:android:release:e2e
+
+    - name: Run end to end tests
+      run: npm run test:android:release:e2e
 
   style:
     runs-on: ubuntu-latest
