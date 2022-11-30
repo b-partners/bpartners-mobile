@@ -26,7 +26,7 @@ const HEADER_TEXT_STYLE: TextStyle = {
   textAlign: 'center',
 };
 
-export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFile'>> = observer(({}) => {
+export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFile'>> = observer(() => {
   const { legalFilesStore, transactionStore, authStore } = useStores();
   const { unApprovedFiles } = legalFilesStore;
 
