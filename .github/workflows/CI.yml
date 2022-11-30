@@ -26,9 +26,6 @@ jobs:
           npm install --force
           npm install --location=global react-native-cli
 
-      - name: Run unit tests
-        run: npm run test
-
       - name: Build release app for ios
         run: npm run build:ios:release:e2e
 
