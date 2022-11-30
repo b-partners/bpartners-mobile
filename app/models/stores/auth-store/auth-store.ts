@@ -96,13 +96,14 @@ export const AuthStoreModel = types
       let whoAmiResult, getAccountResult, getAccountHolderResult;
       try {
         whoAmiResult = yield signInApi.whoami();
+        self.currentUser = whoAmiResult.user;
         getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
         getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
         self.whoamiFail(e.message);
       }
-      self.rootStore.legalFilesStore.getLegalFiles();
+      yield self.rootStore.legalFilesStore.getLegalFiles();
     }),
   }))
   .actions(self => ({

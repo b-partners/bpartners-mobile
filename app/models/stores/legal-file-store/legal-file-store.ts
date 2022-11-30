@@ -38,13 +38,21 @@ export const LegalFileStoreModel = types
       }
     }),
   }))
-  .actions(self => ({
-    approveLegalFileSuccess: () => {
-      // get the updated legal file and replace
-      // the legalFile on the store to the new one
+  .actions(self => {
+    const fileIndexById = (id: string) => self.legalFiles.findIndex(file => file.id === id);
+    const approveLegalFileSuccess = flow(function* (approvedLegalFile: LegalFileSnapshotOut) {
+      yield self.rootStore.authStore.whoami();
+      // replace the unapproved file to the approved one
+      // to avoid low latency internet connection
+      const fileIndex = fileIndexById(approvedLegalFile.id);
+      self.legalFiles[fileIndex] = approvedLegalFile;
+
+      // double check legalFiles
       self.getLegalFiles();
-    },
-  }))
+    });
+
+    return { approveLegalFileSuccess };
+  })
   .actions(() => ({
     approveLegalFileFail: error => {
       __DEV__ && console.tron.log(error);
@@ -54,8 +62,8 @@ export const LegalFileStoreModel = types
     approveLegalFile: flow(function* (lId: string) {
       const legalFileApi = new LegalFileApi(self.environment.api);
       try {
-        yield legalFileApi.approveLegalFiles(self.currentUser.id, lId);
-        self.approveLegalFileSuccess();
+        const { legalFile } = yield legalFileApi.approveLegalFiles(self.currentUser.id, lId);
+        self.approveLegalFileSuccess(legalFile);
       } catch (e) {
         self.approveLegalFileFail(e.message);
         self.catchOrThrow(e);

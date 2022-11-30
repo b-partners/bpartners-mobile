@@ -7,7 +7,6 @@ import { Button, Checkbox, PDFView, Text } from '../../../components';
 import { CheckboxProps } from '../../../components/checkbox/checkbox.props';
 import { useStores } from '../../../models';
 import { LegalFile } from '../../../models/entities/legal-file/legal-file';
-import { navigate } from '../../../navigators';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
@@ -122,8 +121,6 @@ export const LegalFileView = observer(function LegalFileView(props: ILegalFileVi
     } finally {
       setAccepted(false);
     }
-    // in case if there are others cgu that was no approved
-    navigate('legalFile');
     onApprove();
     setContentLoaded(true);
   };
@@ -139,7 +136,6 @@ export const LegalFileView = observer(function LegalFileView(props: ILegalFileVi
       await legalFilesStore.getLegalFiles();
     } catch (e) {
       setError(true);
-      console.tron.log('error fetching ...' + e.message);
       throw e;
     }
 
@@ -151,13 +147,15 @@ export const LegalFileView = observer(function LegalFileView(props: ILegalFileVi
       <View style={PDF_CONTAINER}>
         {renderErrorMessage(error, handleReloadPress)}
         {contentLoaded && !error && <Text text={`${currentPage}/${lastPageNumber}`} style={PAGE_NUMBERS_STYLE} />}
-        <PDFView
-          source={{ uri: legalFile?.fileUrl, cache: true }}
-          onPageChanged={page => setCurrentPage(page)}
-          onLoadComplete={handleLoaCompletedState}
-          onError={() => setError(true)}
-          renderActivityIndicator={() => <ActivityIndicator animating={!contentLoaded} />}
-        />
+        {!error && (
+          <PDFView
+            source={{ uri: legalFile?.fileUrl, cache: true }}
+            onPageChanged={page => setCurrentPage(page)}
+            onLoadComplete={handleLoaCompletedState}
+            onError={() => setError(true)}
+            renderActivityIndicator={() => <ActivityIndicator animating={!contentLoaded} />}
+          />
+        )}
       </View>
 
       {contentLoaded && !error && renderFooter(setAccepted, accepted, acceptCGUAndContinue, legalFilesStore)}
