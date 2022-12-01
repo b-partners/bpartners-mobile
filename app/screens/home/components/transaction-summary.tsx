@@ -1,80 +1,27 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { Dimensions, View } from 'react-native';
-import { PieChart } from 'react-native-chart-kit';
-import { AbstractChartProps } from 'react-native-chart-kit/dist/AbstractChart';
-import { PieChartProps } from 'react-native-chart-kit/dist/PieChart';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { Button } from '../../../components';
-import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
-import { palette } from '../../../theme/palette';
-import { BUTTON_TEXT_STYLE, CHART_BUTTON_CONTAINER_STYLE, CHART_BUTTON_MARGIN_STYLE, CHART_BUTTON_STYLE } from '../styles';
+import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
+import { spacing } from '../../../theme';
+import { DonutChart } from './donut-chart';
+import { GoalProgressBar } from './goal-progress-bar';
 
-const CHART_CONFIG: AbstractChartProps['chartConfig'] = {
-  backgroundColor: '#022173',
-  backgroundGradientFrom: '#022173',
-  backgroundGradientTo: '#1b3fa0',
-  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  style: {
-    borderRadius: 16,
-  },
-};
-
-const GRAPH_STYLE: PieChartProps['style'] = {
-  marginVertical: 8,
-  ...CHART_CONFIG.style,
-};
-
-const width = Dimensions.get('window').width;
-const height = 220;
-
-interface ITransactionSummary {
-  transactionCategories: Array<TransactionCategory>;
+interface TransactionSummaryProps {
+  summary: ITransactionSummary;
 }
 
-export const TransactionSummary: React.FC<ITransactionSummary> = observer(({ transactionCategories }) => {
-  const chartData = [];
-  const PIE_CHART_COLOURS = [
-    palette.midnightGreen,
-    palette.purpleNavy,
-    palette.mulberry,
-    palette.pastelRed,
-    palette.cheese,
-    palette.saffron,
-    palette.japaneseLaurel,
-    palette.green,
-    palette.deepPurple,
-  ];
+const BOOST_MY_RESULT_BUTTON_STYLE: ViewStyle = { borderRadius: 25, marginBottom: spacing[4] };
 
-  for (let i = 0; i < transactionCategories.length; i++) {
-    const category = transactionCategories[i];
-    const color = PIE_CHART_COLOURS[i];
+const BOOST_MY_RESULT_BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 
-    chartData.push({
-      name: category.type,
-      value: category.count,
-      color,
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    });
-  }
-
+export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary }) => {
   return (
     <View>
-      <PieChart
-        backgroundColor='transparent'
-        paddingLeft='0'
-        data={chartData}
-        height={height}
-        width={width}
-        chartConfig={CHART_CONFIG}
-        accessor='value'
-        style={GRAPH_STYLE}
-      />
-      <View style={CHART_BUTTON_CONTAINER_STYLE}>
-        <Button tx='homeScreen.labels.frequency' style={{ ...CHART_BUTTON_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
-        <Button tx='homeScreen.labels.boostYourResults' style={{ ...CHART_BUTTON_STYLE, ...CHART_BUTTON_MARGIN_STYLE }} textStyle={BUTTON_TEXT_STYLE} />
-      </View>
+      {summary && <DonutChart summary={summary} />}
+      <GoalProgressBar />
+      <Button tx='homeScreen.summary.boostMyResult' style={BOOST_MY_RESULT_BUTTON_STYLE} textStyle={BOOST_MY_RESULT_BUTTON_TEXT_STYLE} />
     </View>
   );
 });

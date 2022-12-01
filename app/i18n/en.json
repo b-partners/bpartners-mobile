@@ -114,6 +114,15 @@
       "frequency": "Frequency",
       "boostYourResults": "Boost your results",
       "allTransactions": "See all transactions"
+    },
+    "summary": {
+      "title": "Stats",
+      "goals": "Goals",
+      "income": "Income",
+      "outcome": "Outcome",
+      "cashFlow": "Cash Flow",
+      "boostMyResult": "Boost my result",
+      "lastTransactions": "Last Transcations"
     }
   },
   "invoiceScreen": {

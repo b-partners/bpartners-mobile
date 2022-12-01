@@ -30,10 +30,11 @@ import * as storage from './utils/storage';
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
 Sentry.init({
-  dsn: 'https://3ed8ba2521a74559815da267b36f276d@o1341863.ingest.sentry.io/4504173590151168',
+  dsn: process.env.SENTRY_DSN,
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
   // We recommend adjusting this value in production.
   tracesSampleRate: 1.0,
+  environment: process.env.SENTRY_ENV,
 });
 
 /**

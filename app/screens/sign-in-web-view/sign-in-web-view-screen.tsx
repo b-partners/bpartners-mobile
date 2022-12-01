@@ -43,11 +43,13 @@ export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welc
 
   useEffect(() => {
     async function resumeAuth() {
-      try {
-        await authStore.getToken(code);
-        await authStore.whoami();
-      } catch (e) {
-        navigation.navigate('signIn');
+      if (code) {
+        try {
+          await authStore.getToken(code);
+          await authStore.whoami();
+        } catch (e) {
+          navigation.navigate('signIn');
+        }
       }
     }
 

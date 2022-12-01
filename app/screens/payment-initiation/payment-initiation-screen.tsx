@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 
+// import QRCode from 'react-native-qrcode-svg';
 import { GradientBackground, Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';

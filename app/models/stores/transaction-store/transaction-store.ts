@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree'
 
 import { TransactionApi } from '../../../services/api/transaction-api';
 import { TransactionCategory, TransactionCategoryModel, TransactionCategorySnapshotOut } from '../../entities/transaction-category/transaction-category';
+import { TransactionSummary, TransactionSummaryModel } from '../../entities/transaction-summary/transaction-summary';
 import { TransactionModel, TransactionSnapshotOut } from '../../entities/transaction/transaction';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -12,12 +13,39 @@ export const TransactionStoreModel = types
   .props({
     transactions: types.optional(types.array(TransactionModel), []),
     transactionCategories: types.optional(types.array(TransactionCategoryModel), []),
+    transactionsSummary: types.optional(types.array(TransactionSummaryModel), []),
     loadingTransactions: types.optional(types.boolean, false),
     loadingTransactionCategories: types.optional(types.boolean, false),
+    loadingTransactionsSummary: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
+  .actions(self => ({
+    getTransactionsSummarySuccess: (transactionSummaries: TransactionSummary[]) => {
+      self.transactionsSummary.replace(transactionSummaries);
+    },
+  }))
+  .actions(() => ({
+    getTransactionsSummaryFail: error => {
+      console.tron.log(`Failing to fetch transactions summary, ${error}`);
+    },
+  }))
+  .actions(self => ({
+    getTransactionsSummary: flow(function* (year: number) {
+      const transactionApi = new TransactionApi(self.environment.api);
+      self.loadingTransactionsSummary = true;
+      try {
+        const getTransactionsSummaryResult = yield transactionApi.getTransactionsSummary(self.currentAccount.id, year);
+        self.getTransactionsSummarySuccess(getTransactionsSummaryResult.summary);
+      } catch (e) {
+        self.getTransactionsSummaryFail(e.message);
+        self.rootStore.authStore.catchOrThrow(e);
+      } finally {
+        self.loadingTransactionsSummary = false;
+      }
+    }),
+  }))
   .actions(self => ({
     getTransactionCategoriesSuccess: (transactionCategoriesSnapshotOuts: TransactionCategorySnapshotOut[]) => {
       self.transactionCategories.replace(transactionCategoriesSnapshotOuts);
@@ -25,7 +53,7 @@ export const TransactionStoreModel = types
   }))
   .actions(() => ({
     getTransactionCategoriesFail: error => {
-      console.tron.log(`Failing to fetch transaction categories, ${error}`);
+      __DEV__ && console.tron.log(`Failing to fetch transaction categories, ${error}`);
     },
   }))
   .actions(self => ({
@@ -51,7 +79,7 @@ export const TransactionStoreModel = types
   }))
   .actions(() => ({
     getTransactionsFail: error => {
-      console.tron.log(`Failing to fetch transactions, ${error}`);
+      __DEV__ && console.tron.log(`Failing to fetch transactions, ${error}`);
     },
   }))
   .actions(self => ({
@@ -72,7 +100,7 @@ export const TransactionStoreModel = types
   }))
   .actions(() => ({
     updateTransactionCategoryFail: error => {
-      console.tron.log(error);
+      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
@@ -93,6 +121,10 @@ export const TransactionStoreModel = types
     },
     get currentBalance() {
       return self.transactions.reduce((a, c) => a + c.amount, 0);
+    },
+    get currentMonthSummary() {
+      const date = new Date();
+      return self.transactionsSummary.find(item => item.month === date.getMonth());
     },
   }));
 

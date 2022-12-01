@@ -13,7 +13,7 @@ export class CustomerApi {
 
   async getCustomers(account: string, name = ''): Promise<GetCustomersResult> {
     // make the api call
-    console.tron.log(`Fetching account's customer`);
+    __DEV__ && console.tron.log(`Fetching account's customer`);
     const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/customers`, { name });
     // the typical ways to die when calling an api
     if (!response.ok) {

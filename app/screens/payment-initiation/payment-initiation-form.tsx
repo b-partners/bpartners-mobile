@@ -46,7 +46,7 @@ export const PaymentInitiationForm: FC<
         try {
           await init({ id: uuid.v4() as string, ...values });
         } catch (e) {
-          console.tron.log(e);
+          __DEV__ && console.tron.log(e);
         }
       }}
     >

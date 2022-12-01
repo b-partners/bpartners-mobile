@@ -28,6 +28,8 @@ export type GetTransactionsResult = { kind: 'ok'; transactions: Transaction[] } 
 
 export type GetTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 
+export type GetTransactionsSummaryResult = { kind: 'ok'; year: number; summary: TransactionCategory[] } | GeneralApiProblem;
+
 export type UpdateTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 
 export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;

@@ -12,7 +12,7 @@ export const FileStoreModel = types
       const authApi = new AuthApi(self.environment.api);
       const getWhoamiResult = await authApi.whoami();
       if (getWhoamiResult.kind !== 'ok') {
-        console.tron.log(`[auth] bad data`);
+        __DEV__ && console.tron.log(`[auth] bad data`);
         return;
       }
 
@@ -34,7 +34,7 @@ export const FileStoreModel = types
       const authApi = new AuthApi(self.environment.api);
       const getWhoamiResult = await authApi.whoami();
       if (getWhoamiResult.kind !== 'ok') {
-        console.tron.log(`[auth] bad data`);
+        __DEV__ && console.tron.log(`[auth] bad data`);
         return getWhoamiResult.kind;
       }
 

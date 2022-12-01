@@ -3,7 +3,7 @@ import { ApiResponse } from 'apisauce';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetTransactionCategoriesResult, GetTransactionsResult } from './api.types';
+import { GetTransactionCategoriesResult, GetTransactionsResult, GetTransactionsSummaryResult } from './api.types';
 
 export class TransactionApi {
   private api: Api;
@@ -25,6 +25,25 @@ export class TransactionApi {
       category: item.category && item.category.length ? item.category[0] : null,
     }));
     return { kind: 'ok', transactions };
+  }
+
+  async getTransactionsSummary(accountId: string, year: number): Promise<GetTransactionsSummaryResult> {
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactionsSummary`, {
+      year,
+    });
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+
+    const { year: transactionSummaryYear, summary } = response.data;
+
+    return {
+      kind: 'ok',
+      year: transactionSummaryYear,
+      summary: summary.map(item => ({ ...item, updatedAt: item.updatedAt && new Date(item.updatedAt) })),
+    };
   }
 
   async getTransactionCategories(

@@ -28,7 +28,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       await invoiceStore.getInvoice(item.id);
       navigation.navigate('invoiceForm');
     } catch (e) {
-      console.tron.log(`Failed to edit invoice, ${e}`);
+      __DEV__ && console.tron.log(`Failed to edit invoice, ${e}`);
     }
   };
 
@@ -47,7 +47,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {
-      console.tron.log(`Failed to convert invoice, ${e}`);
+      __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
     }
   };
 

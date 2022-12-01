@@ -9,7 +9,7 @@ export const HEADER_STYLE: ViewStyle = {
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginBottom: spacing[8],
+  marginTop: spacing[2],
 };
 export const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 export const BUTTON_STYLE: ViewStyle = { marginRight: spacing[2], width: 150 };
