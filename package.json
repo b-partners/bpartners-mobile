@@ -3,7 +3,7 @@
   "version": "1.22.19",
   "private": true,
   "scripts": {
-    "start": "react-native start",
+    "start": "expo start",
     "ios": "expo run:ios",
     "android": "expo run:android",
     "build:ios:debug:e2e": "detox build --configuration ios.sim.debug",
