@@ -57,7 +57,7 @@
     },
     "profileScreen": {
       "label": "Paiement",
-      "title": "Initier un paiement",
+      "title": "Profil",
       "fields": {
         "logo": "Logo",
         "selectFileButton": "Sélectionner un fichier",

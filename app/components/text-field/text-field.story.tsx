@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import { storiesOf } from '@storybook/react-native';
 import React from 'react';
 import { Alert, TextStyle, ViewStyle } from 'react-native';
