@@ -3,6 +3,7 @@
   "displayName": "BpartnersMobile",
   "expo": {
     "name": "BpartnersMobile",
+    "scheme": "bpartners",
     "slug": "bpartners",
     "version": "1.0.0",
     "orientation": "portrait",
