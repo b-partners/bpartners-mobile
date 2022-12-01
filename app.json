@@ -28,7 +28,8 @@
     },
     "ios": {
       "icon": "./assets/images/app-icon-ios.png",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "app.bpartners"
     },
     "web": {
       "favicon": "./assets/images/app-icon-web-favicon.png"
