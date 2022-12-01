@@ -40,7 +40,7 @@ jobs:
         run: npm run test:ios:release:e2e
 
   test-android-app:
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -58,6 +58,7 @@ jobs:
           api-level: 31
           target: default
           arch: x86
+          emulator-build: 6110076
           profile: Pixel 5
           avd-name: Pixel_5_API_31
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
