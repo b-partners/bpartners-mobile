@@ -14,4 +14,3 @@ module.exports = {
     ['react-native-reanimated/plugin'],
   ],
 };
-f
