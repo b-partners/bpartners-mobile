@@ -40,7 +40,7 @@ jobs:
         run: npm run test:ios:release:e2e
 
   test-android-app:
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
 
@@ -56,9 +56,12 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 31
-          target: google_apis
-          profile: pixel_5
+          target: default
+          arch: x86
+          profile: Pixel 5
           avd-name: Pixel_5_API_31
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
           script: npm run test:android:release:e2e
 
   style:
