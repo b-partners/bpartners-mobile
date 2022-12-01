@@ -441,8 +441,8 @@ PODS:
     - Sentry (= 7.29.0)
   - RNSnackbar (2.4.0):
     - React-Core
-  - RNSVG (13.5.0):
-    - React-Core
+  - RNSVG (12.1.0):
+    - React
   - RNVectorIcons (9.2.0):
     - React-Core
   - Sentry (7.29.0):
@@ -757,7 +757,7 @@ SPEC CHECKSUMS:
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSentry: db7fd7b66efda28885e4e904a8b5e7349aec61c1
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
-  RNSVG: 38ca962c970dbce1ca38991a5aebf26d163f9efb
+  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Sentry: 4272663eb0eda312024d795ca3f5a562a8ce5e18
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
