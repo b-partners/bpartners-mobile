@@ -6,11 +6,12 @@
  */
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useColorScheme } from 'react-native';
 
-import { BpDrawer } from '../components';
+import { BpDrawer, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
@@ -143,7 +144,21 @@ export function AppNavigator(props: NavigationProps) {
 
   return (
     <ErrorBoundary catchErrors={'always'}>
-      <NavigationContainer ref={navigationRef} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} {...props} onStateChange={onStateChange}>
+      <NavigationContainer
+        linking={{
+          prefixes: [Linking.createURL('/')],
+          config: {
+            screens: {
+              home: 'home',
+            },
+          },
+        }}
+        fallback={<Text text={'Loading...'} />}
+        ref={navigationRef}
+        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        {...props}
+        onStateChange={onStateChange}
+      >
         <AppStack />
       </NavigationContainer>
     </ErrorBoundary>
