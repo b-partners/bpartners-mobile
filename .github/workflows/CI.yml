@@ -52,19 +52,26 @@ jobs:
       - name: Build release app for android
         run: npm run build:android:release:e2e
 
-      - name: Run end to end tests
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
         with:
-          api-level: 31
-          target: google_apis
-          arch: arm64-v8a
-          emulator-build: 6110076
-          profile: pixel_5
-          avd-name: Pixel_5_API_31
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: npm run test:android:release:e2e
+          java-version: "11"
+          distribution: "adopt"
 
+      - name: Setup android environment
+        uses: android-actions/setup-android@v2
+
+      - name: Install Android Sdk
+        run: |
+          sdkmanager --install "build-tools;31.0.0" platform-tools 'platforms;android-31'
+          sdkmanager --install 'system-images;android-31;google_apis;arm64-v8a' --channel=0
+
+      - name: Create android virtual device
+        run: |
+          echo no | avdmanager create avd --force --name "Pixel_5_API_31" --abi "x86" --tag "google_apis" --package 'system-images;android-31;google_apis;arm64-v8a' --device 'pixel_5'
+
+      - name: Run end to end tests
+        run: npm run test:android:release:e2e
   style:
     runs-on: ubuntu-latest
     steps:
