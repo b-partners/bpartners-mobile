@@ -2,8 +2,10 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
+import { authorize } from 'react-native-app-auth';
 
 import { Button, GradientBackground, Header, Screen, Text } from '../../components';
+import env from '../../config/env';
 import { useError } from '../../hook';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
@@ -72,7 +74,24 @@ const FOOTER_CONTENT: ViewStyle = {
 };
 
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
-  const signIn = () => navigation.navigate('signIn');
+  const signIn = async () => {
+    try {
+      const result = await authorize({
+        clientId: env.clientId,
+        clientSecret: env.clientSecret,
+        scopes: [],
+        redirectUrl: env.successUrl,
+        serviceConfiguration: {
+          authorizationEndpoint: env.authorizationEndpoint,
+          tokenEndpoint: env.tokenEndpoint,
+        },
+      });
+      console.tron.log(result);
+    } catch (e) {
+      console.tron.log({ e });
+      throw new Error(e);
+    }
+  };
   const { onboardingStore } = useStores();
   const { setError } = useError();
 
