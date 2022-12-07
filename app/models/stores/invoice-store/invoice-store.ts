@@ -1,18 +1,18 @@
-import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
-import uuid from 'react-native-uuid';
+import * as _ from "lodash/fp";
+import { detach, flow, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
+import uuid from "react-native-uuid";
 
-import { translate } from '../../../i18n';
-import { CustomerApi } from '../../../services/api/customer-api';
-import { PaymentApi } from '../../../services/api/payment-api';
-import { ProductApi } from '../../../services/api/product-api';
-import { showMessage } from '../../../utils/snackbar';
-import { Criteria } from '../../entities/criteria/criteria';
-import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
-import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
-import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
-import { withCredentials } from '../../extensions/with-credentials';
-import { withEnvironment } from '../../extensions/with-environment';
-import { withRootStore } from '../../extensions/with-root-store';
+import { translate } from "../../../i18n";
+import { CustomerApi } from "../../../services/api/customer-api";
+import { PaymentApi } from "../../../services/api/payment-api";
+import { ProductApi } from "../../../services/api/product-api";
+import { showMessage } from "../../../utils/snackbar";
+import { Criteria } from "../../entities/criteria/criteria";
+import { CustomerModel, CustomerSnapshotOut } from "../../entities/customer/customer";
+import { Invoice, InvoiceModel, InvoiceStatus } from "../../entities/invoice/invoice";
+import { ProductModel, ProductSnapshotOut } from "../../entities/product/product";
+import { withCredentials } from "../../extensions/with-credentials";
+import { withEnvironment, withRootStore } from "../..";
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
@@ -159,8 +159,7 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     getInvoiceSuccess: (invoice: Invoice) => {
-      const invoiceModel = InvoiceModel.create(invoice);
-      self.invoice = invoiceModel;
+      self.invoice = InvoiceModel.create(invoice);
     },
   }))
   .actions(() => ({
@@ -182,8 +181,7 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     saveInvoiceSuccess: (invoice: Invoice) => {
-      const invoiceModel = InvoiceModel.create(invoice);
-      self.invoice = invoiceModel;
+      self.invoice = InvoiceModel.create(invoice);
     },
   }))
   .actions(() => ({
@@ -216,6 +214,11 @@ export const InvoiceStoreModel = types
         customer: {},
         status: InvoiceStatus.DRAFT,
       });
+    },
+  }))
+  .views(self => ({
+    get quotationByMonth() {
+      return _.groupBy(value => value.sendingDate.getMonth(), self.quotations);
     },
   }));
 
