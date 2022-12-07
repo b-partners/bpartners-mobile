@@ -29,6 +29,6 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
           authStore.logout();
         }}
       />
-    </DrawerContentScrollView>
+    </DrawerContentScrollView
   );
 };
