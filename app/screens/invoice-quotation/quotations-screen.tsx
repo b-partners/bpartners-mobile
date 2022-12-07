@@ -79,6 +79,10 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   const sectionedQuotations = sectionsQuotation();
   const items: MenuItem[] = [{ id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') }];
 
+  const onRefresh = async () => {
+    await invoiceStore.getQuotations({ page: 1, pageSize: 15 });
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
