@@ -50,7 +50,7 @@ export type NavigatorParamList = {
   onboarding: { url: string };
   transactionList: { url: string };
   signIn: { url: string };
-  signInWebView: { url: string };
+  AuthRedirect: { url: string };
   paymentInitiation: undefined;
   profile: undefined;
   invoices: undefined;
@@ -95,7 +95,7 @@ const AppStack = observer(function () {
         <>
           <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='signIn' component={SignInScreen} options={HIDE_DRAWER_OPTIONS} />
-          <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='AuthRedirect' component={SignInWebViewScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       )}
     </Drawer.Navigator>
@@ -146,11 +146,13 @@ export function AppNavigator(props: NavigationProps) {
     <ErrorBoundary catchErrors={'always'}>
       <NavigationContainer
         linking={{
-          prefixes: [Linking.createURL('/'), 'bpartners://'],
+          prefixes: [Linking.createURL('/')],
           config: {
             screens: {
-              home: 'home',
-              signInWebview: 'auth',
+              initialRouteName: 'welcome',
+              AuthRedirect: {
+                path: 'auth/:code',
+              },
             },
           },
         }}

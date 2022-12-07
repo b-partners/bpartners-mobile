@@ -9,7 +9,8 @@ import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = { flex: 1 };
 
-export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome'>> = observer(({ route, navigation }) => {
+export const SignInWebViewScreen: FC<DrawerScreenProps<NavigatorParamList, 'AuthRedirect'>> = observer(() => {
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='SignInWebViewScreen' style={FULL}>
