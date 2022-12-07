@@ -1,21 +1,44 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { FlatList, View } from 'react-native';
+import { SectionList, TextStyle, View, ViewStyle } from 'react-native';
 
-import { GradientBackground, Screen, Separator } from '../../components';
-import { Loader } from '../../components/loader/loader';
+import { ErrorBoundary, HEADER_STYLE } from '..';
+import { Button, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceSnapshotOut, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
-import { color } from '../../theme';
+import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
-import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
-import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
+import { CONTAINER, FULL } from './styles';
 
+const SECTION_HEADER_TEXT_STYLE: TextStyle = {
+  ...HEADER_STYLE,
+  fontWeight: '700',
+  color: palette.greyDarker,
+  backgroundColor: palette.white,
+};
+const SHADOW_STYLE: ViewStyle = {
+  shadowOffset: { height: 10, width: 0 },
+  shadowOpacity: 10,
+  shadowRadius: 2,
+  shadowColor: 'rgba(156, 37, 90, 0.2)',
+  elevation: 2,
+};
+const BUTTON_STYLE: ViewStyle = {
+  ...SHADOW_STYLE,
+  backgroundColor: color.primary,
+  marginHorizontal: '10%',
+  padding: spacing[7],
+  borderRadius: 40,
+};
+
+const BUTTON_TEXT_STYLE = { fontSize: 14 };
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore } = useStores();
   const { quotations, loading } = invoiceStore;
@@ -59,20 +82,21 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <GradientBackground colors={['#422443', '#281b34']} />
-        <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-          {!loading ? (
-            <FlatList<IInvoice>
-              contentContainerStyle={INVOICES_STYLE}
-              data={[...quotations]}
-              renderItem={({ item }) => {
-                return <Invoice item={item} menuItems={items} menuAction={{ markAsInvoice: () => markAsInvoice(item) }} />;
-              }}
-              ItemSeparatorComponent={() => <Separator />}
-            />
-          ) : (
-            <Loader size='large' containerStyle={LOADER_STYLE} />
-          )}
+        <Screen style={CONTAINER} preset='fixed' backgroundColor={palette.white}>
+          <SectionList<IInvoice>
+            style={{ marginHorizontal: spacing[4] }}
+            sections={[...sectionedQuotations]}
+            renderItem={({ item }) => <Invoice item={item} menuItems={items} menuAction={{ markAsInvoice: () => markAsInvoice(item) }} />}
+            keyExtractor={item => item.id}
+            renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
+            refreshing={loading}
+            progressViewOffset={100}
+            stickySectionHeadersEnabled={true}
+            onRefresh={onRefresh}
+            ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
+            renderSectionFooter={() => <View style={{ marginBottom: spacing[5] }} />}
+          />
+          <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
         </Screen>
       </View>
     </ErrorBoundary>
