@@ -169,6 +169,9 @@
       "quotations": "Quotations"
     }
   },
+  "quotationScreen": {
+    "createQuotation": "Create a quotation"
+  },
   "logoutScreen": {
     "title": "Logout",
     "swan": "Open Swan"

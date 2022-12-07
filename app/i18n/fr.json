@@ -152,6 +152,9 @@
       "quotations": "Devis"
     }
   },
+  "quotationScreen" : {
+    "createQuotation": "Créer un devis"
+  },
   "logoutScreen": {
     "title": "Déconnexion",
     "swan": "Ouvrir Swan",
