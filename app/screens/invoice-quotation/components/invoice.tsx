@@ -1,12 +1,14 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import { Icon, Text } from '../../../components';
+import { Text } from '../../../components';
 import { BulletSeparator } from '../../../components/bullet-separator/bullet-separator';
 import { Menu, MenuAction, MenuItem } from '../../../components/menu/menu';
 import { translate } from '../../../i18n';
 import { Invoice as IInvoice } from '../../../models/entities/invoice/invoice';
 import { spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 import { currencyPipe, datePipe } from '../../../utils/pipes';
 import { BODY_TEXT_STYLE, CENTERED_ROW, HEADER_TEXT_STYLE, ROW_STYLE } from '../styles';
 
@@ -14,7 +16,7 @@ type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAct
 
 const INVOICE_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
 const INVOICE_STYLE: ViewStyle = { paddingVertical: spacing[2], flex: 1 };
-const BOTTOM_MARGIN_STYLE: ViewStyle = { marginBottom: spacing[1] };
+const BOTTOM_MARGIN_STYLE: ViewStyle = { marginBottom: spacing[2] };
 const POSITION_STYLE: ViewStyle = {
   justifyContent: 'flex-start',
   alignItems: 'center',
@@ -37,7 +39,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
       <TouchableOpacity style={INVOICE_STYLE}>
         <View style={{ ...ROW_STYLE, ...BOTTOM_MARGIN_STYLE }}>
           <Text text={props.item.customer.name} style={HEADER_TEXT_STYLE} />
-          <Text text={totalPriceWithVat} style={HEADER_TEXT_STYLE} />
+          <Text text={totalPriceWithVat} style={{ ...HEADER_TEXT_STYLE, fontWeight: 'normal' }} />
         </View>
         <View
           style={{
@@ -56,7 +58,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
       </TouchableOpacity>
       <View style={MENU_CONTAINER_STYLE}>
         <Menu items={menuItems} actions={menuAction}>
-          <Icon icon='menu' />
+          <MaterialCommunityIcons name='dots-vertical' size={22} color={palette.lightGrey} />
         </Menu>
       </View>
     </View>
