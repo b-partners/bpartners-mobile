@@ -8,4 +8,8 @@ export default {
   endpointWhiteList: ['auth', 'token'],
   sentryDSN: config.SENTRY_ENV || '',
   sentryENV: config.SENTRY_DSN || '',
+  clientId: config.CLIENT_ID || '',
+  clientSecret: config.CLIENT_SECRET || '',
+  authorizationEndpoint: config.AUTHORIZATION_ENDPOINT || '',
+  tokenEndpoint: config.TOKEN_ENDPOINT || '',
 };
