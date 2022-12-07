@@ -1,18 +1,18 @@
-import * as _ from "lodash/fp";
-import { detach, flow, Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
-import uuid from "react-native-uuid";
+import * as _ from 'lodash/fp';
+import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
+import uuid from 'react-native-uuid';
 
-import { translate } from "../../../i18n";
-import { CustomerApi } from "../../../services/api/customer-api";
-import { PaymentApi } from "../../../services/api/payment-api";
-import { ProductApi } from "../../../services/api/product-api";
-import { showMessage } from "../../../utils/snackbar";
-import { Criteria } from "../../entities/criteria/criteria";
-import { CustomerModel, CustomerSnapshotOut } from "../../entities/customer/customer";
-import { Invoice, InvoiceModel, InvoiceStatus } from "../../entities/invoice/invoice";
-import { ProductModel, ProductSnapshotOut } from "../../entities/product/product";
-import { withCredentials } from "../../extensions/with-credentials";
-import { withEnvironment, withRootStore } from "../..";
+import { withEnvironment, withRootStore } from '../..';
+import { translate } from '../../../i18n';
+import { CustomerApi } from '../../../services/api/customer-api';
+import { PaymentApi } from '../../../services/api/payment-api';
+import { ProductApi } from '../../../services/api/product-api';
+import { showMessage } from '../../../utils/snackbar';
+import { Criteria } from '../../entities/criteria/criteria';
+import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
+import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
+import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
+import { withCredentials } from '../../extensions/with-credentials';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
