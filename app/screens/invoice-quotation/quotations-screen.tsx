@@ -39,6 +39,21 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
     }
   };
 
+  function sectionsQuotation() {
+    const sectionedQuotation = [];
+    for (const quotationByMonthKey in quotationByMonth) {
+      if (quotationByMonth.hasOwnProperty(quotationByMonthKey)) {
+        const quotationByMonthElement: InvoiceSnapshotOut[] = quotationByMonth[quotationByMonthKey];
+        sectionedQuotation.push({
+          title: new Intl.DateTimeFormat('default', { month: 'long' }).format(new Date(quotationByMonthElement[0].sendingDate)),
+          data: quotationByMonthElement,
+        });
+      }
+    }
+    return sectionedQuotation;
+  }
+
+  const sectionedQuotations = sectionsQuotation();
   const items: MenuItem[] = [{ id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') }];
 
   return (
