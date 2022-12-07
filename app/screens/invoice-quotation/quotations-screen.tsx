@@ -41,7 +41,7 @@ const BUTTON_STYLE: ViewStyle = {
 const BUTTON_TEXT_STYLE = { fontSize: 14 };
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore } = useStores();
-  const { quotations, loading } = invoiceStore;
+  const { loading, quotationByMonth } = invoiceStore;
 
   const markAsInvoice = async (item: IInvoice) => {
     if (item.status === InvoiceStatus.DRAFT || item.status === InvoiceStatus.CONFIRMED) {
