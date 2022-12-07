@@ -6,6 +6,7 @@
  */
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { useColorScheme } from 'react-native';
@@ -145,10 +146,9 @@ export function AppNavigator(props: NavigationProps) {
     <ErrorBoundary catchErrors={'always'}>
       <NavigationContainer
         linking={{
-          prefixes: ['bpartners://'],
+          prefixes: [Linking.createURL('/'), 'bpartners://'],
           config: {
             screens: {
-              initialRouteName: 'welcome',
               home: 'home',
               signInWebview: 'auth',
             },
