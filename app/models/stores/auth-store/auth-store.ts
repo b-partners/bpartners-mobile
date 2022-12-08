@@ -12,14 +12,14 @@ import { withEnvironment } from '../../extensions/with-environment';
 export const AuthStoreModel = types
   .model('SignIn')
   .props({
-    redirectionUrl: types.optional(types.string, ''),
-    successUrl: types.optional(types.string, ''),
-    failureUrl: types.optional(types.string, ''),
-    refreshToken: types.optional(types.string, ''),
-    accessToken: types.optional(types.string, ''),
-    currentUser: types.optional(UserModel, {}),
-    currentAccount: types.optional(AccountModel, {}),
-    currentAccountHolder: types.optional(AccountHolderModel, {}),
+    redirectionUrl: types.maybe(types.maybeNull(types.string)),
+    successUrl: types.maybe(types.maybeNull(types.string)),
+    failureUrl: types.maybe(types.maybeNull(types.string)),
+    refreshToken: types.maybe(types.maybeNull(types.string)),
+    accessToken: types.maybe(types.maybeNull(types.string)),
+    currentUser: types.maybe(types.maybe(UserModel)),
+    currentAccount: types.maybe(types.maybeNull(AccountModel)),
+    currentAccountHolder: types.maybe(types.maybeNull(AccountHolderModel)),
   })
   .extend(withEnvironment)
   .actions(self => ({
@@ -84,7 +84,8 @@ export const AuthStoreModel = types
   }))
   .actions(() => ({
     whoamiFail: error => {
-      __DEV__ && console.tron.log(error);
+      __DEV__ && console.tron.log(error.message);
+      throw error;
     },
   }))
   .actions(self => ({
@@ -104,15 +105,13 @@ export const AuthStoreModel = types
   }))
   .actions(self => ({
     setCachedCredentials: flow(function* () {
-      yield AsyncStorage.multiSet([
-        ['accessToken', self.accessToken],
-        ['refreshToken', self.refreshToken],
-      ]);
+      yield AsyncStorage.multiSet([['accessToken', self.accessToken]]);
     }),
   }))
   .actions(() => ({
     getTokenFail: error => {
-      __DEV__ && console.tron.log(error);
+      __DEV__ && console.tron.log(error.message);
+      throw error;
     },
   }))
   .actions(self => ({
@@ -125,20 +124,19 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
-    getTokenSuccess: ({ accessToken, refreshToken }) => {
+    getTokenSuccess: flow(function* ({ accessToken, refreshToken }) {
       self.accessToken = accessToken;
       self.refreshToken = refreshToken;
-      self.setCachedCredentials();
-    },
+      yield self.setCachedCredentials();
+    }),
   }))
   .actions(self => ({
     getToken: flow(function* (code) {
       const signInApi = new AuthApi(self.environment.api);
       try {
         const result = yield signInApi.getToken(code);
-        self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
+        yield self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
       } catch (e) {
-        __DEV__ && console.tron.log(e);
         self.getTokenFail(e);
       }
     }),
