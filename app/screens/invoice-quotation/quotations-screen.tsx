@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { SectionList, TextStyle, View, ViewStyle } from 'react-native';
 
 import { ErrorBoundary, HEADER_STYLE } from '..';
@@ -45,6 +45,19 @@ const FOOTER_COMPONENT_STYLE = { marginBottom: spacing[5] };
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore } = useStores();
   const { loading, quotationByMonth } = invoiceStore;
+  const sectionsQuotation = useCallback(() => {
+    const sectionedQuotation = [];
+    for (const quotationByMonthKey in quotationByMonth) {
+      if (quotationByMonth.hasOwnProperty(quotationByMonthKey)) {
+        const quotationByMonthElement: InvoiceSnapshotOut[] = quotationByMonth[quotationByMonthKey];
+        sectionedQuotation.push({
+          title: new Intl.DateTimeFormat('default', { month: 'long' }).format(new Date(quotationByMonthElement[0].sendingDate)),
+          data: quotationByMonthElement,
+        });
+      }
+    }
+    return sectionedQuotation;
+  }, [quotationByMonth]);
 
   const markAsInvoice = async (item: IInvoice) => {
     if (item.status === InvoiceStatus.DRAFT || item.status === InvoiceStatus.CONFIRMED) {
@@ -65,26 +78,12 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
     }
   };
 
-  function sectionsQuotation() {
-    const sectionedQuotation = [];
-    for (const quotationByMonthKey in quotationByMonth) {
-      if (quotationByMonth.hasOwnProperty(quotationByMonthKey)) {
-        const quotationByMonthElement: InvoiceSnapshotOut[] = quotationByMonth[quotationByMonthKey];
-        sectionedQuotation.push({
-          title: new Intl.DateTimeFormat('default', { month: 'long' }).format(new Date(quotationByMonthElement[0].sendingDate)),
-          data: quotationByMonthElement,
-        });
-      }
-    }
-    return sectionedQuotation;
-  }
-
-  const sectionedQuotations = sectionsQuotation();
-  const items: MenuItem[] = [{ id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') }];
-
   const onRefresh = async () => {
     await invoiceStore.getQuotations({ page: 1, pageSize: 15 });
   };
+
+  const sectionedQuotations = sectionsQuotation();
+  const items: MenuItem[] = [{ id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') }];
 
   return (
     <ErrorBoundary catchErrors='always'>
