@@ -6,8 +6,6 @@ import { authorize } from 'react-native-app-auth';
 
 import { Button, GradientBackground, Header, Screen, Text } from '../../components';
 import env from '../../config/env';
-import { useError } from '../../hook';
-import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -73,10 +71,10 @@ const FOOTER_CONTENT: ViewStyle = {
   justifyContent: 'space-between',
 };
 
-export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
+export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(() => {
   const signIn = async () => {
     try {
-      const result = await authorize({
+      await authorize({
         clientId: env.clientId,
         clientSecret: env.clientSecret,
         scopes: [],
@@ -85,25 +83,17 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> 
           authorizationEndpoint: env.authorizationEndpoint,
           tokenEndpoint: env.tokenEndpoint,
         },
+        skipCodeExchange: true,
+        usePKCE: false,
       });
-      console.tron.log(result);
     } catch (e) {
-      console.tron.log({ e });
+      __DEV__ && console.tron.log({ e });
       throw new Error(e);
     }
   };
-  const { onboardingStore } = useStores();
-  const { setError } = useError();
 
   const createAccount = async () => {
-    try {
-      await onboardingStore.getOnboardingUrl();
-      const { redirectionUrl } = onboardingStore;
-      // TODO: Connecting routing to mobx-state-tree and pass query params to store
-      navigation.navigate('onboarding', { url: redirectionUrl });
-    } catch (e) {
-      setError(e);
-    }
+    __DEV__ && console.tron.log('Creating user account');
   };
 
   return (
