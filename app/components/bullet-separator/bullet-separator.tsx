@@ -9,13 +9,13 @@ type TBulletSeparator = {
   style?: TextStyle;
   containerStyle?: ViewStyle;
 };
-const CONTAINER_STYLE: ViewStyle = { marginHorizontal: spacing[1] };
+const CONTAINER_STYLE: ViewStyle = { marginHorizontal: spacing[1], alignItems: 'center' };
 const BULLET_STYLE: TextStyle = { fontSize: 8, color: palette.greyDarker };
 
 export const BulletSeparator: FC<TBulletSeparator> = props => {
   const { style, containerStyle } = props;
   return (
-    <View style={[CONTAINER_STYLE, containerStyle, { alignItems: 'center' }]}>
+    <View style={[CONTAINER_STYLE, containerStyle]}>
       <Text text={'\u2B24'} style={[BULLET_STYLE, style]} />
     </View>
   );
