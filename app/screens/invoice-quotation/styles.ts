@@ -44,7 +44,9 @@ export const STATUS_TEXT: TextStyle = {
 export const DATE_CONTAINER: ViewStyle = {
   flexDirection: 'row',
 };
-
+export const DATE_TEXT_STYLE: TextStyle = {
+  fontStyle: 'italic',
+};
 export const BULLET_SEPARATOR_STYLE: ViewStyle = {
   marginHorizontal: spacing[1],
 };

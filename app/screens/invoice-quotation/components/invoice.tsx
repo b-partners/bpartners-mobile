@@ -17,6 +17,7 @@ import {
   BULLET_SEPARATOR_STYLE,
   CENTERED_ROW,
   DATE_CONTAINER,
+  DATE_TEXT_STYLE,
   HEADER_TEXT_STYLE,
   ROW_STYLE,
   STATUS_CONTAINER,
@@ -71,7 +72,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
             <Text text={`#${props.item.ref}`} style={BODY_TEXT_STYLE} />
             <View style={DATE_CONTAINER}>
               <BulletSeparator style={BULLET_SEPARATOR_STYLE} containerStyle={BULLET_SEPARATOR_CONTAINER_STYLE} />
-              <Text text={datePipe(props.item.sendingDate).split(' ')[0]} style={BODY_TEXT_STYLE} />
+              <Text text={datePipe(props.item.sendingDate).split(' ')[0]} style={[BODY_TEXT_STYLE, DATE_TEXT_STYLE]} />
             </View>
           </View>
           <View style={STATUS_CONTAINER}>
