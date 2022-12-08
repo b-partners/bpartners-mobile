@@ -15,3 +15,4 @@ export * from './autocompletion-form-field/autocompletion-form-field';
 export * from './dropdown/dropdown';
 export { Separator } from './separator/Separator';
 export { BpDrawer } from './bp-drawer/bp-drawer';
+export * from './loader/loader';

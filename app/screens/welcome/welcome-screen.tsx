@@ -2,10 +2,10 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
+import { authorize } from 'react-native-app-auth';
 
 import { Button, GradientBackground, Header, Screen, Text } from '../../components';
-import { useError } from '../../hook';
-import { useStores } from '../../models';
+import env from '../../config/env';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -71,20 +71,29 @@ const FOOTER_CONTENT: ViewStyle = {
   justifyContent: 'space-between',
 };
 
-export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
-  const signIn = () => navigation.navigate('signIn');
-  const { onboardingStore } = useStores();
-  const { setError } = useError();
+export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(() => {
+  const signIn = async () => {
+    try {
+      await authorize({
+        clientId: env.clientId,
+        clientSecret: env.clientSecret,
+        scopes: [],
+        redirectUrl: env.successUrl,
+        serviceConfiguration: {
+          authorizationEndpoint: env.authorizationEndpoint,
+          tokenEndpoint: env.tokenEndpoint,
+        },
+        skipCodeExchange: true,
+        usePKCE: false,
+      });
+    } catch (e) {
+      __DEV__ && console.tron.log({ e });
+      throw new Error(e);
+    }
+  };
 
   const createAccount = async () => {
-    try {
-      await onboardingStore.getOnboardingUrl();
-      const { redirectionUrl } = onboardingStore;
-      // TODO: Connecting routing to mobx-state-tree and pass query params to store
-      navigation.navigate('onboarding', { url: redirectionUrl });
-    } catch (e) {
-      setError(e);
-    }
+    __DEV__ && console.tron.log('Creating user account');
   };
 
   return (

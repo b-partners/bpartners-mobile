@@ -67,6 +67,7 @@
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-action-button": "^2.8.5",
+    "react-native-app-auth": "^6.4.3",
     "react-native-autocomplete-dropdown": "^2.0.7",
     "react-native-charts-wrapper": "^0.5.11",
     "react-native-config": "^1.4.6",
