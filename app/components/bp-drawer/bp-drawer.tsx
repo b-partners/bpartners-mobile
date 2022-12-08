@@ -1,15 +1,16 @@
-import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import React, { useCallback } from 'react';
-import { Linking, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Dimensions, Linking, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Alert, TextInput } from 'react-native';
 import Home from 'react-native-vector-icons/AntDesign';
-import Profile from 'react-native-vector-icons/AntDesign';
 import Left from 'react-native-vector-icons/Entypo';
 import Right from 'react-native-vector-icons/Entypo';
 import Search from 'react-native-vector-icons/EvilIcons';
-import PaymentInit from 'react-native-vector-icons/FontAwesome';
+import Profile from 'react-native-vector-icons/Ionicons';
 import Power from 'react-native-vector-icons/Ionicons';
 import User from 'react-native-vector-icons/Ionicons';
+import Exit from 'react-native-vector-icons/Ionicons';
+import PaymentInit from 'react-native-vector-icons/MaterialCommunityIcons';
 import PaymentList from 'react-native-vector-icons/MaterialIcons';
 import Notification from 'react-native-vector-icons/Octicons';
 import TransactionList from 'react-native-vector-icons/Octicons';
@@ -35,12 +36,12 @@ const SEARCH: ViewStyle = {
 };
 
 const LOGOUT: ViewStyle = {
-  position: 'relative',
+  position: 'absolute',
   backgroundColor: palette.white,
   width: 280,
   height: 40,
   marginTop: 10,
-  marginBottom: 30,
+  bottom: 0,
   alignSelf: 'center',
   borderRadius: 40,
   justifyContent: 'center',
@@ -59,14 +60,39 @@ const NAVIGATION: ViewStyle = {
   justifyContent: 'space-around',
 };
 
+const SWAN: ViewStyle = {
+  backgroundColor: palette.white,
+  height: 50,
+  borderWidth: 0.5,
+  borderColor: palette.lighterGrey,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+};
+
+const TEXT: TextStyle = {
+  color: palette.black,
+  fontSize: 16,
+  fontFamily: 'sans-serif-light',
+};
+
+const ICON: ViewStyle = {
+  width: 50,
+  height: 40,
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
 type RouteProps = {
   key: any;
   name: string;
+  options: any;
 };
 
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
   const [searchValue, onSearchValue] = React.useState(null);
+  const windowHeight = Dimensions.get('window').height - 40;
 
   const handlePress = useCallback(async () => {
     const supported = await Linking.canOpenURL(env.swanUrl);
@@ -78,9 +104,9 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   }, [env.swanUrl]);
 
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: palette.white }}>
-      <View style={{ flex: 2, flexDirection: 'column', marginTop: 30 }}>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+    <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: palette.white, height: windowHeight }}>
+      <View style={{ flexDirection: 'column', marginTop: '3%' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity
             style={{ alignSelf: 'flex-start', paddingLeft: 2 }}
             onPress={() => {
@@ -91,8 +117,8 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
           </TouchableOpacity>
           <View style={{ alignItems: 'center' }}>
             <User name='person-circle' size={60} color='black' />
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ color: palette.black, fontSize: 13, fontFamily: 'sans-serif-light' }}>Maholy</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ color: palette.black, fontSize: 13, fontFamily: 'sans-serif-light' }}>André Inacio</Text>
               <Right name='chevron-thin-right' size={10} color='#000' />
             </View>
           </View>
@@ -105,20 +131,20 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
             <Search name='search' size={30} color='#000' />
           </View>
           <View>
-            <TextInput onChangeText={onSearchValue} value={searchValue} placeholder="Je recherche de l'aide, une valeur, etc" />
+            <TextInput onChangeText={onSearchValue} value={searchValue} placeholder={translate('drawer.search')} />
           </View>
         </View>
       </View>
-      {props.state.routes.map((route: RouteProps) => {
+      {props.state.routes.slice(0, 5).map((route: RouteProps) => {
         return (
           <TouchableOpacity key={route.key} style={NAVIGATION} onPress={() => props.navigation.navigate(route.name)}>
-            <View style={{ width: 50, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={ICON}>
               {route.name === 'profile' ? (
-                <Profile name='profile' size={22} color='#000' />
+                <Profile name='information-circle-outline' size={22} color='#000' />
               ) : route.name === 'transactionList' ? (
                 <TransactionList name='checklist' size={22} color='#000' />
               ) : route.name === 'paymentInitiation' ? (
-                <PaymentInit name='money' size={22} color='#000' />
+                <PaymentInit name='cash-multiple' size={22} color='#000' />
               ) : route.name === 'paymentList' ? (
                 <PaymentList name='format-list-bulleted' size={22} color='#000' />
               ) : (
@@ -126,16 +152,25 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
               )}
             </View>
             <View style={{ width: 200, height: 40, justifyContent: 'center' }}>
-              <Text style={{ color: palette.black, fontSize: 16, fontFamily: 'sans-serif-light' }}>{route.name}</Text>
+              <Text style={TEXT}>{route.name}</Text>
             </View>
-            <View style={{ width: 50, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={ICON}>
               <Right name='chevron-thin-right' size={18} color='#000' />
             </View>
           </TouchableOpacity>
         );
       })}
-      <DrawerItemList {...props} />
-      <DrawerItem label={translate('logoutScreen.swan')} onPress={handlePress} />
+      <TouchableOpacity style={SWAN} onPress={handlePress}>
+        <View style={ICON}>
+          <Exit name='arrow-redo-outline' size={22} color='#000' />
+        </View>
+        <View style={{ width: 200, height: 40, justifyContent: 'center' }}>
+          <Text style={TEXT}>{translate('logoutScreen.swan')}</Text>
+        </View>
+        <View style={ICON}>
+          <Right name='chevron-thin-right' size={18} color='#000' />
+        </View>
+      </TouchableOpacity>
       <TouchableOpacity
         style={LOGOUT}
         onPress={() => {
@@ -146,7 +181,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
           <Power name='ios-power-outline' size={18} color='#000' />
         </View>
         <View style={{ justifyContent: 'center' }}>
-          <Text style={{ color: palette.black, fontSize: 16, fontFamily: 'sans-serif-light' }}>Déconnexion</Text>
+          <Text style={TEXT}>{translate('logoutScreen.title')}</Text>
         </View>
       </TouchableOpacity>
     </DrawerContentScrollView>
