@@ -3,7 +3,7 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree'
 
 import { AccountApi } from '../../../services/api/account-api';
 import { AuthApi } from '../../../services/api/auth-api';
-import { save } from '../../../utils/storage';
+import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountModel } from '../../entities/account/account';
 import { User, UserModel } from '../../entities/user/user';
@@ -115,13 +115,14 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
-    logout: () => {
+    logout: flow(function* () {
       self.accessToken = undefined;
       self.refreshToken = undefined;
       self.currentUser = undefined;
       self.currentAccount = undefined;
       self.currentAccountHolder = undefined;
-    },
+      yield clear();
+    }),
   }))
   .actions(self => ({
     getTokenSuccess: flow(function* ({ accessToken, refreshToken }) {
