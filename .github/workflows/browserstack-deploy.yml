@@ -35,11 +35,14 @@ jobs:
           touch ~/.env
           sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }} ${{secrets.API_URL}} ${{secrets.SUCCESS_URL}} ${{secrets.FAILURE_URL}}
 
-      - run: cd android && ./gradlew clean
-
       - name: Build release app
-        run: cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets
-
+        run: | 
+          yarn build-android 
+          cd android
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
+          ./gradlew assembleRelease
+          
       - name: Build bundle app
         run: cd android && ./gradlew bundleRelease -x bundleReleaseJsAndAssets
 
