@@ -93,6 +93,10 @@ jobs:
 
       - run: brew upgrade
 
+      - run: brew update
+
+      - run: brew upgrade
+
       - run: npm run ci:build:e2e
 
       - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV

@@ -138,7 +138,6 @@ export const AuthStoreModel = types
         const result = yield signInApi.getToken(code);
         yield self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
       } catch (e) {
-        __DEV__ && console.tron.log(e);
         self.getTokenFail(e);
       }
     }),
