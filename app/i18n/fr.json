@@ -152,7 +152,7 @@
       "quotations": "Devis"
     }
   },
-  "quotationScreen" : {
+  "quotationScreen": {
     "createQuotation": "Créer un devis"
   },
   "logoutScreen": {

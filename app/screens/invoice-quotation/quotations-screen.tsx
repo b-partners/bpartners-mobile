@@ -33,9 +33,10 @@ const SHADOW_STYLE: ViewStyle = {
 const BUTTON_STYLE: ViewStyle = {
   ...SHADOW_STYLE,
   backgroundColor: color.primary,
-  marginHorizontal: '10%',
-  padding: spacing[7],
+  marginHorizontal: '5%',
   borderRadius: 40,
+  paddingVertical: spacing[3],
+  paddingHorizontal: spacing[2],
 };
 
 const BUTTON_TEXT_STYLE = { fontSize: 14 };
