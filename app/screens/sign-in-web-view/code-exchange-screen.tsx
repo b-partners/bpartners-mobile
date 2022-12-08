@@ -17,6 +17,7 @@ export const CodeExchangeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth
     async function exchangeCode() {
       const { code } = route.params;
       if (!code) {
+        navigation.navigate('welcome');
         return;
       }
       try {
