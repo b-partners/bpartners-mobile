@@ -9,20 +9,19 @@ import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Balance } from './components/balance';
-import { HomeFooter } from './components/home-footer';
 import { HomeHeader } from './components/home-header';
 import { HomeLatestTransaction } from './components/home-latest-transaction';
-import { HomeNavbar } from './components/home-navbar';
 import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore } = useStores();
-  const { transactions, loadingTransactions, currentBalance, transactionCategories: categories } = transactionStore;
+  const { transactions, loadingTransactions, currentBalance, currentMonthSummary } = transactionStore;
 
   useEffect(() => {
+    const date = new Date();
     transactionStore.getTransactions();
-    transactionStore.getTransactionCategories();
+    transactionStore.getTransactionsSummary(date.getFullYear());
   }, []);
 
   return (
@@ -30,16 +29,10 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       <View testID='SignInWebViewScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen preset='auto' backgroundColor={color.transparent}>
-          <HomeHeader onPress={() => navigation.navigate('paymentInitiation')} />
+          <HomeHeader />
           {transactions && <Balance balance={currentBalance} />}
-          <HomeNavbar
-            goToInvoices={() => {
-              navigation.navigate('paymentList');
-            }}
-          />
-          {categories && <TransactionSummary transactionCategories={categories} />}
+          <TransactionSummary summary={currentMonthSummary} />
           <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
-          <HomeFooter />
         </Screen>
       </View>
     </ErrorBoundary>
