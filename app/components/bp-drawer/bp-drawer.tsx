@@ -19,7 +19,7 @@ import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { palette } from '../../theme/palette';
-import {Icon} from "../icon/icon";
+import { Icon } from '../icon/icon';
 
 const windowHeight = Dimensions.get('window').height - 40;
 

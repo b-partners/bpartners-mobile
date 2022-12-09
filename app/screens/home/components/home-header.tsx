@@ -1,4 +1,4 @@
-import { DrawerActions, useNavigation} from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ImageStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
