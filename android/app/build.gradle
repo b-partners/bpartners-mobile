@@ -83,6 +83,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
+    bundleInDebug: true,
     bundleInRelease: true,
 ]
 
@@ -239,22 +240,14 @@ android {
         }
     }
     signingConfigs {
-            release {
-                if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                    storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                    storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                    keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                    keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
                 }
             }
-        release{
-            if(project.hasProperty('APP_UPLOAD_STORE_FILE')){
-                storeFile file(APP_UPLOAD_STORE_FILE)
-                storePassword APP_UPLOAD_STORE_PASSWORD
-                keyAlias APP_UPLOAD_KEY_ALIAS
-                keyPassword APP_UPLOAD_KEY_PASSWORD
-            }
-        }
     }
     buildTypes {
         debug {
