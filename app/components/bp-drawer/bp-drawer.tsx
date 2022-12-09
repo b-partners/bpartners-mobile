@@ -19,8 +19,11 @@ import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { palette } from '../../theme/palette';
+import {Icon} from "../icon/icon";
 
-const SEARCH: ViewStyle = {
+const windowHeight = Dimensions.get('window').height - 40;
+
+const SEARCH_CONTAINER_STYLE: ViewStyle = {
   position: 'relative',
   backgroundColor: palette.white,
   width: 280,
@@ -35,7 +38,7 @@ const SEARCH: ViewStyle = {
   flexDirection: 'row',
 };
 
-const LOGOUT: ViewStyle = {
+const LOGOUT_CONTAINER_STYLE: ViewStyle = {
   position: 'absolute',
   backgroundColor: palette.white,
   width: 280,
@@ -50,7 +53,7 @@ const LOGOUT: ViewStyle = {
   borderColor: palette.black,
 };
 
-const NAVIGATION: ViewStyle = {
+const NAVIGATION_STYLE: ViewStyle = {
   backgroundColor: palette.white,
   height: 50,
   borderTopWidth: 0.5,
@@ -60,7 +63,7 @@ const NAVIGATION: ViewStyle = {
   justifyContent: 'space-around',
 };
 
-const SWAN: ViewStyle = {
+const SWAN_CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.white,
   height: 50,
   borderWidth: 0.5,
@@ -70,18 +73,44 @@ const SWAN: ViewStyle = {
   justifyContent: 'space-around',
 };
 
-const TEXT: TextStyle = {
+const TEXT_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 16,
   fontFamily: 'sans-serif-light',
 };
 
-const ICON: ViewStyle = {
+const INFO_TEXT_STYLE: TextStyle = {
+  color: palette.black,
+  fontSize: 13,
+  fontFamily: 'sans-serif-light',
+};
+
+const TEXT_CONTAINER_STYLE: ViewStyle = {
+  width: 200,
+  height: 40,
+  justifyContent: 'center',
+};
+
+const ICON_CONTAINER_STYLE: ViewStyle = {
   width: 50,
   height: 40,
   alignItems: 'center',
   justifyContent: 'center',
 };
+
+const BULLET_STYLE: ViewStyle = { position: 'absolute', zIndex: 1 };
+
+const DRAWER_SCROLLVIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: windowHeight };
+const HEADER_STYLE: ViewStyle = { flexDirection: 'column', marginTop: '3%' };
+const PROFILE_CONTAINER_STYLE: ViewStyle = { flexDirection: 'row', justifyContent: 'space-between' };
+
+const CHEVRON_CONTAINER_STYLE: ViewStyle = { alignSelf: 'flex-start', paddingLeft: '1%' };
+const POWER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center', marginRight: 8 };
+const INFO_CONTAINER_STYLE: ViewStyle = { flexDirection: 'row', alignItems: 'center' };
+
+const NOTIFICATION_CONTAINER_STYLE: ViewStyle = { alignSelf: 'flex-start', paddingRight: '3%' };
+const CENTER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center' };
+const CENTER_STYLE: ViewStyle = { alignItems: 'center' };
 
 type RouteProps = {
   key: any;
@@ -92,7 +121,6 @@ type RouteProps = {
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
   const [searchValue, onSearchValue] = React.useState(null);
-  const windowHeight = Dimensions.get('window').height - 40;
 
   const handlePress = useCallback(async () => {
     const supported = await Linking.canOpenURL(env.swanUrl);
@@ -104,30 +132,33 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   }, [env.swanUrl]);
 
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={{ backgroundColor: palette.white, height: windowHeight }}>
-      <View style={{ flexDirection: 'column', marginTop: '3%' }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
+      <View style={HEADER_STYLE}>
+        <View style={PROFILE_CONTAINER_STYLE}>
           <TouchableOpacity
-            style={{ alignSelf: 'flex-start', paddingLeft: 2 }}
+            style={CHEVRON_CONTAINER_STYLE}
             onPress={() => {
               props.navigation.closeDrawer();
             }}
           >
             <Left name='chevron-thin-left' size={25} color='#000' />
           </TouchableOpacity>
-          <View style={{ alignItems: 'center' }}>
+          <View style={CENTER_STYLE}>
             <User name='person-circle' size={60} color='black' />
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ color: palette.black, fontSize: 13, fontFamily: 'sans-serif-light' }}>André Inacio</Text>
+            <View style={INFO_CONTAINER_STYLE}>
+              <Text style={INFO_TEXT_STYLE}>André Inacio</Text>
               <Right name='chevron-thin-right' size={10} color='#000' />
             </View>
           </View>
-          <View style={{ alignSelf: 'flex-start', paddingRight: 10 }}>
+          <View style={NOTIFICATION_CONTAINER_STYLE}>
+            <View style={BULLET_STYLE}>
+              <Icon icon='redBullet' />
+            </View>
             <Notification name='bell' size={25} color='#000' />
           </View>
         </View>
-        <View style={SEARCH}>
-          <View style={{ justifyContent: 'center' }}>
+        <View style={SEARCH_CONTAINER_STYLE}>
+          <View style={CENTER_CONTAINER_STYLE}>
             <Search name='search' size={30} color='#000' />
           </View>
           <View>
@@ -137,8 +168,8 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
       </View>
       {props.state.routes.slice(0, 5).map((route: RouteProps) => {
         return (
-          <TouchableOpacity key={route.key} style={NAVIGATION} onPress={() => props.navigation.navigate(route.name)}>
-            <View style={ICON}>
+          <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
+            <View style={ICON_CONTAINER_STYLE}>
               {route.name === 'profile' ? (
                 <Profile name='information-circle-outline' size={22} color='#000' />
               ) : route.name === 'transactionList' ? (
@@ -151,37 +182,37 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
                 <Home name='home' size={22} color='#000' />
               )}
             </View>
-            <View style={{ width: 200, height: 40, justifyContent: 'center' }}>
-              <Text style={TEXT}>{route.name}</Text>
+            <View style={TEXT_CONTAINER_STYLE}>
+              <Text style={TEXT_STYLE}>{route.name}</Text>
             </View>
-            <View style={ICON}>
+            <View style={ICON_CONTAINER_STYLE}>
               <Right name='chevron-thin-right' size={18} color='#000' />
             </View>
           </TouchableOpacity>
         );
       })}
-      <TouchableOpacity style={SWAN} onPress={handlePress}>
-        <View style={ICON}>
+      <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress}>
+        <View style={ICON_CONTAINER_STYLE}>
           <Exit name='arrow-redo-outline' size={22} color='#000' />
         </View>
-        <View style={{ width: 200, height: 40, justifyContent: 'center' }}>
-          <Text style={TEXT}>{translate('logoutScreen.swan')}</Text>
+        <View style={TEXT_CONTAINER_STYLE}>
+          <Text style={TEXT_STYLE}>{translate('logoutScreen.swan')}</Text>
         </View>
-        <View style={ICON}>
+        <View style={ICON_CONTAINER_STYLE}>
           <Right name='chevron-thin-right' size={18} color='#000' />
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        style={LOGOUT}
+        style={LOGOUT_CONTAINER_STYLE}
         onPress={() => {
           authStore.logout();
         }}
       >
-        <View style={{ justifyContent: 'center', marginRight: 8 }}>
+        <View style={POWER_CONTAINER_STYLE}>
           <Power name='ios-power-outline' size={18} color='#000' />
         </View>
-        <View style={{ justifyContent: 'center' }}>
-          <Text style={TEXT}>{translate('logoutScreen.title')}</Text>
+        <View style={CENTER_CONTAINER_STYLE}>
+          <Text style={TEXT_STYLE}>{translate('logoutScreen.title')}</Text>
         </View>
       </TouchableOpacity>
     </DrawerContentScrollView>
