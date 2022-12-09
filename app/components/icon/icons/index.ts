@@ -10,6 +10,7 @@ export const icons = {
   redBullet: require('./red-bullet.png'),
   settings: require('./cog.png'),
   coins: require('./coins.png'),
+  info: require('./info.png'),
 };
 
 export type IconTypes = keyof typeof icons;
