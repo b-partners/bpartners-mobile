@@ -25,8 +25,8 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
       <DrawerItem label={translate('logoutScreen.swan')} onPress={handlePress} />
       <DrawerItem
         label={translate('logoutScreen.title')}
-        onPress={() => {
-          authStore.logout();
+        onPress={async () => {
+          await authStore.logout();
         }}
       />
     </DrawerContentScrollView
