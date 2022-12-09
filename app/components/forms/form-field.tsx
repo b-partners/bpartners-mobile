@@ -2,8 +2,8 @@ import { useFormikContext } from 'formik';
 import React from 'react';
 import { View } from 'react-native';
 
-import { Text, TextField, TextFieldProps } from '../../../components';
-import { TxKeyPath } from '../../../i18n';
+import { TxKeyPath } from '../../i18n';
+import { Text, TextField, TextFieldProps } from '../index';
 import ErrorMessage from './error-message';
 
 interface FormFieldProps extends TextFieldProps {

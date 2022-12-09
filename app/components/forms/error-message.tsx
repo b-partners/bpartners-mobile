@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
-import { spacing } from '../../../theme';
+import { spacing } from '../../theme';
 
 const ERROR_TEXT: TextStyle = {
   color: 'yellow',
@@ -15,7 +15,7 @@ const ERROR_MESSAGE_CONTAINER: ViewStyle = {
 };
 
 interface ErrorMessageProps {
-  error: string;
+  error?: string;
 }
 
 // TODO: make this component more generic
