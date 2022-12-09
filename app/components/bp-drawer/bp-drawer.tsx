@@ -1,6 +1,6 @@
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import React, { useCallback } from 'react';
-import { Dimensions, Linking, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Linking, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Alert, TextInput } from 'react-native';
 import Home from 'react-native-vector-icons/AntDesign';
 import Left from 'react-native-vector-icons/Entypo';
@@ -21,15 +21,12 @@ import { useStores } from '../../models';
 import { palette } from '../../theme/palette';
 import { Icon } from '../icon/icon';
 
-const windowHeight = Dimensions.get('window').height - 40;
-
 const SEARCH_CONTAINER_STYLE: ViewStyle = {
   position: 'relative',
   backgroundColor: palette.white,
-  width: 280,
-  height: 37,
-  marginTop: 20,
-  marginBottom: 30,
+  width: '90%',
+  height: '25%',
+  marginTop: '3%',
   alignSelf: 'center',
   borderRadius: 40,
   elevation: 2,
@@ -41,10 +38,10 @@ const SEARCH_CONTAINER_STYLE: ViewStyle = {
 const LOGOUT_CONTAINER_STYLE: ViewStyle = {
   position: 'absolute',
   backgroundColor: palette.white,
-  width: 280,
+  width: '100%',
   height: 40,
   marginTop: 10,
-  bottom: 0,
+  bottom: '3%',
   alignSelf: 'center',
   borderRadius: 40,
   justifyContent: 'center',
@@ -65,7 +62,7 @@ const NAVIGATION_STYLE: ViewStyle = {
 
 const SWAN_CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.white,
-  height: 50,
+  height: '9%',
   borderWidth: 0.5,
   borderColor: palette.lighterGrey,
   flexDirection: 'row',
@@ -98,17 +95,23 @@ const ICON_CONTAINER_STYLE: ViewStyle = {
   justifyContent: 'center',
 };
 
+const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
+  marginTop: '3%',
+  width: '100%',
+  backgroundColor: palette.white,
+}
+
 const BULLET_STYLE: ViewStyle = { position: 'absolute', zIndex: 1 };
 
-const DRAWER_SCROLLVIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: windowHeight };
-const HEADER_STYLE: ViewStyle = { flexDirection: 'column', marginTop: '3%' };
+const DRAWER_SCROLLVIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: '100%' };
+const HEADER_STYLE: ViewStyle = { flexDirection: 'column', marginTop: '3%', height: '25%' };
 const PROFILE_CONTAINER_STYLE: ViewStyle = { flexDirection: 'row', justifyContent: 'space-between' };
 
 const CHEVRON_CONTAINER_STYLE: ViewStyle = { alignSelf: 'flex-start', paddingLeft: '1%' };
 const POWER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center', marginRight: 8 };
 const INFO_CONTAINER_STYLE: ViewStyle = { flexDirection: 'row', alignItems: 'center' };
 
-const NOTIFICATION_CONTAINER_STYLE: ViewStyle = { alignSelf: 'flex-start', paddingRight: '3%' };
+const NOTIFICATION_CONTAINER_STYLE: ViewStyle = { alignSelf: 'flex-start', paddingRight: '3%', marginTop: '0.5%' };
 const CENTER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center' };
 const CENTER_STYLE: ViewStyle = { alignItems: 'center' };
 
@@ -166,6 +169,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
           </View>
         </View>
       </View>
+      <View style={NAVIGATION_CONTAINER_STYLE}>
       {props.state.routes.slice(0, 5).map((route: RouteProps) => {
         return (
           <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
@@ -191,6 +195,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
           </TouchableOpacity>
         );
       })}
+      </View>
       <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress}>
         <View style={ICON_CONTAINER_STYLE}>
           <Exit name='arrow-redo-outline' size={22} color='#000' />
