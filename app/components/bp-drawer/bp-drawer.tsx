@@ -96,6 +96,7 @@ const ICON_CONTAINER_STYLE: ViewStyle = {
 };
 
 const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
+  position: 'relative',
   marginTop: '3%',
   width: '100%',
   backgroundColor: palette.white,
@@ -104,7 +105,7 @@ const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
 const BULLET_STYLE: ViewStyle = { position: 'absolute', zIndex: 1 };
 
 const DRAWER_SCROLLVIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: '100%' };
-const HEADER_STYLE: ViewStyle = { flexDirection: 'column', marginTop: '3%', height: '25%' };
+const HEADER_STYLE: ViewStyle = { flexDirection: 'column', marginTop: '3%', height: 150 };
 const PROFILE_CONTAINER_STYLE: ViewStyle = { flexDirection: 'row', justifyContent: 'space-between' };
 
 const CHEVRON_CONTAINER_STYLE: ViewStyle = { alignSelf: 'flex-start', paddingLeft: '1%' };
@@ -115,15 +116,10 @@ const NOTIFICATION_CONTAINER_STYLE: ViewStyle = { alignSelf: 'flex-start', paddi
 const CENTER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center' };
 const CENTER_STYLE: ViewStyle = { alignItems: 'center' };
 
-type RouteProps = {
-  key: any;
-  name: string;
-  options: any;
-};
-
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
   const [searchValue, onSearchValue] = React.useState(null);
+  const { currentUser } = authStore;
 
   const handlePress = useCallback(async () => {
     const supported = await Linking.canOpenURL(env.swanUrl);
@@ -149,7 +145,9 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
           <View style={CENTER_STYLE}>
             <User name='person-circle' size={60} color='black' />
             <View style={INFO_CONTAINER_STYLE}>
-              <Text style={INFO_TEXT_STYLE}>André Inacio</Text>
+              <Text style={INFO_TEXT_STYLE}>
+                {currentUser?.firstName} {currentUser?.lastName}
+              </Text>
               <Right name='chevron-thin-right' size={10} color='#000' />
             </View>
           </View>
@@ -170,7 +168,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
         </View>
       </View>
       <View style={NAVIGATION_CONTAINER_STYLE}>
-        {props.state.routes.slice(0, 5).map((route: RouteProps) => {
+        {props.state.routes.slice(0, 5).map((route: any) => {
           return (
             <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
               <View style={ICON_CONTAINER_STYLE}>
@@ -187,7 +185,17 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
                 )}
               </View>
               <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>{route.name}</Text>
+                <Text style={TEXT_STYLE}>
+                  {route.name === 'profile'
+                    ? translate('profileScreen.title')
+                    : route.name === 'transactionList'
+                    ? translate('transactionListScreen.title')
+                    : route.name === 'paymentInitiation'
+                    ? translate('paymentInitiationScreen.label')
+                    : route.name === 'paymentList'
+                    ? translate('paymentListScreen.title')
+                    : translate('homeScreen.title')}
+                </Text>
               </View>
               <View style={ICON_CONTAINER_STYLE}>
                 <Right name='chevron-thin-right' size={18} color='#000' />
