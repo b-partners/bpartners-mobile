@@ -4,7 +4,7 @@ import React from 'react';
 interface IForm<T> {
   initialValue: T;
   validationSchema?: any;
-  onSubmit: (values: T) => void;
+  onSubmit?: (values: T) => void;
   children: React.ReactNode;
 }
 
