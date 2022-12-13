@@ -17,7 +17,8 @@
       },
       "ios": {
         "buildConfiguration": "Debug"
-      }
+      },
+      "image": ""
     },
     "preview": {
       "env": {
