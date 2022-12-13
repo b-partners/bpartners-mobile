@@ -1,4 +1,3 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ImageStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -13,13 +12,12 @@ const LOGO_STYLE: ImageStyle = { width: 50, height: 25 };
 export function HomeHeader() {
   const { authStore } = useStores();
   const { currentAccount, currentUser, accessToken } = authStore;
-  const navigation = useNavigation();
   const logo = `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${currentUser.logoFileId}/raw?accessToken=${accessToken}&fileType=LOGO`;
 
   return (
     <View style={HEADER_STYLE}>
       <AutoImage source={{ uri: logo }} style={LOGO_STYLE} resizeMethod='resize' />
-      <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+      <TouchableOpacity>
         <View>
           <View style={BULLET_STYLE}>
             <Icon icon='redBullet' />
