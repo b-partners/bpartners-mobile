@@ -9,7 +9,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@
 import * as Linking from 'expo-linking';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { Dimensions, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 
 import { BpDrawer, Text } from '../components';
 import { useError } from '../hook';
@@ -48,7 +48,6 @@ export type NavigatorParamList = {
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
-const windowWidth = Dimensions.get('window').width;
 
 const AppStack = observer(function () {
   const HIDE_DRAWER_OPTIONS: any = {
@@ -71,9 +70,6 @@ const AppStack = observer(function () {
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
-        drawerStyle: {
-          width: windowWidth,
-        },
       }}
       initialRouteName={accessToken ? 'home' : 'welcome'}
       drawerContent={props => <BpDrawer {...props} />}

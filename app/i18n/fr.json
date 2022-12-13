@@ -14,9 +14,6 @@
     "invalidEmail": "Adresse e-mail invalide",
     "somethingWentWrong": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement."
   },
-  "drawer": {
-    "search": "Je recherche de l'aide, une valeur, etc"
-  },
   "transactionListScreen": {
     "title": "Transactions",
     "balance": "Balance",
@@ -60,7 +57,7 @@
     },
     "profileScreen": {
       "label": "Paiement",
-      "title": "Profil",
+      "title": "Initier un paiement",
       "fields": {
         "logo": "Logo",
         "selectFileButton": "Sélectionner un fichier",
@@ -153,8 +150,7 @@
     }
   },
   "logoutScreen": {
-    "title": "Déconnexion",
-    "swan": "Ouvrir Swan",
+    "title": "Se déconnecter",
     "swan": "Ouvrir Swan"
   }
 }
