@@ -37,7 +37,7 @@ jobs:
 
       - run: |
           touch .env
-          echo API_URL=${{ secrets.API_URL }} >> .env
+          echo API_URL=${{ secrets.API_URL }} >> .env 
           echo SUCCESS_URL=${{ secrets.SUCCESS_URL }} >> .env
           echo FAILURE_URL=${{ secrets.FAILURE_URL }} >> .env
           echo SWAN_URL=${{ secrets.SWAN_URL }} >> .env
@@ -62,6 +62,8 @@ jobs:
 
       - run: |
           mv android/app/build/outputs/bundle/release/app-preprod.aab android/app/build/outputs/bundle/release/${{env.appName}}.aab
+
+      
 
       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.appName }}.aab"
 
