@@ -61,6 +61,9 @@ jobs:
       - name: Build bundle release app
         run: cd android && ./gradlew bundlePreprod
 
+      - name: Build bundle release app
+        run: cd android && ./gradlew bundleRelease
+
       - run: echo "appName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
 
       - run: |
