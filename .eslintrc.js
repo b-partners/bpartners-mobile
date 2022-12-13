@@ -25,7 +25,7 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'react/no-unescaped-entities': 'off',
         'max-len': ['error', { code: 160 }],
-        'react-native/no-inline-styles': 'error',
+        'react-native/no-inline-styles': 0,
         'react-hooks/rules-of-hooks': 'off',
         'react/prop-types': 'off',
         'react-hooks/exhaustive-deps': 'off',
