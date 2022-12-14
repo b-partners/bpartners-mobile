@@ -1,43 +1,41 @@
 import React, { FC, useState } from "react";
 import { View, ViewStyle } from "react-native";
+import * as yup from "yup";
 
+import { Icon } from "../../../components";
+import Form from "../../../components/forms/form";
 import { spacing } from "../../../theme";
 import { palette } from "../../../theme/palette";
 import { SHADOW_STYLE } from "../styles";
 import EditableTextField from "./EditableTextField";
-import Form from "../../../components/forms/form";
-import * as yup from "yup";
-import { Icon } from "../../../components";
 
-type TCardElement = {
-  title: string;
-  description: string;
-  unitPrice: number;
-  quantity: number;
-  tVA: number;
-}
+type TCardElement = {};
+
 const CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.white,
   borderRadius: 20,
   margin: spacing[4],
-  overflow: "hidden", ...SHADOW_STYLE
+  overflow: "hidden",
+  ...SHADOW_STYLE,
+  elevation: 12
 };
 const EDITABLE_TF_CONTAINER = { borderWidth: 0.5, borderColor: palette.lighterGrey, flex: 1 };
+const DELETE_ACTION_POSITION_STYLE: ViewStyle = { position: "absolute", right: 5, top: 5, zIndex: 2 };
+const BOTTOM_INFO_STYLE: ViewStyle = { flex: 1, flexDirection: "row", overflow: "hidden" };
 
 
 const CardElement: FC<TCardElement> = props => {
-  const { title, description, quantity, tVA, unitPrice } = props;
   const [initialValues] = useState({
     title: "",
     description: "",
-    unitPrice: 0,
-    quantity: 0,
-    tva: 0
+    unitPrice: "0",
+    quantity: 1,
+    tva: "0"
   });
 
   const VALIDATION_SCHEMA = yup.object().shape({
     title: yup.string().required(),
-    description: yup.string().required(),
+    description: yup.string(),
     unitPrice: yup.number(),
     quantity: yup.number(),
     tva: yup.number()
@@ -46,41 +44,45 @@ const CardElement: FC<TCardElement> = props => {
 
   return (
     <>
-      <View style={{ position: "absolute", right: 5, top: 5, zIndex: 2 }}>
+      <View style={DELETE_ACTION_POSITION_STYLE}>
         <Icon icon={"trash"} />
       </View>
-      <View style={CONTAINER_STYLE}>
-        <View>
-          <Form
-            initialValue={initialValues}
-            validationSchema={VALIDATION_SCHEMA}
-          >
-            <View>
-              <EditableTextField title={"Titre de l'élement"} formName={"title"} placeholder={"Taper le titre"} />
-              <EditableTextField title={"Déscription (facultatif)"} formName={"description"}
-                                 placeholder={"Taper le titre"} />
-            </View>
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", overflow: "hidden" }}>
-              <EditableTextField title={"Prix unitaire"}
-                                 formName={"unitPrice"}
-                                 containerStyle={EDITABLE_TF_CONTAINER}
-                                 keyboardType={"number-pad"}
-                                 value={"0"}
-              />
-              <EditableTextField title={"Quantité"}
-                                 formName={"quantity"}
-                                 containerStyle={EDITABLE_TF_CONTAINER}
-                                 keyboardType={"number-pad"}
-              />
-              <EditableTextField
-                title={"TVA"}
-                formName={"tva"}
-                containerStyle={EDITABLE_TF_CONTAINER}
-              />
-            </View>
-          </Form>
 
-        </View>
+      <View style={CONTAINER_STYLE}>
+        <Form
+          initialValues={initialValues}
+          validationSchema={VALIDATION_SCHEMA}
+        >
+          <View>
+            <EditableTextField title={"Titre de l'élement"} formName={"title"} placeholder={"Taper le titre"}
+                               containerStyle={{ paddingBottom: spacing[0] }} />
+            <EditableTextField title={"Déscription (facultatif)"} formName={"description"}
+                               placeholder={"Taper le titre"} />
+          </View>
+          <View style={BOTTOM_INFO_STYLE}>
+            <EditableTextField
+              title={"Prix unitaire"}
+              suffix={" $"}
+              formName={"unitPrice"}
+              containerStyle={EDITABLE_TF_CONTAINER}
+              keyboardType={"number-pad"}
+              value={"0"}
+              style={{ height: 46 }}
+            />
+            <EditableTextField
+              title={"Quantité"}
+              prefix={"x "}
+              formName={"quantity"}
+              containerStyle={EDITABLE_TF_CONTAINER}
+              keyboardType={"number-pad"} />
+            <EditableTextField
+              title={"TVA"}
+              formName={"tva"}
+              containerStyle={EDITABLE_TF_CONTAINER}
+              suffix={" %"}
+            />
+          </View>
+        </Form>
       </View>
     </>
   );

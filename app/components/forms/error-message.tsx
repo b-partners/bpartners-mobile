@@ -22,7 +22,7 @@ interface ErrorMessageProps {
 
 // TODO: make this component more generic
 function ErrorMessage({ error, visible=false, style }: ErrorMessageProps) {
-  if (!error && !visible) return null;
+  if (!error || !visible) return null;
   return (
     <View style={ERROR_MESSAGE_CONTAINER}>
       <Ionicons color='yellow' name='warning' size={16} />

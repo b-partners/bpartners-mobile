@@ -8,6 +8,8 @@ import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountModel } from '../../entities/account/account';
 import { User, UserModel } from '../../entities/user/user';
+import { showMessage } from "../../../utils/snackbar";
+import { palette } from "../../../theme/palette";
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -38,6 +40,7 @@ export const AuthStoreModel = types
   .actions(self => ({
     catchOrThrow: (error: Error) => {
       const errorMessage = error.message;
+      if (errorMessage == "cannot-connect") return showMessage("Verify your connection", {backgroundColor: palette.pastelRed});
       if (errorMessage === 'forbidden') return self.reset();
       throw error;
     },

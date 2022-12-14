@@ -3,14 +3,15 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { View, ViewStyle } from 'react-native';
 
+import { ErrorBoundary } from '..';
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
-import { ErrorBoundary } from "..";
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { InvoiceForm } from './components/invoice-form';
+import { palette } from "../../theme/palette";
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -36,17 +37,16 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
         <Header
-        headerTx='invoiceScreen.title'
-        style={HEADER}
-        titleStyle={HEADER_TITLE}
-        leftIcon={'back'}
-        rightIcon={'info'}
-        onLeftPress={async () => {
-          navigation.navigate('paymentList');
-        }}
-      />
-        <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-
+          headerTx='invoiceScreen.title'
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+          leftIcon={'back'}
+          rightIcon={'info'}
+          onLeftPress={async () => {
+            navigation.navigate('paymentList');
+          }}
+        />
+        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
           <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>
