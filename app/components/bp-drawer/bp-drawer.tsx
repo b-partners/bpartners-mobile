@@ -191,7 +191,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
                     : route.name === 'transactionList'
                     ? translate('transactionListScreen.title')
                     : route.name === 'paymentInitiation'
-                    ? translate('paymentInitiationScreen.label')
+                    ? translate('paymentInitiationScreen.title')
                     : route.name === 'paymentList'
                     ? translate('paymentListScreen.title')
                     : translate('homeScreen.title')}

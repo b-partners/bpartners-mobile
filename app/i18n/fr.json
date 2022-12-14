@@ -59,7 +59,7 @@
       }
     },
     "profileScreen": {
-      "label": "Paiement",
+      "label": "Profil",
       "title": "Profil",
       "fields": {
         "logo": "Logo",
