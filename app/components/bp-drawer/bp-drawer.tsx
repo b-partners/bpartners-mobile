@@ -172,29 +172,35 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
           return (
             <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
               <View style={ICON_CONTAINER_STYLE}>
-                {route.name === 'profile' ? (
-                  <Profile name='information-circle-outline' size={22} color='#000' />
-                ) : route.name === 'transactionList' ? (
-                  <TransactionList name='checklist' size={22} color='#000' />
-                ) : route.name === 'paymentInitiation' ? (
-                  <PaymentInit name='cash-multiple' size={22} color='#000' />
-                ) : route.name === 'paymentList' ? (
-                  <PaymentList name='format-list-bulleted' size={22} color='#000' />
-                ) : (
-                  <Home name='home' size={22} color='#000' />
-                )}
+                {
+                  /*TODO: better to used dictionnary instead of nested ternary condition */
+                  route.name === 'profile' ? (
+                    <Profile name='information-circle-outline' size={22} color='#000' />
+                  ) : route.name === 'transactionList' ? (
+                    <TransactionList name='checklist' size={22} color='#000' />
+                  ) : route.name === 'paymentInitiation' ? (
+                    <PaymentInit name='cash-multiple' size={22} color='#000' />
+                  ) : route.name === 'paymentList' ? (
+                    <PaymentList name='format-list-bulleted' size={22} color='#000' />
+                  ) : (
+                    <Home name='home' size={22} color='#000' />
+                  )
+                }
               </View>
               <View style={TEXT_CONTAINER_STYLE}>
                 <Text style={TEXT_STYLE}>
-                  {route.name === 'profile'
-                    ? translate('profileScreen.title')
-                    : route.name === 'transactionList'
-                    ? translate('transactionListScreen.title')
-                    : route.name === 'paymentInitiation'
-                    ? translate('paymentInitiationScreen.title')
-                    : route.name === 'paymentList'
-                    ? translate('paymentListScreen.title')
-                    : translate('homeScreen.title')}
+                  {
+                    /*TODO: same here*/
+                    route.name === 'profile'
+                      ? translate('profileScreen.title')
+                      : route.name === 'transactionList'
+                      ? translate('transactionListScreen.title')
+                      : route.name === 'paymentInitiation'
+                      ? translate('paymentInitiationScreen.title')
+                      : route.name === 'paymentList'
+                      ? translate('paymentListScreen.title')
+                      : translate('homeScreen.title')
+                  }
                 </Text>
               </View>
               <View style={ICON_CONTAINER_STYLE}>
