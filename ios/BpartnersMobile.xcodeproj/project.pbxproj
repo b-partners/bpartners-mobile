@@ -171,6 +171,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		D953376F5FDC422F8EA46669 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		E4DC8A9EFE6F9C5F90DD96E4 /* BpartnersMobileTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -178,14 +186,6 @@
 			);
 			name = BpartnersMobileTests;
 			sourceTree = "<group>";
-		};
-		D953376F5FDC422F8EA46669 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 

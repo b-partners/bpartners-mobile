@@ -66,7 +66,7 @@ const AppStack = observer(function () {
   const hasAccount = currentAccount && !!currentAccount?.id;
   const hasAccountHolder = currentAccountHolder && !!currentAccountHolder?.id;
   const hasUser = currentUser && !!currentUser?.id;
-  const hasApprovedLegaFiles = legalFilesStore.unapproved.files.length > 0;
+  const hasApprovedLegaFiles = legalFilesStore.unApprovedFiles.length > 0;
   const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
 
   return (
