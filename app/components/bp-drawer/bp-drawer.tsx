@@ -208,9 +208,13 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
         {props.state.routes.slice(0, 6).map((route: any) => {
           return (
             <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
-              <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
+              <View style={ICON_CONTAINER_STYLE}>
+                {IconRoute[route.name]}
+              </View>
               <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>{TitleRoute[route.name]}</Text>
+                <Text style={TEXT_STYLE}>
+                  {TitleRoute[route.name]}
+                </Text>
               </View>
               <View style={ICON_CONTAINER_STYLE}>
                 <Right name='chevron-thin-right' size={18} color='#000' />
@@ -232,8 +236,8 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
       </TouchableOpacity>
       <TouchableOpacity
         style={LOGOUT_CONTAINER_STYLE}
-        onPress={async () => {
-          await authStore.logout();
+        onPress={() => {
+          authStore.logout();
           props.navigation.closeDrawer();
         }}
       >
