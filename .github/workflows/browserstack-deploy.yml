@@ -2,14 +2,15 @@ name: deploy
 on:
   workflow_dispatch:
     inputs:
-      platform:
-        type: choice
-        description: 'Platform'
-        options:
-          - all
-          - android-store
-          - ios-store
-        required: true
+     platform:
+       type: choice
+       description: 'Platform'
+       options:
+         - all
+         - android-store
+         - ios-store
+       required: true
+
 jobs:
   android-browserstack:
     if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-store'
@@ -33,21 +34,31 @@ jobs:
         run: |
           mkdir ~/.gradle
           touch ~/.env
-          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }} ${{secrets.API_URL}} ${{secrets.SUCCESS_URL}} ${{secrets.FAILURE_URL}}
+          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }} ${{secrets.API_URL}} ${{secrets.SUCCESS_URL}} ${{secrets.FAILURE_URL}} ${{ secrets.SWAN_URL }}
+          sh ./setOtherEnv.sh ${{ secrets.SENTRY_ENV }} ${{ secrets.SENTRY_DSN }} ${{ secrets.CLIENT_ID }} ${{ secrets.CLIENT_SECRET }} ${{ secrets.AUTHORIZATION_ENDPOINT }} ${{ secrets.TOKEN_ENDPOINT }}
 
-      - run: cd android && ./gradlew clean
+      - run: yarn build-android
 
-      - name: Build release app
-        run: cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets
+      - name: Remove duplicated ressources
+        run: |
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
 
-      - name: Build bundle app
-        run: cd android && ./gradlew bundleRelease -x bundleReleaseJsAndAssets
+      - name: Build apk release app
+        run: cd android && ./gradlew assembleRelease
+
+      - name: Build bundle release app
+        run: cd android && ./gradlew bundleRelease
 
       - run: echo "appName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
 
       - run: |
           mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/${{env.appName}}.apk
           mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/${{env.appName}}.aab
+
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
+
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.appName }}.aab"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
@@ -63,7 +74,6 @@ jobs:
 
       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
 
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.appName }}.aab"     
 
   ios-browserstack:
     env:
@@ -73,7 +83,7 @@ jobs:
 
     runs-on: macos-latest
 
-    timeout-minutes: 60
+    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v2
@@ -81,23 +91,17 @@ jobs:
       - run: npm install --force
 
       - run: npm install --location=global react-native-cli
-
-      - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-      - run: brew update 
-
-      - run: brew upgrade
       
-      - run: npm run ci:build:e2e
+      - run: npm run build:ios:release:e2e
 
-      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | shasum | awk '{print $1}')" >> $GITHUB_ENV
+      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
 
       - name: change extension app to ipa
         run: |
           mkdir Payload
-          mv ios/build/Build/Products/Release-iphonesimulator/BpartnersMobile.app Payload/
+          mv /Users/runner/work/bpartners-mobile/bpartners-mobile/ios/build/Build/Products/Release-iphonesimulator/bpartners.app Payload/
           zip -r ${{ env.ipaName }}.ipa Payload
-
+          
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
         with:
