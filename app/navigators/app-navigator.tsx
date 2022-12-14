@@ -9,7 +9,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@
 import * as Linking from 'expo-linking';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { useColorScheme } from 'react-native';
+import { Dimensions, useColorScheme } from 'react-native';
 
 import { BpDrawer, Text } from '../components';
 import { useError } from '../hook';
@@ -48,6 +48,7 @@ export type NavigatorParamList = {
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
+const windowWidth = Dimensions.get('window').width;
 
 const AppStack = observer(function () {
   const HIDE_DRAWER_OPTIONS: any = {
@@ -70,6 +71,9 @@ const AppStack = observer(function () {
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
+        drawerStyle: {
+          width: windowWidth,
+        },
       }}
       initialRouteName={accessToken ? 'home' : 'welcome'}
       drawerContent={props => <BpDrawer {...props} />}
@@ -80,7 +84,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
           <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-          <Drawer.Screen name='paymentList' component={PaymentListScreen} />
+          <Drawer.Screen name='paymentList' component={PaymentListScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
