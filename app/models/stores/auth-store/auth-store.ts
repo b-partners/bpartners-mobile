@@ -97,6 +97,7 @@ export const AuthStoreModel = types
       try {
         whoAmiResult = yield signInApi.whoami();
         self.currentUser = whoAmiResult.user;
+        yield self.rootStore.legalFilesStore.getLegalFiles();
         getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
         getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
