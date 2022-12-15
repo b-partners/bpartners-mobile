@@ -85,6 +85,9 @@ project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
     bundleInDebug: true,
     bundleInRelease: true,
+    bundleInPreprod: true,
+    // TODO: MUST BE ADDRESSED AS SOON AS POSSIBLE, dev mode MUST BE disabled on the end user environment
+    devDisabledInPreprod: false,
 ]
 
 // This method of including other gradle files is to support symlinks.
@@ -239,7 +242,7 @@ android {
             include (*reactNativeArchitectures())
         }
     }
-    
+
     signingConfigs {
         release {
             if (project.hasProperty('APP_UPLOAD_STORE_FILE')) {
@@ -261,6 +264,11 @@ android {
             signingConfig signingConfigs.release
 //             minifyEnabled enableProguardInReleaseBuilds
 //             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+        preprod {
+            initWith release
+            signingConfig signingConfigs.release
+            matchingFallbacks = ['debug', 'release']
         }
     }
 
