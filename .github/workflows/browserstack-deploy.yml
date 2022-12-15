@@ -33,9 +33,20 @@ jobs:
       - name: Setting up the environment variables
         run: |
           mkdir ~/.gradle
-          touch ~/.env
-          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }} ${{secrets.API_URL}} ${{secrets.SUCCESS_URL}} ${{secrets.FAILURE_URL}} ${{ secrets.SWAN_URL }}
-          sh ./setOtherEnv.sh ${{ secrets.SENTRY_ENV }} ${{ secrets.SENTRY_DSN }} ${{ secrets.CLIENT_ID }} ${{ secrets.CLIENT_SECRET }} ${{ secrets.AUTHORIZATION_ENDPOINT }} ${{ secrets.TOKEN_ENDPOINT }}
+          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
+       
+      - run: |
+          touch .env
+          echo API_URL=${{ secrets.API_URL }} >> .env 
+          echo SUCCESS_URL=${{ secrets.SUCCESS_URL }} >> .env
+          echo FAILURE_URL=${{ secrets.FAILURE_URL }} >> .env
+          echo SWAN_URL=${{ secrets.SWAN_URL }} >> .env
+          echo SENTRY_ENV= ${{ secrets.SENTRY_ENV }} >> .env
+          echo SENTRY_DSN = ${{ secrets.CLIENT_ID }} >> .env
+          echo CLIENT_ID = ${{ secrets.CLIENT_ID }} >> .env
+          echo CLIENT_SECRET = ${{ secrets.CLIENT_SECRET }} >> .env
+          echo AUTHORIZATION_ENDPOINT = ${{ secrets.AUTHORIZATION_ENDPOINT }} >> .env
+          echo TOKEN_ENDPOINT = ${{ secrets.TOKEN_ENDPOINT }} >> .env
 
       - run: yarn build-android
 
@@ -71,9 +82,6 @@ jobs:
         run: |
           aws s3 cp android/app/build/outputs/apk/release/${{env.appName}}.apk s3://mobile-bpartners/android/
           aws s3 cp android/app/build/outputs/bundle/release/${{env.appName}}.aab s3://mobile-bpartners/android/
-
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
-
 
   ios-browserstack:
     env:
