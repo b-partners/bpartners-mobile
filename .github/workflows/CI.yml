@@ -68,7 +68,7 @@ jobs:
 
       - name: Create android virtual device
         run: |
-          echo no | avdmanager create avd --force --name "Pixel_5_API_31" --abi "x86" --tag "google_apis" --package 'system-images;android-31;google_apis;arm64-v8a' --device 'pixel_5'
+          echo no | avdmanager create avd --force --name "Pixel_5_API_31" --abi "arm64-v8a" --tag "google_apis" --package 'system-images;android-31;google_apis;arm64-v8a' --device 'pixel_5'
 
       - name: Run end to end tests
         run: npm run test:android:release:e2e
