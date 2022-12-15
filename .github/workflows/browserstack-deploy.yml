@@ -2,14 +2,14 @@ name: deploy
 on:
   workflow_dispatch:
     inputs:
-     platform:
-       type: choice
-       description: 'Platform'
-       options:
-         - all
-         - android-store
-         - ios-store
-       required: true
+      platform:
+        type: choice
+        description: 'Platform'
+        options:
+          - all
+          - android-store
+          - ios-store
+        required: true
 
 jobs:
   android-browserstack:
@@ -95,7 +95,7 @@ jobs:
       - run: npm install --force
 
       - run: npm install --location=global react-native-cli
-      
+
       - run: npm run build:ios:release:e2e
 
       - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
