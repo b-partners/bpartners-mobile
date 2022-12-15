@@ -171,6 +171,9 @@
       "quotations": "Quotations"
     }
   },
+  "marketPlaceScreen": {
+    "title": "MarketPlace"
+  },
   "quotationScreen": {
     "createQuotation": "Create a Quotation"
   },

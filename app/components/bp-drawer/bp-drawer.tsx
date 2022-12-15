@@ -7,6 +7,7 @@ import Contact from 'react-native-vector-icons/AntDesign';
 import Left from 'react-native-vector-icons/Entypo';
 import Right from 'react-native-vector-icons/Entypo';
 import Search from 'react-native-vector-icons/EvilIcons';
+import Map from 'react-native-vector-icons/Ionicons';
 import Profile from 'react-native-vector-icons/Ionicons';
 import Power from 'react-native-vector-icons/Ionicons';
 import User from 'react-native-vector-icons/Ionicons';
@@ -128,6 +129,7 @@ type RouteNameProps = {
   paymentList: string | React.ReactElement;
   welcome: string | React.ReactElement;
   oauth: string | React.ReactElement;
+  marketplace: string | React.ReactElement;
   supportContact: string | React.ReactElement;
 };
 
@@ -144,6 +146,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
     paymentList: translate('paymentListScreen.title'),
     welcome: translate('homeScreen.title'),
     oauth: translate('signInScreen.title'),
+    marketplace: translate('marketPlaceScreen.title'),
     supportContact: translate('supportContactScreen.title'),
   };
 
@@ -154,6 +157,8 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
     paymentInitiation: <PaymentInit name='cash-multiple' size={22} color='#000' />,
     paymentList: <PaymentList name='format-list-bulleted' size={22} color='#000' />,
     welcome: <Home name='home' size={22} color='#000' />,
+    oauth: <Lock name='lock-closed-outline' size={22} color='#000' />,
+    marketplace: <Map name='md-map-outline' size={22} color='#000' />,
     oauth: <Lock name='lock-closed-outline' size={22} color='#000' />,
     supportContact: <Contact name='contacts' size={22} color='#000' />,
   };
@@ -205,16 +210,12 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
         </View>
       </View>
       <View style={NAVIGATION_CONTAINER_STYLE}>
-        {props.state.routes.slice(0, 6).map((route: any) => {
+        {props.state.routes.slice(0, 7).map((route: any) => {
           return (
             <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
-              <View style={ICON_CONTAINER_STYLE}>
-                {IconRoute[route.name]}
-              </View>
+              <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
               <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>
-                  {TitleRoute[route.name]}
-                </Text>
+                <Text style={TEXT_STYLE}>{TitleRoute[route.name]}</Text>
               </View>
               <View style={ICON_CONTAINER_STYLE}>
                 <Right name='chevron-thin-right' size={18} color='#000' />
