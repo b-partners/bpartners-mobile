@@ -55,24 +55,15 @@ jobs:
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
 
-      - name: Build apk release app
-        run: cd android && ./gradlew assemblePreprod 
-
       - name: Build bundle release app
         run: cd android && ./gradlew bundlePreprod
-
-      - name: Build bundle release app
-        run: cd android && ./gradlew bundleRelease
 
       - run: echo "appName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
 
       - run: |
-          mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/${{env.appName}}.apk
-          mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/${{env.appName}}.aab
+          mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/bundle/preprod/${{env.appName}}.aab
 
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
-
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.appName }}.aab"
+      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/preprod/${{ env.appName }}.aab"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
