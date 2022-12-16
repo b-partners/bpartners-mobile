@@ -66,7 +66,7 @@ const AppStack = observer(function () {
   const hasAccount = currentAccount && !!currentAccount?.id;
   const hasAccountHolder = currentAccountHolder && !!currentAccountHolder?.id;
   const hasUser = currentUser && !!currentUser?.id;
-  const hasApprovedLegalFiles =  legalFilesStore.unApprovedFiles.length <= 0;
+  const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
   const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
 
   return (
@@ -80,7 +80,7 @@ const AppStack = observer(function () {
       initialRouteName={accessToken ? 'home' : 'welcome'}
       drawerContent={props => <BpDrawer {...props} />}
     >
-      { (accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
+      {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
         <>
           <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
         </>

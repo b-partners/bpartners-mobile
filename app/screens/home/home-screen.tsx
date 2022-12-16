@@ -15,7 +15,7 @@ import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFilesStore  } = useStores();
+  const { transactionStore, legalFilesStore } = useStores();
 
   const { transactions, loadingTransactions, currentBalance, currentMonthSummary } = transactionStore;
 
