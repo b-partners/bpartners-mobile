@@ -10,6 +10,7 @@ import Profile from 'react-native-vector-icons/Ionicons';
 import Power from 'react-native-vector-icons/Ionicons';
 import User from 'react-native-vector-icons/Ionicons';
 import Exit from 'react-native-vector-icons/Ionicons';
+import Lock from 'react-native-vector-icons/Ionicons';
 import PaymentInit from 'react-native-vector-icons/MaterialCommunityIcons';
 import PaymentList from 'react-native-vector-icons/MaterialIcons';
 import Notification from 'react-native-vector-icons/Octicons';
@@ -116,10 +117,40 @@ const NOTIFICATION_CONTAINER_STYLE: ViewStyle = { alignSelf: 'flex-start', paddi
 const CENTER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center' };
 const CENTER_STYLE: ViewStyle = { alignItems: 'center' };
 
+type RouteNameProps = {
+  home: string | React.ReactElement;
+  profile: string | React.ReactElement;
+  transactionList: string | React.ReactElement;
+  paymentInitiation: string | React.ReactElement;
+  paymentList: string | React.ReactElement;
+  welcome: string | React.ReactElement;
+  oauth: string | React.ReactElement;
+};
+
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
   const [searchValue, onSearchValue] = React.useState(null);
   const { currentUser } = authStore;
+
+  const TitleRoute: RouteNameProps = {
+    home: translate('homeScreen.title'),
+    profile: translate('profileScreen.title'),
+    transactionList: translate('transactionListScreen.title'),
+    paymentInitiation: translate('paymentInitiationScreen.title'),
+    paymentList: translate('paymentListScreen.title'),
+    welcome: translate('homeScreen.title'),
+    oauth: translate('signInScreen.title'),
+  };
+
+  const IconRoute: RouteNameProps = {
+    home: <Home name='home' size={22} color='#000' />,
+    profile: <Profile name='information-circle-outline' size={22} color='#000' />,
+    transactionList: <TransactionList name='checklist' size={22} color='#000' />,
+    paymentInitiation: <PaymentInit name='cash-multiple' size={22} color='#000' />,
+    paymentList: <PaymentList name='format-list-bulleted' size={22} color='#000' />,
+    welcome: <Home name='home' size={22} color='#000' />,
+    oauth: <Lock name='lock-closed-outline' size={22} color='#000' />,
+  };
 
   const handlePress = useCallback(async () => {
     const supported = await Linking.canOpenURL(env.swanUrl);
@@ -171,37 +202,9 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
         {props.state.routes.slice(0, 5).map((route: any) => {
           return (
             <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
-              <View style={ICON_CONTAINER_STYLE}>
-                {
-                  /*TODO: better to used dictionnary instead of nested ternary condition */
-                  route.name === 'profile' ? (
-                    <Profile name='information-circle-outline' size={22} color='#000' />
-                  ) : route.name === 'transactionList' ? (
-                    <TransactionList name='checklist' size={22} color='#000' />
-                  ) : route.name === 'paymentInitiation' ? (
-                    <PaymentInit name='cash-multiple' size={22} color='#000' />
-                  ) : route.name === 'paymentList' ? (
-                    <PaymentList name='format-list-bulleted' size={22} color='#000' />
-                  ) : (
-                    <Home name='home' size={22} color='#000' />
-                  )
-                }
-              </View>
+              <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
               <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>
-                  {
-                    /*TODO: same here*/
-                    route.name === 'profile'
-                      ? translate('profileScreen.title')
-                      : route.name === 'transactionList'
-                      ? translate('transactionListScreen.title')
-                      : route.name === 'paymentInitiation'
-                      ? translate('paymentInitiationScreen.title')
-                      : route.name === 'paymentList'
-                      ? translate('paymentListScreen.title')
-                      : translate('homeScreen.title')
-                  }
-                </Text>
+                <Text style={TEXT_STYLE}>{TitleRoute[route.name]}</Text>
               </View>
               <View style={ICON_CONTAINER_STYLE}>
                 <Right name='chevron-thin-right' size={18} color='#000' />
@@ -225,6 +228,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
         style={LOGOUT_CONTAINER_STYLE}
         onPress={() => {
           authStore.logout();
+          props.navigation.closeDrawer();
         }}
       >
         <View style={POWER_CONTAINER_STYLE}>
