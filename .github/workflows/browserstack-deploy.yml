@@ -73,8 +73,7 @@ jobs:
 
       - name: Upload apps to amazon S3
         run: |
-          aws s3 cp android/app/build/outputs/apk/release/${{env.appName}}.apk s3://mobile-bpartners/android/
-          aws s3 cp android/app/build/outputs/bundle/release/${{env.appName}}.aab s3://mobile-bpartners/android/
+          aws s3 cp android/app/build/outputs/bundle/preprod/${{env.appName}}.aab s3://mobile-bpartners/android/preprod-bundle
 
   ios-browserstack:
     env:
