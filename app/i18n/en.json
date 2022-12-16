@@ -172,5 +172,11 @@
   "logoutScreen": {
     "title": "Logout",
     "swan": "Open Swan"
+  },
+  "legalFileScreen": {
+    "accept": "Accept",
+    "continue": "Continue",
+    "reload": "Reload",
+    "errorMessage": "An error occurred while loading"
   }
 }

@@ -156,5 +156,10 @@
     "title": "Déconnexion",
     "swan": "Ouvrir Swan",
     "swan": "Ouvrir Swan"
+  },
+  "legalFileScreen": {
+    "accept": "Accept",
+    "continue": "Continue",
+    "reload": "recharger"
   }
 }
