@@ -15,11 +15,13 @@ import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore } = useStores();
+  const { transactionStore, legalFilesStore } = useStores();
+
   const { transactions, loadingTransactions, currentBalance, currentMonthSummary } = transactionStore;
 
   useEffect(() => {
     const date = new Date();
+    legalFilesStore.getLegalFiles();
     transactionStore.getTransactions();
     transactionStore.getTransactionsSummary(date.getFullYear());
   }, []);

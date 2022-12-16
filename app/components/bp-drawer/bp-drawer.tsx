@@ -118,13 +118,13 @@ const CENTER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center' };
 const CENTER_STYLE: ViewStyle = { alignItems: 'center' };
 
 type RouteNameProps = {
-  home: string | React.ReactElement,
-  profile: string | React.ReactElement,
-  transactionList: string | React.ReactElement,
-  paymentInitiation: string | React.ReactElement,
-  paymentList: string | React.ReactElement,
-  welcome: string | React.ReactElement,
-  oauth: string | React.ReactElement,
+  home: string | React.ReactElement;
+  profile: string | React.ReactElement;
+  transactionList: string | React.ReactElement;
+  paymentInitiation: string | React.ReactElement;
+  paymentList: string | React.ReactElement;
+  welcome: string | React.ReactElement;
+  oauth: string | React.ReactElement;
 };
 
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
@@ -149,7 +149,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
     paymentInitiation: <PaymentInit name='cash-multiple' size={22} color='#000' />,
     paymentList: <PaymentList name='format-list-bulleted' size={22} color='#000' />,
     welcome: <Home name='home' size={22} color='#000' />,
-    oauth: <Lock name='lock-closed-outline' size={22} color='#000' />
+    oauth: <Lock name='lock-closed-outline' size={22} color='#000' />,
   };
 
   const handlePress = useCallback(async () => {
@@ -202,13 +202,9 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
         {props.state.routes.slice(0, 5).map((route: any) => {
           return (
             <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
-              <View style={ICON_CONTAINER_STYLE}>
-                {IconRoute[route.name]}
-              </View>
+              <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
               <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>
-                  {TitleRoute[route.name]}
-                </Text>
+                <Text style={TEXT_STYLE}>{TitleRoute[route.name]}</Text>
               </View>
               <View style={ICON_CONTAINER_STYLE}>
                 <Right name='chevron-thin-right' size={18} color='#000' />

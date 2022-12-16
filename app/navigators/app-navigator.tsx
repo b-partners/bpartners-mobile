@@ -16,7 +16,7 @@ import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { InvoiceStatus } from '../models/entities/invoice/invoice';
-import { ErrorBoundary, HomeScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen } from '../screens';
+import { ErrorBoundary, HomeScreen, LegalFileScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen } from '../screens';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
@@ -45,6 +45,7 @@ export type NavigatorParamList = {
   invoices: undefined;
   invoiceForm: undefined;
   paymentList: undefined;
+  legalFile: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
@@ -59,12 +60,13 @@ const AppStack = observer(function () {
     drawerItemStyle: { display: 'none' },
   };
 
-  const { authStore } = useStores();
+  const { authStore, legalFilesStore } = useStores();
   const { accessToken, currentAccount, currentAccountHolder, currentUser } = authStore;
 
   const hasAccount = currentAccount && !!currentAccount?.id;
   const hasAccountHolder = currentAccountHolder && !!currentAccountHolder?.id;
   const hasUser = currentUser && !!currentUser?.id;
+  const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
   const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
 
   return (
@@ -78,7 +80,11 @@ const AppStack = observer(function () {
       initialRouteName={accessToken ? 'home' : 'welcome'}
       drawerContent={props => <BpDrawer {...props} />}
     >
-      {isAuthenticated ? (
+      {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
+        <>
+          <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      ) : isAuthenticated && hasApprovedLegalFiles ? (
         <>
           <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
@@ -173,5 +179,5 @@ AppNavigator.displayName = 'AppNavigator';
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-const exitRoutes = ['welcome'];
+const exitRoutes = ['welcome', 'home'];
 export const canExit = (routeName: string) => exitRoutes.includes(routeName);
