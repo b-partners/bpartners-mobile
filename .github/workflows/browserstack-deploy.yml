@@ -54,7 +54,6 @@ jobs:
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
           rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
 
-
       - name: Build bundle preprod
         run: cd android && ./gradlew bundlePreprod
 
