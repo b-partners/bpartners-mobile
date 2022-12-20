@@ -74,13 +74,15 @@ const SWAN_CONTAINER_STYLE: ViewStyle = {
 const TEXT_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 16,
-  fontFamily: 'sans-serif-light',
+  // TODO: Font not recognized in iOs, fix this
+  // fontFamily: 'sans-serif-light',
 };
 
 const INFO_TEXT_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 13,
-  fontFamily: 'sans-serif-light',
+  // TODO: Idem
+  // fontFamily: 'sans-serif-light',
 };
 
 const TEXT_CONTAINER_STYLE: ViewStyle = {

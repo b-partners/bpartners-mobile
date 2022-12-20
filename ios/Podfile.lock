@@ -455,8 +455,6 @@ PODS:
     - React-Core
   - RNSVG (12.1.0):
     - React
-  - RNVectorIcons (9.2.0):
-    - React-Core
   - Sentry (7.29.0):
     - Sentry/Core (= 7.29.0)
   - Sentry/Core (7.29.0)
@@ -553,7 +551,6 @@ DEPENDENCIES:
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -702,8 +699,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-snackbar"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -784,7 +779,6 @@ SPEC CHECKSUMS:
   RNSentry: db7fd7b66efda28885e4e904a8b5e7349aec61c1
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Sentry: 4272663eb0eda312024d795ca3f5a562a8ce5e18
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
