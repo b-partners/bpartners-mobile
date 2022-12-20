@@ -69,6 +69,9 @@ jobs:
           sdkmanger --install 'patcher;v4'
           sdkmanager --install 'platform-tools'
 
+      - name: Run headless android emulator
+        run: emulator -avd Pixel_5_API_31 -no-audio -no-window
+
       - name: Create android virtual device
         run: |
           echo no | avdmanager create avd --force --name "Pixel_5_API_31" --abi "x86_64" --tag "google_apis" --package 'system-images;android-31;google_apis;x86_64' --device 'pixel_5'
