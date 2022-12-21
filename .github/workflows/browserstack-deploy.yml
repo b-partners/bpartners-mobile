@@ -17,7 +17,7 @@ jobs:
 
   android-browserstack:
 
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev-store' || github.event.inputs.platform == 'android-preprod-store' || || github.event.inputs.platform == 'android-prod-store'
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev-store' || github.event.inputs.platform == 'android-preprod-store' || github.event.inputs.platform == 'android-prod-store'
 
     runs-on: ubuntu-latest
 
