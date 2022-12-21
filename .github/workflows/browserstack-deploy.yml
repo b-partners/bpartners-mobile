@@ -7,9 +7,9 @@ on:
         description: 'Platform'
         options:
           - all
-          - android-dev-store
-          - android-preprod-store
-          - android-prod-store
+          - android-dev
+          - android-preprod
+          - android-prod
           - ios-store
         required: true
 
@@ -17,7 +17,7 @@ jobs:
 
   android-dev-browserstack:
 
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev-store' 
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev' 
     
     runs-on: ubuntu-latest
 
@@ -46,7 +46,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-        if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev-store' 
+        if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev' 
 
       - run: |
           sh ./setDevEnv.sh
@@ -64,7 +64,7 @@ jobs:
       - name: Build apk debug
         run: cd android && ./gradlew assembleDebug
 
-      - run: echo "debug=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
+      - run: echo "debug=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - run: |
           mv android/app/build/outputs/bundle/debug/app-debug.aab android/app/build/outputs/bundle/debug/${{ env.debug }}.aab
@@ -81,7 +81,7 @@ jobs:
 
   android-preprod-browserstack:
 
-    if: github.event.inputs.platform == 'all' ||  github.event.inputs.platform == 'android-preprod-store'
+    if: github.event.inputs.platform == 'all' ||  github.event.inputs.platform == 'android-preprod'
 
     runs-on: ubuntu-latest
 
@@ -141,7 +141,7 @@ jobs:
           aws s3 cp android/app/build/outputs/apk/preprod/${{env.preprod}}.apk s3://mobile-bpartners/android/preprod-apk/
 
   android-prod-browserstack:      
-    if: github.event.inputs.platform == 'all' ||  github.event.inputs.platform == 'android-prod-store'
+    if: github.event.inputs.platform == 'all' ||  github.event.inputs.platform == 'android-prod'
 
     runs-on: ubuntu-latest
 
