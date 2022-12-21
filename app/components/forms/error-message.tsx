@@ -17,11 +17,11 @@ const ERROR_MESSAGE_CONTAINER: ViewStyle = {
 interface ErrorMessageProps {
   error?: string;
   style?: TextStyle;
-  visible?: boolean
+  visible?: boolean;
 }
 
 // TODO: make this component more generic
-function ErrorMessage({ error, visible=false, style }: ErrorMessageProps) {
+function ErrorMessage({ error, visible = false, style }: ErrorMessageProps) {
   if (!error || !visible) return null;
   return (
     <View style={ERROR_MESSAGE_CONTAINER}>

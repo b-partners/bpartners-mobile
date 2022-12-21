@@ -1,23 +1,21 @@
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
+import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import uuid from 'react-native-uuid';
+import * as yup from 'yup';
 
-import { AutocompletionFormField, Button, Separator, Text, TextField } from '../../../components';
+import { AutocompletionFormField, Button, Icon, Separator, Switch, Text, TextField } from '../../../components';
 import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
 import { translate } from '../../../i18n';
 import { Customer } from '../../../models/entities/customer/customer';
 import { Invoice, InvoiceSnapshotIn, InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { Product } from '../../../models/entities/product/product';
-import { spacing } from '../../../theme';
+import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { currencyPipe, datePipe } from "../../../utils/pipes";
-import { BUTTON_STYLE, INPUT_LABEL_STYLE, INPUT_TEXT_STYLE, LABEL_CONTAINER_STYLE, SECTION_STYLE, TEXT_FIELD_STYLE, TOTAL_SECTION_STYLE } from '../styles';
+import { currencyPipe } from '../../../utils/pipes';
 import CardElement from './CardElement';
 import EditableTextField from './EditableTextField';
-import { ProductFormField } from './product-form-field';
-import * as yup from "yup";
-import GridHeaderContent from "./grid-header-content";
+import GridHeaderContent from './grid-header-content';
 
 type InvoiceFormProps = {
   invoice: Partial<InvoiceSnapshotIn>;
@@ -26,20 +24,65 @@ type InvoiceFormProps = {
   onSaveInvoice: (invoice: Partial<InvoiceSnapshotIn>) => Promise<void>;
 };
 
-const FULL: ViewStyle = {flex: 1}
-const FLEX_ROW: ViewStyle = {...FULL, flexDirection: "row"}
-const DATEPICKER_ROW_STYLE: ViewStyle = {
-  ...FLEX_ROW,
-  justifyContent: 'space-between',
-  marginBottom: spacing[4],
-};
+const FULL: ViewStyle = { flex: 1 };
+const FLEX_ROW: ViewStyle = { ...FULL, flexDirection: 'row' };
+// const DATEPICKER_ROW_STYLE: ViewStyle = {
+//   ...FLEX_ROW,
+//   justifyContent: 'space-between',
+//   marginBottom: spacing[4],
+// };
 
 const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
   fontSize: 14,
 };
 
-const EDITABLE_TF_CONTAINER = { borderWidth: 0.5, borderColor: palette.lighterGrey, flex: 1 };
+const EDITABLE_TF_CONTAINER: ViewStyle = { borderWidth: 0.5, borderColor: palette.lighterGrey, flex: 1 };
+const BUTTON_OUTLINE_STYLE: ViewStyle = {
+  marginHorizontal: '5%',
+  borderWidth: 1,
+  borderRadius: 40,
+  paddingVertical: spacing[3],
+  paddingHorizontal: spacing[2],
+  borderColor: color.primary,
+  backgroundColor: color.transparent,
+};
 
+const BUTTON_FILL_STYLE: ViewStyle = {
+  backgroundColor: color.primary,
+  marginHorizontal: '5%',
+  borderRadius: 40,
+  paddingVertical: spacing[3],
+  paddingHorizontal: spacing[2],
+};
+
+const ADD_BUTTON_TEXT_STYLE: TextStyle = { fontWeight: '400', color: color.primary };
+
+const HEADER_RIGHT_ROW: ViewStyle = { ...EDITABLE_TF_CONTAINER, flex: 1.5 };
+
+const LABEL_STYLE: TextStyle = { color: palette.greyDarker, fontSize: 14, fontWeight: '700' };
+
+const CENTERED_FLEX: ViewStyle = {
+  paddingVertical: spacing[2],
+  paddingRight: spacing[2],
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const SAVE_ICON_CONTAINER: ViewStyle = {
+  borderWidth: 2,
+  borderColor: palette.lighterPurple,
+  width: 25,
+  height: 25,
+  borderRadius: 25,
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const DATE_PICKER_FIELD_CONTAINER: ViewStyle = { ...EDITABLE_TF_CONTAINER, padding: spacing[4] };
+
+const SEPARATOR_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
+
+// todo: recycle unused code
 export function InvoiceForm(props: InvoiceFormProps) {
   const { invoice, customers, products, onSaveInvoice } = props;
   const [dataList, setDataList] = useState([]);
@@ -53,7 +96,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
     }
     return errors;
   };
-
+  const [legalNotice, setLegalNotice] = useState<boolean>(false);
+  const [showMyMailAddress, setShowMyMailAddress] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState({
     id: uuid.v4().toString(),
     ref: '',
@@ -85,8 +129,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
   };
   const validationSchema = yup.object().shape({
     title: yup.string().required(),
-    ref: yup.string().nullable().required()
-  })
+    ref: yup.string().nullable().required(),
+  });
   return (
     <View>
       <Formik
@@ -119,24 +163,37 @@ export function InvoiceForm(props: InvoiceFormProps) {
             <>
               <View style={{ flex: 1, flexWrap: 'wrap' }}>
                 <View style={FLEX_ROW}>
-                  <EditableTextField title={'Titre de devis'} formName={'title'} placeholder={'Taper le titre du devis'} containerStyle={EDITABLE_TF_CONTAINER} />
-                  <EditableTextField title={'Numéros du devis'} formName={'ref'} placeholder={'Taper le numéros du devis'} containerStyle={EDITABLE_TF_CONTAINER} />
+                  <EditableTextField title={'Titre de devis'} formName={'title'} placeholder={'Taper le titre du devis'} containerStyle={HEADER_RIGHT_ROW} />
+                  <EditableTextField
+                    title={'Numéros du devis'}
+                    formName={'ref'}
+                    placeholder={'Taper le numéros du devis'}
+                    containerStyle={EDITABLE_TF_CONTAINER}
+                  />
                 </View>
                 <View style={FLEX_ROW}>
-                  <GridHeaderContent headerText={"Date d'émission"} bodyText={`${datePipe(new Date().toUTCString())}`} style={EDITABLE_TF_CONTAINER}/>
+                  <EditableTextField title={'Nom du client'} formName={'ref'} placeholder={'Taper le nom du client'} containerStyle={HEADER_RIGHT_ROW} />
+                  <View style={DATE_PICKER_FIELD_CONTAINER}>
+                    <DatePickerField
+                      value={initialValues.sendingDate}
+                      onDateChange={date => setInitialValues({ ...initialValues, sendingDate: date })}
+                      labelText={"Date d'émission"}
+                      labelStyle={LABEL_STYLE}
+                    />
+                  </View>
                 </View>
-                <View style={FLEX_ROW}>
-                  {/*TODO show date picker*/}
-                  {/*<EditableTextField title={'Titre de devis'} formName={''} placeholder={'Placeholder'} containerStyle={EDITABLE_TF_CONTAINER} />*/}
-                  {/*  <View style={DATEPICKER_ROW_STYLE}>
+                {/*<View style={FLEX_ROW}>
+                  TODO show date picker
+                  <EditableTextField title={'Titre de devis'} formName={''} placeholder={'Placeholder'} containerStyle={EDITABLE_TF_CONTAINER} />
+                    <View style={DATEPICKER_ROW_STYLE}>
                     <DatePickerField
                       labelTx='invoiceScreen.labels.sendingDate'
                       value={values.sendingDate}
                       onDateChange={date => setFieldValue("sendingDate", date)}
                       validationError={errors.sendingDate as string}
                     />
-                </View>*/}
-                  {/*<AutocompletionFormField
+                </View>
+                  <AutocompletionFormField
                     containerStyle={{ marginBottom: spacing[4], flex: 1 }}
                     id='id'
                     title='name'
@@ -155,112 +212,147 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     headerText={"Date de l'émission"}
                     bodyText={new Date().toLocaleDateString()}
                     style={{ flex: 1, borderWidth: 1, borderColor: palette.greyDarker }}
-                  />*/}
-                </View>
+                  />
+                // </View>*/}
               </View>
               <View>
+                {/*list of the elements to be created*/}
                 <CardElement />
-                <Button text={'Ajouter un autre élément'} style={BUTTON_STYLE} onPress={handlePress} />
+                <Button text={'Ajouter un autre élément'} style={BUTTON_OUTLINE_STYLE} textStyle={ADD_BUTTON_TEXT_STYLE} onPress={handlePress} />
               </View>
-
-              <TextField
-                testID='ref'
-                nativeID='ref'
-                style={TEXT_FIELD_STYLE}
-                labelContainerStyle={LABEL_CONTAINER_STYLE}
-                labelStyle={INPUT_LABEL_STYLE}
-                inputStyle={INPUT_TEXT_STYLE}
-                labelTx='invoiceScreen.labels.ref'
-                value={values.ref}
-                onChangeText={ref => setFieldValue('ref', ref)}
-              />
-
-              <View style={DATEPICKER_ROW_STYLE}>
-                <DatePickerField
-                  labelTx='invoiceScreen.labels.toPayAt'
-                  value={values.toPayAt}
-                  onDateChange={date => setFieldValue('toPayAt', date)}
-                  validationError={errors.toPayAt as string}
-                />
-              </View>
-              <Text tx='invoiceScreen.labels.customerSection' style={SECTION_STYLE} />
-              <Separator style={{ marginBottom: spacing[4] }} />
-              <Text tx='invoiceScreen.labels.productSection' style={SECTION_STYLE} />
               <View>
-                <AutocompletionFormField
-                  value={''}
-                  data={products.filter(item => {
-                    const selectedProducts = values.products.map(p => p.id);
-                    return !selectedProducts.includes(item.id);
-                  })}
-                  id='id'
-                  title='description'
-                  onValueChange={item => {
-                    if (!item) {
-                      return;
-                    }
-                    const product = products.find(p => item && item.id === p.id);
-                    setFieldValue('products', [...values.products, { ...product, quantity: 1 }]);
-                  }}
-                  onSearch={() => {}}
-                  onClear={() => {}}
-                />
-                <View style={{ marginTop: spacing[4] }}>
-                  <FlatList<Product>
-                    data={values.products}
-                    renderItem={({ item }) => (
-                      <ProductFormField
-                        key={item.id}
-                        product={item}
-                        onQuantityChange={quantity => {
-                          const selectedProducts = values.products.map(p =>
-                            p.id === item.id
-                              ? {
-                                  ...p,
-                                  quantity,
-                                }
-                              : p
-                          );
-                          setFieldValue('products', selectedProducts);
-                        }}
-                        onRemoveProduct={product => {
-                          setFieldValue(
-                            'products',
-                            values.products.filter(p => p.id !== product.id)
-                          );
-                        }}
-                      />
-                    )}
+                <View>
+                  <Text text={'Durée de validité limité'} />
+                </View>
+                <View style={FLEX_ROW}>
+                  <EditableTextField
+                    title={'Délais Du Paiement'}
+                    formName={'title'}
+                    placeholder={'Taper le titre du devis'}
+                    containerStyle={EDITABLE_TF_CONTAINER}
+                  />
+                  <EditableTextField
+                    title={'Acompte'}
+                    formName={'acompte'}
+                    placeholder={'Taper '}
+                    containerStyle={EDITABLE_TF_CONTAINER}
+                    value={'10'}
+                    suffix={' %'}
                   />
                 </View>
+                <View style={[FLEX_ROW, CENTERED_FLEX]}>
+                  <GridHeaderContent headerText={'Mentions légales personalisés'} bodyText={'Bon pour accord Signature du client'} style={FULL} />
+                  <Switch style={FULL} value={legalNotice} onToggle={newValue => setLegalNotice(newValue)} />
+                </View>
+                <Separator style={SEPARATOR_STYLE} />
+                <View style={[FLEX_ROW, CENTERED_FLEX]}>
+                  <GridHeaderContent headerText={'Afficher mon addresse email'} bodyText={'user@gmail.com'} style={FULL} />
+                  <Switch style={FULL} value={showMyMailAddress} onToggle={newValue => setShowMyMailAddress(newValue)} />
+                </View>
+                <Separator style={SEPARATOR_STYLE} />
               </View>
+              {/*<TextField*/}
+              {/*  testID='ref'*/}
+              {/*  nativeID='ref'*/}
+              {/*  style={TEXT_FIELD_STYLE}*/}
+              {/*  labelContainerStyle={LABEL_CONTAINER_STYLE}*/}
+              {/*  labelStyle={INPUT_LABEL_STYLE}*/}
+              {/*  inputStyle={INPUT_TEXT_STYLE}*/}
+              {/*  labelTx='invoiceScreen.labels.ref'*/}
+              {/*  value={values.ref}*/}
+              {/*  onChangeText={ref => setFieldValue('ref', ref)}*/}
+              {/*/>*/}
 
-              <Separator style={{ marginBottom: spacing[4] }} />
+              {/*<View style={DATEPICKER_ROW_STYLE}>*/}
+              {/*  <DatePickerField*/}
+              {/*    labelTx='invoiceScreen.labels.toPayAt'*/}
+              {/*    value={values.toPayAt}*/}
+              {/*    onDateChange={date => setFieldValue('toPayAt', date)}*/}
+              {/*    validationError={errors.toPayAt as string}*/}
+              {/*  />*/}
+              {/*</View>*/}
+              {/*<Text tx='invoiceScreen.labels.customerSection' style={SECTION_STYLE} />*/}
+              {/*<Separator style={{ marginBottom: spacing[4] }} />*/}
+              {/*<Text tx='invoiceScreen.labels.productSection' style={SECTION_STYLE} />*/}
+              {/*<View>*/}
+              {/*  <AutocompletionFormField*/}
+              {/*    value={''}*/}
+              {/*    data={products.filter(item => {*/}
+              {/*      const selectedProducts = values.products.map(p => p.id);*/}
+              {/*      return !selectedProducts.includes(item.id);*/}
+              {/*    })}*/}
+              {/*    id='id'*/}
+              {/*    title='description'*/}
+              {/*    onValueChange={item => {*/}
+              {/*      if (!item) {*/}
+              {/*        return;*/}
+              {/*      }*/}
+              {/*      const product = products.find(p => item && item.id === p.id);*/}
+              {/*      setFieldValue('products', [...values.products, { ...product, quantity: 1 }]);*/}
+              {/*    }}*/}
+              {/*    onSearch={() => {}}*/}
+              {/*    onClear={() => {}}*/}
+              {/*  />*/}
+              {/*  <View style={{ marginTop: spacing[4] }}>*/}
+              {/*    <FlatList<Product>*/}
+              {/*      data={values.products}*/}
+              {/*      renderItem={({ item }) => (*/}
+              {/*        <ProductFormField*/}
+              {/*          key={item.id}*/}
+              {/*          product={item}*/}
+              {/*          onQuantityChange={quantity => {*/}
+              {/*            const selectedProducts = values.products.map(p =>*/}
+              {/*              p.id === item.id*/}
+              {/*                ? {*/}
+              {/*                    ...p,*/}
+              {/*                    quantity,*/}
+              {/*                  }*/}
+              {/*                : p*/}
+              {/*            );*/}
+              {/*            setFieldValue('products', selectedProducts);*/}
+              {/*          }}*/}
+              {/*          onRemoveProduct={product => {*/}
+              {/*            setFieldValue(*/}
+              {/*              'products',*/}
+              {/*              values.products.filter(p => p.id !== product.id)*/}
+              {/*            );*/}
+              {/*          }}*/}
+              {/*        />*/}
+              {/*      )}*/}
+              {/*    />*/}
+              {/*  </View>*/}
+              {/*</View>*/}
 
-              <View style={TOTAL_SECTION_STYLE}>
-                <Text text={`${translate('invoiceScreen.labels.totalSection')}: `} style={SECTION_STYLE} />
-                <Text text={format(total)} />
-              </View>
+              {/*<Separator style={{ marginBottom: spacing[4] }} />*/}
 
-              <Separator style={{ marginBottom: spacing[4] }} />
+              {/*<View style={TOTAL_SECTION_STYLE}>*/}
+              {/*  <Text text={`${translate('invoiceScreen.labels.totalSection')}: `} style={SECTION_STYLE} />*/}
+              {/*  <Text text={format(total)} />*/}
+              {/*</View>*/}
 
-              <TextField
-                testID='comment'
-                nativeID='comment'
-                style={TEXT_FIELD_STYLE}
-                labelContainerStyle={LABEL_CONTAINER_STYLE}
-                labelStyle={INPUT_LABEL_STYLE}
-                inputStyle={INPUT_TEXT_STYLE}
-                labelTx='invoiceScreen.labels.comment'
-                value={values.comment}
-                onChangeText={comment => setFieldValue('comment', comment)}
-              />
+              {/*<Separator style={{ marginBottom: spacing[4] }} />*/}
 
-              <View>
+              {/*<TextField*/}
+              {/*  testID='comment'*/}
+              {/*  nativeID='comment'*/}
+              {/*  style={TEXT_FIELD_STYLE}*/}
+              {/*  labelContainerStyle={LABEL_CONTAINER_STYLE}*/}
+              {/*  labelStyle={INPUT_LABEL_STYLE}*/}
+              {/*  inputStyle={INPUT_TEXT_STYLE}*/}
+              {/*  labelTx='invoiceScreen.labels.comment'*/}
+              {/*  value={values.comment}*/}
+              {/*  onChangeText={comment => setFieldValue('comment', comment)}*/}
+              {/*/>*/}
+
+              <View style={[FLEX_ROW, { marginVertical: spacing[6] }]}>
+                <View style={SAVE_ICON_CONTAINER}>
+                  <Icon icon={'save'} />
+                </View>
                 <Button
                   disabled={!!Object.keys(errors).length}
                   tx='invoiceScreen.labels.invoiceForm'
                   textStyle={SUBMIT_BUTTON_TEXT_STYLE}
+                  style={BUTTON_FILL_STYLE}
                   onPress={() => handleSubmit()}
                 />
               </View>

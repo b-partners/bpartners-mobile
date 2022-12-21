@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { Text } from '../../../components';
 import { spacing } from '../../../theme';
@@ -10,12 +10,14 @@ type TGridHeaderContent = {
   bodyText: string;
   style?: ViewStyle;
 };
+const HEADER_TEXT_STYlE: TextStyle = { color: palette.greyDarker, fontSize: 14, fontWeight: '700' };
+const MAIN_CONTAINER: ViewStyle = { padding: spacing[4] };
 
 const GridHeaderContent: FC<TGridHeaderContent> = props => {
   const { headerText, bodyText, style } = props;
   return (
-    <View style={{ padding: spacing[4], ...style }}>
-      <Text text={headerText} style={{ color: palette.greyDarker, fontSize: 14, fontWeight: '700' }} />
+    <View style={{ ...MAIN_CONTAINER, ...style }}>
+      <Text text={headerText} style={HEADER_TEXT_STYlE} />
       <Text text={bodyText} style={{ color: palette.textClassicColor, fontSize: 18, fontWeight: '700' }} />
     </View>
   );

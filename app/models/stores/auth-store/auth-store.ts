@@ -40,7 +40,7 @@ export const AuthStoreModel = types
   .actions(self => ({
     catchOrThrow: (error: Error) => {
       const errorMessage = error.message;
-      if (errorMessage == "cannot-connect") return showMessage("Verify your connection", {backgroundColor: palette.pastelRed});
+      if (errorMessage == 'cannot-connect') return showMessage('Verify your connection', { backgroundColor: palette.pastelRed });
       if (errorMessage === 'forbidden') return self.reset();
       throw error;
     },
