@@ -13,8 +13,8 @@ import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import env from '../app/config/env';
 import { ToggleStorybook } from '../storybook/toggle-storybook';
+import env from './config/env';
 import './i18n';
 import { RootStore, RootStoreProvider, setupRootStore } from './models';
 import { AppNavigator, useNavigationPersistence } from './navigators';
