@@ -1,15 +1,15 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export const CustomerModel = types.model('Customer').props({
-  id: types.maybeNull(types.string),
-  name: types.maybeNull(types.string),
-  email: types.maybeNull(types.string),
-  phone: types.maybeNull(types.string),
-  address: types.maybeNull(types.string),
-  website: types.maybeNull(types.string),
-  zipCode: types.maybeNull(types.number),
-  city: types.maybeNull(types.string),
-  country: types.maybeNull(types.string),
+  id: types.maybe(types.maybeNull(types.string)),
+  name: types.maybe(types.maybeNull(types.string)),
+  email: types.maybe(types.maybeNull(types.string)),
+  phone: types.maybe(types.maybeNull(types.string)),
+  address: types.maybe(types.maybeNull(types.string)),
+  website: types.maybe(types.maybeNull(types.string)),
+  zipCode: types.maybe(types.maybeNull(types.number)),
+  city: types.maybe(types.maybeNull(types.string)),
+  country: types.maybe(types.maybeNull(types.string)),
 });
 
 export interface Customer extends Instance<typeof CustomerModel> {}

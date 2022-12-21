@@ -85,7 +85,7 @@ export const AuthStoreModel = types
   }))
   .actions(() => ({
     whoamiFail: error => {
-      __DEV__ && console.tron.log(error.message);
+      __DEV__ && console.tron.log(error.message || error);
       throw error;
     },
   }))
