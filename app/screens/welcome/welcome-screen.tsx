@@ -58,6 +58,7 @@ const FOOTER_CONTENT: ViewStyle = {
   paddingHorizontal: spacing[4],
   flexDirection: 'row',
   justifyContent: 'space-between',
+  // justifyContent: 'space-between',
 };
 
 WebBrowser.maybeCompleteAuthSession();
