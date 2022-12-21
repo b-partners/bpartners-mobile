@@ -42,7 +42,7 @@ const BUTTON_STYLE: ViewStyle = {
 const BUTTON_TEXT_STYLE = { fontSize: 14 };
 const SEPARATOR_STYLE = { borderColor: palette.lighterGrey };
 const FOOTER_COMPONENT_STYLE = { marginBottom: spacing[5] };
-export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
+export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { loading, quotationByMonth } = invoiceStore;
   const sectionsQuotation = useCallback(() => {
@@ -102,7 +102,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
             ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
             renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
           />
-          <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} />
+          <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
         </Screen>
       </View>
     </ErrorBoundary>
