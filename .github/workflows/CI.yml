@@ -73,12 +73,8 @@ jobs:
         run: |
           echo no | avdmanager create avd --force --name "Pixel_5_API_31" --abi "x86_64" --tag "google_apis" --package 'system-images;android-31;google_apis;x86_64' --device 'pixel_5'
 
-      - run: echo "alias emu="$ANDROID_HOME/tools/emulator"" >> .profile
-
-      - run: source .profile
-
       - name: Run headless android emulator
-        run: emu @Pixel_5_API_31 -no-audio -no-window -no-cache
+        run: emulator @Pixel_5_API_31 -no-audio -no-window -no-cache
 
       - name: Run headless android emulator
         run: emulator -avd Pixel_5_API_31 -no-audio -no-window
