@@ -12,6 +12,7 @@ export const icons = {
   coins: require('./coins.png'),
   info: require('./info.png'),
   trash: require('./trash.png'),
+  save: require('./save.png'),
 };
 
 export type IconTypes = keyof typeof icons;
