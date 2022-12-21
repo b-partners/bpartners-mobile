@@ -125,7 +125,7 @@ jobs:
       - name: Build apk preprod
         run: cd android && ./gradlew assemblePreprod
 
-      - run: echo "preprod=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
+      - run: echo "preprod=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - run: |
           mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/bundle/preprod/${{ env.preprod }}.aab
@@ -185,7 +185,7 @@ jobs:
       - name: Build apk prod
         run: cd android && ./gradlew assembleRelease
 
-      - run: echo "prod=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
+      - run: echo "prod=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - run: |
           mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/${{ env.prod }}.aab
