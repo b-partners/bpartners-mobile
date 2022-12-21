@@ -2,22 +2,27 @@ name: deploy
 on:
   workflow_dispatch:
     inputs:
-      platform:
+      OS:
         type: choice
-        description: 'Platform'
+        description: 'OS'
         options:
-          - all
-          - android-dev
-          - android-preprod
-          - android-prod
-          - ios-store
+          - android
+          - ios
+        required: true
+      env:
+        type: choice
+        description: 'env'
+        options:
+          - dev
+          - preprod
+          - prod
         required: true
 
 jobs:
 
   android-dev-browserstack:
 
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev' 
+    if: github.event.inputs.OS == 'android' && github.event.inputs.env == 'dev'
     
     runs-on: ubuntu-latest
 
@@ -81,7 +86,7 @@ jobs:
 
   android-preprod-browserstack:
 
-    if: github.event.inputs.platform == 'all' ||  github.event.inputs.platform == 'android-preprod'
+    if: github.event.inputs.OS == 'android' && github.event.inputs.env == 'preprod'
 
     runs-on: ubuntu-latest
 
@@ -141,7 +146,7 @@ jobs:
           aws s3 cp android/app/build/outputs/apk/preprod/${{env.preprod}}.apk s3://mobile-bpartners/android/preprod-apk/
 
   android-prod-browserstack:      
-    if: github.event.inputs.platform == 'all' ||  github.event.inputs.platform == 'android-prod'
+    if: github.event.inputs.OS == 'android' && github.event.inpurs.env = 'prod'
 
     runs-on: ubuntu-latest
 
