@@ -146,7 +146,7 @@ jobs:
           aws s3 cp android/app/build/outputs/apk/preprod/${{env.preprod}}.apk s3://mobile-bpartners/android/preprod-apk/
 
   android-prod-browserstack:      
-    if: github.event.inputs.OS == 'android' && github.event.inputs.env = 'prod'
+    if: github.event.inputs.OS == 'android' && github.event.inputs.env == 'prod'
 
     runs-on: ubuntu-latest
 
