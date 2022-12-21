@@ -50,7 +50,7 @@ jobs:
           npm install --location=global react-native-cli
 
       - name: Build debug app for android
-        run: yarn android:build:debug:e2e
+        run: yarn build:android:debug:e2e
 
       - name: Setup Java
         uses: actions/setup-java@v2
