@@ -25,11 +25,12 @@ export const CodeExchangeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth
         await authStore.whoami();
       } catch (error) {
         navigation.navigate('welcome');
+        __DEV__ && console.tron.log(error);
         throw error;
       }
     }
 
-    exchangeCode().then(result => console.tron.log(result));
+    exchangeCode();
   }, [route]);
 
   return (
