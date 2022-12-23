@@ -55,7 +55,9 @@ jobs:
           sh ./setDevEnv.sh
 
       - run: yarn build-android
-
+      
+      - run: cd android && ./gradlew clean
+      
       - name: Build bundle debug
         run: cd android && ./gradlew bundleDebug
       
