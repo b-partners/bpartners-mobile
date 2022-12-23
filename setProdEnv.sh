@@ -8,7 +8,7 @@ CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/env/CLIENT_ID_PROD
 CLIENT_SECRET=$(aws ssm get-parameters --names "/bpartners/mobile/env/CLIENT_SECRET_PROD" --with-decryption --output text --query "Parameters[*].Value")
 SENTRY_ENV=$(aws ssm get-parameters --names "/bpartners/mobile/env/SENTRY_PROD_ENV" --with-decryption --output text --query "Parameters[*].Value")
 SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/env/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value")
-AHUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/env/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
+AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/env/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
 TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/env/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
 
 # Create the env file
