@@ -63,5 +63,6 @@ buck-out/
 /ios/Pods/
 /vendor/bundle/
 
-.env
+.env.*
+!.env.template
 /.expo/
