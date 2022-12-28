@@ -1,15 +1,15 @@
 # Get all ssm parameters from aws
 
-API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/env/API_DEV_URL" --with-decryption --output text --query "Parameters[*].Value")
-SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/env/SUCCESS_DEV_URL" --with-decryption --output text --query "Parameters[*].Value")
-FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/env/FAILURE_DEV_URL" --with-decryption --output text --query "Parameters[*].Value")
-SWAN_URL=$(aws ssm get-parameters --names "/bpartners/mobile/env/SWAN_URL" --with-decryption --output text --query "Parameters[*].Value")
-CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/env/CLIENT_ID_DEV" --with-decryption --output text --query "Parameters[*].Value")
-CLIENT_SECRET=$(aws ssm get-parameters --names "/bpartners/mobile/env/CLIENT_SECRET_DEV" --with-decryption --output text --query "Parameters[*].Value")
-SENTRY_ENV=$(aws ssm get-parameters --names "/bpartners/mobile/env/SENTRY_DEV_ENV" --with-decryption --output text --query "Parameters[*].Value")
-SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/env/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value")
-AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/env/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
-TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/env/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
+API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/dev/API_URL" --with-decryption --output text --query "Parameters[*].Value")
+SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/dev/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value")
+FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/dev/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value")
+SWAN_URL=$(aws ssm get-parameters --names "/bpartners/mobile/SWAN_URL" --with-decryption --output text --query "Parameters[*].Value")
+CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/dev/SWAN_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value")
+CLIENT_SECRET=$(aws ssm get-parameters --names "/bpartners/mobile/dev/SAWN_CLIENT_SECRET" --with-decryption --output text --query "Parameters[*].Value")
+SENTRY_ENV=$(aws ssm get-parameters --names "/bpartners/mobile/dev/SENTRY_DEV" --with-decryption --output text --query "Parameters[*].Value")
+SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value")
+AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
+TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
 
 # Create the env file
 touch .env
