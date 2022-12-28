@@ -1,11 +1,9 @@
-import { useFormikContext } from 'formik';
-import React, { FC, useState } from 'react';
-import { TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
-import * as yup from 'yup';
+import { Formik, useFormikContext } from 'formik';
+import React, { FC } from 'react';
+import { TouchableHighlight, View, ViewStyle } from 'react-native';
 
 import { Icon } from '../../../components';
-import Form from '../../../components/forms/form';
-import { ProductSnapshotOut } from '../../../models/entities/product/product';
+import { Product } from '../../../models/entities/product/product';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SHADOW_STYLE } from '../styles';
@@ -25,57 +23,53 @@ const BOTTOM_INFO_STYLE: ViewStyle = { flex: 1, flexDirection: 'row', overflow: 
 
 const EDITABLE_TEXT_FIELD_STYLE = { height: 46 };
 type ICardElement = {
-  onAdd: (product: ProductSnapshotOut) => void;
+  onAdd?: (product: Product) => void;
+  item?: Product;
+  onRemove?: (item: Product) => void;
 };
 
-const CardElement: FC<ICardElement> = ({ onAdd }) => {
-  const [initialValues] = useState({
-    title: '',
-    description: '',
-    unitPrice: '0',
-    quantity: 1,
-    tva: '0',
-  });
-  const { handleSubmit } = useFormikContext();
-  const VALIDATION_SCHEMA = yup.object().shape({
-    title: yup.string().required(),
-    description: yup.string(),
-    unitPrice: yup.number(),
-    quantity: yup.number(),
-    tva: yup.number(),
-  });
-
-  const [product, setProduct] = useState(null);
+const ProductCardItem: FC<ICardElement> = ({ onAdd, item, onRemove }) => {
+  const { values: invoiceForm } = useFormikContext();
 
   return (
-    <TouchableWithoutFeedback onBlur={() => onAdd(product)}>
-      <View style={DELETE_ACTION_POSITION_STYLE}>
-        <Icon icon={'trash'} />
-      </View>
+    <Formik initialValues={{}} onSubmit={() => {}}>
+      {() => {
+        return (
+          <>
+            <TouchableHighlight style={DELETE_ACTION_POSITION_STYLE} onPress={() => onRemove(invoiceForm['products'])}>
+              <Icon icon={'trash'} />
+              {/*<Text text={'Delete'} onPress={() => onAdd(product)} />*/}
+            </TouchableHighlight>
 
-      <View style={CONTAINER_STYLE}>
-        <Form initialValues={initialValues} validationSchema={VALIDATION_SCHEMA} onSubmit={values => setProduct(values)}>
-          <View>
-            <EditableTextField title={"Titre de l'élement"} formName={'title'} placeholder={'Taper le titre'} containerStyle={{ paddingBottom: spacing[0] }} />
-            <EditableTextField title={'Déscription (facultatif)'} formName={'description'} placeholder={'Taper le titre'} />
-          </View>
-          <View style={BOTTOM_INFO_STYLE}>
-            <EditableTextField
-              title={'Prix unitaire'}
-              suffix={' $'}
-              formName={'unitPrice'}
-              containerStyle={EDITABLE_TF_CONTAINER}
-              keyboardType={'number-pad'}
-              value={'0'}
-              style={EDITABLE_TEXT_FIELD_STYLE}
-            />
-            <EditableTextField title={'Quantité'} prefix={'x '} formName={'quantity'} containerStyle={EDITABLE_TF_CONTAINER} keyboardType={'number-pad'} />
-            <EditableTextField title={'TVA'} formName={'tva'} containerStyle={EDITABLE_TF_CONTAINER} suffix={' %'} />
-          </View>
-        </Form>
-      </View>
-    </TouchableWithoutFeedback>
+            <View style={CONTAINER_STYLE}>
+              <View>
+                <EditableTextField
+                  title={"Titre de l'élement"}
+                  formName={'title'}
+                  placeholder={'Taper le titre'}
+                  containerStyle={{ paddingBottom: spacing[0] }}
+                />
+                <EditableTextField title={'Déscription (facultatif)'} formName={'description'} placeholder={'Taper le titre'} />
+              </View>
+              <View style={BOTTOM_INFO_STYLE}>
+                <EditableTextField
+                  title={'Prix unitaire'}
+                  suffix={' $'}
+                  formName={'unitPrice'}
+                  containerStyle={EDITABLE_TF_CONTAINER}
+                  keyboardType={'number-pad'}
+                  value={'0'}
+                  style={EDITABLE_TEXT_FIELD_STYLE}
+                />
+                <EditableTextField title={'Quantité'} prefix={'x '} formName={'quantity'} containerStyle={EDITABLE_TF_CONTAINER} keyboardType={'number-pad'} />
+                <EditableTextField title={'TVA'} formName={'tva'} containerStyle={EDITABLE_TF_CONTAINER} suffix={' %'} />
+              </View>
+            </View>
+          </>
+        );
+      }}
+    </Formik>
   );
 };
 
-export default CardElement;
+export default ProductCardItem;
