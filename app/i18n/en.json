@@ -14,6 +14,9 @@
     "invalidEmail": "Invalid email address.",
     "somethingWentWrong": "Something went wrong. Please retry later."
   },
+  "drawer": {
+    "search": "I am looking for help, value, etc"
+  },
   "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",
     "readyForLaunch": "Ready for launch.",
@@ -169,5 +172,11 @@
   "logoutScreen": {
     "title": "Logout",
     "swan": "Open Swan"
+  },
+  "legalFileScreen": {
+    "accept": "Accept",
+    "continue": "Continue",
+    "reload": "Reload",
+    "errorMessage": "An error occurred while loading"
   }
 }

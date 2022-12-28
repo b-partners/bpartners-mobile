@@ -2,21 +2,84 @@ name: deploy
 on:
   workflow_dispatch:
     inputs:
-      platform:
+      OS:
         type: choice
-        description: 'Platform'
+        description: 'OS'
         options:
-          - all
-          - android-store
-          - ios-store
+          - android
+          - ios
         required: true
+      env:
+        type: choice
+        description: 'env'
+        options:
+          - dev
+          - preprod
+          - prod
+        required: true
+
 jobs:
-  android-browserstack:
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-store'
+
+  android-dev-browserstack:
+
+    if: github.event.inputs.OS == 'android' && github.event.inputs.env == 'dev'
+    
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: npm install --force
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+        if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev' 
+
+      - run: |
+          sh ./setDevEnv.sh
+
+      - run: yarn build-android
+
+      - name: Remove duplicated ressources
+        run: |
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
+
+      - name: Build bundle debug
+        run: cd android && ./gradlew bundleDebug
+      
+      - name: Build apk debug
+        run: cd android && ./gradlew assembleDebug
+
+      - run: echo "debug=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - run: |
+          mv android/app/build/outputs/bundle/debug/app-debug.aab android/app/build/outputs/bundle/debug/${{ env.debug }}.aab
+          mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/${{ env.debug }}.apk
+
+      - run: |
+          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/debug/${{ env.debug }}.aab"    
+          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/debug/${{ env.debug }}.apk"
+
+      - name: Upload apps to amazon S3
+        run: |
+          aws s3 cp android/app/build/outputs/bundle/debug/${{env.debug}}.aab s3://mobile-bpartners/android/debug-bundle/
+          aws s3 cp android/app/build/outputs/apk/debug/${{env.debug}}.apk s3://mobile-bpartners/android/debug-apk/
+
+  android-preprod-browserstack:
+
+    if: github.event.inputs.OS == 'android' && github.event.inputs.env == 'preprod'
 
     runs-on: ubuntu-latest
 
-    timeout-minutes: 25
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v2
@@ -32,22 +95,7 @@ jobs:
       - name: Setting up the environment variables
         run: |
           mkdir ~/.gradle
-          touch ~/.env
-          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }} ${{secrets.API_URL}} ${{secrets.SUCCESS_URL}} ${{secrets.FAILURE_URL}}
-
-      - run: cd android && ./gradlew clean
-
-      - name: Build release app
-        run: cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets
-
-      - name: Build bundle app
-        run: cd android && ./gradlew bundleRelease -x bundleReleaseJsAndAssets
-
-      - run: echo "appName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
-
-      - run: |
-          mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/${{env.appName}}.apk
-          mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/${{env.appName}}.aab
+          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
@@ -56,56 +104,130 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - run: sh ./setPreprodEnv.sh
+
+      - run: yarn build-android
+
+      - name: Remove duplicated ressources
+        run: |
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
+
+      - name: Build bundle preprod
+        run: cd android && ./gradlew bundlePreprod
+      
+      - name: Build apk preprod
+        run: cd android && ./gradlew assemblePreprod
+
+      - run: echo "preprod=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - run: |
+          mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/bundle/preprod/${{ env.preprod }}.aab
+          mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/apk/preprod/${{ env.preprod }}.apk
+
+      - run: |
+          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/preprod/${{ env.preprod }}.aab"
+          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/preprod/${{ env.preprod }}.apk"
+
       - name: Upload apps to amazon S3
         run: |
-          aws s3 cp android/app/build/outputs/apk/release/${{env.appName}}.apk s3://mobile-bpartners/android/
-          aws s3 cp android/app/build/outputs/bundle/release/${{env.appName}}.aab s3://mobile-bpartners/android/
+          aws s3 cp android/app/build/outputs/bundle/preprod/${{env.preprod}}.aab s3://mobile-bpartners/android/preprod-bundle/
+          aws s3 cp android/app/build/outputs/apk/preprod/${{env.preprod}}.apk s3://mobile-bpartners/android/preprod-apk/
 
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.appName }}.apk"
+  android-prod-browserstack:      
+    if: github.event.inputs.OS == 'android' && github.event.inputs.env == 'prod'
 
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.appName }}.aab"     
+    runs-on: ubuntu-latest
 
-  ios-browserstack:
-    env:
-      AWS_REGION: eu-west-3
-
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios-store'
-
-    runs-on: macos-latest
-
-    timeout-minutes: 60
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v2
 
       - run: npm install --force
 
-      - run: npm install --location=global react-native-cli
-      - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-      - run: brew update 
-
-      - run: brew upgrade
-      
-      - run: npm run ci:build:e2e
-
-      - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
-
-      - name: change extension app to ipa
+      - name: Decode keystore
         run: |
-          mkdir Payload
-          mv ios/build/Build/Products/Release-iphonesimulator/BpartnersMobile.app Payload/
-          zip -r ${{ env.ipaName }}.ipa Payload
+          cd android/app
+          touch release.keystore
+          echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
+
+      - name: Setting up the environment variables
+        run: |
+          mkdir ~/.gradle
+          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      - run: sh ./setProdEnv.sh
 
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@Payload.ipa"
+      - run: yarn build-android
 
-      - run: aws s3 cp ${{ env.ipaName }}.ipa s3://mobile-bpartners/ios/
+      - name: Remove duplicated ressources
+        run: |
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
 
-      - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@${{ env.ipaName }}.ipa"
+      - name: Build bundle prod
+        run: cd android && ./gradlew bundleRelease
+      
+      - name: Build apk prod
+        run: cd android && ./gradlew assembleRelease
+
+      - run: echo "prod=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - run: |
+          mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/bundle/release/${{ env.prod }}.aab
+          mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/${{ env.prod }}.apk
+
+      - run: |
+          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/bundle/release/${{ env.prod }}.aab"
+          curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@android/app/build/outputs/apk/release/${{ env.prod }}.apk"
+
+      - name: Upload apps to amazon S3
+        run: |
+          aws s3 cp android/app/build/outputs/bundle/release/${{env.prod}}.aab s3://mobile-bpartners/android/release-bundle/
+          aws s3 cp android/app/build/outputs/apk/release/${{env.prod}}.apk s3://mobile-bpartners/android/release-apk/
+
+    
+  ios-browserstack:
+
+      if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
+      runs-on: macos-latest
+
+      timeout-minutes: 120
+
+      steps:
+        - uses: actions/checkout@v2
+
+        - run: npm install --force
+
+        - run: npm install --location=global react-native-cli
+
+        - run: npm run build:ios:release:e2e
+
+        - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
+
+        - run: echo "ipaName=$(echo -n ${{ github.event.head_commit.message }} | sha1sum | awk '{print $1}')" >> $GITHUB_ENV
+
+        - name: change extension app to ipa
+          run: |
+            mkdir Payload
+            mv /Users/runner/work/bpartners-mobile/bpartners-mobile/ios/build/Build/Products/Release-iphonesimulator/bpartners.app Payload/
+            zip -r ${{ env.ipaName }}.ipa Payload
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+
+        - run: aws s3 cp ${{ env.ipaName }}.ipa s3://mobile-bpartners/ios/
+
+        - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@${{ env.ipaName }}.ipa"

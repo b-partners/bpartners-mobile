@@ -11,21 +11,21 @@ export enum InvoiceStatus {
 }
 
 export const InvoiceModel = types.model('Invoice').props({
-  id: types.maybe(types.string),
-  fileId: types.maybeNull(types.string),
-  ref: types.maybeNull(types.string),
-  title: types.maybeNull(types.string),
-  comment: types.maybeNull(types.string),
+  id: types.maybe(types.maybeNull(types.string)),
+  fileId: types.maybe(types.maybeNull(types.string)),
+  ref: types.maybe(types.maybeNull(types.string)),
+  title: types.maybe(types.maybeNull(types.string)),
+  comment: types.maybe(types.maybeNull(types.string)),
   customer: types.maybe(types.maybeNull(CustomerModel)),
-  products: types.optional(types.array(ProductModel), []),
-  sendingDate: types.maybeNull(types.Date),
-  toPayAt: types.maybeNull(types.Date),
-  updatedAt: types.maybeNull(types.Date),
-  paymentUrl: types.maybeNull(types.string),
-  totalVat: types.maybeNull(types.number),
-  totalPriceWithVat: types.maybeNull(types.number),
-  totalPriceWithoutVat: types.maybeNull(types.number),
-  status: types.maybeNull(types.enumeration(Object.values(InvoiceStatus))),
+  products: types.maybe(types.maybeNull(types.array(ProductModel))),
+  sendingDate: types.maybe(types.maybeNull(types.Date)),
+  toPayAt: types.maybe(types.maybeNull(types.Date)),
+  updatedAt: types.maybe(types.maybeNull(types.Date)),
+  paymentUrl: types.maybe(types.maybeNull(types.string)),
+  totalVat: types.maybe(types.maybeNull(types.number)),
+  totalPriceWithVat: types.maybe(types.maybeNull(types.number)),
+  totalPriceWithoutVat: types.maybe(types.maybeNull(types.number)),
+  status: types.maybe(types.maybeNull(types.enumeration(Object.values(InvoiceStatus)))),
 });
 
 export interface Invoice extends Instance<typeof InvoiceModel> {}

@@ -2,12 +2,12 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import uuid from 'react-native-uuid';
 
 export const TransactionSummaryModel = types.model('TransactionSummary').props({
-  id: types.maybeNull(types.identifier),
-  month: types.maybeNull(types.number),
-  income: types.maybeNull(types.number),
-  outcome: types.maybeNull(types.number),
-  cashFlow: types.maybeNull(types.number),
-  updatedAt: types.maybeNull(types.Date),
+  id: types.maybe(types.maybeNull(types.string)),
+  month: types.maybe(types.maybeNull(types.number)),
+  income: types.maybe(types.maybeNull(types.number)),
+  outcome: types.maybe(types.maybeNull(types.number)),
+  cashFlow: types.maybe(types.maybeNull(types.number)),
+  updatedAt: types.maybe(types.maybeNull(types.Date)),
 });
 
 export interface TransactionSummary extends Instance<typeof TransactionSummaryModel> {}
