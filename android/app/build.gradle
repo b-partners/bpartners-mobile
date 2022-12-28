@@ -83,7 +83,11 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
+    bundleInDebug: true,
     bundleInRelease: true,
+    bundleInPreprod: true,
+    // TODO: MUST BE ADDRESSED AS SOON AS POSSIBLE, dev mode MUST BE disabled on the end user environment
+    devDisabledInPreprod: false,
 ]
 
 // This method of including other gradle files is to support symlinks.
@@ -140,11 +144,15 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     packagingOptions {
-        pickFirst 'lib/x86/libc++_shared.so'
-        pickFirst 'lib/x86_64/libc++_shared.so'
-        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-        pickFirst 'lib/arm64-v8a/libc++_shared.so'
-    }
+       pickFirst 'lib/x86/libc++_shared.so'
+       pickFirst 'lib/x86_64/libjsc.so'
+       pickFirst 'lib/x86/libc++_shared.so'
+       pickFirst 'lib/x86_64/libc++_shared.so'
+       pickFirst 'lib/arm64-v8a/libjsc.so'
+       pickFirst 'lib/arm64-v8a/libc++_shared.so'
+       pickFirst 'lib/x86_64/libc++_shared.so'
+       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+     }
 
     defaultConfig {
         applicationId "com.bpartnersmobile"
@@ -238,24 +246,18 @@ android {
             include (*reactNativeArchitectures())
         }
     }
+
     signingConfigs {
-            release {
-                if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                    storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                    storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                    keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                    keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-                }
-            }
-        release{
-            if(project.hasProperty('APP_UPLOAD_STORE_FILE')){
+        release {
+            if (project.hasProperty('APP_UPLOAD_STORE_FILE')) {
                 storeFile file(APP_UPLOAD_STORE_FILE)
                 storePassword APP_UPLOAD_STORE_PASSWORD
                 keyAlias APP_UPLOAD_KEY_ALIAS
                 keyPassword APP_UPLOAD_KEY_PASSWORD
+                }
             }
-        }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -266,6 +268,11 @@ android {
             signingConfig signingConfigs.release
 //             minifyEnabled enableProguardInReleaseBuilds
 //             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+        preprod {
+            initWith release
+            signingConfig signingConfigs.release
+            matchingFallbacks = ['debug', 'release']
         }
     }
 

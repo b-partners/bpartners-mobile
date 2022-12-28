@@ -64,4 +64,6 @@ buck-out/
 /vendor/bundle/
 
 .env
+.env.preprod
+.env.dev
 /.expo/

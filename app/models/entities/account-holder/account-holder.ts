@@ -1,12 +1,12 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export const AccountHolderModel = types.model('AccountHolder').props({
-  id: types.maybe(types.string),
-  name: types.maybe(types.string),
-  address: types.maybe(types.string),
-  city: types.maybe(types.string),
-  country: types.maybe(types.string),
-  postalCode: types.maybe(types.string),
+  id: types.maybe(types.maybeNull(types.string)),
+  name: types.maybe(types.maybeNull(types.string)),
+  address: types.maybe(types.maybeNull(types.string)),
+  city: types.maybe(types.maybeNull(types.string)),
+  country: types.maybe(types.maybeNull(types.string)),
+  postalCode: types.maybe(types.maybeNull(types.string)),
 });
 
 export interface AccountHolder extends Instance<typeof AccountHolderModel> {}

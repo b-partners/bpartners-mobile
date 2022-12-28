@@ -48,6 +48,7 @@ storiesOf('FormRow', module)
         <FormRow preset='soloRound'>
           <Text style={TEXT_STYLE_OVERRIDE}>I'm round</Text>
         </FormRow>
+        {}
         <FormRow preset='soloStraight' style={{ marginTop: 10, backgroundColor: '#ffe' }}>
           <Text style={TEXT_STYLE_OVERRIDE}>I'm square and have a custom style.</Text>
         </FormRow>

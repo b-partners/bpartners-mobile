@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
+import { withEnvironment, withRootStore } from '../..';
 import { AccountApi } from '../../../services/api/account-api';
 import { AuthApi } from '../../../services/api/auth-api';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountModel } from '../../entities/account/account';
 import { User, UserModel } from '../../entities/user/user';
-import { withEnvironment } from '../../extensions/with-environment';
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -22,6 +22,7 @@ export const AuthStoreModel = types
     currentAccountHolder: types.maybe(types.maybeNull(AccountHolderModel)),
   })
   .extend(withEnvironment)
+  .extend(withRootStore)
   .actions(self => ({
     reset: () => {
       self.accessToken = undefined;
@@ -84,7 +85,7 @@ export const AuthStoreModel = types
   }))
   .actions(() => ({
     whoamiFail: error => {
-      __DEV__ && console.tron.log(error.message);
+      __DEV__ && console.tron.log(error.message || error);
       throw error;
     },
   }))
@@ -95,12 +96,15 @@ export const AuthStoreModel = types
       let whoAmiResult, getAccountResult, getAccountHolderResult;
       try {
         whoAmiResult = yield signInApi.whoami();
+        self.currentUser = whoAmiResult.user;
+        yield self.rootStore.legalFilesStore.getLegalFiles();
         getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
         getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
-        self.whoamiFail(e);
+        self.whoamiFail(e.message);
       }
+      yield self.rootStore.legalFilesStore.getLegalFiles();
     }),
   }))
   .actions(self => ({

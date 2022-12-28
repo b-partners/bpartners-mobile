@@ -13,6 +13,7 @@ import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
+import env from '../app/config/env';
 import { ToggleStorybook } from '../storybook/toggle-storybook';
 import './i18n';
 import { RootStore, RootStoreProvider, setupRootStore } from './models';
@@ -30,11 +31,11 @@ import * as storage from './utils/storage';
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: env.sentryDSN,
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
   // We recommend adjusting this value in production.
   tracesSampleRate: 1.0,
-  environment: process.env.SENTRY_ENV,
+  environment: env.sentryENV,
 });
 
 /**

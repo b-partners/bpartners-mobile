@@ -6,6 +6,7 @@ export * from './onboarding/onboarding-screen';
 export * from './payment-initiation/payment-initiation-screen';
 export * from './profile/profile-screen';
 export * from './home/home-screen';
+export * from './legal-file/legal-file-screen';
 export { TRANSACTION_BUTTONS_STYLE } from './home/styles';
 export { BALANCE_TEXT_STYLE } from './home/styles';
 export { CHART_BUTTON_MARGIN_STYLE } from './home/styles';
