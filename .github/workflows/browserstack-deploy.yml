@@ -26,23 +26,12 @@ jobs:
     
     runs-on: ubuntu-latest
 
-    timeout-minutes: 25
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v2
 
       - run: npm install --force
-
-      - name: Decode keystore
-        run: |
-          cd android/app
-          touch release.keystore
-          echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
-
-      - name: Setting up the environment variables
-        run: |
-          mkdir ~/.gradle
-          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
@@ -90,7 +79,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    timeout-minutes: 25
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v2
@@ -150,7 +139,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    timeout-minutes: 25
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v2
