@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { useFormikContext } from 'formik';
+import React, { FC, useState } from 'react';
+import { TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 import * as yup from 'yup';
 
 import { Icon } from '../../../components';
 import Form from '../../../components/forms/form';
+import { ProductSnapshotOut } from '../../../models/entities/product/product';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SHADOW_STYLE } from '../styles';
-import EditableTextField from './EditableTextField';
+import EditableTextField from './editable-text-field';
 
 const CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.white,
@@ -22,7 +24,11 @@ const DELETE_ACTION_POSITION_STYLE: ViewStyle = { position: 'absolute', right: 5
 const BOTTOM_INFO_STYLE: ViewStyle = { flex: 1, flexDirection: 'row', overflow: 'hidden' };
 
 const EDITABLE_TEXT_FIELD_STYLE = { height: 46 };
-const CardElement = () => {
+type ICardElement = {
+  onAdd: (product: ProductSnapshotOut) => void;
+};
+
+const CardElement: FC<ICardElement> = ({ onAdd }) => {
   const [initialValues] = useState({
     title: '',
     description: '',
@@ -30,7 +36,7 @@ const CardElement = () => {
     quantity: 1,
     tva: '0',
   });
-
+  const { handleSubmit } = useFormikContext();
   const VALIDATION_SCHEMA = yup.object().shape({
     title: yup.string().required(),
     description: yup.string(),
@@ -39,14 +45,16 @@ const CardElement = () => {
     tva: yup.number(),
   });
 
+  const [product, setProduct] = useState(null);
+
   return (
-    <>
+    <TouchableWithoutFeedback onBlur={() => onAdd(product)}>
       <View style={DELETE_ACTION_POSITION_STYLE}>
         <Icon icon={'trash'} />
       </View>
 
       <View style={CONTAINER_STYLE}>
-        <Form initialValues={initialValues} validationSchema={VALIDATION_SCHEMA}>
+        <Form initialValues={initialValues} validationSchema={VALIDATION_SCHEMA} onSubmit={values => setProduct(values)}>
           <View>
             <EditableTextField title={"Titre de l'élement"} formName={'title'} placeholder={'Taper le titre'} containerStyle={{ paddingBottom: spacing[0] }} />
             <EditableTextField title={'Déscription (facultatif)'} formName={'description'} placeholder={'Taper le titre'} />
@@ -66,7 +74,7 @@ const CardElement = () => {
           </View>
         </Form>
       </View>
-    </>
+    </TouchableWithoutFeedback>
   );
 };
 
