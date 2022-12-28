@@ -74,7 +74,12 @@ jobs:
           echo no | avdmanager create avd --force --name "Pixel_5_API_31" --abi "x86_64" --tag "google_apis" --package 'system-images;android-31;google_apis;x86_64' --device 'pixel_5'
 
       - name: Run end to end tests
-        run: yarn test:android:debug:e2e
+        run: | 
+          echo "Run android emulator"
+          cd $ANDROID_HOME/tools/
+          ./emulator @Pixel_5_API_31 -no-boot-anim -no-window -no-audio
+          echo "Android emulator started"
+          yarn test:android:debug:e2e
 
   style:
     runs-on: ubuntu-latest
