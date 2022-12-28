@@ -228,8 +228,8 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
       </TouchableOpacity>
       <TouchableOpacity
         style={LOGOUT_CONTAINER_STYLE}
-        onPress={() => {
-          authStore.logout();
+        onPress={async () => {
+          await authStore.logout();
           props.navigation.closeDrawer();
         }}
       >
