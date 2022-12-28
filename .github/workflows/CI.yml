@@ -73,21 +73,14 @@ jobs:
         run: |
           echo no | avdmanager create avd --force --name "Pixel_5_API_31" --abi "x86_64" --tag "google_apis" --package 'system-images;android-31;google_apis;x86_64' --device 'pixel_5'
 
-      - name: Add emu as alias to emulator command in .profile
+      - name: Run headless android emulator
         run: |
-          touch ~/.bashrc
-          echo "alias emu="$ANDROID_HOME/tools/emulator"" >> ~/.bashrc 
-          source ~/.bashrc
-
-      - name: Run headless android emulator
-        run: emu @Pixel_5_API_31 -no-audio -no-window -no-cache
-
-      - name: Run headless android emulator
-        run: emulator -avd Pixel_5_API_31 -no-audio -no-window
-      
+          cd $ANDROID_HOME/tools/
+          ./emulator @Pixel_5_API_31 -no-audio -no-window -no-cache
 
       - name: Run end to end tests
         run: npm run test:android:debug:e2e
+
   style:
     runs-on: ubuntu-latest
     steps:
