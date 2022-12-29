@@ -1,16 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
-import { translate } from '../../../i18n';
 import { withEnvironment, withRootStore } from '../..';
+import { translate } from '../../../i18n';
 import { AccountApi } from '../../../services/api/account-api';
 import { AuthApi } from '../../../services/api/auth-api';
+import { palette } from '../../../theme/palette';
+import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountModel } from '../../entities/account/account';
 import { User, UserModel } from '../../entities/user/user';
-import { showMessage } from "../../../utils/snackbar";
-import { palette } from "../../../theme/palette";
 
 export const AuthStoreModel = types
   .model('SignIn')
