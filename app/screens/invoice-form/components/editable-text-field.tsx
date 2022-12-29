@@ -1,5 +1,5 @@
 import { useFormikContext } from 'formik';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Text, TextField } from '../../../components';
@@ -33,15 +33,11 @@ const TEXT_FIELD_STYLE: ViewStyle = { paddingVertical: 0 };
 const EditableTextField: FC<TEditableTextField> = props => {
   const { title, formName, placeholder, containerStyle, suffix = '', prefix = '', ...rest } = props;
   const { touched, handleChange, values, setFieldTouched, errors } = useFormikContext();
-  useEffect(() => {
-    __DEV__ && console.tron.log('initial values');
-    __DEV__ && console.tron.log(values);
-  }, []);
 
-  return (
-    <View style={[CONTAINER_STYLE, containerStyle]}>
-      <Text text={title} style={LABEL_STYLE} />
-      {touched[formName] || !values[formName] ? (
+  if (touched[formName] || !values[formName]) {
+    return (
+      <View style={[CONTAINER_STYLE, containerStyle]}>
+        <Text text={title} style={LABEL_STYLE} />
         <TextField
           {...rest}
           style={TEXT_FIELD_STYLE}
@@ -51,9 +47,14 @@ const EditableTextField: FC<TEditableTextField> = props => {
           placeholder={placeholder}
           autoFocus={true}
         />
-      ) : (
-        <Text numberOfLines={2} text={`${prefix}${values[formName]}${suffix}`} style={TEXT_STYLE} onPress={() => setFieldTouched(formName)} />
-      )}
+        <ErrorMessage error={errors[formName]} style={{ color: palette.pastelRed }} visible={touched[formName]} />
+      </View>
+    );
+  }
+  return (
+    <View style={[CONTAINER_STYLE, containerStyle]}>
+      <Text text={title} style={LABEL_STYLE} />
+      <Text numberOfLines={2} text={`${prefix}${values[formName]}${suffix}`} style={TEXT_STYLE} onPress={() => setFieldTouched(formName)} />
       <ErrorMessage error={errors[formName]} style={{ color: palette.pastelRed }} visible={touched[formName]} />
     </View>
   );
