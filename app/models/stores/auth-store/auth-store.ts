@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
+import { translate } from '../../../i18n';
 import { withEnvironment, withRootStore } from '../..';
 import env from '../../../config/env';
 import { translate } from '../../../i18n';

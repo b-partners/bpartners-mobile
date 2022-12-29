@@ -13,7 +13,7 @@
   "errors": {
     "invalidEmail": "Invalid email address.",
     "somethingWentWrong": "Something went wrong. Please retry later.",
-    "verifyConnection": "Verify your connection"
+    "verifyConnection":  "Verify your connection"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
