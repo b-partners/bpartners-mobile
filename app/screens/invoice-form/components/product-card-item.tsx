@@ -36,9 +36,8 @@ const ProductCardItem: FC<ICardElement> = ({ onAdd, item, onRemove }) => {
       {() => {
         return (
           <>
-            <TouchableHighlight style={DELETE_ACTION_POSITION_STYLE} onPress={() => onRemove(invoiceForm['products'])}>
+            <TouchableHighlight style={DELETE_ACTION_POSITION_STYLE} onPress={() => onRemove(invoiceForm.products)}>
               <Icon icon={'trash'} />
-              {/*<Text text={'Delete'} onPress={() => onAdd(product)} />*/}
             </TouchableHighlight>
 
             <View style={CONTAINER_STYLE}>

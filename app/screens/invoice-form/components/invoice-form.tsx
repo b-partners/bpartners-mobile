@@ -235,7 +235,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 {/*list of the elements to be created*/}
                 <FlatList<Product>
                   data={[...values.products]}
-                  renderItem={({ item }) => <ProductCardItem item={{ ...item }} onRemove={product => values.products.filter(p => p.id != product.id)} />}
+                  renderItem={({ item }) => <ProductCardItem item={{ ...item }} onRemove={product => values.products.filter(p => p.id !== product.id)} />}
                 />
                 {/*{isAddingNewElement && (
                   <ProductCardItem
@@ -251,7 +251,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   textStyle={ADD_BUTTON_TEXT_STYLE}
                   onPress={() => {
                     setFieldValue('products', [
-                      ...values['products'],
+                      ...values.products,
                       {
                         title: '',
                         description: '',

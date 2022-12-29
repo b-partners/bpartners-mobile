@@ -56,8 +56,6 @@ const CONTINUE: ViewStyle = {
   backgroundColor: color.palette.deepPurple,
   flex: 1,
   marginHorizontal: spacing[2],
-  // width: 180,
-  // marginRight: spacing[2],
 };
 const CONTINUE_TEXT: TextStyle = {
   ...TEXT,
@@ -71,7 +69,6 @@ const FOOTER_CONTENT: ViewStyle = {
   paddingHorizontal: spacing[4],
   flexDirection: 'row',
   justifyContent: 'space-between',
-  // justifyContent: 'space-between',
 };
 
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(() => {
