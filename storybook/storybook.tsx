@@ -1,5 +1,6 @@
+import { configure, getStorybookUI } from '@storybook/react-native';
 import React, { useEffect } from 'react';
-import { getStorybookUI, configure } from '@storybook/react-native';
+
 import { initFonts } from '../app/theme/fonts';
 
 declare let module;

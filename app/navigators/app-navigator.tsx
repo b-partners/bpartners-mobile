@@ -4,15 +4,24 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import React from 'react';
-import { useColorScheme } from 'react-native';
-import { NavigationContainer, DefaultTheme, DarkTheme, NavigationState } from '@react-navigation/native';
-import { WelcomeScreen, TransactionListScreen, SignInScreen, OnboardingScreen, PaymentInitiationScreen, ProfileScreen, HomeScreen } from '../screens';
-import { navigationRef, useBackButtonHandler } from './navigation-utilities';
-import { SignInWebViewScreen } from '../screens/sign-in-web-view/sign-in-web-view-screen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
+import { Dimensions, useColorScheme } from 'react-native';
+
+import { BpDrawer, Text } from '../components';
+import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
+import { InvoiceStatus } from '../models/entities/invoice/invoice';
+import { ErrorBoundary, HomeScreen, LegalFileScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen } from '../screens';
+import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
+import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
+import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
+import { CodeExchangeScreen } from '../screens/sign-in-web-view/code-exchange-screen';
+import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -27,20 +36,23 @@ import { useStores } from '../models';
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type NavigatorParamList = {
-  welcome: { url: string };
+  welcome: undefined;
   home: undefined;
-  onboarding: { url: string };
-  transactionList: { url: string };
-  signIn: { url: string };
-  signInWebView: { url: string };
+  transactionList: undefined;
+  oauth: { code: string; state: string };
   paymentInitiation: undefined;
   profile: undefined;
+  invoices: undefined;
+  invoiceForm: undefined;
+  paymentList: undefined;
+  legalFile: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
+const windowWidth = Dimensions.get('window').width;
 
-function AppStack() {
-  const PROTECTED_ROUTE_OPTIONS: any = {
+const AppStack = observer(function () {
+  const HIDE_DRAWER_OPTIONS: any = {
     swipeEnabled: false,
     drawerLabel: () => null,
     drawerIcon: () => null,
@@ -48,48 +60,111 @@ function AppStack() {
     drawerItemStyle: { display: 'none' },
   };
 
+  const { authStore, legalFilesStore } = useStores();
+  const { accessToken, currentAccount, currentAccountHolder, currentUser } = authStore;
+
+  const hasAccount = currentAccount && !!currentAccount?.id;
+  const hasAccountHolder = currentAccountHolder && !!currentAccountHolder?.id;
+  const hasUser = currentUser && !!currentUser?.id;
+  const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
+  const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
+
   return (
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
+        drawerStyle: {
+          width: windowWidth,
+        },
       }}
-      initialRouteName='welcome'
+      initialRouteName={accessToken ? 'home' : 'welcome'}
+      drawerContent={props => <BpDrawer {...props} />}
     >
-      <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
-      <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-      <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-      <Drawer.Screen name='onboarding' component={OnboardingScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='welcome' component={WelcomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='signIn' component={SignInScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='signInWebView' component={SignInWebViewScreen} options={PROTECTED_ROUTE_OPTIONS} />
-      <Drawer.Screen name='home' component={HomeScreen} options={PROTECTED_ROUTE_OPTIONS} />
+      {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
+        <>
+          <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      ) : isAuthenticated && hasApprovedLegalFiles ? (
+        <>
+          <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+          <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
+          <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+          <Drawer.Screen name='paymentList' component={PaymentListScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      ) : (
+        <>
+          <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      )}
     </Drawer.Navigator>
   );
-}
+});
 
 type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>;
 
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore } = useStores();
+  const { transactionStore, invoiceStore } = useStores();
+  const { setError } = useError();
+
+  const handleError = async (asyncFunc: () => any) => {
+    try {
+      await asyncFunc();
+    } catch (e) {
+      setError(e);
+    }
+  };
 
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
     switch (route) {
-      case 'home':
-        await transactionStore.getTransactions();
-        break;
       case 'transactionList':
-        await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
+        await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
+        break;
+      case 'paymentList':
+        await handleError(
+          async () =>
+            await Promise.all([
+              invoiceStore.getDrafts({
+                status: InvoiceStatus.DRAFT,
+                page: 1,
+                pageSize: 15,
+              }),
+            ])
+        );
+        break;
+      case 'invoiceForm':
+        await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));
         break;
     }
   };
 
   return (
-    <NavigationContainer ref={navigationRef} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme} {...props} onStateChange={onStateChange}>
-      <AppStack />
-    </NavigationContainer>
+    <ErrorBoundary catchErrors={'always'}>
+      <NavigationContainer
+        linking={{
+          prefixes: [Linking.createURL('/')],
+          config: {
+            screens: {
+              initialRouteName: 'welcome',
+              oauth: 'auth',
+            },
+          },
+        }}
+        fallback={<Text text={'Loading...'} />}
+        ref={navigationRef}
+        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        {...props}
+        onStateChange={onStateChange}
+      >
+        <AppStack />
+      </NavigationContainer>
+    </ErrorBoundary>
   );
 }
 
@@ -104,5 +179,5 @@ AppNavigator.displayName = 'AppNavigator';
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-const exitRoutes = ['welcome'];
+const exitRoutes = ['welcome', 'home'];
 export const canExit = (routeName: string) => exitRoutes.includes(routeName);

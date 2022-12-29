@@ -1,11 +1,14 @@
-import { GeneralApiProblem } from './api-problem';
-import { Transaction } from '../../models/entities/transaction/transaction';
-import { Account } from '../../models/entities/account/account';
-import { User } from '../../models/entities/user/user';
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
-import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
+import { Account } from '../../models/entities/account/account';
 import { Customer } from '../../models/entities/customer/customer';
+import { File } from '../../models/entities/file/file';
+import { Invoice } from '../../models/entities/invoice/invoice';
+import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Product } from '../../models/entities/product/product';
+import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
+import { Transaction } from '../../models/entities/transaction/transaction';
+import { User } from '../../models/entities/user/user';
+import { GeneralApiProblem } from './api-problem';
 
 export interface Whoami {
   user: any;
@@ -26,6 +29,8 @@ export type GetTransactionsResult = { kind: 'ok'; transactions: Transaction[] } 
 
 export type GetTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 
+export type GetTransactionsSummaryResult = { kind: 'ok'; year: number; summary: TransactionCategory[] } | GeneralApiProblem;
+
 export type UpdateTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 
 export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
@@ -38,10 +43,24 @@ export type GetWhoAmIResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type GetUserAccount = { kind: 'ok'; account: Account } | GeneralApiProblem;
 
-export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem;
+export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem | void;
 
 export type GetProductsResult = { kind: 'ok'; products: Product[] } | GeneralApiProblem;
+
+export type GetInvoicesResult = { kind: 'ok'; invoices: Invoice[] } | GeneralApiProblem;
+
+export type GetInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
+
+export type CrupdateInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
 
 export type GetAccountHolderResult = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
 
 export type InitPaymentResult = { kind: 'ok'; paymentInitiation: { id: string } & RedirectionUrlsStatus } | GeneralApiProblem;
+
+export type GetFileInformation = { kind: 'ok'; fileInfos: File } | GeneralApiProblem;
+
+export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProblem;
+
+export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
+
+export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;

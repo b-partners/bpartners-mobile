@@ -1,5 +1,6 @@
-import { ProductModel } from './product';
 import uuid from 'react-native-uuid';
+
+import { ProductModel } from './product';
 
 test('can be created', () => {
   const instance = ProductModel.create({

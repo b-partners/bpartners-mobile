@@ -1,10 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-
-import React from 'react';
 import { storiesOf } from '@storybook/react-native';
-import { ViewStyle, TextStyle, Alert } from 'react-native';
-import { StoryScreen, Story, UseCase } from '../../../storybook/views';
+import React from 'react';
+import { Alert, TextStyle, ViewStyle } from 'react-native';
+
 import { Text, TextField } from '..';
+import { Story, StoryScreen, UseCase } from '../../../storybook/views';
 import { State } from '../../utils/react-powerplug';
 
 declare let module;

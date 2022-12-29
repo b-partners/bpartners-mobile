@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
+
 import { Text } from '../text/text';
-import { viewPresets, textPresets } from './button.presets';
+import { textPresets, viewPresets } from './button.presets';
 import { ButtonProps } from './button.props';
 
 /**

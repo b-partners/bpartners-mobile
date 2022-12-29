@@ -1,6 +1,7 @@
-import { ApisauceInstance, create } from 'apisauce';
-import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ApisauceInstance, create } from 'apisauce';
+
+import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
 
 /**
  * Manages all requests to the API.
@@ -50,7 +51,7 @@ export class Api {
           const accessToken = await AsyncStorage.getItem('accessToken');
           request.headers.Authorization = `Bearer ${accessToken}`;
         } catch (e) {
-          console.tron.log(`Can't fetch access token`);
+          __DEV__ && console.tron.log(`Can't fetch access token`);
           throw new Error(e);
         }
       }

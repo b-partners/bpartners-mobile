@@ -1,5 +1,6 @@
-import { AccountModel } from './account';
 import uuid from 'react-native-uuid';
+
+import { AccountModel } from './account';
 
 test('can be created', () => {
   const instance = AccountModel.create({

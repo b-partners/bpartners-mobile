@@ -1,14 +1,17 @@
-import React, { FC } from 'react';
-import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 import WebView from 'react-native-webview';
-import { NavigatorParamList } from '../../navigators';
+
 import { GradientBackground, Header } from '../../components';
-import { color, spacing, typography } from '../../theme';
 import env from '../../config/env';
-import getQueryParams from '../../utils/get-query-params';
+import { useError } from '../../hook';
 import { useStores } from '../../models';
+import { NavigatorParamList } from '../../navigators';
+import { color, spacing, typography } from '../../theme';
+import getQueryParams from '../../utils/get-query-params';
+import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = { flex: 1 };
 
@@ -38,10 +41,11 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
   const { url } = route.params;
   const { authStore } = useStores();
   let webview: WebView;
+  const { setError } = useError();
 
   const onNavigationStateChange = async webViewState => {
     const { url: currentUrl } = webViewState;
-    console.tron.log(`Navigating to ${currentUrl}`);
+    __DEV__ && console.tron.log(`Navigating to ${currentUrl}`);
     if (!currentUrl.includes(env.successUrl)) {
       return;
     }
@@ -56,23 +60,26 @@ export const OnboardingScreen: FC<DrawerScreenProps<NavigatorParamList, 'welcome
       navigation.navigate('home');
     } catch (e) {
       navigation.navigate('signIn');
-      console.tron.log(`Sign in error`);
+      __DEV__ && console.tron.log(`Sign in error`);
+      return setError(e);
     }
     navigation.navigate('home');
   };
 
   return (
-    <View testID='OnboardingScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <SafeAreaView />
-      <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.navigate('welcome')} style={HEADER} titleStyle={HEADER_TITLE} />
-      <WebView
-        ref={ref => {
-          webview = ref;
-        }}
-        source={{ uri: url }}
-        onNavigationStateChange={onNavigationStateChange}
-      />
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='OnboardingScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <SafeAreaView />
+        <Header headerTx='onboardingScreen.title' leftIcon='back' onLeftPress={() => navigation.navigate('welcome')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <WebView
+          ref={ref => {
+            webview = ref;
+          }}
+          source={{ uri: url }}
+          onNavigationStateChange={onNavigationStateChange}
+        />
+      </View>
+    </ErrorBoundary>
   );
 });

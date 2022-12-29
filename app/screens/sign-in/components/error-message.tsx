@@ -1,7 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
+
 import { spacing } from '../../../theme';
-import { Ionicons } from '@expo/vector-icons';
 
 const ERROR_TEXT: TextStyle = {
   color: 'yellow',

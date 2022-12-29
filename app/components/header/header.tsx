@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, ViewStyle, TextStyle } from 'react-native';
-import { HeaderProps } from './header.props';
-import { Button } from '../button/button';
-import { Text } from '../text/text';
-import { Icon } from '../icon/icon';
-import { spacing } from '../../theme';
+import { TextStyle, View, ViewStyle } from 'react-native';
+
 import { translate } from '../../i18n';
+import { spacing } from '../../theme';
+import { Button } from '../button/button';
+import { Icon } from '../icon/icon';
+import { Text } from '../text/text';
+import { HeaderProps } from './header.props';
 
 // static styles
 const ROOT: ViewStyle = {

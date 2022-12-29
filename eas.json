@@ -1,0 +1,40 @@
+{
+  "cli": {
+    "version": ">= 2.7.1"
+  },
+  "build": {
+    "development": {
+      "env": {
+        "API_URL": "https://api-dev.bpartners.app",
+        "SUCCESS_URL": "https://dashboard-dev.bpartners.app/login/success",
+        "FAILURE_URL": "https://dashboard-dev.bpartners.app/login/error",
+        "SWAN_URL": "https://banking.sandbox.swan.io/projects/4aff311f-c33f-4726-bf7f-b476d251d499"
+      },
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
+      }
+    },
+    "preview": {
+      "env": {
+        "API_URL": "https://api-dev.bpartners.app",
+        "SUCCESS_URL": "https://dashboard-dev.bpartners.app/login/success",
+        "FAILURE_URL": "https://dashboard-dev.bpartners.app/login/error",
+        "SWAN_URL": "https://banking.sandbox.swan.io/projects/4aff311f-c33f-4726-bf7f-b476d251d499"
+      },
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
+  }
+}

@@ -1,6 +1,6 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import * as React from 'react';
 import { ViewStyle } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 const BG_GRADIENT: ViewStyle = {
   position: 'absolute',

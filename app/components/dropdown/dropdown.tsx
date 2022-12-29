@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
 import { ViewStyle } from 'react-native';
+import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
+
 import { spacing } from '../../theme';
 
 const DEFAULT_MAX_VALUE = 30;
@@ -17,6 +18,7 @@ interface DropdownProps<T> {
 }
 
 const CONTAINER_STYLE: ViewStyle = { flex: 1, marginVertical: spacing[2] };
+const DROPDOWN_LIST_STYLE: ViewStyle = { position: 'relative', top: 0 };
 
 export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
   const { items, selectValue, selectLabel, value, onChangeValue, onSelectItem, max } = props;
@@ -43,6 +45,8 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
       onChangeValue={onChangeValue}
       max={DEFAULT_MAX_VALUE || max}
       containerStyle={CONTAINER_STYLE}
+      dropDownContainerStyle={DROPDOWN_LIST_STYLE}
+      listMode={'SCROLLVIEW'}
     />
   );
 };

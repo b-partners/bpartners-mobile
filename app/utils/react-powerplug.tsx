@@ -1,7 +1,6 @@
 // Replaces react-powerplug which is not maintained
 // TODO: Eventually remove entirely
-
-import React, { ReactNode, useState, Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, ReactNode, SetStateAction, useState } from 'react';
 
 export function State({
   initial,

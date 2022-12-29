@@ -9,22 +9,34 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
-import './i18n';
-import './utils/ignore-warnings';
-import React, { useState, useEffect } from 'react';
+import * as Sentry from '@sentry/react-native';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
-import { initFonts } from './theme/fonts'; // expo
-import * as storage from './utils/storage';
-import { AppNavigator, useNavigationPersistence } from './navigators';
-import { RootStore, RootStoreProvider, setupRootStore } from './models';
+
+import env from '../app/config/env';
 import { ToggleStorybook } from '../storybook/toggle-storybook';
+import './i18n';
+import { RootStore, RootStoreProvider, setupRootStore } from './models';
+import { AppNavigator, useNavigationPersistence } from './navigators';
 import { ErrorBoundary } from './screens/error/error-boundary';
+import { initFonts } from './theme/fonts';
+import './utils/ignore-warnings';
+// expo
+import * as storage from './utils/storage';
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
+
+Sentry.init({
+  dsn: env.sentryDSN,
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+  environment: env.sentryENV,
+});
 
 /**
  * This is the root component of our app.
@@ -67,4 +79,4 @@ function App() {
   );
 }
 
-export default App;
+export default Sentry.wrap(App);

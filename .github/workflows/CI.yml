@@ -3,26 +3,53 @@ name: CI
 on:
   push:
     branches:
-      - '*'
+      - 'dev'
+      - 'preprod'
+      - 'prod'
+
   pull_request:
     branches:
-      - '*'
+      - 'dev'
+      - 'preprod'
+      - 'prod'
+
   workflow_dispatch:
 
 jobs:
-  CI:
-      runs-on: macos-latest
-      timeout-minutes: 15
-      steps: 
-        - uses: actions/checkout@v2
-        - run: npm install --force
-        - run: npm install --location=global react-native-cli
-        - run: npm run ci:build:e2e
-        - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      
-        - name: Install applesimutils
-          run: |
-              brew tap wix/brew
-              brew install applesimutils
-        - run: npm run ci:test:e2e
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: |
+          npm install --force
+          npm install --location=global react-native-cli
+
+      - name: Run unit tests
+        run: npm run test
+
+      - run: npm run ci:build:e2e
+
+      - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+      - name: Install applesimutils
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: Test Run End to End tests
+        run: npm run ci:test:e2e
+
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 17.x
+
+      - run: npm install --location=global prettier
+      - run: prettier --check "app/**/*.{js,ts,tsx}" "./**/*.{json,yml,yaml}"

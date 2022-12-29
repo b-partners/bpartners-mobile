@@ -1,11 +1,14 @@
-import React, { FC } from 'react';
-import { View, ViewStyle, TextStyle, SafeAreaView } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import { Button, Header, Screen, Text, GradientBackground } from '../../components';
-import { color, spacing, typography } from '../../theme';
+import React, { FC } from 'react';
+import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
+import { authorize } from 'react-native-app-auth';
+
+import { Button, GradientBackground, Header, Screen, Text } from '../../components';
+import env from '../../config/env';
 import { NavigatorParamList } from '../../navigators';
-import { useStores } from '../../models';
+import { color, spacing, typography } from '../../theme';
+import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = { flex: 1 };
 const CONTAINER: ViewStyle = {
@@ -68,35 +71,51 @@ const FOOTER_CONTENT: ViewStyle = {
   justifyContent: 'space-between',
 };
 
-export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'signIn'>> = observer(({ navigation }) => {
-  const signIn = () => navigation.navigate('signIn');
-  const { onboardingStore } = useStores();
+export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(() => {
+  const signIn = async () => {
+    try {
+      await authorize({
+        clientId: env.clientId,
+        clientSecret: env.clientSecret,
+        scopes: [],
+        redirectUrl: env.successUrl,
+        serviceConfiguration: {
+          authorizationEndpoint: env.authorizationEndpoint,
+          tokenEndpoint: env.tokenEndpoint,
+        },
+        skipCodeExchange: true,
+        usePKCE: false,
+      });
+    } catch (e) {
+      __DEV__ && console.tron.log({ e });
+      throw new Error(e);
+    }
+  };
 
   const createAccount = async () => {
-    await onboardingStore.getOnboardingUrl();
-    const { redirectionUrl } = onboardingStore;
-    // TODO: Connecting routing to mobx-state-tree and pass query params to store
-    navigation.navigate('onboarding', { url: redirectionUrl });
+    __DEV__ && console.tron.log('Creating user account');
   };
 
   return (
-    <View testID='WelcomeScreen' style={FULL}>
-      <GradientBackground colors={['#422443', '#281b34']} />
-      <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
-        <Header headerTx='welcomeScreen.poweredBy' style={HEADER} titleStyle={HEADER_TITLE} />
-        <Text style={TITLE_WRAPPER}>
-          <Text style={TITLE} text='Your new app, ' />
-          <Text style={ALMOST} text='BPartners' />
-          <Text style={TITLE} text='!' />
-        </Text>
-        <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
-      </Screen>
-      <SafeAreaView style={FOOTER}>
-        <View style={FOOTER_CONTENT}>
-          <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} />
-          <Button testID='onboarding-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={createAccount} />
-        </View>
-      </SafeAreaView>
-    </View>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='WelcomeScreen' style={FULL}>
+        <GradientBackground colors={['#422443', '#281b34']} />
+        <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
+          <Header headerTx='welcomeScreen.poweredBy' style={HEADER} titleStyle={HEADER_TITLE} />
+          <Text style={TITLE_WRAPPER}>
+            <Text style={TITLE} text='Your new app, ' />
+            <Text style={ALMOST} text='BPartners' />
+            <Text style={TITLE} text='!' />
+          </Text>
+          <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
+        </Screen>
+        <SafeAreaView style={FOOTER}>
+          <View style={FOOTER_CONTENT}>
+            <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} />
+            <Button testID='onboarding-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={createAccount} />
+          </View>
+        </SafeAreaView>
+      </View>
+    </ErrorBoundary>
   );
 });

@@ -1,29 +1,41 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { withEnvironment } from '../../extensions/with-environment';
-import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
+
 import { ProductApi } from '../../../services/api/product-api';
+import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
+import { withEnvironment } from '../../extensions/with-environment';
+import { withRootStore } from '../../extensions/with-root-store';
 
 export const ProductStoreModel = types
   .model('Product')
   .props({
     products: types.optional(types.array(ProductModel), []),
   })
+  .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
   .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
+  .actions(self => ({
     getProductsSuccess: (productSnapshotOuts: ProductSnapshotOut[]) => {
       self.products.replace(productSnapshotOuts);
+    },
+  }))
+  .actions(() => ({
+    getProductsFail: error => {
+      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
     getProducts: async (description: string) => {
       const productApi = new ProductApi(self.environment.api);
       const getProductsResults = await productApi.getProducts(self.currentAccount.id, description);
-      if (getProductsResults.kind === 'ok') {
-        self.getProductsSuccess(getProductsResults.products);
-      } else {
-        __DEV__ && console.tron.log(getProductsResults.kind);
+      try {
+        if (getProductsResults.kind === 'ok') self.getProductsSuccess(getProductsResults.products);
+      } catch (e) {
+        self.getProductsFail(e.message);
+        self.catchOrThrow(e);
       }
     },
   }));
@@ -34,4 +46,7 @@ export interface ProductStoreSnapshotOut extends SnapshotOut<typeof ProductStore
 
 export interface ProductStoreSnapshotIn extends SnapshotIn<typeof ProductStoreModel> {}
 
-export const createProductStoreDefaultModel = () => types.optional(ProductStoreModel, {});
+export const createProductStoreDefaultModel = () =>
+  types.optional(ProductStoreModel, {
+    products: [],
+  });

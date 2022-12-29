@@ -1,4 +1,5 @@
 import { TextStyle, ViewStyle } from 'react-native';
+
 import { color, spacing } from '../../theme';
 
 export const FULL: ViewStyle = { flex: 1, padding: spacing[3], display: 'flex', flexDirection: 'column' };
@@ -8,7 +9,7 @@ export const HEADER_STYLE: ViewStyle = {
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginBottom: spacing[8],
+  marginTop: spacing[2],
 };
 export const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 export const BUTTON_STYLE: ViewStyle = { marginRight: spacing[2], width: 150 };
@@ -36,5 +37,4 @@ export const CHART_BUTTON_MARGIN_STYLE = {
   marginLeft: spacing[1],
 };
 export const BALANCE_TEXT_STYLE: TextStyle = { fontSize: 16, fontWeight: 'bold' };
-export const FOOTER_STYLE: ViewStyle = { position: 'absolute', bottom: 0, right: spacing[6] };
 export const TRANSACTION_BUTTONS_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' };

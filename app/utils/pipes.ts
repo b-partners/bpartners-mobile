@@ -5,7 +5,7 @@ export const currencyPipe = (currency: string): Intl.NumberFormat => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency,
-    maximumFractionDigits: 0,
+    maximumFractionDigits: 2,
   });
 };
 

@@ -1,12 +1,21 @@
 {
   "currency": "EUR",
+  "components": {
+    "datePicker": {
+      "pickADate": "Sélectionner une date"
+    }
+  },
   "common": {
     "ok": "OK!",
     "cancel": "Annuler",
     "back": "Précédent"
   },
   "errors": {
-    "invalidEmail": "Adresse e-mail invalide"
+    "invalidEmail": "Adresse e-mail invalide",
+    "somethingWentWrong": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement."
+  },
+  "drawer": {
+    "search": "Je recherche de l'aide, une valeur, etc"
   },
   "transactionListScreen": {
     "title": "Transactions",
@@ -50,8 +59,8 @@
       }
     },
     "profileScreen": {
-      "label": "Paiement",
-      "title": "Initier un paiement",
+      "label": "Profil",
+      "title": "Profil",
       "fields": {
         "logo": "Logo",
         "selectFileButton": "Sélectionner un fichier",
@@ -80,7 +89,7 @@
     }
   },
   "homeScreen": {
-    "title": "Bienvenue sur BPartners",
+    "title": "Accueil",
     "labels": {
       "collectPayment": "Collecter un paiement",
       "balance": "Solde au",
@@ -91,6 +100,66 @@
       "frequency": "Fréquence",
       "boostYourResults": "Booster vos résultats",
       "allTransactions": "Tout voir"
+    },
+    "summary": {
+      "title": "Mes chiffres",
+      "goals": "Objectifs",
+      "income": "Chiffres d'affaire",
+      "outcome": "Dépenses",
+      "cashFlow": "Trésorerie Disponible",
+      "boostMyResult": "Booster mes résultats",
+      "lastTransactions": "Dernières Transactions"
     }
+  },
+  "invoiceScreen": {
+    "title": "Devis / Facturation",
+    "labels": {
+      "customerSection": "Client",
+      "productSection": "Produits",
+      "totalSection": "Total",
+      "addItem": "Add item",
+      "ref": "Référence",
+      "title": "Titre",
+      "vat": "TVA",
+      "sendingDate": "Date d'envoi",
+      "toPayAt": "Limite de paiement",
+      "invoiceForm": "Créer un devis",
+      "comment": "Commentaire"
+    },
+    "errors": {
+      "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
+      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
+    },
+    "menu": {
+      "markAsInvoice": "Transformer en facture",
+      "markAsProposal": "Transformer en devis",
+      "downloadInvoice": "Télécharger la facture ",
+      "editInvoice": "Modifier la facture"
+    },
+    "messages": {
+      "successfullyMarkAsProposal": "Devis envoyé au client.",
+      "successfullyMarkAsInvoice": "Devis transformé en facture.",
+      "downloadingInvoice": "Téléchargement de la facture en cours",
+      "invoiceSuccessfullyDownload": "Facture téléchargée.",
+      "downloadingInvoiceFailed": "Un problème est survenu durant le téléchargement de la facture."
+    }
+  },
+  "paymentListScreen": {
+    "title": "Devis / Factures",
+    "tabs": {
+      "drafts": "Brouillons",
+      "invoices": "Factures",
+      "quotations": "Devis"
+    }
+  },
+  "logoutScreen": {
+    "title": "Déconnexion",
+    "swan": "Ouvrir Swan",
+    "swan": "Ouvrir Swan"
+  },
+  "legalFileScreen": {
+    "accept": "Accept",
+    "continue": "Continue",
+    "reload": "recharger"
   }
 }

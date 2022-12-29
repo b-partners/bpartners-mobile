@@ -1,4 +1,5 @@
 import { ApiErrorResponse } from 'apisauce';
+
 import { getGeneralApiProblem } from './api-problem';
 
 test('handles connection errors', () => {

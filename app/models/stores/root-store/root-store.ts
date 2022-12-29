@@ -1,11 +1,15 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { TransactionStoreModel } from '../transaction-store/transaction-store';
-import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
-import { AuthStoreModel } from '../auth-store/auth-store';
-import { PaymentInitiationStoreModel } from '../payment-initiation-store/payment-initiation-store';
+
 import { AccountHolder } from '../../entities/account-holder/account-holder';
 import { Account } from '../../entities/account/account';
 import { User } from '../../entities/user/user';
+import { AuthStoreModel } from '../auth-store/auth-store';
+import { FileStoreModel } from '../file-store/file-store';
+import { InvoiceStoreModel } from '../invoice-store/invoice-store';
+import { LegalFileStoreModel } from '../legal-file-store/legal-file-store';
+import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
+import { PaymentInitiationStoreModel } from '../payment-initiation-store/payment-initiation-store';
+import { TransactionStoreModel } from '../transaction-store/transaction-store';
 
 /**
  * A RootStore model.
@@ -15,7 +19,10 @@ export const RootStoreModel = types.model('RootStore').props({
     transactionStore: types.optional(TransactionStoreModel, {} as any),
     onboardingStore: types.optional(OnboardingStoreModel, {} as any),
     authStore: types.optional(AuthStoreModel, {} as any),
-    paymentInitiationStore: types.optional(PaymentInitiationStoreModel, {} as any)
+    paymentInitiationStore: types.optional(PaymentInitiationStoreModel, {} as any),
+    fileStore: types.optional(FileStoreModel, {} as any),
+    invoiceStore: types.optional(InvoiceStoreModel, {} as any),
+    legalFilesStore: types.optional(LegalFileStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;

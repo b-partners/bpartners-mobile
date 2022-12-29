@@ -1,5 +1,7 @@
 apply plugin: 'kotlin-android'
 apply plugin: "com.android.application"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -81,6 +83,11 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
+    bundleInDebug: true,
+    bundleInRelease: true,
+    bundleInPreprod: true,
+    // TODO: MUST BE ADDRESSED AS SOON AS POSSIBLE, dev mode MUST BE disabled on the end user environment
+    devDisabledInPreprod: false,
 ]
 
 // This method of including other gradle files is to support symlinks.
@@ -112,7 +119,7 @@ def enableProguardInReleaseBuilds = false
  * give correct results when using with locales other than en-US.  Note that
  * this variant is about 6MiB larger per architecture than default.
  */
-def jscFlavor = 'org.webkit:android-jsc:+'
+ def jscFlavor = 'org.webkit:android-jsc-intl:+'
 
 /**
  * Whether to enable the Hermes VM.
@@ -136,6 +143,17 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    packagingOptions {
+       pickFirst 'lib/x86/libc++_shared.so'
+       pickFirst 'lib/x86_64/libjsc.so'
+       pickFirst 'lib/x86/libc++_shared.so'
+       pickFirst 'lib/x86_64/libc++_shared.so'
+       pickFirst 'lib/arm64-v8a/libjsc.so'
+       pickFirst 'lib/arm64-v8a/libc++_shared.so'
+       pickFirst 'lib/x86_64/libc++_shared.so'
+       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+     }
+
     defaultConfig {
         applicationId "com.bpartnersmobile"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -143,6 +161,11 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+        testBuildType System.getProperty('testBuildType', 'debug')
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'app.bpartners.auth'
+        ]
 
         if (isNewArchitectureEnabled()) {
             // We configure the NDK build only if you decide to opt-in for the New Architecture.
@@ -223,14 +246,18 @@ android {
             include (*reactNativeArchitectures())
         }
     }
+
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
+        release {
+            if (project.hasProperty('APP_UPLOAD_STORE_FILE')) {
+                storeFile file(APP_UPLOAD_STORE_FILE)
+                storePassword APP_UPLOAD_STORE_PASSWORD
+                keyAlias APP_UPLOAD_KEY_ALIAS
+                keyPassword APP_UPLOAD_KEY_PASSWORD
+                }
+            }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -238,9 +265,14 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+//             minifyEnabled enableProguardInReleaseBuilds
+//             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+        preprod {
+            initWith release
+            signingConfig signingConfigs.release
+            matchingFallbacks = ['debug', 'release']
         }
     }
 
@@ -262,7 +294,12 @@ android {
 }
 
 dependencies {
+    androidTestImplementation('com.wix:detox:+')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    // TODO: replace this library later
+    implementation project(':react-native-fs')
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
