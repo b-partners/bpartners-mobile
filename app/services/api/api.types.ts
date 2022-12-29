@@ -3,6 +3,7 @@ import { Account } from '../../models/entities/account/account';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
 import { Invoice } from '../../models/entities/invoice/invoice';
+import { Marketplace } from '../../models/entities/marketplace/marketplace';
 import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Product } from '../../models/entities/product/product';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
@@ -60,6 +61,8 @@ export type InitPaymentResult = { kind: 'ok'; paymentInitiation: { id: string } 
 export type GetFileInformation = { kind: 'ok'; fileInfos: File } | GeneralApiProblem;
 
 export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProblem;
+
+export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } | GeneralApiProblem;
 
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
 
