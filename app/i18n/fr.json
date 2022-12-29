@@ -12,7 +12,8 @@
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
-    "somethingWentWrong": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement."
+    "somethingWentWrong": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement.",
+    "verifyConnection": "Verifier votre connexion"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"

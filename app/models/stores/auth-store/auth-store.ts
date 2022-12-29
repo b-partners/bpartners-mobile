@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
+import { translate } from '../../../i18n';
 import { withEnvironment, withRootStore } from '../..';
 import { AccountApi } from '../../../services/api/account-api';
 import { AuthApi } from '../../../services/api/auth-api';
@@ -40,8 +41,12 @@ export const AuthStoreModel = types
   .actions(self => ({
     catchOrThrow: (error: Error) => {
       const errorMessage = error.message;
-      if (errorMessage == 'cannot-connect') return showMessage('Verify your connection', { backgroundColor: palette.pastelRed });
-      if (errorMessage === 'forbidden') return self.reset();
+      if (errorMessage === 'cannot-connect') {
+        return showMessage(translate('errors.verifyConnection'), { backgroundColor: palette.pastelRed });
+      }
+      if (errorMessage === 'forbidden') {
+        return self.reset();
+      }
       throw error;
     },
   }))
