@@ -1,6 +1,6 @@
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import React, { useCallback } from 'react';
-import { Linking, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Alert, TextInput } from 'react-native';
 import Home from 'react-native-vector-icons/AntDesign';
 import Contact from 'react-native-vector-icons/AntDesign';
@@ -32,7 +32,7 @@ const SEARCH_CONTAINER_STYLE: ViewStyle = {
   marginTop: '3%',
   alignSelf: 'center',
   borderRadius: 40,
-  elevation: 2,
+  elevation: 5,
   shadowColor: palette.black,
   justifyContent: 'center',
   flexDirection: 'row',
@@ -65,7 +65,7 @@ const NAVIGATION_STYLE: ViewStyle = {
 
 const SWAN_CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.white,
-  height: '9%',
+  height: 50,
   borderWidth: 0.5,
   borderColor: palette.lighterGrey,
   flexDirection: 'row',
@@ -107,6 +107,11 @@ const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.white,
 };
 
+const SCROLLVIEW_CONTAINER_STYLE: ViewStyle = {
+  width: '100%',
+  height: '60%',
+};
+
 const BULLET_STYLE: ViewStyle = { position: 'absolute', zIndex: 1 };
 
 const DRAWER_SCROLLVIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: '100%' };
@@ -140,7 +145,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
 
   const TitleRoute: RouteNameProps = {
     home: translate('homeScreen.title'),
-    profile: translate('profileScreen.title'),
+    profile: translate('profilScreen.title'),
     transactionList: translate('transactionListScreen.title'),
     paymentInitiation: translate('paymentInitiationScreen.title'),
     paymentList: translate('paymentListScreen.title'),
@@ -159,7 +164,6 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
     welcome: <Home name='home' size={22} color='#000' />,
     oauth: <Lock name='lock-closed-outline' size={22} color='#000' />,
     marketplace: <Map name='md-map-outline' size={22} color='#000' />,
-    oauth: <Lock name='lock-closed-outline' size={22} color='#000' />,
     supportContact: <Contact name='contacts' size={22} color='#000' />,
   };
 
@@ -209,32 +213,34 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
           </View>
         </View>
       </View>
-      <View style={NAVIGATION_CONTAINER_STYLE}>
-        {props.state.routes.slice(0, 7).map((route: any) => {
-          return (
-            <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
-              <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
-              <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>{TitleRoute[route.name]}</Text>
-              </View>
-              <View style={ICON_CONTAINER_STYLE}>
-                <Right name='chevron-thin-right' size={18} color='#000' />
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+      <View style={SCROLLVIEW_CONTAINER_STYLE}>
+        <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
+          {props.state.routes.slice(0, 6).map((route: any) => {
+            return (
+              <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
+                <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
+                <View style={TEXT_CONTAINER_STYLE}>
+                  <Text style={TEXT_STYLE}>{TitleRoute[route.name]}</Text>
+                </View>
+                <View style={ICON_CONTAINER_STYLE}>
+                  <Right name='chevron-thin-right' size={18} color='#000' />
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+          <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress}>
+            <View style={ICON_CONTAINER_STYLE}>
+              <Exit name='arrow-redo-outline' size={22} color='#000' />
+            </View>
+            <View style={TEXT_CONTAINER_STYLE}>
+              <Text style={TEXT_STYLE}>{translate('logoutScreen.swan')}</Text>
+            </View>
+            <View style={ICON_CONTAINER_STYLE}>
+              <Right name='chevron-thin-right' size={18} color='#000' />
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
-      <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress}>
-        <View style={ICON_CONTAINER_STYLE}>
-          <Exit name='arrow-redo-outline' size={22} color='#000' />
-        </View>
-        <View style={TEXT_CONTAINER_STYLE}>
-          <Text style={TEXT_STYLE}>{translate('logoutScreen.swan')}</Text>
-        </View>
-        <View style={ICON_CONTAINER_STYLE}>
-          <Right name='chevron-thin-right' size={18} color='#000' />
-        </View>
-      </TouchableOpacity>
       <TouchableOpacity
         style={LOGOUT_CONTAINER_STYLE}
         onPress={() => {
