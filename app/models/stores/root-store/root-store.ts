@@ -6,6 +6,7 @@ import { User } from '../../entities/user/user';
 import { AuthStoreModel } from '../auth-store/auth-store';
 import { FileStoreModel } from '../file-store/file-store';
 import { InvoiceStoreModel } from '../invoice-store/invoice-store';
+import { MarketplaceStoreModel } from '../marketplace-store/marketplace-store';
 import { LegalFileStoreModel } from '../legal-file-store/legal-file-store';
 import { MarketplaceStoreModel } from '../marketplace-store/marketplace-store';
 import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
