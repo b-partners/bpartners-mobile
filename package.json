@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "expo start",
-    "ios": "expo run:ios",
-    "android": "expo run:android",
+    "ios": "react-native run-android",
+    "android": "react-native run-ios",
     "build:ios:debug:e2e": "detox build --configuration ios.sim.debug",
     "build:ios:release:e2e": "detox build --configuration ios.sim.release",
     "build:android:debug:e2e": "detox build --configuration android.emu.debug",
