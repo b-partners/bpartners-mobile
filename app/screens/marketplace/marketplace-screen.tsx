@@ -11,7 +11,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { ColumnList } from './components/market-column-list';
 import { MarketHeader } from './components/market-header';
 import { RowList } from './components/market-row-list';
-import { SCREEN_STYLE } from './styles';
+import { FULL_HEIGHT, SCREEN_STYLE } from './styles';
 
 export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
   const { marketplaceStore } = useStores();
@@ -25,7 +25,7 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'market
     <ErrorBoundary catchErrors='always'>
       <View testID='SignInWebViewScreen' style={SCREEN_STYLE}>
         <GradientBackground colors={['#422443', '#281b34']} />
-        <Screen preset='scroll' backgroundColor={palette.white} style={{ height: '100%' }}>
+        <Screen preset='scroll' backgroundColor={palette.white} style={FULL_HEIGHT}>
           <MarketHeader onPress={() => navigation.navigate('home')} />
           {marketplaces.length < 3 ? <ColumnList /> : <RowList />}
         </Screen>

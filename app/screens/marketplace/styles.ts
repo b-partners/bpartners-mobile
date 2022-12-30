@@ -140,3 +140,7 @@ export const CARD_ROW_CONTAINER_STYLE: ViewStyle = {
   alignItems: 'center',
   marginVertical: 10,
 };
+
+export const FULL_HEIGHT: ViewStyle = {
+  height: '100%',
+};
