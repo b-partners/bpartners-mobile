@@ -1,4 +1,4 @@
-import { Formik, useFormikContext } from 'formik';
+import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
 import uuid from 'react-native-uuid';
@@ -12,7 +12,6 @@ import { Invoice, InvoiceSnapshotIn, InvoiceStatus } from '../../../models/entit
 import { Product } from '../../../models/entities/product/product';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { currencyPipe } from '../../../utils/pipes';
 import EditableTextField from './editable-text-field';
 import GridHeaderContent from './grid-header-content';
 import ProductCardItem from './product-card-item';
@@ -37,17 +36,6 @@ const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
 };
 
 const EDITABLE_TF_CONTAINER: ViewStyle = { borderWidth: 0.5, borderColor: palette.lighterGrey, flex: 1 };
-const BUTTON_OUTLINE_STYLE: ViewStyle = {
-  marginHorizontal: '5%',
-  borderWidth: 1,
-  borderRadius: 40,
-  paddingVertical: spacing[3],
-  paddingHorizontal: spacing[2],
-  borderColor: color.primary,
-  backgroundColor: color.transparent,
-  marginVertical: spacing[2],
-};
-
 const BUTTON_FILL_STYLE: ViewStyle = {
   backgroundColor: color.primary,
   marginHorizontal: '5%',
@@ -55,9 +43,6 @@ const BUTTON_FILL_STYLE: ViewStyle = {
   paddingVertical: spacing[3],
   paddingHorizontal: spacing[2],
 };
-
-const ADD_BUTTON_TEXT_STYLE: TextStyle = { fontWeight: '400', color: color.primary };
-
 const HEADER_RIGHT_ROW: ViewStyle = { ...EDITABLE_TF_CONTAINER, flex: 1.5 };
 
 const LABEL_STYLE: TextStyle = { color: palette.greyDarker, fontSize: 14, fontWeight: '700' };
@@ -83,10 +68,10 @@ const DATE_PICKER_FIELD_CONTAINER: ViewStyle = { ...EDITABLE_TF_CONTAINER, paddi
 
 const SEPARATOR_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
-// todo: recycle unused code
+const FLEX_WRAP: ViewStyle = { flex: 1, flexWrap: 'wrap' };
+
 export function InvoiceForm(props: InvoiceFormProps) {
-  const { invoice, customers, products, onSaveInvoice } = props;
-  const { format } = currencyPipe(translate('currency'));
+  const { onSaveInvoice } = props;
 
   const validate = values => {
     const errors: Partial<Record<keyof Invoice, string>> = {};
@@ -158,7 +143,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
               products: values.products.map(item => ({
                 description: item.description,
                 unitPrice: item.unitPrice,
-                vatPercent: item.totalPriceWithVat,
+                vatPercent: item.tva,
                 quantity: item.quantity,
               })),
             });
@@ -169,14 +154,14 @@ export function InvoiceForm(props: InvoiceFormProps) {
         validationSchema={validationSchema}
         validate={validate}
       >
-        {({ errors, handleSubmit, setFieldValue, values, touched }) => {
+        {({ errors, handleSubmit, values }) => {
           /*const total = (values.products as Product[]).reduce((a, c) => {
             return a + c.totalPriceWithVat * c.quantity;
           }, 0);*/
 
           return (
             <>
-              <View style={{ flex: 1, flexWrap: 'wrap' }}>
+              <View style={FLEX_WRAP}>
                 <View style={FLEX_ROW}>
                   <EditableTextField title={'Titre de devis'} formName={'title'} placeholder={'Taper le titre du devis'} containerStyle={HEADER_RIGHT_ROW} />
                   <EditableTextField
@@ -197,38 +182,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     />
                   </View>
                 </View>
-                {/*<View style={FLEX_ROW}>
-                  TODO show date picker
-                  <EditableTextField title={'Titre de devis'} formName={''} placeholder={'Placeholder'} containerStyle={EDITABLE_TF_CONTAINER} />
-                    <View style={DATEPICKER_ROW_STYLE}>
-                    <DatePickerField
-                      labelTx='invoiceScreen.labels.sendingDate'
-                      value={values.sendingDate}
-                      onDateChange={date => setFieldValue("sendingDate", date)}
-                      validationError={errors.sendingDate as string}
-                    />
-                </View>
-                  <AutocompletionFormField
-                    containerStyle={{ marginBottom: spacing[4], flex: 1 }}
-                    id='id'
-                    title='name'
-                    value={values.customer}
-                    data={customers}
-                    onValueChange={item => {
-                      const c = (customers || []).find(customer => item && item.id === customer.id);
-                      setFieldValue('customer', c);
-                    }}
-                    onSearch={() => {}}
-                    onClear={() => {
-                      setFieldValue('customer', null);
-                    }}
-                  />
-                  <GridHeaderContent
-                    headerText={"Date de l'émission"}
-                    bodyText={new Date().toLocaleDateString()}
-                    style={{ flex: 1, borderWidth: 1, borderColor: palette.greyDarker }}
-                  />
-                // </View>*/}
               </View>
 
               <View>
@@ -245,7 +198,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     }}
                   />
                 )}*/}
-                <Button
+                {/*<Button
                   text={'Ajouter un autre élément'}
                   style={BUTTON_OUTLINE_STYLE}
                   textStyle={ADD_BUTTON_TEXT_STYLE}
@@ -261,7 +214,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       },
                     ]);
                   }}
-                />
+                />*/}
               </View>
 
               <View>
