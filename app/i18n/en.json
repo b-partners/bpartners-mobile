@@ -12,7 +12,8 @@
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
-    "somethingWentWrong": "Something went wrong. Please retry later."
+    "somethingWentWrong": "Something went wrong. Please retry later.",
+    "verifyConnection": "Verify your connection"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -168,6 +169,9 @@
       "invoices": "Invoices",
       "quotations": "Quotations"
     }
+  },
+  "quotationScreen": {
+    "createQuotation": "Create a Quotation"
   },
   "logoutScreen": {
     "title": "Logout",

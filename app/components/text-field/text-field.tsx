@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleProp, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
+import { Text } from '..';
 import { TxKeyPath, translate } from '../../i18n';
 import { color, spacing, typography } from '../../theme';
-import { Text } from '../text/text';
+import { palette } from '../../theme/palette';
 
 // the base styling for the container
 const CONTAINER: ViewStyle = {
@@ -101,7 +102,7 @@ export function TextField(props: TextFieldProps) {
         placeholderTextColor={color.palette.lighterGrey}
         underlineColorAndroid={color.transparent}
         {...rest}
-        style={inputStyles}
+        style={[inputStyles, { color: palette.black }]}
         ref={forwardedRef}
       />
     </View>
