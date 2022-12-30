@@ -1,4 +1,4 @@
-import { Formik, useFormikContext } from 'formik';
+import { useFormikContext } from 'formik';
 import React, { FC } from 'react';
 import { TouchableHighlight, View, ViewStyle } from 'react-native';
 
@@ -28,46 +28,35 @@ type ICardElement = {
   onRemove?: (item: Product) => void;
 };
 
-const ProductCardItem: FC<ICardElement> = ({ onAdd, item, onRemove }) => {
+const ProductCardItem: FC<ICardElement> = ({ onRemove }) => {
   const { values: invoiceForm } = useFormikContext();
 
   return (
-    <Formik initialValues={{}} onSubmit={() => {}}>
-      {() => {
-        return (
-          <>
-            <TouchableHighlight style={DELETE_ACTION_POSITION_STYLE} onPress={() => onRemove(invoiceForm.products)}>
-              <Icon icon={'trash'} />
-            </TouchableHighlight>
+    <>
+      <TouchableHighlight style={DELETE_ACTION_POSITION_STYLE} onPress={() => onRemove(invoiceForm.products)}>
+        <Icon icon={'trash'} />
+      </TouchableHighlight>
 
-            <View style={CONTAINER_STYLE}>
-              <View>
-                <EditableTextField
-                  title={"Titre de l'élement"}
-                  formName={'title'}
-                  placeholder={'Taper le titre'}
-                  containerStyle={{ paddingBottom: spacing[0] }}
-                />
-                <EditableTextField title={'Déscription (facultatif)'} formName={'description'} placeholder={'Taper le titre'} />
-              </View>
-              <View style={BOTTOM_INFO_STYLE}>
-                <EditableTextField
-                  title={'Prix unitaire'}
-                  suffix={' $'}
-                  formName={'unitPrice'}
-                  containerStyle={EDITABLE_TF_CONTAINER}
-                  keyboardType={'number-pad'}
-                  value={'0'}
-                  style={EDITABLE_TEXT_FIELD_STYLE}
-                />
-                <EditableTextField title={'Quantité'} prefix={'x '} formName={'quantity'} containerStyle={EDITABLE_TF_CONTAINER} keyboardType={'number-pad'} />
-                <EditableTextField title={'TVA'} formName={'tva'} containerStyle={EDITABLE_TF_CONTAINER} suffix={' %'} />
-              </View>
-            </View>
-          </>
-        );
-      }}
-    </Formik>
+      <View style={CONTAINER_STYLE}>
+        <View>
+          <EditableTextField title={"Titre de l'élement"} formName={'title'} placeholder={'Taper le titre'} containerStyle={{ paddingBottom: spacing[0] }} />
+          <EditableTextField title={'Déscription (facultatif)'} formName={'description'} placeholder={'Taper le titre'} />
+        </View>
+        <View style={BOTTOM_INFO_STYLE}>
+          <EditableTextField
+            title={'Prix unitaire'}
+            suffix={' $'}
+            formName={'unitPrice'}
+            containerStyle={EDITABLE_TF_CONTAINER}
+            keyboardType={'number-pad'}
+            value={'0'}
+            style={EDITABLE_TEXT_FIELD_STYLE}
+          />
+          <EditableTextField title={'Quantité'} prefix={'x '} formName={'quantity'} containerStyle={EDITABLE_TF_CONTAINER} keyboardType={'number-pad'} />
+          <EditableTextField title={'TVA'} formName={'tva'} containerStyle={EDITABLE_TF_CONTAINER} suffix={' %'} />
+        </View>
+      </View>
+    </>
   );
 };
 
