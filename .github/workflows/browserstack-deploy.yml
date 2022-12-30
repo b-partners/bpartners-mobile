@@ -40,8 +40,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-        if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android-dev' 
-
       - run: |
           sh ./setDevEnv.sh
 
