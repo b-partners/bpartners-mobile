@@ -5,11 +5,11 @@ import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
 import { AutocompletionFormField } from '../../components';
+import FormField from '../../components/forms/form-field';
 import { translate } from '../../i18n';
 import { Customer } from '../../models/entities/customer/customer';
 import { Product } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
-import FormField from '../sign-in/components/form-field';
 
 const FORM_FIELD_STYLE: TextStyle = { color: color.palette.black, paddingHorizontal: spacing[2], paddingBottom: 0 };
 const INVALID_FORM_FIELD = {

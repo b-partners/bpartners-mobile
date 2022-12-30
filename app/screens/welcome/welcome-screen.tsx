@@ -54,8 +54,8 @@ const CONTINUE: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
   backgroundColor: color.palette.deepPurple,
-  width: 180,
-  marginRight: spacing[2],
+  flex: 1,
+  marginHorizontal: spacing[2],
 };
 const CONTINUE_TEXT: TextStyle = {
   ...TEXT,
@@ -109,11 +109,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           </Text>
           <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
         </Screen>
-        <SafeAreaView style={FOOTER}>
-          <View style={FOOTER_CONTENT}>
-            <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} />
-            <Button testID='onboarding-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={createAccount} />
-          </View>
+        <SafeAreaView style={[FOOTER, FOOTER_CONTENT]}>
+          <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} />
+          <Button testID='onboarding-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={createAccount} />
         </SafeAreaView>
       </View>
     </ErrorBoundary>

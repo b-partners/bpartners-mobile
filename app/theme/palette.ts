@@ -6,9 +6,11 @@ export const palette = {
   orangeDarker: '#EB9918',
   lightGrey: '#939AA4',
   lighterGrey: '#CDD4DA',
+  greyDarker: '#989FB3',
   angry: '#dd3333',
   green: '#74b469',
   deepPurple: '#5D2555',
+  lighterPurple: '#9C255A',
   midnightGreen: '#003f5c',
   purpleNavy: '#58508d',
   mulberry: '#bc5090',
@@ -19,4 +21,5 @@ export const palette = {
   apple: '#7AC142',
   oceanBoatBlue: '#007CC3',
   usafaBlue: '#00529B',
+  textClassicColor: '#0A1045',
 };

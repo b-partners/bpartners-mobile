@@ -4,10 +4,10 @@ import { TextStyle, ViewStyle } from 'react-native';
 import * as yup from 'yup';
 
 import { Button } from '../../../components';
+import FormField from '../../../components/forms/form-field';
 import { useError } from '../../../hook';
 import { useStores } from '../../../models';
 import { color, spacing, typography } from '../../../theme';
-import FormField from './form-field';
 
 const PHONE_NUMBER_STYLE: TextStyle = {
   borderRadius: 10,
@@ -43,6 +43,7 @@ const validationSchema = yup.object().shape({
     .max(15)
     .label('Phone number'),
 });
+// todo move it to the error form
 const INVALID_PHONE_NUMBER = {
   borderColor: '#FF5983',
   borderWidth: 2,

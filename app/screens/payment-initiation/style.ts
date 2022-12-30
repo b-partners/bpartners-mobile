@@ -12,6 +12,7 @@ export const HEADER: TextStyle = {
   paddingBottom: spacing[5] - 1,
   paddingHorizontal: spacing[4],
   paddingTop: spacing[3],
+  backgroundColor: color.primary,
 };
 export const HEADER_TITLE: TextStyle = {
   fontSize: 12,
