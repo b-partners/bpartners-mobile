@@ -88,6 +88,7 @@ project.ext.react = [
     bundleInPreprod: true,
     // TODO: MUST BE ADDRESSED AS SOON AS POSSIBLE, dev mode MUST BE disabled on the end user environment
     devDisabledInPreprod: false,
+    devDisabledInProd: false,
 ]
 
 // This method of including other gradle files is to support symlinks.
@@ -270,6 +271,11 @@ android {
 //             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
         preprod {
+            initWith release
+            signingConfig signingConfigs.release
+            matchingFallbacks = ['debug', 'release']
+        }
+        prod {
             initWith release
             signingConfig signingConfigs.release
             matchingFallbacks = ['debug', 'release']
