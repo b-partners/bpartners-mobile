@@ -1,12 +1,12 @@
 # Get all ssm parameters from aws
 
-API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/dev/API_URL" --with-decryption --output text --query "Parameters[*].Value")
-SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/dev/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value")
-FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/dev/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value")
+API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value")
+SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value")
+FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value")
 SWAN_URL=$(aws ssm get-parameters --names "/bpartners/mobile/SWAN_URL" --with-decryption --output text --query "Parameters[*].Value")
-CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/dev/SWAN_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value")
-CLIENT_SECRET=$(aws ssm get-parameters --names "/bpartners/mobile/dev/SAWN_CLIENT_SECRET" --with-decryption --output text --query "Parameters[*].Value")
-SENTRY_ENV=$(aws ssm get-parameters --names "/bpartners/mobile/dev/SENTRY_DEV" --with-decryption --output text --query "Parameters[*].Value")
+CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SWAN_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value")
+CLIENT_SECRET=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SAWN_CLIENT_SECRET" --with-decryption --output text --query "Parameters[*].Value")
+SENTRY_ENV=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SENTRY_DEV" --with-decryption --output text --query "Parameters[*].Value")
 SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value")
 AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
 TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value")
