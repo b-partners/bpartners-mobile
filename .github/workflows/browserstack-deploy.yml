@@ -21,11 +21,8 @@ on:
 jobs:
 
   android-browserstack:
-
     if: github.event.inputs.OS == 'android' && github.event.inputs.env == 'dev' || github.event.inputs.env == 'preprod' || github.event.inputs.env == 'prod'
-
     runs-on: ubuntu-latest
-
     timeout-minutes: 45
 
     steps:
@@ -35,15 +32,16 @@ jobs:
 
       - name: Decode keystore
         run: |
-            cd android/app
-            touch release.keystore
-            echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
+          cd android/app
+          touch release.keystore
+          echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
         if: github.event.inputs.env == 'preprod' || github.event.inputs.env == 'prod'
           
       - name: Setting up the environment variables
         run: |
-            mkdir ~/.gradle
-            sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
+          mkdir ~/.gradle
+          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
+          echo "sha=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
@@ -61,8 +59,6 @@ jobs:
 
       - name: Build apk and bundle
         run: |
-          echo "sha=${GITHUB_SHA}" >> $GITHUB_ENV
-
           if ${{ github.event.inputs.env == 'dev'}}; then
             sh ./setDevEnv.sh
             cd android
@@ -86,7 +82,6 @@ jobs:
             cd ..
             mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/${{ github.event.inputs.env}}-${{ env.sha }}.aab
             mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
-
           fi
 
       - name: Deploy to browserstack
@@ -99,10 +94,8 @@ jobs:
           aws s3 cp android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab s3://mobile-bpartners/android/
     
   ios-browserstack:
-
       if: github.event.inputs.platform == 'ios'
       runs-on: macos-latest
-
       timeout-minutes: 120
 
       steps:
