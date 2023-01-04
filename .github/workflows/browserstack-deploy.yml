@@ -32,16 +32,16 @@ jobs:
 
       - name: Decode keystore
         run: |
-          cd android/app
-          touch release.keystore
-          echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
+            cd android/app
+            touch release.keystore
+            echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
         if: github.event.inputs.env == 'preprod' || github.event.inputs.env == 'prod'
           
       - name: Setting up the environment variables
         run: |
-          mkdir ~/.gradle
-          sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
-          echo "sha=${GITHUB_SHA}" >> $GITHUB_ENV
+            mkdir ~/.gradle
+            sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
+            echo "sha=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
@@ -59,6 +59,7 @@ jobs:
       
       - name: Retrieve the environment variables from aws and put them in .env 
         run: |
+          touch .env
           echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
           echo SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
           echo FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
@@ -69,6 +70,7 @@ jobs:
           echo SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value") > .env
           echo AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") > .env
           echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") > .env
+          cat .env
 
       - name: Build apk and bundle
         run: |
