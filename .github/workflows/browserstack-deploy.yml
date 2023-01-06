@@ -69,8 +69,7 @@ jobs:
           echo SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
-          cat .env
-          
+
       - name: Build apk and bundle
         run: |
           if ${{ github.event.inputs.env == 'dev'}}; then
@@ -85,14 +84,15 @@ jobs:
             ./gradlew assemblePreprod && ./gradlew bundlePreprod
             cd ..
             mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
-            mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
+            mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk 
 
           elif ${{ github.event.inputs.env == 'prod'}}; then
             cd android
-            ./gradlew assembleRelease && ./gradlew bundleRelease
+            # TODO: release is broken and that's why we use preprod scripts
+            ./gradlew assemblePreprod && ./gradlew bundlePreprod
             cd ..
-            mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/${{ github.event.inputs.env}}-${{ env.sha }}.aab
-            mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
+            mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
+            mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
           fi
 
       - name: Deploy to browserstack
