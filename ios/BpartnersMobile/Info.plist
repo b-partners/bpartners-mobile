@@ -93,5 +93,16 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>app.bpartners</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>app.bpartners</string>
+        </array>
+      </dict>
+    </array>
 </dict>
 </plist>

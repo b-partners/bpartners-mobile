@@ -453,8 +453,8 @@ PODS:
     - Sentry/HybridSDK (= 7.31.3)
   - RNSnackbar (2.4.0):
     - React-Core
-  - RNSVG (12.1.0):
-    - React
+  - RNSVG (12.3.0):
+    - React-Core
   - Sentry/HybridSDK (7.31.3)
   - SocketRocket (0.6.0)
   - SwiftAlgorithms (1.0.0)
@@ -464,6 +464,7 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
+  - AppAuth
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -776,7 +777,7 @@ SPEC CHECKSUMS:
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSentry: 4c09f4dd9740cb9b33e94303de5b6d0dbeb0737d
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
-  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
+  RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   Sentry: 08884c523575ec0f6690d94ed3ccb0246a1600bf
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
@@ -784,6 +785,6 @@ SPEC CHECKSUMS:
   Yoga: c4d61225a466f250c35c1ee78d2d0b3d41fe661c
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 743e2e2751c4a74ad557e2a7b4f5e935f0a7d33d
+PODFILE CHECKSUM: 20a05b9ddd38a261e82a72cdf3b2b149e8521a66
 
 COCOAPODS: 1.11.3
