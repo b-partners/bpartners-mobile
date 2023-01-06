@@ -7,10 +7,11 @@ import { Icon, Text } from '../../../components';
 import { Dropdown } from '../../../components/dropdown/dropdown';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
+import { TransactionCategory, TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color } from '../../../theme';
-import { currencyPipe, datePipe } from '../../../utils/pipes';
+import { printCurrency } from '../../../utils/money';
+import { datePipe } from '../../../utils/pipes';
 import {
   ICON_CONTAINER_STYLE,
   ICON_STYLE,
@@ -54,7 +55,7 @@ export const Transaction = (
           </Text>
         </View>
         <View style={TRANSACTION_RIGHT_SIDE}>
-          <Text style={TRANSACTION_AMOUNT(item.amount)}>{currencyPipe(translate('currency')).format(item.amount)}</Text>
+          <Text style={TRANSACTION_AMOUNT(item.type as TransactionType)}>{printCurrency(item.amount)}</Text>
         </View>
       </View>
       {showTransactionCategory && (
