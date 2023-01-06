@@ -1,5 +1,7 @@
-import React, { PropsWithoutRef, useState } from 'react';
+import { cloneDeep } from 'lodash';
+import React, { PropsWithoutRef } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { Icon, Text } from '../../../components';
 import { Dropdown } from '../../../components/dropdown/dropdown';
@@ -7,6 +9,7 @@ import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { TransactionCategory } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
+import { color } from '../../../theme';
 import { currencyPipe, datePipe } from '../../../utils/pipes';
 import {
   ICON_CONTAINER_STYLE,
@@ -20,13 +23,11 @@ import {
   TRANSACTION_LEFT_SIDE,
   TRANSACTION_RIGHT_SIDE,
 } from '../styles';
-import { UserDefinedCategoryForm } from './user-defined-category-form';
 
 export const Transaction = (
   props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[]; showTransactionCategory?: boolean }>
 ) => {
   const { transactionStore } = useStores();
-  const [userDefinedCategory, setUserDefinedCategory] = useState(false);
 
   const { item, transactionCategories, showTransactionCategory } = props;
 
@@ -47,17 +48,19 @@ export const Transaction = (
         <View style={TRANSACTION_BOTTOM_SIDE}>
           <View style={TRANSACTION_ACTIONS}>
             <Dropdown<TransactionCategory>
-              items={transactionCategories}
+              items={cloneDeep(transactionCategories)}
+              labelField='description'
+              valueField='id'
+              onChangeText={() => {}}
+              onChange={category => transactionStore.updateTransactionCategory(item.id, category)}
+              placeholder={translate('transactionListScreen.transactionCategoryPlaceholder')}
               value={item.category}
-              selectValue={transactionCategory => transactionCategory.id}
-              selectLabel={transactionCategory => transactionCategory.type}
-              onSelectItem={transactionCategory => transactionStore.updateTransactionCategory(item.id, transactionCategory)}
-            />
-            {!userDefinedCategory && (
-              <TouchableOpacity onPress={() => setUserDefinedCategory(true)} style={ICON_CONTAINER_STYLE}>
-                <Icon icon='plus' style={ICON_STYLE} />
-              </TouchableOpacity>
-            )}
+            >
+              <View testID='transaction-category-container'>
+                {item.category && item.category.description && <Text text={item.category.description} testID='transaction-category' />}
+                <AntDesignIcon name='edit' size={15} style={{ color: color.palette.white }}></AntDesignIcon>
+              </View>
+            </Dropdown>
             <TouchableOpacity style={ICON_CONTAINER_STYLE}>
               <Icon icon={item.category && item.category.id ? 'check' : 'bullet'} style={ICON_STYLE} />
             </TouchableOpacity>
@@ -65,24 +68,6 @@ export const Transaction = (
               <Icon icon='upload' style={ICON_STYLE} />
             </TouchableOpacity>
           </View>
-          {userDefinedCategory && (
-            <View>
-              <UserDefinedCategoryForm
-                onSubmit={async transactionCategory => {
-                  try {
-                    await transactionStore.updateTransactionCategory(item.id, transactionCategory as any);
-                  } catch (e) {
-                    __DEV__ && console.tron.log(e);
-                    throw new Error(e);
-                  } finally {
-                    await transactionStore.getTransactionCategories();
-                    setUserDefinedCategory(false);
-                  }
-                }}
-                onCancel={() => setUserDefinedCategory(false)}
-              />
-            </View>
-          )}
         </View>
       )}
     </View>

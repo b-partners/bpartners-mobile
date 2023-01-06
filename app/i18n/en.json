@@ -46,7 +46,8 @@
         "submitButton": "Update",
         "cancelButton": "Cancel"
       }
-    }
+    },
+    "transactionCategoryPlaceholder": "Select an item"
   },
   "onboardingScreen": {
     "title": "Onboarding"
