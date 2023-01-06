@@ -1,11 +1,20 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import uuid from 'react-native-uuid';
+
+export enum TransactionType {
+  INCOME = 'INCOME',
+  OUTCOME = 'OUTCOME',
+}
 
 export const TransactionCategoryModel = types.model('TransactionCategory').props({
   id: types.maybe(types.maybeNull(types.string)),
-  userDefined: types.maybe(types.maybeNull(types.boolean)),
-  type: types.maybe(types.maybeNull(types.string)),
-  vat: types.maybe(types.maybeNull(types.number)),
   count: types.maybe(types.maybeNull(types.number)),
+  vat: types.maybe(types.maybeNull(types.number)),
+  transactionType: types.maybe(types.maybeNull(types.enumeration(Object.values(TransactionType)))),
+  description: types.maybe(types.maybeNull(types.string)),
+  type: types.maybe(types.maybeNull(types.string)),
+  comment: types.maybe(types.maybeNull(types.string)),
+  isOther: types.maybe(types.maybeNull(types.boolean)),
 });
 
 export interface TransactionCategory extends Instance<typeof TransactionCategoryModel> {}
@@ -16,7 +25,9 @@ export interface TransactionCategorySnapshotIn extends SnapshotIn<typeof Transac
 
 export const createTransactionCategoryDefaultModel = () =>
   types.optional(TransactionCategoryModel, {
-    type: null,
-    vat: null,
-    userDefined: false,
+    id: uuid.v4().toString(),
+    description: null,
+    isOther: false,
+    transactionType: null,
+    count: 0,
   });
