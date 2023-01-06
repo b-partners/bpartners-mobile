@@ -14,14 +14,18 @@ interface DropdownProps<T> extends PropsWithChildren<any> {
   onChange: (item: T) => Promise<void>;
   onChangeText: (search: string) => void;
   style?: ViewStyle;
+  dropdownContainerStyle?: ViewStyle;
   itemTextStyle?: TextStyle;
+  selectedItemTextStyle?: TextStyle;
   placeholderTextStyle?: TextStyle;
   placeholder?: string;
 }
 
+const DROPDOWN_CONTAINER_STYLE: ViewStyle = { flex: 1, paddingVertical: spacing[2], paddingHorizontal: spacing[1] };
 const STYLE: ViewStyle = { flex: 1 };
 const ITEM_TEXT_STYLE: TextStyle = { color: color.palette.black };
 const PLACEHOLDER_TEXT_STYLE: TextStyle = { color: color.palette.white };
+const SELECTED_TEXT_STYLE: TextStyle = { color: color.palette.white };
 
 export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
   const {
@@ -31,8 +35,10 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
     valueField,
     onChange,
     onChangeText,
+    dropdownContainerStyle: dropdownContainerStyleOverrides,
     style: styleOverrides,
     itemTextStyle: itemTextStylesOverrides,
+    selectedItemTextStyle: selectedItemTextStyleOverrides,
     placeholder,
     children,
   } = props;
@@ -44,7 +50,7 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, paddingVertical: spacing[2], paddingHorizontal: spacing[1] }}>
+    <View style={[DROPDOWN_CONTAINER_STYLE, dropdownContainerStyleOverrides]}>
       {!edit && <TouchableOpacity onPress={() => setEdit(true)}>{children}</TouchableOpacity>}
       {edit && (
         <View>
@@ -56,7 +62,6 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
             labelField={labelField}
             valueField={valueField}
             onChange={async item => {
-              console.tron.log({ item });
               try {
                 await onChange(item);
               } catch (e) {
@@ -70,6 +75,7 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
             onChangeText={onChangeText}
             placeholder={placeholder}
             placeholderStyle={[PLACEHOLDER_TEXT_STYLE]}
+            selectedTextStyle={[SELECTED_TEXT_STYLE, selectedItemTextStyleOverrides]}
           />
         </View>
       )}

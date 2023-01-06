@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import React, { PropsWithoutRef } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { Icon, Text } from '../../../components';
@@ -24,12 +24,25 @@ import {
   TRANSACTION_RIGHT_SIDE,
 } from '../styles';
 
+const TRANSACTION_CATEGORY_LABEL_CONTAINER: ViewStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  width: '100%',
+};
+
+const TRANSACTION_CATEGORY_LABEL_LEFT_ITEM: ViewStyle = { flex: 10 };
+
+const TRANSACTION_CATEGORY_LABEL_RIGHT_ITEM: TextStyle = { color: color.palette.white, flex: 1 };
+
 export const Transaction = (
   props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[]; showTransactionCategory?: boolean }>
 ) => {
   const { transactionStore } = useStores();
 
   const { item, transactionCategories, showTransactionCategory } = props;
+
+  const filteredTransactionCategories = cloneDeep(transactionCategories).filter(category => category.transactionType === item.type);
 
   return (
     <View style={LIST_CONTAINER}>
@@ -48,7 +61,7 @@ export const Transaction = (
         <View style={TRANSACTION_BOTTOM_SIDE}>
           <View style={TRANSACTION_ACTIONS}>
             <Dropdown<TransactionCategory>
-              items={cloneDeep(transactionCategories)}
+              items={filteredTransactionCategories}
               labelField='description'
               valueField='id'
               onChangeText={() => {}}
@@ -56,9 +69,13 @@ export const Transaction = (
               placeholder={translate('transactionListScreen.transactionCategoryPlaceholder')}
               value={item.category}
             >
-              <View testID='transaction-category-container'>
-                {item.category && item.category.description && <Text text={item.category.description} testID='transaction-category' />}
-                <AntDesignIcon name='edit' size={15} style={{ color: color.palette.white }}></AntDesignIcon>
+              <View testID='transaction-category-container' style={TRANSACTION_CATEGORY_LABEL_CONTAINER}>
+                {item.category && item.category.description && (
+                  <View style={TRANSACTION_CATEGORY_LABEL_LEFT_ITEM}>
+                    <Text text={item.category.description} testID='transaction-category' />
+                  </View>
+                )}
+                <AntDesignIcon name='edit' size={15} style={TRANSACTION_CATEGORY_LABEL_RIGHT_ITEM} />
               </View>
             </Dropdown>
             <TouchableOpacity style={ICON_CONTAINER_STYLE}>
