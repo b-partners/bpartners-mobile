@@ -92,10 +92,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     }
   };
 
-  const createAccount = async () => {
-    __DEV__ && console.tron.log('Creating user account');
-  };
-
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='WelcomeScreen' style={FULL}>
@@ -111,7 +107,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
         </Screen>
         <SafeAreaView style={[FOOTER, FOOTER_CONTENT]}>
           <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} />
-          <Button testID='onboarding-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.start' onPress={createAccount} />
         </SafeAreaView>
       </View>
     </ErrorBoundary>
