@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 import { authorize } from 'react-native-app-auth';
 
-import { Button, GradientBackground, Header, Screen, Text } from '../../components';
+import { Button, GradientBackground, Screen, Text } from '../../components';
 import env from '../../config/env';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing, typography } from '../../theme';
@@ -14,25 +14,13 @@ const FULL: ViewStyle = { flex: 1 };
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[4],
+  paddingVertical: spacing[2],
 };
 const TEXT: TextStyle = {
   color: color.palette.white,
   fontFamily: typography.primary,
 };
 const BOLD: TextStyle = { fontWeight: 'bold' };
-const HEADER: TextStyle = {
-  paddingTop: spacing[3],
-  paddingBottom: spacing[4] + spacing[1],
-  paddingHorizontal: spacing[5],
-};
-const HEADER_TITLE: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 12,
-  lineHeight: 15,
-  textAlign: 'center',
-  letterSpacing: 1.5,
-};
 const TITLE_WRAPPER: TextStyle = {
   ...TEXT,
   textAlign: 'center',
@@ -97,7 +85,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       <View testID='WelcomeScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
-          <Header headerTx='welcomeScreen.poweredBy' style={HEADER} titleStyle={HEADER_TITLE} />
           <Text style={TITLE_WRAPPER}>
             <Text style={TITLE} text='Your new app, ' />
             <Text style={ALMOST} text='BPartners' />
