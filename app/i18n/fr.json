@@ -166,5 +166,10 @@
     "accept": "Accept",
     "continue": "Continue",
     "reload": "recharger"
+  },
+  "supportContactScreen": {
+    "title": "Contacter le support",
+    "message": "Pour contacter le support, veuillez envoyer un courriel à",
+    "mail": "contact@bpartners.app"
   }
 }

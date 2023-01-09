@@ -35,6 +35,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
 
   return (
     <ErrorBoundary catchErrors='always'>
+      {' '}
       <View testID='PaymentInitiationScreen' style={FULL}>
         <Header
           headerTx='invoiceScreen.title'

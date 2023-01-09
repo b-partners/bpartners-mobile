@@ -21,6 +21,7 @@ import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
 import { CodeExchangeScreen } from '../screens/sign-in-web-view/code-exchange-screen';
+import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
 /**
@@ -46,6 +47,7 @@ export type NavigatorParamList = {
   invoiceForm: undefined;
   paymentList: undefined;
   legalFile: undefined;
+  supportContact: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
@@ -91,6 +93,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
           <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
           <Drawer.Screen name='paymentList' component={PaymentListScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='supportContact' component={SupportContactScreen} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
         </>

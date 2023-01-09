@@ -183,5 +183,10 @@
     "continue": "Continue",
     "reload": "Reload",
     "errorMessage": "An error occurred while loading"
+  },
+  "supportContactScreen": {
+    "title": "Contact support",
+    "message": "To contact support, please send an email to",
+    "mail": "contact@bpartners.app"
   }
 }
