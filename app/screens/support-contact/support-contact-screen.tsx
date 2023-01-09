@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
@@ -21,6 +21,8 @@ const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[4],
 };
 
+const MESSAGE_STYLE: TextStyle = { color: color.palette.black, textAlign: 'justify', lineHeight: 22 };
+
 export const SupportContactScreen: FC<StackScreenProps<NavigatorParamList, 'supportContact'>> = observer(function SupportContactScreen({ navigation }) {
   return (
     <ErrorBoundary catchErrors='always'>
@@ -36,10 +38,7 @@ export const SupportContactScreen: FC<StackScreenProps<NavigatorParamList, 'supp
           }}
         />
         <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
-          <Text
-            text={`${translate('supportContactScreen.message')} ${translate('supportContactScreen.mail')}.`}
-            style={{ color: color.palette.black, textAlign: 'justify', lineHeight: 22 }}
-          ></Text>
+          <Text text={`${translate('supportContactScreen.message')} ${translate('supportContactScreen.mail')}.`} style={MESSAGE_STYLE} />
         </Screen>
       </View>
     </ErrorBoundary>
