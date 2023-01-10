@@ -18,6 +18,11 @@ export interface AutocompletionFormFieldProps<T> {
   selectedTextStyle?: TextStyle;
 }
 
+const DROPDOWN_STYLE: ViewStyle = {
+  height: 44,
+  backgroundColor: '#fff',
+  paddingHorizontal: spacing[2],
+};
 export const AutocompletionFormField = observer(<T extends { id: string }>(props: AutocompletionFormFieldProps<T>) => {
   const { data, style: styleOverrides, value, ...rest } = props;
 
@@ -27,20 +32,5 @@ export const AutocompletionFormField = observer(<T extends { id: string }>(props
     setDropdownItems(data);
   }, [data]);
 
-  return (
-    <Dropdown
-      search={true}
-      data={dropdownItems}
-      value={value}
-      style={[
-        {
-          height: 44,
-          backgroundColor: '#fff',
-          paddingHorizontal: spacing[2],
-        },
-        styleOverrides,
-      ]}
-      {...rest}
-    ></Dropdown>
-  );
+  return <Dropdown search={true} data={dropdownItems} value={value} style={[DROPDOWN_STYLE, styleOverrides]} {...rest} />;
 });

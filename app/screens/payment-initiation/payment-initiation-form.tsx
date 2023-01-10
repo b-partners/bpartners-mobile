@@ -41,7 +41,7 @@ export const PaymentInitiationForm: FC<
         }
       }}
     >
-      {({ handleSubmit, errors, setFieldValue }) => {
+      {({ handleSubmit, errors }) => {
         return (
           <View style={{ paddingVertical: spacing[2] }}>
             <FormField name='reference' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.reference' />
