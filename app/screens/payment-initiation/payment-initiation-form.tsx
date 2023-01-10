@@ -1,15 +1,13 @@
 import { Formik } from 'formik';
-import React, { FC, PropsWithoutRef, useState } from 'react';
+import React, { FC, PropsWithoutRef } from 'react';
 import { Button, TextStyle, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
-import { AutocompletionFormField } from '../../components';
 import FormField from '../../components/forms/form-field';
 import { translate } from '../../i18n';
-import { Customer } from '../../models/entities/customer/customer';
-import { Product } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
+import { amountToMinors } from '../../utils/money';
 
 const FORM_FIELD_STYLE: TextStyle = { color: color.palette.black, paddingHorizontal: spacing[2], paddingBottom: 0 };
 const INVALID_FORM_FIELD = {
@@ -19,11 +17,7 @@ const INVALID_FORM_FIELD = {
 
 export const PaymentInitiationForm: FC<
   PropsWithoutRef<{
-    products: Product[];
-    customers: Customer[];
     init: (values: unknown) => void;
-    getProducts: (description: string) => void;
-    getCustomers: (name: string) => void;
   }>
 > = props => {
   const initialValues = { label: '', reference: '', amount: null, payerName: '', payerEmail: '' };
@@ -33,10 +27,7 @@ export const PaymentInitiationForm: FC<
     payerEmail: yup.string().email().label(translate('paymentInitiationScreen.fields.payerEmail')),
   });
 
-  const [labelValue, setLabelValue] = useState<string>();
-  const [payerNameValue, setPayerNameValue] = useState<string>();
-
-  const { products, customers, init, getProducts, getCustomers } = props;
+  const { init } = props;
 
   return (
     <Formik
@@ -44,7 +35,7 @@ export const PaymentInitiationForm: FC<
       validationSchema={validationSchema}
       onSubmit={async values => {
         try {
-          await init({ id: uuid.v4() as string, ...values });
+          await init({ id: uuid.v4() as string, ...values, amount: amountToMinors(values.amount) });
         } catch (e) {
           __DEV__ && console.tron.log(e);
         }
@@ -52,40 +43,16 @@ export const PaymentInitiationForm: FC<
     >
       {({ handleSubmit, errors, setFieldValue }) => {
         return (
-          <>
-            <AutocompletionFormField
-              data={products}
-              id={'id'}
-              title={'description'}
-              value={labelValue}
-              onSearch={async label => {
-                setLabelValue(label);
-                getProducts(label);
-              }}
-              onValueChange={item => {
-                setFieldValue('label', item && item.title);
-              }}
-            />
+          <View style={{ paddingVertical: spacing[2] }}>
             <FormField name='reference' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.reference' />
+            <FormField name='label' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.label' />
             <FormField
               name='amount'
               inputStyle={[FORM_FIELD_STYLE, errors.amount && INVALID_FORM_FIELD]}
               placeholderTx='paymentInitiationScreen.fields.amount'
               keyboardType='phone-pad'
             />
-            <AutocompletionFormField
-              data={customers}
-              id={'id'}
-              title={'name'}
-              value={payerNameValue}
-              onSearch={name => {
-                setPayerNameValue(name);
-                getCustomers(name);
-              }}
-              onValueChange={item => {
-                setFieldValue('payerName', item && item.title);
-              }}
-            />
+            <FormField name='payerName' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.payerName' />
             <FormField
               name='payerEmail'
               inputStyle={[FORM_FIELD_STYLE]}
@@ -97,7 +64,7 @@ export const PaymentInitiationForm: FC<
                 {translate('paymentInitiationScreen.fields.submit')}
               </Button>
             </View>
-          </>
+          </View>
         );
       }}
     </Formik>
