@@ -33,31 +33,34 @@ export const PaymentInitiationForm: FC<
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={async values => {
+      onSubmit={async (values, { resetForm }) => {
         try {
           await init({ id: uuid.v4() as string, ...values, amount: amountToMinors(values.amount) });
+          resetForm();
         } catch (e) {
           __DEV__ && console.tron.log(e);
         }
       }}
     >
-      {({ handleSubmit, errors }) => {
+      {({ values, handleSubmit, errors }) => {
         return (
           <View style={{ paddingVertical: spacing[2] }}>
-            <FormField name='reference' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.reference' />
-            <FormField name='label' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.label' />
+            <FormField name='reference' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.reference' value={values.reference} />
+            <FormField name='label' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.label' value={values.label} />
             <FormField
               name='amount'
               inputStyle={[FORM_FIELD_STYLE, errors.amount && INVALID_FORM_FIELD]}
               placeholderTx='paymentInitiationScreen.fields.amount'
               keyboardType='phone-pad'
+              value={values.amount}
             />
-            <FormField name='payerName' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.payerName' />
+            <FormField name='payerName' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.payerName' value={values.payerName} />
             <FormField
               name='payerEmail'
               inputStyle={[FORM_FIELD_STYLE]}
               placeholderTx='paymentInitiationScreen.fields.payerEmail'
               keyboardType='email-address'
+              value={values.payerEmail}
             />
             <View>
               <Button title={translate('paymentInitiationScreen.fields.submit')} onPress={() => handleSubmit()}>
