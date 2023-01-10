@@ -164,6 +164,13 @@
       "downloadingInvoiceFailed": "Something went wrong while downloading invoice"
     }
   },
+  "invoiceFormScreen": {
+    "customerSelectionForm": {
+      "title": "Client Name",
+      "addClient": "Add a client",
+      "validate": "Validate"
+    }
+  },
   "paymentListScreen": {
     "title": "Invoicing",
     "tabs": {

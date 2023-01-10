@@ -147,6 +147,13 @@
       "downloadingInvoiceFailed": "Un problème est survenu durant le téléchargement de la facture."
     }
   },
+  "invoiceFormScreen": {
+    "customerSelectionForm": {
+      "title": "Nom du Client",
+      "addClient": "Ajouter un client",
+      "validate": "Valider"
+    }
+  },
   "paymentListScreen": {
     "title": "Facturation",
     "tabs": {
