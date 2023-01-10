@@ -9,6 +9,7 @@ import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { printCurrency } from '../../utils/money';
 import { ErrorBoundary } from '../error/error-boundary';
 import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { Transaction } from './components/transaction';
@@ -51,7 +52,10 @@ const FLAT_LIST: ViewStyle = {
 };
 
 export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
-  const { transactionStore } = useStores();
+  const { transactionStore, authStore } = useStores();
+
+  const { availableBalance } = authStore.currentAccount;
+
   const { transactions, transactionCategories, loadingTransactionCategories } = transactionStore;
 
   return (
@@ -68,7 +72,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           />
           <View style={SUB_HEADER}>
             <Text tx={'transactionListScreen.balance'} style={SUB_HEADER_TITLE} />
-            <Text style={SUB_HEADER_TITLE}>{transactions.reduce((a, c) => a + c.amount, 0)} €</Text>
+            <Text style={SUB_HEADER_TITLE}>{printCurrency(availableBalance)}</Text>
           </View>
           {!loadingTransactionCategories ? (
             <FlatList

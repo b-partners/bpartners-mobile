@@ -8,6 +8,7 @@ export const TransactionModel = types.model('Transaction').props({
   reference: types.maybe(types.maybeNull(types.string)),
   amount: types.maybe(types.maybeNull(types.number)),
   category: types.maybe(types.maybeNull(TransactionCategoryModel)),
+  type: types.maybe(types.maybeNull(types.string)),
   paymentDatetime: types.maybe(types.maybeNull(types.string)),
 });
 

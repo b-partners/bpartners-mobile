@@ -1,11 +1,12 @@
 import { TextStyle, ViewStyle } from 'react-native';
 
+import { TransactionType } from '../../models/entities/transaction-category/transaction-category';
 import { color, spacing } from '../../theme';
 
-export const TRANSACTION_AMOUNT = (amount: number): TextStyle => ({
+export const TRANSACTION_AMOUNT = (transactionType: TransactionType): TextStyle => ({
   fontSize: 19,
   fontWeight: 'bold',
-  color: amount > 0 ? color.palette.green : color.palette.angry,
+  color: transactionType === TransactionType.INCOME ? color.palette.green : color.palette.angry,
   textAlign: 'right',
 });
 export const LIST_TEXT: TextStyle = {
