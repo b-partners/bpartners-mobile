@@ -1,52 +1,84 @@
-import React, { useEffect, useState } from 'react';
-import { ViewStyle } from 'react-native';
-import DropDownPicker, { ItemType, ValueType } from 'react-native-dropdown-picker';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Dropdown as DropdownPicker } from 'react-native-element-dropdown';
 
-import { spacing } from '../../theme';
+import { translate } from '../../i18n';
+import { color, spacing } from '../../theme';
+import { showMessage } from '../../utils/snackbar';
 
-const DEFAULT_MAX_VALUE = 30;
-
-interface DropdownProps<T> {
+interface DropdownProps<T> extends PropsWithChildren<any> {
   items: T[];
-  value: T;
-  selectLabel: (item: T) => any;
-  selectValue: (item: T) => any;
-  onSelectItem?: (item: T) => void;
-  onChangeValue?: (item: ValueType) => void;
-  max?: number;
-  containerStyle?: ViewStyle;
+  value?: T;
+  labelField: string;
+  valueField: string;
+  onChange: (item: T) => Promise<void>;
+  onChangeText: (search: string) => void;
+  style?: ViewStyle;
+  dropdownContainerStyle?: ViewStyle;
+  itemTextStyle?: TextStyle;
+  selectedItemTextStyle?: TextStyle;
+  placeholderTextStyle?: TextStyle;
+  placeholder?: string;
 }
 
-const CONTAINER_STYLE: ViewStyle = { flex: 1, marginVertical: spacing[2] };
-const DROPDOWN_LIST_STYLE: ViewStyle = { position: 'relative', top: 0 };
+const DROPDOWN_CONTAINER_STYLE: ViewStyle = { flex: 1, paddingVertical: spacing[2], paddingHorizontal: spacing[1] };
+const STYLE: ViewStyle = { flex: 1 };
+const ITEM_TEXT_STYLE: TextStyle = { color: color.palette.black };
+const PLACEHOLDER_TEXT_STYLE: TextStyle = { color: color.palette.white };
+const SELECTED_TEXT_STYLE: TextStyle = { color: color.palette.white };
 
 export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
-  const { items, selectValue, selectLabel, value, onChangeValue, onSelectItem, max } = props;
-  const [open, setOpen] = useState<boolean>(false);
-  const [itemTypes, setItemTypes] = useState<Array<ItemType<ValueType>>>([]);
-  const [dropdownValue, setDropdownValue] = useState();
+  const {
+    items,
+    value,
+    labelField,
+    valueField,
+    onChange,
+    onChangeText,
+    dropdownContainerStyle: dropdownContainerStyleOverrides,
+    style: styleOverrides,
+    itemTextStyle: itemTextStylesOverrides,
+    selectedItemTextStyle: selectedItemTextStyleOverrides,
+    placeholder,
+    children,
+  } = props;
+
+  const [edit, setEdit] = useState<boolean>(false);
 
   useEffect(() => {
-    setItemTypes(items.map(item => ({ label: selectLabel(item), value: selectValue(item), raw: item })));
-  }, [items, selectLabel, selectValue]);
-
-  useEffect(() => {
-    setDropdownValue(selectValue(value));
-  }, [selectValue, value]);
+    setEdit(!value);
+  }, []);
 
   return (
-    <DropDownPicker
-      open={open}
-      setOpen={setOpen}
-      items={itemTypes}
-      value={dropdownValue}
-      setValue={setDropdownValue}
-      onSelectItem={item => onSelectItem(item.raw)}
-      onChangeValue={onChangeValue}
-      max={DEFAULT_MAX_VALUE || max}
-      containerStyle={CONTAINER_STYLE}
-      dropDownContainerStyle={DROPDOWN_LIST_STYLE}
-      listMode={'SCROLLVIEW'}
-    />
+    <View style={[DROPDOWN_CONTAINER_STYLE, dropdownContainerStyleOverrides]}>
+      {!edit && <TouchableOpacity onPress={() => setEdit(true)}>{children}</TouchableOpacity>}
+      {edit && (
+        <View>
+          <DropdownPicker
+            style={[STYLE, styleOverrides]}
+            itemTextStyle={[ITEM_TEXT_STYLE, itemTextStylesOverrides]}
+            data={items}
+            value={value}
+            labelField={labelField}
+            valueField={valueField}
+            onChange={async item => {
+              try {
+                await onChange(item);
+              } catch (e) {
+                __DEV__ && console.tron.log(e);
+                showMessage(translate('errors.somethingWentWrong'));
+                throw e;
+              } finally {
+                setEdit(false);
+              }
+            }}
+            onChangeText={onChangeText}
+            placeholder={placeholder}
+            placeholderStyle={[PLACEHOLDER_TEXT_STYLE]}
+            selectedTextStyle={[SELECTED_TEXT_STYLE, selectedItemTextStyleOverrides]}
+          />
+        </View>
+      )}
+    </View>
   );
 };

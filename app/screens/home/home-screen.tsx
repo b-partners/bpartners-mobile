@@ -15,9 +15,11 @@ import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFilesStore } = useStores();
+  const { transactionStore, legalFilesStore, authStore } = useStores();
 
-  const { transactions, loadingTransactions, currentBalance, currentMonthSummary } = transactionStore;
+  const { availableBalance } = authStore.currentAccount;
+
+  const { transactions, loadingTransactions, currentMonthSummary } = transactionStore;
 
   useEffect(() => {
     const date = new Date();
@@ -32,7 +34,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen preset='auto' backgroundColor={color.transparent}>
           <HomeHeader />
-          {transactions && <Balance balance={currentBalance} />}
+          <Balance balance={availableBalance} />
           <TransactionSummary summary={currentMonthSummary} />
           <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
         </Screen>

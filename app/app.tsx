@@ -11,6 +11,7 @@
  */
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useState } from 'react';
+import { LogBox } from 'react-native';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import { ToggleStorybook } from '../storybook/toggle-storybook';
@@ -37,6 +38,8 @@ Sentry.init({
   tracesSampleRate: 1.0,
   environment: env.sentryENV,
 });
+
+env.scheme !== 'dev' && LogBox.ignoreAllLogs();
 
 /**
  * This is the root component of our app.

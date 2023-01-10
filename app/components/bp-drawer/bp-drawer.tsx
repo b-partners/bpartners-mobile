@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import { Linking, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Alert, TextInput } from 'react-native';
 import Home from 'react-native-vector-icons/AntDesign';
+import Contact from 'react-native-vector-icons/AntDesign';
 import Left from 'react-native-vector-icons/Entypo';
 import Right from 'react-native-vector-icons/Entypo';
 import Search from 'react-native-vector-icons/EvilIcons';
@@ -127,6 +128,7 @@ type RouteNameProps = {
   paymentList: string | React.ReactElement;
   welcome: string | React.ReactElement;
   oauth: string | React.ReactElement;
+  supportContact: string | React.ReactElement;
 };
 
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
@@ -142,6 +144,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
     paymentList: translate('paymentListScreen.title'),
     welcome: translate('homeScreen.title'),
     oauth: translate('signInScreen.title'),
+    supportContact: translate('supportContactScreen.title'),
   };
 
   const IconRoute: RouteNameProps = {
@@ -152,6 +155,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
     paymentList: <PaymentList name='format-list-bulleted' size={22} color='#000' />,
     welcome: <Home name='home' size={22} color='#000' />,
     oauth: <Lock name='lock-closed-outline' size={22} color='#000' />,
+    supportContact: <Contact name='contacts' size={22} color='#000' />,
   };
 
   const handlePress = useCallback(async () => {
@@ -201,7 +205,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
         </View>
       </View>
       <View style={NAVIGATION_CONTAINER_STYLE}>
-        {props.state.routes.slice(0, 5).map((route: any) => {
+        {props.state.routes.slice(0, 6).map((route: any) => {
           return (
             <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
               <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
