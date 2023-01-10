@@ -12,7 +12,7 @@
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
-    "somethingWentWrong": "Quelque chose s'est mal passé. Veuillez réessayer ultérieurement.",
+    "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
     "verifyConnection": "Verifier votre connexion"
   },
   "drawer": {
@@ -28,7 +28,8 @@
         "submitButton": "Mettre à jour",
         "cancelButton": "Annuler"
       }
-    }
+    },
+    "transactionCategoryPlaceholder": "Sélectionner un élément"
   },
   "onboardingScreen": {
     "title": "Créer un compte"
@@ -165,5 +166,10 @@
     "accept": "Accept",
     "continue": "Continue",
     "reload": "recharger"
+  },
+  "supportContactScreen": {
+    "title": "Contacter le support",
+    "message": "Pour contacter le support, veuillez envoyer un courriel à",
+    "mail": "contact@bpartners.app"
   }
 }
