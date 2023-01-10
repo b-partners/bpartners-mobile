@@ -60,15 +60,15 @@ jobs:
       - name: Retrieve the environment variables from aws and put them in .env 
         run: |
           echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo SWAN_URL=$(aws ssm get-parameters --names "/bpartners/mobile/SWAN_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SWAN_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo CLIENT_SECRET=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SWAN_CLIENT_SECRET" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo SENTRY_ENV=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SENTRY_ENV" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") > .env
-          echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo SWAN_URL=$(aws ssm get-parameters --names "/bpartners/mobile/SWAN_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SWAN_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo CLIENT_SECRET=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SWAN_CLIENT_SECRET" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo SENTRY_ENV=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SENTRY_ENV" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
 
       - name: Build apk and bundle
         run: |
@@ -84,14 +84,15 @@ jobs:
             ./gradlew assemblePreprod && ./gradlew bundlePreprod
             cd ..
             mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
-            mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
+            mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk 
 
           elif ${{ github.event.inputs.env == 'prod'}}; then
             cd android
-            ./gradlew assembleRelease && ./gradlew bundleRelease
+            # TODO: release is broken and that's why we use preprod scripts
+            ./gradlew assemblePreprod && ./gradlew bundlePreprod
             cd ..
-            mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/${{ github.event.inputs.env}}-${{ env.sha }}.aab
-            mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
+            mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
+            mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
           fi
 
       - name: Deploy to browserstack
