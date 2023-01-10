@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export const AccountModel = types.model('Account').props({
   id: types.maybe(types.maybeNull(types.string)),
+  availableBalance: types.maybe(types.maybeNull(types.number)),
   name: types.maybe(types.maybeNull(types.string)),
   IBAN: types.maybe(types.maybeNull(types.string)),
   BIC: types.maybe(types.maybeNull(types.string)),

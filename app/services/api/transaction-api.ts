@@ -82,13 +82,9 @@ export class TransactionApi {
     transactionId: string,
     transactionCategory: TransactionCategory
   ): Promise<GetTransactionCategoriesResult> {
-    const { type, vat } = transactionCategory;
     // make the api call
     const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/transactions/${transactionId}/transactionCategories`, [
-      {
-        type,
-        vat,
-      },
+      transactionCategory,
     ]);
     // the typical ways to die when calling an api
     if (!response.ok) {

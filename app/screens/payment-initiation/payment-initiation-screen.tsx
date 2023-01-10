@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 
-// import QRCode from 'react-native-qrcode-svg';
 import { GradientBackground, Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
@@ -24,7 +23,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
   navigation,
 }) {
   const { paymentInitiationStore } = useStores();
-  const { paymentUrl, products, customers } = paymentInitiationStore;
+  const { paymentUrl } = paymentInitiationStore;
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -39,13 +38,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
             onLeftPress={() => navigation.navigate('home')}
           />
           <ScrollView style={FORM_FIELD_CONTAINER}>
-            <PaymentInitiationForm
-              init={paymentInitiationStore.init}
-              getCustomers={paymentInitiationStore.getCustomers}
-              getProducts={paymentInitiationStore.getProducts}
-              products={products}
-              customers={customers}
-            />
+            <PaymentInitiationForm init={paymentInitiationStore.init} />
             {paymentUrl && (
               <View style={QRCODE_CONTAINER_STYLE}>
                 <Text text={paymentUrl} style={PAYMENT_LINK_STYLE} />
