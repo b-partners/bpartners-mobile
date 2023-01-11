@@ -43,13 +43,11 @@ export function ColumnList() {
         </View>
         <ScrollView style={SCROLLVIEW_STYLE} contentContainerStyle={SCROLLVIEW_CONTAINER_STYLE}>
           {marketplaces.map((item: Marketplace) => {
-            const logoOrPlaceholder = {
-              'logo URL': <AutoImage source={{ uri: item.logoUrl }} style={LOGO_STYLE} resizeMethod='resize' />,
-              default: <Market name='shopping-cart' size={80} color={palette.lighterGrey} />,
-            };
+            const logo = <AutoImage source={{ uri: item.logoUrl }} style={LOGO_STYLE} resizeMethod='resize' />;
+            const placeholder = <Market name='shopping-cart' size={80} color={palette.lighterGrey} />;
             return (
               <TouchableOpacity key={item.id} style={CARD_STYLE} onPress={() => handlePress(item.websiteUrl)}>
-                {item.logoUrl === 'logo URL' ? logoOrPlaceholder.default : logoOrPlaceholder['logo URL']}
+                {item.logoUrl === 'logo URL' ? placeholder : logo}
                 <Text style={TEXT_STYLE}>{item.name}</Text>
               </TouchableOpacity>
             );
