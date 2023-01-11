@@ -216,11 +216,6 @@ export const InvoiceStoreModel = types
       });
     },
   }))
-  .views(self => ({
-    get quotationByMonth() {
-      return _.groupBy(value => value.sendingDate.getMonth(), self.quotations);
-    },
-  }));
 
 export interface InvoiceStore extends Instance<typeof InvoiceStoreModel> {}
 
