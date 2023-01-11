@@ -1,4 +1,3 @@
-import * as _ from 'lodash/fp';
 import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
 import uuid from 'react-native-uuid';
 
@@ -215,7 +214,7 @@ export const InvoiceStoreModel = types
         status: InvoiceStatus.DRAFT,
       });
     },
-  }))
+  }));
 
 export interface InvoiceStore extends Instance<typeof InvoiceStoreModel> {}
 
