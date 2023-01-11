@@ -94,6 +94,8 @@ export const TEXT_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 16,
   fontFamily: 'sans-serif-light',
+  bottom: 15,
+  position: 'absolute',
 };
 
 export const TEXT_ROW_STYLE: TextStyle = {
@@ -108,7 +110,7 @@ export const TEXT_ROW_STYLE: TextStyle = {
 export const CARD_ROW_STYLE: ViewStyle = {
   width: '97%',
   marginHorizontal: '1.5%',
-  height: 170,
+  height: 400,
   marginVertical: 5,
   backgroundColor: palette.white,
   borderRadius: 10,

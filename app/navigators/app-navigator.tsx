@@ -89,17 +89,17 @@ const AppStack = observer(function () {
           <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       ) : isAuthenticated && hasApprovedLegalFiles ? (
-          <>
-            <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
-            <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
-            <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-            <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-            <Drawer.Screen name='paymentList' component={PaymentListScreen} />
-            <Drawer.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
-            <Drawer.Screen name='supportContact' component={SupportContactScreen} />
-            <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
-            <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
-          </>
+        <>
+          <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+          <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
+          <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+          <Drawer.Screen name='paymentList' component={PaymentListScreen} />
+          <Drawer.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
+          <Drawer.Screen name='supportContact' component={SupportContactScreen} />
+          <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
       ) : (
         <>
           <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />

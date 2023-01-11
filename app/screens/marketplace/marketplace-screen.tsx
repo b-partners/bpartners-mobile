@@ -1,7 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
-import { View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 
 import { GradientBackground, Screen } from '../../components';
 import { useStores } from '../../models';
@@ -15,7 +15,7 @@ import { FULL_HEIGHT, SCREEN_STYLE } from './styles';
 
 export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
   const { marketplaceStore } = useStores();
-  const { marketplaces } = marketplaceStore;
+  const screenWidth = Dimensions.get('screen').width;
 
   useEffect(() => {
     marketplaceStore.getMarketplaces();
@@ -27,7 +27,7 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'market
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen preset='scroll' backgroundColor={palette.white} style={FULL_HEIGHT}>
           <MarketHeader onPress={() => navigation.navigate('home')} />
-          {marketplaces.length < 3 ? <ColumnList /> : <RowList />}
+          {screenWidth < 720 ? <ColumnList /> : <RowList />}
         </Screen>
       </View>
     </ErrorBoundary>
