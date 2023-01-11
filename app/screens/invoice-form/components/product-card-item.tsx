@@ -39,7 +39,12 @@ const ProductCardItem: FC<ICardElement> = ({ onRemove }) => {
 
       <View style={CONTAINER_STYLE}>
         <View>
-          <EditableTextField title={"Titre de l'élement"} formName={'productTitle'} placeholder={'Taper le titre'} containerStyle={{ paddingBottom: spacing[0] }} />
+          <EditableTextField
+            title={"Titre de l'élement"}
+            formName={'productTitle'}
+            placeholder={'Taper le titre'}
+            containerStyle={{ paddingBottom: spacing[0] }}
+          />
           <EditableTextField title={'Déscription (facultatif)'} formName={'productDescription'} placeholder={'Taper le titre'} />
         </View>
         <View style={BOTTOM_INFO_STYLE}>
