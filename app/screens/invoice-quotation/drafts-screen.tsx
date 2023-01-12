@@ -22,6 +22,10 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   const { invoiceStore } = useStores();
   const { drafts, loading } = invoiceStore;
 
+  const handleRefresh = async () =>{
+    await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.DRAFT });
+  }
+
   const editInvoice = async (item: IInvoice) => {
     if (item.status !== InvoiceStatus.DRAFT) {
       return;
@@ -61,7 +65,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
+        <Screen style={CONTAINER} preset='fixed' backgroundColor={palette.white}>
           <SectionList<IInvoice>
             style={{ marginHorizontal: spacing[4] }}
             sections={[...sectionedQuotations]}
@@ -78,6 +82,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
             keyExtractor={item => item.id}
             renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
             refreshing={loading}
+            onRefresh={handleRefresh}
             progressViewOffset={100}
             stickySectionHeadersEnabled={true}
             ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}

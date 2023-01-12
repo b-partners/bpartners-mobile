@@ -39,6 +39,10 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   const { invoiceStore } = useStores();
   const { loading, quotations } = invoiceStore;
 
+  const handleRefresh = async () => {
+    await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.PROPOSAL });
+  };
+
   const markAsInvoice = async (item: IInvoice) => {
     if (item.status === InvoiceStatus.DRAFT || item.status === InvoiceStatus.CONFIRMED) {
       return;
@@ -57,9 +61,6 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
     }
   };
-  const handleRefresh = async () => {
-    await invoiceStore.getQuotations({ page: 1, pageSize: 15 });
-  };
 
   const sectionedQuotations = sectionInvoicesByMonth(quotations);
   const items: MenuItem[] = [{ id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') }];
@@ -75,9 +76,9 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
             keyExtractor={item => item.id}
             renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
             refreshing={loading}
+            onRefresh={handleRefresh}
             progressViewOffset={100}
             stickySectionHeadersEnabled={true}
-            onRefresh={handleRefresh}
             ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
             renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
           />

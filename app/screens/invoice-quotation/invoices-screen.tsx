@@ -8,7 +8,7 @@ import { MenuItem } from "../../components/menu/menu";
 import env from "../../config/env";
 import { translate } from "../../i18n";
 import { useStores } from "../../models";
-import { Invoice as IInvoice } from "../../models/entities/invoice/invoice";
+import { Invoice as IInvoice, InvoiceStatus } from "../../models/entities/invoice/invoice";
 import { NavigatorParamList } from "../../navigators";
 import { spacing } from "../../theme";
 import { palette } from "../../theme/palette";
@@ -24,6 +24,10 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   const { invoiceStore, authStore } = useStores();
   const { invoices, loading } = invoiceStore;
   const { currentAccount, accessToken } = authStore;
+
+  const handleRefresh = async () => {
+    await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.CONFIRMED });
+  }
 
   const sectionedQuotations = sectionInvoicesByMonth(invoices);
   const items: MenuItem[] = [{ id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') }];
@@ -46,7 +50,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
+        <Screen style={CONTAINER} preset='fixed' backgroundColor={palette.white}>
           <SectionList<IInvoice>
             style={{ marginHorizontal: spacing[4] }}
             sections={[...sectionedQuotations]}
@@ -63,6 +67,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
             keyExtractor={item => item.id}
             renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
             refreshing={loading}
+            onRefresh={handleRefresh}
             progressViewOffset={100}
             stickySectionHeadersEnabled={true}
             ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
