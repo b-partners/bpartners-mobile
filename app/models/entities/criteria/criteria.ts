@@ -1,5 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import { InvoiceStatus } from "../invoice/invoice";
+
+import { InvoiceStatus } from '../invoice/invoice';
 
 export const CriteriaModel = types.model('Criteria').props({
   page: types.maybe(types.maybeNull(types.number)),
