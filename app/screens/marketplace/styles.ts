@@ -1,5 +1,6 @@
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 
+import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 
 export const SCREEN_STYLE: ViewStyle = {
@@ -9,35 +10,33 @@ export const SCREEN_STYLE: ViewStyle = {
 };
 
 export const HEADER_STYLE: ViewStyle = {
-  backgroundColor: palette.lighterGrey,
   width: '100%',
-  height: 60,
+  height: 85,
   display: 'flex',
   flexDirection: 'row',
+  position: 'relative',
   alignItems: 'center',
 };
 
 export const LEFT_STYLE: ViewStyle = {
+  marginTop: '13%',
   width: 50,
   height: '100%',
   alignItems: 'center',
-  justifyContent: 'center',
-  flex: 0.5,
 };
 
 export const TEXT_HEADER_CONTAINER_STYLE: ViewStyle = {
+  marginTop: '13%',
   width: '100%',
   height: '100%',
-  flex: 3,
   alignItems: 'flex-start',
-  justifyContent: 'center',
 };
 
 export const TEXT_HEADER_STYLE: TextStyle = {
-  color: palette.black,
+  color: palette.white,
   fontSize: 16,
   fontFamily: 'sans-serif-light',
-  paddingLeft: '20%',
+  paddingLeft: '15%',
 };
 
 export const MARKET_LIST_STYLE: ViewStyle = {
@@ -54,19 +53,20 @@ export const CARD_CONTAINER_STYLE: ViewStyle = {
 
 export const CARD_STYLE: ViewStyle = {
   width: '90%',
-  height: 200,
+  height: 130,
   marginVertical: 5,
   backgroundColor: palette.white,
-  borderRadius: 10,
-  elevation: 10,
+  borderRadius: 50,
+  elevation: 5,
   shadowColor: palette.black,
   alignItems: 'center',
   justifyContent: 'center',
+  marginBottom: 10,
 };
 
 export const LOGO_STYLE: ImageStyle = {
-  width: '90%',
-  height: 90,
+  width: '70%',
+  height: 70,
 };
 
 export const SCROLLVIEW_STYLE: ViewStyle = {
@@ -79,9 +79,10 @@ export const SCROLLVIEW_CONTAINER_STYLE: ViewStyle = {
 };
 
 export const ANNOUNCE_STYLE: TextStyle = {
-  color: palette.black,
+  color: color.primary,
   fontSize: 13,
   fontFamily: 'sans-serif-light',
+  fontWeight: 'bold',
 };
 
 export const ANNOUNCE_CONTAINER_STYLE: ViewStyle = {
@@ -94,8 +95,9 @@ export const TEXT_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 16,
   fontFamily: 'sans-serif-light',
-  bottom: 15,
-  position: 'absolute',
+  textDecorationLine: 'underline',
+  textDecorationStyle: 'solid',
+  textDecorationColor: palette.black,
 };
 
 export const TEXT_ROW_STYLE: TextStyle = {
@@ -108,12 +110,12 @@ export const TEXT_ROW_STYLE: TextStyle = {
 };
 
 export const CARD_ROW_STYLE: ViewStyle = {
-  width: '97%',
+  width: 200,
   marginHorizontal: '1.5%',
-  height: 400,
+  height: 200,
   marginVertical: 5,
   backgroundColor: palette.white,
-  borderRadius: 10,
+  borderRadius: 70,
   elevation: 10,
   shadowColor: palette.black,
   alignItems: 'center',
@@ -128,7 +130,7 @@ export const FLATLIST_STYLE: ViewStyle = {
 
 export const ROW_LOGO_STYLE: ImageStyle = {
   width: '90%',
-  height: '25%',
+  height: '35%',
 };
 
 export const FLATLIST_CONTAINER_STYLE: ViewStyle = {
@@ -145,4 +147,17 @@ export const CARD_ROW_CONTAINER_STYLE: ViewStyle = {
 
 export const FULL_HEIGHT: ViewStyle = {
   height: '100%',
+};
+
+export const VIEW_CARD: ViewStyle = {
+  width: '100%',
+  alignItems: 'center',
+  marginBottom: 10,
+};
+
+export const WAVE_STYLE: ImageStyle = {
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+  top: 0,
 };
