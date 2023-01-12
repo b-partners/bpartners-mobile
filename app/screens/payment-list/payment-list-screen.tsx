@@ -5,7 +5,7 @@ import React, { FC } from "react";
 import { Dimensions, TextStyle, View, ViewStyle } from "react-native";
 import ActionButton from "react-native-action-button";
 
-import { GradientBackground, Header, Screen, Text } from "../../components";
+import { Header, Screen, Text } from "../../components";
 import { translate } from "../../i18n";
 import { useStores } from "../../models";
 import { InvoiceStatus } from "../../models/entities/invoice/invoice";
@@ -16,6 +16,7 @@ import { DraftsScreen } from "../invoice-quotation/drafts-screen";
 import { InvoicesScreen } from "../invoice-quotation/invoices-screen";
 import { QuotationsScreen } from "../invoice-quotation/quotations-screen";
 import { palette } from "../../theme/palette";
+import { HEADER, HEADER_TITLE } from "../payment-initiation/style";
 
 const FLOATING_ACTION_BUTTON_STYLE: ViewStyle = {
   position: "absolute",
@@ -33,8 +34,7 @@ export const PaymentListScreen: FC<StackScreenProps<NavigatorParamList, "payment
   return (
     <ErrorBoundary catchErrors='always'>
       <Screen>
-        <GradientBackground colors={['#422443', '#281b34']} />
-        <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' />
+        <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE}/>
         <Tab.Navigator
           initialRouteName={translate("paymentListScreen.tabs.drafts")}
           style={TAB_BAR_STYLE}
