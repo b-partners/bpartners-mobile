@@ -17,6 +17,9 @@ on:
           - preprod
           - prod
         required: true
+      versionCode:
+        type: number
+        default: 1
 
 jobs:
 
@@ -36,12 +39,18 @@ jobs:
           touch release.keystore
           echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
         if: github.event.inputs.env == 'preprod' || github.event.inputs.env == 'prod'
-          
+
+      - run: echo "sha=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - name: Setting up the versionCode and versionName
+        run: |
+          sed -i 's/versionCode 1/versionCode ${{ github.event.inputs.versionCode }}/g' android/app/build.gradle
+          sed -i 's/versionName "1.0"/versionName "${{ github.event.inputs.env}}-${{ env.sha }}"/g' android/app/build.gradle
+
       - name: Setting up the environment variables
         run: |
           mkdir ~/.gradle
           sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
-          echo "sha=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
@@ -104,7 +113,7 @@ jobs:
         run: |
           aws s3 cp android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk s3://mobile-bpartners/android/
           aws s3 cp android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab s3://mobile-bpartners/android/
-    
+
   ios-browserstack:
     if: github.event.inputs.OS == 'ios' && (github.event.inputs.env == 'dev' || github.event.inputs.env == 'preprod' || github.event.inputs.env == 'prod')
     runs-on: macos-latest
