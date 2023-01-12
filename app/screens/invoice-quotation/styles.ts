@@ -1,6 +1,5 @@
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { HEADER_STYLE } from '..';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 
@@ -55,7 +54,6 @@ export const BULLET_SEPARATOR_CONTAINER_STYLE: ViewStyle = {
   alignItems: 'center',
 };
 export const SECTION_HEADER_TEXT_STYLE: TextStyle = {
-  ...HEADER_STYLE,
   fontWeight: '700',
   color: palette.greyDarker,
   backgroundColor: palette.white,
