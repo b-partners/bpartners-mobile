@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { Screen, Separator, Text } from '../../components';
+import { Button, Screen, Separator, Text } from "../../components";
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -17,6 +17,8 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
 import { CONTAINER, FOOTER_COMPONENT_STYLE, FULL, SECTION_HEADER_TEXT_STYLE, SEPARATOR_STYLE } from './styles';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
+import { BUTTON_STYLE } from "../invoice-form/styles";
+import { BUTTON_TEXT_STYLE } from "..";
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
@@ -88,6 +90,9 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
             ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
             renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
           />
+
+
+          <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
         </Screen>
       </View>
     </ErrorBoundary>
