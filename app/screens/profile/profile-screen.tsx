@@ -17,9 +17,6 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 };
 const HEADER: TextStyle = {
-  paddingBottom: spacing[5] - 1,
-  paddingHorizontal: spacing[4],
-  paddingTop: spacing[3],
 };
 const HEADER_TITLE: TextStyle = {
   fontSize: 12,

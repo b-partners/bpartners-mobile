@@ -9,7 +9,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { SUPPORT_HEADER, HEADER_TITLE } from '../payment-initiation/style';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -29,7 +29,7 @@ export const SupportContactScreen: FC<StackScreenProps<NavigatorParamList, 'supp
       <View testID='PaymentInitiationScreen' style={FULL}>
         <Header
           headerTx='supportContactScreen.title'
-          style={HEADER}
+          style={SUPPORT_HEADER}
           titleStyle={HEADER_TITLE}
           leftIcon={'back'}
           rightIcon={'info'}

@@ -1,6 +1,7 @@
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { color, spacing } from '../../theme';
+import { color } from '../../theme';
+import {palette} from "../../theme/palette";
 
 export const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
@@ -9,11 +10,13 @@ export const FULL: ViewStyle = {
   flex: 1,
 };
 export const HEADER: TextStyle = {
-  paddingBottom: spacing[5] - 1,
-  paddingHorizontal: spacing[4],
-  paddingTop: spacing[3],
-  backgroundColor: color.primary,
 };
+export const INVOICE_HEADER: TextStyle = {
+  backgroundColor: palette.white,
+}
+export const SUPPORT_HEADER: TextStyle = {
+  backgroundColor: palette.white,
+}
 export const HEADER_TITLE: TextStyle = {
   fontSize: 12,
   fontWeight: 'bold',

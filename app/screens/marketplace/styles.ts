@@ -11,11 +11,12 @@ export const SCREEN_STYLE: ViewStyle = {
 
 export const HEADER_STYLE: ViewStyle = {
   width: '100%',
-  height: 85,
+  height: 90,
   display: 'flex',
   flexDirection: 'row',
   position: 'relative',
   alignItems: 'center',
+  backgroundColor: palette.black,
 };
 
 export const LEFT_STYLE: ViewStyle = {
@@ -159,5 +160,4 @@ export const WAVE_STYLE: ImageStyle = {
   width: '100%',
   height: '100%',
   position: 'absolute',
-  top: 0,
 };
