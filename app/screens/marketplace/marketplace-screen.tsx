@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 import { Dimensions, View } from 'react-native';
 
-import {GradientBackground, Header, Screen} from '../../components';
+import { GradientBackground, Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
@@ -25,7 +25,7 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'market
       <View testID='SignInWebViewScreen' style={SCREEN_STYLE}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen preset='scroll' backgroundColor={palette.white} style={FULL_HEIGHT}>
-          <Header headerTx='marketPlaceScreen.header' leftIcon={'back'}/>
+          <Header headerTx='marketPlaceScreen.header' leftIcon={'back'} />
           {screenWidth < 720 ? <ColumnList /> : <RowList />}
         </Screen>
       </View>

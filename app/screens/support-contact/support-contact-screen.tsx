@@ -9,7 +9,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { SUPPORT_HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER_TITLE, SUPPORT_HEADER } from '../payment-initiation/style';
 
 const FULL: ViewStyle = {
   flex: 1,
