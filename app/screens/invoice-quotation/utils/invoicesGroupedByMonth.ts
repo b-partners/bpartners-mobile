@@ -1,7 +1,7 @@
 import * as _ from 'lodash/fp';
 
-import { Invoice } from '../../../models/entities/invoice/invoice';
+import { InvoiceSnapshotIn } from "../../../models/entities/invoice/invoice";
 
-export const invoicesGroupedByMonth = (invoices: Invoice) => {
+export const invoicesGroupedByMonth = (invoices: InvoiceSnapshotIn) => {
   return _.groupBy(value => value.sendingDate.getMonth(), invoices);
 };

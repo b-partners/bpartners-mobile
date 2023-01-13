@@ -1,7 +1,7 @@
-import { Invoice, InvoiceSnapshotOut } from '../../../models/entities/invoice/invoice';
+import { InvoiceSnapshotIn, InvoiceSnapshotOut } from "../../../models/entities/invoice/invoice";
 import { invoicesGroupedByMonth } from './invoicesGroupedByMonth';
 
-export const sectionInvoicesByMonth = (invoices: Invoice) => {
+export const sectionInvoicesByMonth = (invoices: InvoiceSnapshotIn) => {
   const quotationGroupedByMonth = invoicesGroupedByMonth(invoices);
   const sectionedQuotation = [];
   for (const quotationByMonthKey in quotationGroupedByMonth) {
