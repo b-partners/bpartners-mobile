@@ -12,7 +12,7 @@ import { ColumnList } from './components/market-column-list';
 import { RowList } from './components/market-row-list';
 import { FULL_HEIGHT, SCREEN_STYLE } from './styles';
 
-export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
+export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen() {
   const { marketplaceStore } = useStores();
   const screenWidth = Dimensions.get('screen').width;
 
