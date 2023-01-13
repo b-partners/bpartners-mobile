@@ -32,6 +32,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
 
   const handleRefresh = async () => {
     await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.PROPOSAL });
+    __DEV__ && console.tron.log(quotations)
   };
 
   const markAsInvoice = async (item: IInvoice) => {
@@ -59,7 +60,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <Screen style={CONTAINER} preset='fixed' backgroundColor={palette.white}>
+        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
           <View>
             <SectionList<IInvoice>
               style={SECTION_LIST_CONTAINER_STYLE}

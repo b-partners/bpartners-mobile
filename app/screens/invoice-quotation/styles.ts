@@ -57,6 +57,7 @@ export const SECTION_HEADER_TEXT_STYLE: TextStyle = {
   fontWeight: '700',
   color: palette.greyDarker,
   backgroundColor: palette.white,
+  marginTop: spacing[5]
 };
 export const SEPARATOR_STYLE = { borderColor: palette.lighterGrey };
 export const FOOTER_COMPONENT_STYLE = { marginBottom: spacing[0] };
@@ -77,4 +78,4 @@ export const BUTTON_STYLE: ViewStyle = {
   paddingVertical: spacing[3],
   paddingHorizontal: spacing[2],
 };
-export const SECTION_LIST_CONTAINER_STYLE = { marginHorizontal: spacing[4], marginTop: spacing[5] };
+export const SECTION_LIST_CONTAINER_STYLE = { marginHorizontal: spacing[4] };

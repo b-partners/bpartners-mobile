@@ -9,7 +9,6 @@ import { translate } from "../../i18n";
 import { useStores } from "../../models";
 import { Invoice as IInvoice, InvoiceStatus } from "../../models/entities/invoice/invoice";
 import { NavigatorParamList } from "../../navigators";
-import { spacing } from "../../theme";
 import { palette } from "../../theme/palette";
 import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 import { showMessage } from "../../utils/snackbar";
@@ -22,6 +21,7 @@ import {
   FOOTER_COMPONENT_STYLE,
   FULL,
   SECTION_HEADER_TEXT_STYLE,
+  SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE
 } from "./styles";
 import { sectionInvoicesByMonth } from "./utils/section-quotation-by-month";
@@ -73,10 +73,10 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, "inv
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <Screen style={CONTAINER} preset='fixed' backgroundColor={palette.white}>
+        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
           <View>
             <SectionList<IInvoice>
-              style={{ marginHorizontal: spacing[4] }}
+              style={ SECTION_LIST_CONTAINER_STYLE }
               sections={[...sectionedQuotations]}
               renderItem={({ item }) => (
                 <Invoice
