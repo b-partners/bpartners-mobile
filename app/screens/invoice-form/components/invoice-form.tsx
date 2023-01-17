@@ -172,7 +172,32 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   />
                 </View>
                 <View style={FLEX_ROW}>
-                  <EditableTextField title={'Nom du client'} formName={'customer'} placeholder={'Taper le nom du client'} containerStyle={HEADER_RIGHT_ROW} />
+                  <TouchableOpacity
+                    style={[HEADER_RIGHT_ROW, { justifyContent: 'space-between', flexDirection: 'row' }]}
+                    onPress={() => {
+                      setShowUserListModal(true);
+                    }}
+                  >
+                    <>
+                      <GridHeaderContent
+                        headerTx={'invoiceFormScreen.customerSelectionForm.title'}
+                        bodyText={values['customer']?.name}
+                        style={EDITABLE_TF_CONTAINER}
+                      />
+                      <View style={{ justifyContent: 'center' }}>
+                        <MaterialCommunityIcons name={'chevron-down'} size={25} />
+                      </View>
+                    </>
+                  </TouchableOpacity>
+                  <CustomerListSelectionModal
+                    customers={customers}
+                    visible={showUserListModal}
+                    onRequestClose={() => setShowUserListModal(false)}
+                    onValidateChoice={customer => {
+                      setShowUserListModal(false);
+                      setFieldValue('customer', customer);
+                    }}
+                  />
                   <View style={DATE_PICKER_FIELD_CONTAINER}>
                     <DatePickerField
                       value={initialValues.sendingDate}
@@ -224,7 +249,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <View style={FLEX_ROW}>
                   <EditableTextField
                     title={'Délais Du Paiement'}
-                    formName={'toPayAt'}
+                    formName={'title'}
                     placeholder={'Taper le titre du devis'}
                     containerStyle={EDITABLE_TF_CONTAINER}
                   />

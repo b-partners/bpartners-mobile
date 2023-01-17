@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Modal, View, ViewStyle } from 'react-native';
 
 import { Customer } from '../../../../models/entities/customer/customer';
@@ -9,15 +9,22 @@ const MODAL_ITEM_CONTAINER_STYLE: ViewStyle = {
   justifyContent: 'center',
   backgroundColor: 'rgba(10,16,69,0.8)',
 };
-type TUserListSelectionModal = { visible: boolean; onRequestClose: () => void; onValidate: (customer) => void; customers: Customer[] };
+type TUserListSelectionModal = {
+  visible: boolean;
+  onRequestClose: () => void;
+  onValidateChoice?: (customer: Customer) => void;
+  customers: Customer[];
+  onDismiss?: () => void;
+};
 
-const CustomerListSelectionModal = (props: TUserListSelectionModal) => (
-  <Modal visible={props.visible} transparent={true} onRequestClose={props.onRequestClose} onDismiss={props.onRequestClose}>
-    ~
-    <View style={MODAL_ITEM_CONTAINER_STYLE}>
-      <CustomerSelectionForm onValidate={props.onValidate} customers={props.customers} />
-    </View>
-  </Modal>
-);
+const CustomerListSelectionModal: FC<TUserListSelectionModal> = ({ customers, onRequestClose, onValidateChoice, onDismiss, visible }) => {
+  return (
+    <Modal visible={visible} transparent={true} onRequestClose={onRequestClose} onDismiss={onDismiss}>
+      <View style={MODAL_ITEM_CONTAINER_STYLE}>
+        <CustomerSelectionForm onValidateChoice={onValidateChoice} customers={customers} />
+      </View>
+    </Modal>
+  );
+};
 
 export default CustomerListSelectionModal;

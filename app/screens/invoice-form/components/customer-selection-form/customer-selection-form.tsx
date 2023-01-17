@@ -10,7 +10,7 @@ import CustomerRow from './customer-row';
 
 type TCustomerForm = {
   customers: Customer[];
-  onValidate: (customer: Customer) => void;
+  onValidateChoice: (customer: Customer) => void;
 };
 const FORM_TITLE: TextStyle = {
   color: palette.greyDarker,
@@ -42,7 +42,7 @@ const ADD_CLIENT_BUTTON_TEXT_STYLE: TextStyle = {
 };
 
 const CustomerSelectionForm: FC<TCustomerForm> = props => {
-  const { customers, onValidate } = props;
+  const { customers, onValidateChoice } = props;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   // By default the selected customer is the customer at index zero
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
@@ -62,7 +62,7 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
         <Button tx={'invoiceFormScreen.customerSelectionForm.addClient'} style={[ADD_CLIENT_BUTTON_STYLE]} textStyle={ADD_CLIENT_BUTTON_TEXT_STYLE} />
         <Button
           tx={'invoiceFormScreen.customerSelectionForm.validate'}
-          onPress={() => onValidate(selectedCustomer)}
+          onPress={() => onValidateChoice(selectedCustomer)}
           style={[BUTTON_STYLE, VALIDATE_BUTTON_STYLE]}
           textStyle={VALIDATE_BUTTON_TEXT_STYLE}
         />
