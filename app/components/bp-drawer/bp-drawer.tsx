@@ -76,14 +76,14 @@ const TEXT_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 16,
   // TODO: Font not recognized in iOs, fix this
-  fontFamily: 'sans-serif-light',
+  // fontFamily: 'sans-serif-light',
 };
 
 const INFO_TEXT_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 13,
   // TODO: Idem
-  fontFamily: 'sans-serif-light',
+  // fontFamily: 'sans-serif-light',
 };
 
 const TEXT_CONTAINER_STYLE: ViewStyle = {
