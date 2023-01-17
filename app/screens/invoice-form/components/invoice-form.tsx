@@ -1,6 +1,7 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
-import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
+import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
@@ -12,6 +13,7 @@ import { Invoice, InvoiceSnapshotIn, InvoiceStatus } from '../../../models/entit
 import { Product } from '../../../models/entities/product/product';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import CustomerListSelectionModal from './customer-selection-form/customer-list-selection-modal';
 import EditableTextField from './editable-text-field';
 import GridHeaderContent from './grid-header-content';
 import ProductCardItem from './product-card-item';
@@ -25,11 +27,6 @@ type InvoiceFormProps = {
 
 const FULL: ViewStyle = { flex: 1 };
 const FLEX_ROW: ViewStyle = { ...FULL, flexDirection: 'row' };
-// const DATEPICKER_ROW_STYLE: ViewStyle = {
-//   ...FLEX_ROW,
-//   justifyContent: 'space-between',
-//   marginBottom: spacing[4],
-// };
 
 const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
   fontSize: 14,
@@ -37,6 +34,7 @@ const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
 
 const EDITABLE_TF_CONTAINER: ViewStyle = { borderWidth: 0.5, borderColor: palette.lighterGrey, flex: 1 };
 const BUTTON_FILL_STYLE: ViewStyle = {
+  flex: 1,
   backgroundColor: color.primary,
   marginHorizontal: '5%',
   borderRadius: 40,
@@ -70,8 +68,11 @@ const SEPARATOR_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
 const FLEX_WRAP: ViewStyle = { flex: 1, flexWrap: 'wrap' };
 
+const USER_SELECT_ICON: ViewStyle = { justifyContent: 'center', marginRight: spacing[2] };
+
 export function InvoiceForm(props: InvoiceFormProps) {
-  const { onSaveInvoice } = props;
+  const { onSaveInvoice, customers } = props;
+  const [showUserListModal, setShowUserListModal] = useState(false);
 
   const validate = values => {
     const errors: Partial<Record<keyof Invoice, string>> = {};
@@ -91,7 +92,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
     comment: null,
     sendingDate: new Date(),
     toPayAt: new Date(),
-    customer: {},
+    customer: customers[0],
     products: [
       {
         title: '',
@@ -154,7 +155,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
         validationSchema={validationSchema}
         validate={validate}
       >
-        {({ errors, handleSubmit, values }) => {
+        {({ errors, handleSubmit, values, setFieldValue }) => {
           /*const total = (values.products as Product[]).reduce((a, c) => {
             return a + c.totalPriceWithVat * c.quantity;
           }, 0);*/
@@ -179,12 +180,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     }}
                   >
                     <>
-                      <GridHeaderContent
-                        headerTx={'invoiceFormScreen.customerSelectionForm.title'}
-                        bodyText={values['customer']?.name}
-                        style={EDITABLE_TF_CONTAINER}
-                      />
-                      <View style={{ justifyContent: 'center' }}>
+                      <GridHeaderContent headerTx={'invoiceFormScreen.customerSelectionForm.title'} bodyText={values['customer'].name} />
+                      <View style={USER_SELECT_ICON}>
                         <MaterialCommunityIcons name={'chevron-down'} size={25} />
                       </View>
                     </>
