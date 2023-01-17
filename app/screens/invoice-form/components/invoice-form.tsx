@@ -250,7 +250,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   <EditableTextField
                     title={'Délais Du Paiement'}
                     formName={'title'}
-                    placeholder={'Taper le titre du devis'}
+                    placeholder={'Taper le delais de payement'}
                     containerStyle={EDITABLE_TF_CONTAINER}
                   />
                   <EditableTextField
