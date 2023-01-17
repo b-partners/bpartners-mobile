@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import { Octicons as Icon } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -36,7 +36,7 @@ const CustomerRow: FC<TCustomerRow> = props => {
         </>
       </TouchableOpacity>
       <TouchableOpacity style={EDIT_BUTTON_STYLE}>
-        <Icon name={'pencil-outline'} color={palette.lighterGrey} size={20} />
+        <Icon name={'pencil'} color={palette.greyDarker} size={20} />
       </TouchableOpacity>
     </View>
   );
