@@ -49,7 +49,7 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
 
   return (
     <View style={FORM_CONTAINER}>
-      <Text tx={'invoiceFormScreen.customerSelectionForm'} style={FORM_TITLE} />
+      <Text tx={'invoiceFormScreen.customerSelectionForm.title'} style={FORM_TITLE} />
       <FlatList
         data={customers}
         keyExtractor={item => item.id}
