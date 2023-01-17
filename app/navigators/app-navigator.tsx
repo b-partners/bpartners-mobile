@@ -151,7 +151,7 @@ export function AppNavigator(props: NavigationProps) {
     <ErrorBoundary catchErrors={'always'}>
       <NavigationContainer
         linking={{
-          prefixes: [Linking.createURL('/')],
+          prefixes: ['bpartners://', Linking.createURL('/')],
           config: {
             screens: {
               initialRouteName: 'welcome',
