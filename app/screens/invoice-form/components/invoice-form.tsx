@@ -70,6 +70,8 @@ const FLEX_WRAP: ViewStyle = { flex: 1, flexWrap: 'wrap' };
 
 const USER_SELECT_ICON: ViewStyle = { justifyContent: 'center', marginRight: spacing[2] };
 
+const CLIENT_SELECTION_FORM_STYLE: ViewStyle = { justifyContent: 'space-between', flexDirection: 'row' };
+
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
   const [showUserListModal, setShowUserListModal] = useState(false);
@@ -174,13 +176,13 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 </View>
                 <View style={FLEX_ROW}>
                   <TouchableOpacity
-                    style={[HEADER_RIGHT_ROW, { justifyContent: 'space-between', flexDirection: 'row' }]}
+                    style={[HEADER_RIGHT_ROW, CLIENT_SELECTION_FORM_STYLE]}
                     onPress={() => {
                       setShowUserListModal(true);
                     }}
                   >
                     <>
-                      <GridHeaderContent headerTx={'invoiceFormScreen.customerSelectionForm.title'} bodyText={values['customer'].name} />
+                      <GridHeaderContent headerTx={'invoiceFormScreen.customerSelectionForm.title'} bodyText={values.customer.name} />
                       <View style={USER_SELECT_ICON}>
                         <MaterialCommunityIcons name={'chevron-down'} size={25} />
                       </View>
