@@ -1,8 +1,9 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
-import { SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
-import { authorize } from 'react-native-app-auth';
+import React, { FC, useEffect } from 'react';
+import { Linking, SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Button, GradientBackground, Screen, Text } from '../../components';
 import env from '../../config/env';
@@ -59,26 +60,41 @@ const FOOTER_CONTENT: ViewStyle = {
   justifyContent: 'space-between',
 };
 
-export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(() => {
+WebBrowser.maybeCompleteAuthSession();
+
+export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
+  const [request, result, promptAsync] = AuthSession.useAuthRequest(
+    {
+      clientId: env.clientId,
+      clientSecret: env.clientSecret,
+      redirectUri: env.successUrl,
+    },
+    {
+      authorizationEndpoint: env.authorizationEndpoint,
+      tokenEndpoint: env.tokenEndpoint,
+    }
+  );
+
   const signIn = async () => {
     try {
-      await authorize({
-        clientId: env.clientId,
-        clientSecret: env.clientSecret,
-        scopes: [],
-        redirectUrl: env.successUrl,
-        serviceConfiguration: {
-          authorizationEndpoint: env.authorizationEndpoint,
-          tokenEndpoint: env.tokenEndpoint,
-        },
-        skipCodeExchange: true,
-        usePKCE: false,
-      });
+      await promptAsync();
     } catch (e) {
-      __DEV__ && console.tron.log({ e });
+      __DEV__ && console.tron.log(e);
       throw new Error(e);
     }
   };
+
+  useEffect(() => {
+    console.tron.log({ request });
+  }, [request]);
+
+  useEffect(() => {
+    __DEV__ && console.tron.log({ result });
+    if (!result || !(result as any).url) {
+      return;
+    }
+    Linking.openURL((result as any).url).then(() => {});
+  }, [result]);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -93,7 +109,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
         </Screen>
         <SafeAreaView style={[FOOTER, FOOTER_CONTENT]}>
-          <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} />
+          <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} disabled={!request} />
         </SafeAreaView>
       </View>
     </ErrorBoundary>

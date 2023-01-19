@@ -11,6 +11,7 @@ export default {
   sentryENV: config.SENTRY_ENV || '',
   clientId: config.CLIENT_ID || '',
   clientSecret: config.CLIENT_SECRET || '',
+  authorizationBaseURL: config.AUTHORIZATION_BASE_URL || '',
   authorizationEndpoint: config.AUTHORIZATION_ENDPOINT || '',
   tokenEndpoint: config.TOKEN_ENDPOINT || '',
 };
