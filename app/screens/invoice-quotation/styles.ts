@@ -1,7 +1,7 @@
-import { TextStyle, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from "react-native";
 
-import { color, spacing } from '../../theme';
-import { palette } from '../../theme/palette';
+import { color, spacing } from "../../theme";
+import { palette } from "../../theme/palette";
 
 export const INVOICES_STYLE: ViewStyle = {
   paddingHorizontal: spacing[3],
@@ -53,3 +53,29 @@ export const BULLET_SEPARATOR_STYLE: ViewStyle = {
 export const BULLET_SEPARATOR_CONTAINER_STYLE: ViewStyle = {
   alignItems: 'center',
 };
+export const SECTION_HEADER_TEXT_STYLE: TextStyle = {
+  fontWeight: '700',
+  color: palette.greyDarker,
+  backgroundColor: palette.white,
+  marginTop: spacing[5]
+};
+export const SEPARATOR_STYLE = { borderColor: palette.lighterGrey };
+export const FOOTER_COMPONENT_STYLE = { marginBottom: spacing[0] };
+export const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
+export const SHADOW_STYLE: ViewStyle = {
+  shadowOffset: { height: 10, width: 0 },
+  shadowOpacity: 10,
+  shadowRadius: 2,
+  shadowColor: 'rgba(156, 37, 90, 0.2)',
+  elevation: 2,
+};
+export const BUTTON_STYLE: ViewStyle = {
+  ...SHADOW_STYLE,
+  backgroundColor: color.primary,
+  marginVertical: spacing[5],
+  marginHorizontal: spacing[4],
+  borderRadius: 40,
+  paddingVertical: spacing[3],
+  paddingHorizontal: spacing[2],
+};
+export const SECTION_LIST_CONTAINER_STYLE = { marginHorizontal: spacing[4] };
