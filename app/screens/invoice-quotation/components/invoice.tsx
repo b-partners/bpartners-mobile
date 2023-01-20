@@ -27,7 +27,7 @@ import {
 type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction };
 
 const INVOICE_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
-const INVOICE_STYLE: ViewStyle = { paddingVertical: spacing[2], flex: 1 };
+const INVOICE_STYLE: ViewStyle = { paddingBottom: spacing[2], paddingTop: spacing[0], flex: 1 };
 const BOTTOM_MARGIN_STYLE: ViewStyle = { marginBottom: spacing[2] };
 const MENU_CONTAINER_STYLE: ViewStyle = {
   display: 'flex',

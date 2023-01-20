@@ -150,7 +150,7 @@
     }
   },
   "paymentListScreen": {
-    "title": "Devis / Factures",
+    "title": "Facturation",
     "tabs": {
       "drafts": "Brouillons",
       "invoices": "Factures",

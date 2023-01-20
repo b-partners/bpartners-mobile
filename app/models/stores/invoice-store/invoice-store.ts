@@ -1,4 +1,3 @@
-import * as _ from 'lodash/fp';
 import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
 import uuid from 'react-native-uuid';
 
@@ -214,11 +213,6 @@ export const InvoiceStoreModel = types
         customer: {},
         status: InvoiceStatus.DRAFT,
       });
-    },
-  }))
-  .views(self => ({
-    get quotationByMonth() {
-      return _.groupBy(value => value.sendingDate.getMonth(), self.quotations);
     },
   }));
 

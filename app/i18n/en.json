@@ -167,7 +167,7 @@
     }
   },
   "paymentListScreen": {
-    "title": "Invoices / Quotations",
+    "title": "Invoicing",
     "tabs": {
       "drafts": "Drafts",
       "invoices": "Invoices",

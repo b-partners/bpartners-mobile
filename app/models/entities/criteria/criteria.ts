@@ -1,9 +1,11 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
+import { InvoiceStatus } from '../invoice/invoice';
+
 export const CriteriaModel = types.model('Criteria').props({
   page: types.maybe(types.maybeNull(types.number)),
   pageSize: types.maybe(types.maybeNull(types.number)),
-  status: types.maybeNull(types.maybeNull(types.string)),
+  status: types.maybe(types.maybeNull(types.enumeration(Object.values(InvoiceStatus)))),
 });
 
 export interface Criteria extends Instance<typeof CriteriaModel> {}
