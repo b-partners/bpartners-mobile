@@ -65,9 +65,11 @@ WebBrowser.maybeCompleteAuthSession();
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
+      usePKCE: false,
       clientId: env.clientId,
       clientSecret: env.clientSecret,
       redirectUri: env.successUrl,
+      scopes: ['openid', 'offline', 'idverified'],
     },
     {
       authorizationEndpoint: env.authorizationEndpoint,
