@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Formik } from 'formik';
-import React, { useState } from 'react';
-import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { FlatList, Button as NativeButton, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
@@ -74,6 +74,7 @@ const CLIENT_SELECTION_FORM_STYLE: ViewStyle = { justifyContent: 'space-between'
 
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
+  const productCardRef = useRef<NativeButton>(null);
   const [showUserListModal, setShowUserListModal] = useState(false);
 
   const validate = values => {
@@ -95,15 +96,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
     sendingDate: new Date(),
     toPayAt: new Date(),
     customer: customers[0],
-    products: [
-      {
-        title: '',
-        description: '',
-        unitPrice: '0',
-        quantity: 1,
-        tva: '0',
-      },
-    ],
+    products: [],
     status: InvoiceStatus.DRAFT,
   });
 
@@ -162,27 +155,46 @@ export function InvoiceForm(props: InvoiceFormProps) {
             return a + c.totalPriceWithVat * c.quantity;
           }, 0);*/
 
+          const handleProductItemRemove = product => {
+            setFieldValue(
+              'products',
+              values.products.filter(p => JSON.stringify(p) != JSON.stringify(product))
+            );
+          };
+
           return (
             <>
               <View style={FLEX_WRAP}>
                 <View style={FLEX_ROW}>
-                  <EditableTextField title={'Titre de devis'} formName={'title'} placeholder={'Taper le titre du devis'} containerStyle={HEADER_RIGHT_ROW} />
-                  <EditableTextField
-                    title={'Numéros du devis'}
-                    formName={'ref'}
-                    placeholder={'Taper le numéros du devis'}
-                    containerStyle={EDITABLE_TF_CONTAINER}
-                  />
+                  <View style={{ flex: 1 }}>
+                    <EditableTextField
+                      title={'Titre de devis'}
+                      formName={'title'}
+                      placeholder={'Taper le titre du devis'}
+                      containerStyle={{ ...HEADER_RIGHT_ROW }}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <EditableTextField
+                      title={'Numéros du devis'}
+                      formName={'ref'}
+                      placeholder={'Taper le numéros du devis'}
+                      containerStyle={{ ...EDITABLE_TF_CONTAINER }}
+                    />
+                  </View>
                 </View>
                 <View style={FLEX_ROW}>
                   <TouchableOpacity
-                    style={[HEADER_RIGHT_ROW, CLIENT_SELECTION_FORM_STYLE]}
+                    style={[HEADER_RIGHT_ROW, CLIENT_SELECTION_FORM_STYLE, { flex: 1 }]}
                     onPress={() => {
                       setShowUserListModal(true);
                     }}
                   >
                     <>
-                      <GridHeaderContent headerTx={'invoiceFormScreen.customerSelectionForm.title'} bodyText={values.customer.name} />
+                      <GridHeaderContent
+                        headerTx={'invoiceFormScreen.customerSelectionForm.title'}
+                        bodyText={values['customer'] ? values['customer'].name : 'le nom du client'}
+                      />
                       <View style={USER_SELECT_ICON}>
                         <MaterialCommunityIcons name={'chevron-down'} size={25} />
                       </View>
@@ -197,7 +209,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       setFieldValue('customer', customer);
                     }}
                   />
-                  <View style={DATE_PICKER_FIELD_CONTAINER}>
+                  <View style={{ ...DATE_PICKER_FIELD_CONTAINER, flex: 1 }}>
                     <DatePickerField
                       value={initialValues.sendingDate}
                       onDateChange={date => setInitialValues({ ...initialValues, sendingDate: date })}
@@ -212,33 +224,15 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 {/*list of the elements to be created*/}
                 <FlatList<Product>
                   data={[...values.products]}
-                  renderItem={({ item }) => <ProductCardItem item={{ ...item }} onRemove={product => values.products.filter(p => p.id !== product.id)} />}
+                  renderItem={({ item }) => <ProductCardItem item={{ ...item }} onRemove={() => handleProductItemRemove(item)} showSubmitButton={false} />}
                 />
-                {/*{isAddingNewElement && (
-                  <ProductCardItem
-                    onAdd={product => {
-                      setFieldValue('products', [...values.products, product]);
-                      setIsAddingNewElement(false);
-                    }}
-                  />
-                )}*/}
-                {/*<Button
-                  text={'Ajouter un autre élément'}
-                  style={BUTTON_OUTLINE_STYLE}
-                  textStyle={ADD_BUTTON_TEXT_STYLE}
-                  onPress={() => {
-                    setFieldValue('products', [
-                      ...values.products,
-                      {
-                        title: '',
-                        description: '',
-                        unitPrice: '0',
-                        quantity: 1,
-                        tva: '0',
-                      },
-                    ]);
+                <ProductCardItem
+                  ref={productCardRef}
+                  onAdd={product => {
+                    setFieldValue('products', [...values.products, product]);
                   }}
-                />*/}
+                  showSubmitButton={true}
+                />
               </View>
 
               <View>
@@ -257,7 +251,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     formName={'acompte'}
                     placeholder={'Taper '}
                     containerStyle={EDITABLE_TF_CONTAINER}
-                    value={'10'}
+                    defaultValue={'10'}
                     suffix={' %'}
                   />
                 </View>
@@ -379,7 +373,11 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   tx='invoiceScreen.labels.invoiceForm'
                   textStyle={SUBMIT_BUTTON_TEXT_STYLE}
                   style={BUTTON_FILL_STYLE}
-                  onPress={() => handleSubmit()}
+                  onPress={e => {
+                    // add the last item before submit
+                    productCardRef.current.props.onPress(e);
+                    handleSubmit();
+                  }}
                 />
               </View>
             </>

@@ -17,16 +17,19 @@ const CONTAINER_STYLE: ViewStyle = {
   overflow: 'hidden',
   ...SHADOW_STYLE,
   elevation: 12,
+  borderWidth: 0.5,
+  borderColor: palette.lighterGrey,
 };
 const EDITABLE_TF_CONTAINER = { borderWidth: 0.5, borderColor: palette.lighterGrey, flex: 1 };
 const DELETE_ACTION_POSITION_STYLE: ViewStyle = { position: 'absolute', right: 5, top: 5, zIndex: 2 };
 const BOTTOM_INFO_STYLE: ViewStyle = { flex: 1, flexDirection: 'row', overflow: 'hidden' };
-
+const PLACEHOLDER_TEXT_STYLE: TextStyle = { fontStyle: 'italic' };
 const EDITABLE_TEXT_FIELD_STYLE = { height: 46 };
 type ICardElement = {
   onAdd?: (product: Product) => void;
   item?: Product;
   onRemove?: (item: Product) => void;
+  showSubmitButton?: boolean;
 };
 
 const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAdd, showSubmitButton = false, item }, ref) => {
