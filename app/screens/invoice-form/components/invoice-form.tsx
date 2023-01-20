@@ -100,32 +100,10 @@ export function InvoiceForm(props: InvoiceFormProps) {
     status: InvoiceStatus.DRAFT,
   });
 
-  /*useEffect(() => {
-    setInitialValues({
-      id: uuid.v4().toString(),
-      ref: invoice.ref,
-      title: invoice.title,
-      comment: null,
-      customer: invoice.customer,
-      products: invoice.products,
-      sendingDate: new Date(invoice.sendingDate),
-      toPayAt: new Date(invoice.toPayAt),
-      status: invoice.status,
-    });
-  }, [invoice]);*/
 
   const validationSchema = yup.object().shape({
     title: yup.string().required(),
-    ref: yup.string().nullable().required(),
-    /*products: array().of(
-      yup.object().shape({
-        title: yup.string().required(),
-        description: yup.string(),
-        unitPrice: yup.number(),
-        quantity: yup.number(),
-        tva: yup.number().min(0).max(100),
-      })
-    ),*/
+    ref: yup.string().required(),
   });
   return (
     <View>
@@ -151,10 +129,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
         validate={validate}
       >
         {({ errors, handleSubmit, values, setFieldValue }) => {
-          /*const total = (values.products as Product[]).reduce((a, c) => {
-            return a + c.totalPriceWithVat * c.quantity;
-          }, 0);*/
-
           const handleProductItemRemove = product => {
             setFieldValue(
               'products',
@@ -266,103 +240,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 </View>
                 <Separator style={SEPARATOR_STYLE} />
               </View>
-              {/*<TextField
-                testID='ref'
-                nativeID='ref'
-                style={TEXT_FIELD_STYLE}
-                labelContainerStyle={LABEL_CONTAINER_STYLE}
-                labelStyle={INPUT_LABEL_STYLE}
-                inputStyle={INPUT_TEXT_STYLE}
-                labelTx='invoiceScreen.labels.ref'
-                value={values.ref}
-                onChangeText={ref => setFieldValue('ref', ref)}
-              />*/}
-
-              {/*<View style={DATEPICKER_ROW_STYLE}>
-                <DatePickerField
-                  labelTx='invoiceScreen.labels.toPayAt'
-                  value={values.toPayAt}
-                  onDateChange={date => setFieldValue('toPayAt', date)}
-                  validationError={errors.toPayAt as string}
-                />
-              </View>*/}
-              {/*<Text tx='invoiceScreen.labels.customerSection' style={SECTION_STYLE} />*/}
-              {/*<Separator style={{ marginBottom: spacing[4] }} />*/}
-              {/*<Text tx='invoiceScreen.labels.productSection' style={SECTION_STYLE} />*/}
-              <View>
-                {/* <AutocompletionFormField
-                  value={''}
-                  data={products.filter(item => {
-                    const selectedProducts = values.products.map(p => p.id);
-                    return !selectedProducts.includes(item.id);
-                  })}
-                  id='id'
-                  title='description'
-                  onValueChange={item => {
-                    if (!item) {
-                      return;
-                    }
-                    const product = products.find(p => item && item.id === p.id);
-                    setFieldValue('products', [...values.products, { ...product, quantity: 1 }]);
-                  }}
-                  onSearch={() => {}}
-                  onClear={() => {}}
-                />*/}
-                {/*<View style={{ marginTop: spacing[4] }}>
-                  <FlatList<Product>
-                    data={values.products}
-                    renderItem={({ item }) => (
-                      <ProductFormField
-                        key={item.id}
-                        product={item}
-                        onQuantityChange={quantity => {
-                          const selectedProducts = values.products.map(p =>
-                            p.id === item.id
-                              ? {
-                                  ...p,
-                                  quantity,
-                                }
-                              : p
-                          );
-                          setFieldValue('products', selectedProducts);
-                        }}
-                        onRemoveProduct={product => {
-                          setFieldValue(
-                            'products',
-                            values.products.filter(p => p.id !== product.id)
-                          );
-                        }}
-                      />
-                    )}
-                  />
-                  <ProductFormField
-                    product={{ id: '', quantity: 2, unitPrice: 1, description: 'description', totalVat: 1, totalPriceWithVat: 1, vatPercent: 1 }}
-                    onQuantityChange={() => {}}
-                    onRemoveProduct={product => values.products.filter(p => p.id != product.id)}
-                  />
-                </View>*/}
-              </View>
-
-              {/*<Separator style={{ marginBottom: spacing[4] }} />*/}
-
-              {/*<View style={TOTAL_SECTION_STYLE}>
-                <Text text={`${translate('invoiceScreen.labels.totalSection')}: `} style={SECTION_STYLE} />
-                <Text text={format(total)} />
-              </View>*/}
-
-              {/*<Separator style={{ marginBottom: spacing[4] }} />*/}
-
-              {/*  <TextField
-                testID='comment'
-                nativeID='comment'
-                style={TEXT_FIELD_STYLE}
-                labelContainerStyle={LABEL_CONTAINER_STYLE}
-                labelStyle={INPUT_LABEL_STYLE}
-                inputStyle={INPUT_TEXT_STYLE}
-                labelTx='invoiceScreen.labels.comment'
-                value={values.comment}
-                onChangeText={comment => setFieldValue('comment', comment)}
-              />*/}
 
               <View style={[FLEX_ROW, { marginVertical: spacing[6] }]}>
                 <View style={SAVE_ICON_CONTAINER}>
