@@ -62,7 +62,7 @@ const FOOTER_CONTENT: ViewStyle = {
 
 WebBrowser.maybeCompleteAuthSession();
 
-export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
+export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(() => {
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
       usePKCE: false,
