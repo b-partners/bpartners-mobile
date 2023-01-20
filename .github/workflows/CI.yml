@@ -21,25 +21,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install dependencies
+      - name: Install
         run: |
           npm install --force
           npm install --location=global react-native-cli
-
-      - name: Run unit tests
-        run: npm run test
-
-      - run: npm run ci:build:e2e
-
-      - run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-      - name: Install applesimutils
-        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew tap wix/brew
           brew install applesimutils
 
-      - name: Test Run End to End tests
-        run: npm run ci:test:e2e
+      - name: Test (e2e)
+        run: |
+          npm run build:ios:debug:e2e
+          npm run test:ios:debug:e2e
 
   style:
     runs-on: ubuntu-latest

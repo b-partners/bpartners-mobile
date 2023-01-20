@@ -12,7 +12,7 @@ module.exports = {
   apps: {
     'ios.debug': {
       type: 'ios.app',
-      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/BpartnersMobile.app',
+      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/bpartners.app',
       build:
         'xcodebuild -workspace ios/BpartnersMobile.xcworkspace -scheme BpartnersMobile -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build',
     },

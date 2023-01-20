@@ -17,9 +17,11 @@ on:
           - preprod
           - prod
         required: true
+      versionCode:
+        type: number
+        default: 1
 
 jobs:
-
   android-browserstack:
     if: github.event.inputs.OS == 'android' && (github.event.inputs.env == 'dev' || github.event.inputs.env == 'preprod' || github.event.inputs.env == 'prod')
     runs-on: ubuntu-latest
@@ -36,30 +38,37 @@ jobs:
           touch release.keystore
           echo "${{ secrets.KEYSTORE }}" | base64 -d >> release.keystore
         if: github.event.inputs.env == 'preprod' || github.event.inputs.env == 'prod'
-          
+
+      - run: echo "sha=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - name: Setting up the versionCode and versionName
+        run: |
+          sed -i 's/versionCode 1/versionCode ${{ github.event.inputs.versionCode }}/g' android/app/build.gradle
+          sed -i 's/versionName "1.0"/versionName "${{ github.event.inputs.env}}-${{ env.sha }}"/g' android/app/build.gradle
+
       - name: Setting up the environment variables
         run: |
           mkdir ~/.gradle
           sh ./setEnvironmentVariables.sh ${{ secrets.APP_UPLOAD_STORE_FILE }} ${{ secrets.APP_UPLOAD_STORE_PASSWORD }} ${{ secrets.APP_UPLOAD_KEY_ALIAS }} ${{ secrets.APP_UPLOAD_KEY_PASSWORD }}
-          echo "sha=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
         with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_REGION }}
-              
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - run: yarn build-android
 
       - name: Remove duplicated ressources
         run: |
-            rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
-            rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
-      
-      - name: Retrieve the environment variables from aws and put them in .env 
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/drawable-*
+          rm -rf /home/runner/work/bpartners-mobile/bpartners-mobile/android/app/src/main/res/raw
+
+      - name: Retrieve the environment variables from aws and put them in .env
         run: |
           echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo SCHEME=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SCHEME" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SWAN_URL=$(aws ssm get-parameters --names "/bpartners/mobile/SWAN_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
@@ -104,7 +113,7 @@ jobs:
         run: |
           aws s3 cp android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk s3://mobile-bpartners/android/
           aws s3 cp android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab s3://mobile-bpartners/android/
-    
+
   ios-browserstack:
     if: github.event.inputs.OS == 'ios' && (github.event.inputs.env == 'dev' || github.event.inputs.env == 'preprod' || github.event.inputs.env == 'prod')
     runs-on: macos-latest
@@ -149,5 +158,3 @@ jobs:
       - run: aws s3 cp ${{ env.ipaName }}.ipa s3://mobile-bpartners/ios/
 
       - run: curl -u "${{ secrets.BROWSERSTACK_USERNAME }}:${{ secrets.BROWSERSTACK_ACCESSKEY }}" -X POST "https://api-cloud.browserstack.com/app-live/upload" -F "file=@${{ env.ipaName }}.ipa"
-
-
