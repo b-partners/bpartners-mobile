@@ -1,42 +1,22 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { ImageStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {ImageStyle, Text, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
 
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
+
+import { Icon, IconType } from './type';
+
+const TEXT_STYLE: TextStyle = {
+  color: palette.black,
+  fontSize: 16,
+  fontFamily: 'sans-serif-light',
+};
 
 const TAB_VIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: 100, width: '100%', flexDirection: 'row' };
 const WAVE_STYLE: ImageStyle = { width: '100%', height: '95%', position: 'absolute', bottom: 0 };
 const NAVIGATION_STYLE: ViewStyle = { width: 45, height: 45, margin: 10, backgroundColor: palette.white };
 const ICON_STYLE: ImageStyle = { width: '100%', height: '100%', position: 'absolute', bottom: 0 };
-
-type IconType = {
-  id: number;
-  name: string;
-};
-
-const Icon: IconType[] = [
-  {
-    id: 1,
-    name: 'wallet',
-  },
-  {
-    id: 2,
-    name: 'activity',
-  },
-  {
-    id: 3,
-    name: 'paiment',
-  },
-  {
-    id: 4,
-    name: 'facturation',
-  },
-  {
-    id: 5,
-    name: 'service',
-  },
-];
 
 type IconProps = {
   wallet: string;
@@ -48,8 +28,8 @@ type IconProps = {
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   const IconImage: IconProps = {
-    wallet: require('./tab-navigation.png'),
-    activity: require('./wallet.png'),
+    wallet: require('./wallet.png'),
+    activity: require('./activity.png'),
     paiment: require('./paiment.png'),
     facturation: require('./facturation.png'),
     service: require('./service.png'),
@@ -70,6 +50,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
         return (
           <TouchableOpacity key={item.id} onPress={() => props.navigation.navigate(IconRoute[item.name])} style={NAVIGATION_STYLE}>
             <AutoImage source={IconImage[item.name]} style={ICON_STYLE} resizeMethod='resize' />
+            <Text style={TEXT_STYLE}>{item.name}</Text>
           </TouchableOpacity>
         );
       })}
