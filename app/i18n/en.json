@@ -83,9 +83,12 @@
       "submit": "Confirm"
     }
   },
+  "profilScreen": {
+    "title": "Change request"
+  },
   "profileScreen": {
-    "label": "Profile",
-    "title": "Profile",
+    "label": "Profil",
+    "title": "Profil",
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",
@@ -170,6 +173,11 @@
       "invoices": "Invoices",
       "quotations": "Quotations"
     }
+  },
+  "marketPlaceScreen": {
+    "title": "MarketPlace",
+    "offerTitle": "SEE THE OFFERS ON:",
+    "header": "Boost my results"
   },
   "quotationScreen": {
     "createQuotation": "Create a Quotation"

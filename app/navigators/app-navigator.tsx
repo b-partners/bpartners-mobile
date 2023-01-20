@@ -19,6 +19,7 @@ import { InvoiceStatus } from '../models/entities/invoice/invoice';
 import { ErrorBoundary, HomeScreen, LegalFileScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen } from '../screens';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
+import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
 import { CodeExchangeScreen } from '../screens/sign-in-web-view/code-exchange-screen';
 import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
@@ -47,6 +48,7 @@ export type NavigatorParamList = {
   invoiceForm: undefined;
   paymentList: undefined;
   legalFile: undefined;
+  marketplace: undefined;
   supportContact: undefined;
 };
 
@@ -92,7 +94,8 @@ const AppStack = observer(function () {
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
           <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-          <Drawer.Screen name='paymentList' component={PaymentListScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='paymentList' component={PaymentListScreen} />
+          <Drawer.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
           <Drawer.Screen name='supportContact' component={SupportContactScreen} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />

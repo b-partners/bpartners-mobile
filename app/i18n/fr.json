@@ -60,9 +60,12 @@
         "submit": "Confirmer"
       }
     },
+    "profilScreen": {
+      "title": "Changer une requete"
+    },
     "profileScreen": {
-      "label": "Profil",
-      "title": "Profil",
+      "label": "Profile",
+      "title": "Profile",
       "fields": {
         "logo": "Logo",
         "selectFileButton": "Sélectionner un fichier",
@@ -154,12 +157,16 @@
       "quotations": "Devis"
     }
   },
+  "marketPlaceScreen": {
+    "title": "MarketPlace",
+    "offerTitle": "VOIR LES OFFRES SUR:",
+    "header": "Boostez mes résultats"
+  },
   "quotationScreen": {
     "createQuotation": "Créer un Devis"
   },
   "logoutScreen": {
     "title": "Déconnexion",
-    "swan": "Ouvrir Swan",
     "swan": "Ouvrir Swan"
   },
   "legalFileScreen": {

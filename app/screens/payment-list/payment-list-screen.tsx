@@ -15,6 +15,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { DraftsScreen } from '../invoice-quotation/drafts-screen';
 import { InvoicesScreen } from '../invoice-quotation/invoices-screen';
 import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
+import { INVOICE_HEADER } from '../payment-initiation/style';
 
 const FLOATING_ACTION_BUTTON_STYLE: ViewStyle = {
   position: 'absolute',
@@ -30,7 +31,7 @@ export const PaymentListScreen: FC<StackScreenProps<NavigatorParamList, 'payment
     <ErrorBoundary catchErrors='always'>
       <Screen>
         <GradientBackground colors={['#422443', '#281b34']} />
-        <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' />
+        <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={INVOICE_HEADER} />
         <Tab.Navigator initialRouteName={translate('paymentListScreen.tabs.drafts')}>
           <Tab.Screen
             name={translate('paymentListScreen.tabs.drafts')}
