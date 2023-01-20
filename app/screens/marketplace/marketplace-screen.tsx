@@ -12,7 +12,7 @@ import { ColumnList } from './components/market-column-list';
 import { RowList } from './components/market-row-list';
 import { FULL_HEIGHT, SCREEN_STYLE } from './styles';
 
-export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen() {
+export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
   const { marketplaceStore } = useStores();
   const screenWidth = Dimensions.get('screen').width;
 
@@ -25,7 +25,7 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'market
       <View testID='SignInWebViewScreen' style={SCREEN_STYLE}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen preset='scroll' backgroundColor={palette.white} style={FULL_HEIGHT}>
-          <Header headerTx='marketPlaceScreen.header' leftIcon={'back'} />
+          <Header headerTx='marketPlaceScreen.header' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')}/>
           {screenWidth < 720 ? <ColumnList /> : <RowList />}
         </Screen>
       </View>

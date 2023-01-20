@@ -8,15 +8,39 @@ import { AutoImage } from '../auto-image/auto-image';
 import { Icon, IconType } from './type';
 
 const TEXT_STYLE: TextStyle = {
-  color: palette.black,
-  fontSize: 16,
-  fontFamily: 'sans-serif-light',
+  color: palette.white,
+  fontSize: 10,
+  width: '100%',
+  alignSelf: 'center',
+  backgroundColor: palette.black,
 };
 
-const TAB_VIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: 100, width: '100%', flexDirection: 'row' };
-const WAVE_STYLE: ImageStyle = { width: '100%', height: '95%', position: 'absolute', bottom: 0 };
-const NAVIGATION_STYLE: ViewStyle = { width: 45, height: 45, margin: 10, backgroundColor: palette.white };
-const ICON_STYLE: ImageStyle = { width: '100%', height: '100%', position: 'absolute', bottom: 0 };
+const TAB_VIEW_STYLE: ViewStyle = {
+  backgroundColor: palette.white,
+  height: 110,
+  width: '100%',
+  flexDirection: 'row',
+  alignItems: 'center',
+};
+
+const WAVE_STYLE: ImageStyle = {
+  width: '100%',
+  height: '95%',
+  position: 'absolute',
+  bottom: 0
+};
+
+const NAVIGATION_STYLE: ViewStyle = {
+  width: '18%',
+  height: 50,
+  marginHorizontal: '1%',
+  flexDirection: 'column',
+};
+
+const ICON_STYLE: ImageStyle = {
+  width: '100%',
+  height: '100%',
+};
 
 type IconProps = {
   wallet: string;
@@ -43,6 +67,14 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     service: 'supportContact',
   };
 
+  const IconTexte: IconProps = {
+    wallet: 'Comptes',
+    activity: 'Activité',
+    paiment: 'Collecter un paiement',
+    facturation: 'Facturation',
+    service: 'Autres services',
+  };
+
   return (
     <View style={TAB_VIEW_STYLE} {...props}>
       <AutoImage source={require('./tab-navigation.png')} style={WAVE_STYLE} resizeMethod='resize' />
@@ -50,7 +82,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
         return (
           <TouchableOpacity key={item.id} onPress={() => props.navigation.navigate(IconRoute[item.name])} style={NAVIGATION_STYLE}>
             <AutoImage source={IconImage[item.name]} style={ICON_STYLE} resizeMethod='resize' />
-            <Text style={TEXT_STYLE}>{item.name}</Text>
+            <Text style={TEXT_STYLE}>{IconTexte[item.name]}</Text>
           </TouchableOpacity>
         );
       })}
