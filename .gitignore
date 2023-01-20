@@ -61,8 +61,10 @@ buck-out/
 
 # Ruby / CocoaPods
 /ios/Pods/
+/ios/Podfile.lock
 /vendor/bundle/
 
 .env.*
 !.env.template
 /.expo/
+/yarn.lock
