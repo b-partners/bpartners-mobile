@@ -4,6 +4,7 @@ import React, { FC, useEffect } from 'react';
 import { SafeAreaView, View, ViewStyle } from 'react-native';
 
 import { GradientBackground, Loader } from '../../components';
+import env from '../../config/env';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -15,7 +16,7 @@ export const CodeExchangeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth
 
   useEffect(() => {
     async function exchangeCode() {
-      const { code } = route.params;
+      const code = env.isCi ? 'dummy code' : route.params.code;
       if (!code) {
         navigation.navigate('welcome');
         return;

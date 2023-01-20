@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { withEnvironment, withRootStore } from '../..';
+import env from '../../../config/env';
 import { translate } from '../../../i18n';
 import { AccountApi } from '../../../services/api/account-api';
 import { AuthApi } from '../../../services/api/auth-api';
@@ -147,8 +148,8 @@ export const AuthStoreModel = types
     getToken: flow(function* (code) {
       const signInApi = new AuthApi(self.environment.api);
       try {
-        const result = yield signInApi.getToken(code);
-        yield self.getTokenSuccess({ accessToken: result.accessToken, refreshToken: result.refreshToken });
+        const { accessToken, refreshToken } = env.isCi ? { accessToken: env.ciAccessToken, refreshToken: null } : yield signInApi.getToken(code);
+        yield self.getTokenSuccess({ accessToken: accessToken, refreshToken: refreshToken });
       } catch (e) {
         self.getTokenFail(e);
       }
