@@ -132,7 +132,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
           const handleProductItemRemove = product => {
             setFieldValue(
               'products',
-              values.products.filter(p => JSON.stringify(p) != JSON.stringify(product))
+              values.products.filter(p => JSON.stringify(p) !== JSON.stringify(product))
             );
           };
 
@@ -140,7 +140,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
             <>
               <View style={FLEX_WRAP}>
                 <View style={FLEX_ROW}>
-                  <View style={{ flex: 1 }}>
+                  <View style={FULL}>
                     <EditableTextField
                       title={'Titre de devis'}
                       formName={'title'}
@@ -148,7 +148,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       containerStyle={{ ...HEADER_RIGHT_ROW }}
                     />
                   </View>
-                  <View style={{ flex: 1 }}>
+                  <View style={FULL}>
                     <EditableTextField
                       title={'Numéros du devis'}
                       formName={'ref'}
@@ -159,7 +159,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 </View>
                 <View style={FLEX_ROW}>
                   <TouchableOpacity
-                    style={[HEADER_RIGHT_ROW, CLIENT_SELECTION_FORM_STYLE, { flex: 1 }]}
+                    style={[HEADER_RIGHT_ROW, CLIENT_SELECTION_FORM_STYLE, FULL]}
                     onPress={() => {
                       setShowUserListModal(true);
                     }}
@@ -167,7 +167,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     <>
                       <GridHeaderContent
                         headerTx={'invoiceFormScreen.customerSelectionForm.title'}
-                        bodyText={values['customer'] ? values['customer'].name : 'le nom du client'}
+                        bodyText={values.customer ? values.customer.name : 'le nom du client'}
                       />
                       <View style={USER_SELECT_ICON}>
                         <MaterialCommunityIcons name={'chevron-down'} size={25} />
@@ -183,7 +183,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       setFieldValue('customer', customer);
                     }}
                   />
-                  <View style={{ ...DATE_PICKER_FIELD_CONTAINER, flex: 1 }}>
+                  <View style={{ ...DATE_PICKER_FIELD_CONTAINER, ...FULL }}>
                     <DatePickerField
                       value={initialValues.sendingDate}
                       onDateChange={date => setInitialValues({ ...initialValues, sendingDate: date })}

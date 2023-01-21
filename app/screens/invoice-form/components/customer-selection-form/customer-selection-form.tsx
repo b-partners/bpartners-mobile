@@ -40,6 +40,8 @@ const ADD_CLIENT_BUTTON_STYLE: ViewStyle = {
 const ADD_CLIENT_BUTTON_TEXT_STYLE: TextStyle = {
   color: color.primary,
 };
+const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
+
 
 const CustomerSelectionForm: FC<TCustomerForm> = props => {
   const { customers, onValidateChoice } = props;
@@ -56,7 +58,7 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
         renderItem={({ item: customer }) => {
           return <CustomerRow customer={customer} isSelected={customer.id === selectedCustomer?.id} onSelect={() => setSelectedCustomer(customer)} />;
         }}
-        ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
+        ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
       />
       <View style={{ paddingTop: spacing[3] }}>
         <Button tx={'invoiceFormScreen.customerSelectionForm.addClient'} style={[ADD_CLIENT_BUTTON_STYLE]} textStyle={ADD_CLIENT_BUTTON_TEXT_STYLE} />

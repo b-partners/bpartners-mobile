@@ -105,4 +105,6 @@ const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAd
   );
 });
 
+ProductCardItem.displayName = 'ProductCardItem';
+
 export default ProductCardItem;
