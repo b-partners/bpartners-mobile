@@ -25,7 +25,7 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'market
       <View testID='SignInWebViewScreen' style={SCREEN_STYLE}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen preset='scroll' backgroundColor={palette.white} style={FULL_HEIGHT}>
-          <Header headerTx='marketPlaceScreen.header' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')}/>
+          <Header headerTx='marketPlaceScreen.header' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           {screenWidth < 720 ? <ColumnList /> : <RowList />}
         </Screen>
       </View>

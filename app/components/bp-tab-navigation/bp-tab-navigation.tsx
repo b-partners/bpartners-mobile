@@ -1,10 +1,9 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {ImageStyle, Text, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
+import { ImageStyle, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
-
 import { Icon, IconType } from './type';
 
 const TEXT_STYLE: TextStyle = {
@@ -27,7 +26,7 @@ const WAVE_STYLE: ImageStyle = {
   width: '100%',
   height: '95%',
   position: 'absolute',
-  bottom: 0
+  bottom: 0,
 };
 
 const NAVIGATION_STYLE: ViewStyle = {
