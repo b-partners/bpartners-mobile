@@ -62,7 +62,12 @@ const FOOTER_CONTENT: ViewStyle = {
 
 WebBrowser.maybeCompleteAuthSession();
 
-export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(() => {
+export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
+  if (env.isCi) {
+    navigation.navigate('oauth');
+    return null;
+  }
+
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
     {
       usePKCE: false,
@@ -100,7 +105,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='WelcomeScreen' style={FULL}>
+      <View testID='welcome-view' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
           <Text style={TITLE_WRAPPER}>

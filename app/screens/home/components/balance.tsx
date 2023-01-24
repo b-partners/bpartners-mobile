@@ -19,7 +19,7 @@ export function Balance(props: { balance: number }) {
   const { balance } = props;
 
   return (
-    <View style={CONTAINER_STYLE}>
+    <View testID='balance-view' style={CONTAINER_STYLE}>
       <Text tx='homeScreen.labels.balance' style={SECONDARY_TEXT_STYLE} />
       <View style={{ marginVertical: spacing[1] }}>
         <Text text={printCurrency(balance)} style={MAIN_TEXT_STYLE} />
