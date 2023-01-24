@@ -39,7 +39,7 @@ Sentry.init({
   environment: env.sentryENV,
 });
 
-env.scheme !== 'dev' && LogBox.ignoreAllLogs();
+env.appEnv !== 'dev' && LogBox.ignoreAllLogs();
 
 /**
  * This is the root component of our app.

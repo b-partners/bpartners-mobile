@@ -2,6 +2,7 @@ import config from 'react-native-config';
 
 export default {
   scheme: config.SCHEME || '',
+  appEnv: config.APP_ENV || '',
   get isCi() {
     return this.scheme === 'ci';
   },
