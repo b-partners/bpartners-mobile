@@ -35,7 +35,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='SignInWebViewScreen' style={FULL}>
+      <View testID='homeScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen preset='auto' backgroundColor={color.transparent}>
           <HomeHeader />

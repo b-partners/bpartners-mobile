@@ -40,6 +40,18 @@
     "start": "OUVRIR UN COMPTE",
     "login": "SE CONNECTER"
   },
+  "paymentInitiationScreen": {
+    "label": "Paiement",
+    "title": "Initier un paiement",
+    "fields": {
+      "label": "Label",
+      "reference": "Référence",
+      "amount": "Total",
+      "payerName": "Nom du payeur",
+      "payerEmail": "Email du payeur",
+      "submit": "Confirmer"
+    }
+  },
   "signInScreen": {
     "title": "Connectez-vous à BPartners",
     "description": "Entrez le numéro de téléphone que vous avez utilisé lors de votre inscription",
@@ -48,49 +60,34 @@
     "labels": {
       "phoneNumber": "Téléphone"
     },
-    "paymentInitiationScreen": {
-      "label": "Paiement",
-      "title": "Initier un paiement",
-      "fields": {
-        "label": "Label",
-        "reference": "Référence",
-        "amount": "Total",
-        "payerName": "Nom du payeur",
-        "payerEmail": "Email du payeur",
-        "submit": "Confirmer"
-      }
-    },
-    "profilScreen": {
-      "title": "Changer une requete"
-    },
-    "profileScreen": {
-      "label": "Profile",
-      "title": "Profile",
-      "fields": {
-        "logo": "Logo",
-        "selectFileButton": "Sélectionner un fichier",
-        "uploadFileButton": "Téléverser le fichier",
-        "uploadFileButton": "Supprimer le fichier",
-        "user": {
-          "section": "Mon identité",
-          "firstName": "Prénom",
-          "lastName": "Nom",
-          "phone": "Téléphone"
-        },
-        "accountHolder": {
-          "section": "Ma société",
-          "name": "Nom",
-          "address": "Adresse",
-          "city": "Ville",
-          "country": "Pays",
-          "postalCode": "Code postal"
-        }
-      }
-    },
     "fields": {
       "firstName": "Prénom",
       "lastName": "Nom",
       "phone": "Numéro de téléphone"
+    }
+  },
+  "profileScreen": {
+    "label": "Profile",
+    "title": "Profil",
+    "fields": {
+      "logo": "Logo",
+      "selectFileButton": "Sélectionner un fichier",
+      "uploadFileButton": "Téléverser le fichier",
+      "uploadFileButton": "Supprimer le fichier",
+      "user": {
+        "section": "Mon identité",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "phone": "Téléphone"
+      },
+      "accountHolder": {
+        "section": "Ma société",
+        "name": "Nom",
+        "address": "Adresse",
+        "city": "Ville",
+        "country": "Pays",
+        "postalCode": "Code postal"
+      }
     }
   },
   "homeScreen": {
@@ -158,7 +155,7 @@
     }
   },
   "marketPlaceScreen": {
-    "title": "MarketPlace",
+    "title": "Marketplace",
     "offerTitle": "VOIR LES OFFRES SUR:",
     "header": "Boostez mes résultats"
   },

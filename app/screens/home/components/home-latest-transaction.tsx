@@ -24,10 +24,10 @@ export function HomeLatestTransaction(props: HomeLatestTransactionProps) {
   const { loading } = props;
 
   return (
-    <View testID='homeLatestTransaction'>
+    <View>
       <View>
         <View style={LAST_TRANSACTIONS_SECTION}>
-          <Text tx='homeScreen.summary.lastTransactions' style={LAST_TRANSACTIONS_TEXT_STYLE} />
+          <Text tx='homeScreen.summary.lastTransactions' style={LAST_TRANSACTIONS_TEXT_STYLE} testID='latestTransactionText' />
           <TouchableOpacity>
             <Icon icon='settings' />
           </TouchableOpacity>
