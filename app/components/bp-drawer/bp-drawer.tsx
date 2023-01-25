@@ -145,7 +145,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
 
   const TitleRoute: RouteNameProps = {
     home: translate('homeScreen.title'),
-    profile: translate('profilScreen.title'),
+    profile: translate('profileScreen.title'),
     transactionList: translate('transactionListScreen.title'),
     paymentInitiation: translate('paymentInitiationScreen.title'),
     paymentList: translate('paymentListScreen.title'),
