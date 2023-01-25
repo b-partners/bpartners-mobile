@@ -1,14 +1,14 @@
-import { Formik } from 'formik';
-import React, { forwardRef, useEffect } from "react";
-import { Button as NativeButton, TextStyle, TouchableHighlight, View, ViewStyle } from 'react-native';
-import * as yup from 'yup';
+import { Formik } from "formik";
+import React, { FC, useEffect } from "react";
+import { TextStyle, TouchableHighlight, View, ViewStyle } from "react-native";
+import * as yup from "yup";
 
-import { Icon } from '../../../components';
-import { Product } from '../../../models/entities/product/product';
-import { spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
-import { SHADOW_STYLE } from '../styles';
-import EditableTextField from './editable-text-field';
+import { Icon } from "../../../components";
+import { Product } from "../../../models/entities/product/product";
+import { spacing } from "../../../theme";
+import { palette } from "../../../theme/palette";
+import { SHADOW_STYLE } from "../styles";
+import EditableTextField from "./editable-text-field";
 
 const CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.white,
@@ -26,14 +26,13 @@ const BOTTOM_INFO_STYLE: ViewStyle = { flex: 1, flexDirection: 'row', overflow: 
 const PLACEHOLDER_TEXT_STYLE: TextStyle = { fontStyle: 'italic' };
 const EDITABLE_TEXT_FIELD_STYLE = { height: 46 };
 type ICardElement = {
-  onAdd?: (product: Product) => void;
   item?: Product;
+  onAdd?: (product: Product) => void;
   onRemove?: (item: Product) => void;
-  showSubmitButton?: boolean;
-  onChange: (item: Product)=>void
+  onChange: (item: Product) => void;
 };
 
-const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAdd, showSubmitButton = false, item , onChange}, ref) => {
+const ProductCardItem: FC<ICardElement> = ({ onRemove, onAdd, item, onChange }) => {
   const initialValues: Product = item || { id: '', description: '', totalPriceWithVat: 0, vatPercent: 0, unitPrice: 0, quantity: 0, totalVat: 0 };
   const validationSchema = yup.object().shape({
     title: yup.string().required(),
@@ -47,7 +46,6 @@ const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAd
     <Formik<Product>
       initialValues={initialValues}
       onSubmit={values => {
-        __DEV__ && console.tron.log(values)
         onAdd(values);
       }}
       validationSchema={validationSchema}
@@ -101,8 +99,6 @@ const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAd
       }}
     </Formik>
   );
-});
-
-ProductCardItem.displayName = 'ProductCardItem';
+}
 
 export default ProductCardItem;

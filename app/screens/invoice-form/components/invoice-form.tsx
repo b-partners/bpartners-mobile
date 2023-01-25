@@ -1,9 +1,9 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Formik } from 'formik';
-import React, { useRef, useState } from 'react';
-import { FlatList, Button as NativeButton, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import uuid from 'react-native-uuid';
-import * as yup from 'yup';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Formik } from "formik";
+import React, { useState } from "react";
+import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
+import uuid from "react-native-uuid";
+import * as yup from "yup";
 
 import { Button, Icon, Separator, Switch, Text } from '../../../components';
 import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
@@ -74,7 +74,6 @@ const CLIENT_SELECTION_FORM_STYLE: ViewStyle = { justifyContent: 'space-between'
 
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
-  const productCardRef = useRef<NativeButton>(null);
   const [showUserListModal, setShowUserListModal] = useState(false);
 
   const validate = values => {
@@ -250,9 +249,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   tx='invoiceScreen.labels.invoiceForm'
                   textStyle={SUBMIT_BUTTON_TEXT_STYLE}
                   style={BUTTON_FILL_STYLE}
-                  onPress={e => {
-                    // add the last item before submit
-                    productCardRef.current.props.onPress(e);
+                  onPress={() => {
                     handleSubmit();
                   }}
                 />
