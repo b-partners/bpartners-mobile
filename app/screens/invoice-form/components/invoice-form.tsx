@@ -1,9 +1,9 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Formik } from "formik";
-import React, { useState } from "react";
-import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
-import uuid from "react-native-uuid";
-import * as yup from "yup";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Formik } from 'formik';
+import React, { useState } from 'react';
+import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import uuid from 'react-native-uuid';
+import * as yup from 'yup';
 
 import { Button, Icon, Separator, Switch, Text } from '../../../components';
 import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
@@ -87,6 +87,17 @@ export function InvoiceForm(props: InvoiceFormProps) {
 
   const [legalNotice, setLegalNotice] = useState<boolean>(false);
   const [showMyMailAddress, setShowMyMailAddress] = useState<boolean>(false);
+  const productInitialValue = {
+    id: '',
+    description: '',
+    totalPriceWithVat: 0,
+    vatPercent: 0,
+    unitPrice: '0',
+    quantity: '1',
+    totalVat: 0,
+    title: '',
+    tva: '0',
+  };
   const [initialValues, setInitialValues] = useState({
     id: uuid.v4().toString(),
     ref: '',
@@ -95,17 +106,26 @@ export function InvoiceForm(props: InvoiceFormProps) {
     sendingDate: new Date(),
     toPayAt: new Date(),
     customer: customers[0],
-    products: [],
+    products: [productInitialValue],
     status: InvoiceStatus.DRAFT,
   });
-
 
   const validationSchema = yup.object().shape({
     title: yup.string().required(),
     ref: yup.string().required(),
+    products: yup.array().of(
+      yup.object().shape({
+        title: yup.string().required(),
+        description: yup.string().notRequired(),
+        unitPrice: yup.number().min(0).required(),
+        quantity: yup.number().min(1).required(),
+        tva: yup.number().min(0).max(100).required(),
+      })
+    ),
   });
   return (
     <View>
+      {/*todo: correctly type formik values*/}
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -127,13 +147,18 @@ export function InvoiceForm(props: InvoiceFormProps) {
         validationSchema={validationSchema}
         validate={validate}
       >
-        {({ errors, handleSubmit, values, setFieldValue }) => {
+        {({ handleSubmit, values, setFieldValue }) => {
           const handleProductItemRemove = product => {
             setFieldValue(
               'products',
               values.products.filter(p => JSON.stringify(p) !== JSON.stringify(product))
             );
           };
+
+          const handleProductItemChange = (product: Product, index: number) => {
+            setFieldValue(`products[${index}]`, product);
+          };
+
 
           return (
             <>
@@ -197,15 +222,17 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 {/*list of the elements to be created*/}
                 <FlatList<Product>
                   data={[...values.products]}
-                  renderItem={({ item }) => <ProductCardItem item={{ ...item }} onRemove={() => handleProductItemRemove(item)} showSubmitButton={false} />}
+                  renderItem={({ item, index }) => (
+                    <ProductCardItem
+                      item={{ ...item }}
+                      onRemove={(item) => handleProductItemRemove(item)}
+                      onChange={product => handleProductItemChange(product, index)}
+                    />
+                  )
+                    }
                 />
-                <ProductCardItem
-                  ref={productCardRef}
-                  onAdd={product => {
-                    setFieldValue('products', [...values.products, product]);
-                  }}
-                  showSubmitButton={true}
-                />
+                {/*todo: styling*/}
+                <Button text={'Add item'} onPress={() => setFieldValue('products', [...values.products, productInitialValue])} />
               </View>
 
               <View>
@@ -245,7 +272,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   <Icon icon={'save'} />
                 </View>
                 <Button
-                  disabled={!!Object.keys(errors).length}
                   tx='invoiceScreen.labels.invoiceForm'
                   textStyle={SUBMIT_BUTTON_TEXT_STYLE}
                   style={BUTTON_FILL_STYLE}
