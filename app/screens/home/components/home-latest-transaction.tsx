@@ -24,7 +24,7 @@ export function HomeLatestTransaction(props: HomeLatestTransactionProps) {
   const { loading } = props;
 
   return (
-    <View>
+    <View testID='homeLatestTransaction'>
       <View>
         <View style={LAST_TRANSACTIONS_SECTION}>
           <Text tx='homeScreen.summary.lastTransactions' style={LAST_TRANSACTIONS_TEXT_STYLE} />

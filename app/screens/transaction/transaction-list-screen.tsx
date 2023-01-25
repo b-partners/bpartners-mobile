@@ -76,6 +76,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           </View>
           {!loadingTransactionCategories ? (
             <FlatList
+              testID='listContainer'
               contentContainerStyle={FLAT_LIST}
               data={[...transactions]}
               renderItem={({ item }) => {
