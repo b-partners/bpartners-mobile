@@ -217,7 +217,7 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
           {props.state.routes.slice(0, 7).map((route: any) => {
             return (
-              <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)}>
+              <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
                 <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
                 <View style={TEXT_CONTAINER_STYLE}>
                   <Text style={TEXT_STYLE}>{TitleRoute[route.name]}</Text>

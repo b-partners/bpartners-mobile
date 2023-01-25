@@ -19,7 +19,7 @@ export function HomeHeader() {
   return (
     <View style={HEADER_STYLE}>
       <AutoImage source={{ uri: logo }} style={LOGO_STYLE} resizeMethod='resize' />
-      <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+      <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} testID='menuContainer'>
         <View>
           <View style={BULLET_STYLE}>
             <Icon icon='redBullet' />
