@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from "react";
 import { Button as NativeButton, TextStyle, TouchableHighlight, View, ViewStyle } from 'react-native';
 import * as yup from 'yup';
 
@@ -30,9 +30,10 @@ type ICardElement = {
   item?: Product;
   onRemove?: (item: Product) => void;
   showSubmitButton?: boolean;
+  onChange: (item: Product)=>void
 };
 
-const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAdd, showSubmitButton = false, item }, ref) => {
+const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAdd, showSubmitButton = false, item , onChange}, ref) => {
   const initialValues: Product = item || { id: '', description: '', totalPriceWithVat: 0, vatPercent: 0, unitPrice: 0, quantity: 0, totalVat: 0 };
   const validationSchema = yup.object().shape({
     title: yup.string().required(),
@@ -46,11 +47,15 @@ const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAd
     <Formik<Product>
       initialValues={initialValues}
       onSubmit={values => {
+        __DEV__ && console.tron.log(values)
         onAdd(values);
       }}
       validationSchema={validationSchema}
     >
-      {({ handleSubmit, values }) => {
+      {({ values }) => {
+        useEffect(() => {
+          onChange(values);
+        }, [values]);
         return (
           <>
             <View>
@@ -91,13 +96,6 @@ const ProductCardItem = forwardRef<NativeButton, ICardElement>(({ onRemove, onAd
                 </View>
               </View>
             </View>
-
-            {/*todo: replace this button by the customised one and add ref support to it*/}
-            {showSubmitButton && (
-              <>
-                <NativeButton title={'Submit'} ref={ref} onPress={() => handleSubmit()} />
-              </>
-            )}
           </>
         );
       }}
