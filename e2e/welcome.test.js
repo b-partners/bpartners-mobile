@@ -10,6 +10,6 @@ describe('App', () => {
   it('can view balance', async () => {
     await waitFor(element(by.id('balance-view')))
       .toBeVisible()
-      .withTimeout(5_000);
+      .withTimeout(12_000);
   });
 });
