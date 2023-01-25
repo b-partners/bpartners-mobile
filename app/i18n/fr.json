@@ -67,7 +67,7 @@
     }
   },
   "profileScreen": {
-    "label": "Profil",
+    "label": "Profile",
     "title": "Profil",
     "fields": {
       "logo": "Logo",
@@ -155,7 +155,7 @@
     }
   },
   "marketPlaceScreen": {
-    "title": "MarketPlace",
+    "title": "Marketplace",
     "offerTitle": "VOIR LES OFFRES SUR:",
     "header": "Boostez mes résultats"
   },

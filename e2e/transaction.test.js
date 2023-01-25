@@ -8,9 +8,8 @@ describe('Transaction', () => {
   });
 
   it('displays latest transaction', async () => {
-    await waitFor(element(by.id('homeLatestTransaction')))
-      .toBeVisible()
-      .withTimeout(5_000);
+    await waitFor(element(by.id('homeScreen')));
+    await expect(element(by.id('latestTransactionText'))).toBeVisible();
   });
 
   it('displays transaction list', async () => {

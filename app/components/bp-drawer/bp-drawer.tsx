@@ -220,7 +220,9 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
               <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
                 <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
                 <View style={TEXT_CONTAINER_STYLE}>
-                  <Text style={TEXT_STYLE}>{TitleRoute[route.name]}</Text>
+                  <Text style={TEXT_STYLE} testID={`${route.name}Text`}>
+                    {TitleRoute[route.name]}
+                  </Text>
                 </View>
                 <View style={ICON_CONTAINER_STYLE}>
                   <Right name='chevron-thin-right' size={18} color='#000' />
@@ -228,12 +230,14 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
               </TouchableOpacity>
             );
           })}
-          <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress}>
+          <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress} testID='openSwan'>
             <View style={ICON_CONTAINER_STYLE}>
               <Exit name='arrow-redo-outline' size={22} color='#000' />
             </View>
             <View style={TEXT_CONTAINER_STYLE}>
-              <Text style={TEXT_STYLE}>{translate('logoutScreen.swan')}</Text>
+              <Text style={TEXT_STYLE} testID='openSwanText'>
+                {translate('logoutScreen.swan')}
+              </Text>
             </View>
             <View style={ICON_CONTAINER_STYLE}>
               <Right name='chevron-thin-right' size={18} color='#000' />
