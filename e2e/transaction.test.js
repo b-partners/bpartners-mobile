@@ -7,6 +7,12 @@ describe('Transaction', () => {
     await device.reloadReactNative();
   });
 
+  it('displays latest transaction', async () => {
+    await waitFor(element(by.id('homeLatestTransaction')))
+      .toBeVisible()
+      .withTimeout(5_000);
+  });
+
   it('displays transaction list', async () => {
     await waitFor(element(by.id('menuContainer')));
     await element(by.id('menuContainer')).tap();
