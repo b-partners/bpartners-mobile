@@ -35,6 +35,8 @@ const TEXT_FIELD_STYLE: ViewStyle = { paddingVertical: 0 };
 
 const FLEX_ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
 const ERROR_MESSAGE_STYLE: TextStyle = { color: palette.pastelRed };
+
+// todo: add i18n support
 const EditableTextField: FC<TEditableTextField> = props => {
   const { title, formName, placeholder, containerStyle, suffix = '', prefix = '', defaultValue = '', ...rest } = props;
   const initialValue = props.value;

@@ -1,14 +1,14 @@
-import { Formik } from "formik";
-import React, { FC, useEffect } from "react";
-import { TextStyle, TouchableHighlight, View, ViewStyle } from "react-native";
-import * as yup from "yup";
+import { Formik } from 'formik';
+import React, { FC, useEffect } from 'react';
+import { TextStyle, TouchableHighlight, View, ViewStyle } from 'react-native';
+import * as yup from 'yup';
 
-import { Icon } from "../../../components";
-import { Product } from "../../../models/entities/product/product";
-import { spacing } from "../../../theme";
-import { palette } from "../../../theme/palette";
-import { SHADOW_STYLE } from "../styles";
-import EditableTextField from "./editable-text-field";
+import { Icon } from '../../../components';
+import { Product } from '../../../models/entities/product/product';
+import { spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
+import { SHADOW_STYLE } from '../styles';
+import EditableTextField from './editable-text-field';
 
 const CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.white,
@@ -99,6 +99,6 @@ const ProductCardItem: FC<ICardElement> = ({ onRemove, onAdd, item, onChange }) 
       }}
     </Formik>
   );
-}
+};
 
 export default ProductCardItem;

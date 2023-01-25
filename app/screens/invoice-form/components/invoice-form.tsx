@@ -159,7 +159,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
             setFieldValue(`products[${index}]`, product);
           };
 
-
           return (
             <>
               <View style={FLEX_WRAP}>
@@ -219,17 +218,15 @@ export function InvoiceForm(props: InvoiceFormProps) {
               </View>
 
               <View>
-                {/*list of the elements to be created*/}
                 <FlatList<Product>
                   data={[...values.products]}
                   renderItem={({ item, index }) => (
                     <ProductCardItem
                       item={{ ...item }}
-                      onRemove={(item) => handleProductItemRemove(item)}
+                      onRemove={product => handleProductItemRemove(product)}
                       onChange={product => handleProductItemChange(product, index)}
                     />
-                  )
-                    }
+                  )}
                 />
                 {/*todo: styling*/}
                 <Button text={'Add item'} onPress={() => setFieldValue('products', [...values.products, productInitialValue])} />

@@ -42,7 +42,6 @@ const ADD_CLIENT_BUTTON_TEXT_STYLE: TextStyle = {
 };
 const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
-
 const CustomerSelectionForm: FC<TCustomerForm> = props => {
   const { customers, onValidateChoice } = props;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
