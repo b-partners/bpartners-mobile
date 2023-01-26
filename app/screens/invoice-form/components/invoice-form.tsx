@@ -72,6 +72,9 @@ const USER_SELECT_ICON: ViewStyle = { justifyContent: 'center', marginRight: spa
 
 const CLIENT_SELECTION_FORM_STYLE: ViewStyle = { justifyContent: 'space-between', flexDirection: 'row' };
 
+const DATE_PICKER_STYLE: TextStyle = { color: palette.textClassicColor, fontSize: 18, fontWeight: '700' };
+
+
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
   const [showUserListModal, setShowUserListModal] = useState(false);
@@ -212,6 +215,9 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       onDateChange={date => setInitialValues({ ...initialValues, sendingDate: date })}
                       labelText={"Date d'émission"}
                       labelStyle={LABEL_STYLE}
+                      isButtonPreset={false}
+                      textStyle={DATE_PICKER_STYLE}
+                      dateSeparator={"/"}
                     />
                   </View>
                 </View>

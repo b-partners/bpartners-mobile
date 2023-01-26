@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
-import DatePickerInput from 'react-native-date-picker';
+import React, { useEffect, useState } from "react";
+import { TextStyle, View, ViewStyle } from "react-native";
+import DatePickerInput from "react-native-date-picker";
 
-import { TxKeyPath, translate } from '../../i18n';
-import { spacing } from '../../theme';
-import { palette } from '../../theme/palette';
-import { Button, Text } from '../index';
+import { translate, TxKeyPath } from "../../i18n";
+import { spacing } from "../../theme";
+import { palette } from "../../theme/palette";
+import { Button, Text } from "..";
 
 type DatePickerProps = {
   value: Date;
@@ -16,9 +15,14 @@ type DatePickerProps = {
   labelContainerStyle?: ViewStyle;
   onDateChange?: (date: Date) => void;
   validationError?: string;
+  // if it's true it a button containing the date value will be displayed instead of a directly text
+  isButtonPreset?: boolean
+  // this will be applied if you use Text instead of button to display the current value
+  textStyle?: TextStyle;
+  dateSeparator?: string
 };
 
-const LABEL_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 13 };
+const LABEL_TEXT_STYLE: TextStyle = { textTransform: "uppercase", fontSize: 13 };
 const LABEL_CONTAINER_STYLE: ViewStyle = { marginBottom: spacing[2] };
 
 const DATE_PICKER_CONTAINER_STYLE = { flex: 1 };
@@ -26,9 +30,10 @@ const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 const BUTTON_STYLE: ViewStyle = { marginTop: spacing[2] };
 
 export function DatePickerField(props: DatePickerProps) {
-  const { value, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange, validationError } = props;
+  const { value, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange, validationError, textStyle, isButtonPreset = true, dateSeparator } = props;
   const [open, setOpen] = useState(false);
-  const [date] = value && value.toISOString().split('T');
+  let [date] = value && value.toISOString().split("T");
+  date = date.split("-").join(dateSeparator);
 
   useEffect(() => {
     onDateChange(value);
@@ -38,7 +43,13 @@ export function DatePickerField(props: DatePickerProps) {
     <View style={DATE_PICKER_CONTAINER_STYLE}>
       <View style={[LABEL_CONTAINER_STYLE, labelContainerStyleOverride]}>
         <Text text={labelText} tx={labelTx} style={[LABEL_TEXT_STYLE, labelStyleOverride]} />
-        <Button text={date || translate('components.datePicker.pickADate')} onPress={() => setOpen(true)} textStyle={BUTTON_TEXT_STYLE} style={BUTTON_STYLE} />
+        {isButtonPreset ?
+          <Button text={date || translate("components.datePicker.pickADate")} onPress={() => setOpen(true)}
+                  textStyle={BUTTON_TEXT_STYLE} style={BUTTON_STYLE} /> :
+          <Text text={date || translate("components.datePicker.pickADate")} onPress={() => {
+            setOpen(true);
+          }}
+                style={textStyle} />}
       </View>
       <DatePickerInput
         modal
