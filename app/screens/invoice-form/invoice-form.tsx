@@ -5,18 +5,18 @@ import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-na
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
-import { Button, Icon, Separator, Switch, Text } from '../../../components';
-import { DatePickerField } from '../../../components/date-picker-field/date-picker-field';
-import { translate } from '../../../i18n';
-import { Customer } from '../../../models/entities/customer/customer';
-import { Invoice, InvoiceSnapshotIn, InvoiceStatus } from '../../../models/entities/invoice/invoice';
-import { Product } from '../../../models/entities/product/product';
-import { color, spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
-import CustomerListSelectionModal from './customer-selection-form/customer-list-selection-modal';
-import EditableTextField from './editable-text-field';
-import GridHeaderContent from './grid-header-content';
-import ProductCardItem from './product-card-item';
+import { Button, Icon, Separator, Switch, Text } from '../../components';
+import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
+import { translate } from '../../i18n';
+import { Customer } from '../../models/entities/customer/customer';
+import { Invoice, InvoiceSnapshotIn, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { Product } from '../../models/entities/product/product';
+import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
+import CustomerListSelectionModal from './components/customer-selection-form/customer-list-selection-modal';
+import EditableTextField from './components/editable-text-field';
+import GridHeaderContent from './components/grid-header-content';
+import ProductCardItem from './components/product-card-item';
 
 type InvoiceFormProps = {
   invoice: Partial<InvoiceSnapshotIn>;
