@@ -158,9 +158,10 @@ export function InvoiceForm(props: InvoiceFormProps) {
             );
           };
 
-          const handleProductItemChange = (product: Product, index: number) => {
-            setFieldValue(`products[${index}]`, product);
+          const handleProductItemFieldChange = (index: number) => {
+            return (product: Product)=> setFieldValue(`products[${index}]`, product);
           };
+
 
           return (
             <>
@@ -229,8 +230,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   renderItem={({ item, index }) => (
                     <ProductCardItem
                       item={{ ...item }}
-                      onRemove={product => handleProductItemRemove(product)}
-                      onChange={product => handleProductItemChange(product, index)}
+                      onRemove={handleProductItemRemove}
+                      onChange={handleProductItemFieldChange(index)}
                     />
                   )}
                 />
