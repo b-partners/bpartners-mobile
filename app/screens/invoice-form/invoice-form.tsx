@@ -74,7 +74,6 @@ const CLIENT_SELECTION_FORM_STYLE: ViewStyle = { justifyContent: 'space-between'
 
 const DATE_PICKER_STYLE: TextStyle = { color: palette.textClassicColor, fontSize: 18, fontWeight: '700' };
 
-
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
   const [showUserListModal, setShowUserListModal] = useState(false);
@@ -159,9 +158,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
           };
 
           const handleProductItemFieldChange = (index: number) => {
-            return (product: Product)=> setFieldValue(`products[${index}]`, product);
+            return (product: Product) => setFieldValue(`products[${index}]`, product);
           };
-
 
           return (
             <>
@@ -218,7 +216,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       labelStyle={LABEL_STYLE}
                       isButtonPreset={false}
                       textStyle={DATE_PICKER_STYLE}
-                      dateSeparator={"/"}
+                      dateSeparator={'/'}
                     />
                   </View>
                 </View>
@@ -228,11 +226,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <FlatList<Product>
                   data={[...values.products]}
                   renderItem={({ item, index }) => (
-                    <ProductCardItem
-                      item={{ ...item }}
-                      onRemove={handleProductItemRemove}
-                      onChange={handleProductItemFieldChange(index)}
-                    />
+                    <ProductCardItem item={{ ...item }} onRemove={handleProductItemRemove} onChange={handleProductItemFieldChange(index)} />
                   )}
                 />
                 {/*todo: styling*/}
