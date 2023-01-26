@@ -53,7 +53,7 @@ export type NavigatorParamList = {
 
 export type TabNavigatorParamList = {
   home: undefined;
-    marketplace: undefined;
+  marketplace: undefined;
   supportContact: undefined;
 };
 
@@ -87,7 +87,7 @@ const AppStack = observer(function () {
           width: windowWidth,
         },
       }}
-      initialRouteName={ 'home' }
+      initialRouteName={'home'}
       drawerContent={props => <BpDrawer {...props} />}
     >
       {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
@@ -187,12 +187,12 @@ const AppTabStack = observer(function () {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={ 'home' }
+      initialRouteName={'home'}
       tabBar={props => <BpTabNavigation {...props} />}
     >
       <>
         <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
-          <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
+        <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
       </>
     </Tab.Navigator>
