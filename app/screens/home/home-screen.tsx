@@ -11,7 +11,7 @@ import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { ErrorBoundary } from '../error/error-boundary';
-import { HomeLatestTransaction } from './components/home-latest-transaction';
+import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
 
@@ -48,7 +48,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
   const uri = `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${currentUser.logoFileId}/raw?accessToken=${accessToken}&fileType=LOGO`;
 
-  const { transactions, loadingTransactions, currentMonthSummary } = transactionStore;
+  const { loadingTransactions, currentMonthSummary, latestTransactions } = transactionStore;
 
   useEffect(() => {
     const date = new Date();
@@ -69,8 +69,8 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
           <HeaderWithBalance balance={availableBalance} left={<Logo uri={uri} />} right={<Menu navigation={navigation} />} />
           <View style={{ padding: spacing[3] }}>
             <TransactionSummary summary={currentMonthSummary} />
-            <HomeLatestTransaction transactions={transactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
           </View>
+          <HomeLatestTransactions transactions={latestTransactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
         </Screen>
       </View>
     </ErrorBoundary>

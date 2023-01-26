@@ -23,7 +23,7 @@ export { BUTTON_TEXT_STYLE } from './home/styles';
 export { HeaderWithBalance } from '../components/header-with-balance/header-with-balance';
 export { HomeNavbar } from './home/components/home-navbar';
 export { TransactionSummary } from './home/components/transaction-summary';
-export { HomeLatestTransaction } from './home/components/home-latest-transaction';
+export { HomeLatestTransactions } from './home/components/home-latest-transactions';
 export { HomeFooter } from './home/components/home-footer';
 export { HEADER_STYLE } from '../components/header-with-balance/style';
 export { LOGO_STYLE } from '../components/header-with-balance/style';

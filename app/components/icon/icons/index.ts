@@ -3,6 +3,7 @@ export const icons = {
   bullet: require('./bullet.png'),
   bug: require('./ladybug.png'),
   check: require('./check.png'),
+  unchecked: require('./unchecked.png'),
   upload: require('./upload.png'),
   cross: require('./cross.png'),
   plus: require('./plus.png'),
@@ -14,6 +15,7 @@ export const icons = {
   info: require('./info.png'),
   trash: require('./trash.png'),
   save: require('./save.png'),
+  chevronRight: require('./chevron-right.png'),
 };
 
 export type IconTypes = keyof typeof icons;

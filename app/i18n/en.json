@@ -118,7 +118,8 @@
       "settings": "Settings",
       "frequency": "Frequency",
       "boostYourResults": "Boost your results",
-      "allTransactions": "See all transactions"
+      "allTransactions": "See all transactions",
+      "uncategorizedTransaction": "To categorize and justify"
     },
     "summary": {
       "title": "Stats",
