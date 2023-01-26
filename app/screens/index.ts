@@ -20,7 +20,6 @@ export { BULLET_BUTTON_STYLE } from './home/styles';
 export { BUTTON_STYLE_NO_MARGIN_STYLE } from './home/styles';
 export { BUTTON_STYLE } from './home/styles';
 export { BUTTON_TEXT_STYLE } from './home/styles';
-export { Balance } from './home/components/balance';
 export { HeaderWithBalance } from '../components/header-with-balance/header-with-balance';
 export { HomeNavbar } from './home/components/home-navbar';
 export { TransactionSummary } from './home/components/transaction-summary';
