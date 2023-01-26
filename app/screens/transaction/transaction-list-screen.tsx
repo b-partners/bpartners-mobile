@@ -20,11 +20,6 @@ const FULL: ViewStyle = {
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 };
-const HEADER: TextStyle = {
-  paddingBottom: spacing[5] - 1,
-  paddingHorizontal: spacing[4],
-  paddingTop: spacing[3],
-};
 const SUB_HEADER: TextStyle = {
   paddingHorizontal: spacing[4],
   paddingTop: spacing[3],
@@ -63,13 +58,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
       <View testID='TransactionListScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-          <Header
-            headerTx='transactionListScreen.title'
-            style={HEADER}
-            titleStyle={HEADER_TITLE}
-            onLeftPress={() => navigation.navigate('home')}
-            leftIcon={'back'}
-          />
+          <Header headerTx='transactionListScreen.title' titleStyle={HEADER_TITLE} onLeftPress={() => navigation.navigate('home')} leftIcon={'back'} />
           <View style={SUB_HEADER}>
             <Text tx={'transactionListScreen.balance'} style={SUB_HEADER_TITLE} />
             <Text style={SUB_HEADER_TITLE}>{printCurrency(availableBalance)}</Text>
