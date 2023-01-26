@@ -5,12 +5,12 @@ import { PieChart } from 'react-native-gifted-charts';
 import { Icon, Text } from '../../../components';
 import { TxKeyPath, translate } from '../../../i18n';
 import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
-import { spacing } from '../../../theme';
+import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
-const CHART_CONTAINER: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'flex-end' };
+const CHART_CONTAINER: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'flex-start' };
 const LABELS_SECTION: ViewStyle = { flex: 1 };
-const CHART_SECTION: ViewStyle = { flex: 2, marginLeft: spacing[4] };
+const CHART_SECTION: ViewStyle = { flex: 2, marginLeft: spacing[4], position: 'absolute', bottom: -121, right: 0 };
 const LABEL_CONTAINER_STYLE: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
@@ -20,8 +20,9 @@ const LABEL_CONTAINER_STYLE: ViewStyle = {
 const LABEL_COLOR_STYLE = (color: string): ViewStyle => ({
   backgroundColor: color,
   height: 10,
-  width: 10,
+  width: 20,
   marginRight: spacing[1],
+  borderRadius: 10,
 });
 
 const COLORS = [
@@ -47,9 +48,15 @@ const TITLE_CONTAINER_STYLE: ViewStyle = {
   flexDirection: 'row',
   justifyContent: 'space-between',
   marginBottom: spacing[8],
+  paddingVertical: spacing[4],
+  paddingHorizontal: spacing[4],
 };
 
-const SUMMARY_TITLE_STYLE: TextStyle = { textTransform: 'uppercase' };
+const SUMMARY_TITLE_STYLE: TextStyle = {
+  textTransform: 'uppercase',
+  color: color.palette.secondaryColor,
+  fontFamily: 'Geometria-Heavy',
+};
 
 export const DonutChart: React.FC<DonutChartProps> = props => {
   const { summary } = props;
@@ -70,11 +77,12 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
               return (
                 <View style={LABEL_CONTAINER_STYLE} key={item}>
                   <View style={LABEL_COLOR_STYLE(COLORS[i])} />
-                  <Text text={translate(`homeScreen.summary.${item}` as TxKeyPath)} />
+                  <Text text={translate(`homeScreen.summary.${item}` as TxKeyPath)} style={{ color: '#989FB3', fontFamily: 'Geometria' }} />
                 </View>
               );
             })}
         </View>
+        <View style={{ flex: 3 }}></View>
         <View style={CHART_SECTION}>
           <PieChart
             donut
