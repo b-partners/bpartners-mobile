@@ -49,11 +49,11 @@ export type NavigatorParamList = {
   invoiceForm: undefined;
   paymentList: undefined;
   legalFile: undefined;
-  marketplace: undefined;
 };
 
 export type TabNavigatorParamList = {
   home: undefined;
+    marketplace: undefined;
   supportContact: undefined;
 };
 
@@ -87,7 +87,7 @@ const AppStack = observer(function () {
           width: windowWidth,
         },
       }}
-      initialRouteName={accessToken ? 'home' : 'welcome'}
+      initialRouteName={ 'home' }
       drawerContent={props => <BpDrawer {...props} />}
     >
       {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
@@ -101,7 +101,6 @@ const AppStack = observer(function () {
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
           <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
           <Drawer.Screen name='paymentList' component={PaymentListScreen} />
-          <Drawer.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
@@ -109,6 +108,7 @@ const AppStack = observer(function () {
         <>
           <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='home' component={AppTabStack} />
         </>
       )}
     </Drawer.Navigator>
@@ -187,11 +187,12 @@ const AppTabStack = observer(function () {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={'home'}
+      initialRouteName={ 'home' }
       tabBar={props => <BpTabNavigation {...props} />}
     >
       <>
         <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+          <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
       </>
     </Tab.Navigator>

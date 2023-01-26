@@ -60,7 +60,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   const IconRoute: IconProps = {
     wallet: 'home',
-    activity: 'supportContact',
+    activity: 'marketplace',
     paiment: 'supportContact',
     facturation: 'supportContact',
     service: 'supportContact',
