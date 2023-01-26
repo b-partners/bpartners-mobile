@@ -7,6 +7,7 @@ export const icons = {
   cross: require('./cross.png'),
   plus: require('./plus.png'),
   menu: require('./bars.png'),
+  whiteMenu: require('./white-bars.png'),
   redBullet: require('./red-bullet.png'),
   settings: require('./cog.png'),
   coins: require('./coins.png'),
