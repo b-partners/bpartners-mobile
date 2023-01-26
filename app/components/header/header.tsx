@@ -16,6 +16,7 @@ const ROOT: ViewStyle = {
   alignItems: 'center',
   justifyContent: 'flex-start',
   position: 'relative',
+  paddingHorizontal: 0,
 };
 const TITLE: TextStyle = { textAlign: 'center' };
 const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: 'center' };
@@ -36,7 +37,7 @@ export function Header(props: HeaderProps) {
 
   return (
     <View style={[ROOT, style]}>
-      <AutoImage source={require('./header.png')} style={WAVE_STYLE} resizeMethod='resize' />
+      <AutoImage source={require('./header.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
       {leftIcon ? (
         <TouchableOpacity onPress={onLeftPress} testID='header-left-button'>
           <Left name='chevron-thin-left' size={25} color='#ffffff' />
