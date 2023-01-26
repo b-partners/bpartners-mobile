@@ -82,7 +82,7 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
               );
             })}
         </View>
-        <View style={{ flex: 3 }}></View>
+        <View style={{ flex: 3 }} />
         <View style={CHART_SECTION}>
           <PieChart
             donut

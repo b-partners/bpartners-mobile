@@ -43,7 +43,7 @@ function LatestTransaction(props: { item: ITransaction }) {
       }}
     >
       <TouchableOpacity>
-        <Icon icon={props.item.category ? 'check' : 'unchecked'} style={{ flex: 1 }}></Icon>
+        <Icon icon={props.item.category ? 'check' : 'unchecked'} style={{ flex: 1 }} />
       </TouchableOpacity>
       <View
         style={{
@@ -62,7 +62,7 @@ function LatestTransaction(props: { item: ITransaction }) {
           }}
         />
         {props.item.category ? (
-          <Text text={props.item.category.description} style={CATEGORY_TEXT_STYLE}></Text>
+          <Text text={props.item.category.description} style={CATEGORY_TEXT_STYLE} />
         ) : (
           <Text text={translate('homeScreen.labels.uncategorizedTransaction')} style={CATEGORY_TEXT_STYLE} />
         )}
@@ -73,7 +73,7 @@ function LatestTransaction(props: { item: ITransaction }) {
           color: props.item.type === TransactionType.OUTCOME ? color.palette.textClassicColor : color.palette.green,
           flex: 2,
         }}
-      ></Text>
+      />
       <TouchableOpacity>
         <Icon icon='chevronRight' style={{ flex: 1 }} />
       </TouchableOpacity>
