@@ -90,7 +90,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
   const [legalNotice, setLegalNotice] = useState<boolean>(false);
   const [showMyMailAddress, setShowMyMailAddress] = useState<boolean>(false);
   const productInitialValue = {
-    id: '',
+    id: uuid.v4().toString(),
     description: '',
     totalPriceWithVat: 0,
     vatPercent: 0,
@@ -153,7 +153,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
           const handleProductItemRemove = product => {
             setFieldValue(
               'products',
-              values.products.filter(p => JSON.stringify(p) !== JSON.stringify(product))
+              values.products.filter((p: Product) => p.id !== product.id)
             );
           };
 
@@ -230,7 +230,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   )}
                 />
                 {/*todo: styling*/}
-                <Button text={'Add item'} onPress={() => setFieldValue('products', [...values.products, productInitialValue])} />
+                <Button text={'Add item'} onPress={() => setFieldValue('products', [...values.products, {...productInitialValue, id: uuid.v4().toString()}])} />
               </View>
 
               <View>
