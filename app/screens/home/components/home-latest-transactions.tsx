@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import { Icon, Text } from '../../../components';
+import { Button, Icon, Text } from '../../../components';
 import { Loader } from '../../../components/loader/loader';
 import { translate } from '../../../i18n';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
@@ -101,6 +101,22 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
       </View>
       <View style={{ paddingLeft: spacing[6] }}>
         {!loading ? props.transactions.map(item => <LatestTransaction item={item} />) : <Loader size='large' containerStyle={LOADER_STYLE} />}
+      </View>
+      <View style={{ paddingHorizontal: spacing[4], paddingTop: spacing[6] }}>
+        <Button
+          tx='homeScreen.labels.allTransactions'
+          style={{
+            borderRadius: 25,
+            height: 50,
+            marginBottom: spacing[4],
+            backgroundColor: '#9C255A',
+            borderColor: color.transparent,
+          }}
+          textStyle={{
+            fontSize: 16,
+            fontFamily: 'Geometria-Bold',
+          }}
+        />
       </View>
     </View>
   );

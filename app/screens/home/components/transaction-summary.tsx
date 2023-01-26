@@ -20,7 +20,10 @@ const BOOST_MY_RESULT_BUTTON_STYLE: ViewStyle = {
   borderColor: color.transparent,
 };
 
-const BOOST_MY_RESULT_BUTTON_TEXT_STYLE: TextStyle = { fontSize: 16, fontFamily: 'Geometria-Bold' };
+const BOOST_MY_RESULT_BUTTON_TEXT_STYLE: TextStyle = {
+  fontSize: 16,
+  fontFamily: 'Geometria-Bold',
+};
 
 export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary }) => {
   return (
