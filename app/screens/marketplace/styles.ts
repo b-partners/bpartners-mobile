@@ -36,7 +36,6 @@ export const TEXT_HEADER_CONTAINER_STYLE: ViewStyle = {
 export const TEXT_HEADER_STYLE: TextStyle = {
   color: palette.white,
   fontSize: 16,
-  fontFamily: 'sans-serif-light',
   paddingLeft: '15%',
 };
 
@@ -82,7 +81,7 @@ export const SCROLLVIEW_CONTAINER_STYLE: ViewStyle = {
 export const ANNOUNCE_STYLE: TextStyle = {
   color: color.primary,
   fontSize: 13,
-  fontFamily: 'sans-serif-light',
+  // fontFamily: 'sans-serif-light',
   fontWeight: 'bold',
 };
 
@@ -95,7 +94,6 @@ export const ANNOUNCE_CONTAINER_STYLE: ViewStyle = {
 export const TEXT_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 16,
-  fontFamily: 'sans-serif-light',
   textDecorationLine: 'underline',
   textDecorationStyle: 'solid',
   textDecorationColor: palette.black,
@@ -104,7 +102,6 @@ export const TEXT_STYLE: TextStyle = {
 export const TEXT_ROW_STYLE: TextStyle = {
   color: palette.black,
   fontSize: 12,
-  fontFamily: 'sans-serif-light',
   textDecorationLine: 'underline',
   textDecorationColor: palette.black,
   textDecorationStyle: 'solid',
