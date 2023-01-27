@@ -6,7 +6,7 @@ export type IconType = {
 export const Icon: IconType[] = [
   {
     id: 1,
-    name: 'wallet',
+    name: 'account',
   },
   {
     id: 2,
@@ -14,7 +14,7 @@ export const Icon: IconType[] = [
   },
   {
     id: 3,
-    name: 'paiment',
+    name: 'payment',
   },
   {
     id: 4,

@@ -5,7 +5,7 @@ import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 
 import { GradientBackground, Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
-import {TabNavigatorParamList} from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { ErrorBoundary } from '../error/error-boundary';
 import { PaymentInitiationForm } from './payment-initiation-form';

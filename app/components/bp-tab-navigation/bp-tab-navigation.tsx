@@ -1,16 +1,16 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React, {useCallback, useState} from 'react';
+import { useRoute } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { ImageStyle, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { Icon, IconType } from './type';
-import {useRoute} from "@react-navigation/native";
 
 const TEXT_CONTAINER_STYLE: ViewStyle = {
   width: '100%',
   alignItems: 'center',
-}
+};
 const TEXT_STYLE: TextStyle = {
   color: palette.white,
   fontSize: 10,
@@ -35,7 +35,7 @@ const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
   width: '20%',
   height: '100%',
   position: 'relative',
-}
+};
 
 const NAVIGATION_STYLE: ViewStyle = {
   width: '100%',
@@ -54,20 +54,20 @@ const TAB_STYLE: ImageStyle = {
   height: 10,
   position: 'absolute',
   bottom: 0,
-}
+};
 
 type IconProps = {
-  wallet: string;
+  account: string;
   activity: string;
-  paiment: string;
+  payment: string;
   facturation: string;
   service: string;
 };
 
 type IconRouteProps = {
-  wallet: () => void;
+  account: () => void;
   activity: () => void;
-  paiment: () => void;
+  payment: () => void;
   facturation: () => void;
   service: () => void;
 };
@@ -82,33 +82,33 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   }, []);
 
   const IconImage: IconProps = {
-    wallet: require('./wallet.png'),
+    account: require('./wallet.png'),
     activity: require('./activity.png'),
-    paiment: require('./paiment.png'),
+    payment: require('./paiment.png'),
     facturation: require('./facturation.png'),
     service: require('./service.png'),
   };
 
   const IconRoute: IconRouteProps = {
-    wallet: () => handleNavigation('home'),
+    account: () => handleNavigation('home'),
     activity: () => handleNavigation('marketplace'),
-    paiment: () => handleNavigation('paymentInitiation'),
+    payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => handleNavigation('supportContact'),
   };
 
   const RouteName: IconProps = {
-    wallet: 'home',
+    account: 'home',
     activity: 'marketplace',
-    paiment: 'paymentInitiation',
+    payment: 'paymentInitiation',
     facturation: 'paymentList',
     service: 'supportContact',
-  }
+  };
 
   const IconTexte: IconProps = {
-    wallet: 'Comptes',
+    account: 'Comptes',
     activity: 'Activité',
-    paiment: 'Collecter un paiement',
+    payment: 'Collecter un paiement',
     facturation: 'Facturation',
     service: 'Autres services',
   };
@@ -118,15 +118,15 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
       <AutoImage source={require('./tab-navigation.png')} style={WAVE_STYLE} resizeMethod='resize' />
       {Icon.map((item: IconType) => {
         return (
-            <View key={item.id} style={NAVIGATION_CONTAINER_STYLE}>
-              <TouchableOpacity onPress={IconRoute[item.name]} style={NAVIGATION_STYLE}>
-                <AutoImage source={IconImage[item.name]} style={ICON_STYLE} resizeMethod='resize' />
-                <View style={TEXT_CONTAINER_STYLE}>
-                  <Text style={TEXT_STYLE}>{IconTexte[item.name]}</Text>
-                </View>
-              </TouchableOpacity>
-              {activeRouteName === RouteName[item.name] && <AutoImage source={require('./tab.png')} style={TAB_STYLE} resizeMethod='resize' />}
-            </View>
+          <View key={item.id} style={NAVIGATION_CONTAINER_STYLE}>
+            <TouchableOpacity onPress={IconRoute[item.name]} style={NAVIGATION_STYLE}>
+              <AutoImage source={IconImage[item.name]} style={ICON_STYLE} resizeMethod='resize' />
+              <View style={TEXT_CONTAINER_STYLE}>
+                <Text style={TEXT_STYLE}>{IconTexte[item.name]}</Text>
+              </View>
+            </TouchableOpacity>
+            {activeRouteName === RouteName[item.name] && <AutoImage source={require('./tab.png')} style={TAB_STYLE} resizeMethod='resize' />}
+          </View>
         );
       })}
     </View>

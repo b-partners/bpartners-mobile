@@ -57,7 +57,7 @@ export const CARD_STYLE: ViewStyle = {
   marginVertical: 5,
   backgroundColor: palette.white,
   borderRadius: 50,
-  shadowOffset: {width: -2, height: 4},
+  shadowOffset: { width: -2, height: 4 },
   shadowOpacity: 0.2,
   shadowRadius: 3,
   shadowColor: palette.black,

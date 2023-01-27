@@ -5,7 +5,7 @@ import { Dimensions, View } from 'react-native';
 
 import { GradientBackground, Header, Screen } from '../../components';
 import { useStores } from '../../models';
-import {TabNavigatorParamList} from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { ColumnList } from './components/market-column-list';

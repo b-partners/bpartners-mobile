@@ -80,35 +80,35 @@ const AppStack = observer(function () {
   const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
 
   return (
-      <Drawer.Navigator
-          screenOptions={{
-            headerShown: false,
-            drawerStyle: {
-              width: windowWidth,
-            },
-          }}
-          initialRouteName={accessToken ? 'home' : 'welcome'}
-          drawerContent={props => <BpDrawer {...props} />}
-      >
-        {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
-            <>
-              <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
-            </>
-        ) : isAuthenticated && hasApprovedLegalFiles ? (
-            <>
-              <Drawer.Screen name='home' component={AppTabStack} />
-              <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
-              <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-              <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
-              <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
-            </>
-        ) : (
-            <>
-              <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
-              <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
-            </>
-        )}
-      </Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerStyle: {
+          width: windowWidth,
+        },
+      }}
+      initialRouteName={accessToken ? 'home' : 'welcome'}
+      drawerContent={props => <BpDrawer {...props} />}
+    >
+      {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
+        <>
+          <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      ) : isAuthenticated && hasApprovedLegalFiles ? (
+        <>
+          <Drawer.Screen name='home' component={AppTabStack} />
+          <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
+          <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      ) : (
+        <>
+          <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      )}
+    </Drawer.Navigator>
   );
 });
 
