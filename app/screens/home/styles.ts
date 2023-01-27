@@ -2,15 +2,7 @@ import { TextStyle, ViewStyle } from 'react-native';
 
 import { color, spacing } from '../../theme';
 
-export const FULL: ViewStyle = { flex: 1, padding: spacing[3], display: 'flex', flexDirection: 'column' };
-export const LOGO_STYLE: TextStyle = { color: '#fff' };
-export const HEADER_STYLE: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginTop: spacing[2],
-};
+export const FULL: ViewStyle = { flex: 1, display: 'flex', flexDirection: 'column' };
 export const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 export const BUTTON_STYLE: ViewStyle = { marginRight: spacing[2], width: 150 };
 export const BUTTON_STYLE_NO_MARGIN_STYLE: ViewStyle = { marginRight: 0 };

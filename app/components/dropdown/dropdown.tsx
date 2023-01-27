@@ -18,6 +18,7 @@ interface DropdownProps<T> extends PropsWithChildren<any> {
   itemTextStyle?: TextStyle;
   selectedItemTextStyle?: TextStyle;
   placeholderTextStyle?: TextStyle;
+  inputSearchTextStyle?: TextStyle;
   placeholder?: string;
 }
 
@@ -39,6 +40,7 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
     style: styleOverrides,
     itemTextStyle: itemTextStylesOverrides,
     selectedItemTextStyle: selectedItemTextStyleOverrides,
+    inputSearchTextStyle: inputSearchTextStyleOverrides,
     placeholder,
     children,
   } = props;
@@ -76,6 +78,13 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
             placeholder={placeholder}
             placeholderStyle={[PLACEHOLDER_TEXT_STYLE]}
             selectedTextStyle={[SELECTED_TEXT_STYLE, selectedItemTextStyleOverrides]}
+            inputSearchStyle={[
+              {
+                color: color.palette.textClassicColor,
+                fontFamily: 'Geometria',
+              },
+              inputSearchTextStyleOverrides,
+            ]}
           />
         </View>
       )}

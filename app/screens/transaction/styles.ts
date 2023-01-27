@@ -13,9 +13,8 @@ export const LIST_TEXT: TextStyle = {
   fontWeight: 'bold',
 };
 export const LIST_CONTAINER: ViewStyle = {
-  alignItems: 'center',
   flexDirection: 'column',
-  padding: spacing[2],
+  paddingVertical: spacing[2],
   marginTop: spacing[2],
 };
 export const TRANSACTION_LEFT_SIDE: ViewStyle = {

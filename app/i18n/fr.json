@@ -101,7 +101,8 @@
       "settings": "Paramètres",
       "frequency": "Fréquence",
       "boostYourResults": "Booster vos résultats",
-      "allTransactions": "Tout voir"
+      "allTransactions": "Tout voir",
+      "uncategorizedTransaction": "À catégoriser et justifier"
     },
     "summary": {
       "title": "Mes chiffres",
