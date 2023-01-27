@@ -34,8 +34,9 @@ const SEARCH_CONTAINER_STYLE: ViewStyle = {
   borderRadius: 40,
   elevation: 5,
   shadowColor: palette.black,
-  justifyContent: 'center',
   flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
 };
 
 const LOGOUT_CONTAINER_STYLE: ViewStyle = {
@@ -138,9 +139,43 @@ type RouteNameProps = {
   supportContact: string | React.ReactElement;
 };
 
+function DrawerHeader(props: { onPress: () => void; currentUser: any; onChangeText: (value: string) => void }) {
+  return (
+    <View style={HEADER_STYLE}>
+      <View style={PROFILE_CONTAINER_STYLE}>
+        <TouchableOpacity style={CHEVRON_CONTAINER_STYLE} onPress={props.onPress}>
+          <Left name='chevron-thin-left' size={25} color='#000' />
+        </TouchableOpacity>
+        <View style={CENTER_STYLE}>
+          <User name='person-circle' size={60} color='black' />
+          <View style={INFO_CONTAINER_STYLE}>
+            <Text style={INFO_TEXT_STYLE}>
+              {props.currentUser?.firstName} {props.currentUser?.lastName}
+            </Text>
+            <Right name='chevron-thin-right' size={10} color='#000' />
+          </View>
+        </View>
+        <View style={NOTIFICATION_CONTAINER_STYLE}>
+          <View style={BULLET_STYLE}>
+            <Icon icon='redBullet' />
+          </View>
+          <Notification name='bell' size={25} color='#000' />
+        </View>
+      </View>
+      <View style={SEARCH_CONTAINER_STYLE}>
+        <View style={CENTER_CONTAINER_STYLE}>
+          <Search name='search' size={30} color='#000' />
+        </View>
+        <View>
+          <TextInput onChangeText={props.onChangeText} placeholder={translate('drawer.search')} />
+        </View>
+      </View>
+    </View>
+  );
+}
+
 export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
-  const [searchValue, onSearchValue] = React.useState(null);
   const { currentUser } = authStore;
 
   const TitleRoute: RouteNameProps = {
@@ -178,41 +213,13 @@ export const BpDrawer: React.FC<DrawerContentComponentProps> = props => {
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
-      <View style={HEADER_STYLE}>
-        <View style={PROFILE_CONTAINER_STYLE}>
-          <TouchableOpacity
-            style={CHEVRON_CONTAINER_STYLE}
-            onPress={() => {
-              props.navigation.closeDrawer();
-            }}
-          >
-            <Left name='chevron-thin-left' size={25} color='#000' />
-          </TouchableOpacity>
-          <View style={CENTER_STYLE}>
-            <User name='person-circle' size={60} color='black' />
-            <View style={INFO_CONTAINER_STYLE}>
-              <Text style={INFO_TEXT_STYLE}>
-                {currentUser?.firstName} {currentUser?.lastName}
-              </Text>
-              <Right name='chevron-thin-right' size={10} color='#000' />
-            </View>
-          </View>
-          <View style={NOTIFICATION_CONTAINER_STYLE}>
-            <View style={BULLET_STYLE}>
-              <Icon icon='redBullet' />
-            </View>
-            <Notification name='bell' size={25} color='#000' />
-          </View>
-        </View>
-        <View style={SEARCH_CONTAINER_STYLE}>
-          <View style={CENTER_CONTAINER_STYLE}>
-            <Search name='search' size={30} color='#000' />
-          </View>
-          <View>
-            <TextInput onChangeText={onSearchValue} value={searchValue} placeholder={translate('drawer.search')} />
-          </View>
-        </View>
-      </View>
+      <DrawerHeader
+        onPress={() => {
+          props.navigation.closeDrawer();
+        }}
+        currentUser={currentUser}
+        onChangeText={() => {}}
+      />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
           {props.state.routes.slice(0, 7).map((route: any) => {
