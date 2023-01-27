@@ -61,7 +61,7 @@ export const Transaction = (
               <Text
                 text={new Date(item.paymentDatetime).toLocaleDateString()}
                 style={{ color: '#989FB3', fontSize: 13, fontFamily: 'Geometria-LightItalic' }}
-              ></Text>
+              />
               <Text
                 text={'\u2B24'}
                 style={{
@@ -77,7 +77,7 @@ export const Transaction = (
                   color: '#989FB3',
                   fontFamily: 'Geometria-LightItalic',
                 }}
-              ></Text>
+              />
             </View>
           </View>
           <Text

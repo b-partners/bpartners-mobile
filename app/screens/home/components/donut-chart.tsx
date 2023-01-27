@@ -17,8 +17,8 @@ const LABEL_CONTAINER_STYLE: ViewStyle = {
   alignItems: 'center',
   marginBottom: spacing[2],
 };
-const LABEL_COLOR_STYLE = (color: string): ViewStyle => ({
-  backgroundColor: color,
+const LABEL_COLOR_STYLE = (backgroundColor: string): ViewStyle => ({
+  backgroundColor: backgroundColor,
   height: 10,
   width: 20,
   marginRight: spacing[1],
