@@ -16,6 +16,7 @@ export const icons = {
   trash: require('./trash.png'),
   save: require('./save.png'),
   chevronRight: require('./chevron-right.png'),
+  ellipsisV: require('./ellipsis-v.png'),
 };
 
 export type IconTypes = keyof typeof icons;

@@ -16,7 +16,7 @@ const CONTAINER_STYLE: ViewStyle = {
 const MAIN_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 32, fontFamily: 'Geometria-Bold' };
 const SECONDARY_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 11, fontFamily: 'Geometria' };
 
-export function HeaderWithBalance(props: { balance: number; left: React.ReactNode; right: React.ReactNode }) {
+export function HeaderWithBalance(props: { balance: number; left?: React.ReactNode; right?: React.ReactNode }) {
   const { balance, left, right } = props;
 
   return (

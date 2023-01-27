@@ -100,7 +100,7 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
         </View>
       </View>
       <View style={{ paddingLeft: spacing[6] }}>
-        {!loading ? props.transactions.map(item => <LatestTransaction item={item} />) : <Loader size='large' containerStyle={LOADER_STYLE} />}
+        {!loading ? props.transactions.map(item => <LatestTransaction key={item.id} item={item} />) : <Loader size='large' containerStyle={LOADER_STYLE} />}
       </View>
       <View style={{ paddingHorizontal: spacing[4], paddingTop: spacing[6] }}>
         <Button
