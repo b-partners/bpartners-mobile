@@ -43,17 +43,17 @@ export type NavigatorParamList = {
   home: undefined;
   transactionList: undefined;
   oauth: { code: string; state: string };
-  paymentInitiation: undefined;
   profile: undefined;
   invoices: undefined;
   invoiceForm: undefined;
-  paymentList: undefined;
   legalFile: undefined;
 };
 
 export type TabNavigatorParamList = {
   home: undefined;
   marketplace: undefined;
+  paymentInitiation: undefined;
+  paymentList: undefined;
   supportContact: undefined;
 };
 
@@ -80,38 +80,35 @@ const AppStack = observer(function () {
   const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
 
   return (
-    <Drawer.Navigator
-      screenOptions={{
-        headerShown: false,
-        drawerStyle: {
-          width: windowWidth,
-        },
-      }}
-      initialRouteName={'home'}
-      drawerContent={props => <BpDrawer {...props} />}
-    >
-      {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
-        <>
-          <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
-        </>
-      ) : isAuthenticated && hasApprovedLegalFiles ? (
-        <>
-          <Drawer.Screen name='home' component={AppTabStack} />
-          <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
-          <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-          <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-          <Drawer.Screen name='paymentList' component={PaymentListScreen} />
-          <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
-          <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
-        </>
-      ) : (
-        <>
-          <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
-          <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
-          <Drawer.Screen name='home' component={AppTabStack} />
-        </>
-      )}
-    </Drawer.Navigator>
+      <Drawer.Navigator
+          screenOptions={{
+            headerShown: false,
+            drawerStyle: {
+              width: windowWidth,
+            },
+          }}
+          initialRouteName={accessToken ? 'home' : 'welcome'}
+          drawerContent={props => <BpDrawer {...props} />}
+      >
+        {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
+            <>
+              <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
+            </>
+        ) : isAuthenticated && hasApprovedLegalFiles ? (
+            <>
+              <Drawer.Screen name='home' component={AppTabStack} />
+              <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
+              <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
+              <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
+              <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
+            </>
+        ) : (
+            <>
+              <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
+              <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
+            </>
+        )}
+      </Drawer.Navigator>
   );
 });
 
@@ -193,6 +190,8 @@ const AppTabStack = observer(function () {
       <>
         <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
         <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
+        <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+        <Tab.Screen name='paymentList' component={PaymentListScreen} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
       </>
     </Tab.Navigator>

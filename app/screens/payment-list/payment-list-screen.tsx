@@ -8,7 +8,7 @@ import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { NavigatorParamList } from '../../navigators';
+import {TabNavigatorParamList} from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -20,7 +20,7 @@ import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
 const TAB_BAR_STYLE: ViewStyle = { borderBottomWidth: 1, borderBottomColor: palette.greyDarker, ...NO_SHADOW };
 
-export const PaymentListScreen: FC<StackScreenProps<NavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation }) {
+export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
   const { invoiceStore } = useStores();
 

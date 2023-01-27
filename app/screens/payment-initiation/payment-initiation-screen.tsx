@@ -5,7 +5,7 @@ import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 
 import { GradientBackground, Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import {TabNavigatorParamList} from '../../navigators';
 import { color, spacing } from '../../theme';
 import { ErrorBoundary } from '../error/error-boundary';
 import { PaymentInitiationForm } from './payment-initiation-form';
@@ -19,7 +19,7 @@ const PAYMENT_LINK_STYLE: TextStyle = {
   textDecorationLine: 'underline',
 };
 
-export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({
+export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({
   navigation,
 }) {
   const { paymentInitiationStore } = useStores();
