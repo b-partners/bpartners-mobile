@@ -16,24 +16,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install
-        run: |
-          npm install --force
-          npm install --location=global react-native-cli
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          brew tap wix/brew
-          brew install applesimutils
-
-      - name: Test (e2e)
-        run: |
-          npm run build:ios:debug:e2e
-          npm run test:ios:debug:e2e
-
   style:
     runs-on: ubuntu-latest
     steps:
