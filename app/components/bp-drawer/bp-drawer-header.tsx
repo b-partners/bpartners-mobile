@@ -16,6 +16,7 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
       style={{
         position: 'absolute',
         zIndex: 3,
+        width: '100%',
         height: '25%',
         paddingTop: Platform.select({ ios: top - 30, android: 0 }),
       }}
