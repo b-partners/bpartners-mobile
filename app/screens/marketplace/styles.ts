@@ -81,7 +81,6 @@ export const SCROLLVIEW_CONTAINER_STYLE: ViewStyle = {
 export const ANNOUNCE_STYLE: TextStyle = {
   color: color.primary,
   fontSize: 13,
-  // fontFamily: 'sans-serif-light',
   fontWeight: 'bold',
 };
 
