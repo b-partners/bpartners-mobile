@@ -54,7 +54,7 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
                 fontFamily: 'Geometria-Bold',
               }}
             >
-              {currentUser.firstName}
+              {currentUser?.firstName}
             </Text>
             <Text
               style={{
@@ -63,7 +63,7 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
                 fontFamily: 'Geometria',
               }}
             >
-              {currentUser.lastName}
+              {currentUser?.lastName}
             </Text>
           </View>
         </View>
