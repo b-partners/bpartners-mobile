@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
 
-import { BpDrawer, Text } from '../components';
+import { BPDrawer, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
@@ -82,7 +82,7 @@ const AppStack = observer(function () {
         },
       }}
       initialRouteName={accessToken ? 'home' : 'welcome'}
-      drawerContent={props => <BpDrawer {...props} />}
+      drawerContent={props => <BPDrawer {...props} />}
     >
       {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
         <>

@@ -1,5 +1,5 @@
 export const icons = {
-  back: require('./arrow-left.png'),
+  back: require('./back.png'),
   bullet: require('./bullet.png'),
   bug: require('./ladybug.png'),
   check: require('./check.png'),
@@ -18,6 +18,8 @@ export const icons = {
   chevronRight: require('./chevron-right.png'),
   ellipsisV: require('./ellipsis-v.png'),
   bell: require('./bell.png'),
+  magnifier: require('./magnifier.png'),
+  edit: require('./edit.png'),
 };
 
 export type IconTypes = keyof typeof icons;

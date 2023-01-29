@@ -53,7 +53,7 @@
     "title": "Onboarding"
   },
   "signInScreen": {
-    "title": "Connect to BPartner",
+    "title": "Connect to BPartners",
     "description": "Enter the phone number you used when you registered",
     "hint": "Phone Number",
     "confirm": "Confirm",
