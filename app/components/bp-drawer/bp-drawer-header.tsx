@@ -35,7 +35,7 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View>
             <TouchableOpacity style={{ position: 'absolute', bottom: -10, left: 21, zIndex: 1 }}>
-              <Icon icon='edit'></Icon>
+              <Icon icon='edit' />
             </TouchableOpacity>
             <AutoImage source={require('./profile-placeholder.png')} resizeMode='stretch' resizeMethod='auto' />
           </View>
@@ -68,7 +68,7 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
           </View>
         </View>
         <TouchableOpacity>
-          <Icon icon='redBullet' style={{ position: 'absolute', top: 0, left: 0 }}></Icon>
+          <Icon icon='redBullet' style={{ position: 'absolute', top: 0, left: 0 }} />
           <Icon icon='bell' />
         </TouchableOpacity>
       </View>
