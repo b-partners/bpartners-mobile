@@ -1,7 +1,7 @@
-import { TextStyle, ViewStyle } from "react-native";
+import { TextStyle, ViewStyle } from 'react-native';
 
-import { color, spacing } from "../../theme";
-import { palette } from "../../theme/palette";
+import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 
 export const INVOICES_STYLE: ViewStyle = {
   paddingHorizontal: spacing[3],
@@ -57,7 +57,7 @@ export const SECTION_HEADER_TEXT_STYLE: TextStyle = {
   fontWeight: '700',
   color: palette.greyDarker,
   backgroundColor: palette.white,
-  marginTop: spacing[5]
+  marginTop: spacing[5],
 };
 export const SEPARATOR_STYLE = { borderColor: palette.lighterGrey };
 export const FOOTER_COMPONENT_STYLE = { marginBottom: spacing[0] };

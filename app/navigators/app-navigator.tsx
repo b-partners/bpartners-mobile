@@ -11,16 +11,17 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
 
-import { BpDrawer, Text } from '../components';
+import { BPDrawer, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { InvoiceStatus } from '../models/entities/invoice/invoice';
 import { ErrorBoundary, HomeScreen, LegalFileScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen } from '../screens';
+import { CodeExchangeScreen } from '../screens/code-exchange/code-exchange-screen';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
+import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
-import { CodeExchangeScreen } from '../screens/sign-in-web-view/code-exchange-screen';
 import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
@@ -47,6 +48,7 @@ export type NavigatorParamList = {
   invoiceForm: undefined;
   paymentList: undefined;
   legalFile: undefined;
+  marketplace: undefined;
   supportContact: undefined;
 };
 
@@ -80,7 +82,7 @@ const AppStack = observer(function () {
         },
       }}
       initialRouteName={accessToken ? 'home' : 'welcome'}
-      drawerContent={props => <BpDrawer {...props} />}
+      drawerContent={props => <BPDrawer {...props} />}
     >
       {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
         <>
@@ -92,7 +94,8 @@ const AppStack = observer(function () {
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
           <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-          <Drawer.Screen name='paymentList' component={PaymentListScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='paymentList' component={PaymentListScreen} />
+          <Drawer.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
           <Drawer.Screen name='supportContact' component={SupportContactScreen} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />

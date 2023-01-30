@@ -1,4 +1,4 @@
-describe('Example', () => {
+describe('App', () => {
   beforeAll(async () => {
     await device.launchApp();
   });
@@ -7,7 +7,9 @@ describe('Example', () => {
     await device.reloadReactNative();
   });
 
-  it('should have welcome screen', async () => {
-    await expect(element(by.id('WelcomeScreen'))).toBeVisible();
+  it('can view balance', async () => {
+    await waitFor(element(by.id('balance-view')))
+      .toBeVisible()
+      .withTimeout(5_000);
   });
 });
