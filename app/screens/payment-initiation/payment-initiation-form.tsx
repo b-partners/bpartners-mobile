@@ -1,18 +1,18 @@
 import { Formik } from 'formik';
 import React, { FC, PropsWithoutRef } from 'react';
-import { Button, TextStyle, View } from 'react-native';
+import { View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
+import { Button } from '../../components';
 import FormField from '../../components/forms/form-field';
 import { translate } from '../../i18n';
 import { color, spacing } from '../../theme';
 import { amountToMinors } from '../../utils/money';
 
-const FORM_FIELD_STYLE: TextStyle = { color: color.palette.black, paddingHorizontal: spacing[2], paddingBottom: 0 };
 const INVALID_FORM_FIELD = {
-  borderColor: '#FF5983',
-  borderWidth: 2,
+  borderBottomColor: '#FF5983',
+  borderBottomWidth: 2,
 };
 
 export const PaymentInitiationForm: FC<
@@ -44,28 +44,29 @@ export const PaymentInitiationForm: FC<
     >
       {({ values, handleSubmit, errors }) => {
         return (
-          <View style={{ paddingVertical: spacing[2] }}>
-            <FormField name='reference' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.reference' value={values.reference} />
-            <FormField name='label' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.label' value={values.label} />
+          <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3] }}>
+            <FormField name='reference' labelTx='paymentInitiationScreen.fields.reference' value={values.reference} />
+            <FormField name='label' labelTx='paymentInitiationScreen.fields.label' value={values.label} />
             <FormField
               name='amount'
-              inputStyle={[FORM_FIELD_STYLE, errors.amount && INVALID_FORM_FIELD]}
-              placeholderTx='paymentInitiationScreen.fields.amount'
+              inputStyle={[errors.amount && INVALID_FORM_FIELD]}
+              labelTx='paymentInitiationScreen.fields.amount'
               keyboardType='phone-pad'
               value={values.amount}
             />
-            <FormField name='payerName' inputStyle={[FORM_FIELD_STYLE]} placeholderTx='paymentInitiationScreen.fields.payerName' value={values.payerName} />
-            <FormField
-              name='payerEmail'
-              inputStyle={[FORM_FIELD_STYLE]}
-              placeholderTx='paymentInitiationScreen.fields.payerEmail'
-              keyboardType='email-address'
-              value={values.payerEmail}
-            />
-            <View>
-              <Button title={translate('paymentInitiationScreen.fields.submit')} onPress={() => handleSubmit()}>
-                {translate('paymentInitiationScreen.fields.submit')}
-              </Button>
+            <FormField name='payerName' labelTx='paymentInitiationScreen.fields.payerName' value={values.payerName} />
+            <FormField name='payerEmail' labelTx='paymentInitiationScreen.fields.payerEmail' keyboardType='email-address' value={values.payerEmail} />
+            <View style={{ marginTop: spacing[4] }}>
+              <Button
+                tx='paymentInitiationScreen.fields.submit'
+                onPress={() => handleSubmit()}
+                style={{
+                  backgroundColor: color.palette.secondaryColor,
+                  height: 45,
+                  borderRadius: 25,
+                }}
+                textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
+              />
             </View>
           </View>
         );

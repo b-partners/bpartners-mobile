@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 
-import { GradientBackground, Header, Screen, Text } from '../../components';
+import { Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -28,7 +28,6 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
           <Header
             headerTx='paymentInitiationScreen.title'
