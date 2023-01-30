@@ -18,7 +18,7 @@ const ROOT: ViewStyle = {
   position: 'relative',
   paddingHorizontal: spacing[5],
 };
-const TITLE: TextStyle = { textAlign: 'center' };
+const TITLE: TextStyle = { textAlign: 'center', fontFamily: 'Geometria-Bold', textTransform: 'uppercase', fontSize: 13 };
 const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: 'center' };
 const LEFT: ViewStyle = { width: 32 };
 const RIGHT: ViewStyle = { width: 32 };
