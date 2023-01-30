@@ -16,7 +16,7 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'market
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='SignInWebViewScreen' style={SCREEN_STYLE}>
+      <View testID='marketplace-screen' style={SCREEN_STYLE}>
         <Screen preset='scroll' backgroundColor={palette.white} style={FULL_HEIGHT}>
           <Header headerTx='marketPlaceScreen.header' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           {screenWidth < 720 ? <ColumnList /> : <RowList />}

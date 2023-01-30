@@ -75,7 +75,6 @@ export const CARD_STYLE: ViewStyle = {
 
 export const LOGO_STYLE: ImageStyle = {
   width: '100%',
-  zIndex: 1,
 };
 
 export const SCROLLVIEW_STYLE: ViewStyle = {

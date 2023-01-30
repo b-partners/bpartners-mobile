@@ -42,20 +42,18 @@ export function ColumnList() {
         <View style={ANNOUNCE_CONTAINER_STYLE}>
           <Text style={ANNOUNCE_STYLE}>{translate('marketPlaceScreen.offerTitle')}</Text>
         </View>
-        <ScrollView style={SCROLLVIEW_STYLE} contentContainerStyle={SCROLLVIEW_CONTAINER_STYLE}>
+        <ScrollView testID='marketplace-list-container' style={SCROLLVIEW_STYLE} contentContainerStyle={SCROLLVIEW_CONTAINER_STYLE}>
           {marketplaces.map((item: Marketplace) => {
             const logo = <AutoImage source={{ uri: item.logoUrl }} style={LOGO_STYLE} resizeMethod='scale' resizeMode='contain' />;
             const placeholder = <Market name='shopping-cart' size={80} color={palette.lighterGrey} />;
+
             return (
-              <View>
-                <TouchableOpacity
-                  style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 2 }}
-                  key={item.id}
-                  onPress={() => handlePress(item.websiteUrl)}
-                ></TouchableOpacity>
+              <View key={item.id}>
                 <View style={MARKETPLACE_CARD} key={item.id}>
                   <View style={CARD_STYLE}>{item.logoUrl === 'logo URL' ? placeholder : logo}</View>
-                  <Text style={TEXT_STYLE}>{item.name}</Text>
+                  <TouchableOpacity style={{ zIndex: 2 }} onPress={() => handlePress(item.websiteUrl)}>
+                    <Text style={TEXT_STYLE}>{item.name}</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             );
