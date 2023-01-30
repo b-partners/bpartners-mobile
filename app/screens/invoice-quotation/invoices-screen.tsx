@@ -1,28 +1,43 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { FlatList, View } from 'react-native';
+import { SectionList, View } from 'react-native';
 
-import { GradientBackground, Screen, Separator } from '../../components';
-import { Loader } from '../../components/loader/loader';
+import { Button, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Invoice as IInvoice } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
-import { color } from '../../theme';
+import { palette } from '../../theme/palette';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { fetchBinaryFile } from '../../utils/fetch-binary-file';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
-import { CONTAINER, FULL, INVOICES_STYLE, LOADER_STYLE } from './styles';
+import {
+  BUTTON_STYLE,
+  BUTTON_TEXT_STYLE,
+  CONTAINER,
+  FOOTER_COMPONENT_STYLE,
+  FULL,
+  SECTION_HEADER_TEXT_STYLE,
+  SECTION_LIST_CONTAINER_STYLE,
+  SEPARATOR_STYLE,
+} from './styles';
+import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
-export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
+export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
   const { invoices, loading } = invoiceStore;
   const { currentAccount, accessToken } = authStore;
 
+  const handleRefresh = async () => {
+    await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.CONFIRMED });
+  };
+
+  const sectionedQuotations = sectionInvoicesByMonth(invoices);
   const items: MenuItem[] = [{ id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') }];
 
   const downloadInvoice = async (url: string, fileName: string) => {
@@ -43,32 +58,32 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <GradientBackground colors={['#422443', '#281b34']} />
-        <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-          {!loading ? (
-            <FlatList<IInvoice>
-              contentContainerStyle={INVOICES_STYLE}
-              data={[...invoices]}
-              renderItem={({ item }) => {
-                return (
-                  <Invoice
-                    item={item}
-                    menuItems={items}
-                    menuAction={{
-                      downloadInvoice: () =>
-                        downloadInvoice(
-                          `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`,
-                          `${item.ref}.pdf`
-                        ),
-                    }}
-                  />
-                );
-              }}
-              ItemSeparatorComponent={() => <Separator />}
+        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
+          <View>
+            <SectionList<IInvoice>
+              style={SECTION_LIST_CONTAINER_STYLE}
+              sections={[...sectionedQuotations]}
+              renderItem={({ item }) => (
+                <Invoice
+                  item={item}
+                  menuItems={items}
+                  menuAction={{
+                    downloadInvoice: () =>
+                      downloadInvoice(`${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`, `${item.ref}.pdf`),
+                  }}
+                />
+              )}
+              keyExtractor={item => item.id}
+              renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
+              refreshing={loading}
+              onRefresh={handleRefresh}
+              progressViewOffset={100}
+              stickySectionHeadersEnabled={true}
+              ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
+              renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
             />
-          ) : (
-            <Loader size='large' containerStyle={LOADER_STYLE} />
-          )}
+          </View>
+          <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
         </Screen>
       </View>
     </ErrorBoundary>

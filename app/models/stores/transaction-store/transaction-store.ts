@@ -126,6 +126,9 @@ export const TransactionStoreModel = types
       const date = new Date();
       return self.transactionsSummary.find(item => item.month === date.getMonth());
     },
+    get latestTransactions() {
+      return self.transactions.filter((_, i) => i < 3);
+    },
   }));
 
 export interface TransactionStore extends Instance<typeof TransactionStoreModel> {}

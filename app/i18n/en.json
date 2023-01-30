@@ -53,7 +53,7 @@
     "title": "Onboarding"
   },
   "signInScreen": {
-    "title": "Connect to BPartner",
+    "title": "Connect to BPartners",
     "description": "Enter the phone number you used when you registered",
     "hint": "Phone Number",
     "confirm": "Confirm",
@@ -84,8 +84,8 @@
     }
   },
   "profileScreen": {
-    "label": "Profile",
-    "title": "Profile",
+    "label": "Profil",
+    "title": "Profil",
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",
@@ -118,7 +118,8 @@
       "settings": "Settings",
       "frequency": "Frequency",
       "boostYourResults": "Boost your results",
-      "allTransactions": "See all transactions"
+      "allTransactions": "See all transactions",
+      "uncategorizedTransaction": "To categorize and justify"
     },
     "summary": {
       "title": "Stats",
@@ -164,12 +165,17 @@
     }
   },
   "paymentListScreen": {
-    "title": "Invoices / Quotations",
+    "title": "Invoicing",
     "tabs": {
       "drafts": "Drafts",
       "invoices": "Invoices",
       "quotations": "Quotations"
     }
+  },
+  "marketPlaceScreen": {
+    "title": "MarketPlace",
+    "offerTitle": "SEE THE OFFERS ON:",
+    "header": "Boost my results"
   },
   "quotationScreen": {
     "createQuotation": "Create a Quotation"

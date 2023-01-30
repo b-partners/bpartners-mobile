@@ -11,9 +11,9 @@ const ROW: ViewStyle = {
 };
 
 const PROGRESS_BAR_BACKGROUND_STYLE: ViewStyle = {
-  height: 40,
+  height: 30,
   flex: 1,
-  backgroundColor: color.palette.white,
+  backgroundColor: '#1D3D3D3',
   borderRadius: 50,
 };
 
@@ -21,8 +21,8 @@ const PROGRESS_BAR_CONTAINER: ViewStyle = { marginVertical: spacing[4] };
 
 const PROGRESS_BAR_STYLE: ViewStyle = {
   position: 'absolute',
-  backgroundColor: color.palette.lighterGrey,
-  height: 40,
+  backgroundColor: '#BFC7DE',
+  height: 30,
   width: '40%',
   borderTopLeftRadius: 25,
   borderBottomLeftRadius: 25,
@@ -35,7 +35,12 @@ const PROGRESS_BAR_TEXT_CONTAINER_STYLE: ViewStyle = {
   justifyContent: 'center',
 };
 
-const PROGRESS_BAR_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', color: color.palette.black };
+const PROGRESS_BAR_TEXT_STYLE: TextStyle = {
+  textTransform: 'uppercase',
+  color: color.palette.black,
+  fontFamily: 'Geometria',
+  fontSize: 13,
+};
 
 export function GoalProgressBar() {
   return (
@@ -48,12 +53,12 @@ export function GoalProgressBar() {
       </View>
       <View style={{ ...ROW, ...{ justifyContent: 'space-between', marginTop: spacing[2] } }}>
         <View style={ROW}>
-          <Text text='42%' />
+          <Text text='42%' style={{ fontFamily: 'Geometria-Bold', color: color.palette.textClassicColor }} />
           <View style={{ marginHorizontal: spacing[1] }} />
-          <Text text='Réalisé' />
+          <Text text='Réalisé' style={{ fontFamily: 'Geometria', color: '#BFC7DE' }} />
         </View>
         <View style={ROW}>
-          <Text text='100 000 €' />
+          <Text text='100 000 €' style={{ fontFamily: 'Geometria', color: color.palette.textClassicColor }} />
           <View style={{ marginHorizontal: spacing[1] }} />
           <Icon icon='coins' />
         </View>

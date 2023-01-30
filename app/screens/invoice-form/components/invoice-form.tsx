@@ -172,7 +172,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   />
                 </View>
                 <View style={FLEX_ROW}>
-                  <EditableTextField title={'Nom du client'} formName={'ref'} placeholder={'Taper le nom du client'} containerStyle={HEADER_RIGHT_ROW} />
+                  <EditableTextField title={'Nom du client'} formName={'customer'} placeholder={'Taper le nom du client'} containerStyle={HEADER_RIGHT_ROW} />
                   <View style={DATE_PICKER_FIELD_CONTAINER}>
                     <DatePickerField
                       value={initialValues.sendingDate}
@@ -224,7 +224,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <View style={FLEX_ROW}>
                   <EditableTextField
                     title={'Délais Du Paiement'}
-                    formName={'title'}
+                    formName={'toPayAt'}
                     placeholder={'Taper le titre du devis'}
                     containerStyle={EDITABLE_TF_CONTAINER}
                   />

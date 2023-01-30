@@ -29,6 +29,7 @@ module.exports = {
         'react-hooks/rules-of-hooks': 'off',
         'react/prop-types': 'off',
         'react-hooks/exhaustive-deps': 'off',
+        'react-native/no-inline-styles': 'off',
       },
     },
   ],

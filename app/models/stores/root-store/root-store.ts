@@ -7,6 +7,7 @@ import { AuthStoreModel } from '../auth-store/auth-store';
 import { FileStoreModel } from '../file-store/file-store';
 import { InvoiceStoreModel } from '../invoice-store/invoice-store';
 import { LegalFileStoreModel } from '../legal-file-store/legal-file-store';
+import { MarketplaceStoreModel } from '../marketplace-store/marketplace-store';
 import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
 import { PaymentInitiationStoreModel } from '../payment-initiation-store/payment-initiation-store';
 import { TransactionStoreModel } from '../transaction-store/transaction-store';
@@ -22,6 +23,7 @@ export const RootStoreModel = types.model('RootStore').props({
     paymentInitiationStore: types.optional(PaymentInitiationStoreModel, {} as any),
     fileStore: types.optional(FileStoreModel, {} as any),
     invoiceStore: types.optional(InvoiceStoreModel, {} as any),
+    marketplaceStore: types.optional(MarketplaceStoreModel, {} as any),
     legalFilesStore: types.optional(LegalFileStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
