@@ -13,11 +13,11 @@ import {
   CARD_CONTAINER_STYLE,
   CARD_STYLE,
   LOGO_STYLE,
+  MARKETPLACE_CARD,
   MARKET_LIST_STYLE,
   SCROLLVIEW_CONTAINER_STYLE,
   SCROLLVIEW_STYLE,
   TEXT_STYLE,
-  VIEW_CARD,
 } from '../styles';
 
 export function ColumnList() {
@@ -44,14 +44,19 @@ export function ColumnList() {
         </View>
         <ScrollView style={SCROLLVIEW_STYLE} contentContainerStyle={SCROLLVIEW_CONTAINER_STYLE}>
           {marketplaces.map((item: Marketplace) => {
-            const logo = <AutoImage source={{ uri: item.logoUrl }} style={LOGO_STYLE} resizeMethod='resize' />;
+            const logo = <AutoImage source={{ uri: item.logoUrl }} style={LOGO_STYLE} resizeMethod='scale' resizeMode='contain' />;
             const placeholder = <Market name='shopping-cart' size={80} color={palette.lighterGrey} />;
             return (
-              <View style={VIEW_CARD} key={item.id}>
-                <TouchableOpacity style={CARD_STYLE} onPress={() => handlePress(item.websiteUrl)}>
-                  {item.logoUrl === 'logo URL' ? placeholder : logo}
-                </TouchableOpacity>
-                <Text style={TEXT_STYLE}>{item.name}</Text>
+              <View>
+                <TouchableOpacity
+                  style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 2 }}
+                  key={item.id}
+                  onPress={() => handlePress(item.websiteUrl)}
+                ></TouchableOpacity>
+                <View style={MARKETPLACE_CARD} key={item.id}>
+                  <View style={CARD_STYLE}>{item.logoUrl === 'logo URL' ? placeholder : logo}</View>
+                  <Text style={TEXT_STYLE}>{item.name}</Text>
+                </View>
               </View>
             );
           })}
