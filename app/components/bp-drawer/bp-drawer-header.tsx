@@ -1,3 +1,5 @@
+import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
+import { DrawerActions } from '@react-navigation/native';
 import React from 'react';
 import { Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -6,8 +8,8 @@ import { color, spacing } from '../../theme';
 import { AutoImage } from '../auto-image/auto-image';
 import { Icon } from '../icon/icon';
 
-export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; onChangeText: (value: string) => void }) {
-  const { currentUser } = props;
+export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; onChangeText: (value: string) => void; navigation: DrawerNavigationHelpers }) {
+  const { currentUser, navigation } = props;
 
   const { top } = useSafeAreaInsets();
 
@@ -30,7 +32,7 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
           paddingVertical: spacing[6],
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}>
           <Icon icon='back' />
         </TouchableOpacity>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>

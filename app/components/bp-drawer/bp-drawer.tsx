@@ -1,4 +1,5 @@
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
 import React, { useCallback } from 'react';
 import { Alert, Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Home from 'react-native-vector-icons/AntDesign';
@@ -108,7 +109,7 @@ type RouteNameProps = {
   supportContact: string | React.ReactElement;
 };
 
-export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
+export const BPDrawer: React.FC<DrawerContentComponentProps> = observer(props => {
   const { authStore } = useStores();
   const { currentUser } = authStore;
 
@@ -154,6 +155,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
         }}
         currentUser={currentUser}
         onChangeText={() => {}}
+        navigation={props.navigation}
       />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
@@ -211,4 +213,4 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       </TouchableOpacity>
     </DrawerContentScrollView>
   );
-};
+});
