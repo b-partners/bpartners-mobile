@@ -165,6 +165,9 @@
     }
   },
   "invoiceFormScreen": {
+    "invoiceForm": {
+      "addItem": "Add another element"
+    },
     "customerSelectionForm": {
       "title": "Client Name",
       "addClient": "Add a client",

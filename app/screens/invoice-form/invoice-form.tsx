@@ -74,6 +74,22 @@ const CLIENT_SELECTION_FORM_STYLE: ViewStyle = { justifyContent: 'space-between'
 
 const DATE_PICKER_STYLE: TextStyle = { color: palette.textClassicColor, fontSize: 18, fontWeight: '700' };
 
+const ADD_PRODUCT_BUTTON_STYLE: ViewStyle = {
+  backgroundColor: palette.white,
+  borderWidth: 1,
+  borderColor: color.primary,
+  display: "flex",
+  flexDirection: "row",
+  marginHorizontal: spacing[4],
+  marginVertical: spacing[4],
+  borderRadius: 40,
+};
+
+const ADD_BUTTON_TEXT_STYLE: TextStyle = {
+  color: color.primary,
+  marginLeft: spacing[2]
+};
+
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
   const [showUserListModal, setShowUserListModal] = useState(false);
@@ -229,8 +245,15 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     <ProductCardItem item={{ ...item }} onRemove={handleProductItemRemove} onChange={handleProductItemFieldChange(index)} />
                   )}
                 />
-                {/*todo: styling*/}
-                <Button text={'Add item'} onPress={() => setFieldValue('products', [...values.products, {...productInitialValue, id: uuid.v4().toString()}])} />
+                <Button
+                  onPress={() => setFieldValue('products', [...values.products, { ...productInitialValue, id: uuid.v4().toString() }])}
+                  style={ADD_PRODUCT_BUTTON_STYLE}
+                >
+                  <>
+                    <MaterialCommunityIcons name='plus' size={25} color={color.primary} />
+                    <Text tx={'invoiceFormScreen.invoiceForm.addItem'} style={ADD_BUTTON_TEXT_STYLE}/>
+                  </>
+                </Button>
               </View>
 
               <View>
