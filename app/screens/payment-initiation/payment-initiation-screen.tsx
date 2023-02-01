@@ -1,9 +1,9 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
+import { ScrollView, View, ViewStyle } from 'react-native';
 
-import { Header, Screen, Text } from '../../components';
+import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -12,12 +12,6 @@ import { PaymentInitiationForm } from './payment-initiation-form';
 import { CONTAINER, FULL, HEADER, HEADER_TITLE } from './style';
 
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
-const QRCODE_CONTAINER_STYLE: ViewStyle = { display: 'flex', alignItems: 'center', marginTop: 25 };
-const PAYMENT_LINK_STYLE: TextStyle = {
-  marginBottom: spacing[3],
-  textAlign: 'center',
-  textDecorationLine: 'underline',
-};
 
 export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({
   navigation,
@@ -37,12 +31,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, '
             onLeftPress={() => navigation.navigate('home')}
           />
           <ScrollView style={FORM_FIELD_CONTAINER}>
-            <PaymentInitiationForm init={paymentInitiationStore.init} />
-            {paymentUrl && (
-              <View style={QRCODE_CONTAINER_STYLE}>
-                <Text text={paymentUrl} style={PAYMENT_LINK_STYLE} />
-              </View>
-            )}
+            <PaymentInitiationForm init={paymentInitiationStore.init} paymentUrl={paymentUrl} />
           </ScrollView>
         </Screen>
       </View>
