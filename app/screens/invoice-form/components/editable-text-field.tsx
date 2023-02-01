@@ -1,16 +1,19 @@
-import { useField } from 'formik';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { Keyboard, TextInput, TextInputProps, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useField } from "formik";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { Keyboard, TextInput, TextInputProps, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 
-import { Text, TextField } from '../../../components';
-import ErrorMessage from '../../../components/forms/error-message';
-import { spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
+import { Text, TextField } from "../../../components";
+import ErrorMessage from "../../../components/forms/error-message";
+import { spacing } from "../../../theme";
+import { palette } from "../../../theme/palette";
+import { translate, TxKeyPath } from "../../../i18n";
 
 interface TEditableTextField extends TextInputProps {
   title?: string;
+  titleTx?: TxKeyPath;
   formName?: string;
   placeholder?: string;
+  placeholderTx?: TxKeyPath;
   containerStyle?: ViewStyle;
   placeholderStyle?: TextStyle;
   prefix?: string;
@@ -21,29 +24,28 @@ interface TEditableTextField extends TextInputProps {
 
 const CONTAINER_STYLE: ViewStyle = {
   flex: 1,
-  padding: spacing[4],
+  padding: spacing[4]
 };
 
 const LABEL_STYLE: TextStyle = {
   color: palette.greyDarker,
   fontSize: 14,
-  fontWeight: '700',
+  fontWeight: "700"
 };
-const TEXT_STYLE: TextStyle = { color: palette.textClassicColor, fontSize: 18, fontWeight: '700' };
+const TEXT_STYLE: TextStyle = { color: palette.textClassicColor, fontSize: 18, fontWeight: "700" };
 const PLACEHOLDER_TEXT_STYLE: TextStyle = {
   color: palette.lighterGrey,
   fontSize: 14,
-  fontStyle: 'italic',
-  marginTop: spacing[1],
+  fontStyle: "italic",
+  marginTop: spacing[1]
 };
 const TEXT_FIELD_STYLE: ViewStyle = { paddingVertical: 0 };
 
-const FLEX_ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
+const FLEX_ROW_STYLE: ViewStyle = { display: "flex", flexDirection: "row" };
 const ERROR_MESSAGE_STYLE: TextStyle = { color: palette.pastelRed };
 
-// todo: add i18n support
 const EditableTextField: FC<TEditableTextField> = props => {
-  const { title, formName, placeholder, containerStyle, suffix = '', prefix = '', defaultValue = '', ...rest } = props;
+  const { title, formName, placeholder, containerStyle, suffix = "", prefix = "", defaultValue = "", titleTx, placeholderTx, ...rest } = props;
   const initialValue = props.value;
   const [isEditing, setIsEditing] = useState(false);
   const [field, meta, helpers] = useField<string>({ name: formName, value: initialValue });
@@ -61,10 +63,10 @@ const EditableTextField: FC<TEditableTextField> = props => {
     /*
      To know the current state of the keyboard if it's hidden or shown
      */
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
       setKeyBoardHidden(true);
     });
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
       setKeyBoardHidden(false);
     });
 
@@ -100,11 +102,12 @@ const EditableTextField: FC<TEditableTextField> = props => {
   return (
     <View style={[CONTAINER_STYLE, containerStyle]}>
       <TouchableOpacity onPress={handlePress}>
-        <Text text={title} style={LABEL_STYLE} />
+        <Text text={title} tx={titleTx} style={LABEL_STYLE} />
         {isEditing ? (
           <TextField
             {...field}
             {...rest}
+            placeholderTx={placeholderTx}
             style={TEXT_FIELD_STYLE}
             onBlur={handleBlur}
             onChangeText={field.onChange(formName)}
@@ -117,6 +120,7 @@ const EditableTextField: FC<TEditableTextField> = props => {
             placeholderStyle={props.placeholderStyle}
             defaultValue={defaultValue}
             placeholder={placeholder}
+            placeholderTx={placeholderTx}
             suffix={suffix}
             prefix={prefix}
           />
@@ -129,6 +133,7 @@ const EditableTextField: FC<TEditableTextField> = props => {
 
 type TReadOnlyText = {
   placeholder?: string;
+  placeholderTx?: TxKeyPath;
   value?: string;
   defaultValue?: string;
   suffix?: string;
@@ -140,17 +145,21 @@ type TReadOnlyText = {
  * The Text to display when the user is not editing the input
  * */
 const ReadOnlyText: FC<TReadOnlyText> = props => {
-  const { placeholder, value, defaultValue, prefix = '', suffix = '', placeholderStyle } = props;
-  if (placeholder && !value && !defaultValue) {
+  const { placeholder, placeholderTx, value, defaultValue, prefix = "", suffix = "", placeholderStyle } = props;
+  const placeholderContent = translate(placeholderTx) || placeholder;
+
+  if ((placeholder || placeholderTx) && (!value && !defaultValue)) {
     return (
       <View style={FLEX_ROW_STYLE}>
         <Text numberOfLines={1} text={prefix} style={TEXT_STYLE} />
-        <Text numberOfLines={1} text={`${placeholder}`} style={[PLACEHOLDER_TEXT_STYLE, placeholderStyle]} />
+        <Text numberOfLines={1} text={`${placeholderContent}`} tx={placeholderTx}
+              style={[PLACEHOLDER_TEXT_STYLE, placeholderStyle]} />
         <Text numberOfLines={1} text={suffix} style={TEXT_STYLE} />
       </View>
     );
   }
-  return <Text numberOfLines={1} text={`${prefix}${value || defaultValue}${suffix}`} style={TEXT_STYLE} />;
+  return <Text numberOfLines={1} text={`${prefix}${value || defaultValue}${suffix}`} tx={placeholderTx}
+               style={TEXT_STYLE} />;
 };
 
 export default EditableTextField;
