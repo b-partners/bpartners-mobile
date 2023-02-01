@@ -6,7 +6,7 @@ import QRCode from 'react-native-qrcode-svg';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
-import { Button, Header, Text } from '../../components';
+import { Button, Header, Loader, Text } from '../../components';
 import FormField from '../../components/forms/form-field';
 import { translate } from '../../i18n';
 import { color, spacing } from '../../theme';
@@ -20,6 +20,7 @@ const INVALID_FORM_FIELD = {
 export const PaymentInitiationForm: FC<
   PropsWithoutRef<{
     init: (values: unknown) => void;
+    loading: boolean;
     paymentUrl?: string;
   }>
 > = observer(props => {
@@ -30,7 +31,7 @@ export const PaymentInitiationForm: FC<
     payerEmail: yup.string().email().label(translate('paymentInitiationScreen.fields.payerEmail')),
   });
 
-  const { init, paymentUrl } = props;
+  const { init, paymentUrl, loading } = props;
 
   const [showModal, setShowModal] = useState(false);
 
@@ -84,14 +85,16 @@ export const PaymentInitiationForm: FC<
                     borderRadius: 25,
                   }}
                   textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
-                />
+                >
+                  {loading ? <Loader /> : <Text tx='paymentInitiationScreen.fields.submit' />}
+                </Button>
               </View>
             </View>
           );
         }}
       </Formik>
       <Modal animationType='slide' transparent={true} visible={showModal} onRequestClose={closeModal}>
-        <View style={{ flex: 1, backgroundColor: 'rgba(16,16,19,0.9)' }}></View>
+        <View style={{ flex: 1, backgroundColor: 'rgba(16,16,19,0.9)' }} />
         <View
           style={{
             display: 'flex',
