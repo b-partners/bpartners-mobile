@@ -109,29 +109,35 @@ export const PaymentInitiationForm: FC<
             <Header rightIcon='cross' onRightPress={closeModal} style={{ borderTopLeftRadius: 50 }} headerTx='paymentInitiationScreen.fields.paymentUrl' />
           </View>
           <View style={{ alignItems: 'center', padding: spacing[6] }} testID='payment-url-modal-content'>
-            <TouchableOpacity
-              onPress={async () => {
-                const supported = await Linking.canOpenURL(paymentUrl);
-                if (!supported) {
-                  return;
-                }
-                await Linking.openURL(paymentUrl);
-              }}
-            >
-              <Text
-                text={paymentUrl}
-                style={{
-                  color: color.palette.textClassicColor,
-                  fontFamily: 'Geometria',
-                  textAlign: 'center',
-                  textAlignVertical: 'center',
-                  textDecorationLine: 'underline',
-                  marginBottom: spacing[4],
-                  lineHeight: 20,
-                }}
-              />
-            </TouchableOpacity>
-            <QRCode value={paymentUrl} />
+            {paymentUrl ? (
+              <>
+                <TouchableOpacity
+                  onPress={async () => {
+                    const supported = await Linking.canOpenURL(paymentUrl);
+                    if (!supported) {
+                      return;
+                    }
+                    await Linking.openURL(paymentUrl);
+                  }}
+                >
+                  <Text
+                    text={paymentUrl}
+                    style={{
+                      color: color.palette.textClassicColor,
+                      fontFamily: 'Geometria',
+                      textAlign: 'center',
+                      textAlignVertical: 'center',
+                      textDecorationLine: 'underline',
+                      marginBottom: spacing[4],
+                      lineHeight: 20,
+                    }}
+                  />
+                </TouchableOpacity>
+                <QRCode value={paymentUrl} />
+              </>
+            ) : (
+              <Text tx='errors.somethingWentWrong' />
+            )}
           </View>
         </View>
       </Modal>
