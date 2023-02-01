@@ -1,13 +1,13 @@
-import React, { FC } from 'react';
-import { Modal, View, ViewStyle } from 'react-native';
+import React, { FC } from "react";
+import { Modal, View, ViewStyle } from "react-native";
 
-import { Customer } from '../../../../models/entities/customer/customer';
-import CustomerSelectionForm from './customer-selection-form';
+import { Customer } from "../../../../models/entities/customer/customer";
+import CustomerSelectionForm from "./customer-selection-form";
 
 const MODAL_ITEM_CONTAINER_STYLE: ViewStyle = {
   flex: 1,
-  justifyContent: 'center',
-  backgroundColor: 'rgba(10,16,69,0.8)',
+  justifyContent: "center",
+  backgroundColor: "rgba(10,16,69,0.8)",
 };
 type TUserListSelectionModal = {
   visible: boolean;

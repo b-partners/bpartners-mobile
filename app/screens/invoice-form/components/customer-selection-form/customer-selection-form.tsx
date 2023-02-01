@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { FlatList, TextStyle, View, ViewStyle } from 'react-native';
+import { FlatList, TextStyle, useWindowDimensions, View, ViewStyle } from "react-native";
 
 import { Button, Separator, Text } from '../../../../components';
 import { Customer } from '../../../../models/entities/customer/customer';
@@ -19,6 +19,10 @@ const FORM_TITLE: TextStyle = {
 const FORM_CONTAINER: ViewStyle = {
   padding: spacing[5],
   backgroundColor: palette.white,
+  position: "absolute",
+  left: 0,
+  right: 0,
+  top: "20%"
 };
 const VALIDATE_BUTTON_TEXT_STYLE: TextStyle = {
   fontSize: 14,
@@ -47,9 +51,11 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   // By default the selected customer is the customer at index zero
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
+  const {height} = useWindowDimensions();
+  const MAX_HEIGHT = 4.5*height/10;
 
   return (
-    <View style={FORM_CONTAINER}>
+    <View style={{...FORM_CONTAINER, maxHeight: MAX_HEIGHT}}>
       <Text tx={'invoiceFormScreen.customerSelectionForm.title'} style={FORM_TITLE} />
       <FlatList
         data={customers}

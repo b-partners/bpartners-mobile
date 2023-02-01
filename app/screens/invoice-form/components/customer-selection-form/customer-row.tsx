@@ -32,7 +32,7 @@ const CustomerRow: FC<TCustomerRow> = props => {
       <TouchableOpacity style={CUSTOMER_ROW_CONTAINER} onPress={() => onSelect(customer)}>
         <>
           <RadioButton isActive={isSelected} />
-          <Text text={customer.name} style={{ ...CUSTOMER_NAME, marginLeft: spacing[2] }} />
+          <Text text={customer.name} style={{ ...CUSTOMER_NAME, marginLeft: spacing[2] }} numberOfLines={2}/>
         </>
       </TouchableOpacity>
       <TouchableOpacity style={EDIT_BUTTON_STYLE}>
