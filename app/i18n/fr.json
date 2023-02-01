@@ -149,7 +149,17 @@
   },
   "invoiceFormScreen": {
     "invoiceForm": {
-        "addItem": "Ajouter un autre éléments"
+      "addItem": "Ajouter un autre éléments",
+      "quotationTitle": "Titre du devis",
+      "quotationTitlePlaceholder": "Taper le titre du devis",
+      "quotationNumber": "Numéro du devis",
+      "quotationNumberPlaceholder": "Taper le numéros du devis",
+      "issueDate": "Date d'émission",
+      "paymentDelay": "Délais de paiement",
+      "paymentDelayPlaceholder": "Taper le délais de paiement",
+      "downPayment": "Acompte",
+      "personalizedNotice": "Mentions légales personalisés",
+      "viewMail": "Afficher mon addresse email"
     },
     "customerSelectionForm": {
       "title": "Nom du Client",

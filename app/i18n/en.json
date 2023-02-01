@@ -166,7 +166,17 @@
   },
   "invoiceFormScreen": {
     "invoiceForm": {
-      "addItem": "Add another element"
+      "addItem": "Add another element",
+      "quotationTitle": "Quotation title",
+      "quotationTitlePlaceholder": "Type the title of the quote",
+      "quotationNumber": "Quotation number",
+      "quotationNumberPlaceholder": "Type the quotation number",
+      "issueDate": "Issue date",
+      "paymentDelay": "Payment delays",
+      "paymentDelayPlaceholder": "Type de payment delays",
+      "downPayment": "Down Payment",
+      "personalizedNotice": "Personalized legal notice",
+      "viewMail": "View my email address"
     },
     "customerSelectionForm": {
       "title": "Client Name",

@@ -183,17 +183,17 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <View style={FLEX_ROW}>
                   <View style={FULL}>
                     <EditableTextField
-                      title={'Titre de devis'}
+                      titleTx={'invoiceFormScreen.invoiceForm.quotationTitle'}
                       formName={'title'}
-                      placeholder={'Taper le titre du devis'}
+                      placeholderTx={'invoiceFormScreen.invoiceForm.quotationTitlePlaceholder'}
                       containerStyle={{ ...HEADER_RIGHT_ROW }}
                     />
                   </View>
                   <View style={FULL}>
                     <EditableTextField
-                      title={'Numéros du devis'}
+                      titleTx={'invoiceFormScreen.invoiceForm.quotationNumber'}
                       formName={'ref'}
-                      placeholder={'Taper le numéros du devis'}
+                      placeholderTx={'invoiceFormScreen.invoiceForm.quotationNumber'}
                       containerStyle={{ ...EDITABLE_TF_CONTAINER }}
                     />
                   </View>
@@ -228,7 +228,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     <DatePickerField
                       value={initialValues.sendingDate}
                       onDateChange={date => setInitialValues({ ...initialValues, sendingDate: date })}
-                      labelText={"Date d'émission"}
+                      labelTx={'invoiceFormScreen.invoiceForm.issueDate'}
                       labelStyle={LABEL_STYLE}
                       isButtonPreset={false}
                       textStyle={DATE_PICKER_STYLE}
@@ -262,13 +262,13 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 </View>
                 <View style={FLEX_ROW}>
                   <EditableTextField
-                    title={'Délais Du Paiement'}
+                    titleTx={'invoiceFormScreen.invoiceForm.paymentDelay'}
                     formName={'title'}
-                    placeholder={'Taper le delais de payement'}
+                    placeholderTx={'invoiceFormScreen.invoiceForm.paymentDelayPlaceholder'}
                     containerStyle={EDITABLE_TF_CONTAINER}
                   />
                   <EditableTextField
-                    title={'Acompte'}
+                    titleTx={'invoiceFormScreen.invoiceForm.downPayment'}
                     formName={'acompte'}
                     placeholder={'Taper '}
                     containerStyle={EDITABLE_TF_CONTAINER}
@@ -277,12 +277,12 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   />
                 </View>
                 <View style={[FLEX_ROW, CENTERED_FLEX]}>
-                  <GridHeaderContent headerText={'Mentions légales personalisés'} bodyText={'Bon pour accord Signature du client'} style={FULL} />
+                  <GridHeaderContent headerTx={'invoiceFormScreen.invoiceForm.personalizedNotice'} bodyText={'Bon pour accord Signature du client'} style={FULL} />
                   <Switch style={FULL} value={legalNotice} onToggle={newValue => setLegalNotice(newValue)} />
                 </View>
                 <Separator style={SEPARATOR_STYLE} />
                 <View style={[FLEX_ROW, CENTERED_FLEX]}>
-                  <GridHeaderContent headerText={'Afficher mon addresse email'} bodyText={'user@gmail.com'} style={FULL} />
+                  <GridHeaderContent headerTx={'invoiceFormScreen.invoiceForm.viewMail'} bodyText={values['customer']['email'] || ''} style={FULL} />
                   <Switch style={FULL} value={showMyMailAddress} onToggle={newValue => setShowMyMailAddress(newValue)} />
                 </View>
                 <Separator style={SEPARATOR_STYLE} />
