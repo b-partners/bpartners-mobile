@@ -159,7 +159,16 @@
       "paymentDelayPlaceholder": "Taper le délais de paiement",
       "downPayment": "Acompte",
       "personalizedNotice": "Mentions légales personalisés",
-      "viewMail": "Afficher mon addresse email"
+      "viewMail": "Afficher mon addresse email",
+      "productCartItem": {
+        "title": "Titre de l'élément",
+        "titlePlaceholder": "Taper le titre de l'élément",
+        "description": "Déscription (Facultatif)",
+        "descriptionPlaceholder": "Type the description",
+        "unitPrice": "Prix unitaire",
+        "quantity": "Quantité",
+        "tva": "TVA"
+      }
     },
     "customerSelectionForm": {
       "title": "Nom du Client",

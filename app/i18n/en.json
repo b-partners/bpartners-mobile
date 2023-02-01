@@ -176,7 +176,16 @@
       "paymentDelayPlaceholder": "Type de payment delays",
       "downPayment": "Down Payment",
       "personalizedNotice": "Personalized legal notice",
-      "viewMail": "View my email address"
+      "viewMail": "View my email address",
+      "productCartItem": {
+        "title": "Element title",
+        "titlePlaceholder": "Type the element title",
+        "description": "Description (Optional)",
+        "descriptionPlaceholder": "Type the description",
+        "unitPrice": "Unit price",
+        "quantity": "Quantity",
+        "tva": "TVA"
+      }
     },
     "customerSelectionForm": {
       "title": "Client Name",
