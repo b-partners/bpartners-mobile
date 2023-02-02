@@ -31,7 +31,7 @@ const LABEL_STYLE: TextStyle = {
   color: palette.greyDarker,
   fontSize: 14,
   fontWeight: '700',
-  textTransform: "uppercase"
+  textTransform: 'uppercase',
 };
 const TEXT_STYLE: TextStyle = { color: palette.textClassicColor, fontSize: 18, fontWeight: '700' };
 const PLACEHOLDER_TEXT_STYLE: TextStyle = {

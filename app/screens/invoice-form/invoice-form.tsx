@@ -1,4 +1,4 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
@@ -139,7 +139,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
     products: [productInitialValue],
     status: InvoiceStatus.DRAFT,
     delayInPaymentAllowed: 0,
-    delayPenaltyPercent: 0
+    delayPenaltyPercent: 0,
   });
 
   const validationSchema = yup.object().shape({
@@ -152,7 +152,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
         unitPrice: yup.number().min(0).required(),
         quantity: yup.number().min(1).required(),
         tva: yup.number().min(0).max(100).required(),
-      }),
+      })
     ),
     delayInPaymentAllowed: yup.number().min(0).required(),
     delayPenaltyPercent: yup.number().min(0).max(100).required(),
@@ -168,8 +168,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
             await onSaveInvoice({
               ...values,
               // todo: add those 2 field to Model
-              delayInPaymentAllowed: +values['delayInPaymentAllowed'],
-              delayPenaltyPercent: +values['delayPenaltyPercent'],
+              delayInPaymentAllowed: +values.delayInPaymentAllowed,
+              delayPenaltyPercent: +values.delayPenaltyPercent,
               products: values.products.map(item => ({
                 description: item.description,
                 unitPrice: +item.unitPrice,
@@ -294,10 +294,10 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   <EditableTextField
                     titleTx={'invoiceFormScreen.invoiceForm.paymentDelay'}
                     formName={'delayInPaymentAllowed'}
-                    keyboardType={"number-pad"}
+                    keyboardType={'number-pad'}
                     placeholderTx={'invoiceFormScreen.invoiceForm.paymentDelayPlaceholder'}
                     containerStyle={EDITABLE_TF_CONTAINER}
-                    suffix={translate('invoiceFormScreen.invoiceForm.days')||''}
+                    suffix={translate('invoiceFormScreen.invoiceForm.days') || ''}
                   />
                   <EditableTextField
                     titleTx={'invoiceFormScreen.invoiceForm.downPayment'}
@@ -335,7 +335,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 ]}
               >
                 <View style={SAVE_ICON_CONTAINER}>
-                  <Ionicons name={"save-outline"} size={16} color={color.primary} style={{fontWeight: "300"}}/>
+                  <Ionicons name={'save-outline'} size={16} color={color.primary} style={{ fontWeight: '300' }} />
                 </View>
                 <Button
                   tx='invoiceScreen.labels.invoiceForm'
