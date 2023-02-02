@@ -50,7 +50,7 @@ export const FormField = ({
         style={[{ paddingTop: 0 }]}
         {...rest}
       />
-      <ErrorMessage error={errors[name]} visible={touched[name]} style={[ERROR_STYLE, errorStyleOverrides]} />
+      <ErrorMessage name={name} error={errors[name]} visible={touched[name]} style={[ERROR_STYLE, errorStyleOverrides]} />
     </View>
   );
 };

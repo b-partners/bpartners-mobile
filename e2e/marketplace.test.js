@@ -1,16 +1,13 @@
-let device;
-
-describe('Transaction', () => {
+describe('Marketplace', () => {
   beforeAll(async () => {
     await device.launchApp();
-    device = device.getPlatform();
   });
 
   beforeEach(async () => {
     await device.reloadReactNative();
   });
 
-  it('displays transaction list', async () => {
+  it('displays marketplace list', async () => {
     await waitFor(element(by.id('menuContainer')));
     await element(by.id('menuContainer')).tap();
     await element(by.id('marketplace')).tap();

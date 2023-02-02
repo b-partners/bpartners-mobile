@@ -40,7 +40,7 @@ export const PaymentInitiationForm: FC<
   };
 
   return (
-    <View>
+    <View testID='paymentInitiationScreen'>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -58,17 +58,31 @@ export const PaymentInitiationForm: FC<
         {({ values, handleSubmit, errors }) => {
           return (
             <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3] }}>
-              <FormField name='reference' labelTx='paymentInitiationScreen.fields.reference' value={values.reference} inputStyle={{ textTransform: 'none' }} />
-              <FormField name='label' labelTx='paymentInitiationScreen.fields.label' value={values.label} inputStyle={{ textTransform: 'none' }} />
               <FormField
+                testID='reference'
+                name='reference'
+                labelTx='paymentInitiationScreen.fields.reference'
+                value={values.reference}
+                inputStyle={{ textTransform: 'none' }}
+              />
+              <FormField
+                testID='label'
+                name='label'
+                labelTx='paymentInitiationScreen.fields.label'
+                value={values.label}
+                inputStyle={{ textTransform: 'none' }}
+              />
+              <FormField
+                testID='amount'
                 name='amount'
                 inputStyle={[errors.amount && INVALID_FORM_FIELD]}
                 labelTx='paymentInitiationScreen.fields.amount'
                 keyboardType='phone-pad'
                 value={values.amount}
               />
-              <FormField name='payerName' labelTx='paymentInitiationScreen.fields.payerName' value={values.payerName} />
+              <FormField testID='payerName' name='payerName' labelTx='paymentInitiationScreen.fields.payerName' value={values.payerName} />
               <FormField
+                testID='payerEmail'
                 name='payerEmail'
                 labelTx='paymentInitiationScreen.fields.payerEmail'
                 keyboardType='email-address'
@@ -77,6 +91,7 @@ export const PaymentInitiationForm: FC<
               />
               <View style={{ marginTop: spacing[4] }}>
                 <Button
+                  testID='submit'
                   tx='paymentInitiationScreen.fields.submit'
                   onPress={() => handleSubmit()}
                   style={{
@@ -93,7 +108,7 @@ export const PaymentInitiationForm: FC<
           );
         }}
       </Formik>
-      <Modal animationType='slide' transparent={true} visible={showModal} onRequestClose={closeModal}>
+      <Modal testID='payment-url-modal' animationType='slide' transparent={true} visible={showModal} onRequestClose={closeModal}>
         <View style={{ flex: 1, backgroundColor: 'rgba(16,16,19,0.9)' }} />
         <View
           style={{
@@ -131,6 +146,7 @@ export const PaymentInitiationForm: FC<
                       marginBottom: spacing[4],
                       lineHeight: 20,
                     }}
+                    testID='payment-url'
                   />
                 </TouchableOpacity>
                 <QRCode value={paymentUrl} />
