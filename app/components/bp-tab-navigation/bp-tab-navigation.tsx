@@ -173,72 +173,72 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
             {activeRouteName === RouteName[bottomTavNavItem] && (
               <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
             )}
-            <Modal
-              animationType='slide'
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(false);
-              }}
-            >
-              <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-                <View style={{ width: '100%', height: modalHeight }}>
-                  <View
-                    style={{
-                      width: '18%',
-                      height: 200,
-                      backgroundColor: palette.purple,
-                      position: 'absolute',
-                      bottom: 10,
-                      right: 5,
-                      borderRadius: 50,
-                      justifyContent: 'space-around',
-                    }}
-                  >
-                    {MODAL_SERVICES_ROUTES.map((serviceModalRoute: string, j) => {
-                      return (
-                        <View
-                          key={`modal-service-route-${j}`}
-                          style={{
-                            width: '100%',
-                            height: '30%',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <AutoImage
-                            source={SERVICES_MODAL_ICONS[serviceModalRoute]}
-                            style={{ width: 40, height: 40, borderRadius: 50 }}
-                            resizeMethod='auto'
-                            resizeMode='stretch'
-                          />
-                          <TouchableOpacity
-                            style={{ width: '100%', height: 50 }}
-                            onPress={() => {
-                              console.tron.log({ item: serviceModalRoute });
-                            }}
-                          >
-                            <View style={{ width: '100%', alignItems: 'center' }}>
-                              <Text
-                                style={{
-                                  color: palette.white,
-                                  fontSize: 10,
-                                }}
-                              >
-                                {ModalText[serviceModalRoute]}
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    })}
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            </Modal>
           </View>
         );
       })}
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View style={{ width: '100%', height: modalHeight }}>
+            <View
+              style={{
+                width: '18%',
+                height: 200,
+                backgroundColor: palette.purple,
+                position: 'absolute',
+                bottom: 10,
+                right: 5,
+                borderRadius: 50,
+                justifyContent: 'space-around',
+              }}
+            >
+              {MODAL_SERVICES_ROUTES.map((serviceModalRoute: string, j) => {
+                return (
+                  <View
+                    key={`modal-service-route-${j}`}
+                    style={{
+                      width: '100%',
+                      height: '30%',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <AutoImage
+                      source={SERVICES_MODAL_ICONS[serviceModalRoute]}
+                      style={{ width: 40, height: 40, borderRadius: 50 }}
+                      resizeMethod='auto'
+                      resizeMode='stretch'
+                    />
+                    <TouchableOpacity
+                      style={{ width: '100%', height: 50 }}
+                      onPress={() => {
+                        console.tron.log({ item: serviceModalRoute });
+                      }}
+                    >
+                      <View style={{ width: '100%', alignItems: 'center' }}>
+                        <Text
+                          style={{
+                            color: palette.white,
+                            fontSize: 10,
+                          }}
+                        >
+                          {ModalText[serviceModalRoute]}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 };
