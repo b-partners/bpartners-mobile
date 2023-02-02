@@ -118,7 +118,6 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => {
-      console.tron.log('triggered');
       openModal('supportContact');
     },
   };
