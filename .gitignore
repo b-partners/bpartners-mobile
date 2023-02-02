@@ -67,4 +67,3 @@ buck-out/
 .env.*
 !.env.template
 /.expo/
-/yarn.lock

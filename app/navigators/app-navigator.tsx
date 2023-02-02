@@ -112,72 +112,6 @@ const AppStack = observer(function () {
   );
 });
 
-type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>;
-
-export function AppNavigator(props: NavigationProps) {
-  const colorScheme = useColorScheme();
-  useBackButtonHandler(canExit);
-  const { transactionStore, invoiceStore } = useStores();
-  const { setError } = useError();
-
-  const handleError = async (asyncFunc: () => any) => {
-    try {
-      await asyncFunc();
-    } catch (e) {
-      setError(e);
-    }
-  };
-
-  const onStateChange = async (state: NavigationState) => {
-    const route = state.routeNames[state.index];
-    switch (route) {
-      case 'transactionList':
-        await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
-        break;
-      case 'paymentList':
-        await handleError(
-          async () =>
-            await Promise.all([
-              invoiceStore.getDrafts({
-                status: InvoiceStatus.DRAFT,
-                page: 1,
-                pageSize: 15,
-              }),
-            ])
-        );
-        break;
-      case 'invoiceForm':
-        await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));
-        break;
-    }
-  };
-
-  return (
-    <ErrorBoundary catchErrors={'always'}>
-      <NavigationContainer
-        linking={{
-          prefixes: ['bpartners://', Linking.createURL('/')],
-          config: {
-            screens: {
-              initialRouteName: 'welcome',
-              oauth: 'auth',
-            },
-          },
-        }}
-        fallback={<Text text={'Loading...'} />}
-        ref={navigationRef}
-        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-        {...props}
-        onStateChange={onStateChange}
-      >
-        <AppStack />
-      </NavigationContainer>
-    </ErrorBoundary>
-  );
-}
-
-AppNavigator.displayName = 'AppNavigator';
-
 const AppTabStack = observer(function () {
   return (
     <Tab.Navigator
@@ -197,6 +131,73 @@ const AppTabStack = observer(function () {
     </Tab.Navigator>
   );
 });
+
+
+type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>;
+
+export function AppNavigator(props: NavigationProps) {
+    const colorScheme = useColorScheme();
+    useBackButtonHandler(canExit);
+    const { transactionStore, invoiceStore } = useStores();
+    const { setError } = useError();
+
+    const handleError = async (asyncFunc: () => any) => {
+        try {
+            await asyncFunc();
+        } catch (e) {
+            setError(e);
+        }
+    };
+
+    const onStateChange = async (state: NavigationState) => {
+        const route = state.routeNames[state.index];
+        switch (route) {
+            case 'transactionList':
+                await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
+                break;
+            case 'paymentList':
+                await handleError(
+                    async () =>
+                        await Promise.all([
+                            invoiceStore.getDrafts({
+                                status: InvoiceStatus.DRAFT,
+                                page: 1,
+                                pageSize: 15,
+                            }),
+                        ])
+                );
+                break;
+            case 'invoiceForm':
+                await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));
+                break;
+        }
+    };
+
+    return (
+        <ErrorBoundary catchErrors={'always'}>
+            <NavigationContainer
+                linking={{
+                    prefixes: ['bpartners://', Linking.createURL('/')],
+                    config: {
+                        screens: {
+                            initialRouteName: 'welcome',
+                            oauth: 'auth',
+                        },
+                    },
+                }}
+                fallback={<Text text={'Loading...'} />}
+                ref={navigationRef}
+                theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+                {...props}
+                onStateChange={onStateChange}
+            >
+                <AppStack />
+            </NavigationContainer>
+        </ErrorBoundary>
+    );
+}
+
+AppNavigator.displayName = 'AppNavigator';
 
 /**
  * A list of routes from which we're allowed to leave the app when

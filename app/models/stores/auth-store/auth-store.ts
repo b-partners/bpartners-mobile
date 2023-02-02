@@ -148,7 +148,7 @@ export const AuthStoreModel = types
     getToken: flow(function* (code) {
       const signInApi = new AuthApi(self.environment.api);
       try {
-        const { accessToken, refreshToken } = env.isCi ? { accessToken: env.ciAccessToken, refreshToken: null } : yield signInApi.getToken(code);
+        const { accessToken, refreshToken } = env.isCi ? { accessToken: 'vYASrZS1E0op_n2xKC_5G1xKzI0Nhrze1vtzpQf_sDg.rg-BzJ_-5tmWSzqN5MDKeQkfbTLOAEaqmu0COaScci8', refreshToken: null } : yield signInApi.getToken(code);
         yield self.getTokenSuccess({ accessToken: accessToken, refreshToken: refreshToken });
       } catch (e) {
         self.getTokenFail(e);

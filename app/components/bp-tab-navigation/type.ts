@@ -25,3 +25,20 @@ export const Icon: IconType[] = [
     name: 'service',
   },
 ];
+
+export const ModalRoute: IconType[] = [
+  {
+    id: 1,
+    name: 'transfer',
+  },
+  {
+    id: 2,
+    name: 'card',
+  },
+  {
+    id: 3,
+    name: 'help',
+  },
+]
+
+
