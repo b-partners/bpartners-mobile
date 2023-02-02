@@ -138,6 +138,8 @@ export function InvoiceForm(props: InvoiceFormProps) {
     customer: customers[0],
     products: [productInitialValue],
     status: InvoiceStatus.DRAFT,
+    delayInPaymentAllowed: 0,
+    delayPenaltyPercent: 0
   });
 
   const validationSchema = yup.object().shape({
@@ -150,8 +152,10 @@ export function InvoiceForm(props: InvoiceFormProps) {
         unitPrice: yup.number().min(0).required(),
         quantity: yup.number().min(1).required(),
         tva: yup.number().min(0).max(100).required(),
-      })
+      }),
     ),
+    delayInPaymentAllowed: yup.number().min(0).required(),
+    delayPenaltyPercent: yup.number().min(0).max(100).required(),
   });
   return (
     <View>
@@ -163,6 +167,9 @@ export function InvoiceForm(props: InvoiceFormProps) {
           try {
             await onSaveInvoice({
               ...values,
+              // todo: add those 2 field to Model
+              delayInPaymentAllowed: +values['delayInPaymentAllowed'],
+              delayPenaltyPercent: +values['delayPenaltyPercent'],
               products: values.products.map(item => ({
                 description: item.description,
                 unitPrice: +item.unitPrice,
@@ -286,13 +293,15 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <View style={FLEX_ROW}>
                   <EditableTextField
                     titleTx={'invoiceFormScreen.invoiceForm.paymentDelay'}
-                    formName={'title'}
+                    formName={'delayInPaymentAllowed'}
+                    keyboardType={"number-pad"}
                     placeholderTx={'invoiceFormScreen.invoiceForm.paymentDelayPlaceholder'}
                     containerStyle={EDITABLE_TF_CONTAINER}
+                    suffix={translate('invoiceFormScreen.invoiceForm.days')||''}
                   />
                   <EditableTextField
                     titleTx={'invoiceFormScreen.invoiceForm.downPayment'}
-                    formName={'acompte'}
+                    formName={'delayPenaltyPercent'}
                     placeholder={'Taper '}
                     containerStyle={EDITABLE_TF_CONTAINER}
                     defaultValue={'10'}

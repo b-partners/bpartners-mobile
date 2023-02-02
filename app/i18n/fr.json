@@ -161,6 +161,7 @@
       "personalizedNotice": "Mentions légales personalisés",
       "viewMail": "Afficher mon addresse email",
       "limitedValidityPeriod": "Durée de validité limitée",
+      "days": "Jours",
       "productCartItem": {
         "delete": "Supprimer",
         "title": "Titre de l'élément",
