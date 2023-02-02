@@ -179,6 +179,7 @@
       "viewMail": "View my email address",
       "limitedValidityPeriod": "Limited period of validity",
       "productCartItem": {
+        "delete": "Delete",
         "title": "Element title",
         "titlePlaceholder": "Type the element title",
         "description": "Description (Optional)",

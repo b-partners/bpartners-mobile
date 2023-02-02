@@ -80,7 +80,7 @@ const ProductCardItem: FC<ICardElement> = ({ onRemove, onAdd, item, onChange }) 
           <>
             <View>
               <View style={CONTAINER_STYLE}>
-                <Text text={"Supprimer"} style={{ color: color.primary, flex: 1, alignSelf: 'flex-end', marginRight: spacing[5], fontSize: 9 }} />
+                <Text tx={"invoiceFormScreen.invoiceForm.productCartItem.delete"} style={{ color: color.primary, flex: 1, alignSelf: 'flex-end', marginRight: spacing[5], fontSize: 9 }} />
                 <TouchableOpacity
                   style={[DELETE_ACTION_POSITION_STYLE, DELETE_ACTION_CONTAINER_STYLE]}
                   onPress={() => {
