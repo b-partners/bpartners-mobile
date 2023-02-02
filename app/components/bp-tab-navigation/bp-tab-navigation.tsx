@@ -98,7 +98,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     setActiveRouteName(routeName);
   }, []);
 
-  const IconImage: IconProps = {
+  const BOTTOM_NAVBAR_ICONS: IconProps = {
     account: require('./wallet.png'),
     activity: require('./activity.png'),
     payment: require('./paiment.png'),
@@ -106,13 +106,13 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     service: require('./service.png'),
   };
 
-  const ModalImage: ModalProps = {
+  const SERVICES_MODAL_ICONS: ModalProps = {
     transfer: require('./transfer.png'),
     card: require('./card.png'),
     help: require('./help.png'),
   };
 
-  const IconRoute: IconRouteProps = {
+  const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
     account: () => handleNavigation('home'),
     activity: () => handleNavigation('marketplace'),
     payment: () => handleNavigation('paymentInitiation'),
@@ -128,7 +128,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     service: 'supportContact',
   };
 
-  const IconText: IconProps = {
+  const ROUTE: IconProps = {
     account: 'Comptes',
     activity: 'Activité',
     payment: 'Collecter un paiement',
@@ -161,10 +161,10 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
       {Icon.map((item: IconType) => {
         return (
           <View key={item.id} style={NAVIGATION_CONTAINER_STYLE}>
-            <TouchableOpacity onPress={IconRoute[item.name]} style={NAVIGATION_STYLE}>
-              <AutoImage source={IconImage[item.name]} style={ICON_STYLE} resizeMethod='auto' resizeMode='stretch' />
+            <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[item.name]} style={NAVIGATION_STYLE}>
+              <AutoImage source={BOTTOM_NAVBAR_ICONS[item.name]} style={ICON_STYLE} resizeMethod='auto' resizeMode='stretch' />
               <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>{IconText[item.name]}</Text>
+                <Text style={TEXT_STYLE}>{ROUTE[item.name]}</Text>
               </View>
             </TouchableOpacity>
             {activeRouteName === RouteName[item.name] && <AutoImage source={require('./tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />}
@@ -202,7 +202,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                           }}
                         >
                           <AutoImage
-                            source={ModalImage[modalRouteItem.name]}
+                            source={SERVICES_MODAL_ICONS[modalRouteItem.name]}
                             style={{ width: 40, height: 40, borderRadius: 50 }}
                             resizeMethod='auto'
                             resizeMode='stretch'
