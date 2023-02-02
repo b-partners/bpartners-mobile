@@ -1,11 +1,11 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
-import { Button, Icon, Separator, Switch, Text } from '../../components';
+import { Button, Separator, Switch, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { translate } from '../../i18n';
 import { Customer } from '../../models/entities/customer/customer';
@@ -104,9 +104,9 @@ const VALIDITY_PERIOD_TEXT_STYLE: TextStyle = {
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
   const [showUserListModal, setShowUserListModal] = useState(false);
-  const [legalNotice, setLegalNotice] = useState<boolean>(false);
+  const [legalNotice, setLegalNotice] = useState<boolean>(true);
   const [limitedPeriodOfValidity, setLimitedPeriodOfValidity] = useState(false);
-  const [showMyMailAddress, setShowMyMailAddress] = useState<boolean>(false);
+  const [showMyMailAddress, setShowMyMailAddress] = useState<boolean>(true);
 
   const validate = values => {
     const errors: Partial<Record<keyof Invoice, string>> = {};
@@ -326,7 +326,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 ]}
               >
                 <View style={SAVE_ICON_CONTAINER}>
-                  <Icon icon={'save'} />
+                  <Ionicons name={"save-outline"} size={16} color={color.primary} style={{fontWeight: "300"}}/>
                 </View>
                 <Button
                   tx='invoiceScreen.labels.invoiceForm'
