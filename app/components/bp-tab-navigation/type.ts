@@ -39,6 +39,4 @@ export const ModalRoute: IconType[] = [
     id: 3,
     name: 'help',
   },
-]
-
-
+];

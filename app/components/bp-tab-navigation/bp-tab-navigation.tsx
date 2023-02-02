@@ -190,10 +190,10 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                       justifyContent: 'space-around',
                     }}
                   >
-                    {ModalRoute.map((item: IconType) => {
+                    {ModalRoute.map((modalRouteItem: IconType) => {
                       return (
                         <View
-                          key={item.id}
+                          key={modalRouteItem.id}
                           style={{
                             width: '100%',
                             height: '30%',
@@ -202,7 +202,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                           }}
                         >
                           <AutoImage
-                            source={ModalImage[item.name]}
+                            source={ModalImage[modalRouteItem.name]}
                             style={{ width: 40, height: 40, borderRadius: 50 }}
                             resizeMethod='auto'
                             resizeMode='stretch'
@@ -210,7 +210,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                           <TouchableOpacity
                             style={{ width: '100%', height: 50 }}
                             onPress={() => {
-                              console.tron.log({ item });
+                              console.tron.log({ item: modalRouteItem });
                             }}
                           >
                             <View style={{ width: '100%', alignItems: 'center' }}>
@@ -220,7 +220,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                                   fontSize: 10,
                                 }}
                               >
-                                {ModalText[item.name]}
+                                {ModalText[modalRouteItem.name]}
                               </Text>
                             </View>
                           </TouchableOpacity>
