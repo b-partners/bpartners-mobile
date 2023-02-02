@@ -1,23 +1,12 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { useRoute, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import {
-  ImageStyle,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-  Modal,
-  BackHandler,
-  TouchableWithoutFeedback,
-  Dimensions
-} from 'react-native';
+import { BackHandler, Dimensions, ImageStyle, Modal, Text, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 
+import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { Icon, IconType, ModalRoute } from './type';
-import {color} from "../../theme";
 
 const TEXT_CONTAINER_STYLE: ViewStyle = {
   width: '100%',
@@ -82,7 +71,7 @@ type ModalProps = {
   transfer: string;
   card: string;
   help: string;
-}
+};
 
 type IconRouteProps = {
   account: () => void;
@@ -105,7 +94,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   }, []);
 
   const openModal = useCallback((routeName: string) => {
-    setModalVisible(true)
+    setModalVisible(true);
     setActiveRouteName(routeName);
   }, []);
 
@@ -121,7 +110,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     transfer: require('./transfer.png'),
     card: require('./card.png'),
     help: require('./help.png'),
-  }
+  };
 
   const IconRoute: IconRouteProps = {
     account: () => handleNavigation('home'),
@@ -151,20 +140,19 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     transfer: 'Virement',
     card: 'Cartes',
     help: 'Aide',
-  }
+  };
 
   useFocusEffect(
-      React.useCallback(() => {
-        const onBackPress = () => {
-          setActiveRouteName('home');
-          return false;
-        };
+    React.useCallback(() => {
+      const onBackPress = () => {
+        setActiveRouteName('home');
+        return false;
+      };
 
-        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-        return () =>
-            BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-      }, [])
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
   );
 
   return (
@@ -181,35 +169,68 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
             </TouchableOpacity>
             {activeRouteName === RouteName[item.name] && <AutoImage source={require('./tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />}
             <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  setModalVisible(false);
-                }}>
-              <TouchableWithoutFeedback onPress={ () => setModalVisible(false) }>
-                <View style={ { width: "100%", height: modalHeight } }>
-                  <View style={{ width: '18%', height: 200, backgroundColor: palette.purple, position: 'absolute', bottom: 10, right: 5, borderRadius: 50, justifyContent: 'space-around'  }}>
-
+              animationType='slide'
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(false);
+              }}
+            >
+              <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+                <View style={{ width: '100%', height: modalHeight }}>
+                  <View
+                    style={{
+                      width: '18%',
+                      height: 200,
+                      backgroundColor: palette.purple,
+                      position: 'absolute',
+                      bottom: 10,
+                      right: 5,
+                      borderRadius: 50,
+                      justifyContent: 'space-around',
+                    }}
+                  >
                     {ModalRoute.map((item: IconType) => {
                       return (
-                          <View key={item.id} style={ {width: '100%', height: '30%', flexDirection: 'column', alignItems: 'center' } } >
-                            <AutoImage source={ModalImage[item.name]} style={{width: 40, height: 40, borderRadius: 50 }} resizeMethod='auto' resizeMode='stretch' />
-                            <TouchableOpacity style={{ width: '100%', height: 50, }}>
-                              <View style={{ width: '100%', alignItems: 'center',}}>
-                                <Text style={{ color: palette.white, fontSize: 10,}}>{ModalText[item.name]}</Text>
-                              </View>
-                            </TouchableOpacity>
-                          </View>
+                        <View
+                          key={item.id}
+                          style={{
+                            width: '100%',
+                            height: '30%',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <AutoImage
+                            source={ModalImage[item.name]}
+                            style={{ width: 40, height: 40, borderRadius: 50 }}
+                            resizeMethod='auto'
+                            resizeMode='stretch'
+                          />
+                          <TouchableOpacity
+                            style={{ width: '100%', height: 50 }}
+                            onPress={() => {
+                              console.tron.log({ item });
+                            }}
+                          >
+                            <View style={{ width: '100%', alignItems: 'center' }}>
+                              <Text
+                                style={{
+                                  color: palette.white,
+                                  fontSize: 10,
+                                }}
+                              >
+                                {ModalText[item.name]}
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                        </View>
                       );
                     })}
-
                   </View>
                 </View>
               </TouchableWithoutFeedback>
             </Modal>
-
-
           </View>
         );
       })}
