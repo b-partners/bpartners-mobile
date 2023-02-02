@@ -1,8 +1,8 @@
 import React from 'react';
 import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import Left from 'react-native-vector-icons/Entypo';
 
 import { translate } from '../../i18n';
+import { spacing } from '../../theme';
 import { AutoImage } from '../auto-image/auto-image';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
@@ -16,9 +16,9 @@ const ROOT: ViewStyle = {
   alignItems: 'center',
   justifyContent: 'flex-start',
   position: 'relative',
-  paddingHorizontal: 0,
+  paddingHorizontal: spacing[5],
 };
-const TITLE: TextStyle = { textAlign: 'center' };
+const TITLE: TextStyle = { textAlign: 'center', fontFamily: 'Geometria-Bold', textTransform: 'uppercase', fontSize: 13 };
 const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: 'center' };
 const LEFT: ViewStyle = { width: 32 };
 const RIGHT: ViewStyle = { width: 32 };
@@ -36,25 +36,27 @@ export function Header(props: HeaderProps) {
   const header = headerText || (headerTx && translate(headerTx)) || '';
 
   return (
-    <View style={[ROOT, style]}>
+    <View>
       <AutoImage source={require('./header.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
-      {leftIcon ? (
-        <TouchableOpacity onPress={onLeftPress} testID='header-left-button'>
-          <Left name='chevron-thin-left' size={25} color='#ffffff' />
-        </TouchableOpacity>
-      ) : (
-        <View style={LEFT} />
-      )}
-      <View style={TITLE_MIDDLE}>
-        <Text style={[TITLE, titleStyle]} text={header} />
+      <View style={[ROOT, style]}>
+        {leftIcon ? (
+          <TouchableOpacity onPress={onLeftPress} testID='header-left-button'>
+            <Icon icon='back' />
+          </TouchableOpacity>
+        ) : (
+          <View style={LEFT} />
+        )}
+        <View style={TITLE_MIDDLE}>
+          <Text style={[TITLE, titleStyle]} text={header} />
+        </View>
+        {rightIcon ? (
+          <Button preset='link' onPress={onRightPress} testID='header-right-button'>
+            <Icon icon={rightIcon} />
+          </Button>
+        ) : (
+          <View style={RIGHT} />
+        )}
       </View>
-      {rightIcon ? (
-        <Button preset='link' onPress={onRightPress} testID='header-right-button'>
-          <Icon icon={rightIcon} />
-        </Button>
-      ) : (
-        <View style={RIGHT} />
-      )}
     </View>
   );
 }

@@ -80,7 +80,8 @@
       "amount": "Amount",
       "payerName": "Payer name",
       "payerEmail": "Payer email",
-      "submit": "Confirm"
+      "submit": "Confirm",
+      "paymentUrl": "Payment URL"
     }
   },
   "profileScreen": {

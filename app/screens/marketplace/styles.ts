@@ -1,6 +1,6 @@
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 
-import { color } from '../../theme';
+import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 
 export const SCREEN_STYLE: ViewStyle = {
@@ -49,24 +49,32 @@ export const CARD_CONTAINER_STYLE: ViewStyle = {
   height: '100%',
   flexDirection: 'column',
   backgroundColor: palette.white,
+  paddingVertical: spacing[5],
 };
 
 export const CARD_STYLE: ViewStyle = {
-  width: '90%',
-  height: 130,
-  marginVertical: 5,
-  backgroundColor: palette.white,
-  borderRadius: 50,
-  elevation: 5,
-  shadowColor: palette.black,
   alignItems: 'center',
   justifyContent: 'center',
+  width: 325,
+  height: 130,
+  borderRadius: 50,
+  marginTop: 5,
   marginBottom: 10,
+  padding: spacing[6],
+  backgroundColor: palette.white,
+  shadowColor: palette.secondaryColor,
+  shadowOffset: {
+    width: 0,
+    height: 5,
+  },
+  shadowOpacity: 0.34,
+  shadowRadius: 6.27,
+  elevation: 10,
+  zIndex: 1,
 };
 
 export const LOGO_STYLE: ImageStyle = {
-  width: '70%',
-  height: 70,
+  width: '100%',
 };
 
 export const SCROLLVIEW_STYLE: ViewStyle = {
@@ -81,7 +89,7 @@ export const SCROLLVIEW_CONTAINER_STYLE: ViewStyle = {
 export const ANNOUNCE_STYLE: TextStyle = {
   color: color.primary,
   fontSize: 13,
-  fontWeight: 'bold',
+  fontFamily: 'Geometria-Heavy',
 };
 
 export const ANNOUNCE_CONTAINER_STYLE: ViewStyle = {
@@ -91,11 +99,12 @@ export const ANNOUNCE_CONTAINER_STYLE: ViewStyle = {
 };
 
 export const TEXT_STYLE: TextStyle = {
-  color: palette.black,
-  fontSize: 16,
+  color: palette.textClassicColor,
+  fontSize: 13,
   textDecorationLine: 'underline',
   textDecorationStyle: 'solid',
   textDecorationColor: palette.black,
+  textTransform: 'lowercase',
 };
 
 export const TEXT_ROW_STYLE: TextStyle = {
@@ -146,14 +155,8 @@ export const FULL_HEIGHT: ViewStyle = {
   height: '100%',
 };
 
-export const VIEW_CARD: ViewStyle = {
+export const MARKETPLACE_CARD: ViewStyle = {
   width: '100%',
   alignItems: 'center',
-  marginBottom: 10,
-};
-
-export const WAVE_STYLE: ImageStyle = {
-  width: '100%',
-  height: '100%',
-  position: 'absolute',
+  marginBottom: 20,
 };
