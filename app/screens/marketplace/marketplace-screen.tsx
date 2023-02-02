@@ -4,14 +4,14 @@ import React, { FC } from 'react';
 import { Dimensions, View } from 'react-native';
 
 import { Header, Screen } from '../../components';
-import { NavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { ColumnList } from './components/market-column-list';
 import { RowList } from './components/market-row-list';
 import { FULL_HEIGHT, SCREEN_STYLE } from './styles';
 
-export const MarketPlaceScreen: FC<DrawerScreenProps<NavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
+export const MarketPlaceScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
   const screenWidth = Dimensions.get('screen').width;
 
   return (

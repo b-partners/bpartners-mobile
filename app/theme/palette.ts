@@ -9,6 +9,7 @@ export const palette = {
   greyDarker: '#989FB3',
   angry: '#FF5983',
   green: '#74b469',
+  purple: '#7E224A',
   deepPurple: '#5D2555',
   lighterPurple: '#9C255A',
   midnightGreen: '#003f5c',

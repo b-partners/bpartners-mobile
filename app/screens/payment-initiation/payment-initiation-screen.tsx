@@ -5,7 +5,7 @@ import { ScrollView, View, ViewStyle } from 'react-native';
 
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { ErrorBoundary } from '../error/error-boundary';
 import { PaymentInitiationForm } from './payment-initiation-form';
@@ -13,7 +13,7 @@ import { CONTAINER, FULL, HEADER, HEADER_TITLE } from './style';
 
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
 
-export const PaymentInitiationScreen: FC<DrawerScreenProps<NavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({
+export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'paymentInitiation'>> = observer(function PaymentInitiationScreen({
   navigation,
 }) {
   const { paymentInitiationStore } = useStores();
