@@ -20,7 +20,8 @@
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",
-    "readyForLaunch": "Ready for launch.",
+    "noAccount": "No account ?",
+    "itsThisWay": "It's this way",
     "start": "CREATE AN ACCOUNT",
     "login": "LOGIN"
   },
@@ -53,7 +54,7 @@
     "title": "Onboarding"
   },
   "signInScreen": {
-    "title": "Connect to BPartner",
+    "title": "Connect to BPartners",
     "description": "Enter the phone number you used when you registered",
     "hint": "Phone Number",
     "confirm": "Confirm",
@@ -80,7 +81,8 @@
       "amount": "Amount",
       "payerName": "Payer name",
       "payerEmail": "Payer email",
-      "submit": "Confirm"
+      "submit": "Confirm",
+      "paymentUrl": "Payment URL"
     }
   },
   "profileScreen": {

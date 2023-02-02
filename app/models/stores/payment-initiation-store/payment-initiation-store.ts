@@ -84,6 +84,7 @@ export const PaymentInitiationStoreModel = types
       } catch (e) {
         self.actionFail(e.message);
         self.initiatingPayment = false;
+        self.paymentUrl = '';
         self.catchOrThrow(e);
       }
     }),

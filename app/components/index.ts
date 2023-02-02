@@ -15,6 +15,6 @@ export * from './autocompletion-form-field/autocompletion-form-field';
 export * from './dropdown/dropdown';
 export * from './pdf-viewer/PDFView';
 export { Separator } from './separator/Separator';
-export { BpDrawer } from './bp-drawer/bp-drawer';
+export { BPDrawer } from './bp-drawer/bp-drawer';
 export { BpTabNavigation } from './bp-tab-navigation/bp-tab-navigation';
 export * from './loader/loader';

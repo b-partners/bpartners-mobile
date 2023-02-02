@@ -3,62 +3,13 @@ import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
-import { Linking, SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
+import { Linking, TouchableOpacity, View } from 'react-native';
 
-import { Button, GradientBackground, Screen, Text } from '../../components';
+import { AutoImage, Button, Icon, Screen, Text } from '../../components';
 import env from '../../config/env';
 import { NavigatorParamList } from '../../navigators';
-import { color, spacing, typography } from '../../theme';
+import { color, spacing } from '../../theme';
 import { ErrorBoundary } from '../error/error-boundary';
-
-const FULL: ViewStyle = { flex: 1 };
-const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
-  paddingHorizontal: spacing[4],
-  paddingVertical: spacing[2],
-};
-const TEXT: TextStyle = {
-  color: color.palette.white,
-  fontFamily: typography.primary,
-};
-const BOLD: TextStyle = { fontWeight: 'bold' };
-const TITLE_WRAPPER: TextStyle = {
-  ...TEXT,
-  textAlign: 'center',
-};
-const TITLE: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 28,
-  lineHeight: 38,
-  textAlign: 'center',
-};
-const ALMOST: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 26,
-  fontStyle: 'italic',
-};
-const CONTINUE: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.deepPurple,
-  flex: 1,
-  marginHorizontal: spacing[2],
-};
-const CONTINUE_TEXT: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 13,
-  letterSpacing: 2,
-};
-const FOOTER: ViewStyle = { backgroundColor: '#20162D' };
-const FOOTER_CONTENT: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-};
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -105,20 +56,53 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='welcome-view' style={FULL}>
-        <GradientBackground colors={['#422443', '#281b34']} />
-        <Screen style={CONTAINER} preset='scroll' backgroundColor={color.transparent}>
-          <Text style={TITLE_WRAPPER}>
-            <Text style={TITLE} text='Your new app, ' />
-            <Text style={ALMOST} text='BPartners' />
-            <Text style={TITLE} text='!' />
-          </Text>
-          <Text style={TITLE} preset='header' tx='welcomeScreen.readyForLaunch' />
-        </Screen>
-        <SafeAreaView style={[FOOTER, FOOTER_CONTENT]}>
-          <Button testID='sign-in-button' style={CONTINUE} textStyle={CONTINUE_TEXT} tx='welcomeScreen.login' onPress={signIn} disabled={!request} />
-        </SafeAreaView>
-      </View>
+      <Screen backgroundColor='#fff'>
+        <AutoImage
+          source={require('./welcome.background.png')}
+          resizeMode='stretch'
+          resizeMethod='auto'
+          style={{ position: 'absolute', height: '100%', width: '100%' }}
+        />
+        <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
+          <AutoImage source={require('./welcome.logo.png')} resizeMode='contain' resizeMethod='auto' style={{ width: '100%', marginTop: spacing[8] }} />
+          <Button
+            onPress={signIn}
+            style={{
+              borderRadius: 50,
+              paddingVertical: spacing[3],
+              backgroundColor: '#fff',
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: spacing[8] + spacing[8] + spacing[0],
+            }}
+          >
+            <Text
+              tx='welcomeScreen.login'
+              style={{
+                color: color.palette.secondaryColor,
+                fontFamily: 'Geometria-Bold',
+                marginRight: spacing[2],
+              }}
+            />
+            <Icon icon='user' />
+          </Button>
+          <View
+            style={{
+              marginTop: spacing[8] + spacing[3],
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 0,
+            }}
+          >
+            <Text tx='welcomeScreen.noAccount' style={{ fontFamily: 'Geometria', marginRight: spacing[2] }} />
+            <TouchableOpacity>
+              <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Screen>
     </ErrorBoundary>
   );
 });

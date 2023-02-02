@@ -12,7 +12,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
 
-import { BpDrawer, BpTabNavigation, Text } from '../components';
+import { BPDrawer, BpTabNavigation, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
@@ -88,7 +88,7 @@ const AppStack = observer(function () {
         },
       }}
       initialRouteName={accessToken ? 'home' : 'welcome'}
-      drawerContent={props => <BpDrawer {...props} />}
+      drawerContent={props => <BPDrawer {...props} />}
     >
       {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
         <>
@@ -138,7 +138,7 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
     const colorScheme = useColorScheme();
     useBackButtonHandler(canExit);
-    const { transactionStore, invoiceStore } = useStores();
+    const { transactionStore, invoiceStore, marketplaceStore } = useStores();
     const { setError } = useError();
 
     const handleError = async (asyncFunc: () => any) => {
@@ -170,7 +170,9 @@ export function AppNavigator(props: NavigationProps) {
             case 'invoiceForm':
                 await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));
                 break;
-        }
+        case 'marketplace':
+        await handleError(async () => await Promise.all([marketplaceStore.getMarketplaces()]));
+        break;}
     };
 
     return (
