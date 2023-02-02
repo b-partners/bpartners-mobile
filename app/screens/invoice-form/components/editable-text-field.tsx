@@ -157,7 +157,7 @@ const ReadOnlyText: FC<TReadOnlyText> = props => {
       </View>
     );
   }
-  return <Text numberOfLines={1} text={`${prefix}${value || defaultValue}${suffix}`} tx={placeholderTx} style={TEXT_STYLE} />;
+  return <Text numberOfLines={1} text={`${prefix}${value || defaultValue}${suffix}`} style={TEXT_STYLE} />;
 };
 
 export default EditableTextField;
