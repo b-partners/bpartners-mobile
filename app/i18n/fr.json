@@ -38,7 +38,9 @@
     "poweredBy": "POWERED BY NUMER",
     "readyForLaunch": "Prêt pour le lancement.",
     "start": "OUVRIR UN COMPTE",
-    "login": "SE CONNECTER"
+    "login": "SE CONNECTER",
+    "noAccount": "Pas de compte ?",
+    "itsThisWay": "C'est par ici"
   },
   "paymentInitiationScreen": {
     "label": "Paiement",

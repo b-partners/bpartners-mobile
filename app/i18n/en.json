@@ -20,7 +20,8 @@
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",
-    "readyForLaunch": "Ready for launch.",
+    "noAccount": "No account ?",
+    "itsThisWay": "It's this way",
     "start": "CREATE AN ACCOUNT",
     "login": "LOGIN"
   },
