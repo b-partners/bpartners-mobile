@@ -104,7 +104,9 @@ const VALIDITY_PERIOD_TEXT_STYLE: TextStyle = {
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
   const [showUserListModal, setShowUserListModal] = useState(false);
+  const [legalNotice, setLegalNotice] = useState<boolean>(false);
   const [limitedPeriodOfValidity, setLimitedPeriodOfValidity] = useState(false);
+  const [showMyMailAddress, setShowMyMailAddress] = useState<boolean>(false);
 
   const validate = values => {
     const errors: Partial<Record<keyof Invoice, string>> = {};
@@ -115,8 +117,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
     return errors;
   };
 
-  const [legalNotice, setLegalNotice] = useState<boolean>(false);
-  const [showMyMailAddress, setShowMyMailAddress] = useState<boolean>(false);
   const productInitialValue = {
     id: uuid.v4().toString(),
     description: '',
@@ -165,9 +165,9 @@ export function InvoiceForm(props: InvoiceFormProps) {
               ...values,
               products: values.products.map(item => ({
                 description: item.description,
-                unitPrice: item.unitPrice,
-                vatPercent: item.tva,
-                quantity: item.quantity,
+                unitPrice: +item.unitPrice,
+                vatPercent: +item.tva,
+                quantity: +item.quantity,
               })),
             });
           } catch (e) {
