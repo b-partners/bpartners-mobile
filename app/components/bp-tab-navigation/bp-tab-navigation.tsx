@@ -6,7 +6,7 @@ import { BackHandler, Dimensions, ImageStyle, Modal, Text, TextStyle, TouchableO
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
-import { Icon, IconType, ModalRoute } from './type';
+import { BOTTOM_TAB_ROUTES, MODAL_SERVICES_ROUTES } from './constants';
 
 const TEXT_CONTAINER_STYLE: ViewStyle = {
   width: '100%',
@@ -99,17 +99,17 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   }, []);
 
   const BOTTOM_NAVBAR_ICONS: IconProps = {
-    account: require('./wallet.png'),
-    activity: require('./activity.png'),
-    payment: require('./paiment.png'),
-    facturation: require('./facturation.png'),
-    service: require('./service.png'),
+    account: require('./icons/wallet.png'),
+    activity: require('./icons/activity.png'),
+    payment: require('./icons/paiment.png'),
+    facturation: require('./icons/facturation.png'),
+    service: require('./icons/service.png'),
   };
 
   const SERVICES_MODAL_ICONS: ModalProps = {
-    transfer: require('./transfer.png'),
-    card: require('./card.png'),
-    help: require('./help.png'),
+    transfer: require('./icons/transfer.png'),
+    card: require('./icons/card.png'),
+    help: require('./icons/help.png'),
   };
 
   const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
@@ -117,7 +117,10 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     activity: () => handleNavigation('marketplace'),
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
-    service: () => openModal('supportContact'),
+    service: () => {
+      console.tron.log('triggered');
+      openModal('supportContact');
+    },
   };
 
   const RouteName: IconProps = {
@@ -157,17 +160,19 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   return (
     <View style={TAB_VIEW_STYLE} {...props}>
-      <AutoImage source={require('./tab-navigation.png')} style={WAVE_STYLE} resizeMethod='resize' />
-      {Icon.map((item: IconType) => {
+      <AutoImage source={require('./icons/tab-navigation.png')} style={WAVE_STYLE} resizeMethod='resize' />
+      {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
         return (
-          <View key={item.id} style={NAVIGATION_CONTAINER_STYLE}>
-            <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[item.name]} style={NAVIGATION_STYLE}>
-              <AutoImage source={BOTTOM_NAVBAR_ICONS[item.name]} style={ICON_STYLE} resizeMethod='auto' resizeMode='stretch' />
+          <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
+            <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]} style={NAVIGATION_STYLE}>
+              <AutoImage source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]} style={ICON_STYLE} resizeMethod='auto' resizeMode='stretch' />
               <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>{ROUTE[item.name]}</Text>
+                <Text style={TEXT_STYLE}>{ROUTE[bottomTavNavItem]}</Text>
               </View>
             </TouchableOpacity>
-            {activeRouteName === RouteName[item.name] && <AutoImage source={require('./tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />}
+            {activeRouteName === RouteName[bottomTavNavItem] && (
+              <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
+            )}
             <Modal
               animationType='slide'
               transparent={true}
@@ -190,10 +195,10 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                       justifyContent: 'space-around',
                     }}
                   >
-                    {ModalRoute.map((modalRouteItem: IconType) => {
+                    {MODAL_SERVICES_ROUTES.map((serviceModalRoute: string, j) => {
                       return (
                         <View
-                          key={modalRouteItem.id}
+                          key={`modal-service-route-${j}`}
                           style={{
                             width: '100%',
                             height: '30%',
@@ -202,7 +207,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                           }}
                         >
                           <AutoImage
-                            source={SERVICES_MODAL_ICONS[modalRouteItem.name]}
+                            source={SERVICES_MODAL_ICONS[serviceModalRoute]}
                             style={{ width: 40, height: 40, borderRadius: 50 }}
                             resizeMethod='auto'
                             resizeMode='stretch'
@@ -210,7 +215,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                           <TouchableOpacity
                             style={{ width: '100%', height: 50 }}
                             onPress={() => {
-                              console.tron.log({ item: modalRouteItem });
+                              console.tron.log({ item: serviceModalRoute });
                             }}
                           >
                             <View style={{ width: '100%', alignItems: 'center' }}>
@@ -220,7 +225,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                                   fontSize: 10,
                                 }}
                               >
-                                {ModalText[modalRouteItem.name]}
+                                {ModalText[serviceModalRoute]}
                               </Text>
                             </View>
                           </TouchableOpacity>
