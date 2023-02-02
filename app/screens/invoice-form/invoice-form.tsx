@@ -30,6 +30,7 @@ const FLEX_ROW: ViewStyle = { ...FULL, flexDirection: 'row' };
 
 const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
   fontSize: 14,
+  fontWeight: '700'
 };
 
 const EDITABLE_TF_CONTAINER: ViewStyle = { borderWidth: 0.5, borderColor: palette.lighterGrey, flex: 1 };
@@ -40,6 +41,7 @@ const BUTTON_FILL_STYLE: ViewStyle = {
   borderRadius: 40,
   paddingVertical: spacing[3],
   paddingHorizontal: spacing[2],
+  marginLeft: spacing[2]
 };
 const HEADER_RIGHT_ROW: ViewStyle = { ...EDITABLE_TF_CONTAINER, flex: 1.5 };
 
@@ -55,8 +57,8 @@ const CENTERED_FLEX: ViewStyle = {
 const SAVE_ICON_CONTAINER: ViewStyle = {
   borderWidth: 2,
   borderColor: palette.lighterPurple,
-  width: 25,
-  height: 25,
+  width: 45,
+  height: 45,
   borderRadius: 25,
   justifyContent: 'center',
   alignItems: 'center',
@@ -288,7 +290,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <Separator style={SEPARATOR_STYLE} />
               </View>
 
-              <View style={[FLEX_ROW, { marginVertical: spacing[6] }]}>
+              <View style={[FLEX_ROW, { marginVertical: spacing[6], marginHorizontal: spacing[4], justifyContent: "center", }]}>
                 <View style={SAVE_ICON_CONTAINER}>
                   <Icon icon={'save'} />
                 </View>
