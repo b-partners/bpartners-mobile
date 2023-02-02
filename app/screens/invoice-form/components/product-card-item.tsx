@@ -86,8 +86,16 @@ const ProductCardItem: FC<ICardElement> = ({ onRemove, onAdd, item, onChange }) 
 
               <View style={CONTAINER_STYLE}>
                 <View>
-                  <EditableTextField titleTx={"invoiceFormScreen.invoiceForm.productCartItem.title"} formName={'title'} placeholderTx={'invoiceFormScreen.invoiceForm.productCartItem.titlePlaceholder'}/>
-                  <EditableTextField titleTx={'invoiceFormScreen.invoiceForm.productCartItem.description'} formName={'description'} placeholderTx={'invoiceFormScreen.invoiceForm.productCartItem.descriptionPlaceholder'} />
+                  <EditableTextField
+                    titleTx={'invoiceFormScreen.invoiceForm.productCartItem.title'}
+                    formName={'title'}
+                    placeholderTx={'invoiceFormScreen.invoiceForm.productCartItem.titlePlaceholder'}
+                  />
+                  <EditableTextField
+                    titleTx={'invoiceFormScreen.invoiceForm.productCartItem.description'}
+                    formName={'description'}
+                    placeholderTx={'invoiceFormScreen.invoiceForm.productCartItem.descriptionPlaceholder'}
+                  />
                 </View>
                 <View style={BOTTOM_INFO_STYLE}>
                   <EditableTextField

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
-import DatePickerInput from "react-native-date-picker";
+import React, { useEffect, useState } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import DatePickerInput from 'react-native-date-picker';
 
-import { Button, Text } from "..";
-import { TxKeyPath, translate } from "../../i18n";
-import { spacing } from "../../theme";
-import { palette } from "../../theme/palette";
+import { Button, Text } from '..';
+import { TxKeyPath, translate } from '../../i18n';
+import { spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 
 type DatePickerProps = {
   value: Date;
@@ -22,7 +22,7 @@ type DatePickerProps = {
   dateSeparator?: string;
 };
 
-const LABEL_TEXT_STYLE: TextStyle = { textTransform: "uppercase", fontSize: 13 };
+const LABEL_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 13 };
 const LABEL_CONTAINER_STYLE: ViewStyle = { marginBottom: spacing[2] };
 
 const DATE_PICKER_CONTAINER_STYLE = { flex: 1 };
@@ -40,11 +40,11 @@ export function DatePickerField(props: DatePickerProps) {
     validationError,
     textStyle,
     isButtonPreset = true,
-    dateSeparator
+    dateSeparator,
   } = props;
   const [open, setOpen] = useState(false);
-  let [date] = value && value.toISOString().split("T");
-  date = date.split("-").join(dateSeparator);
+  let [date] = value && value.toISOString().split('T');
+  date = date.split('-').join(dateSeparator);
 
   useEffect(() => {
     onDateChange(value);
@@ -56,17 +56,14 @@ export function DatePickerField(props: DatePickerProps) {
         <Text text={labelText} tx={labelTx} style={[LABEL_TEXT_STYLE, labelStyleOverride]} />
         {isButtonPreset ? (
           <Button
-            text={date || translate("components.datePicker.pickADate")}
+            text={date || translate('components.datePicker.pickADate')}
             onPress={() => setOpen(true)}
             textStyle={BUTTON_TEXT_STYLE}
             style={BUTTON_STYLE}
           />
         ) : (
           <TouchableOpacity onPress={() => setOpen(true)}>
-            <Text
-              text={date || translate("components.datePicker.pickADate")}
-              style={textStyle}
-            />
+            <Text text={date || translate('components.datePicker.pickADate')} style={textStyle} />
           </TouchableOpacity>
         )}
       </View>

@@ -57,7 +57,6 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   const sectionedQuotations = sectionInvoicesByMonth(quotations);
   const items: MenuItem[] = [{ id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') }];
 
-
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>

@@ -160,7 +160,7 @@
       "downPayment": "Acompte",
       "personalizedNotice": "Mentions légales personalisés",
       "viewMail": "Afficher mon addresse email",
-      "limitedValidityPeriod":  "Durée de validité limitée",
+      "limitedValidityPeriod": "Durée de validité limitée",
       "productCartItem": {
         "title": "Titre de l'élément",
         "titlePlaceholder": "Taper le titre de l'élément",
@@ -168,7 +168,7 @@
         "descriptionPlaceholder": "Type the description",
         "unitPrice": "Prix unitaire",
         "quantity": "Quantité",
-        "tva": "TVA",
+        "tva": "TVA"
       }
     },
     "customerSelectionForm": {
