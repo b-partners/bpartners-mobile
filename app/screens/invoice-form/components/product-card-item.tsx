@@ -52,6 +52,7 @@ const ProductCardItem: FC<ICardElement> = ({ onRemove, onAdd, item, onChange }) 
     }
   }, []);
 
+
   const validationSchema = yup.object().shape({
     title: yup.string().required(),
     description: yup.string().notRequired(),
@@ -100,7 +101,7 @@ const ProductCardItem: FC<ICardElement> = ({ onRemove, onAdd, item, onChange }) 
                 <View style={BOTTOM_INFO_STYLE}>
                   <EditableTextField
                     titleTx={'invoiceFormScreen.invoiceForm.productCartItem.unitPrice'}
-                    suffix={' $'}
+                    suffix={' €'}
                     formName={'unitPrice'}
                     containerStyle={EDITABLE_TF_CONTAINER}
                     keyboardType={'number-pad'}
