@@ -177,6 +177,7 @@
       "downPayment": "Down Payment",
       "personalizedNotice": "Personalized legal notice",
       "viewMail": "View my email address",
+      "limitedValidityPeriod": "Limited period of validity",
       "productCartItem": {
         "title": "Element title",
         "titlePlaceholder": "Type the element title",
