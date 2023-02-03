@@ -155,7 +155,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
     customer: customers[0],
     products: [productInitialValue],
     status: InvoiceStatus.DRAFT,
-    delayInPaymentAllowed: 40,
+    delayInPaymentAllowed: 30,
     delayPenaltyPercent: 0
   });
 
@@ -205,7 +205,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
           try {
             await onSaveInvoice({
               ...values,
-              // todo: add those 2 field to Model
               delayInPaymentAllowed: +values.delayInPaymentAllowed,
               delayPenaltyPercent: +values.delayPenaltyPercent,
               products: values.products.map(item => ({
