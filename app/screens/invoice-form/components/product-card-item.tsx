@@ -10,7 +10,7 @@ import { Product } from '../../../models/entities/product/product';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SEPARATOR_STYLE } from '../../invoice-quotation/styles';
-import { SHADOW_STYLE } from '../styles';
+import { DEFAULT_FONT_STYLE, SHADOW_STYLE } from "../styles";
 import EditableTextField from './editable-text-field';
 
 const CONTAINER_STYLE: ViewStyle = {
@@ -81,7 +81,7 @@ const ProductCardItem: FC<ICardElement> = ({ onRemove, onAdd, item, onChange }) 
               <View style={CONTAINER_STYLE}>
                 <Text
                   tx={'invoiceFormScreen.invoiceForm.productCartItem.delete'}
-                  style={{ color: color.primary, flex: 1, alignSelf: 'flex-end', marginRight: spacing[5], fontSize: 9 }}
+                  style={{ color: color.primary, flex: 1, alignSelf: 'flex-end', marginRight: spacing[5], fontSize: 9, ...DEFAULT_FONT_STYLE}}
                 />
                 <TouchableOpacity
                   style={[DELETE_ACTION_POSITION_STYLE, DELETE_ACTION_CONTAINER_STYLE]}

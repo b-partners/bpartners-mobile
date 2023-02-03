@@ -7,6 +7,7 @@ import ErrorMessage from '../../../components/forms/error-message';
 import { TxKeyPath, translate } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { DEFAULT_FONT_STYLE } from "../styles";
 
 interface TEditableTextField extends TextInputProps {
   title?: string;
@@ -32,13 +33,15 @@ const LABEL_STYLE: TextStyle = {
   fontSize: 14,
   fontWeight: '700',
   textTransform: 'uppercase',
+  ...DEFAULT_FONT_STYLE
 };
-const TEXT_STYLE: TextStyle = { color: palette.textClassicColor, fontSize: 18, fontWeight: '700' };
+const TEXT_STYLE: TextStyle = { color: palette.textClassicColor, fontSize: 18, fontWeight: '700', ...DEFAULT_FONT_STYLE};
 const PLACEHOLDER_TEXT_STYLE: TextStyle = {
   color: palette.lighterGrey,
   fontSize: 14,
   fontStyle: 'italic',
   marginTop: spacing[1],
+  ...DEFAULT_FONT_STYLE
 };
 const TEXT_FIELD_STYLE: ViewStyle = { paddingVertical: 0 };
 

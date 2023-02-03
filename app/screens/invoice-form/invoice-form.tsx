@@ -17,6 +17,7 @@ import CustomerListSelectionModal from './components/customer-selection-form/cus
 import EditableTextField from './components/editable-text-field';
 import GridHeaderContent from './components/grid-header-content';
 import ProductCardItem from './components/product-card-item';
+import { DEFAULT_FONT_STYLE, TEXT_STYLE } from "./styles";
 
 type InvoiceFormProps = {
   invoice: Partial<InvoiceSnapshotIn>;
@@ -31,6 +32,7 @@ const FLEX_ROW: ViewStyle = { ...FULL, flexDirection: 'row' };
 const SUBMIT_BUTTON_TEXT_STYLE: TextStyle = {
   fontSize: 14,
   fontWeight: '700',
+  ...DEFAULT_FONT_STYLE
 };
 
 const EDITABLE_TF_CONTAINER: ViewStyle = { borderWidth: 0.5, borderColor: palette.lighterGrey, flex: 1 };
@@ -143,7 +145,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
   });
 
   const validationSchema = yup.object().shape({
-    title: yup.string().required(),
+    title: yup.string().required("title", "Ce champ est obligatoire"),
     ref: yup.string().required(),
     products: yup.array().of(
       yup.object().shape({
@@ -274,11 +276,12 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       },
                     ])
                   }
+                  textStyle={DEFAULT_FONT_STYLE}
                   style={ADD_PRODUCT_BUTTON_STYLE}
                 >
                   <>
                     <MaterialCommunityIcons name='plus' size={25} color={color.primary} />
-                    <Text tx={'invoiceFormScreen.invoiceForm.addItem'} style={ADD_BUTTON_TEXT_STYLE} />
+                    <Text tx={'invoiceFormScreen.invoiceForm.addItem'} style={{...ADD_BUTTON_TEXT_STYLE, ...DEFAULT_FONT_STYLE}} />
                   </>
                 </Button>
               </View>
@@ -286,7 +289,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <View style={[FLEX_ROW, CENTERED_FLEX, SEPARATOR_STYLE, VALIDITY_PERIOD_TEXT_STYLE]}>
                   <Text
                     tx={'invoiceFormScreen.invoiceForm.limitedValidityPeriod'}
-                    style={[FULL, { color: palette.textClassicColor, fontSize: 14, fontWeight: '400' }]}
+                    style={[FULL, { color: palette.textClassicColor, fontSize: 14, fontWeight: '400', ...DEFAULT_FONT_STYLE }]}
                   />
                   <Switch style={FULL} value={limitedPeriodOfValidity} onToggle={() => setLimitedPeriodOfValidity(!limitedPeriodOfValidity)} />
                 </View>
@@ -313,12 +316,18 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     headerTx={'invoiceFormScreen.invoiceForm.personalizedNotice'}
                     bodyText={'Bon pour accord Signature du client'}
                     style={FULL}
+                    headerTextStyle={{color: palette.textClassicColor, fontSize: 14, fontWeight: '400'}}
                   />
                   <Switch style={FULL} value={legalNotice} onToggle={newValue => setLegalNotice(newValue)} />
                 </View>
                 <Separator style={SEPARATOR_STYLE} />
                 <View style={[FLEX_ROW, CENTERED_FLEX]}>
-                  <GridHeaderContent headerTx={'invoiceFormScreen.invoiceForm.viewMail'} bodyText={values.customer.email || ''} style={FULL} />
+                  <GridHeaderContent
+                    headerTx={'invoiceFormScreen.invoiceForm.viewMail'}
+                    bodyText={values.customer.email || ''}
+                    style={FULL}
+                    headerTextStyle={TEXT_STYLE}
+                  />
                   <Switch style={FULL} value={showMyMailAddress} onToggle={newValue => setShowMyMailAddress(newValue)} />
                 </View>
                 <Separator style={SEPARATOR_STYLE} />
