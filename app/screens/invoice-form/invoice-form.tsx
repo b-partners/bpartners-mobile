@@ -66,7 +66,7 @@ const SAVE_ICON_CONTAINER: ViewStyle = {
   alignItems: "center"
 };
 
-const DATE_PICKER_FIELD_CONTAINER: ViewStyle = { ...EDITABLE_TF_CONTAINER, padding: spacing[4] };
+const DATE_PICKER_FIELD_CONTAINER: ViewStyle = { ...EDITABLE_TF_CONTAINER, padding: spacing[0] };
 
 const SEPARATOR_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
@@ -102,6 +102,8 @@ const VALIDITY_PERIOD_TEXT_STYLE: TextStyle = {
   paddingVertical: spacing[3],
   borderTopWidth: 1
 };
+
+const DATE_PICKER_CONTAINER_STYLE: ViewStyle = {marginVertical: spacing[4], marginRight: spacing[2], marginLeft: spacing[4]};
 
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
@@ -223,20 +225,18 @@ export function InvoiceForm(props: InvoiceFormProps) {
             <>
               <View style={FLEX_WRAP}>
                 <View style={FLEX_ROW}>
-                  <View style={FULL}>
+                  <View style={[FULL, { ...EDITABLE_TF_CONTAINER, borderTopWidth: 0} ]}>
                     <EditableTextField
                       titleTx={"invoiceFormScreen.invoiceForm.quotationTitle"}
                       formName={"title"}
                       placeholderTx={"invoiceFormScreen.invoiceForm.quotationTitlePlaceholder"}
-                      containerStyle={{ ...EDITABLE_TF_CONTAINER, borderTopWidth: 0 }}
                     />
                   </View>
-                  <View style={FULL}>
+                  <View style={[FULL, { ...EDITABLE_TF_CONTAINER, borderTopWidth: 0 }]}>
                     <EditableTextField
                       titleTx={"invoiceFormScreen.invoiceForm.quotationNumber"}
                       formName={"ref"}
                       placeholderTx={"invoiceFormScreen.invoiceForm.quotationNumber"}
-                      containerStyle={{ ...EDITABLE_TF_CONTAINER, borderTopWidth: 0 }}
                     />
                   </View>
                 </View>
@@ -275,6 +275,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       isButtonPreset={false}
                       textStyle={DATE_PICKER_STYLE}
                       dateSeparator={"/"}
+                      containerStyle={DATE_PICKER_CONTAINER_STYLE}
                     />
                   </View>
                 </View>

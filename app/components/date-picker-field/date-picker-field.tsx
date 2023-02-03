@@ -20,6 +20,7 @@ type DatePickerProps = {
   // this will be applied if you use Text instead of button to display the current value
   textStyle?: TextStyle;
   dateSeparator?: string;
+  containerStyle?: ViewStyle;
 };
 
 const LABEL_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 13 };
@@ -41,6 +42,7 @@ export function DatePickerField(props: DatePickerProps) {
     textStyle,
     isButtonPreset = true,
     dateSeparator,
+    containerStyle
   } = props;
   const [open, setOpen] = useState(false);
   let [date] = value && value.toISOString().split('T');
@@ -51,7 +53,7 @@ export function DatePickerField(props: DatePickerProps) {
   }, [value]);
 
   return (
-    <View style={DATE_PICKER_CONTAINER_STYLE}>
+    <View style={[DATE_PICKER_CONTAINER_STYLE, containerStyle]}>
       <View style={[LABEL_CONTAINER_STYLE, labelContainerStyleOverride]}>
         <Text text={labelText} tx={labelTx} style={[LABEL_TEXT_STYLE, labelStyleOverride]} />
         {isButtonPreset ? (
