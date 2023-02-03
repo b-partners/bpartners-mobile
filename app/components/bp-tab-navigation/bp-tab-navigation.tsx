@@ -7,6 +7,7 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { BOTTOM_TAB_ROUTES, MODAL_SERVICES_ROUTES } from './constants';
+import {translate} from "../../i18n";
 
 const TEXT_CONTAINER_STYLE: ViewStyle = {
   width: '100%',
@@ -81,6 +82,12 @@ type IconRouteProps = {
   service: () => void;
 };
 
+type ModalRouteProps = {
+  transfer: () => void;
+  card: () => void;
+  help: () => void;
+}
+
 const modalHeight = Dimensions.get('window').height - 130;
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
@@ -122,6 +129,12 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     },
   };
 
+  const MODAL_NAVIGATION_HANDLERS: ModalRouteProps = {
+    transfer: () => console.tron.log('transfer'),
+    card: () => console.tron.log('card'),
+    help: () => handleNavigation('supportContact'),
+  }
+
   const RouteName: IconProps = {
     account: 'home',
     activity: 'marketplace',
@@ -131,17 +144,17 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   };
 
   const ROUTE: IconProps = {
-    account: 'Comptes',
-    activity: 'Activité',
-    payment: 'Collecter un paiement',
-    facturation: 'Facturation',
-    service: 'Autres services',
+    account: translate('bottomTab.account'),
+    activity: translate('bottomTab.activity'),
+    payment: translate('bottomTab.payment'),
+    facturation: translate('bottomTab.facturation'),
+    service: translate('bottomTab.service'),
   };
 
   const ModalText: ModalProps = {
-    transfer: 'Virement',
-    card: 'Cartes',
-    help: 'Aide',
+    transfer: translate('bottomTab.transfer'),
+    card: translate('bottomTab.card'),
+    help: translate('bottomTab.help'),
   };
 
   useFocusEffect(
@@ -163,7 +176,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
       {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
         return (
           <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
-            <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]} style={NAVIGATION_STYLE}>
+            <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]} style={NAVIGATION_STYLE} testID={RouteName[bottomTavNavItem]}>
               <AutoImage source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]} style={ICON_STYLE} resizeMethod='auto' resizeMode='stretch' />
               <View style={TEXT_CONTAINER_STYLE}>
                 <Text style={TEXT_STYLE}>{ROUTE[bottomTavNavItem]}</Text>
@@ -217,7 +230,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                     <TouchableOpacity
                       style={{ width: '100%', height: 50 }}
                       onPress={() => {
-                        console.tron.log({ item: serviceModalRoute });
+                        MODAL_NAVIGATION_HANDLERS[serviceModalRoute];
                       }}
                     >
                       <View style={{ width: '100%', alignItems: 'center' }}>

@@ -9,8 +9,7 @@ describe('PaymentInitiation', () => {
 
   it('Initiating a payment', async () => {
     const REF = `REF-${new Date().toISOString().replaceAll('-', '')}`;
-    await waitFor(element(by.id('menuContainer')));
-    await element(by.id('menuContainer')).tap();
+    await waitFor(element(by.id('paymentInitiation')));
     await element(by.id('paymentInitiation')).tap();
     await waitFor(element(by.id('paymentInitiationScreen')))
       .toBeVisible()
@@ -26,8 +25,7 @@ describe('PaymentInitiation', () => {
 
   it('Amount must be a number', async () => {
     const REF = `REF-${new Date().toISOString().replaceAll('-', '')}`;
-    await waitFor(element(by.id('menuContainer')));
-    await element(by.id('menuContainer')).tap();
+    await waitFor(element(by.id('paymentInitiation')));
     await element(by.id('paymentInitiation')).tap();
     await waitFor(element(by.id('paymentInitiationScreen')))
       .toBeVisible()
@@ -43,8 +41,7 @@ describe('PaymentInitiation', () => {
 
   it('Email must be a valid email', async () => {
     const REF = `REF-${new Date().toISOString().replaceAll('-', '')}`;
-    await waitFor(element(by.id('menuContainer')));
-    await element(by.id('menuContainer')).tap();
+    await waitFor(element(by.id('paymentInitiation')));
     await element(by.id('paymentInitiation')).tap();
     await waitFor(element(by.id('paymentInitiationScreen')))
       .toBeVisible()

@@ -219,5 +219,15 @@
     "title": "Contacter le support",
     "message": "Pour contacter le support, veuillez envoyer un courriel à",
     "mail": "contact@bpartners.app"
+  },
+  "bottomTab": {
+    "account": "Comptes",
+    "activity": "Activité",
+    "payment": "Collecter un paiement",
+    "facturation": "Facturation",
+    "service": "Autres services",
+    "transfer": "Virement",
+    "card": "Cartes",
+    "help": "Aide"
   }
 }
