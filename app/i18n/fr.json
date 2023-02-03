@@ -162,6 +162,11 @@
       "viewMail": "Afficher mon addresse email",
       "limitedValidityPeriod": "Durée de validité limitée",
       "days": "Jours",
+      "editableTextField": {
+        "error": {
+          "required": "Ce champ est requis"
+        }
+      },
       "productCartItem": {
         "delete": "Supprimer",
         "title": "Titre de l'élément",

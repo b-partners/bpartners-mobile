@@ -144,8 +144,16 @@ export function InvoiceForm(props: InvoiceFormProps) {
     delayPenaltyPercent: 0,
   });
 
+
+  // default error when no error message is provided
+  yup.setLocale({
+    mixed: {
+      required: "Ce champ est requis",
+    }
+  })
+
   const validationSchema = yup.object().shape({
-    title: yup.string().required("title", "Ce champ est obligatoire"),
+    title: yup.string().required(),
     ref: yup.string().required(),
     products: yup.array().of(
       yup.object().shape({

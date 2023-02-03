@@ -179,6 +179,11 @@
       "viewMail": "View my email address",
       "limitedValidityPeriod": "Limited period of validity",
       "days": "Days",
+      "editableTextField": {
+        "error": {
+          "required": "This field is required"
+        }
+      },
       "productCartItem": {
         "delete": "Delete",
         "title": "Element title",
