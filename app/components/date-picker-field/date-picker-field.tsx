@@ -42,7 +42,7 @@ export function DatePickerField(props: DatePickerProps) {
     textStyle,
     isButtonPreset = true,
     dateSeparator,
-    containerStyle
+    containerStyle,
   } = props;
   const [open, setOpen] = useState(false);
   let [date] = value && value.toISOString().split('T');

@@ -1,10 +1,10 @@
-import React, { FC } from "react";
-import { TextStyle, View, ViewStyle } from "react-native";
+import React, { FC } from 'react';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
-import { Text } from "../../../components";
-import { TxKeyPath } from "../../../i18n";
-import { spacing } from "../../../theme";
-import { palette } from "../../../theme/palette";
+import { Text } from '../../../components';
+import { TxKeyPath } from '../../../i18n';
+import { spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 
 type TGridHeaderContent = {
   headerText?: string;
@@ -16,10 +16,12 @@ type TGridHeaderContent = {
   bodyTextStyle?: TextStyle;
 };
 
-const FONT_STYLE: TextStyle =  {
-  fontSize: 14, fontWeight: "700" , fontFamily: "Geometria"
-}
-const HEADER_TEXT_STYlE: TextStyle = { color: palette.greyDarker, ...FONT_STYLE};
+const FONT_STYLE: TextStyle = {
+  fontSize: 14,
+  fontWeight: '700',
+  fontFamily: 'Geometria',
+};
+const HEADER_TEXT_STYlE: TextStyle = { color: palette.greyDarker, ...FONT_STYLE };
 const MAIN_CONTAINER: ViewStyle = { padding: spacing[4] };
 
 const BODY_TEXT_STYLE: TextStyle = { color: palette.textClassicColor, ...FONT_STYLE };
