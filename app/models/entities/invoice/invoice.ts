@@ -26,6 +26,8 @@ export const InvoiceModel = types.model('Invoice').props({
   totalPriceWithVat: types.maybe(types.maybeNull(types.number)),
   totalPriceWithoutVat: types.maybe(types.maybeNull(types.number)),
   status: types.maybe(types.maybeNull(types.enumeration(Object.values(InvoiceStatus)))),
+  delayInPaymentAllowed: types.maybe(types.maybeNull(types.number)),
+  delayPenaltyPercent: types.maybe(types.maybeNull(types.number)),
 });
 
 export interface Invoice extends Instance<typeof InvoiceModel> {}
@@ -44,4 +46,6 @@ export const createInvoiceDefaultModel = () =>
     customer: createCustomerDefaultModel(),
     products: [],
     status: InvoiceStatus.DRAFT,
+    delayInPaymentAllowed: 0,
+    delayPenaltyPercent: 0,
   });

@@ -150,6 +150,46 @@
       "downloadingInvoiceFailed": "Un problème est survenu durant le téléchargement de la facture."
     }
   },
+  "invoiceFormScreen": {
+    "invoiceForm": {
+      "addItem": "Ajouter un autre éléments",
+      "quotationTitle": "Titre du devis",
+      "quotationTitlePlaceholder": "Taper le titre du devis",
+      "quotationNumber": "Numéro du devis",
+      "quotationNumberPlaceholder": "Taper le numéros du devis",
+      "issueDate": "Date d'émission",
+      "paymentDelay": "Délais de paiement",
+      "paymentDelayPlaceholder": "Taper le délais de paiement",
+      "downPayment": "Acompte",
+      "personalizedNotice": "Mentions légales personalisés",
+      "viewMail": "Afficher mon addresse email",
+      "limitedValidityPeriod": "Durée de validité limitée",
+      "days": "Jours",
+      "editableTextField": {
+        "error": {
+          "required": "Ce champ est requis",
+          "greaterThanZero": "Etrer un nombre supérieur à zéro",
+          "greaterThanOne": "Entrer un nombre supérieur à 1",
+          "lessThanHundredOrEquals": "Entrer un nombre inférieur ou égale à cent"
+        }
+      },
+      "productCartItem": {
+        "delete": "Supprimer",
+        "title": "Titre de l'élément",
+        "titlePlaceholder": "Taper le titre de l'élément",
+        "description": "Déscription (Facultatif)",
+        "descriptionPlaceholder": "Type the description",
+        "unitPrice": "Prix unitaire",
+        "quantity": "Quantité",
+        "tva": "TVA"
+      }
+    },
+    "customerSelectionForm": {
+      "title": "Nom du Client",
+      "addClient": "Ajouter un client",
+      "validate": "Valider"
+    }
+  },
   "paymentListScreen": {
     "title": "Facturation",
     "tabs": {
