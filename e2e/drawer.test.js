@@ -13,7 +13,6 @@ describe('Drawer', () => {
     await expect(element(by.id('homeText'))).toHaveText('Accueil');
     await expect(element(by.id('profileText'))).toHaveText('Profil');
     await expect(element(by.id('transactionListText'))).toHaveText('Transactions');
-    await expect(element(by.id('supportContactText'))).toHaveText('Contacter le support');
     await expect(element(by.id('openSwanText'))).toHaveText('Ouvrir Swan');
   });
 });

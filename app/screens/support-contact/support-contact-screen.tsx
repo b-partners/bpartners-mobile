@@ -25,22 +25,22 @@ const MESSAGE_STYLE: TextStyle = { color: color.palette.black, textAlign: 'justi
 
 export const SupportContactScreen: FC<StackScreenProps<TabNavigatorParamList, 'supportContact'>> = observer(function SupportContactScreen({ navigation }) {
   return (
-    <ErrorBoundary catchErrors='always'>
-      <View testID='PaymentInitiationScreen' style={FULL}>
-        <Header
-          headerTx='supportContactScreen.title'
-          style={SUPPORT_HEADER}
-          titleStyle={HEADER_TITLE}
-          leftIcon={'back'}
-          rightIcon={'info'}
-          onLeftPress={async () => {
-            navigation.navigate('home');
-          }}
-        />
-        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
-          <Text text={`${translate('supportContactScreen.message')} ${translate('supportContactScreen.mail')}.`} style={MESSAGE_STYLE} />
-        </Screen>
-      </View>
-    </ErrorBoundary>
+      <ErrorBoundary catchErrors='always'>
+        <View testID='PaymentInitiationScreen' style={FULL}>
+          <Header
+              headerTx='supportContactScreen.title'
+              style={SUPPORT_HEADER}
+              titleStyle={HEADER_TITLE}
+              leftIcon={'back'}
+              rightIcon={'info'}
+              onLeftPress={async () => {
+                navigation.navigate('home');
+              }}
+          />
+          <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
+            <Text text={`${translate('supportContactScreen.message')} ${translate('supportContactScreen.mail')}.`} style={MESSAGE_STYLE} />
+          </Screen>
+        </View>
+      </ErrorBoundary>
   );
 });

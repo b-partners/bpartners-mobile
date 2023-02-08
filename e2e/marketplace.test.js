@@ -8,8 +8,8 @@ describe('Marketplace', () => {
   });
 
   it('displays marketplace list', async () => {
-    await waitFor(element(by.id('marketplace')));
-    await element(by.id('marketplace')).tap();
+    await waitFor(element(by.id('marketplaceTab')));
+    await element(by.id('marketplaceTab')).tap();
     await waitFor(element(by.id('marketplace-screen')))
       .toBeVisible()
       .withTimeout(5_000);

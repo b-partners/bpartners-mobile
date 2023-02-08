@@ -83,9 +83,9 @@ type IconRouteProps = {
 };
 
 type ModalRouteProps = {
-  transfer: () => void;
-  card: () => void;
-  help: () => void;
+  transfer: () => void | null;
+  card: () => void | null;
+  help: () => void | null;
 }
 
 const modalHeight = Dimensions.get('window').height - 130;
@@ -130,9 +130,9 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   };
 
   const MODAL_NAVIGATION_HANDLERS: ModalRouteProps = {
-    transfer: () => console.tron.log('transfer'),
-    card: () => console.tron.log('card'),
-    help: () => handleNavigation('supportContact'),
+    transfer: null,
+    card: null,
+    help: null,
   }
 
   const RouteName: IconProps = {
@@ -176,12 +176,23 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
       {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
         return (
           <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
+            {modalVisible == true && bottomTavNavItem == 'service' ?
+                <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]} style={{width: '100%', height: 60, marginTop: 8, alignItems: 'center',}} testID={`${RouteName[bottomTavNavItem]}Tab`}>
+                  <View style={{width: '100%', height: 60, justifyContent: 'center', alignItems: 'center', backgroundColor: palette.deepPurple, borderRadius: 50}}>
+                  <AutoImage source={require('./icons/anotherService.png')} style={{width: 50, height: 40, borderRadius: 10}} resizeMethod='auto' resizeMode='stretch' />
+                  </View>
+                  <View style={TEXT_CONTAINER_STYLE}>
+                    <Text style={TEXT_STYLE}>{translate('bottomTab.service')}</Text>
+                  </View>
+                </TouchableOpacity>
+                :
             <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]} style={NAVIGATION_STYLE} testID={RouteName[bottomTavNavItem]}>
               <AutoImage source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]} style={ICON_STYLE} resizeMethod='auto' resizeMode='stretch' />
               <View style={TEXT_CONTAINER_STYLE}>
                 <Text style={TEXT_STYLE}>{ROUTE[bottomTavNavItem]}</Text>
               </View>
             </TouchableOpacity>
+            }
             {activeRouteName === RouteName[bottomTavNavItem] && (
               <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
             )}
@@ -212,7 +223,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
             >
               {MODAL_SERVICES_ROUTES.map((serviceModalRoute: string, j) => {
                 return (
-                  <View
+                  <TouchableOpacity
                     key={`modal-service-route-${j}`}
                     style={{
                       width: '100%',
@@ -220,6 +231,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                       flexDirection: 'column',
                       alignItems: 'center',
                     }}
+                    onPress={MODAL_NAVIGATION_HANDLERS[serviceModalRoute]}
                   >
                     <AutoImage
                       source={SERVICES_MODAL_ICONS[serviceModalRoute]}
@@ -227,11 +239,8 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                       resizeMethod='auto'
                       resizeMode='stretch'
                     />
-                    <TouchableOpacity
+                    <View
                       style={{ width: '100%', height: 50 }}
-                      onPress={() => {
-                        MODAL_NAVIGATION_HANDLERS[serviceModalRoute];
-                      }}
                     >
                       <View style={{ width: '100%', alignItems: 'center' }}>
                         <Text
@@ -243,8 +252,8 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                           {ModalText[serviceModalRoute]}
                         </Text>
                       </View>
-                    </TouchableOpacity>
-                  </View>
+                    </View>
+                  </TouchableOpacity>
                 );
               })}
             </View>
