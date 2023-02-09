@@ -80,55 +80,55 @@ const AppStack = observer(function () {
   const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
 
   return (
-      <Drawer.Navigator
-          screenOptions={{
-            headerShown: false,
-            drawerStyle: {
-              width: windowWidth,
-            },
-          }}
-          initialRouteName={accessToken ? 'home' : 'welcome'}
-          drawerContent={props => <BPDrawer {...props} />}
-      >
-        {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
-            <>
-              <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
-            </>
-        ) : isAuthenticated && hasApprovedLegalFiles ? (
-            <>
-              <Drawer.Screen name='home' component={AppTabStack} />
-              <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
-              <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-              <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
-              <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
-            </>
-        ) : (
-            <>
-              <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
-              <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
-            </>
-        )}
-      </Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerStyle: {
+          width: windowWidth,
+        },
+      }}
+      initialRouteName={accessToken ? 'home' : 'welcome'}
+      drawerContent={props => <BPDrawer {...props} />}
+    >
+      {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
+        <>
+          <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      ) : isAuthenticated && hasApprovedLegalFiles ? (
+        <>
+          <Drawer.Screen name='home' component={AppTabStack} />
+          <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
+          <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
+          <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      ) : (
+        <>
+          <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
+        </>
+      )}
+    </Drawer.Navigator>
   );
 });
 
 const AppTabStack = observer(function () {
   return (
-      <Tab.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-          initialRouteName={'home'}
-          tabBar={props => <BpTabNavigation {...props} />}
-      >
-        <>
-          <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
-          <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
-          <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-          <Tab.Screen name='paymentList' component={PaymentListScreen} />
-          <Tab.Screen name='supportContact' component={SupportContactScreen} />
-        </>
-      </Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
+      initialRouteName={'home'}
+      tabBar={props => <BpTabNavigation {...props} />}
+    >
+      <>
+        <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+        <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
+        <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+        <Tab.Screen name='paymentList' component={PaymentListScreen} />
+        <Tab.Screen name='supportContact' component={SupportContactScreen} />
+      </>
+    </Tab.Navigator>
   );
 });
 
@@ -156,19 +156,19 @@ export function AppNavigator(props: NavigationProps) {
         break;
       case 'paymentList':
         await handleError(
-            async () =>
-                await Promise.all([
-                  invoiceStore.getDrafts({
-                    status: InvoiceStatus.DRAFT,
-                    page: 1,
-                    pageSize: 15,
-                  }),
-                ])
+          async () =>
+            await Promise.all([
+              invoiceStore.getDrafts({
+                status: InvoiceStatus.DRAFT,
+                page: 1,
+                pageSize: 15,
+              }),
+            ])
         );
         break;
-        case 'marketplace':
-            await handleError( async () => await Promise.all([marketplaceStore.getMarketplace()]));
-            break;
+      case 'marketplace':
+        await handleError(async () => await Promise.all([marketplaceStore.getMarketplace()]));
+        break;
       case 'invoiceForm':
         await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));
         break;
@@ -176,26 +176,26 @@ export function AppNavigator(props: NavigationProps) {
   };
 
   return (
-      <ErrorBoundary catchErrors={'always'}>
-        <NavigationContainer
-            linking={{
-              prefixes: ['bpartners://', Linking.createURL('/')],
-              config: {
-                screens: {
-                  initialRouteName: 'welcome',
-                  oauth: 'auth',
-                },
-              },
-            }}
-            fallback={<Text text={'Loading...'} />}
-            ref={navigationRef}
-            theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-            {...props}
-            onStateChange={onStateChange}
-        >
-          <AppStack />
-        </NavigationContainer>
-      </ErrorBoundary>
+    <ErrorBoundary catchErrors={'always'}>
+      <NavigationContainer
+        linking={{
+          prefixes: ['bpartners://', Linking.createURL('/')],
+          config: {
+            screens: {
+              initialRouteName: 'welcome',
+              oauth: 'auth',
+            },
+          },
+        }}
+        fallback={<Text text={'Loading...'} />}
+        ref={navigationRef}
+        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        {...props}
+        onStateChange={onStateChange}
+      >
+        <AppStack />
+      </NavigationContainer>
+    </ErrorBoundary>
   );
 }
 

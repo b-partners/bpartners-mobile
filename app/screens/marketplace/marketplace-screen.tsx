@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import { Dimensions, View } from 'react-native';
 
 import { Header, Screen } from '../../components';
@@ -12,7 +12,7 @@ import { RowList } from './components/market-row-list';
 import { FULL_HEIGHT, SCREEN_STYLE } from './styles';
 
 export const MarketPlaceScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
-    const screenWidth = Dimensions.get('screen').width;
+  const screenWidth = Dimensions.get('screen').width;
 
   return (
     <ErrorBoundary catchErrors='always'>

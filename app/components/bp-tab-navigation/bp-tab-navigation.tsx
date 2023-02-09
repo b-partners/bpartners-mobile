@@ -3,11 +3,10 @@ import { useFocusEffect, useRoute } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { BackHandler, Dimensions, ImageStyle, Modal, Text, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 
-import { color } from '../../theme';
+import { translate } from '../../i18n';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { BOTTOM_TAB_ROUTES, MODAL_SERVICES_ROUTES } from './constants';
-import {translate} from "../../i18n";
 
 const TEXT_CONTAINER_STYLE: ViewStyle = {
   width: '100%',
@@ -21,7 +20,6 @@ const TEXT_STYLE: TextStyle = {
 
 const TAB_VIEW_STYLE: ViewStyle = {
   position: 'relative',
-  backgroundColor: color.transparent,
   height: 110,
   width: '100%',
   flexDirection: 'row',
@@ -86,7 +84,7 @@ type ModalRouteProps = {
   transfer: () => void | null;
   card: () => void | null;
   help: () => void | null;
-}
+};
 
 const modalHeight = Dimensions.get('window').height - 130;
 
@@ -133,7 +131,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     transfer: null,
     card: null,
     help: null,
-  }
+  };
 
   const RouteName: IconProps = {
     account: 'home',
@@ -176,23 +174,34 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
       {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
         return (
           <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
-            {modalVisible == true && bottomTavNavItem == 'service' ?
-                <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]} style={{width: '100%', height: 60, marginTop: 8, alignItems: 'center',}} testID={`${RouteName[bottomTavNavItem]}Tab`}>
-                  <View style={{width: '100%', height: 60, justifyContent: 'center', alignItems: 'center', backgroundColor: palette.deepPurple, borderRadius: 50}}>
-                  <AutoImage source={require('./icons/anotherService.png')} style={{width: 50, height: 40, borderRadius: 10}} resizeMethod='auto' resizeMode='stretch' />
-                  </View>
-                  <View style={TEXT_CONTAINER_STYLE}>
-                    <Text style={TEXT_STYLE}>{translate('bottomTab.service')}</Text>
-                  </View>
-                </TouchableOpacity>
-                :
-            <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]} style={NAVIGATION_STYLE} testID={RouteName[bottomTavNavItem]}>
-              <AutoImage source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]} style={ICON_STYLE} resizeMethod='auto' resizeMode='stretch' />
-              <View style={TEXT_CONTAINER_STYLE}>
-                <Text style={TEXT_STYLE}>{ROUTE[bottomTavNavItem]}</Text>
-              </View>
-            </TouchableOpacity>
-            }
+            {modalVisible === true && bottomTavNavItem === 'service' ? (
+              <TouchableOpacity
+                onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
+                style={{ width: '100%', height: 60, marginTop: 8, alignItems: 'center' }}
+                testID={`${RouteName[bottomTavNavItem]}Tab`}
+              >
+                <View
+                  style={{ width: '100%', height: 60, justifyContent: 'center', alignItems: 'center', backgroundColor: palette.deepPurple, borderRadius: 50 }}
+                >
+                  <AutoImage
+                    source={require('./icons/anotherService.png')}
+                    style={{ width: 50, height: 40, borderRadius: 10 }}
+                    resizeMethod='auto'
+                    resizeMode='stretch'
+                  />
+                </View>
+                <View style={TEXT_CONTAINER_STYLE}>
+                  <Text style={TEXT_STYLE}>{translate('bottomTab.service')}</Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]} style={NAVIGATION_STYLE} testID={RouteName[bottomTavNavItem]}>
+                <AutoImage source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]} style={ICON_STYLE} resizeMethod='auto' resizeMode='stretch' />
+                <View style={TEXT_CONTAINER_STYLE}>
+                  <Text style={TEXT_STYLE}>{ROUTE[bottomTavNavItem]}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
             {activeRouteName === RouteName[bottomTavNavItem] && (
               <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
             )}
@@ -200,7 +209,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
         );
       })}
       <Modal
-        animationType='slide'
+        animationType='fade'
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -208,7 +217,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
         }}
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View style={{ width: '100%', height: modalHeight }}>
+          <View style={{ width: '100%', height: modalHeight, backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
             <View
               style={{
                 width: '18%',
@@ -239,9 +248,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                       resizeMethod='auto'
                       resizeMode='stretch'
                     />
-                    <View
-                      style={{ width: '100%', height: 50 }}
-                    >
+                    <View style={{ width: '100%', height: 50 }}>
                       <View style={{ width: '100%', alignItems: 'center' }}>
                         <Text
                           style={{
