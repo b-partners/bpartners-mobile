@@ -223,9 +223,11 @@
   "bottomTab": {
     "account": "Comptes",
     "activity": "Activité",
-    "payment": "Collecter un paiement",
+    "collect": "Collecter un",
+    "payment": "paiement",
     "facturation": "Facturation",
-    "service": "Autres services",
+    "other": "Autres",
+    "service": "services",
     "transfer": "Virement",
     "card": "Cartes",
     "help": "Aide"

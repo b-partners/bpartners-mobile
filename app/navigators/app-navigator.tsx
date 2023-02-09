@@ -116,7 +116,7 @@ const AppTabStack = observer(function () {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}
       initialRouteName={'home'}
       tabBar={props => <BpTabNavigation {...props} />}

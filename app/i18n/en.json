@@ -240,9 +240,11 @@
   "bottomTab": {
     "account": "Accounts",
     "activity": "Activity",
-    "payment": "Collecting a payment",
+    "collect": "Collecting a",
+    "payment": "payment",
     "facturation": "Billing",
-    "service": "Other services",
+    "other": "Other",
+    "service": "services",
     "transfer": "Transfer",
     "card": "Cards",
     "help": "Help"
