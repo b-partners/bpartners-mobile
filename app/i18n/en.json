@@ -236,5 +236,17 @@
     "title": "Contact support",
     "message": "To contact support, please send an email to",
     "mail": "contact@bpartners.app"
+  },
+  "bottomTab": {
+    "account": "Accounts",
+    "activity": "Activity",
+    "collect": "Collecting a",
+    "payment": "payment",
+    "facturation": "Billing",
+    "other": "Other",
+    "service": "services",
+    "transfer": "Transfer",
+    "card": "Cards",
+    "help": "Help"
   }
 }
