@@ -4,6 +4,7 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
@@ -11,7 +12,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
 
-import { BPDrawer, Text } from '../components';
+import { BPDrawer, BpTabNavigation, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
@@ -42,17 +43,22 @@ export type NavigatorParamList = {
   home: undefined;
   transactionList: undefined;
   oauth: { code: string; state: string };
-  paymentInitiation: undefined;
   profile: undefined;
   invoices: undefined;
   invoiceForm: undefined;
-  paymentList: undefined;
   legalFile: undefined;
+};
+
+export type TabNavigatorParamList = {
+  home: undefined;
   marketplace: undefined;
+  paymentInitiation: undefined;
+  paymentList: undefined;
   supportContact: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
+const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 const windowWidth = Dimensions.get('window').width;
 
 const AppStack = observer(function () {
@@ -90,13 +96,9 @@ const AppStack = observer(function () {
         </>
       ) : isAuthenticated && hasApprovedLegalFiles ? (
         <>
-          <Drawer.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+          <Drawer.Screen name='home' component={AppTabStack} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-          <Drawer.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
-          <Drawer.Screen name='paymentList' component={PaymentListScreen} />
-          <Drawer.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
-          <Drawer.Screen name='supportContact' component={SupportContactScreen} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
@@ -110,12 +112,32 @@ const AppStack = observer(function () {
   );
 });
 
+const AppTabStack = observer(function () {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName={'home'}
+      tabBar={props => <BpTabNavigation {...props} />}
+    >
+      <>
+        <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+        <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
+        <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+        <Tab.Screen name='paymentList' component={PaymentListScreen} />
+        <Tab.Screen name='supportContact' component={SupportContactScreen} />
+      </>
+    </Tab.Navigator>
+  );
+});
+
 type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>;
 
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore, invoiceStore } = useStores();
+  const { transactionStore, invoiceStore, marketplaceStore } = useStores();
   const { setError } = useError();
 
   const handleError = async (asyncFunc: () => any) => {
@@ -143,6 +165,9 @@ export function AppNavigator(props: NavigationProps) {
               }),
             ])
         );
+        break;
+      case 'marketplace':
+        await handleError(async () => await Promise.all([marketplaceStore.getMarketplace()]));
         break;
       case 'invoiceForm':
         await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));

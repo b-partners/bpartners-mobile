@@ -5,7 +5,7 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
-import { NavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -23,7 +23,7 @@ const CONTAINER: ViewStyle = {
 
 const MESSAGE_STYLE: TextStyle = { color: color.palette.black, textAlign: 'justify', lineHeight: 22 };
 
-export const SupportContactScreen: FC<StackScreenProps<NavigatorParamList, 'supportContact'>> = observer(function SupportContactScreen({ navigation }) {
+export const SupportContactScreen: FC<StackScreenProps<TabNavigatorParamList, 'supportContact'>> = observer(function SupportContactScreen({ navigation }) {
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
