@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import DatePickerInput from 'react-native-date-picker';
 
+import { Button, Text } from '..';
 import { TxKeyPath, translate } from '../../i18n';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
-import { Button, Text } from '../index';
 
 type DatePickerProps = {
   value: Date;
@@ -16,6 +15,12 @@ type DatePickerProps = {
   labelContainerStyle?: ViewStyle;
   onDateChange?: (date: Date) => void;
   validationError?: string;
+  // if it's true it a button containing the date value will be displayed instead of a directly text
+  isButtonPreset?: boolean;
+  // this will be applied if you use Text instead of button to display the current value
+  textStyle?: TextStyle;
+  dateSeparator?: string;
+  containerStyle?: ViewStyle;
 };
 
 const LABEL_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 13 };
@@ -26,19 +31,43 @@ const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 const BUTTON_STYLE: ViewStyle = { marginTop: spacing[2] };
 
 export function DatePickerField(props: DatePickerProps) {
-  const { value, labelTx, labelText, labelStyle: labelStyleOverride, labelContainerStyle: labelContainerStyleOverride, onDateChange, validationError } = props;
+  const {
+    value,
+    labelTx,
+    labelText,
+    labelStyle: labelStyleOverride,
+    labelContainerStyle: labelContainerStyleOverride,
+    onDateChange,
+    validationError,
+    textStyle,
+    isButtonPreset = true,
+    dateSeparator,
+    containerStyle,
+  } = props;
   const [open, setOpen] = useState(false);
-  const [date] = value && value.toISOString().split('T');
+  let [date] = value && value.toISOString().split('T');
+  date = date.split('-').join(dateSeparator);
 
   useEffect(() => {
     onDateChange(value);
   }, [value]);
 
   return (
-    <View style={DATE_PICKER_CONTAINER_STYLE}>
+    <View style={[DATE_PICKER_CONTAINER_STYLE, containerStyle]}>
       <View style={[LABEL_CONTAINER_STYLE, labelContainerStyleOverride]}>
         <Text text={labelText} tx={labelTx} style={[LABEL_TEXT_STYLE, labelStyleOverride]} />
-        <Button text={date || translate('components.datePicker.pickADate')} onPress={() => setOpen(true)} textStyle={BUTTON_TEXT_STYLE} style={BUTTON_STYLE} />
+        {isButtonPreset ? (
+          <Button
+            text={date || translate('components.datePicker.pickADate')}
+            onPress={() => setOpen(true)}
+            textStyle={BUTTON_TEXT_STYLE}
+            style={BUTTON_STYLE}
+          />
+        ) : (
+          <TouchableOpacity onPress={() => setOpen(true)}>
+            <Text text={date || translate('components.datePicker.pickADate')} style={textStyle} />
+          </TouchableOpacity>
+        )}
       </View>
       <DatePickerInput
         modal

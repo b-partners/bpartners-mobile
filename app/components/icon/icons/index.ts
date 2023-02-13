@@ -20,6 +20,7 @@ export const icons = {
   bell: require('./bell.png'),
   magnifier: require('./magnifier.png'),
   edit: require('./edit.png'),
+  user: require('./user.png'),
 };
 
 export type IconTypes = keyof typeof icons;

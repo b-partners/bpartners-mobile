@@ -20,7 +20,8 @@
   },
   "welcomeScreen": {
     "poweredBy": "POWERED BY NUMER",
-    "readyForLaunch": "Ready for launch.",
+    "noAccount": "No account ?",
+    "itsThisWay": "It's this way",
     "start": "CREATE AN ACCOUNT",
     "login": "LOGIN"
   },
@@ -80,7 +81,8 @@
       "amount": "Amount",
       "payerName": "Payer name",
       "payerEmail": "Payer email",
-      "submit": "Confirm"
+      "submit": "Confirm",
+      "paymentUrl": "Payment URL"
     }
   },
   "profileScreen": {
@@ -164,6 +166,46 @@
       "downloadingInvoiceFailed": "Something went wrong while downloading invoice"
     }
   },
+  "invoiceFormScreen": {
+    "invoiceForm": {
+      "addItem": "Add another element",
+      "quotationTitle": "Quotation title",
+      "quotationTitlePlaceholder": "Type the title of the quote",
+      "quotationNumber": "Quotation number",
+      "quotationNumberPlaceholder": "Type the quotation number",
+      "issueDate": "Issue date",
+      "paymentDelay": "Payment delays",
+      "paymentDelayPlaceholder": "Type de payment delays",
+      "downPayment": "Down Payment",
+      "personalizedNotice": "Personalized legal notice",
+      "viewMail": "View my email address",
+      "limitedValidityPeriod": "Limited period of validity",
+      "days": "Days",
+      "editableTextField": {
+        "error": {
+          "required": "This field is required",
+          "greaterThanZero": "Enter greater than zero",
+          "greaterThanOne": "Enter greater than 1",
+          "lessThanHundredOrEquals": "Enter a number less than or equal to 100"
+        }
+      },
+      "productCartItem": {
+        "delete": "Delete",
+        "title": "Element title",
+        "titlePlaceholder": "Type the element title",
+        "description": "Description (Optional)",
+        "descriptionPlaceholder": "Type the description",
+        "unitPrice": "Unit price",
+        "quantity": "Quantity",
+        "tva": "TVA"
+      }
+    },
+    "customerSelectionForm": {
+      "title": "Client Name",
+      "addClient": "Add a client",
+      "validate": "Validate"
+    }
+  },
   "paymentListScreen": {
     "title": "Invoicing",
     "tabs": {
@@ -194,5 +236,17 @@
     "title": "Contact support",
     "message": "To contact support, please send an email to",
     "mail": "contact@bpartners.app"
+  },
+  "bottomTab": {
+    "account": "Accounts",
+    "activity": "Activity",
+    "collect": "Collecting a",
+    "payment": "payment",
+    "facturation": "Billing",
+    "other": "Other",
+    "service": "services",
+    "transfer": "Transfer",
+    "card": "Cards",
+    "help": "Help"
   }
 }

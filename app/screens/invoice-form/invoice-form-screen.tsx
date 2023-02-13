@@ -11,7 +11,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
-import { InvoiceForm } from './components/invoice-form';
+import { InvoiceForm } from './invoice-form';
 
 const FULL: ViewStyle = {
   flex: 1,
