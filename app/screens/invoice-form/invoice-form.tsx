@@ -268,7 +268,12 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   <View style={{ ...DATE_PICKER_FIELD_CONTAINER, ...FULL }}>
                     <DatePickerField
                       value={initialValues.sendingDate}
-                      onDateChange={date => setInitialValues({ ...initialValues, sendingDate: date })}
+                      onDateChange={date =>
+                        setInitialValues({
+                          ...initialValues,
+                          sendingDate: date,
+                        })
+                      }
                       labelTx={'invoiceFormScreen.invoiceForm.issueDate'}
                       labelStyle={LABEL_STYLE}
                       isButtonPreset={false}
@@ -323,7 +328,15 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   <Switch style={FULL} value={limitedPeriodOfValidity} onToggle={() => setLimitedPeriodOfValidity(!limitedPeriodOfValidity)} />
                 </View>
                 <View style={FLEX_ROW}>
-                  <View style={{ ...EDITABLE_TF_CONTAINER, ...{ flexDirection: 'row', justifyContent: 'center' } }}>
+                  <View
+                    style={{
+                      ...EDITABLE_TF_CONTAINER,
+                      ...{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                      },
+                    }}
+                  >
                     <EditableTextField
                       titleTx={'invoiceFormScreen.invoiceForm.paymentDelay'}
                       formName={'delayInPaymentAllowed'}
@@ -335,7 +348,15 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       <MaterialCommunityIcons name={'chevron-down'} size={25} color={palette.lightGrey} />
                     </View>
                   </View>
-                  <View style={[EDITABLE_TF_CONTAINER, { flexDirection: 'row', justifyContent: 'center' }]}>
+                  <View
+                    style={[
+                      EDITABLE_TF_CONTAINER,
+                      {
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                      },
+                    ]}
+                  >
                     <EditableTextField
                       titleTx={'invoiceFormScreen.invoiceForm.downPayment'}
                       formName={'delayPenaltyPercent'}
@@ -353,7 +374,11 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     headerTx={'invoiceFormScreen.invoiceForm.personalizedNotice'}
                     bodyText={'Bon pour accord Signature du client'}
                     style={FULL}
-                    headerTextStyle={{ color: palette.textClassicColor, fontSize: 14, fontWeight: '400' }}
+                    headerTextStyle={{
+                      color: palette.textClassicColor,
+                      fontSize: 14,
+                      fontWeight: '400',
+                    }}
                   />
                   <Switch style={FULL} value={legalNotice} onToggle={newValue => setLegalNotice(newValue)} />
                 </View>
@@ -361,7 +386,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                 <View style={[FLEX_ROW, CENTERED_FLEX]}>
                   <GridHeaderContent
                     headerTx={'invoiceFormScreen.invoiceForm.viewMail'}
-                    bodyText={values.customer.email || ''}
+                    bodyText={values?.customer?.email || ''}
                     style={FULL}
                     headerTextStyle={{ ...TEXT_STYLE, ...{ lineHeight: 17.61 } }}
                   />
