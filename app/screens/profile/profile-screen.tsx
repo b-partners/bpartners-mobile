@@ -53,7 +53,13 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
       <View testID='TransactionListScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-          <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} />
+          <Header
+              headerTx='profileScreen.title'
+              style={HEADER}
+              titleStyle={HEADER_TITLE}
+              leftIcon={'back'}
+              onLeftPress={() => navigation.navigate('home')}
+          />
           <View style={LOGO_CONTAINER}>
             <Image
               source={{ uri: `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/logo.jpeg/raw?accessToken=${accessToken}` }}
