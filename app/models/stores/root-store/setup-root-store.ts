@@ -44,7 +44,7 @@ export async function setupRootStore() {
     __DEV__ && console.tron.error(e.message, null);
   }
 
-  // env.reactotron.setRootStore(rootStore, data);
+  __DEV__ && env.reactotron.setRootStore(rootStore, data);
 
   // track changes & save to storage
   onSnapshot(rootStore, snapshot => storage.save(ROOT_STATE_STORAGE_KEY, snapshot));
