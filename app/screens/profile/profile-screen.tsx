@@ -43,7 +43,9 @@ const LOGO_ICON_STYLE: ImageStyle = {
   marginRight: 15,
 };
 
-export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen() {
+export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({
+  navigation,
+}) {
   const { authStore } = useStores();
   const { currentUser, currentAccount, currentAccountHolder, accessToken } = authStore;
 

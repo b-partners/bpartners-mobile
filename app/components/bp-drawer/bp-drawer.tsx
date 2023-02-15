@@ -7,7 +7,7 @@ import Right from 'react-native-vector-icons/Entypo';
 import Map from 'react-native-vector-icons/Ionicons';
 import Profile from 'react-native-vector-icons/Ionicons';
 import Power from 'react-native-vector-icons/Ionicons';
-import Exit from 'react-native-vector-icons/Ionicons';
+import Exit from 'react-native-vector-icons/MaterialCommunityIcons';
 import Lock from 'react-native-vector-icons/Ionicons';
 import PaymentInit from 'react-native-vector-icons/MaterialCommunityIcons';
 import PaymentList from 'react-native-vector-icons/MaterialIcons';
@@ -137,9 +137,9 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   const handlePress = useCallback(async () => {
-    const supported = await Linking.canOpenURL(env.swanUrl);
+    const supported = await Linking.canOpenURL('https://banking.swan.io/login');
     if (supported) {
-      await Linking.openURL(env.swanUrl);
+      await Linking.openURL('https://banking.swan.io/login');
     } else {
       Alert.alert(translate('errors.somethingWentWrong'));
     }
@@ -175,7 +175,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
           })}
           <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress} testID='openSwan'>
             <View style={ICON_CONTAINER_STYLE}>
-              <Exit name='arrow-redo-outline' size={22} color={color.palette.secondaryColor} />
+              <Exit name='bank-outline' size={22} color={color.palette.secondaryColor} />
             </View>
             <View style={TEXT_CONTAINER_STYLE}>
               <Text style={TEXT_STYLE} testID='openSwanText'>
