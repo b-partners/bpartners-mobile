@@ -44,27 +44,15 @@
   },
   "paymentInitiationScreen": {
     "label": "Paiement",
-    "title": "Initier un paiement",
+    "title": "Collecter un paiement",
     "fields": {
-      "label": "Label",
-      "reference": "Référence",
-      "amount": "Total",
-      "payerName": "Nom du payeur",
-      "payerEmail": "Email du payeur",
+      "label": "Commentaire",
+      "reference": "Référence Facture",
+      "amount": "Total TTC euros",
+      "payerName": "Nom et Prénom du client",
+      "payerEmail": "Email du client",
       "submit": "Confirmer",
       "paymentUrl": "Lien de paiement"
-    }
-  },
-  "paymentInitiationScreen": {
-    "label": "Paiement",
-    "title": "Initier un paiement",
-    "fields": {
-      "label": "Label",
-      "reference": "Référence",
-      "amount": "Total",
-      "payerName": "Nom du payeur",
-      "payerEmail": "Email du payeur",
-      "submit": "Confirmer"
     }
   },
   "signInScreen": {

@@ -74,13 +74,13 @@
   },
   "paymentInitiationScreen": {
     "label": "Payment",
-    "title": "Init a payment",
+    "title": "Collect a payment",
     "fields": {
-      "label": "Label",
-      "reference": "Reference",
-      "amount": "Amount",
-      "payerName": "Payer name",
-      "payerEmail": "Payer email",
+      "label": "Comment",
+      "reference": "Invoice reference",
+      "amount": "Total amount including all taxes in euros",
+      "payerName": "Client name and surname",
+      "payerEmail": "Client email",
       "submit": "Confirm",
       "paymentUrl": "Payment URL"
     }
