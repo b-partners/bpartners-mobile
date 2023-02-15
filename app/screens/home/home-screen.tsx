@@ -19,14 +19,14 @@ const BULLET_STYLE: ViewStyle = { position: 'absolute', top: -5, left: -5, zInde
 
 export const Menu: FC<{ navigation: DrawerNavigationProp<any> }> = observer(({ navigation }) => {
   return (
-      <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} testID='menuContainer'>
-        <View>
-          <View style={BULLET_STYLE}>
-            <Icon icon='redBullet' />
-          </View>
-          <Icon icon='whiteMenu' />
+    <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} testID='menuContainer'>
+      <View>
+        <View style={BULLET_STYLE}>
+          <Icon icon='redBullet' />
         </View>
-      </TouchableOpacity>
+        <Icon icon='whiteMenu' />
+      </View>
+    </TouchableOpacity>
   );
 });
 
@@ -34,9 +34,9 @@ export const Logo: FC<{ uri: string }> = observer(({ uri }) => {
   const LOGO_STYLE: ImageStyle = { width: '100%', height: '100%' };
 
   return (
-      <View style={{ height: 50, width: 50 }}>
-        <AutoImage source={{ uri }} style={LOGO_STYLE} resizeMethod='resize' resizeMode='stretch' />
-      </View>
+    <View style={{ height: 50, width: 50 }}>
+      <AutoImage source={{ uri }} style={LOGO_STYLE} resizeMethod='resize' resizeMode='stretch' />
+    </View>
   );
 });
 
@@ -63,16 +63,16 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   }, []);
 
   return (
-      <ErrorBoundary catchErrors='always'>
-        <View testID='homeScreen' style={FULL}>
-          <Screen preset='auto' backgroundColor={color.transparent}>
-            <HeaderWithBalance balance={availableBalance} left={<Logo uri={uri} />} right={<Menu navigation={navigation} />} />
-            <View style={{ padding: spacing[3] }}>
-              <TransactionSummary summary={currentMonthSummary} />
-            </View>
-            <HomeLatestTransactions transactions={latestTransactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
-          </Screen>
-        </View>
-      </ErrorBoundary>
+    <ErrorBoundary catchErrors='always'>
+      <View testID='homeScreen' style={FULL}>
+        <Screen preset='auto' backgroundColor={color.transparent}>
+          <HeaderWithBalance balance={availableBalance} left={<Logo uri={uri} />} right={<Menu navigation={navigation} />} />
+          <View style={{ padding: spacing[3] }}>
+            <TransactionSummary summary={currentMonthSummary} />
+          </View>
+          <HomeLatestTransactions transactions={latestTransactions} onPress={() => navigation.navigate('transactionList')} loading={loadingTransactions} />
+        </Screen>
+      </View>
+    </ErrorBoundary>
   );
 });

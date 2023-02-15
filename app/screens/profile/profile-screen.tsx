@@ -43,9 +43,7 @@ const LOGO_ICON_STYLE: ImageStyle = {
   marginRight: 15,
 };
 
-export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({
-  navigation,
-}) {
+export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({ navigation }) {
   const { authStore } = useStores();
   const { currentUser, currentAccount, currentAccountHolder, accessToken } = authStore;
 
@@ -55,13 +53,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
       <View testID='TransactionListScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
-          <Header
-              headerTx='profileScreen.title'
-              style={HEADER}
-              titleStyle={HEADER_TITLE}
-              leftIcon={'back'}
-              onLeftPress={() => navigation.navigate('home')}
-          />
+          <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           <View style={LOGO_CONTAINER}>
             <Image
               source={{ uri: `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/logo.jpeg/raw?accessToken=${accessToken}` }}
