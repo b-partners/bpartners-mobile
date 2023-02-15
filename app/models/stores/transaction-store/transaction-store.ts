@@ -28,7 +28,7 @@ export const TransactionStoreModel = types
   }))
   .actions(() => ({
     getTransactionsSummaryFail: error => {
-      console.tron.log(`Failing to fetch transactions summary, ${error}`);
+      __DEV__ && console.tron.log(`Failing to fetch transactions summary, ${error}`);
     },
   }))
   .actions(self => ({
