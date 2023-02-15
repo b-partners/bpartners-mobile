@@ -137,9 +137,9 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   const handlePress = useCallback(async () => {
-    const supported = await Linking.canOpenURL('https://banking.swan.io/login');
+    const supported = await Linking.canOpenURL(env.swanUrl);
     if (supported) {
-      await Linking.openURL('https://banking.swan.io/login');
+      await Linking.openURL(env.swanUrl);
     } else {
       Alert.alert(translate('errors.somethingWentWrong'));
     }
