@@ -43,7 +43,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   };
 
   useEffect(() => {
-    console.tron.log({ request });
+    __DEV__ && console.tron.log({ request });
   }, [request]);
 
   useEffect(() => {

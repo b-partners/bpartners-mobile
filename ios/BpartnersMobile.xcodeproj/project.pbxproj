@@ -64,7 +64,7 @@
 		00E356EE1AD99517003FC87E /* BpartnersMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BpartnersMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BpartnersMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BpartnersMobileTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* BpartnersMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = BpartnersMobile.app; path = bpartners.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* bpartners.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bpartners.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BpartnersMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = BpartnersMobile/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BpartnersMobile/Images.xcassets; sourceTree = "<group>"; };
@@ -227,7 +227,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* BpartnersMobile.app */,
+				13B07F961A680F5B00A75B9A /* bpartners.app */,
 				00E356EE1AD99517003FC87E /* BpartnersMobileTests.xctest */,
 			);
 			name = Products;
@@ -302,7 +302,7 @@
 			);
 			name = BpartnersMobile;
 			productName = BpartnersMobile;
-			productReference = 13B07F961A680F5B00A75B9A /* BpartnersMobile.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* bpartners.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -635,6 +635,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YQQ9V72F23;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BpartnersMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -662,6 +663,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YQQ9V72F23;
 				INFOPLIST_FILE = BpartnersMobile/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
