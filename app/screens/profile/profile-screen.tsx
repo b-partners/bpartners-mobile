@@ -119,7 +119,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             <View>
               <Text style={SECTION_STYLE}>L'ambitieux</Text>
               <View>
-                <Text>Tous les services franchir un pallier dans votre croissance et automatiser votre forte activité d’artisan & d'indépendant</Text>
+                <Text>Tous les services pour franchir un pallier dans votre croissance et automatiser votre activité d'artisan ou d'indépendant</Text>
               </View>
             </View>
           </View>
