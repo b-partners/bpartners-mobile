@@ -104,60 +104,60 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   };
 
   useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        setActiveRouteName('home');
-        return false;
-      };
+      React.useCallback(() => {
+        const onBackPress = () => {
+          setActiveRouteName('home');
+          return false;
+        };
 
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+        BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, [])
+        return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      }, [])
   );
 
   return (
-    <View style={TAB_VIEW_STYLE} {...props}>
-      <AutoImage source={require('./icons/tab-navigation.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
-      {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
-        return (
-          <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
-            {modalVisible === true && bottomTavNavItem === 'service' ? (
-              <BottomTab
-                onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
-                testID={`${RouteName[bottomTavNavItem]}Tab`}
-                source={require('./icons/anotherService.png')}
-                tabStyle={{
-                  width: '100%',
-                  height: 90,
-                  marginTop: 8,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: palette.deepPurple,
-                  borderRadius: 50,
-                }}
-                imageStyle={{ width: 50, height: 40, borderRadius: 10, marginBottom: 2 }}
-                text={ROUTE[bottomTavNavItem]}
-                bottomNavItem={bottomTavNavItem}
-              />
-            ) : (
-              <BottomTab
-                onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
-                testID={`${RouteName[bottomTavNavItem]}Tab`}
-                source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
-                tabStyle={{ width: '100%', height: 50, marginTop: 18, alignItems: 'center' }}
-                imageStyle={{ width: 65, height: 55 }}
-                text={ROUTE[bottomTavNavItem]}
-                bottomNavItem={bottomTavNavItem}
-              />
-            )}
-            {activeRouteName === RouteName[bottomTavNavItem] && (
-              <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
-            )}
-          </View>
-        );
-      })}
-      <NavigationModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
-    </View>
+      <View style={TAB_VIEW_STYLE} {...props} >
+        <AutoImage source={require('./icons/tab-navigation.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
+        {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
+          return (
+              <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
+                {modalVisible === true && bottomTavNavItem === 'service' ? (
+                    <BottomTab
+                        onPress={() => setModalVisible(false)}
+                        testID={`${RouteName[bottomTavNavItem]}Tab`}
+                        source={require('./icons/anotherService.png')}
+                        tabStyle={{
+                          width: '100%',
+                          height: 90,
+                          marginTop: 8,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: palette.deepPurple,
+                          borderRadius: 50,
+                        }}
+                        imageStyle={{ width: 50, height: 40, borderRadius: 10, marginBottom: 2 }}
+                        text={ROUTE[bottomTavNavItem]}
+                        bottomNavItem={bottomTavNavItem}
+                    />
+                ) : (
+                    <BottomTab
+                        onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
+                        testID={`${RouteName[bottomTavNavItem]}Tab`}
+                        source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
+                        tabStyle={{ width: '100%', height: 50, marginTop: 18, alignItems: 'center' }}
+                        imageStyle={{ width: 65, height: 55 }}
+                        text={ROUTE[bottomTavNavItem]}
+                        bottomNavItem={bottomTavNavItem}
+                    />
+                )}
+                {activeRouteName === RouteName[bottomTavNavItem] && (
+                    <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
+                )}
+              </View>
+          );
+        })}
+        <NavigationModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      </View>
   );
 };

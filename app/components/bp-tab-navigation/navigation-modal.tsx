@@ -5,6 +5,7 @@ import { translate } from '../../i18n';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { MODAL_SERVICES_ROUTES } from './constants';
+import Snackbar from 'react-native-snackbar';
 
 interface NavigationModalProps {
   modalVisible: boolean;
@@ -28,10 +29,26 @@ const modalHeight = Dimensions.get('window').height - 130;
 export const NavigationModal: React.FC<NavigationModalProps> = props => {
   const { modalVisible, setModalVisible } = props;
 
+    const handleSnackbar = () => {
+        Snackbar.show({
+            text: "Cette fonctionnalité n'a pas encore été implementé !",
+            backgroundColor: 'white',
+            textColor: 'red',
+            duration: Snackbar.LENGTH_LONG,
+            action: {
+                text: 'X',
+                textColor: 'red',
+                onPress: () => {
+                    Snackbar.dismiss();
+                }
+            },
+        });
+    };
+
   const MODAL_NAVIGATION_HANDLERS: ModalRouteProps = {
-    transfer: null,
-    card: null,
-    help: null,
+    transfer: () => handleSnackbar(),
+    card: () => handleSnackbar(),
+    help: () => handleSnackbar(),
   };
 
   const SERVICES_MODAL_ICONS: ModalProps = {
@@ -47,6 +64,7 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
   };
 
   return (
+      <View>
     <Modal
       animationType='fade'
       transparent={true}
@@ -55,7 +73,6 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
         setModalVisible(false);
       }}
     >
-      <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
         <View style={{ width: '100%', height: modalHeight, backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
           <View
             style={{
@@ -104,7 +121,7 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
             })}
           </View>
         </View>
-      </TouchableWithoutFeedback>
     </Modal>
+      </View>
   );
 };
