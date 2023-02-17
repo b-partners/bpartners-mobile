@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Modal, View, ViewStyle } from 'react-native';
 
 import { Customer } from '../../../../models/entities/customer/customer';
-import CustomerSelectionForm from './customer-selection-form';
+import CustomerForm from './customer-form';
 
 const MODAL_ITEM_CONTAINER_STYLE: ViewStyle = {
   flex: 1,
@@ -17,14 +17,14 @@ type TUserListSelectionModal = {
   onDismiss?: () => void;
 };
 
-const CustomerListSelectionModal: FC<TUserListSelectionModal> = ({ customers, onRequestClose, onValidateChoice, onDismiss, visible }) => {
+const CustomerModal: FC<TUserListSelectionModal> = ({ customers, onRequestClose, onValidateChoice, onDismiss, visible }) => {
   return (
     <Modal visible={visible} transparent={true} onRequestClose={onRequestClose} onDismiss={onDismiss}>
       <View style={MODAL_ITEM_CONTAINER_STYLE}>
-        <CustomerSelectionForm onValidateChoice={onValidateChoice} customers={customers} />
+        <CustomerForm onValidateChoice={onValidateChoice} customers={customers} onClose={onRequestClose} />
       </View>
     </Modal>
   );
 };
 
-export default CustomerListSelectionModal;
+export default CustomerModal;
