@@ -1,7 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import uuid from 'react-native-uuid';
 
-import { CustomerModel, createCustomerDefaultModel } from '../customer/customer';
+import { CustomerModel } from '../customer/customer';
 import { ProductModel } from '../product/product';
 
 export enum InvoiceStatus {
@@ -19,7 +19,9 @@ export const InvoiceModel = types.model('Invoice').props({
   customer: types.maybe(types.maybeNull(CustomerModel)),
   products: types.maybe(types.maybeNull(types.array(ProductModel))),
   sendingDate: types.maybe(types.maybeNull(types.Date)),
+  validityDate: types.maybe(types.maybeNull(types.Date)),
   toPayAt: types.maybe(types.maybeNull(types.Date)),
+  createdAt: types.maybe(types.maybeNull(types.Date)),
   updatedAt: types.maybe(types.maybeNull(types.Date)),
   paymentUrl: types.maybe(types.maybeNull(types.string)),
   totalVat: types.maybe(types.maybeNull(types.number)),
@@ -36,16 +38,29 @@ export interface InvoiceSnapshotOut extends SnapshotOut<typeof InvoiceModel> {}
 
 export interface InvoiceSnapshotIn extends SnapshotIn<typeof InvoiceModel> {}
 
-export const createInvoiceDefaultModel = () =>
+export const EMPTY_INVOICE: Invoice = {
+  id: uuid.v4().toString(),
+  paymentUrl: null,
+  products: [] as any,
+  totalVat: null,
+  totalPriceWithoutVat: null,
+  totalPriceWithVat: null,
+  status: null,
+  createdAt: null,
+  updatedAt: null,
+  fileId: null,
+  ref: null,
+  title: null,
+  comment: null,
+  customer: null,
+  sendingDate: new Date(),
+  validityDate: new Date(),
+  toPayAt: null,
+  delayInPaymentAllowed: null,
+  delayPenaltyPercent: null,
+};
+
+export const createInvoiceDefaultModel = (status = InvoiceStatus.DRAFT) =>
   types.optional(InvoiceModel, {
-    id: uuid.v4().toString(),
-    title: null,
-    ref: null,
-    sendingDate: new Date(),
-    toPayAt: new Date(),
-    customer: createCustomerDefaultModel(),
-    products: [],
-    status: InvoiceStatus.DRAFT,
-    delayInPaymentAllowed: 0,
-    delayPenaltyPercent: 0,
+    ...EMPTY_INVOICE,
   });
