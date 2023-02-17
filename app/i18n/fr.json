@@ -133,6 +133,7 @@
     "title": "Devis / Facturation",
     "labels": {
       "customerSection": "Client",
+      "customerSectionPlaceholder": "John Doe",
       "productSection": "Produits",
       "totalSection": "Total",
       "addItem": "Add item",

@@ -137,6 +137,7 @@
     "title": "Invoice",
     "labels": {
       "customerSection": "Customer",
+      "customerSectionPlaceholder": "John Doe",
       "productSection": "Items",
       "totalSection": "Total",
       "addItem": "Add item",
