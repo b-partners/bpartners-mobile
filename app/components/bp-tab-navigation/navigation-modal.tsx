@@ -1,11 +1,11 @@
-import React from 'react';
-import { Dimensions, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import React, {useState} from 'react';
+import { Dimensions, Modal, Text, TouchableOpacity, View } from 'react-native';
 
 import { translate } from '../../i18n';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { MODAL_SERVICES_ROUTES } from './constants';
-import Snackbar from 'react-native-snackbar';
+import {BPSnackbar} from "../snackbar/snackbar";
 
 interface NavigationModalProps {
   modalVisible: boolean;
@@ -29,26 +29,12 @@ const modalHeight = Dimensions.get('window').height - 130;
 export const NavigationModal: React.FC<NavigationModalProps> = props => {
   const { modalVisible, setModalVisible } = props;
 
-    const handleSnackbar = () => {
-        Snackbar.show({
-            text: "Cette fonctionnalité n'a pas encore été implementé !",
-            backgroundColor: 'white',
-            textColor: 'red',
-            duration: Snackbar.LENGTH_LONG,
-            action: {
-                text: 'X',
-                textColor: 'red',
-                onPress: () => {
-                    Snackbar.dismiss();
-                }
-            },
-        });
-    };
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const MODAL_NAVIGATION_HANDLERS: ModalRouteProps = {
-    transfer: () => handleSnackbar(),
-    card: () => handleSnackbar(),
-    help: () => handleSnackbar(),
+    transfer: () => setSnackbarVisible(true),
+    card: () => setSnackbarVisible(true),
+    help: () => setSnackbarVisible(true),
   };
 
   const SERVICES_MODAL_ICONS: ModalProps = {
@@ -65,6 +51,7 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
 
   return (
       <View>
+          <BPSnackbar text={"Cette fonctionalité n'a pas encore été implémenté"} snackbarVisible={snackbarVisible} onDismissSnackbar={() => setSnackbarVisible(false)} />
     <Modal
       animationType='fade'
       transparent={true}

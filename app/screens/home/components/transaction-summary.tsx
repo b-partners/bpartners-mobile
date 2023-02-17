@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, {useState} from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { Button } from '../../../components';
@@ -7,6 +7,7 @@ import { TransactionSummary as ITransactionSummary } from '../../../models/entit
 import { color, spacing } from '../../../theme';
 import { DonutChart } from './donut-chart';
 import { GoalProgressBar } from './goal-progress-bar';
+import {BPSnackbar} from "../../../components/snackbar/snackbar";
 
 interface TransactionSummaryProps {
   summary: ITransactionSummary;
@@ -26,11 +27,14 @@ const BOOST_MY_RESULT_BUTTON_TEXT_STYLE: TextStyle = {
 };
 
 export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary }) => {
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+
   return (
     <View>
       {summary && <DonutChart summary={summary} />}
       <GoalProgressBar />
-      <Button tx='homeScreen.summary.boostMyResult' style={BOOST_MY_RESULT_BUTTON_STYLE} textStyle={BOOST_MY_RESULT_BUTTON_TEXT_STYLE} />
+      <BPSnackbar text={"Cette fonctionalité n'a pas encore été implémenté"} snackbarVisible={snackbarVisible} onDismissSnackbar={() => setSnackbarVisible(false)} />
+      <Button tx='homeScreen.summary.boostMyResult' onPress={() => setSnackbarVisible(true)} style={BOOST_MY_RESULT_BUTTON_STYLE} textStyle={BOOST_MY_RESULT_BUTTON_TEXT_STYLE}/>
     </View>
   );
 });
