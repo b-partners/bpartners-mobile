@@ -1,5 +1,6 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Formik } from 'formik';
+import { cloneDeep } from 'lodash';
 import React, { useState } from 'react';
 import { FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import uuid from 'react-native-uuid';
@@ -9,7 +10,7 @@ import { Button, Separator, Switch, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { translate } from '../../i18n';
 import { Customer } from '../../models/entities/customer/customer';
-import { Invoice, InvoiceSnapshotIn, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { EMPTY_INVOICE, Invoice, InvoiceSnapshotIn } from '../../models/entities/invoice/invoice';
 import { Product } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -17,7 +18,7 @@ import CustomerListSelectionModal from './components/customer-selection-form/cus
 import EditableTextField from './components/editable-text-field';
 import GridHeaderContent from './components/grid-header-content';
 import ProductCardItem from './components/product-card-item';
-import { DEFAULT_FONT_STYLE, TEXT_STYLE } from './styles';
+import { CHEVRON_DOWN_ICON_STYLE, DEFAULT_FONT_STYLE, TEXT_STYLE } from './styles';
 
 type InvoiceFormProps = {
   invoice: Partial<InvoiceSnapshotIn>;
@@ -109,15 +110,6 @@ const DATE_PICKER_CONTAINER_STYLE: ViewStyle = {
   marginLeft: spacing[4],
 };
 
-const CHEVRON_DOWN_ICON_STYLE: ViewStyle = {
-  flex: 1,
-  justifyContent: 'center',
-  position: 'absolute',
-  paddingBottom: spacing[1],
-  bottom: spacing[2],
-  right: spacing[2],
-};
-
 export function InvoiceForm(props: InvoiceFormProps) {
   const { onSaveInvoice, customers } = props;
   const [showUserListModal, setShowUserListModal] = useState(false);
@@ -134,7 +126,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
     return errors;
   };
 
-  const productInitialValue = {
+  const EMPTY_PRODUCT = {
     id: uuid.v4().toString(),
     description: '',
     totalPriceWithVat: 0,
@@ -146,25 +138,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
     tva: '0',
   };
 
-  const generateRef = () => {
-    const date = new Date().toLocaleDateString().replace(/\//g, '');
-    const hour = new Date().toLocaleTimeString().replace(/:/g, '');
-    return `REF-${date}${hour}`;
-  };
-
-  const [initialValues, setInitialValues] = useState({
-    id: uuid.v4().toString(),
-    ref: generateRef(),
-    title: '',
-    comment: null,
-    sendingDate: new Date(),
-    toPayAt: new Date(),
-    customer: customers[0],
-    products: [productInitialValue],
-    status: InvoiceStatus.DRAFT,
-    delayInPaymentAllowed: 30,
-    delayPenaltyPercent: 0,
-  });
+  const [initialValues, setInitialValues] = useState(cloneDeep(EMPTY_INVOICE));
 
   // default error when no error message is provided
   yup.setLocale({
@@ -191,7 +165,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
 
   return (
     <View>
-      {/*todo: correctly type formik values*/}
+      {/*TODO: correctly type formik values*/}
       <Formik
         enableReinitialize
         initialValues={initialValues}
@@ -230,6 +204,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
           return (
             <>
               <View style={FLEX_WRAP}>
+                {/** Quotation title and reference row */}
                 <View style={FLEX_ROW}>
                   <View style={[FULL, { ...EDITABLE_TF_CONTAINER, borderTopWidth: 0 }]}>
                     <EditableTextField
@@ -242,10 +217,79 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     <EditableTextField
                       titleTx={'invoiceFormScreen.invoiceForm.quotationNumber'}
                       formName={'ref'}
-                      placeholderTx={'invoiceFormScreen.invoiceForm.quotationNumber'}
+                      placeholderTx={'invoiceFormScreen.invoiceForm.quotationNumberPlaceholder'}
                     />
                   </View>
                 </View>
+
+                {/** sendingDate and validityDate row */}
+                <View style={FLEX_ROW}>
+                  <View style={{ ...DATE_PICKER_FIELD_CONTAINER, ...FULL }}>
+                    <DatePickerField
+                      value={initialValues.sendingDate}
+                      onDateChange={date =>
+                        setInitialValues({
+                          ...initialValues,
+                          sendingDate: date,
+                        })
+                      }
+                      labelTx={'invoiceFormScreen.invoiceForm.issueDate'}
+                      labelStyle={LABEL_STYLE}
+                      isButtonPreset={false}
+                      textStyle={DATE_PICKER_STYLE}
+                      dateSeparator={'/'}
+                      containerStyle={DATE_PICKER_CONTAINER_STYLE}
+                    />
+                  </View>
+                  <View style={{ ...DATE_PICKER_FIELD_CONTAINER, ...FULL }}>
+                    <DatePickerField
+                      value={initialValues.sendingDate}
+                      onDateChange={date =>
+                        setInitialValues({
+                          ...initialValues,
+                          sendingDate: date,
+                        })
+                      }
+                      labelTx={'invoiceFormScreen.invoiceForm.expirationDate'}
+                      labelStyle={LABEL_STYLE}
+                      isButtonPreset={false}
+                      textStyle={DATE_PICKER_STYLE}
+                      dateSeparator={'/'}
+                      containerStyle={DATE_PICKER_CONTAINER_STYLE}
+                    />
+                  </View>
+                </View>
+
+                {/** allowedPayementDelay and latePaymentPenaltyRate row */}
+                <View style={FLEX_ROW}>
+                  <View style={[FULL, { ...EDITABLE_TF_CONTAINER, borderTopWidth: 0 }]}>
+                    <EditableTextField
+                      titleTx={'invoiceFormScreen.invoiceForm.allowedPaymentDelay'}
+                      formName={'title'}
+                      placeholderTx={'invoiceFormScreen.invoiceForm.allowedPaymentDelayPlaceholder'}
+                    />
+                  </View>
+                  <View style={[FULL, { ...EDITABLE_TF_CONTAINER, borderTopWidth: 0 }]}>
+                    <EditableTextField
+                      titleTx={'invoiceFormScreen.invoiceForm.latePaymentPenaltyRate'}
+                      formName={'ref'}
+                      placeholderTx={'invoiceFormScreen.invoiceForm.latePaymentPenaltyRatePlaceholder'}
+                    />
+                  </View>
+                </View>
+
+                {/** Comment row */}
+                <View style={FLEX_ROW}>
+                  <View style={[FULL, { ...EDITABLE_TF_CONTAINER, borderTopWidth: 0 }]}>
+                    <EditableTextField
+                      titleTx={'invoiceFormScreen.invoiceForm.comment'}
+                      formName={'title'}
+                      placeholderTx={'invoiceFormScreen.invoiceForm.commentPlaceholder'}
+                    />
+                  </View>
+                </View>
+
+                {/** Customer row */}
                 <View style={FLEX_ROW}>
                   <TouchableOpacity
                     style={[HEADER_RIGHT_ROW, CLIENT_SELECTION_FORM_STYLE, FULL]}
@@ -273,23 +317,6 @@ export function InvoiceForm(props: InvoiceFormProps) {
                       setFieldValue('customer', customer);
                     }}
                   />
-                  <View style={{ ...DATE_PICKER_FIELD_CONTAINER, ...FULL }}>
-                    <DatePickerField
-                      value={initialValues.sendingDate}
-                      onDateChange={selectDate =>
-                        setInitialValues({
-                          ...initialValues,
-                          sendingDate: selectDate,
-                        })
-                      }
-                      labelTx={'invoiceFormScreen.invoiceForm.issueDate'}
-                      labelStyle={LABEL_STYLE}
-                      isButtonPreset={false}
-                      textStyle={DATE_PICKER_STYLE}
-                      dateSeparator={'/'}
-                      containerStyle={DATE_PICKER_CONTAINER_STYLE}
-                    />
-                  </View>
                 </View>
               </View>
 
@@ -305,7 +332,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                     setFieldValue('products', [
                       ...values.products,
                       {
-                        ...productInitialValue,
+                        ...EMPTY_PRODUCT,
                         id: uuid.v4().toString(),
                       },
                     ])
@@ -319,6 +346,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   </>
                 </Button>
               </View>
+
               <View>
                 <View style={[FLEX_ROW, CENTERED_FLEX, SEPARATOR_STYLE, VALIDITY_PERIOD_TEXT_STYLE]}>
                   <Text
