@@ -21,6 +21,7 @@ type DatePickerProps = {
   textStyle?: TextStyle;
   dateSeparator?: string;
   containerStyle?: ViewStyle;
+  datePickerStyle?: ViewStyle;
 };
 
 const LABEL_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 13 };
@@ -43,6 +44,8 @@ export function DatePickerField(props: DatePickerProps) {
     isButtonPreset = true,
     dateSeparator,
     containerStyle,
+    datePickerStyle,
+    ...rest
   } = props;
   const [open, setOpen] = useState(false);
   let [date] = value && value.toISOString().split('T');
@@ -80,6 +83,8 @@ export function DatePickerField(props: DatePickerProps) {
         onCancel={() => setOpen(false)}
         textColor={palette.white}
         mode='date'
+        style={[datePickerStyle]}
+        {...rest}
       />
       {validationError && (
         <View>

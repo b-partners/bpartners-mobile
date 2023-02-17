@@ -1,3 +1,4 @@
+import { useLinkTo } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
@@ -24,10 +25,12 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
   const { invoiceStore } = useStores();
   const { products, customers, invoice } = invoiceStore;
 
+  const linkTo = useLinkTo();
+
   const saveInvoice = async (values: Invoice) => {
     try {
       await invoiceStore.saveInvoice(values);
-      navigation.navigate('paymentList');
+      linkTo('/paymentList');
     } catch (e) {
       __DEV__ && console.tron.log(e);
     }
@@ -36,17 +39,17 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <Header
-          headerTx='invoiceScreen.title'
-          style={HEADER}
-          titleStyle={HEADER_TITLE}
-          leftIcon={'back'}
-          rightIcon={'info'}
-          onLeftPress={async () => {
-            navigation.navigate('paymentList');
-          }}
-        />
         <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
+          <Header
+            headerTx='invoiceScreen.title'
+            style={HEADER}
+            titleStyle={HEADER_TITLE}
+            leftIcon={'back'}
+            rightIcon={'info'}
+            onLeftPress={async () => {
+              linkTo('/paymentList');
+            }}
+          />
           <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>

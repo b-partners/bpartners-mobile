@@ -181,6 +181,7 @@ export function AppNavigator(props: NavigationProps) {
             screens: {
               initialRouteName: 'welcome',
               oauth: 'auth',
+              paymentList: 'paymentList',
             },
           },
         }}
