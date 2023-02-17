@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
-import { Dimensions, Modal, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
+import { Modal } from 'react-native-paper';
 
 import { translate } from '../../i18n';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
+import { BPSnackbar } from '../snackbar/snackbar';
 import { MODAL_SERVICES_ROUTES } from './constants';
-import {BPSnackbar} from "../snackbar/snackbar";
 
 interface NavigationModalProps {
   modalVisible: boolean;
@@ -50,65 +51,69 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
   };
 
   return (
-      <View>
-          <BPSnackbar text={"Cette fonctionalité n'a pas encore été implémenté"} snackbarVisible={snackbarVisible} onDismissSnackbar={() => setSnackbarVisible(false)} />
     <Modal
-      animationType='fade'
-      transparent={true}
       visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(false);
+      onDismiss={() => setModalVisible(false)}
+      contentContainerStyle={{
+        position: 'absolute',
+        top: 0,
+        width: '100%',
+        height: modalHeight,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        padding: 20,
       }}
     >
-        <View style={{ width: '100%', height: modalHeight, backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
-          <View
-            style={{
-              width: '18%',
-              height: 200,
-              backgroundColor: palette.purple,
-              position: 'absolute',
-              bottom: 10,
-              right: 5,
-              borderRadius: 50,
-              justifyContent: 'space-around',
-            }}
-          >
-            {MODAL_SERVICES_ROUTES.map((serviceModalRoute: string, j) => {
-              return (
-                <TouchableOpacity
-                  key={`modal-service-route-${j}`}
-                  style={{
-                    width: '100%',
-                    height: '30%',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                  }}
-                  onPress={MODAL_NAVIGATION_HANDLERS[serviceModalRoute]}
-                >
-                  <AutoImage
-                    source={SERVICES_MODAL_ICONS[serviceModalRoute]}
-                    style={{ width: 40, height: 40, borderRadius: 50 }}
-                    resizeMethod='auto'
-                    resizeMode='stretch'
-                  />
-                  <View style={{ width: '100%', height: 50 }}>
-                    <View style={{ width: '100%', alignItems: 'center' }}>
-                      <Text
-                        style={{
-                          color: palette.white,
-                          fontSize: 10,
-                        }}
-                      >
-                        {ModalText[serviceModalRoute]}
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </View>
-    </Modal>
+      <BPSnackbar
+        text={"Cette fonctionalité n'a pas encore été implémenté"}
+        snackbarVisible={snackbarVisible}
+        onDismissSnackbar={() => setSnackbarVisible(false)}
+      />
+      <View
+        style={{
+          width: '18%',
+          height: 200,
+          backgroundColor: palette.purple,
+          position: 'absolute',
+          bottom: 10,
+          right: 5,
+          borderRadius: 50,
+          justifyContent: 'space-around',
+        }}
+      >
+        {MODAL_SERVICES_ROUTES.map((serviceModalRoute: string, j) => {
+          return (
+            <TouchableOpacity
+              key={`modal-service-route-${j}`}
+              style={{
+                width: '100%',
+                height: '30%',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+              onPress={MODAL_NAVIGATION_HANDLERS[serviceModalRoute]}
+            >
+              <AutoImage
+                source={SERVICES_MODAL_ICONS[serviceModalRoute]}
+                style={{ width: 40, height: 40, borderRadius: 50 }}
+                resizeMethod='auto'
+                resizeMode='stretch'
+              />
+              <View style={{ width: '100%', height: 50 }}>
+                <View style={{ width: '100%', alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      color: palette.white,
+                      fontSize: 10,
+                    }}
+                  >
+                    {ModalText[serviceModalRoute]}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </View>
+    </Modal>
   );
 };

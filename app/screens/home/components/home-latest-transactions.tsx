@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { Button, Icon, Text } from '../../../components';
 import { Loader } from '../../../components/loader/loader';
+import { BPSnackbar } from '../../../components/snackbar/snackbar';
 import { translate } from '../../../i18n';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { printCurrency } from '../../../utils/money';
 
-type HomeLatestTransactionProps = { transactions: ITransaction[]; onPress: () => void; loading?: boolean };
+type HomeLatestTransactionProps = {
+  transactions: ITransaction[];
+  onPress: () => void;
+  loading?: boolean;
+};
 
 const LOADER_STYLE: ViewStyle = { height: 200 };
 
@@ -83,6 +88,7 @@ function LatestTransaction(props: { item: ITransaction }) {
 
 export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
   const { loading } = props;
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   return (
     <View
@@ -94,7 +100,7 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
       <View>
         <View style={LAST_TRANSACTIONS_SECTION}>
           <Text tx='homeScreen.summary.lastTransactions' style={LAST_TRANSACTIONS_TEXT_STYLE} testID='latestTransactionText' />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setSnackbarVisible(true)}>
             <Icon icon='settings' />
           </TouchableOpacity>
         </View>
@@ -118,6 +124,11 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
           }}
         />
       </View>
+      <BPSnackbar
+        text={"Cette fonctionalité n'a pas encore été implémenté"}
+        snackbarVisible={snackbarVisible}
+        onDismissSnackbar={() => setSnackbarVisible(false)}
+      />
     </View>
   );
 }

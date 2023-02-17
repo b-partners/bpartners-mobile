@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
 
 import { Icon, Text } from '../../../components';
+import { BPSnackbar } from '../../../components/snackbar/snackbar';
 import { TxKeyPath, translate } from '../../../i18n';
 import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
@@ -60,12 +61,13 @@ const SUMMARY_TITLE_STYLE: TextStyle = {
 
 export const DonutChart: React.FC<DonutChartProps> = props => {
   const { summary } = props;
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   return (
     <View>
       <View style={TITLE_CONTAINER_STYLE}>
         <Text tx='homeScreen.summary.title' style={SUMMARY_TITLE_STYLE} />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setSnackbarVisible(true)}>
           <Icon icon='settings' />
         </TouchableOpacity>
       </View>
@@ -103,6 +105,11 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
           />
         </View>
       </View>
+      <BPSnackbar
+        text={"Cette fonctionalité n'a pas encore été implémenté"}
+        snackbarVisible={snackbarVisible}
+        onDismissSnackbar={() => setSnackbarVisible(false)}
+      />
     </View>
   );
 };
