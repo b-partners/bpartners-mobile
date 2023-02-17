@@ -1,6 +1,6 @@
 import { useField } from 'formik';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Keyboard, TextInput, TextInputProps, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Keyboard, StyleProp, TextInput, TextInputProps, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { Text, TextField } from '../../../components';
 import ErrorMessage from '../../../components/forms/error-message';
@@ -64,9 +64,7 @@ const EditableTextField: FC<TEditableTextField> = props => {
   }, [isEditing]);
 
   useEffect(() => {
-    /*
-     To know the current state of the keyboard if it's hidden or shown
-     */
+    /** To know the current state of the keyboard if it's hidden or show */
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setKeyBoardHidden(true);
     });
@@ -121,7 +119,7 @@ const EditableTextField: FC<TEditableTextField> = props => {
         ) : (
           <ReadOnlyText
             value={field.value}
-            placeholderStyle={props.placeholderStyle}
+            placeholderStyle={[TEXT_FIELD_STYLE, props.placeholderStyle]}
             defaultValue={defaultValue}
             placeholder={placeholder}
             placeholderTx={placeholderTx}
@@ -129,7 +127,7 @@ const EditableTextField: FC<TEditableTextField> = props => {
             prefix={prefix}
           />
         )}
-        <ErrorMessage error={meta.error} style={ERROR_MESSAGE_STYLE} visible={meta.touched} />
+        <ErrorMessage name={''} error={meta.error} style={ERROR_MESSAGE_STYLE} visible={meta.touched} />
       </TouchableOpacity>
     </View>
   );
@@ -142,7 +140,7 @@ type TReadOnlyText = {
   defaultValue?: string;
   suffix?: string;
   prefix?: string;
-  placeholderStyle?: TextStyle;
+  placeholderStyle?: StyleProp<TextStyle>;
 };
 
 /**

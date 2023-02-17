@@ -152,6 +152,7 @@
       "sendingDate": "Sending date",
       "toPayAt": "To pay at",
       "invoiceForm": "Create invoice",
+      "invoicePreview": "Invoice Preview",
       "comment": "Comment"
     },
     "errors": {
@@ -177,17 +178,17 @@
   },
   "invoiceFormScreen": {
     "invoiceForm": {
-      "addItem": "Add another element",
-      "quotationTitle": "Quotation title",
-      "quotationTitlePlaceholder": "Quotation No. 1702231023",
-      "quotationNumber": "Reference",
-      "quotationNumberPlaceholder": "QUOTATION-17022231023",
-      "issueDate": "Issue date",
-      "expirationDate": "Expiration date",
-      "allowedPaymentDelay": "Allowed payment delay",
-      "allowedPaymentDelayPlaceholder": "30",
-      "latePaymentPenaltyRate": "Late payment penalty rate",
-      "latePaymentPenaltyRatePlaceholder": "10",
+      "addItem": "Add a product",
+      "title": "Quotation title",
+      "titlePlaceholder": "Quotation No. 1702231023",
+      "reference": "Reference",
+      "referencePlaceholder": "QUOTATION-17022231023",
+      "sendingDate": "Issue date",
+      "validityDate": "Expiration date",
+      "delayInPaymentAllowed": "Allowed payment delay",
+      "delayInPaymentAllowedPlaceholder": "30",
+      "delayPenaltyPercent": "Late payment penalty rate",
+      "delayPenaltyPercentPlaceholder": "10",
       "comment": "Comment",
       "commentPlaceholder": "Type your comment here...",
       "paymentDelay": "Payment delays",
@@ -216,7 +217,7 @@
         "tva": "TVA"
       }
     },
-    "customerSelectionForm": {
+    "customerForm": {
       "title": "Client Name",
       "addClient": "Add a client",
       "validate": "Validate",

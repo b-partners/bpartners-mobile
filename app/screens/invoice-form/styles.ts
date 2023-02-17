@@ -11,7 +11,6 @@ export const SHADOW_STYLE: ViewStyle = {
   elevation: 2,
 };
 export const BUTTON_STYLE: ViewStyle = {
-  ...SHADOW_STYLE,
   backgroundColor: color.primary,
   marginHorizontal: '5%',
   borderRadius: 40,

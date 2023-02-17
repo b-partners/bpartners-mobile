@@ -136,6 +136,7 @@
       "sendingDate": "Date d'envoi",
       "toPayAt": "Limite de paiement",
       "invoiceForm": "Créer un devis",
+      "invoicePreview": "Aperçu du devis",
       "comment": "Commentaire"
     },
     "errors": {
@@ -161,18 +162,18 @@
   },
   "invoiceFormScreen": {
     "invoiceForm": {
-      "addItem": "Ajouter un autre éléments",
-      "quotationTitle": "Titre du devis",
-      "quotationTitlePlaceholder": "Devis No. 1702231023",
-      "quotationNumber": "Référence",
-      "quotationNumberPlaceholder": "DEVIS-1702231023",
-      "issueDate": "Date d'émission",
-      "expirationDate": "Date de limite de validité",
-      "allowedPaymentDelay": "Délai de retard de paiement autorisé",
-      "allowedPaymentDelayPlaceholder": "30",
-      "latePaymentPenaltyRate": "Pourcentage de pénalité de retard",
-      "latePaymentPenaltyRatePlaceholder": "Pourcentage de pénalité de retard",
-      "latePaymentPenaltyRatePlaceholder": "10",
+      "addItem": "Ajouter un produit",
+      "title": "Titre du devis",
+      "titlePlaceholder": "Devis No. 1702231023",
+      "reference": "Référence",
+      "referencePlaceholder": "DEVIS-1702231023",
+      "sendingDate": "Emission",
+      "validityDate": "Limite de validité",
+      "delayInPaymentAllowed": "Délai de retard de paiement autorisé",
+      "delayInPaymentAllowedPlaceholder": "30",
+      "delayPenaltyPercent": "Pourcentage de pénalité de retard",
+      "delayPenaltyPercentPlaceholder": "Pourcentage de pénalité de retard",
+      "delayPenaltyPercentPlaceholder": "10",
       "comment": "Commentaire",
       "commentPlaceholder": "Entrer votre commentaire ici...",
       "paymentDelay": "Délais de paiement",
@@ -201,8 +202,8 @@
         "tva": "TVA"
       }
     },
-    "customerSelectionForm": {
-      "title": "Nom du Client",
+    "customerForm": {
+      "title": "CLIENT",
       "addClient": "Ajouter un client",
       "validate": "Valider",
       "customerCreationForm": {
