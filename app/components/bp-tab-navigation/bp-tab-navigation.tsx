@@ -25,6 +25,7 @@ const WAVE_STYLE: ImageStyle = {
 };
 
 const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
+  zIndex: 10000000,
   width: '20%',
   height: '100%',
   position: 'relative',
@@ -129,6 +130,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                   testID={`${RouteName[bottomTavNavItem]}Tab`}
                   source={require('./icons/anotherService.png')}
                   tabStyle={{
+                    zIndex: 10000000,
                     width: '100%',
                     height: 90,
                     marginTop: 8,

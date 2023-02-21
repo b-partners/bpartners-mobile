@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
+import Snackbar from 'react-native-snackbar';
 
 import { translate } from '../../i18n';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
-import { BPSnackbar } from '../snackbar/snackbar';
 import { MODAL_SERVICES_ROUTES } from './constants';
 
 interface NavigationModalProps {
@@ -25,17 +25,15 @@ type ModalRouteProps = {
   help: () => void | null | string;
 };
 
-const modalHeight = Dimensions.get('window').height - 130;
+const modalHeight = Dimensions.get('window').height - 120;
 
 export const NavigationModal: React.FC<NavigationModalProps> = props => {
   const { modalVisible, setModalVisible } = props;
 
-  const [snackbarVisible, setSnackbarVisible] = useState(false);
-
   const MODAL_NAVIGATION_HANDLERS: ModalRouteProps = {
-    transfer: () => setSnackbarVisible(true),
-    card: () => setSnackbarVisible(true),
-    help: () => setSnackbarVisible(true),
+    transfer: () => showSnackbar(),
+    card: () => showSnackbar(),
+    help: () => showSnackbar(),
   };
 
   const SERVICES_MODAL_ICONS: ModalProps = {
@@ -50,11 +48,27 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
     help: translate('bottomTab.help'),
   };
 
+  const showSnackbar = () => {
+    Snackbar.show({
+      text: 'Cette fonctionnalité est encore en construction',
+      duration: Snackbar.LENGTH_LONG,
+      numberOfLines: 3,
+      textColor: 'white',
+      backgroundColor: palette.secondaryColor,
+      action: {
+        text: 'X',
+        textColor: 'white',
+        onPress: () => Snackbar.dismiss(),
+      },
+    });
+  };
+
   return (
     <Modal
       visible={modalVisible}
       onDismiss={() => setModalVisible(false)}
       contentContainerStyle={{
+        zIndex: -100000000,
         position: 'absolute',
         top: 0,
         width: '100%',
@@ -63,13 +77,9 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
         padding: 20,
       }}
     >
-      <BPSnackbar
-        text={"Cette fonctionalité n'a pas encore été implémenté"}
-        snackbarVisible={snackbarVisible}
-        onDismissSnackbar={() => setSnackbarVisible(false)}
-      />
       <View
         style={{
+          zIndex: -10000000,
           width: '18%',
           height: 200,
           backgroundColor: palette.purple,

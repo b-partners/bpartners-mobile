@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 
 import { Button, Icon, Text } from '../../../components';
 import { Loader } from '../../../components/loader/loader';
-import { BPSnackbar } from '../../../components/snackbar/snackbar';
 import { translate } from '../../../i18n';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 import { printCurrency } from '../../../utils/money';
 
 type HomeLatestTransactionProps = {
@@ -88,7 +89,21 @@ function LatestTransaction(props: { item: ITransaction }) {
 
 export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
   const { loading } = props;
-  const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+  const showSnackbar = () => {
+    Snackbar.show({
+      text: 'Cette fonctionnalité est encore en construction',
+      duration: Snackbar.LENGTH_LONG,
+      numberOfLines: 3,
+      textColor: 'white',
+      backgroundColor: palette.secondaryColor,
+      action: {
+        text: 'X',
+        textColor: 'white',
+        onPress: () => Snackbar.dismiss(),
+      },
+    });
+  };
 
   return (
     <View
@@ -100,7 +115,7 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
       <View>
         <View style={LAST_TRANSACTIONS_SECTION}>
           <Text tx='homeScreen.summary.lastTransactions' style={LAST_TRANSACTIONS_TEXT_STYLE} testID='latestTransactionText' />
-          <TouchableOpacity onPress={() => setSnackbarVisible(true)}>
+          <TouchableOpacity onPress={() => showSnackbar()}>
             <Icon icon='settings' />
           </TouchableOpacity>
         </View>
@@ -124,11 +139,6 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
           }}
         />
       </View>
-      <BPSnackbar
-        text={"Cette fonctionalité n'a pas encore été implémenté"}
-        snackbarVisible={snackbarVisible}
-        onDismissSnackbar={() => setSnackbarVisible(false)}
-      />
     </View>
   );
 }

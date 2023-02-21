@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
+import Snackbar from 'react-native-snackbar';
 
 import { Icon, Text } from '../../../components';
-import { BPSnackbar } from '../../../components/snackbar/snackbar';
 import { TxKeyPath, translate } from '../../../i18n';
 import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
@@ -61,13 +61,27 @@ const SUMMARY_TITLE_STYLE: TextStyle = {
 
 export const DonutChart: React.FC<DonutChartProps> = props => {
   const { summary } = props;
-  const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+  const showSnackbar = () => {
+    Snackbar.show({
+      text: 'Cette fonctionnalité est encore en construction',
+      duration: Snackbar.LENGTH_LONG,
+      numberOfLines: 3,
+      textColor: 'white',
+      backgroundColor: palette.secondaryColor,
+      action: {
+        text: 'X',
+        textColor: 'white',
+        onPress: () => Snackbar.dismiss(),
+      },
+    });
+  };
 
   return (
     <View>
       <View style={TITLE_CONTAINER_STYLE}>
         <Text tx='homeScreen.summary.title' style={SUMMARY_TITLE_STYLE} />
-        <TouchableOpacity onPress={() => setSnackbarVisible(true)}>
+        <TouchableOpacity onPress={() => showSnackbar()}>
           <Icon icon='settings' />
         </TouchableOpacity>
       </View>
@@ -105,11 +119,6 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
           />
         </View>
       </View>
-      <BPSnackbar
-        text={"Cette fonctionalité n'a pas encore été implémenté"}
-        snackbarVisible={snackbarVisible}
-        onDismissSnackbar={() => setSnackbarVisible(false)}
-      />
     </View>
   );
 };
