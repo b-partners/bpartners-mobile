@@ -16,7 +16,7 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'mar
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='marketplace-screen' style={SCREEN_STYLE}>
+      <View testID='marketplaceScreen' style={SCREEN_STYLE}>
         <Screen preset='scroll' backgroundColor={palette.white} style={FULL_HEIGHT}>
           <Header headerTx='marketPlaceScreen.header' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           {screenWidth < 720 ? <ColumnList /> : <RowList />}

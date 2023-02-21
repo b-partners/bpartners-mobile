@@ -127,7 +127,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
               {modalVisible === true && bottomTavNavItem === 'service' ? (
                 <BottomTab
                   onPress={() => setModalVisible(false)}
-                  testID={`${RouteName[bottomTavNavItem]}Tab`}
+                  testID={`serviceTab`}
                   source={require('./icons/anotherService.png')}
                   tabStyle={{
                     zIndex: 10000000,

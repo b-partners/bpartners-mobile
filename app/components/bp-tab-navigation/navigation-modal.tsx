@@ -78,6 +78,7 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
       }}
     >
       <View
+        testID='BottomTabModal'
         style={{
           zIndex: -10000000,
           width: '18%',
