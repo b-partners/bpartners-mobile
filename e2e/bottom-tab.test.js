@@ -19,6 +19,6 @@ describe('Bottom-tab', () => {
   it('show Modal', async () => {
     await waitFor(element(by.id('serviceTab')));
     await element(by.id('serviceTab')).tap();
-    await waitFor(element(by.id('serviceTab'))).toBeVisible();
+    await waitFor(element(by.id('BottomTabModal'))).toBeVisible();
   });
 });
