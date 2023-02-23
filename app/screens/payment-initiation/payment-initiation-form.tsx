@@ -80,9 +80,9 @@ export const PaymentInitiationForm: FC<
                 keyboardType='phone-pad'
                 value={values.amount}
               />
-              <FormField testID='payerName' name='payerName' labelTx='paymentInitiationScreen.fields.payerName' value={values.payerName} />
+              <FormField testID='clientName' name='payerName' labelTx='paymentInitiationScreen.fields.payerName' value={values.payerName} />
               <FormField
-                testID='payerEmail'
+                testID='clientEmail'
                 name='payerEmail'
                 labelTx='paymentInitiationScreen.fields.payerEmail'
                 keyboardType='email-address'
