@@ -44,27 +44,15 @@
   },
   "paymentInitiationScreen": {
     "label": "Paiement",
-    "title": "Initier un paiement",
+    "title": "Collecter un paiement",
     "fields": {
-      "label": "Label",
-      "reference": "Référence",
-      "amount": "Total",
-      "payerName": "Nom du payeur",
-      "payerEmail": "Email du payeur",
+      "label": "Commentaire",
+      "reference": "Référence Facture",
+      "amount": "Total TTC euros",
+      "payerName": "Nom et Prénom du client",
+      "payerEmail": "Email du client",
       "submit": "Confirmer",
       "paymentUrl": "Lien de paiement"
-    }
-  },
-  "paymentInitiationScreen": {
-    "label": "Paiement",
-    "title": "Initier un paiement",
-    "fields": {
-      "label": "Label",
-      "reference": "Référence",
-      "amount": "Total",
-      "payerName": "Nom du payeur",
-      "payerEmail": "Email du payeur",
-      "submit": "Confirmer"
     }
   },
   "signInScreen": {
@@ -213,14 +201,16 @@
   "marketPlaceScreen": {
     "title": "Marketplace",
     "offerTitle": "VOIR LES OFFRES SUR:",
-    "header": "Boostez mes résultats"
+    "header": "Boostez mes résultats",
+    "messageTitle": "En construction \uD83D\uDEA7",
+    "messageContent": "Bientôt, nous vous proposerons de nouveaux clients ici !"
   },
   "quotationScreen": {
     "createQuotation": "Créer un Devis"
   },
   "logoutScreen": {
     "title": "Déconnexion",
-    "swan": "Ouvrir Swan"
+    "swan": "Ma Banque"
   },
   "legalFileScreen": {
     "accept": "Accept",

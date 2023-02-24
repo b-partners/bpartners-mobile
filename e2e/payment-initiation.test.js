@@ -17,8 +17,8 @@ describe('PaymentInitiation', () => {
     await element(by.id('reference')).typeText(REF);
     await element(by.id('label')).typeText(`TEST-${REF}`);
     await element(by.id('amount')).typeText('10');
-    await element(by.id('payerName')).typeText('Joe Doe');
-    await element(by.id('payerEmail')).typeText('joe.doe@test.com');
+    await element(by.id('clientName')).typeText('Joe Doe');
+    await element(by.id('clientEmail')).typeText('joe.doe@test.com');
     await element(by.id('submit')).tap();
     await expect(element(by.id('payment-url'))).toBeVisible();
   });
@@ -33,8 +33,8 @@ describe('PaymentInitiation', () => {
     await element(by.id('reference')).typeText(REF);
     await element(by.id('label')).typeText(`TEST-${REF}`);
     await element(by.id('amount')).typeText('Test');
-    await element(by.id('payerName')).typeText('Joe Doe');
-    await element(by.id('payerEmail')).typeText('joe.doe@test.com');
+    await element(by.id('clientName')).typeText('Joe Doe');
+    await element(by.id('clientEmail')).typeText('joe.doe@test.com');
     await element(by.id('submit')).tap();
     await expect(element(by.id('amount-error-message'))).toBeVisible();
   });
@@ -49,8 +49,8 @@ describe('PaymentInitiation', () => {
     await element(by.id('reference')).typeText(REF);
     await element(by.id('label')).typeText(`TEST-${REF}`);
     await element(by.id('amount')).typeText('10');
-    await element(by.id('payerName')).typeText('Joe Doe');
-    await element(by.id('payerEmail')).typeText('Test email');
+    await element(by.id('clientName')).typeText('Joe Doe');
+    await element(by.id('clientEmail')).typeText('Test email');
     await element(by.id('submit')).tap();
     await expect(element(by.id('payerEmail-error-message'))).toBeVisible();
   });
