@@ -49,7 +49,7 @@ export const CARD_CONTAINER_STYLE: ViewStyle = {
   height: '100%',
   flexDirection: 'column',
   backgroundColor: palette.white,
-  paddingVertical: spacing[5],
+  paddingVertical: spacing[2],
 };
 
 export const CARD_STYLE: ViewStyle = {

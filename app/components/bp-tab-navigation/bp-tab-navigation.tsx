@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 import { BackHandler, ImageStyle, View, ViewStyle } from 'react-native';
 
 import { translate } from '../../i18n';
+import { useStores } from '../../models';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { BottomTab } from './bottom-tab';
@@ -57,8 +58,18 @@ type IconRouteProps = {
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   const route = useRoute();
+  const { marketplaceStore } = useStores();
   const [activeRouteName, setActiveRouteName] = useState(route.name);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const handleNavigationMarketplace = useCallback((routeName: string) => {
+    props.navigation.navigate(routeName);
+    setActiveRouteName(routeName);
+    const takeMarketplace = async () => {
+      await Promise.all([marketplaceStore.getMarketplaces()]);
+    };
+    takeMarketplace().then();
+  }, []);
 
   const handleNavigation = useCallback((routeName: string) => {
     props.navigation.navigate(routeName);
@@ -80,7 +91,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
     account: () => handleNavigation('home'),
-    activity: () => handleNavigation('marketplace'),
+    activity: () => handleNavigationMarketplace('marketplace'),
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => {
