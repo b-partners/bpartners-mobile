@@ -201,7 +201,9 @@
   "marketPlaceScreen": {
     "title": "Marketplace",
     "offerTitle": "VOIR LES OFFRES SUR:",
-    "header": "Boostez mes résultats"
+    "header": "Boostez mes résultats",
+    "messageTitle": "En construction \uD83D\uDEA7",
+    "messageContent": "Bientôt, nous vous proposerons de nouveaux clients ici !"
   },
   "quotationScreen": {
     "createQuotation": "Créer un Devis"

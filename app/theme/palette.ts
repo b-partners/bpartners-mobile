@@ -24,4 +24,5 @@ export const palette = {
   usafaBlue: '#00529B',
   textClassicColor: '#0A1045',
   secondaryColor: '#9C255A',
+  Khaki: '#FFFBAC',
 };

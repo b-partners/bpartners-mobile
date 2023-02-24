@@ -217,7 +217,9 @@
   "marketPlaceScreen": {
     "title": "MarketPlace",
     "offerTitle": "SEE THE OFFERS ON:",
-    "header": "Boost my results"
+    "header": "Boost my results",
+    "messageTitle": "Under construction \uD83D\uDEA7",
+    "messageContent": "Soon, we will offer you new customers here!"
   },
   "quotationScreen": {
     "createQuotation": "Create a Quotation"
