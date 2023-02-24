@@ -137,7 +137,7 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore, invoiceStore, marketplaceStore } = useStores();
+  const { transactionStore, invoiceStore } = useStores();
   const { setError } = useError();
 
   const handleError = async (asyncFunc: () => any) => {
@@ -165,9 +165,6 @@ export function AppNavigator(props: NavigationProps) {
               }),
             ])
         );
-        break;
-      case 'marketplace':
-        await handleError(async () => await Promise.all([marketplaceStore.getMarketplace()]));
         break;
       case 'invoiceForm':
         await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));
