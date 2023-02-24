@@ -32,7 +32,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
           value={shownValue}
           labelStyle={[LABEL_STYLE, labelStyleOverrides]}
           inputStyle={[INPUT_STYLE, inputStyleOverrides]}
-        ></TextField>
+        />
         <Icon icon='chevronDown' style={{ marginTop: 40 }} />
       </TouchableOpacity>
     </View>
