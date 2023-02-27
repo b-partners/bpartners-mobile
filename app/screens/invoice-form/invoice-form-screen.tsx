@@ -39,17 +39,17 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
+        <Header
+          headerTx='invoiceScreen.title'
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+          leftIcon={'back'}
+          rightIcon={'info'}
+          onLeftPress={async () => {
+            linkTo('/paymentList');
+          }}
+        />
         <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
-          <Header
-            headerTx='invoiceScreen.title'
-            style={HEADER}
-            titleStyle={HEADER_TITLE}
-            leftIcon={'back'}
-            rightIcon={'info'}
-            onLeftPress={async () => {
-              linkTo('/paymentList');
-            }}
-          />
           <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>
