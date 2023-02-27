@@ -147,7 +147,6 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                   testID={`serviceTab`}
                   source={require('./icons/anotherService.png')}
                   tabStyle={{
-                    zIndex: 10000000,
                     width: '100%',
                     height: 90,
                     marginTop: 8,
