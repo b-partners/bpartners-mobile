@@ -26,8 +26,8 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
 
   return (
     <ErrorBoundary catchErrors='always'>
+      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <Screen>
-        <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
         <Tab.Navigator
           initialRouteName={translate('paymentListScreen.tabs.drafts')}
           style={TAB_BAR_STYLE}

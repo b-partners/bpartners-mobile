@@ -22,14 +22,14 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
+        <Header
+          headerTx='paymentInitiationScreen.title'
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+          leftIcon={'back'}
+          onLeftPress={() => navigation.navigate('home')}
+        />
         <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-          <Header
-            headerTx='paymentInitiationScreen.title'
-            style={HEADER}
-            titleStyle={HEADER_TITLE}
-            leftIcon={'back'}
-            onLeftPress={() => navigation.navigate('home')}
-          />
           <ScrollView style={FORM_FIELD_CONTAINER}>
             <PaymentInitiationForm init={paymentInitiationStore.init} paymentUrl={paymentUrl} loading={loading} />
           </ScrollView>
