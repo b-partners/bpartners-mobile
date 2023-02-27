@@ -3,6 +3,9 @@
   "components": {
     "datePicker": {
       "pickADate": "Sélectionner une date"
+    },
+    "button": {
+      "close": "Fermer"
     }
   },
   "common": {
@@ -99,6 +102,8 @@
       "collectPayment": "Collecter un paiement",
       "balance": "Solde au",
       "activity": "Activité",
+      =>
+      setVisible(false)
       "quotationAndInvoice": "Devis / Facture",
       "payment": "Virement",
       "settings": "Paramètres",
@@ -195,7 +200,7 @@
       }
     },
     "customerForm": {
-      "title": "CLIENT",
+      "title": "Nom du client",
       "addClient": "Ajouter un client",
       "validate": "Valider"
     }

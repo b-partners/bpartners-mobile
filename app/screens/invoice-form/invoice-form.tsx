@@ -2,11 +2,14 @@ import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
+import { Customer } from '../../models/entities/customer/customer';
+import { Invoice } from '../../models/entities/invoice/invoice';
+import { Product } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
 import { InvoiceFormField } from './invoice-form-field';
 import { SelectFormField } from './select-form-field/select-form-field';
 
-type InvoiceFormProps = {};
+type InvoiceFormProps = { invoice: Invoice; customers: Customer[]; products: Product[]; onSaveInvoice: (invoice: Invoice) => Promise<void> };
 
 const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
 
@@ -33,6 +36,8 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
+  const { customers } = props;
+
   return (
     <View>
       <View style={ROW_STYLE}>
@@ -88,7 +93,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           modalTx='invoiceFormScreen.customerForm.title'
           placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
           value={null}
-          items={[]}
+          items={customers}
+          itemLabel='name'
+          itemValue='id'
           selectContainerStyle={{ padding: spacing[3], width: '100%' }}
           style={INVOICE_LABEL_STYLE}
         />
