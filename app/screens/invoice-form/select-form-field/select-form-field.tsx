@@ -14,6 +14,9 @@ type SelectFormFieldProps = TextFieldProps & {
   items: any[];
   itemLabel: string;
   itemValue: string;
+  itemSuffix?: React.ReactNode;
+  itemSuffixAction?: (item: any) => void;
+  footer?: React.ReactNode;
 };
 
 const LABEL_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase' };
@@ -29,6 +32,9 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
     items,
     itemLabel,
     itemValue,
+    itemSuffix,
+    itemSuffixAction,
+    footer,
     ...textFieldProps
   } = props;
 
@@ -71,7 +77,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                 },
               ]}
             >
-              <View style={{ paddingVertical: spacing[4] }}>
+              <View style={{ paddingVertical: spacing[4], paddingHorizontal: spacing[3] }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Text
                     tx={modalTx}
@@ -85,30 +91,56 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                     <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
                   </TouchableOpacity>
                 </View>
-                <RadioButton.Group
-                  onValueChange={selectedValue => {
-                    const currentItem = items.find(item => item[itemValue] === selectedValue);
-                    if (!currentItem) {
-                      return;
-                    }
-                    setSelectedItem({ label: currentItem[itemLabel], value: currentItem[itemValue] });
-                  }}
-                  value={selectedItem.value}
-                >
-                  {items.map(item => (
-                    <RadioButton.Item
-                      key={item[itemValue]}
-                      labelStyle={{
-                        textAlign: 'left',
-                        fontFamily: 'Geometria-Bold',
-                        color: color.palette.textClassicColor,
-                      }}
-                      position='leading'
-                      value={item[itemValue]}
-                      label={item[itemLabel]}
-                    />
-                  ))}
-                </RadioButton.Group>
+                <View style={{ paddingVertical: spacing[2] }}>
+                  <RadioButton.Group
+                    onValueChange={selectedValue => {
+                      const currentItem = items.find(item => item[itemValue] === selectedValue);
+                      if (!currentItem) {
+                        return;
+                      }
+                      setSelectedItem({
+                        label: currentItem[itemLabel],
+                        value: currentItem[itemValue],
+                      });
+                    }}
+                    value={selectedItem.value}
+                  >
+                    {items.map(item => (
+                      <View
+                        key={item[itemValue]}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          borderBottomWidth: 1,
+                          borderBottomColor: '#E1E5EF',
+                          paddingHorizontal: 0,
+                        }}
+                      >
+                        <RadioButton.Item
+                          labelStyle={{
+                            textAlign: 'left',
+                            fontFamily: 'Geometria-Bold',
+                            color: color.palette.textClassicColor,
+                            paddingHorizontal: 0,
+                          }}
+                          position='leading'
+                          value={item[itemValue]}
+                          label={item[itemLabel]}
+                        />
+                        <TouchableOpacity
+                          onPress={() => {
+                            itemSuffixAction(item);
+                          }}
+                        >
+                          {itemSuffix}
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                  </RadioButton.Group>
+                  {footer}
+                </View>
                 <Button
                   tx='components.button.close'
                   style={{
