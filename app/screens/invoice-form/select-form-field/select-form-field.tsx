@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
@@ -35,6 +35,10 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ label?: string; value?: string }>({});
 
+  useEffect(() => {
+    __DEV__ && console.tron.log({ value });
+  }, [value]);
+
   return (
     <View style={selectContainerStyle}>
       <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setVisible(true)}>
@@ -70,7 +74,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
               <View style={{ paddingVertical: spacing[4] }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Text
-                    tx='invoiceFormScreen.customerForm.title'
+                    tx={modalTx}
                     style={{
                       color: color.palette.lightGrey,
                       fontFamily: 'Geometria',
@@ -82,8 +86,8 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                   </TouchableOpacity>
                 </View>
                 <RadioButton.Group
-                  onValueChange={value => {
-                    const currentItem = items.find(item => item[itemValue] === value);
+                  onValueChange={selectedValue => {
+                    const currentItem = items.find(item => item[itemValue] === selectedValue);
                     if (!currentItem) {
                       return;
                     }
@@ -93,6 +97,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                 >
                   {items.map(item => (
                     <RadioButton.Item
+                      key={item[itemValue]}
                       labelStyle={{
                         textAlign: 'left',
                         fontFamily: 'Geometria-Bold',
@@ -101,7 +106,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                       position='leading'
                       value={item[itemValue]}
                       label={item[itemLabel]}
-                    ></RadioButton.Item>
+                    />
                   ))}
                 </RadioButton.Group>
                 <Button
