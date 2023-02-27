@@ -4,7 +4,6 @@ import Market from 'react-native-vector-icons/Entypo';
 
 import { AutoImage } from '../../../components';
 import { translate } from '../../../i18n';
-import { useStores } from '../../../models';
 import { Marketplace } from '../../../models/entities/marketplace/marketplace';
 import { palette } from '../../../theme/palette';
 import {
@@ -20,9 +19,8 @@ import {
   TEXT_STYLE,
 } from '../styles';
 
-export function ColumnList() {
-  const { marketplaceStore } = useStores();
-  const { marketplaces } = marketplaceStore;
+export function ColumnList(props: { marketplaces: Marketplace[] }) {
+  const { marketplaces } = props;
 
   const handlePress = useCallback(
     async (URL: string) => {
