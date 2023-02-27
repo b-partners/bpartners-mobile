@@ -3,6 +3,9 @@
   "components": {
     "datePicker": {
       "pickADate": "Pick a date"
+    },
+    "button": {
+      "close": "Close"
     }
   },
   "common": {
