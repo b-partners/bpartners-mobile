@@ -102,8 +102,6 @@
       "collectPayment": "Collecter un paiement",
       "balance": "Solde au",
       "activity": "Activité",
-      =>
-      setVisible(false)
       "quotationAndInvoice": "Devis / Facture",
       "payment": "Virement",
       "settings": "Paramètres",
