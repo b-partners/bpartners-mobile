@@ -41,7 +41,7 @@ export const CodeExchangeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth
           source={require('./code-exchange.background.png')}
           resizeMode='stretch'
           resizeMethod='auto'
-          style={{ position: 'absolute', height: '100%', width: '100%' }}
+          style={{ position: 'absolute', height: '100%', width: '100%', flex: 1 }}
         />
         <View testID='SignInWebViewScreen' style={{ paddingHorizontal: spacing[7], height: '100%', justifyContent: 'center' }}>
           <AutoImage source={require('./bp-logo.png')} resizeMode='contain' resizeMethod='auto' style={{ width: '100%', height: '40%' }} />
