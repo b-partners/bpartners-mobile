@@ -1,6 +1,8 @@
 import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
+import RNVIcon from 'react-native-vector-icons/AntDesign';
 
+import { Button, Icon, Separator, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice } from '../../models/entities/invoice/invoice';
@@ -35,6 +37,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
   textTransform: 'uppercase',
 };
 
+const SEPARATOR_STYLE = { flex: 1, borderColor: '#E1E5EF' };
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { customers } = props;
 
@@ -96,6 +99,38 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           items={customers}
           itemLabel='name'
           itemValue='id'
+          itemSuffix={<Icon icon='edit' />}
+          itemSuffixAction={customer => {
+            __DEV__ && console.tron.log({ customer });
+          }}
+          footer={
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: spacing[3] }}>
+              <Separator style={SEPARATOR_STYLE} />
+              <Button
+                style={{
+                  flex: 2,
+                  flexDirection: 'row',
+                  marginHorizontal: spacing[3],
+                  backgroundColor: color.transparent,
+                  borderColor: color.palette.secondaryColor,
+                  borderWidth: 1,
+                  borderRadius: 25,
+                  paddingVertical: spacing[3],
+                }}
+              >
+                <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />
+                <Text
+                  tx='invoiceFormScreen.customerForm.addClient'
+                  style={{
+                    color: color.palette.secondaryColor,
+                    marginLeft: spacing[2],
+                    fontFamily: 'Geometria',
+                  }}
+                />
+              </Button>
+              <Separator style={SEPARATOR_STYLE} />
+            </View>
+          }
           selectContainerStyle={{ padding: spacing[3], width: '100%' }}
           style={INVOICE_LABEL_STYLE}
         />
