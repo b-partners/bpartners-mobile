@@ -2,12 +2,13 @@ import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, Icon, Separator, Text } from '../../components';
+import { Button, Icon, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { Product } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
+import { CustomerFormFieldFooter } from './components/customer-form-field-footer';
 import { InvoiceFormField } from './components/invoice-form-field';
 import { ProductFormField } from './components/product-form-field';
 import { SelectFormField } from './select-form-field/select-form-field';
@@ -37,8 +38,6 @@ const INVOICE_LABEL_STYLE: TextStyle = {
   fontSize: 13,
   textTransform: 'uppercase',
 };
-
-const SEPARATOR_STYLE = { flex: 1, borderColor: '#E1E5EF' };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { customers, products } = props;
@@ -106,35 +105,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           itemSuffixAction={customer => {
             __DEV__ && console.tron.log({ customer });
           }}
-          footer={
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: spacing[3] }}>
-              <Separator style={SEPARATOR_STYLE} />
-              <Button
-                style={{
-                  flex: 2,
-                  flexDirection: 'row',
-                  marginHorizontal: spacing[3],
-                  backgroundColor: color.transparent,
-                  borderColor: color.palette.secondaryColor,
-                  borderWidth: 1,
-                  borderRadius: 25,
-                  paddingVertical: spacing[3],
-                }}
-              >
-                <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />
-                <Text
-                  tx='invoiceFormScreen.customerForm.addClient'
-                  style={{
-                    color: color.palette.secondaryColor,
-                    marginLeft: spacing[2],
-                    fontFamily: 'Geometria',
-                  }}
-                />
-              </Button>
-              <Separator style={SEPARATOR_STYLE} />
-            </View>
-          }
-          selectContainerStyle={{ padding: spacing[3], width: '100%' }}
+          footer={<CustomerFormFieldFooter />}
+          selectContainerStyle={{
+            padding: spacing[3],
+            marginBottom: spacing[6],
+            width: '100%',
+            borderBottomWidth: 1,
+            borderBottomColor: '#E1E5EF',
+          }}
           style={INVOICE_LABEL_STYLE}
         />
       </View>
