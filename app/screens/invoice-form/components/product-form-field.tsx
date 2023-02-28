@@ -73,7 +73,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             onValueChange={product => {
               setSelectedProduct(product);
             }}
-          ></SelectFormField>
+          />
         </View>
         <View style={{ flexDirection: 'row' }}>
           <InvoiceFormField labelTx='invoiceFormScreen.productForm.quantity' style={{ flex: 1 }} keyboardType='numeric' />
