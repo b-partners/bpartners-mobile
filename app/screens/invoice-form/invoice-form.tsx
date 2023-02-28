@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, Icon, Text } from '../../components';
@@ -91,6 +91,36 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       <View style={ROW_STYLE}>
         <InvoiceFormField labelTx='invoiceFormScreen.invoiceForm.comment' placeholderTx='invoiceFormScreen.invoiceForm.comment' style={{ flex: 1 }} />
       </View>
+      <>
+        <View>
+          <ProductFormField products={products} />
+        </View>
+        <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+          <Button
+            style={{
+              backgroundColor: color.transparent,
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 1,
+              borderRadius: 25,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              paddingVertical: spacing[3],
+              paddingHorizontal: spacing[6],
+              width: '100%',
+            }}
+          >
+            <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+            <Text
+              tx='invoiceFormScreen.productForm.addProduct'
+              style={{
+                color: color.palette.secondaryColor,
+                fontFamily: 'Geometria',
+                marginLeft: spacing[3],
+              }}
+            />
+          </Button>
+        </View>
+      </>
       <View style={ROW_STYLE}>
         <SelectFormField
           value={null}
@@ -108,41 +138,32 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           footer={<CustomerFormFieldFooter />}
           selectContainerStyle={{
             padding: spacing[3],
-            marginBottom: spacing[6],
+            marginVertical: spacing[6],
             width: '100%',
-            borderBottomWidth: 1,
-            borderBottomColor: '#E1E5EF',
+            borderWidth: 1,
+            borderColor: '#E1E5EF',
           }}
           style={INVOICE_LABEL_STYLE}
         />
       </View>
-      <View>
-        <ProductFormField products={products} />
-      </View>
-      <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
-        <Button
-          style={{
-            backgroundColor: color.transparent,
-            borderColor: color.palette.secondaryColor,
-            borderWidth: 1,
-            borderRadius: 25,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            paddingVertical: spacing[3],
-            paddingHorizontal: spacing[6],
-            width: '100%',
-          }}
-        >
-          <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
-          <Text
-            tx='invoiceFormScreen.productForm.addProduct'
+      <View style={{ ...ROW_STYLE, flexDirection: 'row', justifyContent: 'center', paddingHorizontal: spacing[5] }}>
+        <TouchableOpacity>
+          <View
             style={{
-              color: color.palette.secondaryColor,
-              fontFamily: 'Geometria',
-              marginLeft: spacing[3],
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 2,
+              borderRadius: 100,
+              padding: spacing[3],
             }}
-          />
-        </Button>
+          >
+            <RNVIcon name='save' size={25} color={color.palette.secondaryColor} />
+          </View>
+        </TouchableOpacity>
+        <Button
+          tx='invoiceFormScreen.invoicePreview'
+          style={{ backgroundColor: color.palette.secondaryColor, borderRadius: 25, marginLeft: 15, flex: 1 }}
+          textStyle={{ color: color.palette.white, fontSize: 14, fontFamily: 'Geometria-Bold' }}
+        />
       </View>
     </View>
   );
