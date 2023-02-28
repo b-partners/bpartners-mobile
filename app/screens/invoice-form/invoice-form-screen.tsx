@@ -49,7 +49,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
             linkTo('/paymentList');
           }}
         />
-        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
+        <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
           <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>

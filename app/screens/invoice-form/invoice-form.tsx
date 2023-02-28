@@ -8,7 +8,8 @@ import { Customer } from '../../models/entities/customer/customer';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { Product } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
-import { InvoiceFormField } from './invoice-form-field';
+import { InvoiceFormField } from './components/invoice-form-field';
+import { ProductFormField } from './components/product-form-field';
 import { SelectFormField } from './select-form-field/select-form-field';
 
 type InvoiceFormProps = { invoice: Invoice; customers: Customer[]; products: Product[]; onSaveInvoice: (invoice: Invoice) => Promise<void> };
@@ -38,11 +39,12 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 const SEPARATOR_STYLE = { flex: 1, borderColor: '#E1E5EF' };
+
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { customers } = props;
+  const { customers, products } = props;
 
   return (
-    <View>
+    <View style={{ paddingBottom: spacing[6] }}>
       <View style={ROW_STYLE}>
         <InvoiceFormField labelTx='invoiceFormScreen.invoiceForm.title' placeholderTx='invoiceFormScreen.invoiceForm.titlePlaceholder' style={{ flex: 1 }} />
       </View>
@@ -92,10 +94,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       </View>
       <View style={ROW_STYLE}>
         <SelectFormField
+          value={null}
+          onValueChange={() => {}}
           labelTx='invoiceScreen.labels.customerSection'
           modalTx='invoiceFormScreen.customerForm.title'
           placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
-          value={null}
           items={customers}
           itemLabel='name'
           itemValue='id'
@@ -134,6 +137,34 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           selectContainerStyle={{ padding: spacing[3], width: '100%' }}
           style={INVOICE_LABEL_STYLE}
         />
+      </View>
+      <View>
+        <ProductFormField products={products} />
+      </View>
+      <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+        <Button
+          style={{
+            backgroundColor: color.transparent,
+            borderColor: color.palette.secondaryColor,
+            borderWidth: 1,
+            borderRadius: 25,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            paddingVertical: spacing[3],
+            paddingHorizontal: spacing[6],
+            width: '100%',
+          }}
+        >
+          <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+          <Text
+            tx='invoiceFormScreen.productForm.addProduct'
+            style={{
+              color: color.palette.secondaryColor,
+              fontFamily: 'Geometria',
+              marginLeft: spacing[3],
+            }}
+          />
+        </Button>
       </View>
     </View>
   );
