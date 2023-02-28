@@ -20,7 +20,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
     <View
       style={{
         paddingHorizontal: spacing[3],
-        marginBottom: spacing[6],
+        marginVertical: spacing[6],
       }}
     >
       <View

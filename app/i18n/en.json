@@ -225,7 +225,8 @@
       "quantity": "Quantity",
       "vat": "VAT",
       "delete": "Delete"
-    }
+    },
+    "invoicePreview": "Invoice preview"
   },
   "paymentListScreen": {
     "title": "Invoicing",

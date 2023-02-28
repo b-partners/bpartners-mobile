@@ -210,7 +210,8 @@
       "quantity": "Quantité",
       "vat": "TVA",
       "delete": "Supprimer"
-    }
+    },
+    "invoicePreview": "Aperçu du devis"
   },
   "paymentListScreen": {
     "title": "Facturation",
