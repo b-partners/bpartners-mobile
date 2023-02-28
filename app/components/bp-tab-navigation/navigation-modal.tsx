@@ -50,7 +50,7 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
 
   const showSnackbar = () => {
     Snackbar.show({
-      text: 'Test',
+      text: 'Cette fonctionnalité est encore en construction',
       duration: Snackbar.LENGTH_LONG,
       numberOfLines: 3,
       textColor: 'white',
