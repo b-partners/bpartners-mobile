@@ -1,8 +1,8 @@
 import React from 'react';
 import { TextStyle } from 'react-native';
 
-import { TextField, TextFieldProps } from '../../components';
-import { spacing } from '../../theme';
+import { TextField, TextFieldProps } from '../../../components';
+import { spacing } from '../../../theme';
 
 type InvoiceFormFieldProps = TextFieldProps & {};
 

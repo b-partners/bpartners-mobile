@@ -201,6 +201,15 @@
       "title": "Nom du client",
       "addClient": "Ajouter un client",
       "validate": "Valider"
+    },
+    "productForm": {
+      "addProduct": "Ajouter un produit",
+      "title": "Produit",
+      "placeholder": "Sélectionner un produit",
+      "unitPrice": "Prix Unit.",
+      "quantity": "Quantité",
+      "vat": "TVA",
+      "delete": "Supprimer"
     }
   },
   "paymentListScreen": {

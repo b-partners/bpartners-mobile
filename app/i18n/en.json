@@ -216,6 +216,15 @@
       "title": "Client Name",
       "addClient": "Add a client",
       "validate": "Validate"
+    },
+    "productForm": {
+      "addProduct": "Add a product",
+      "placeholder": "Choose a product",
+      "title": "Product",
+      "unitPrice": "Unit price",
+      "quantity": "Quantity",
+      "vat": "VAT",
+      "delete": "Delete"
     }
   },
   "paymentListScreen": {

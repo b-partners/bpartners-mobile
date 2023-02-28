@@ -9,6 +9,7 @@ import { color, spacing } from '../../../theme';
 
 type SelectFormFieldProps = TextFieldProps & {
   value: any;
+  onValueChange: (value: any) => void;
   selectContainerStyle?: StyleProp<ViewStyle>;
   modalTx: TxKeyPath;
   items: any[];
@@ -25,6 +26,7 @@ const INPUT_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 16, tex
 export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
   const {
     value,
+    onValueChange: parentOnValueChange,
     selectContainerStyle,
     labelStyle: labelStyleOverrides,
     inputStyle: inputStyleOverrides,
@@ -102,6 +104,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                         label: currentItem[itemLabel],
                         value: currentItem[itemValue],
                       });
+                      parentOnValueChange(currentItem);
                     }}
                     value={selectedItem.value}
                   >
