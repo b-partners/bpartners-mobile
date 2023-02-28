@@ -44,8 +44,6 @@ export type NavigatorParamList = {
   transactionList: undefined;
   oauth: { code: string; state: string };
   profile: undefined;
-  invoices: undefined;
-  invoiceForm: undefined;
   legalFile: undefined;
 };
 
@@ -55,6 +53,8 @@ export type TabNavigatorParamList = {
   paymentInitiation: undefined;
   paymentList: undefined;
   supportContact: undefined;
+  invoices: undefined;
+  invoiceForm: undefined;
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();
@@ -99,8 +99,6 @@ const AppStack = observer(function () {
           <Drawer.Screen name='home' component={AppTabStack} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-          <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
-          <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       ) : (
         <>
@@ -127,6 +125,8 @@ const AppTabStack = observer(function () {
         <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
         <Tab.Screen name='paymentList' component={PaymentListScreen} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
+        <Tab.Screen name='invoices' component={InvoicesScreen} />
+        <Tab.Screen name='invoiceForm' component={InvoiceFormScreen} />
       </>
     </Tab.Navigator>
   );
