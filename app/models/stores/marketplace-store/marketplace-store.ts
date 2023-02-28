@@ -5,6 +5,7 @@ import { MarketplaceModel, MarketplaceSnapshotOut } from '../../entities/marketp
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
+import {PageCriteria} from "../../entities/criteria/criteria";
 
 export const MarketplaceStoreModel = types
   .model('Marketplace')
@@ -28,10 +29,10 @@ export const MarketplaceStoreModel = types
     },
   }))
   .actions(self => ({
-    getMarketplaces: flow(function* () {
+    getMarketplaces: flow(function* (criteria: PageCriteria) {
       const marketplaceApi = new MarketplaceApi(self.environment.api);
       try {
-        const getMarketplacesResult = yield marketplaceApi.getMarketplaces(self.currentAccount.id);
+        const getMarketplacesResult = yield marketplaceApi.getMarketplaces(self.currentAccount.id, criteria);
         self.getMarketplacesSuccess(getMarketplacesResult.marketplaces);
       } catch (e) {
         self.getMarketplaceFail(e.message);
