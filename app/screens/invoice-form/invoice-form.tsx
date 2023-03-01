@@ -67,9 +67,15 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         createdAt: null,
         updatedAt: null,
       }}
-      onSubmit={() => {}}
+      onSubmit={values => {
+        __DEV__ && console.tron.log({ values });
+      }}
     >
-      {({}) => {
+      {({ values, setFieldValue, handleSubmit }) => {
+        const onFieldChange = (field: keyof Invoice, value: any) => {
+          setFieldValue(field as string, value);
+        };
+
         return (
           <View style={{ paddingBottom: spacing[6] }}>
             <View style={ROW_STYLE}>
@@ -77,6 +83,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 labelTx='invoiceFormScreen.invoiceForm.title'
                 placeholderTx='invoiceFormScreen.invoiceForm.titlePlaceholder'
                 style={{ flex: 1 }}
+                onChangeText={title => onFieldChange('title', title)}
+                value={values.title}
               />
             </View>
             <View style={ROW_STYLE}>
@@ -84,6 +92,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 labelTx='invoiceFormScreen.invoiceForm.reference'
                 placeholderTx='invoiceFormScreen.invoiceForm.referencePlaceholder'
                 style={{ flex: 1 }}
+                onChangeText={reference => onFieldChange('ref', reference)}
+                value={values.ref}
               />
             </View>
             <View style={ROW_STYLE}>
@@ -93,8 +103,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 labelStyle={DATE_PICKER_LABEL_STYLE}
                 containerStyle={DATE_PICKER_CONTAINER_STYLE}
                 textStyle={DATE_PICKER_TEXT_STYLE}
-                value={new Date()}
-                onDateChange={() => {}}
+                value={values.sendingDate}
+                onDateChange={sendingDate => {
+                  onFieldChange('sendingDate', sendingDate);
+                }}
                 dateSeparator='/'
               />
               <DatePickerField
@@ -103,8 +115,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 labelStyle={DATE_PICKER_LABEL_STYLE}
                 containerStyle={DATE_PICKER_CONTAINER_STYLE}
                 textStyle={DATE_PICKER_TEXT_STYLE}
-                value={new Date()}
-                onDateChange={() => {}}
+                value={values.validityDate}
+                onDateChange={validityDate => {
+                  onFieldChange('validityDate', validityDate);
+                }}
                 dateSeparator='/'
               />
             </View>
@@ -113,15 +127,25 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
                 placeholderTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowedPlaceholder'
                 style={{ flex: 1 }}
+                onChangeText={delayInPaymentAllowed => onFieldChange('delayInPaymentAllowed', delayInPaymentAllowed)}
+                value={values?.delayInPaymentAllowed?.toString()}
               />
               <InvoiceFormField
                 labelTx='invoiceFormScreen.invoiceForm.delayPenaltyPercent'
                 placeholderTx='invoiceFormScreen.invoiceForm.delayPenaltyPercentPlaceholder'
                 style={{ flex: 1 }}
+                onChangeText={delayPenaltyPercent => onFieldChange('delayPenaltyPercent', delayPenaltyPercent)}
+                value={values?.delayPenaltyPercent?.toString()}
               />
             </View>
             <View style={ROW_STYLE}>
-              <InvoiceFormField labelTx='invoiceFormScreen.invoiceForm.comment' placeholderTx='invoiceFormScreen.invoiceForm.comment' style={{ flex: 1 }} />
+              <InvoiceFormField
+                labelTx='invoiceFormScreen.invoiceForm.comment'
+                placeholderTx='invoiceFormScreen.invoiceForm.comment'
+                style={{ flex: 1 }}
+                onChangeText={comment => onFieldChange('comment', comment)}
+                value={values.comment}
+              />
             </View>
             <>
               <View>
@@ -186,7 +210,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 paddingHorizontal: spacing[5],
               }}
             >
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => handleSubmit()}>
                 <View
                   style={{
                     borderColor: color.palette.secondaryColor,
