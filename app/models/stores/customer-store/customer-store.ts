@@ -33,7 +33,7 @@ export const CustomerStoreModel = types
     getCustomers: flow(function* (name: string) {
       const customerApi = new CustomerApi(self.environment.api);
       try {
-        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id);
         self.getCustomersSuccess(getCustomersResult.customers);
       } catch (e) {
         self.getCustomerFail(e.message);

@@ -45,6 +45,8 @@ export type NavigatorParamList = {
   oauth: { code: string; state: string };
   profile: undefined;
   legalFile: undefined;
+  invoices: undefined;
+  invoiceForm: undefined;
 };
 
 export type TabNavigatorParamList = {
@@ -162,12 +164,12 @@ export function AppNavigator(props: NavigationProps) {
                 status: InvoiceStatus.DRAFT,
                 page: 1,
                 pageSize: 15,
-              }),
+              } as any),
             ])
         );
         break;
       case 'invoiceForm':
-        await handleError(async () => await Promise.all([invoiceStore.getProducts(''), invoiceStore.getCustomers('')]));
+        await handleError(async () => await Promise.all([invoiceStore.getProducts(), invoiceStore.getCustomers()]));
         break;
     }
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
@@ -42,10 +42,6 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
 
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ label?: string; value?: string }>({});
-
-  useEffect(() => {
-    __DEV__ && console.tron.log({ value });
-  }, [value]);
 
   return (
     <View style={selectContainerStyle}>
