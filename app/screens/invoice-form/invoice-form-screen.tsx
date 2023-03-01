@@ -21,11 +21,16 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 };
 
-export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen() {
+export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { products, customers, invoice } = invoiceStore;
 
   const linkTo = useLinkTo();
+
+  navigation.addListener('state', event => {
+    invoiceStore.getCustomers();
+    invoiceStore.getProducts();
+  });
 
   const saveInvoice = async (values: Invoice) => {
     try {

@@ -207,7 +207,8 @@
       "title": "Produit",
       "placeholder": "Sélectionner un produit",
       "unitPrice": "Prix Unit.",
-      "quantity": "Quantité",
+      "quantity": "Qté",
+      "totalWithVat": "Total",
       "vat": "TVA",
       "delete": "Supprimer"
     },

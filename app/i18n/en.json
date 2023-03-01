@@ -222,8 +222,9 @@
       "placeholder": "Choose a product",
       "title": "Product",
       "unitPrice": "Unit price",
-      "quantity": "Quantity",
+      "quantity": "Qty",
       "vat": "VAT",
+      "totalWithVat": "Total",
       "delete": "Delete"
     },
     "invoicePreview": "Invoice preview"
