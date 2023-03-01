@@ -21,7 +21,14 @@ export interface ProductSnapshotIn extends SnapshotIn<typeof ProductModel> {}
 
 export const createProductDefaultModel = () =>
   types.optional(ProductModel, {
+    id: null,
     description: null,
+    quantity: null,
     unitPrice: null,
+    unitPriceWithVat: null,
     vatPercent: null,
+    totalVat: null,
+    totalPriceWithVat: null,
+    status: null,
+    createdAt: null,
   });

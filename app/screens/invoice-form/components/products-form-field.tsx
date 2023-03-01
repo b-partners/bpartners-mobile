@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { Observer } from 'mobx-react-lite';
 import React from 'react';
 import { View } from 'react-native';
@@ -10,11 +11,11 @@ type ProductsFormFieldProps = {
   items: Product[];
   value: Product[];
   onValueChange: (products: Product[]) => void;
-  onDeleteItem: (index: number) => void;
+  onDeleteItem: (product: Product, index: number) => void;
 };
 
 export const ProductsFormField: React.FC<ProductsFormFieldProps> = props => {
-  const { items, value, onDeleteItem } = props;
+  const { items, value, onValueChange, onDeleteItem } = props;
 
   return (
     <Observer>
@@ -26,7 +27,17 @@ export const ProductsFormField: React.FC<ProductsFormFieldProps> = props => {
           }}
         >
           {value.map((_, i) => (
-            <ProductFormField key={`product-${i}`} index={i} items={items} onDeleteItem={onDeleteItem} onValueChange={() => {}} />
+            <ProductFormField
+              key={`product-${i}`}
+              index={i}
+              items={items}
+              onDeleteItem={onDeleteItem}
+              onValueChange={product => {
+                const cloneProducts = cloneDeep(value);
+                cloneProducts[i] = product;
+                onValueChange(cloneProducts);
+              }}
+            />
           ))}
         </View>
       )}
