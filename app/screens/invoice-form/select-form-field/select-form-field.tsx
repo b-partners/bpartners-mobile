@@ -100,6 +100,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                         value: currentItem[itemValue],
                       });
                       parentOnValueChange(currentItem);
+                      setVisible(false);
                     }}
                     value={selectedItem.value}
                   >

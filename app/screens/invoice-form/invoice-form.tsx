@@ -1,4 +1,5 @@
 import { Formik } from 'formik';
+import { cloneDeep } from 'lodash';
 import { Observer } from 'mobx-react-lite';
 import React from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
@@ -9,7 +10,7 @@ import { Button, Icon, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice } from '../../models/entities/invoice/invoice';
-import { Product } from '../../models/entities/product/product';
+import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
 import { CustomerFormFieldFooter } from './components/customer-form-field-footer';
 import { InvoiceFormField } from './components/invoice-form-field';
@@ -162,7 +163,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 </View>
                 <>
                   <View>
-                    <ProductsFormField items={products} value={values.products} onValueChange={() => {}} onDeleteItem={() => {}} />
+                    <ProductsFormField
+                      items={products}
+                      value={values.products}
+                      onValueChange={products => {
+                        setFieldValue('products', products);
+                      }}
+                      onDeleteItem={(product, i) => {}}
+                    />
                   </View>
                   <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
                     <Button
@@ -177,7 +185,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                         paddingHorizontal: spacing[6],
                         width: '100%',
                       }}
-                      onPress={() => {}}
+                      onPress={() => {
+                        const emptyProduct = createProductDefaultModel().create();
+                        const currentProducts = cloneDeep(values.products);
+                        setFieldValue('products', currentProducts.concat(emptyProduct));
+                      }}
                     >
                       <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
                       <Text

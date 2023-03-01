@@ -9,9 +9,9 @@ import { SelectFormField } from '../select-form-field/select-form-field';
 import { InvoiceFormField } from './invoice-form-field';
 
 type ProductFormFieldProps = {
-  items: Product[];
   index: number;
-  onDeleteItem: (index: number) => void;
+  items: Product[];
+  onDeleteItem: (product: Product, index: number) => void;
   onValueChange?: (product: Product) => void;
 };
 
@@ -50,7 +50,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
           top: -10,
           right: -15,
         }}
-        onPress={() => onDeleteItem(index)}
+        onPress={() => onDeleteItem(currentProduct, index)}
       >
         <Text
           tx='invoiceFormScreen.productForm.delete'
