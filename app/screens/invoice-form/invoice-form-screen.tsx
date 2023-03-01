@@ -27,7 +27,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
 
   const linkTo = useLinkTo();
 
-  navigation.addListener('state', event => {
+  navigation.addListener('state', () => {
     invoiceStore.getCustomers();
     invoiceStore.getProducts();
   });
