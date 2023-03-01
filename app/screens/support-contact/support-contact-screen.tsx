@@ -9,10 +9,10 @@ import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { HEADER_TITLE, SUPPORT_HEADER } from '../payment-initiation/style';
 
 const FULL: ViewStyle = {
   flex: 1,
+  backgroundColor: palette.white,
 };
 
 const CONTAINER: ViewStyle = {
@@ -29,8 +29,6 @@ export const SupportContactScreen: FC<StackScreenProps<TabNavigatorParamList, 's
       <View testID='PaymentInitiationScreen' style={FULL}>
         <Header
           headerTx='supportContactScreen.title'
-          style={SUPPORT_HEADER}
-          titleStyle={HEADER_TITLE}
           leftIcon={'back'}
           rightIcon={'info'}
           onLeftPress={async () => {

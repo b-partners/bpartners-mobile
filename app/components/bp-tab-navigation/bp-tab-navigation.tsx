@@ -172,7 +172,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
           );
         })}
       </View>
-      <NavigationModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <NavigationModal modalVisible={modalVisible} setModalVisible={setModalVisible} handleNavigation={handleNavigation} />
     </>
   );
 };

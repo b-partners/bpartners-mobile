@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import Snackbar from 'react-native-snackbar';
@@ -11,6 +11,7 @@ import { MODAL_SERVICES_ROUTES } from './constants';
 interface NavigationModalProps {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  handleNavigation: (routeName: string) => void;
 }
 
 type ModalProps = {
@@ -28,12 +29,12 @@ type ModalRouteProps = {
 const modalHeight = Dimensions.get('window').height - 120;
 
 export const NavigationModal: React.FC<NavigationModalProps> = props => {
-  const { modalVisible, setModalVisible } = props;
+  const { modalVisible, setModalVisible, handleNavigation } = props;
 
   const MODAL_NAVIGATION_HANDLERS: ModalRouteProps = {
     transfer: () => showSnackbar(),
     card: () => showSnackbar(),
-    help: () => showSnackbar(),
+    help: () => handleNavigationModal('supportContact'),
   };
 
   const SERVICES_MODAL_ICONS: ModalProps = {
@@ -47,6 +48,11 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
     card: translate('bottomTab.card'),
     help: translate('bottomTab.help'),
   };
+
+  const handleNavigationModal = useCallback((routeName: string) => {
+    handleNavigation(routeName);
+    setModalVisible(false);
+  }, []);
 
   const showSnackbar = () => {
     Snackbar.show({
