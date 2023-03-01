@@ -18,9 +18,14 @@ export class PaymentApi {
   private mapInvoice(item: Invoice): Invoice {
     return {
       ...item,
-      toPayAt: new Date(item.toPayAt),
-      sendingDate: new Date(item.sendingDate),
+      sendingDate: item.sendingDate && new Date(item.sendingDate),
+      toPayAt: item.toPayAt && new Date(item.toPayAt),
+      validityDate: item.validityDate && new Date(item.validityDate),
+      createdAt: item.createdAt && new Date(item.createdAt),
       updatedAt: item.updatedAt && new Date(item.updatedAt),
+      metadata: {
+        submittedAt: item.metadata.submittedAt && new Date(item.metadata.submittedAt),
+      },
       customer: {
         id: item.customer ? item.customer.id : null,
         name: item.customer ? item.customer.name : null,
