@@ -81,7 +81,7 @@ export function DatePickerField(props: DatePickerProps) {
           onDateChange(selectedDate);
         }}
         onCancel={() => setOpen(false)}
-        textColor={palette.white}
+        textColor={palette.textClassicColor}
         mode='date'
         style={[datePickerStyle]}
         {...rest}

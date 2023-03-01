@@ -10,7 +10,7 @@ const LABEL_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 12, tex
 const INPUT_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase' };
 
 export const InvoiceFormField: React.FC<InvoiceFormFieldProps> = props => {
-  const { style: styleOverrides, labelStyle: labelStyleOverrides, inputStyle: inputStyleOverrides } = props;
+  const { style: styleOverrides, labelStyle: labelStyleOverrides, inputStyle: inputStyleOverrides, ...rest } = props;
 
   return (
     <TextField
@@ -19,6 +19,7 @@ export const InvoiceFormField: React.FC<InvoiceFormFieldProps> = props => {
       labelStyle={[LABEL_STYLE, labelStyleOverrides]}
       style={[{ borderColor: '#E1E5EF', borderWidth: 1, padding: spacing[4] }, styleOverrides]}
       inputStyle={[INPUT_STYLE, inputStyleOverrides]}
+      {...rest}
     />
   );
 };
