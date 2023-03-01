@@ -26,7 +26,7 @@ export const ProductsFormField: React.FC<ProductsFormFieldProps> = props => {
           }}
         >
           {value.map((_, i) => (
-            <ProductFormField key={`product-${i}`} index={i} items={items} onDeleteItem={onDeleteItem} onValueChange={product => {}} />
+            <ProductFormField key={`product-${i}`} index={i} items={items} onDeleteItem={onDeleteItem} onValueChange={() => {}} />
           ))}
         </View>
       )}

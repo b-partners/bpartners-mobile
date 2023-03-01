@@ -162,7 +162,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 </View>
                 <>
                   <View>
-                    <ProductsFormField items={products} value={values.products} onValueChange={items => {}} onDeleteItem={index => {}} />
+                    <ProductsFormField items={products} value={values.products} onValueChange={() => {}} onDeleteItem={() => {}} />
                   </View>
                   <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
                     <Button
@@ -204,7 +204,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                     itemLabel='name'
                     itemValue='id'
                     itemSuffix={<Icon icon='edit' />}
-                    itemSuffixAction={customer => {}}
+                    itemSuffixAction={() => {}}
                     footer={<CustomerFormFieldFooter />}
                     selectContainerStyle={{
                       padding: spacing[3],

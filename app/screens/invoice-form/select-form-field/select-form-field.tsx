@@ -25,7 +25,6 @@ const INPUT_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 16, tex
 
 export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
   const {
-    value,
     onValueChange: parentOnValueChange,
     selectContainerStyle,
     labelStyle: labelStyleOverrides,
