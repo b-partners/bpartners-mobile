@@ -138,6 +138,26 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       </View>
       <View style={ROW_STYLE}>
         <Controller
+          name='toPayAt'
+          control={control}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <DatePickerField
+                labelTx='invoiceFormScreen.invoiceForm.toPayAt'
+                isButtonPreset={false}
+                labelStyle={DATE_PICKER_LABEL_STYLE}
+                containerStyle={DATE_PICKER_CONTAINER_STYLE}
+                textStyle={DATE_PICKER_TEXT_STYLE}
+                dateSeparator='/'
+                value={value}
+                onDateChange={onChange}
+              />
+            );
+          }}
+        />
+      </View>
+      <View style={ROW_STYLE}>
+        <Controller
           name='delayInPaymentAllowed'
           control={control}
           render={({ field: { value, onBlur, onChange } }) => {

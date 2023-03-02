@@ -189,6 +189,7 @@
       "referencePlaceholder": "QUOTATION-17022231023",
       "sendingDate": "Issue date",
       "validityDate": "Expiration date",
+      "toPayAt": "Payment date",
       "delayInPaymentAllowed": "Allowed payment delay",
       "delayInPaymentAllowedPlaceholder": "30",
       "delayPenaltyPercent": "Late payment penalty rate",
