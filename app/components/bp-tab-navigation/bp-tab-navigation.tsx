@@ -31,7 +31,7 @@ const WAVE_STYLE: ImageStyle = {
 
 const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
   zIndex: 10000000,
-  width: '20%',
+  width: '25%',
   height: '100%',
   position: 'relative',
 };
