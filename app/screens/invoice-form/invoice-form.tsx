@@ -9,6 +9,7 @@ import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
+import { showMessage } from '../../utils/snackbar';
 import { CustomerFormFieldFooter } from './components/customer-form-field-footer';
 import { InvoiceFormField } from './components/invoice-form-field';
 import { ProductFormField } from './components/product-form-field';
@@ -41,7 +42,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { customers, products } = props;
+  const { customers, products, onSaveInvoice } = props;
 
   const { control, handleSubmit } = useForm({
     defaultValues: createInvoiceDefaultModel().create(),
@@ -49,8 +50,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
 
   const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });
 
-  const onSubmit = invoice => {
+  const onSubmit = async invoice => {
     __DEV__ && console.tron.log({ invoice });
+    try {
+      await onSaveInvoice({ ...invoice, metadata: { ...invoice.metadata, submittedAt: new Date() } });
+    } catch (e) {
+      showMessage(e);
+      throw e;
+    }
   };
 
   return (

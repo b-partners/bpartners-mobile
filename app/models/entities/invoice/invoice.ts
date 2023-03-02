@@ -78,7 +78,8 @@ export const EMPTY_INVOICE: Invoice = {
   },
 };
 
-export const createInvoiceDefaultModel = () =>
+export const createInvoiceDefaultModel = (status: InvoiceStatus = InvoiceStatus.DRAFT) =>
   types.optional(InvoiceModel, {
     ...EMPTY_INVOICE,
+    status,
   });
