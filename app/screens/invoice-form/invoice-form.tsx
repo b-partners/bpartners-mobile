@@ -186,9 +186,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           {fields.map((_, i) => {
             return (
               <ProductFormField
+                key={i}
                 index={i}
                 items={products}
-                onDeleteItem={async (_, index) => {
+                onDeleteItem={async (__, index) => {
                   await remove(index);
                 }}
                 onValueChange={product => {
