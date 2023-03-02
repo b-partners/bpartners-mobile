@@ -6,7 +6,7 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 import { Button, Icon, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { Customer } from '../../models/entities/customer/customer';
-import { Invoice, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
+import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
 import { showMessage } from '../../utils/snackbar';
@@ -15,7 +15,13 @@ import { InvoiceFormField } from './components/invoice-form-field';
 import { ProductFormField } from './components/product-form-field';
 import { SelectFormField } from './select-form-field/select-form-field';
 
-type InvoiceFormProps = { invoice: Invoice; customers: Customer[]; products: Product[]; onSaveInvoice: (invoice: Invoice) => Promise<void> };
+type InvoiceFormProps = {
+  invoice: Invoice;
+  customers: Customer[];
+  products: Product[];
+  onSaveInvoice: (invoice: Invoice) => Promise<void>;
+  invoiceType?: InvoiceStatus;
+};
 
 const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
 
@@ -42,10 +48,12 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { customers, products, onSaveInvoice } = props;
+  const { customers, products, onSaveInvoice, invoiceType } = props;
+
+  console.tron.log({ invoiceType });
 
   const { control, handleSubmit } = useForm({
-    defaultValues: createInvoiceDefaultModel().create(),
+    defaultValues: createInvoiceDefaultModel(invoiceType).create(),
   });
 
   const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });

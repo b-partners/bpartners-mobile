@@ -78,7 +78,14 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
             />
           </View>
         </Screen>
-        <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
+        <Button
+          tx='quotationScreen.createQuotation'
+          style={BUTTON_STYLE}
+          textStyle={BUTTON_TEXT_STYLE}
+          onPress={() => {
+            navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.PROPOSAL });
+          }}
+        />
       </View>
     </ErrorBoundary>
   );

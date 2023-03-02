@@ -59,7 +59,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
         status: InvoiceStatus.PROPOSAL,
       };
       await invoiceStore.saveInvoice(editedItem);
-      await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.DRAFT });
+      await invoiceStore.getDrafts({ page: 1, pageSize: 15, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
@@ -100,7 +100,14 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
             />
           </View>
         </Screen>
-        <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
+        <Button
+          tx='quotationScreen.createQuotation'
+          style={BUTTON_STYLE}
+          textStyle={BUTTON_TEXT_STYLE}
+          onPress={() => {
+            navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT });
+          }}
+        />
       </View>
     </ErrorBoundary>
   );
