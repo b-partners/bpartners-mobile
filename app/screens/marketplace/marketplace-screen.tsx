@@ -38,6 +38,20 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'mar
             <Text style={{ alignSelf: 'center', color: 'black' }}>{translate('marketPlaceScreen.messageTitle')}</Text>
             <Text style={{ alignSelf: 'center', color: 'black' }}>{translate('marketPlaceScreen.messageContent')}</Text>
           </View>
+          <View
+            style={{
+              width: '96%',
+              height: 60,
+              backgroundColor: palette.Khaki,
+              marginTop: spacing[2],
+              borderRadius: 10,
+              alignSelf: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text style={{ alignSelf: 'center', color: 'black' }}>{translate('marketPlaceScreen.messageTitle')}</Text>
+            <Text style={{ alignSelf: 'center', color: 'black' }}>{translate('marketPlaceScreen.messageContent')}</Text>
+          </View>
           {screenWidth < 720 ? <ColumnList marketplaces={marketplaces} /> : <RowList marketplaces={marketplaces} />}
         </Screen>
       </View>
