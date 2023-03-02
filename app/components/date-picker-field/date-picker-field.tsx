@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import DatePickerInput from 'react-native-date-picker';
 
@@ -50,10 +50,6 @@ export function DatePickerField(props: DatePickerProps) {
   const [open, setOpen] = useState(false);
   let [date] = value && value.toISOString().split('T');
   date = date.split('-').join(dateSeparator);
-
-  useEffect(() => {
-    onDateChange(value);
-  }, [value]);
 
   return (
     <View style={[DATE_PICKER_CONTAINER_STYLE, containerStyle]}>

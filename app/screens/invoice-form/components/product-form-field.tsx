@@ -42,7 +42,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             backgroundColor: color.palette.white,
             zIndex: 10,
             borderRadius: 10,
-            marginBottom: spacing[5],
+            marginBottom: spacing[6],
           }}
         >
           <Button

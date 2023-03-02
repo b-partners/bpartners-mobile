@@ -29,7 +29,7 @@ export const InvoiceModel = types.model('Invoice').props({
   totalVat: types.maybe(types.maybeNull(types.number)),
   totalPriceWithVat: types.maybe(types.maybeNull(types.number)),
   totalPriceWithoutVat: types.maybe(types.maybeNull(types.number)),
-  totalPriceWithoutDiscount: types.maybe(types.maybe(types.number)),
+  totalPriceWithoutDiscount: types.maybe(types.maybeNull(types.number)),
   status: types.maybe(types.maybeNull(types.enumeration(Object.values(InvoiceStatus)))),
   delayInPaymentAllowed: types.maybe(types.maybeNull(types.number)),
   delayPenaltyPercent: types.maybe(types.maybeNull(types.number)),
@@ -71,7 +71,7 @@ export const EMPTY_INVOICE: Invoice = {
   },
   paymentRegulations: [] as any,
   paymentType: null,
-  createdAt: null,
+  createdAt: new Date(),
   updatedAt: null,
   metadata: {
     submittedAt: null,
