@@ -3,7 +3,7 @@ import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { translate } from '../../i18n';
-import { spacing } from '../../theme';
+import { color, spacing } from '../../theme';
 import { AutoImage } from '../auto-image/auto-image';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
@@ -38,7 +38,7 @@ export function Header(props: HeaderProps) {
   const { top } = useSafeAreaInsets();
 
   return (
-    <View>
+    <View style={{ backgroundColor: color.palette.white }}>
       <AutoImage source={require('./header.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
       <View style={[{ ...ROOT, height: +ROOT.height + top }, style]}>
         {leftIcon ? (

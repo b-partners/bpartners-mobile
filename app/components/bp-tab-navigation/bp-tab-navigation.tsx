@@ -5,6 +5,7 @@ import { BackHandler, ImageStyle, View, ViewStyle } from 'react-native';
 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
+import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { BottomTab } from './bottom-tab';
@@ -16,6 +17,9 @@ const TAB_VIEW_STYLE: ViewStyle = {
   height: 110,
   width: '100%',
   flexDirection: 'row',
+  backgroundColor: color.palette.white,
+  borderWidth: 0,
+  borderColor: color.transparent,
 };
 
 const WAVE_STYLE: ImageStyle = {
