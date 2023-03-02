@@ -93,7 +93,14 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
             />
           </View>
         </Screen>
-        <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
+        <Button
+          tx='quotationScreen.createQuotation'
+          style={BUTTON_STYLE}
+          textStyle={BUTTON_TEXT_STYLE}
+          onPress={() => {
+            navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.CONFIRMED });
+          }}
+        />
       </View>
     </ErrorBoundary>
   );

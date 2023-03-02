@@ -46,7 +46,9 @@ export type NavigatorParamList = {
   profile: undefined;
   legalFile: undefined;
   invoices: undefined;
-  invoiceForm: undefined;
+  invoiceForm: {
+    invoiceType: InvoiceStatus;
+  };
 };
 
 export type TabNavigatorParamList = {
@@ -56,7 +58,9 @@ export type TabNavigatorParamList = {
   paymentList: undefined;
   supportContact: undefined;
   invoices: undefined;
-  invoiceForm: undefined;
+  invoiceForm: {
+    invoiceType: InvoiceStatus;
+  };
 };
 
 const Drawer = createDrawerNavigator<NavigatorParamList>();

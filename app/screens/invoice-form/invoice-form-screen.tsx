@@ -21,7 +21,7 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 };
 
-export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation }) {
+export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
   const { invoiceStore } = useStores();
   const { products, customers, invoice } = invoiceStore;
 
@@ -55,7 +55,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
           }}
         />
         <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
-          <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
+          <InvoiceForm invoiceType={route.params.invoiceType} invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>
     </ErrorBoundary>
