@@ -19,7 +19,7 @@ export const color = {
    * can cause older Android devices to slow down due to the excessive compositing required
    * by their under-powered GPUs.
    */
-  transparent: 'rgba(0, 0, 0, 0)',
+  transparent: 'rgba(255, 255, 255, 1)',
   /**
    * The screen background.
    */
