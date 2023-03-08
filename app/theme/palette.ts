@@ -25,4 +25,6 @@ export const palette = {
   textClassicColor: '#0A1045',
   secondaryColor: '#9C255A',
   Khaki: '#FFFBAC',
+  lightYellow: '#F5DF4D',
+  yellow: '#E7B10A',
 };
