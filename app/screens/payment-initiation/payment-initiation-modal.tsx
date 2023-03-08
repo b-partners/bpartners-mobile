@@ -114,7 +114,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = props => {
               </TouchableOpacity>
               <QRCode value={paymentUrl} size={250} />
               <Text
-                tx={'paymentInitiationScreen.instruction'}
+                text={'paymentInitiationScreen.instruction'}
                 style={{
                   height: '15%',
                   color: color.palette.textClassicColor,
@@ -147,7 +147,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = props => {
                   <Text tx='paymentInitiationScreen.share' style={{ marginLeft: 10, color: 'black', fontFamily: 'Geometria', fontSize: 20 }} />
                 </Button>
               </View>
-              <ShareModal paymentUrl={paymentUrl} shareModal={shareModal} setShareModal={setShareModal} />
+              <ShareModal paymentUrl={paymentUrl} shareModal={shareModal} setShareModal={setShareModal}></ShareModal>
             </>
           ) : (
             <Text tx='errors.somethingWentWrong' />
