@@ -1,16 +1,16 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef, useState } from 'react';
-import { Linking, Modal, TouchableOpacity, View } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import { View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
-import { Button, Header, Loader, Text } from '../../components';
+import { Button, Loader, Text } from '../../components';
 import FormField from '../../components/forms/form-field';
 import { translate } from '../../i18n';
 import { color, spacing } from '../../theme';
 import { amountToMinors } from '../../utils/money';
+import { PaymentModal } from './payment-initiation-modal';
 
 const INVALID_FORM_FIELD = {
   borderBottomColor: '#FF5983',
@@ -33,11 +33,10 @@ export const PaymentInitiationForm: FC<
 
   const { init, paymentUrl, loading } = props;
 
+  const [amount, setAmount] = useState(0);
+  const [label, setLabel] = useState('');
+  const [reference, setReference] = useState('');
   const [showModal, setShowModal] = useState(false);
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
 
   return (
     <View testID='paymentInitiationScreen'>
@@ -93,7 +92,12 @@ export const PaymentInitiationForm: FC<
                 <Button
                   testID='submit'
                   tx='paymentInitiationScreen.fields.submit'
-                  onPress={() => handleSubmit()}
+                  onPress={() => {
+                    setLabel(values.label);
+                    setReference(values.reference);
+                    setAmount(values.amount);
+                    handleSubmit();
+                  }}
                   style={{
                     backgroundColor: color.palette.secondaryColor,
                     height: 45,
@@ -108,55 +112,14 @@ export const PaymentInitiationForm: FC<
           );
         }}
       </Formik>
-      <Modal testID='payment-url-modal' animationType='slide' transparent={true} visible={showModal} onRequestClose={closeModal}>
-        <View style={{ flex: 1, backgroundColor: 'rgba(16,16,19,0.9)' }} />
-        <View
-          style={{
-            display: 'flex',
-            backgroundColor: color.palette.white,
-            borderTopLeftRadius: 50,
-            borderTopRightRadius: 50,
-            width: '100%',
-          }}
-          testID='payment-url-modal-container'
-        >
-          <View testID='payment-url-modal-title-container'>
-            <Header rightIcon='cross' onRightPress={closeModal} style={{ borderTopLeftRadius: 50 }} headerTx='paymentInitiationScreen.fields.paymentUrl' />
-          </View>
-          <View style={{ alignItems: 'center', padding: spacing[6] }} testID='payment-url-modal-content'>
-            {paymentUrl ? (
-              <>
-                <TouchableOpacity
-                  onPress={async () => {
-                    const supported = await Linking.canOpenURL(paymentUrl);
-                    if (!supported) {
-                      return;
-                    }
-                    await Linking.openURL(paymentUrl);
-                  }}
-                >
-                  <Text
-                    text={paymentUrl}
-                    style={{
-                      color: color.palette.textClassicColor,
-                      fontFamily: 'Geometria',
-                      textAlign: 'center',
-                      textAlignVertical: 'center',
-                      textDecorationLine: 'underline',
-                      marginBottom: spacing[4],
-                      lineHeight: 20,
-                    }}
-                    testID='payment-url'
-                  />
-                </TouchableOpacity>
-                <QRCode value={paymentUrl} />
-              </>
-            ) : (
-              <Text tx='errors.somethingWentWrong' />
-            )}
-          </View>
-        </View>
-      </Modal>
+      <PaymentModal
+        paymentUrl={paymentUrl}
+        amount={amount}
+        label={label}
+        reference={reference}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      ></PaymentModal>
     </View>
   );
 });
