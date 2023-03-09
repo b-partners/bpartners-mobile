@@ -13,6 +13,7 @@ import { AccountHolder, AccountHolderModel } from '../../entities/account-holder
 import { Account, AccountModel } from '../../entities/account/account';
 import { User, UserModel } from '../../entities/user/user';
 import {ContactAddressModel} from "../../entities/contact-address/contact-address";
+import {BusinessActivityModel} from "../../entities/business-activity/business-activity";
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -84,10 +85,11 @@ export const AuthStoreModel = types
       const account = AccountModel.create(currentAccount);
       const accountHolder = AccountHolderModel.create(currentAccountHolder);
       const contactAddress = ContactAddressModel.create(currentAccountHolder.contactAddress);
+      const businessActivities = BusinessActivityModel.create(currentAccountHolder.businessActivities);
 
       self.currentUser = { ...user };
       self.currentAccount = { ...account };
-      self.currentAccountHolder = { ...accountHolder, contactAddress };
+      self.currentAccountHolder = { ...accountHolder, contactAddress, businessActivities };
 
       save('currentUser', currentUser);
       save('currentAccount', currentAccount);
