@@ -10,6 +10,7 @@ import { TransactionCategory } from '../../models/entities/transaction-category/
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
 import { GeneralApiProblem } from './api-problem';
+import {Prospect} from "../../models/entities/prospect/prospect";
 
 export interface Whoami {
   user: any;
@@ -63,6 +64,8 @@ export type GetFileInformation = { kind: 'ok'; fileInfos: File } | GeneralApiPro
 export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProblem;
 
 export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } | GeneralApiProblem;
+
+export type GetProspectResult = { kind: 'ok' ; prospects: Prospect[] } | GeneralApiProblem;
 
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
 
