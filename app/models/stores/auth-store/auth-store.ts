@@ -12,6 +12,7 @@ import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountModel } from '../../entities/account/account';
 import { User, UserModel } from '../../entities/user/user';
+import {ContactAddressModel} from "../../entities/contact-address/contact-address";
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -82,10 +83,11 @@ export const AuthStoreModel = types
       const user = UserModel.create(currentUser);
       const account = AccountModel.create(currentAccount);
       const accountHolder = AccountHolderModel.create(currentAccountHolder);
+      const contactAddress = ContactAddressModel.create(currentAccountHolder.contactAddress);
 
       self.currentUser = { ...user };
       self.currentAccount = { ...account };
-      self.currentAccountHolder = { ...accountHolder };
+      self.currentAccountHolder = { ...accountHolder, contactAddress };
 
       save('currentUser', currentUser);
       save('currentAccount', currentAccount);

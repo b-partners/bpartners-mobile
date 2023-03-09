@@ -90,21 +90,30 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
                   <TextField value={currentAccountHolder.name} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.address'} />
-                  <TextField value={currentAccountHolder.address} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.contactAddress.address'} />
+                  <TextField value={currentAccountHolder.contactAddress.address} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.city'} />
-                  <TextField value={currentAccountHolder.city} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.contactAddress.city'} />
+                  <TextField value={currentAccountHolder.contactAddress.city} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.country'} />
-                  <TextField value={currentAccountHolder.country} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.contactAddress.country'} />
+                  <TextField value={currentAccountHolder.contactAddress.country} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.postalCode'} />
-                  <TextField value={currentAccountHolder.postalCode} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.contactAddress.postalCode'} />
+                  <TextField value={currentAccountHolder.contactAddress.postalCode} inputStyle={FORM_FIELD_STYLE} />
                 </View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.siren'} />
+                  <TextField value={currentAccountHolder.siren} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.siren'} />
+                  <TextField value={currentAccountHolder.contactAddress.country} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+
               </View>
             </View>
           )}
