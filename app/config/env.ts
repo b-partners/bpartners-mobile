@@ -18,5 +18,5 @@ export default {
   authorizationBaseURL: config.AUTHORIZATION_BASE_URL || '',
   authorizationEndpoint: config.AUTHORIZATION_ENDPOINT || '',
   tokenEndpoint: config.TOKEN_ENDPOINT || '',
-  ciAccessToken: 'C0NhyZPSwYxi_Qc6uO9jEOJ7pcHvc95HVMPZx7gWxwo.jkXfILiPUqGDRevM1Uajc8lPlWnv3cIl1SNPWtVsfS4',
+  ciAccessToken: 'FqcLly_IhJ3A8KYH6nrfM6K2DLcm7mmP6X23TZ8URDw.M3CtXrkOQAf5S7awZ-v56XPYJTAAWoPUTiThq0WVlG8',
 };
