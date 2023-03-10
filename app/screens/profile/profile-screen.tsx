@@ -114,10 +114,22 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
                   <TextField value={currentAccountHolder.siren} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.siren'} />
-                  <TextField value={currentAccountHolder.contactAddress.country} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.officialActivityName'} />
+                  <TextField value={currentAccountHolder.officialActivityName} inputStyle={FORM_FIELD_STYLE} />
                 </View>
 
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.businessActivities.primary'} />
+                  <TextField value={currentAccountHolder.businessActivities.primary} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.businessActivities.secondary'} />
+                  <TextField value={currentAccountHolder.businessActivities.secondary} inputStyle={FORM_FIELD_STYLE} />
+                </View>
+                <View>
+                  <Text tx={'profileScreen.fields.accountHolder.companyInfo.socialCapital'} />
+                  <TextField value={currentAccountHolder.companyInfo.socialCapital.toString()} inputStyle={FORM_FIELD_STYLE} />
+                </View>
               </View>
             </View>
           )}
