@@ -66,7 +66,12 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     props.navigation.navigate(routeName);
     setActiveRouteName(routeName);
     const takeMarketplace = async () => {
-      await Promise.all([marketplaceStore.getMarketplaces()]);
+      await Promise.all([
+        marketplaceStore.getMarketplaces({
+          page: 1,
+          pageSize: 15,
+        }),
+      ]);
     };
     takeMarketplace().then();
   }, []);
