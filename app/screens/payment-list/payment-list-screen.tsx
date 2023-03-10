@@ -18,7 +18,7 @@ import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
-const TAB_BAR_STYLE: ViewStyle = { borderBottomWidth: 1, borderBottomColor: palette.greyDarker, ...NO_SHADOW };
+const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW };
 
 export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
@@ -47,6 +47,12 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
               );
             },
           })}
+          // @ts-ignore
+          tabBarOptions={{
+            style: {
+              backgroundColor: palette.white,
+            },
+          }}
         >
           <Tab.Screen
             name={translate('paymentListScreen.tabs.drafts')}
