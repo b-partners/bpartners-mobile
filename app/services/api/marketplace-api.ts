@@ -1,5 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
+import { PageCriteria } from '../../models/entities/criteria/criteria';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetMarketplaceResult } from './api.types';
@@ -11,10 +12,10 @@ export class MarketplaceApi {
     this.api = api;
   }
 
-  async getMarketplaces(id: string): Promise<GetMarketplaceResult> {
+  async getMarketplaces(id: string, criteria: PageCriteria): Promise<GetMarketplaceResult> {
     // make the api call
     __DEV__ && console.tron.log(`Fetching marketplace`);
-    const response: ApiResponse<any> = await this.api.apisauce.get(`/accounts/${id}/marketplaces`);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`/accounts/${id}/marketplaces`, criteria);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
