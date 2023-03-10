@@ -16,6 +16,7 @@ const TAB_VIEW_STYLE: ViewStyle = {
   height: 110,
   width: '100%',
   flexDirection: 'row',
+  backgroundColor: palette.white,
 };
 
 const WAVE_STYLE: ImageStyle = {

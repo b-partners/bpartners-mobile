@@ -6,7 +6,8 @@ import { ScrollView, View, ViewStyle } from 'react-native';
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators';
-import { color, spacing } from '../../theme';
+import { spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { PaymentInitiationForm } from './payment-initiation-form';
 import { CONTAINER, FULL, HEADER, HEADER_TITLE } from './style';
@@ -22,7 +23,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={FULL}>
-        <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
+        <Screen style={CONTAINER} preset='fixed' backgroundColor={palette.white}>
           <Header
             headerTx='paymentInitiationScreen.title'
             style={HEADER}
