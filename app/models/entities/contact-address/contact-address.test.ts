@@ -5,7 +5,7 @@ test('can be created', () => {
     address: '6 RUE PAUL LANGEVIN',
     city: 'FONTENAY-SOUS-BOIS',
     country: 'FRANCE',
-    postalCode: '94120'
+    postalCode: '94120',
   });
 
   expect(instance).toBeTruthy();
