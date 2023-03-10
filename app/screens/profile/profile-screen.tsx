@@ -45,7 +45,7 @@ const LOGO_ICON_STYLE: ImageStyle = {
 
 const FIELD_CONTAINER: ViewStyle = {
   backgroundColor: '#313131',
-}
+};
 
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({ navigation }) {
   const { authStore } = useStores();
@@ -56,7 +56,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
     <ErrorBoundary catchErrors='always'>
       <View testID='TransactionListScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
-        <Screen style={CONTAINER} preset='auto' >
+        <Screen style={CONTAINER} preset='auto'>
           <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           <View style={LOGO_CONTAINER}>
             <Image
