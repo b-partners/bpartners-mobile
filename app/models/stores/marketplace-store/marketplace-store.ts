@@ -6,7 +6,6 @@ import { MarketplaceModel, MarketplaceSnapshotOut } from '../../entities/marketp
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
-import { PageCriteria } from '../../entities/criteria/criteria';
 
 export const MarketplaceStoreModel = types
   .model('Marketplace')
