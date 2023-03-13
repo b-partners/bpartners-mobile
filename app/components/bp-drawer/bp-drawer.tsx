@@ -4,6 +4,7 @@ import { Alert, Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, Vi
 import Home from 'react-native-vector-icons/AntDesign';
 import Contact from 'react-native-vector-icons/AntDesign';
 import Right from 'react-native-vector-icons/Entypo';
+import ProspectList from 'react-native-vector-icons/FontAwesome';
 import Map from 'react-native-vector-icons/Ionicons';
 import Profile from 'react-native-vector-icons/Ionicons';
 import Power from 'react-native-vector-icons/Ionicons';
@@ -12,7 +13,6 @@ import Exit from 'react-native-vector-icons/MaterialCommunityIcons';
 import PaymentInit from 'react-native-vector-icons/MaterialCommunityIcons';
 import PaymentList from 'react-native-vector-icons/MaterialIcons';
 import TransactionList from 'react-native-vector-icons/Octicons';
-import ProspectList from 'react-native-vector-icons/FontAwesome';
 
 import env from '../../config/env';
 import { translate } from '../../i18n';

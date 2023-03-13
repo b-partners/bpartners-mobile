@@ -2,7 +2,7 @@ import { ApiResponse } from 'apisauce';
 
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import {GetProspectResult} from './api.types';
+import { GetProspectResult } from './api.types';
 
 export class ProspectApi {
   private api: Api;
