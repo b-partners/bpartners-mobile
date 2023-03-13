@@ -3,6 +3,7 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import { BusinessActivityModel, createBusinessActivityDefaultModel } from '../business-activity/business-activity';
 import { CompanyInfoModel, createCompanyInfoDefaultModel } from '../company-info/company-info';
 import { ContactAddressModel, createContactAddressDefaultModel } from '../contact-address/contact-address';
+import { RevenueTargetModel } from '../revenue-target/revenue-target';
 
 export const AccountHolderModel = types.model('AccountHolder').props({
   id: types.maybe(types.maybeNull(types.string)),
@@ -12,6 +13,7 @@ export const AccountHolderModel = types.model('AccountHolder').props({
   contactAddress: types.maybe(types.maybeNull(ContactAddressModel)),
   businessActivities: types.maybe(types.maybeNull(BusinessActivityModel)),
   companyInfo: types.maybe(types.maybeNull(CompanyInfoModel)),
+  revenueTargets: types.maybe(types.array(RevenueTargetModel)),
 });
 
 export interface AccountHolder extends Instance<typeof AccountHolderModel> {}
@@ -26,6 +28,7 @@ export const createAccountDefaultModel = () =>
     contactAddress: createContactAddressDefaultModel(),
     businessActivities: createBusinessActivityDefaultModel(),
     companyInfo: createCompanyInfoDefaultModel(),
+    revenueTargets: [],
   });
 
 export interface AccountSnapshotIn extends SnapshotIn<typeof AccountHolderModel> {}

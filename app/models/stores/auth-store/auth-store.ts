@@ -11,9 +11,6 @@ import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountModel } from '../../entities/account/account';
-import { BusinessActivityModel } from '../../entities/business-activity/business-activity';
-import { CompanyInfoModel } from '../../entities/company-info/company-info';
-import { ContactAddressModel } from '../../entities/contact-address/contact-address';
 import { User, UserModel } from '../../entities/user/user';
 
 export const AuthStoreModel = types
@@ -82,16 +79,9 @@ export const AuthStoreModel = types
   }))
   .actions(self => ({
     whoamiSuccess: (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
-      const user = UserModel.create(currentUser);
-      const account = AccountModel.create(currentAccount);
-      const accountHolder = AccountHolderModel.create(currentAccountHolder);
-      const contactAddress = ContactAddressModel.create(currentAccountHolder.contactAddress);
-      const businessActivities = BusinessActivityModel.create(currentAccountHolder.businessActivities);
-      const companyInfo = CompanyInfoModel.create(currentAccountHolder.companyInfo);
-
-      self.currentUser = { ...user };
-      self.currentAccount = { ...account };
-      self.currentAccountHolder = { ...accountHolder, contactAddress, businessActivities, companyInfo };
+      self.currentUser = { ...currentUser };
+      self.currentAccount = { ...currentAccount };
+      self.currentAccountHolder = { ...currentAccountHolder };
 
       save('currentUser', currentUser);
       save('currentAccount', currentAccount);
