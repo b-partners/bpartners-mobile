@@ -7,6 +7,7 @@ import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import OcticonsIcon from 'react-native-vector-icons/Octicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import env from '../../config/env';
 import { translate } from '../../i18n';
@@ -15,6 +16,7 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { BPDrawerHeader } from './bp-drawer-header';
+import {FontAwesome} from "@expo/vector-icons";
 
 const LOGOUT_CONTAINER_STYLE: ViewStyle = {
   position: 'absolute',
@@ -122,16 +124,16 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   const IconRoute: RouteNameProps = {
-    home: <Home name='home' size={22} color={color.palette.secondaryColor} />,
-    profile: <Profile name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
-    transactionList: <TransactionList name='checklist' size={22} color={color.palette.secondaryColor} />,
-    prospect: <ProspectList name='list-alt' size={22} color={color.palette.secondaryColor} />,
-    paymentInitiation: <PaymentInit name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
-    paymentList: <PaymentList name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
-    welcome: <Home name='home' size={22} color={color.palette.secondaryColor} />,
-    oauth: <Lock name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
-    marketplace: <Map name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
-    supportContact: <Contact name='contacts' size={22} color={color.palette.secondaryColor} />,
+    home: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
+    profile: <IoniconIcon name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
+    transactionList: <OcticonsIcon name='checklist' size={22} color={color.palette.secondaryColor} />,
+    paymentInitiation: <MaterialCommunityIcon name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
+    paymentList: <MaterialIcon name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
+    welcome: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
+    oauth: <IoniconIcon name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
+    marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
+    supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
+    prospect: <FontAwesome name='list-alt' size={22} color={color.palette.secondaryColor} />,
   };
 
   const handlePress = useCallback(async () => {

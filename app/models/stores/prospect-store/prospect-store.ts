@@ -1,10 +1,10 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
+import { ProspectApi } from '../../../services/api/prospect-api';
+import { ProspectModel, ProspectSnapshotOut } from '../../entities/prospect/prospect';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
-import {ProspectModel, ProspectSnapshotOut} from "../../entities/prospect/prospect";
-import {ProspectApi} from "../../../services/api/prospect-api";
 
 export const ProspectStoreModel = types
   .model('Prospect')

@@ -23,9 +23,9 @@ import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
+import { ProspectScreen } from '../screens/prospect/prospect-screen';
 import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
-import {ProspectScreen} from "../screens/prospect/prospect-screen";
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
