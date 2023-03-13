@@ -23,7 +23,7 @@ const PROGRESS_BAR_STYLE: ViewStyle = {
   position: 'absolute',
   backgroundColor: '#BFC7DE',
   height: 30,
-  width: '40%',
+  width: '42%',
   borderTopLeftRadius: 25,
   borderBottomLeftRadius: 25,
 };
