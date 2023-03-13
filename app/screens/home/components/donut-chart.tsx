@@ -5,7 +5,7 @@ import Snackbar from 'react-native-snackbar';
 
 import { Icon, Text } from '../../../components';
 import { TxKeyPath, translate } from '../../../i18n';
-import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
+import { TransactionSummary as ITransactionSummary, TransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrency } from '../../../utils/money';
@@ -68,6 +68,15 @@ const SUMMARY_TITLE_STYLE: TextStyle = {
   fontFamily: 'Geometria-Heavy',
 };
 
+const mock_summary: TransactionSummary = {
+  id: 'one',
+  month: 2,
+  income: 9000,
+  outcome: 9000,
+  cashFlow: 202301,
+  updatedAt: new Date(),
+};
+
 export const DonutChart: React.FC<DonutChartProps> = props => {
   const { summary } = props;
 
@@ -115,8 +124,10 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
             donut
             semiCircle
             radius={110}
+            showText
             textSize={15}
             labelsPosition='outward'
+            textColor={'black'}
             data={[
               ...Object.keys(summary)
                 .filter(key => !FILTERED_KEYS.includes(key))
