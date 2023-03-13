@@ -57,13 +57,13 @@ type IconRouteProps = {
 };
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
-  const {state: {routeNames, index}}  = props;
+  const {state: {routeNames, index}, navigation: {navigate}}  = props;
   const currentTab = routeNames[index];
   const { marketplaceStore } = useStores();
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleNavigationMarketplace = useCallback((routeName: string) => {
-    props.navigation.navigate(routeName);
+    navigate(routeName);
     const takeMarketplace = async () => {
       await Promise.all([
         marketplaceStore.getMarketplaces({
@@ -76,10 +76,10 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   }, []);
 
   const handleNavigation = useCallback((routeName: string) => {
-    props.navigation.navigate(routeName);
+    navigate(routeName);
   }, []);
 
-  const openModal = useCallback((routeName: string) => {
+  const openModal = useCallback(() => {
     setModalVisible(true);
   }, []);
 
@@ -97,7 +97,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => {
-      openModal('supportContact');
+      openModal();
     },
   };
 
@@ -125,7 +125,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
           return (
             <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
-              {modalVisible === true && bottomTavNavItem === 'service' ? (
+              {modalVisible && bottomTavNavItem === 'service' ? (
                 <BottomTab
                   onPress={() => setModalVisible(false)}
                   testID={`serviceTab`}
