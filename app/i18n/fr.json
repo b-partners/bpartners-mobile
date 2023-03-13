@@ -31,6 +31,9 @@
     },
     "transactionCategoryPlaceholder": "Sélectionner un élément"
   },
+  "prospectScreen": {
+    "title": "Prospects"
+  },
   "onboardingScreen": {
     "title": "Créer un compte"
   },

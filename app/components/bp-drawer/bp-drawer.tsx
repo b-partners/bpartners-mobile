@@ -95,6 +95,7 @@ type RouteNameProps = {
   home: string | React.ReactElement;
   profile: string | React.ReactElement;
   transactionList: string | React.ReactElement;
+  prospect: string | React.ReactElement;
   paymentInitiation: string | React.ReactElement;
   paymentList: string | React.ReactElement;
   welcome: string | React.ReactElement;
@@ -111,6 +112,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     home: translate('homeScreen.title'),
     profile: translate('profileScreen.title'),
     transactionList: translate('transactionListScreen.title'),
+    prospect: translate('prospectScreen.title'),
     paymentInitiation: translate('paymentInitiationScreen.title'),
     paymentList: translate('paymentListScreen.title'),
     welcome: translate('homeScreen.title'),
@@ -120,15 +122,16 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   const IconRoute: RouteNameProps = {
-    home: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
-    profile: <IoniconIcon name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
-    transactionList: <OcticonsIcon name='checklist' size={22} color={color.palette.secondaryColor} />,
-    paymentInitiation: <MaterialCommunityIcon name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
-    paymentList: <MaterialIcon name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
-    welcome: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
-    oauth: <IoniconIcon name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
-    marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
-    supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
+    home: <Home name='home' size={22} color={color.palette.secondaryColor} />,
+    profile: <Profile name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
+    transactionList: <TransactionList name='checklist' size={22} color={color.palette.secondaryColor} />,
+    prospect: <ProspectList name='list-alt' size={22} color={color.palette.secondaryColor} />,
+    paymentInitiation: <PaymentInit name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
+    paymentList: <PaymentList name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
+    welcome: <Home name='home' size={22} color={color.palette.secondaryColor} />,
+    oauth: <Lock name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
+    marketplace: <Map name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
+    supportContact: <Contact name='contacts' size={22} color={color.palette.secondaryColor} />,
   };
 
   const handlePress = useCallback(async () => {
