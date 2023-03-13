@@ -57,7 +57,10 @@ type IconRouteProps = {
 };
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
-  const {state: {routeNames, index}, navigation: {navigate}}  = props;
+  const {
+    state: { routeNames, index },
+    navigation: { navigate },
+  } = props;
   const currentTab = routeNames[index];
   const { marketplaceStore } = useStores();
   const [modalVisible, setModalVisible] = useState(false);
@@ -116,7 +119,6 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     facturation: translate('bottomTab.facturation'),
     service: translate('bottomTab.service'),
   };
-
 
   return (
     <>
