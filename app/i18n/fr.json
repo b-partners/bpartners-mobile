@@ -137,9 +137,9 @@
     "summary": {
       "title": "Mes chiffres",
       "goals": "Objectifs",
-      "income": "Chiffres d'affaire",
-      "outcome": "Dépenses",
-      "cashFlow": "Trésorerie Disponible",
+      "income": "Recette",
+      "outcome": "Dépense",
+      "cashFlow": "Trésorerie",
       "boostMyResult": "Booster mes résultats",
       "lastTransactions": "Dernières Transactions"
     }
