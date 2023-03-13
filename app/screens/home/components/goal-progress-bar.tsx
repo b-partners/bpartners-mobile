@@ -2,9 +2,7 @@ import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { Icon, Text } from '../../../components';
-import { AccountHolder as IAccountHolder } from '../../../models/entities/account-holder/account-holder';
 import { color, spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
 
 const ROW: ViewStyle = {
   display: 'flex',
@@ -15,19 +13,20 @@ const ROW: ViewStyle = {
 const PROGRESS_BAR_BACKGROUND_STYLE: ViewStyle = {
   height: 30,
   flex: 1,
-  backgroundColor: '#F5F5F5',
+  backgroundColor: '#1D3D3D3',
   borderRadius: 50,
 };
 
+const PROGRESS_BAR_CONTAINER: ViewStyle = { marginVertical: spacing[4] };
+
 const PROGRESS_BAR_STYLE: ViewStyle = {
   position: 'absolute',
-  backgroundColor: palette.lightGrey,
+  backgroundColor: '#BFC7DE',
   height: 30,
-  borderTopLeftRadius: 50,
-  borderBottomLeftRadius: 50,
+  width: '42%',
+  borderTopLeftRadius: 25,
+  borderBottomLeftRadius: 25,
 };
-
-const PROGRESS_BAR_CONTAINER: ViewStyle = { marginVertical: spacing[4] };
 
 const PROGRESS_BAR_TEXT_CONTAINER_STYLE: ViewStyle = {
   flex: 1,
@@ -43,36 +42,27 @@ const PROGRESS_BAR_TEXT_STYLE: TextStyle = {
   fontSize: 13,
 };
 
-interface GoalProgressBarProps {
-  accountHolder: IAccountHolder;
-}
-
-export const GoalProgressBar: React.FC<GoalProgressBarProps> = ({ accountHolder: accountHolder }) => {
-  const target = accountHolder?.revenueTargets[0];
-  const GoalAchievedInPercentage = (): string => {
-    return `${(target?.amountAttempted * 100) / target?.amountTarget}%`;
-  };
-
+export function GoalProgressBar() {
   return (
     <View style={PROGRESS_BAR_CONTAINER}>
       <View style={PROGRESS_BAR_BACKGROUND_STYLE}>
-        <View style={{ ...PROGRESS_BAR_STYLE, width: GoalAchievedInPercentage() }} />
+        <View style={PROGRESS_BAR_STYLE} />
         <View style={PROGRESS_BAR_TEXT_CONTAINER_STYLE}>
           <Text tx='homeScreen.summary.goals' style={PROGRESS_BAR_TEXT_STYLE} />
         </View>
       </View>
       <View style={{ ...ROW, ...{ justifyContent: 'space-between', marginTop: spacing[2] } }}>
         <View style={ROW}>
-          <Text text={GoalAchievedInPercentage()} style={{ fontFamily: 'Geometria-Bold', color: color.palette.textClassicColor }} />
+          <Text text='42%' style={{ fontFamily: 'Geometria-Bold', color: color.palette.textClassicColor }} />
           <View style={{ marginHorizontal: spacing[1] }} />
           <Text text='Réalisé' style={{ fontFamily: 'Geometria', color: '#BFC7DE' }} />
         </View>
         <View style={ROW}>
-          <Text text={(target?.amountTarget / 100)?.toString()} style={{ fontFamily: 'Geometria', color: color.palette.textClassicColor }} />
+          <Text text='100 000 €' style={{ fontFamily: 'Geometria', color: color.palette.textClassicColor }} />
           <View style={{ marginHorizontal: spacing[1] }} />
           <Icon icon='coins' />
         </View>
       </View>
     </View>
   );
-};
+}
