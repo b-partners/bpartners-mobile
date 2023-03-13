@@ -5,13 +5,14 @@ import Snackbar from 'react-native-snackbar';
 
 import { Icon, Text } from '../../../components';
 import { TxKeyPath, translate } from '../../../i18n';
-import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
+import { TransactionSummary as ITransactionSummary, TransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { printCurrency } from '../../../utils/money';
 
 const CHART_CONTAINER: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'flex-start' };
 const LABELS_SECTION: ViewStyle = { flex: 1 };
-const CHART_SECTION: ViewStyle = { flex: 2, marginLeft: spacing[4], position: 'absolute', bottom: -121, right: 0 };
+const CHART_SECTION: ViewStyle = { flex: 2, position: 'absolute', bottom: -121, right: 0, alignItems: 'center', alignContent: 'center', justifyContent: 'center' };
 const LABEL_CONTAINER_STYLE: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
@@ -59,6 +60,15 @@ const SUMMARY_TITLE_STYLE: TextStyle = {
   fontFamily: 'Geometria-Heavy',
 };
 
+const mock_summary: TransactionSummary = {
+  id: 'one',
+  month: 2,
+  income: 9000,
+  outcome: 9000,
+  cashFlow: 202301,
+  updatedAt: new Date(),
+};
+
 export const DonutChart: React.FC<DonutChartProps> = props => {
   const { summary } = props;
 
@@ -104,14 +114,17 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
             donut
             semiCircle
             radius={110}
+            showText
+            textSize={15}
             labelsPosition='outward'
+            textColor={'black'}
             data={[
-              ...Object.keys(summary)
+              ...Object.keys(mock_summary)
                 .filter(key => !FILTERED_KEYS.includes(key))
                 .map((key, i) => {
                   return {
-                    value: summary[key],
-                    text: translate(`homeScreen.summary.${key}` as TxKeyPath),
+                    value: mock_summary[key],
+                    text: printCurrency(mock_summary[key]),
                     color: COLORS[i],
                   };
                 }),
