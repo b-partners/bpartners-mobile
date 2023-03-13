@@ -12,6 +12,7 @@ import Exit from 'react-native-vector-icons/MaterialCommunityIcons';
 import PaymentInit from 'react-native-vector-icons/MaterialCommunityIcons';
 import PaymentList from 'react-native-vector-icons/MaterialIcons';
 import TransactionList from 'react-native-vector-icons/Octicons';
+import ProspectList from 'react-native-vector-icons/FontAwesome';
 
 import env from '../../config/env';
 import { translate } from '../../i18n';
@@ -100,6 +101,7 @@ type RouteNameProps = {
   home: string | React.ReactElement;
   profile: string | React.ReactElement;
   transactionList: string | React.ReactElement;
+  prospect: string | React.ReactElement;
   paymentInitiation: string | React.ReactElement;
   paymentList: string | React.ReactElement;
   welcome: string | React.ReactElement;
@@ -116,6 +118,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     home: translate('homeScreen.title'),
     profile: translate('profileScreen.title'),
     transactionList: translate('transactionListScreen.title'),
+    prospect: translate('prospectScreen.title'),
     paymentInitiation: translate('paymentInitiationScreen.title'),
     paymentList: translate('paymentListScreen.title'),
     welcome: translate('homeScreen.title'),
@@ -128,6 +131,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     home: <Home name='home' size={22} color={color.palette.secondaryColor} />,
     profile: <Profile name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
     transactionList: <TransactionList name='checklist' size={22} color={color.palette.secondaryColor} />,
+    prospect: <ProspectList name='list-alt' size={22} color={color.palette.secondaryColor} />,
     paymentInitiation: <PaymentInit name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
     paymentList: <PaymentList name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
     welcome: <Home name='home' size={22} color={color.palette.secondaryColor} />,

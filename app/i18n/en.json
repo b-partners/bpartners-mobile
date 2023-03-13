@@ -50,6 +50,9 @@
     },
     "transactionCategoryPlaceholder": "Select an item"
   },
+  "prospectScreen": {
+    "title": "Prospects"
+  },
   "onboardingScreen": {
     "title": "Onboarding"
   },
