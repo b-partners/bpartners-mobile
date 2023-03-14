@@ -16,6 +16,7 @@ const TAB_VIEW_STYLE: ViewStyle = {
   height: 110,
   width: '100%',
   flexDirection: 'row',
+  backgroundColor: palette.white,
 };
 
 const WAVE_STYLE: ImageStyle = {
@@ -66,7 +67,12 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     props.navigation.navigate(routeName);
     setActiveRouteName(routeName);
     const takeMarketplace = async () => {
-      await Promise.all([marketplaceStore.getMarketplaces()]);
+      await Promise.all([
+        marketplaceStore.getMarketplaces({
+          page: 1,
+          pageSize: 15,
+        }),
+      ]);
     };
     takeMarketplace().then();
   }, []);
@@ -141,7 +147,6 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                   testID={`serviceTab`}
                   source={require('./icons/anotherService.png')}
                   tabStyle={{
-                    zIndex: 10000000,
                     width: '100%',
                     height: 90,
                     marginTop: 8,

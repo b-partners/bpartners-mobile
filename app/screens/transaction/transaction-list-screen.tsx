@@ -18,7 +18,7 @@ const FULL: ViewStyle = {
   flex: 1,
 };
 const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
+  backgroundColor: palette.white,
 };
 const FLAT_LIST: ViewStyle = {
   paddingHorizontal: spacing[4],
