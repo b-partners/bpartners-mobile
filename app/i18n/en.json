@@ -3,25 +3,17 @@
   "components": {
     "datePicker": {
       "pickADate": "Pick a date"
-    },
-    "button": {
-      "close": "Close"
     }
   },
   "common": {
     "ok": "OK!",
-    "submit": "Confirm",
-    "or": "or",
     "cancel": "Cancel",
-    "back": "Back",
-    "noDataProvided": "No records to display"
+    "back": "Back"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
     "somethingWentWrong": "Something went wrong. Please retry later.",
-    "verifyConnection": "Verify your connection",
-    "required": "This field is required",
-    "amount": "Invalid amount"
+    "verifyConnection": "Verify your connection"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -57,14 +49,6 @@
       }
     },
     "transactionCategoryPlaceholder": "Select an item"
-  },
-  "prospectScreen": {
-    "title": "Prospects",
-    "tab": {
-      "toContact": "To contact",
-      "contacted": "Contacted",
-      "converted": "Converted"
-    }
   },
   "onboardingScreen": {
     "title": "Onboarding"
@@ -102,7 +86,6 @@
     },
     "instruction": "Your customer can scan this QR Code. You can also share it by clicking on the button below",
     "share": "Share",
-    "copy": "Copy the link",
     "whatsapp": "Whatsapp",
     "sms": "SMS",
     "or": "or"
@@ -124,24 +107,10 @@
       "accountHolder": {
         "section": "My society",
         "name": "Name",
-        "siren": "Siren",
-        "officialActivityName": "Official activity",
-        "contactAddress": {
-          "address": "Address",
-          "city": "City",
-          "country": "Country",
-          "postalCode": "Postal code"
-        },
-        "companyInfo": {
-          "socialCapital": "Social capital"
-        },
-        "businessActivities": {
-          "primary": "Main activity",
-          "secondary": "Secondary activity"
-        },
-        "revenueTargets": {
-          "amountTarget": "Annual revenue to be realized"
-        }
+        "address": "Address",
+        "city": "City",
+        "country": "Country",
+        "postalCode": "Postal code"
       }
     }
   },
@@ -173,7 +142,6 @@
     "title": "Invoice",
     "labels": {
       "customerSection": "Customer",
-      "customerSectionPlaceholder": "John Doe",
       "productSection": "Items",
       "totalSection": "Total",
       "addItem": "Add item",
@@ -183,31 +151,20 @@
       "sendingDate": "Sending date",
       "toPayAt": "To pay at",
       "invoiceForm": "Create invoice",
-      "invoicePreview": "Invoice Preview",
       "comment": "Comment"
-    },
-    "status": {
-      "PAID": "Paid",
-      "PROPOSAL": "To be confirmed",
-      "DRAFT": "Draft",
-      "CONFIRMED": "To be paid",
-      "ACCEPTED": "Accepted"
     },
     "errors": {
       "sendingDateLaterThanToday": "Invoice can not be sent no later than today.",
-      "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date.",
-      "validEmail": "Please enter a valid email address",
-      "validAmount": "Check that you have entered the correct amount",
-      "requiredField": "Please fill in this field"
+      "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date."
     },
     "menu": {
       "markAsInvoice": "Mark as invoice",
       "markAsProposal": "Mark as proposal",
       "downloadInvoice": "Download",
-      "editDraft": "Edit"
+      "editInvoice": "Edit"
     },
     "messages": {
-      "successfullyMarkAsProposal": "The quote has been created",
+      "successfullyMarkAsProposal": "Invoice proposed to customer.",
       "successfullyMarkAsInvoice": "Quotation successfully transformed as invoice.",
       "downloadingInvoice": "Downloading invoice",
       "invoiceSuccessfullyDownload": "Invoice downloaded",
@@ -215,24 +172,13 @@
     }
   },
   "invoiceFormScreen": {
-    "invoiceCreationForm": {
-      "add": "Ajouter this product"
-    },
     "invoiceForm": {
-      "addItem": "Add a product",
-      "title": "Quotation title",
-      "titlePlaceholder": "Quotation No. 1702231023",
-      "reference": "Reference",
-      "referencePlaceholder": "QUOTATION-17022231023",
-      "sendingDate": "Issue date",
-      "validityDate": "Expiration date",
-      "toPayAt": "Payment date",
-      "delayInPaymentAllowed": "Allowed payment delay",
-      "delayInPaymentAllowedPlaceholder": "30",
-      "delayPenaltyPercent": "Late payment penalty rate",
-      "delayPenaltyPercentPlaceholder": "10",
-      "comment": "Comment",
-      "commentPlaceholder": "Type your comment here...",
+      "addItem": "Add another element",
+      "quotationTitle": "Quotation title",
+      "quotationTitlePlaceholder": "Type the title of the quote",
+      "quotationNumber": "Quotation number",
+      "quotationNumberPlaceholder": "Type the quotation number",
+      "issueDate": "Issue date",
       "paymentDelay": "Payment delays",
       "paymentDelayPlaceholder": "Type de payment delays",
       "downPayment": "Down Payment",
@@ -240,7 +186,6 @@
       "viewMail": "View my email address",
       "limitedValidityPeriod": "Limited period of validity",
       "days": "Days",
-      "save": "save the quote",
       "editableTextField": {
         "error": {
           "required": "This field is required",
@@ -263,34 +208,8 @@
     "customerSelectionForm": {
       "title": "Client Name",
       "addClient": "Add a client",
-      "validate": "Validate",
-      "customerCreationForm": {
-        "firstName": "First name",
-        "lastName": "Last name",
-        "email": "Email",
-        "address": "Address",
-        "phoneNumber": "Phone Number",
-        "comment": "Comment (Optional)",
-        "add": "Add this customer",
-        "added": "Added",
-        "fail": "Try again"
-      }
-    },
-    "productCreationForm": {
-      "unitPrice": "Unit price before tax (in €)",
-      "description": "Description"
-    },
-    "productForm": {
-      "addProduct": "Add a product",
-      "placeholder": "Choose a product",
-      "title": "Product",
-      "unitPrice": "Unit price",
-      "quantity": "Qty",
-      "vat": "VAT",
-      "totalWithVat": "Total",
-      "delete": "Delete"
-    },
-    "invoicePreview": "Invoice preview"
+      "validate": "Validate"
+    }
   },
   "paymentListScreen": {
     "title": "Invoicing",
@@ -308,8 +227,7 @@
     "messageContent": "Soon, we will offer you new customers here!"
   },
   "quotationScreen": {
-    "createQuotation": "Create a Quotation",
-    "createInvoice": "Create an Invoice"
+    "createQuotation": "Create a Quotation"
   },
   "logoutScreen": {
     "title": "Logout",
@@ -323,8 +241,7 @@
   },
   "supportContactScreen": {
     "title": "Contact support",
-    "messagePartOne": "To contact support, please",
-    "messagePartTwo": "send an email to",
+    "message": "To contact support, please send an email to",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {
