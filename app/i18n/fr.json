@@ -3,25 +3,17 @@
   "components": {
     "datePicker": {
       "pickADate": "Sélectionner une date"
-    },
-    "button": {
-      "close": "Fermer"
     }
   },
   "common": {
     "ok": "OK!",
-    "submit": "Confirmer",
-    "or": "ou",
     "cancel": "Annuler",
-    "back": "Précédent",
-    "noDataProvided": "Aucun enregistrement à afficher"
+    "back": "Précédent"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
     "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
-    "verifyConnection": "Verifier votre connexion",
-    "required": "Ce champ est requis",
-    "amount": "Montant invalide"
+    "verifyConnection": "Verifier votre connexion"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
@@ -38,14 +30,6 @@
       }
     },
     "transactionCategoryPlaceholder": "Sélectionner un élément"
-  },
-  "prospectScreen": {
-    "title": "Prospects",
-    "tab": {
-      "toContact": "À Contacter",
-      "contacted": "Contacté",
-      "converted": "Converti"
-    }
   },
   "onboardingScreen": {
     "title": "Créer un compte"
@@ -72,7 +56,6 @@
     },
     "instruction": "Votre client peut scanner ce QR Code. Vous pouvez également le partager en cliquant sur le bouton ci-dessous",
     "share": "Partager",
-    "copy": "Copier le lien",
     "whatsapp": "Whatsapp",
     "sms": "SMS",
     "or": "ou"
@@ -98,7 +81,7 @@
       "logo": "Logo",
       "selectFileButton": "Sélectionner un fichier",
       "uploadFileButton": "Téléverser le fichier",
-      "removeFileButton": "Supprimer le fichier",
+      "uploadFileButton": "Supprimer le fichier",
       "user": {
         "section": "Mon identité",
         "firstName": "Prénom",
@@ -108,24 +91,10 @@
       "accountHolder": {
         "section": "Ma société",
         "name": "Nom",
-        "siren": "Siren",
-        "officialActivityName": "Activité officielle",
-        "contactAddress": {
-          "address": "Adresse",
-          "city": "Ville",
-          "country": "Pays",
-          "postalCode": "Code postal"
-        },
-        "companyInfo": {
-          "socialCapital": "Capital social"
-        },
-        "businessActivities": {
-          "primary": "Activité principale",
-          "secondary": "Activité secondaire"
-        },
-        "revenueTargets": {
-          "amountTarget": "Recette annuelle à réaliser"
-        }
+        "address": "Adresse",
+        "city": "Ville",
+        "country": "Pays",
+        "postalCode": "Code postal"
       }
     }
   },
@@ -146,9 +115,9 @@
     "summary": {
       "title": "Mes chiffres",
       "goals": "Objectifs",
-      "income": "Recette",
-      "outcome": "Dépense",
-      "cashFlow": "Trésorerie",
+      "income": "Chiffres d'affaire",
+      "outcome": "Dépenses",
+      "cashFlow": "Trésorerie Disponible",
       "boostMyResult": "Booster mes résultats",
       "lastTransactions": "Dernières Transactions"
     }
@@ -157,7 +126,6 @@
     "title": "Devis / Facturation",
     "labels": {
       "customerSection": "Client",
-      "customerSectionPlaceholder": "John Doe",
       "productSection": "Produits",
       "totalSection": "Total",
       "addItem": "Add item",
@@ -165,34 +133,22 @@
       "title": "Titre",
       "vat": "TVA",
       "sendingDate": "Date d'envoi",
-      "validityDate": "Date de validité",
       "toPayAt": "Limite de paiement",
       "invoiceForm": "Créer un devis",
-      "invoicePreview": "Aperçu du devis",
       "comment": "Commentaire"
-    },
-    "status": {
-      "PAID": "Payée",
-      "PROPOSAL": "À confirmer",
-      "DRAFT": "Brouillon",
-      "CONFIRMED": "À payer",
-      "ACCEPTED": "accepté"
     },
     "errors": {
       "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
-      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement.",
-      "validEmail": "Veuillez saisir une adresse e-mail valide",
-      "validAmount": "Vérifiez que vous avez saisi un montant correct",
-      "requiredField": "Veuillez remplir ce champ"
+      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
     },
     "menu": {
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
       "downloadInvoice": "Télécharger la facture ",
-      "editDraft": "Modifier le brouillon"
+      "editInvoice": "Modifier la facture"
     },
     "messages": {
-      "successfullyMarkAsProposal": "Le devis a bien été créé",
+      "successfullyMarkAsProposal": "Devis envoyé au client.",
       "successfullyMarkAsInvoice": "Devis transformé en facture.",
       "downloadingInvoice": "Téléchargement de la facture en cours",
       "invoiceSuccessfullyDownload": "Facture téléchargée.",
@@ -200,24 +156,13 @@
     }
   },
   "invoiceFormScreen": {
-    "invoiceCreationForm": {
-      "add": "Ajouter ce produit"
-    },
     "invoiceForm": {
-      "addItem": "Ajouter un produit",
-      "title": "Titre du devis",
-      "titlePlaceholder": "Devis No. 1702231023",
-      "reference": "Référence",
-      "referencePlaceholder": "DEVIS-1702231023",
-      "sendingDate": "Emission",
-      "toPayAt": "Date de paiement",
-      "validityDate": "Limite de validité",
-      "delayInPaymentAllowed": "Délai de retard de paiement autorisé",
-      "delayInPaymentAllowedPlaceholder": "30",
-      "delayPenaltyPercent": "Pourcentage de pénalité de retard",
-      "delayPenaltyPercentPlaceholder": "10",
-      "comment": "Commentaire",
-      "commentPlaceholder": "Entrer votre commentaire ici...",
+      "addItem": "Ajouter un autre éléments",
+      "quotationTitle": "Titre du devis",
+      "quotationTitlePlaceholder": "Taper le titre du devis",
+      "quotationNumber": "Numéro du devis",
+      "quotationNumberPlaceholder": "Taper le numéros du devis",
+      "issueDate": "Date d'émission",
       "paymentDelay": "Délais de paiement",
       "paymentDelayPlaceholder": "Taper le délais de paiement",
       "downPayment": "Acompte",
@@ -225,7 +170,6 @@
       "viewMail": "Afficher mon addresse email",
       "limitedValidityPeriod": "Durée de validité limitée",
       "days": "Jours",
-      "save": "Enregistrer le devis",
       "editableTextField": {
         "error": {
           "required": "Ce champ est requis",
@@ -246,36 +190,10 @@
       }
     },
     "customerSelectionForm": {
-      "title": "Nom du client",
+      "title": "Nom du Client",
       "addClient": "Ajouter un client",
-      "validate": "Valider",
-      "customerCreationForm": {
-        "firstName": "Prénom",
-        "lastName": "Nom de Famille",
-        "email": "Email",
-        "address": "Adresse",
-        "phoneNumber": "Numéro de Téléphone",
-        "comment": "Commentaire (Facultatif)",
-        "add": "Ajouter ce client",
-        "added": "Ajouté",
-        "fail": "Réessayer"
-      }
-    },
-    "productCreationForm": {
-      "unitPrice": "Prix unitaire HT (en €)",
-      "description": "Description"
-    },
-    "productForm": {
-      "addProduct": "Ajouter un produit",
-      "title": "Produit",
-      "placeholder": "Sélectionner un produit",
-      "unitPrice": "Prix Unit.",
-      "quantity": "Qté",
-      "totalWithVat": "Total",
-      "vat": "TVA",
-      "delete": "Supprimer"
-    },
-    "invoicePreview": "Aperçu du devis"
+      "validate": "Valider"
+    }
   },
   "paymentListScreen": {
     "title": "Facturation",
@@ -293,8 +211,7 @@
     "messageContent": "Bientôt, nous vous proposerons de nouveaux clients ici !"
   },
   "quotationScreen": {
-    "createQuotation": "Créer un Devis",
-    "createInvoice": "Créer une Facture"
+    "createQuotation": "Créer un Devis"
   },
   "logoutScreen": {
     "title": "Déconnexion",
@@ -307,8 +224,7 @@
   },
   "supportContactScreen": {
     "title": "Contacter le support",
-    "messagePartOne": "Pour contacter le support, veuillez",
-    "messagePartTwo": "envoyer un courriel à",
+    "message": "Pour contacter le support, veuillez envoyer un courriel à",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {
