@@ -56,7 +56,6 @@
     },
     "instruction": "Votre client peut scanner ce QR Code. Vous pouvez également le partager en cliquant sur le bouton ci-dessous",
     "share": "Partager",
-    "copy": "Copier le lien",
     "whatsapp": "Whatsapp",
     "sms": "SMS",
     "or": "ou"
@@ -82,7 +81,7 @@
       "logo": "Logo",
       "selectFileButton": "Sélectionner un fichier",
       "uploadFileButton": "Téléverser le fichier",
-      "removeFileButton": "Supprimer le fichier",
+      "uploadFileButton": "Supprimer le fichier",
       "user": {
         "section": "Mon identité",
         "firstName": "Prénom",
@@ -140,10 +139,7 @@
     },
     "errors": {
       "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
-      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement.",
-      "validEmail": "Veuillez saisir une adresse e-mail valide",
-      "validAmount": "Vérifiez que vous avez saisi un montant correct",
-      "requiredField": "Veuillez remplir ce champ"
+      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
     },
     "menu": {
       "markAsInvoice": "Transformer en facture",
@@ -196,18 +192,7 @@
     "customerSelectionForm": {
       "title": "Nom du Client",
       "addClient": "Ajouter un client",
-      "validate": "Valider",
-      "customerCreationForm": {
-        "firstName": "Prénom",
-        "lastName": "Nom de Famille",
-        "email": "Email",
-        "address": "Adresse",
-        "phoneNumber": "Numéro de Téléphone",
-        "comment": "Commentaire (Facultatif)",
-        "add": "Ajouter ce client",
-        "added": "Ajouté",
-        "fail": "Réessayer"
-      }
+      "validate": "Valider"
     }
   },
   "paymentListScreen": {
