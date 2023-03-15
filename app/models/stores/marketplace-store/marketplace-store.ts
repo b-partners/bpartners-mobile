@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { MarketplaceApi } from '../../../services/api/marketplace-api';
+import { PageCriteria } from '../../entities/criteria/criteria';
 import { MarketplaceModel, MarketplaceSnapshotOut } from '../../entities/marketplace/marketplace';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -28,10 +29,10 @@ export const MarketplaceStoreModel = types
     },
   }))
   .actions(self => ({
-    getMarketplaces: flow(function* () {
+    getMarketplaces: flow(function* (criteria: PageCriteria) {
       const marketplaceApi = new MarketplaceApi(self.environment.api);
       try {
-        const getMarketplacesResult = yield marketplaceApi.getMarketplaces(self.currentAccount.id);
+        const getMarketplacesResult = yield marketplaceApi.getMarketplaces(self.currentAccount.id, criteria);
         self.getMarketplacesSuccess(getMarketplacesResult.marketplaces);
       } catch (e) {
         self.getMarketplaceFail(e.message);
