@@ -155,7 +155,10 @@
     },
     "errors": {
       "sendingDateLaterThanToday": "Invoice can not be sent no later than today.",
-      "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date."
+      "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date.",
+      "validEmail": "Please enter a valid email address",
+      "validAmount": "Check that you have entered the correct amount",
+      "requiredField": "Please fill in this field"
     },
     "menu": {
       "markAsInvoice": "Mark as invoice",
