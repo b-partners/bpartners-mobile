@@ -26,13 +26,13 @@ const CUSTOMER_ROW_CONTAINER: ViewStyle = {
 const EDIT_BUTTON_STYLE: ViewStyle = { flex: 1, justifyContent: 'center', alignItems: 'flex-end' };
 const CustomerRow: FC<TCustomerRow> = props => {
   const { customer, onSelect, isSelected = false } = props;
-
+  const customerFullName = `${customer.firstName}  ${customer.lastName}`;
   return (
     <View style={{ ...CUSTOMER_ROW_CONTAINER, paddingVertical: spacing[2] }}>
       <TouchableOpacity style={CUSTOMER_ROW_CONTAINER} onPress={() => onSelect(customer)}>
         <>
           <RadioButton isActive={isSelected} />
-          <Text text={customer.name} style={{ ...CUSTOMER_NAME, marginLeft: spacing[2] }} numberOfLines={2} />
+          <Text text={customerFullName} style={{ ...CUSTOMER_NAME, marginLeft: spacing[2] }} numberOfLines={2} />
         </>
       </TouchableOpacity>
       <TouchableOpacity style={EDIT_BUTTON_STYLE}>
