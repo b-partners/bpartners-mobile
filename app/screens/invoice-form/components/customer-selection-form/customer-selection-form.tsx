@@ -76,7 +76,6 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
           textStyle={VALIDATE_BUTTON_TEXT_STYLE}
         />
       </View>
-      <CustomerCreationModal creationModal={creationModal} setCreationModal={setCreationModal}/>
     </View>
   );
 };
