@@ -81,7 +81,7 @@
       "logo": "Logo",
       "selectFileButton": "Sélectionner un fichier",
       "uploadFileButton": "Téléverser le fichier",
-      "uploadFileButton": "Supprimer le fichier",
+      "removeFileButton": "Supprimer le fichier",
       "user": {
         "section": "Mon identité",
         "firstName": "Prénom",
@@ -192,7 +192,16 @@
     "customerSelectionForm": {
       "title": "Nom du Client",
       "addClient": "Ajouter un client",
-      "validate": "Valider"
+      "validate": "Valider",
+      "customerCreationForm": {
+        "firstName": "Prénom",
+        "lastName": "Nom de Famille",
+        "phoneNumber": "Numéro de Téléphone (Facultatif)",
+        "address": "Adresse (Facultatif)",
+        "postalCode": "Code Postal (Facultatif)",
+        "city": "Ville (Facultatif)",
+        "country": "Pays (Facultatif"
+      }
     }
   },
   "paymentListScreen": {
