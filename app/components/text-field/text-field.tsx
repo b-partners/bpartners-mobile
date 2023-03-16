@@ -73,7 +73,6 @@ export interface TextFieldProps extends TextInputProps {
  */
 export function TextField(props: TextFieldProps) {
   const {
-    value,
     placeholderTx,
     placeholder,
     labelTx,
@@ -90,7 +89,6 @@ export function TextField(props: TextFieldProps) {
   const containerStyles = [CONTAINER, PRESETS[preset], styleOverride];
   const inputStyles = [INPUT, inputStyleOverride];
   const actualPlaceholder = placeholderTx ? translate(placeholderTx) : placeholder;
-  const inputValue = value ? value : 'Non renseigné';
 
   return (
     <View style={containerStyles}>
@@ -100,7 +98,6 @@ export function TextField(props: TextFieldProps) {
         </View>
       )}
       <TextInput
-        value={inputValue}
         placeholder={actualPlaceholder}
         placeholderTextColor={color.palette.lighterGrey}
         underlineColorAndroid={color.transparent}
