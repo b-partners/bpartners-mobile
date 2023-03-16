@@ -14,7 +14,7 @@ const FULL: ViewStyle = {
   flex: 1,
 };
 const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
+  backgroundColor: 'black',
 };
 const HEADER: TextStyle = {};
 const HEADER_TITLE: TextStyle = {
@@ -43,6 +43,10 @@ const LOGO_ICON_STYLE: ImageStyle = {
   marginRight: 15,
 };
 
+const FIELD_CONTAINER: ViewStyle = {
+  backgroundColor: '#313131',
+};
+
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({ navigation }) {
   const { authStore } = useStores();
   const { currentUser, currentAccount, currentAccountHolder, accessToken } = authStore;
@@ -52,7 +56,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
     <ErrorBoundary catchErrors='always'>
       <View testID='TransactionListScreen' style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
-        <Screen style={CONTAINER} preset='auto' backgroundColor={color.transparent}>
+        <Screen style={CONTAINER} preset='auto'>
           <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           <View style={LOGO_CONTAINER}>
             <Image
@@ -65,11 +69,11 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             <View style={FORM_FIELD_CONTAINER}>
               <Text style={SECTION_STYLE} tx={'profileScreen.fields.user.section'} />
               <View>
-                <View>
+                <View style={FIELD_CONTAINER}>
                   <Text tx={'profileScreen.fields.user.firstName'} />
                   <TextField value={currentUser.firstName} inputStyle={FORM_FIELD_STYLE} />
                 </View>
-                <View>
+                <View style={FIELD_CONTAINER}>
                   <Text tx={'profileScreen.fields.user.lastName'} />
                   <TextField value={currentUser.lastName} inputStyle={FORM_FIELD_STYLE} />
                 </View>

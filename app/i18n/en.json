@@ -83,7 +83,12 @@
       "payerEmail": "Client email",
       "submit": "Confirm",
       "paymentUrl": "Payment URL"
-    }
+    },
+    "instruction": "Your customer can scan this QR Code. You can also share it by clicking on the button below",
+    "share": "Share",
+    "whatsapp": "Whatsapp",
+    "sms": "SMS",
+    "or": "or"
   },
   "profileScreen": {
     "label": "Profil",

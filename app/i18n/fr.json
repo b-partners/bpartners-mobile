@@ -53,7 +53,12 @@
       "payerEmail": "Email du client",
       "submit": "Confirmer",
       "paymentUrl": "Lien de paiement"
-    }
+    },
+    "instruction": "Votre client peut scanner ce QR Code. Vous pouvez également le partager en cliquant sur le bouton ci-dessous",
+    "share": "Partager",
+    "whatsapp": "Whatsapp",
+    "sms": "SMS",
+    "or": "ou"
   },
   "signInScreen": {
     "title": "Connectez-vous à BPartners",

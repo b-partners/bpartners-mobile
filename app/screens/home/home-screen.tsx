@@ -9,7 +9,8 @@ import { HeaderWithBalance } from '../../components/header-with-balance/header-w
 import env from '../../config/env';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
-import { color, spacing } from '../../theme';
+import { spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { TransactionSummary } from './components/transaction-summary';
@@ -65,7 +66,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='homeScreen' style={FULL}>
-        <Screen preset='auto' backgroundColor={color.transparent}>
+        <Screen preset='auto' backgroundColor={palette.white}>
           <HeaderWithBalance balance={availableBalance} left={<Logo uri={uri} />} right={<Menu navigation={navigation} />} />
           <View style={{ padding: spacing[3] }}>
             <TransactionSummary summary={currentMonthSummary} />
