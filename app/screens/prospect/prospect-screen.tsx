@@ -9,6 +9,7 @@ import EmailIcon from 'react-native-vector-icons/Fontisto';
 import AddressIcon from 'react-native-vector-icons/MaterialIcons';
 
 import { Header, Screen, Text } from '../../components';
+import { NoDataProvided } from '../../components/no-data-provided/no-data-provided';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
 import { NavigatorParamList } from '../../navigators';
@@ -58,6 +59,8 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
     setStatus(actualStatus);
   };
 
+  const filteredProspect = prospects.filter(item => item.status === status);
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='marketplaceScreen' style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -98,16 +101,15 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
               width: '95%',
               height: '74%',
               borderWidth: 2,
-              borderColor: '#EDEFF1',
-              backgroundColor: '#EDEFF1',
+              borderColor: '#F9F9FB',
+              backgroundColor: '#F9F9FB',
               borderRadius: 10,
               alignSelf: 'center',
             }}
             contentContainerStyle={{ alignItems: 'center' }}
           >
-            {prospects
-              .filter(item => item.status === status)
-              .map((item: Prospect) => {
+            {filteredProspect.length > 0 ? (
+              filteredProspect.map((item: Prospect) => {
                 return (
                   <View
                     key={item.id}
@@ -155,7 +157,10 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
                     </Card>
                   </View>
                 );
-              })}
+              })
+            ) : (
+              <NoDataProvided />
+            )}
           </ScrollView>
         </Screen>
       </View>

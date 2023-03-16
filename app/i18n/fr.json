@@ -11,7 +11,8 @@
   "common": {
     "ok": "OK!",
     "cancel": "Annuler",
-    "back": "Précédent"
+    "back": "Précédent",
+    "noDataProvided": "Aucun enregistrement à afficher"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
