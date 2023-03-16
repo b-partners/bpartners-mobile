@@ -94,44 +94,20 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
                   <TextField value={currentAccountHolder.name} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.contactAddress.address'} />
-                  <TextField value={currentAccountHolder.contactAddress.address} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.address'} />
+                  <TextField value={currentAccountHolder.address} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.contactAddress.city'} />
-                  <TextField value={currentAccountHolder.contactAddress.city} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.city'} />
+                  <TextField value={currentAccountHolder.city} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.contactAddress.country'} />
-                  <TextField value={currentAccountHolder.contactAddress.country} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.country'} />
+                  <TextField value={currentAccountHolder.country} inputStyle={FORM_FIELD_STYLE} />
                 </View>
                 <View>
-                  <Text tx={'profileScreen.fields.accountHolder.contactAddress.postalCode'} />
-                  <TextField value={currentAccountHolder.contactAddress.postalCode} inputStyle={FORM_FIELD_STYLE} />
-                </View>
-                <View>
-                  <Text tx={'profileScreen.fields.accountHolder.siren'} />
-                  <TextField value={currentAccountHolder.siren} inputStyle={FORM_FIELD_STYLE} />
-                </View>
-                <View>
-                  <Text tx={'profileScreen.fields.accountHolder.revenueTargets.amountTarget'} />
-                  <TextField value={currentAccountHolder.revenueTargets[0].amountTarget.toString()} inputStyle={FORM_FIELD_STYLE} />
-                </View>
-                <View>
-                  <Text tx={'profileScreen.fields.accountHolder.officialActivityName'} />
-                  <TextField value={currentAccountHolder.officialActivityName} inputStyle={FORM_FIELD_STYLE} />
-                </View>
-                <View>
-                  <Text tx={'profileScreen.fields.accountHolder.businessActivities.primary'} />
-                  <TextField value={currentAccountHolder.businessActivities.primary} inputStyle={FORM_FIELD_STYLE} />
-                </View>
-                <View>
-                  <Text tx={'profileScreen.fields.accountHolder.businessActivities.secondary'} />
-                  <TextField value={currentAccountHolder.businessActivities.secondary} inputStyle={FORM_FIELD_STYLE} />
-                </View>
-                <View>
-                  <Text tx={'profileScreen.fields.accountHolder.companyInfo.socialCapital'} />
-                  <TextField value={currentAccountHolder.companyInfo.socialCapital.toString()} inputStyle={FORM_FIELD_STYLE} />
+                  <Text tx={'profileScreen.fields.accountHolder.postalCode'} />
+                  <TextField value={currentAccountHolder.postalCode} inputStyle={FORM_FIELD_STYLE} />
                 </View>
               </View>
             </View>
