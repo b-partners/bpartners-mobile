@@ -2,7 +2,7 @@ import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { spacing } from '../../theme';
-import { printCurrency } from '../../utils/money';
+import { printCurrencyToMajors } from '../../utils/money';
 import { AutoImage, Text } from '../index';
 import { HEADER_STYLE } from './style';
 
@@ -42,7 +42,7 @@ export function HeaderWithBalance(props: { balance: number; left?: React.ReactNo
         <View testID='balance-view' style={CONTAINER_STYLE}>
           <Text tx='homeScreen.labels.balance' style={SECONDARY_TEXT_STYLE} />
           <View style={{ marginVertical: spacing[1] }}>
-            <Text text={printCurrency(balance)} style={MAIN_TEXT_STYLE} />
+            <Text text={printCurrencyToMajors(balance)} style={MAIN_TEXT_STYLE} />
           </View>
           <Text text={new Date().toLocaleDateString()} style={SECONDARY_TEXT_STYLE} />
         </View>
