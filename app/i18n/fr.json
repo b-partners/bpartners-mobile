@@ -196,11 +196,10 @@
       "customerCreationForm": {
         "firstName": "Prénom",
         "lastName": "Nom de Famille",
-        "phoneNumber": "Numéro de Téléphone (Facultatif)",
-        "address": "Adresse (Facultatif)",
-        "postalCode": "Code Postal (Facultatif)",
-        "city": "Ville (Facultatif)",
-        "country": "Pays (Facultatif"
+        "email": "Email",
+        "address": "Adresse",
+        "phoneNumber": "Numéro de Téléphone",
+        "comment": "Commentaire (Facultatif)"
       }
     }
   },

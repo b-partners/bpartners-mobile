@@ -6,8 +6,8 @@ import { Customer } from '../../../../models/entities/customer/customer';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { BUTTON_STYLE } from '../../styles';
+import { CustomerCreationModal } from './customer-creation-modal';
 import CustomerRow from './customer-row';
-import {CustomerCreationModal} from "./customer-creation-modal";
 
 type TCustomerForm = {
   customers: Customer[];
@@ -54,7 +54,7 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const { height } = useWindowDimensions();
   const MAX_HEIGHT = (4.5 * height) / 10;
-  const [ creationModal, setCreationModal ] = useState<boolean>(false);
+  const [creationModal, setCreationModal] = useState<boolean>(false);
 
   return (
     <View style={{ ...FORM_CONTAINER, maxHeight: MAX_HEIGHT }}>
@@ -68,7 +68,12 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
         ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
       />
       <View style={{ paddingTop: spacing[3] }}>
-        <Button tx={'invoiceFormScreen.customerSelectionForm.addClient'} style={[ADD_CLIENT_BUTTON_STYLE]} textStyle={ADD_CLIENT_BUTTON_TEXT_STYLE} onPress={() => setCreationModal(true)}/>
+        <Button
+          tx={'invoiceFormScreen.customerSelectionForm.addClient'}
+          style={[ADD_CLIENT_BUTTON_STYLE]}
+          textStyle={ADD_CLIENT_BUTTON_TEXT_STYLE}
+          onPress={() => setCreationModal(true)}
+        />
         <Button
           tx={'invoiceFormScreen.customerSelectionForm.validate'}
           onPress={() => onValidateChoice(selectedCustomer)}
@@ -76,7 +81,7 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
           textStyle={VALIDATE_BUTTON_TEXT_STYLE}
         />
       </View>
-      <CustomerCreationModal creationModal={creationModal} setCreationModal={setCreationModal}/>
+      <CustomerCreationModal creationModal={creationModal} setCreationModal={setCreationModal} />
     </View>
   );
 };

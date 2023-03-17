@@ -1,7 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { CustomerApi } from '../../../services/api/customer-api';
-import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
+import {Customer, CustomerModel, CustomerSnapshotOut} from '../../entities/customer/customer';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -38,7 +38,24 @@ export const CustomerStoreModel = types
         self.catchOrThrow(e);
       }
     }),
-  }));
+  }))
+    .actions(() => ({
+      saveCustomerFail: error => {
+        __DEV__ && console.tron.log(error);
+      },
+    }))
+    .actions(self => ({
+      saveCustomer: flow(function* (customer: Customer) {
+        const customerApi = new CustomerApi(self.environment.api);
+        try {
+          yield customerApi.saveCustomer(self.currentAccount.id, customer);
+          __DEV__ && console.tron.log(`Customer saved`);
+        } catch (e) {
+          self.saveCustomerFail(e.message);
+          self.catchOrThrow(e);
+        }
+      }),
+    }));;
 
 export interface CustomerStore extends Instance<typeof CustomerStoreModel> {}
 

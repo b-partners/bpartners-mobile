@@ -212,11 +212,10 @@
       "customerCreationForm": {
         "firstName": "First name",
         "lastName": "Last name",
-        "phoneNumber": "Phone Number (Optional)",
-        "address": "Address (Optional)",
-        "postalCode": "Postal Code (Optional)",
-        "city": "City (Optional)",
-        "country": "Country (Optional)"
+        "email": "Email",
+        "address": "Address",
+        "phoneNumber": "Phone Number",
+        "comment": "Comment (Optional)"
       }
     }
   },
