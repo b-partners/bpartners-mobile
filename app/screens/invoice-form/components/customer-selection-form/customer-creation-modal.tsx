@@ -19,7 +19,7 @@ export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
   };
 
   const { paymentInitiationStore } = useStores();
-  const { paymentUrl, initiatingPayment: loading } = paymentInitiationStore;
+  const { initiatingPayment: loading } = paymentInitiationStore;
 
   return (
     <Modal animationType='slide' transparent={true} visible={creationModal} onRequestClose={closeShareModal}>
@@ -34,7 +34,7 @@ export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
             />
           </View>
           <ScrollView>
-            <CustomerCreationForm init={paymentInitiationStore.init} paymentUrl={'paymentUrl'} loading={loading} />
+            <CustomerCreationForm loading={loading} />
           </ScrollView>
         </View>
       </View>

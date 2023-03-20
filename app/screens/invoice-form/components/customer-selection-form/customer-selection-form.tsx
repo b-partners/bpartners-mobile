@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { FlatList, TextStyle, View, ViewStyle, useWindowDimensions } from 'react-native';
 
 import { Button, Separator, Text } from '../../../../components';
+import { useStores } from '../../../../models';
 import { Customer } from '../../../../models/entities/customer/customer';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
@@ -53,6 +54,7 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
   // By default the selected customer is the customer at index zero
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const { height } = useWindowDimensions();
+  const { customerStore } = useStores();
   const MAX_HEIGHT = (4.5 * height) / 10;
   const [creationModal, setCreationModal] = useState<boolean>(false);
 
@@ -72,7 +74,10 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
           tx={'invoiceFormScreen.customerSelectionForm.addClient'}
           style={[ADD_CLIENT_BUTTON_STYLE]}
           textStyle={ADD_CLIENT_BUTTON_TEXT_STYLE}
-          onPress={() => setCreationModal(true)}
+          onPress={() => {
+            customerStore.saveCustomerInit();
+            setCreationModal(true);
+          }}
         />
         <Button
           tx={'invoiceFormScreen.customerSelectionForm.validate'}

@@ -1,7 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { CustomerApi } from '../../../services/api/customer-api';
-import {Customer, CustomerModel, CustomerSnapshotOut} from '../../entities/customer/customer';
+import { Customer, CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -10,6 +10,8 @@ export const CustomerStoreModel = types
   .model('Customer')
   .props({
     customers: types.optional(types.array(CustomerModel), []),
+    checkCustomer: types.maybeNull(types.boolean),
+    loadingCustomerCreation: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -39,23 +41,39 @@ export const CustomerStoreModel = types
       }
     }),
   }))
-    .actions(() => ({
-      saveCustomerFail: error => {
-        __DEV__ && console.tron.log(error);
-      },
-    }))
-    .actions(self => ({
-      saveCustomer: flow(function* (customer: Customer) {
-        const customerApi = new CustomerApi(self.environment.api);
-        try {
-          yield customerApi.saveCustomer(self.currentAccount.id, customer);
-          __DEV__ && console.tron.log(`Customer saved`);
-        } catch (e) {
-          self.saveCustomerFail(e.message);
-          self.catchOrThrow(e);
-        }
-      }),
-    }));;
+  .actions(self => ({
+    saveCustomerInit: () => {
+      self.checkCustomer = null;
+    },
+  }))
+  .actions(self => ({
+    saveCustomerFail: error => {
+      self.checkCustomer = false;
+      __DEV__ && console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
+    saveCustomerSuccess: () => {
+      self.checkCustomer = true;
+    },
+  }))
+  .actions(self => ({
+    saveCustomer: flow(function* (customer: Customer) {
+      self.loadingCustomerCreation = true;
+      const customerApi = new CustomerApi(self.environment.api);
+      try {
+        yield customerApi.saveCustomer(self.currentAccount.id, customer);
+        self.saveCustomerSuccess();
+        __DEV__ && console.tron.log(`Customer saved`);
+      } catch (e) {
+        __DEV__ && console.tron.log(`FAIL TO SAVE CUSTOMER`);
+        self.saveCustomerFail(e);
+        self.catchOrThrow(e);
+      } finally {
+        self.loadingCustomerCreation = false;
+      }
+    }),
+  }));
 
 export interface CustomerStore extends Instance<typeof CustomerStoreModel> {}
 

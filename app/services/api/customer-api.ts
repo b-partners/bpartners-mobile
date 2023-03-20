@@ -1,9 +1,9 @@
 import { ApiResponse } from 'apisauce';
 
+import { Customer } from '../../models/entities/customer/customer';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import {GetCustomersResult} from './api.types';
-import {Customer} from "../../models/entities/customer/customer";
+import { GetCustomersResult } from './api.types';
 
 export class CustomerApi {
   private api: Api;
@@ -28,14 +28,9 @@ export class CustomerApi {
     return { kind: 'ok', customers };
   }
 
-  async saveCustomer(
-      accountId: string,
-      customer: Customer
-  ): Promise<GetCustomersResult> {
+  async saveCustomer(accountId: string, customer: Customer): Promise<GetCustomersResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/customers`, [
-      customer,
-    ]);
+    const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/customers`, [customer]);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

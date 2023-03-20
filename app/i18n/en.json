@@ -215,7 +215,10 @@
         "email": "Email",
         "address": "Address",
         "phoneNumber": "Phone Number",
-        "comment": "Comment (Optional)"
+        "comment": "Comment (Optional)",
+        "add": "Add this customer",
+        "added": "Added",
+        "fail": "Try again"
       }
     }
   },

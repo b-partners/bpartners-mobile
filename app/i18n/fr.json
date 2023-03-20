@@ -199,7 +199,10 @@
         "email": "Email",
         "address": "Adresse",
         "phoneNumber": "Numéro de Téléphone",
-        "comment": "Commentaire (Facultatif)"
+        "comment": "Commentaire (Facultatif)",
+        "add": "Ajouter ce client",
+        "added": "Ajouté",
+        "fail": "Réessayer"
       }
     }
   },
