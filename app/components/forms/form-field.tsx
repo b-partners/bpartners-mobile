@@ -22,7 +22,7 @@ const LABEL_STYLE: TextStyle = {
   fontSize: 12,
 };
 
-const INPUT_STYLE = {
+const INPUT_STYLE: TextStyle = {
   borderBottomWidth: 2,
   borderBottomColor: '#E1E5EF',
   backgroundColor: color.transparent,
