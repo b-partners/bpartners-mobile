@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef, useState } from 'react';
-import { View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
@@ -12,7 +12,7 @@ import { color, spacing } from '../../theme';
 import { amountToMinors } from '../../utils/money';
 import { PaymentModal } from './payment-initiation-modal';
 
-const INVALID_FORM_FIELD = {
+const INVALID_FORM_FIELD: StyleProp<TextStyle> = {
   borderBottomColor: '#FF5983',
   borderBottomWidth: 2,
 };
