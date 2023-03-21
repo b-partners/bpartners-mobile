@@ -22,7 +22,7 @@ export const CustomerCreationForm: FC<
   PropsWithoutRef<{
     setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
   }>
-> = observer(props => {
+> = observer(() => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
