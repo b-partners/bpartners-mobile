@@ -5,7 +5,9 @@ export const amountToMinors = (amount: number) => amount * 100;
 
 const amountToMajors = (amount: number) => amount / 100;
 
-export const printCurrency = (amount: number) => currencyPipe(translate('currency')).format(amountToMajors(amount));
+export const printCurrencyToMajors = (amount: number) => currencyPipe(translate('currency')).format(amountToMajors(amount));
+
+export const printCurrency = (amount: number) => currencyPipe(translate('currency')).format(amount);
 
 export const vatToMinors = (value: number): number => value * 100;
 
