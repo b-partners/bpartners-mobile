@@ -16,8 +16,6 @@ export const CustomerModel = types.model('Customer').props({
 
 export interface Customer extends Instance<typeof CustomerModel> {}
 
-export interface CreateCustomer extends Instance<typeof createCustomerDefaultModel> {}
-
 export interface CustomerSnapshotOut extends SnapshotOut<typeof CustomerModel> {}
 
 export interface CustomerSnapshotIn extends SnapshotIn<typeof CustomerModel> {}
