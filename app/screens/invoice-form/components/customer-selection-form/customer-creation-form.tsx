@@ -18,7 +18,7 @@ const INVALID_FORM_FIELD = {
   borderBottomWidth: 2,
 };
 
-export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(props => {
+export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
@@ -37,7 +37,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(props => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={async (values, { resetForm }) => {
+        onSubmit={async values => {
           __DEV__ && console.tron.log({ values });
           try {
           } catch (e) {
@@ -45,7 +45,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(props => {
           }
         }}
       >
-        {({ values, handleSubmit, errors }) => {
+        {({ values, errors }) => {
           return (
             <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3] }}>
               <FormField
@@ -91,7 +91,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(props => {
                 value={values.customerComment}
               />
               <View style={{ marginTop: spacing[4] }}>
-                {checkCustomer == true ? (
+                {checkCustomer === true ? (
                   <Button
                     testID='submit'
                     onPress={() => {}}
@@ -106,7 +106,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(props => {
                     <Text tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.added' />
                     <SimpleLineIcons name='check' style={{ marginLeft: spacing[2] }} size={20} color='white' />
                   </Button>
-                ) : checkCustomer == false ? (
+                ) : checkCustomer === false ? (
                   <Button
                     testID='submit'
                     onPress={() => {
@@ -168,7 +168,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(props => {
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
-                    {loadingCustomerCreation == true ? <Loader /> : <Text tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.add' />}
+                    {loadingCustomerCreation === true ? <Loader /> : <Text tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.add' />}
                   </Button>
                 )}
               </View>
