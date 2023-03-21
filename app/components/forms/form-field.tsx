@@ -48,6 +48,7 @@ export const FormField = ({
         onBlur={() => setFieldTouched(name)}
         inputStyle={Array.isArray(inputStyleOverrides) ? [INPUT_STYLE, ...inputStyleOverrides] : [INPUT_STYLE, inputStyleOverrides]}
         style={[{ paddingTop: 0 }]}
+        autoCapitalize={'none'}
         {...rest}
       />
       <ErrorMessage name={name} error={errors[name]} visible={touched[name]} style={[ERROR_STYLE, errorStyleOverrides]} />
