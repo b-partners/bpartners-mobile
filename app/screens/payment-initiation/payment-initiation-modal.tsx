@@ -144,7 +144,15 @@ export const PaymentModal: React.FC<PaymentModalProps> = props => {
                   textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                 >
                   <RNEntypo name='share' size={25} color={palette.black} />
-                  <Text tx='paymentInitiationScreen.share' style={{ marginLeft: 10, color: 'black', fontFamily: 'Geometria', fontSize: 20 }} />
+                  <Text
+                    tx='paymentInitiationScreen.share'
+                    style={{
+                      marginLeft: 10,
+                      color: 'black',
+                      fontFamily: 'Geometria',
+                      fontSize: 20,
+                    }}
+                  />
                 </Button>
               </View>
               <ShareModal paymentUrl={paymentUrl} shareModal={shareModal} setShareModal={setShareModal} />

@@ -9,7 +9,7 @@ import { TransactionType } from '../../../models/entities/transaction-category/t
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { printCurrency } from '../../../utils/money';
+import { printCurrencyToMajors } from '../../../utils/money';
 
 type HomeLatestTransactionProps = {
   transactions: ITransaction[];
@@ -74,7 +74,7 @@ function LatestTransaction(props: { item: ITransaction }) {
         )}
       </View>
       <Text
-        text={`${props.item.type === TransactionType.OUTCOME ? '-' : '+'} ${printCurrency(props.item.amount)}`}
+        text={`${props.item.type === TransactionType.OUTCOME ? '-' : '+'} ${printCurrencyToMajors(props.item.amount)}`}
         style={{
           color: props.item.type === TransactionType.OUTCOME ? color.palette.textClassicColor : color.palette.green,
           flex: 2,

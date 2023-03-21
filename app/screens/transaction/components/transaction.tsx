@@ -10,7 +10,7 @@ import { useStores } from '../../../models';
 import { TransactionCategory, TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
-import { printCurrency } from '../../../utils/money';
+import { printCurrencyToMajors } from '../../../utils/money';
 import { ICON_CONTAINER_STYLE, ICON_STYLE, LIST_CONTAINER, TRANSACTION_ACTIONS, TRANSACTION_BOTTOM_SIDE } from '../styles';
 
 const TRANSACTION_CATEGORY_LABEL_CONTAINER: ViewStyle = {
@@ -84,7 +84,7 @@ export const Transaction = (
             style={{
               color: item.type === TransactionType.OUTCOME ? color.palette.textClassicColor : color.palette.green,
             }}
-            text={`${item.type === TransactionType.OUTCOME ? '-' : '+'}${printCurrency(item.amount)}`}
+            text={`${item.type === TransactionType.OUTCOME ? '-' : '+'}${printCurrencyToMajors(item.amount)}`}
           />
           <TouchableOpacity style={{ marginHorizontal: spacing[2] }}>
             <Icon icon='ellipsisV' />
