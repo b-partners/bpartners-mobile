@@ -1,7 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { useFocusEffect, useRoute } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { BackHandler, ImageStyle, View, ViewStyle } from 'react-native';
+import { ImageStyle, View, ViewStyle } from 'react-native';
 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -58,14 +57,16 @@ type IconRouteProps = {
 };
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
-  const route = useRoute();
+  const {
+    state: { routeNames, index },
+    navigation: { navigate },
+  } = props;
+  const currentTab = routeNames[index];
   const { marketplaceStore } = useStores();
-  const [activeRouteName, setActiveRouteName] = useState(route.name);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleNavigationMarketplace = useCallback((routeName: string) => {
-    props.navigation.navigate(routeName);
-    setActiveRouteName(routeName);
+    navigate(routeName);
     const takeMarketplace = async () => {
       await Promise.all([
         marketplaceStore.getMarketplaces({
@@ -78,13 +79,11 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   }, []);
 
   const handleNavigation = useCallback((routeName: string) => {
-    props.navigation.navigate(routeName);
-    setActiveRouteName(routeName);
+    navigate(routeName);
   }, []);
 
-  const openModal = useCallback((routeName: string) => {
+  const openModal = useCallback(() => {
     setModalVisible(true);
-    setActiveRouteName(routeName);
   }, []);
 
   const BOTTOM_NAVBAR_ICONS: IconProps = {
@@ -101,7 +100,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => {
-      openModal('supportContact');
+      openModal();
     },
   };
 
@@ -121,19 +120,6 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     service: translate('bottomTab.service'),
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        setActiveRouteName('home');
-        return false;
-      };
-
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, [])
-  );
-
   return (
     <>
       <View style={TAB_VIEW_STYLE} {...props} testID='bottom-tab'>
@@ -141,7 +127,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
           return (
             <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
-              {modalVisible === true && bottomTavNavItem === 'service' ? (
+              {modalVisible && bottomTavNavItem === 'service' ? (
                 <BottomTab
                   onPress={() => setModalVisible(false)}
                   testID={`serviceTab`}
@@ -170,7 +156,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                   bottomNavItem={bottomTavNavItem}
                 />
               )}
-              {activeRouteName === RouteName[bottomTavNavItem] && (
+              {currentTab === RouteName[bottomTavNavItem] && (
                 <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
               )}
             </View>
