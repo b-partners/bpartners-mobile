@@ -27,8 +27,16 @@ export const PaymentInitiationForm: FC<
   const initialValues = { label: '', reference: '', amount: null, payerName: '', payerEmail: '' };
 
   const validationSchema = yup.object().shape({
-    amount: yup.number().required().label(translate('paymentInitiationScreen.fields.amount')),
-    payerEmail: yup.string().email().label(translate('paymentInitiationScreen.fields.payerEmail')),
+    amount: yup
+      .number()
+      .required(translate('invoiceScreen.errors.requiredField'))
+      .typeError(translate('invoiceScreen.errors.validAmount'))
+      .label(translate('paymentInitiationScreen.fields.amount')),
+    payerEmail: yup
+      .string()
+      .email(translate('invoiceScreen.errors.validEmail'))
+      .required(translate('invoiceScreen.errors.requiredField'))
+      .label(translate('paymentInitiationScreen.fields.payerEmail')),
   });
 
   const { init, paymentUrl, loading } = props;
@@ -86,7 +94,7 @@ export const PaymentInitiationForm: FC<
                 labelTx='paymentInitiationScreen.fields.payerEmail'
                 keyboardType='email-address'
                 value={values.payerEmail}
-                inputStyle={{ textTransform: 'lowercase' }}
+                inputStyle={[errors.payerEmail && INVALID_FORM_FIELD]}
               />
               <View style={{ marginTop: spacing[4] }}>
                 <Button
