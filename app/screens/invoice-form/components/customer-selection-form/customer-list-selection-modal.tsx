@@ -18,11 +18,11 @@ type TUserListSelectionModal = {
   setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CustomerListSelectionModal: FC<TUserListSelectionModal> = ({ customers, onRequestClose, onValidateChoice, onDismiss, visible , setShowUserListModal}) => {
+const CustomerListSelectionModal: FC<TUserListSelectionModal> = ({ customers, onRequestClose, onValidateChoice, onDismiss, visible, setShowUserListModal }) => {
   return (
     <Modal visible={visible} transparent={true} onRequestClose={onRequestClose} onDismiss={onDismiss}>
       <View style={MODAL_ITEM_CONTAINER_STYLE}>
-        <CustomerSelectionForm onValidateChoice={onValidateChoice} customers={customers} setShowUserListModal={setShowUserListModal}/>
+        <CustomerSelectionForm onValidateChoice={onValidateChoice} customers={customers} setShowUserListModal={setShowUserListModal} />
       </View>
     </Modal>
   );

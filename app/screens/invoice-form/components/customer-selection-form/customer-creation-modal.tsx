@@ -31,7 +31,7 @@ export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
             />
           </View>
           <View style={{ width: '100%', height: '100%' }}>
-            <CustomerCreationForm setShowUserListModal={setShowUserListModal}/>
+            <CustomerCreationForm setShowUserListModal={setShowUserListModal} />
           </View>
         </View>
       </View>

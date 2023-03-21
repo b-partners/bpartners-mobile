@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef } from 'react';
-import {View, ViewStyle} from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
 
@@ -13,14 +13,16 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import emptyToNull from '../../../../utils/empty-to-null';
 
-const INVALID_FORM_FIELD: ViewStyle= {
+const INVALID_FORM_FIELD: ViewStyle = {
   borderBottomColor: '#FF5983',
   borderBottomWidth: 2,
 };
 
-export const CustomerCreationForm: FC<PropsWithoutRef<{
+export const CustomerCreationForm: FC<
+  PropsWithoutRef<{
     setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
-}>> = observer(props => {
+  }>
+> = observer(props => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
@@ -50,51 +52,51 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{
         {({ values, errors }) => {
           return (
             <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '100%' }}>
-                <View style={{ height: '80%' }}>
+              <View style={{ height: '80%' }}>
                 <FormField
-                testID='customerFirstName'
-                name='customerFirstName'
-                labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName'
-                value={values.customerFirstName}
-                inputStyle={[errors.customerFirstName && INVALID_FORM_FIELD]}
-              />
-              <FormField
-                testID='customerLastName'
-                name='customerLastName'
-                labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName'
-                value={values.customerLastName}
-                inputStyle={[errors.customerLastName && INVALID_FORM_FIELD]}
-              />
-              <FormField
-                testID='customerEmail'
-                name='customerEmail'
-                labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.email'
-                keyboardType='email-address'
-                value={values.customerEmail}
-                inputStyle={[errors.customerEmail && INVALID_FORM_FIELD]}
-              />
-              <FormField
-                testID='customerAddress'
-                name='customerAddress'
-                labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.address'
-                value={values.customerAddress}
-                inputStyle={[errors.customerAddress && INVALID_FORM_FIELD]}
-              />
-              <FormField
-                testID='customerPhoneNumber'
-                name='customerPhoneNumber'
-                labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber'
-                value={values.customerPhoneNumber}
-                inputStyle={[errors.customerPhoneNumber && INVALID_FORM_FIELD]}
-              />
-              <FormField
-                testID='customerComment'
-                name='customerComment'
-                labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.comment'
-                value={values.customerComment}
-              />
-                </View>
-              <View >
+                  testID='customerFirstName'
+                  name='customerFirstName'
+                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName'
+                  value={values.customerFirstName}
+                  inputStyle={[errors.customerFirstName && INVALID_FORM_FIELD]}
+                />
+                <FormField
+                  testID='customerLastName'
+                  name='customerLastName'
+                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName'
+                  value={values.customerLastName}
+                  inputStyle={[errors.customerLastName && INVALID_FORM_FIELD]}
+                />
+                <FormField
+                  testID='customerEmail'
+                  name='customerEmail'
+                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.email'
+                  keyboardType='email-address'
+                  value={values.customerEmail}
+                  inputStyle={[errors.customerEmail && INVALID_FORM_FIELD]}
+                />
+                <FormField
+                  testID='customerAddress'
+                  name='customerAddress'
+                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.address'
+                  value={values.customerAddress}
+                  inputStyle={[errors.customerAddress && INVALID_FORM_FIELD]}
+                />
+                <FormField
+                  testID='customerPhoneNumber'
+                  name='customerPhoneNumber'
+                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber'
+                  value={values.customerPhoneNumber}
+                  inputStyle={[errors.customerPhoneNumber && INVALID_FORM_FIELD]}
+                />
+                <FormField
+                  testID='customerComment'
+                  name='customerComment'
+                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.comment'
+                  value={values.customerComment}
+                />
+              </View>
+              <View>
                 {checkCustomer === true ? (
                   <Button
                     testID='submit'
@@ -103,7 +105,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{
                       backgroundColor: palette.green,
                       height: 45,
                       borderRadius: 25,
-                      flexDirection: 'row'
+                      flexDirection: 'row',
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
@@ -147,21 +149,21 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{
                     testID='submit'
                     onPress={async () => {
                       try {
-                          await customerStore.saveCustomer({
-                              ...emptyToNull({
-                                  firstName: values.customerFirstName,
-                                  lastName: values.customerLastName,
-                                  email: values.customerEmail,
-                                  phone: values.customerPhoneNumber,
-                                  address: values.customerAddress,
-                                  website: null,
-                                  city: null,
-                                  country: null,
-                                  comment: null,
-                              }),
-                              zipCode: 0,
-                          });
-                          await invoiceStore.getCustomers();
+                        await customerStore.saveCustomer({
+                          ...emptyToNull({
+                            firstName: values.customerFirstName,
+                            lastName: values.customerLastName,
+                            email: values.customerEmail,
+                            phone: values.customerPhoneNumber,
+                            address: values.customerAddress,
+                            website: null,
+                            city: null,
+                            country: null,
+                            comment: null,
+                          }),
+                          zipCode: 0,
+                        });
+                        await invoiceStore.getCustomers();
                       } catch (e) {
                         __DEV__ && console.tron.log(e);
                       }
@@ -169,7 +171,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{
                     style={{
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
-                      borderRadius: 25
+                      borderRadius: 25,
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >

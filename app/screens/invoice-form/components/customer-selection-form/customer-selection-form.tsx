@@ -13,7 +13,7 @@ import CustomerRow from './customer-row';
 type TCustomerForm = {
   customers: Customer[];
   onValidateChoice: (customer: Customer) => void;
-    setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const FORM_TITLE: TextStyle = {
   color: palette.greyDarker,
