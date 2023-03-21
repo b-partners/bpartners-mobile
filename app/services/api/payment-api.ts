@@ -23,7 +23,8 @@ export class PaymentApi {
       updatedAt: item.updatedAt && new Date(item.updatedAt),
       customer: {
         id: item.customer ? item.customer.id : null,
-        name: item.customer ? item.customer.name : null,
+        firstName: item.customer ? item.customer.firstName : null,
+        lastName: item.customer ? item.customer.lastName : null,
         address: item.customer ? item.customer.address : null,
         city: item.customer ? item.customer.city : null,
         country: item.customer ? item.customer.country : null,
