@@ -22,7 +22,7 @@ const LABEL_STYLE: TextStyle = {
   fontSize: 12,
 };
 
-const INPUT_STYLE = {
+const INPUT_STYLE: TextStyle = {
   borderBottomWidth: 2,
   borderBottomColor: '#E1E5EF',
   backgroundColor: color.transparent,
@@ -40,6 +40,7 @@ export const FormField = ({
   ...rest
 }: FormFieldProps) => {
   const { setFieldTouched, handleChange, errors, touched } = useFormikContext();
+
   return (
     <View>
       {labelTx && <Text tx={labelTx} style={[LABEL_STYLE, labelStyleOverrides]} />}
@@ -48,6 +49,7 @@ export const FormField = ({
         onBlur={() => setFieldTouched(name)}
         inputStyle={Array.isArray(inputStyleOverrides) ? [INPUT_STYLE, ...inputStyleOverrides] : [INPUT_STYLE, inputStyleOverrides]}
         style={[{ paddingTop: 0 }]}
+        autoCapitalize={'none'}
         {...rest}
       />
       <ErrorMessage name={name} error={errors[name]} visible={touched[name]} style={[ERROR_STYLE, errorStyleOverrides]} />

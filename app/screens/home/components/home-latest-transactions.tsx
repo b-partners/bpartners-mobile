@@ -1,3 +1,4 @@
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import React from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Snackbar from 'react-native-snackbar';
@@ -7,14 +8,16 @@ import { Loader } from '../../../components/loader/loader';
 import { translate } from '../../../i18n';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
+import { NavigatorParamList } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { printCurrency } from '../../../utils/money';
+import { printCurrencyToMajors } from '../../../utils/money';
 
 type HomeLatestTransactionProps = {
   transactions: ITransaction[];
   onPress: () => void;
   loading?: boolean;
+  navigation: DrawerNavigationProp<NavigatorParamList, 'home', undefined>;
 };
 
 const LOADER_STYLE: ViewStyle = { height: 200 };
@@ -74,7 +77,7 @@ function LatestTransaction(props: { item: ITransaction }) {
         )}
       </View>
       <Text
-        text={`${props.item.type === TransactionType.OUTCOME ? '-' : '+'} ${printCurrency(props.item.amount)}`}
+        text={`${props.item.type === TransactionType.OUTCOME ? '-' : '+'} ${printCurrencyToMajors(props.item.amount)}`}
         style={{
           color: props.item.type === TransactionType.OUTCOME ? color.palette.textClassicColor : color.palette.green,
           flex: 2,
@@ -88,8 +91,7 @@ function LatestTransaction(props: { item: ITransaction }) {
 }
 
 export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
-  const { loading } = props;
-
+  const { loading, navigation } = props;
   const showSnackbar = () => {
     Snackbar.show({
       text: 'Cette fonctionnalité est encore en construction',
@@ -136,6 +138,9 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
           textStyle={{
             fontSize: 16,
             fontFamily: 'Geometria-Bold',
+          }}
+          onPress={() => {
+            navigation.navigate('transactionList');
           }}
         />
       </View>

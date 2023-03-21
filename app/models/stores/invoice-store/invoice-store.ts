@@ -41,10 +41,10 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
-    getCustomers: flow(function* (name: string) {
+    getCustomers: flow(function* () {
       const customerApi = new CustomerApi(self.environment.api);
       try {
-        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, name);
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id);
         self.getCustomersSuccess(getCustomersResult.customers);
       } catch (e) {
         self.getCustomersFail(e.message);
