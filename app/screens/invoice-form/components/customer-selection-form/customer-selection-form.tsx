@@ -13,6 +13,7 @@ import CustomerRow from './customer-row';
 type TCustomerForm = {
   customers: Customer[];
   onValidateChoice: (customer: Customer) => void;
+    setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const FORM_TITLE: TextStyle = {
   color: palette.greyDarker,
@@ -49,7 +50,7 @@ const ADD_CLIENT_BUTTON_TEXT_STYLE: TextStyle = {
 const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
 const CustomerSelectionForm: FC<TCustomerForm> = props => {
-  const { customers, onValidateChoice } = props;
+  const { customers, onValidateChoice, setShowUserListModal } = props;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   // By default the selected customer is the customer at index zero
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
@@ -86,7 +87,7 @@ const CustomerSelectionForm: FC<TCustomerForm> = props => {
           textStyle={VALIDATE_BUTTON_TEXT_STYLE}
         />
       </View>
-      <CustomerCreationModal creationModal={creationModal} setCreationModal={setCreationModal} />
+      <CustomerCreationModal setShowUserListModal={setShowUserListModal} creationModal={creationModal} setCreationModal={setCreationModal} />
     </View>
   );
 };

@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef } from 'react';
-import { View } from 'react-native';
+import {View, ViewStyle} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
 
@@ -13,12 +13,14 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import emptyToNull from '../../../../utils/empty-to-null';
 
-const INVALID_FORM_FIELD = {
+const INVALID_FORM_FIELD: ViewStyle= {
   borderBottomColor: '#FF5983',
   borderBottomWidth: 2,
 };
 
-export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
+export const CustomerCreationForm: FC<PropsWithoutRef<{
+    setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
+}>> = observer(props => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
@@ -29,7 +31,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
     customerEmail: yup.string().email().label(translate('paymentInitiationScreen.fields.payerEmail')),
   });
 
-  const { customerStore } = useStores();
+  const { customerStore, invoiceStore } = useStores();
   const { checkCustomer, loadingCustomerCreation } = customerStore;
 
   return (
@@ -145,20 +147,21 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     testID='submit'
                     onPress={async () => {
                       try {
-                        await customerStore.saveCustomer({
-                          ...emptyToNull({
-                            firstName: values.customerFirstName,
-                            lastName: values.customerLastName,
-                            email: values.customerEmail,
-                            phone: values.customerPhoneNumber,
-                            address: values.customerAddress,
-                            website: null,
-                            city: null,
-                            country: null,
-                            comment: null,
-                          }),
-                          zipCode: 0,
-                        });
+                          await customerStore.saveCustomer({
+                              ...emptyToNull({
+                                  firstName: values.customerFirstName,
+                                  lastName: values.customerLastName,
+                                  email: values.customerEmail,
+                                  phone: values.customerPhoneNumber,
+                                  address: values.customerAddress,
+                                  website: null,
+                                  city: null,
+                                  country: null,
+                                  comment: null,
+                              }),
+                              zipCode: 0,
+                          });
+                          await invoiceStore.getCustomers();
                       } catch (e) {
                         __DEV__ && console.tron.log(e);
                       }

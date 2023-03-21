@@ -259,6 +259,7 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   <CustomerListSelectionModal
                     customers={customers}
                     visible={showUserListModal}
+                    setShowUserListModal={setShowUserListModal}
                     onRequestClose={() => setShowUserListModal(false)}
                     onValidateChoice={customer => {
                       setShowUserListModal(false);
