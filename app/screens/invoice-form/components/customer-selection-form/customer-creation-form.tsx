@@ -33,7 +33,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
   const { checkCustomer, loadingCustomerCreation } = customerStore;
 
   return (
-    <View testID='paymentInitiationScreen'>
+    <View testID='paymentInitiationScreen' style={{ height: '100%', width: '100%' }}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -47,8 +47,9 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
       >
         {({ values, errors }) => {
           return (
-            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3] }}>
-              <FormField
+            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '100%' }}>
+                <View style={{ height: '80%' }}>
+                <FormField
                 testID='customerFirstName'
                 name='customerFirstName'
                 labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName'
@@ -90,7 +91,8 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                 labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.comment'
                 value={values.customerComment}
               />
-              <View style={{ marginTop: spacing[4] }}>
+                </View>
+              <View >
                 {checkCustomer === true ? (
                   <Button
                     testID='submit'
@@ -99,7 +101,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                       backgroundColor: palette.green,
                       height: 45,
                       borderRadius: 25,
-                      flexDirection: 'row',
+                      flexDirection: 'row'
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
@@ -164,7 +166,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     style={{
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
-                      borderRadius: 25,
+                      borderRadius: 25
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Modal, ScrollView, View } from 'react-native';
+import { Modal, View } from 'react-native';
 
 import { Header } from '../../../../components';
-import { useStores } from '../../../../models';
 import { palette } from '../../../../theme/palette';
 import { CustomerCreationForm } from './customer-creation-form';
 
@@ -18,13 +17,10 @@ export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
     setCreationModal(false);
   };
 
-  const { paymentInitiationStore } = useStores();
-  const { initiatingPayment: loading } = paymentInitiationStore;
-
   return (
     <Modal animationType='slide' transparent={true} visible={creationModal} onRequestClose={closeShareModal}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'flex-end', alignItems: 'center' }}>
-        <View style={{ backgroundColor: palette.white, height: '90%', width: '100%' }}>
+        <View style={{ backgroundColor: palette.white, height: '100%', width: '100%' }}>
           <View>
             <Header
               rightIcon='cross'
@@ -33,9 +29,9 @@ export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
               headerTx='invoiceFormScreen.customerSelectionForm.addClient'
             />
           </View>
-          <ScrollView>
-            <CustomerCreationForm loading={loading} />
-          </ScrollView>
+          <View style={{ width: '100%', height: '100%' }}>
+            <CustomerCreationForm />
+          </View>
         </View>
       </View>
     </Modal>
