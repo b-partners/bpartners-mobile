@@ -11,6 +11,7 @@ export const CustomerModel = types.model('Customer').props({
   zipCode: types.maybe(types.maybeNull(types.number)),
   city: types.maybe(types.maybeNull(types.string)),
   country: types.maybe(types.maybeNull(types.string)),
+  comment: types.maybe(types.maybeNull(types.string)),
 });
 
 export interface Customer extends Instance<typeof CustomerModel> {}
@@ -30,4 +31,5 @@ export const createCustomerDefaultModel = () =>
     zipCode: null,
     city: null,
     country: null,
+    comment: null,
   });

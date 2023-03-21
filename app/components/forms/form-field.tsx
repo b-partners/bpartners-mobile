@@ -40,6 +40,7 @@ export const FormField = ({
   ...rest
 }: FormFieldProps) => {
   const { setFieldTouched, handleChange, errors, touched } = useFormikContext();
+
   return (
     <View>
       {labelTx && <Text tx={labelTx} style={[LABEL_STYLE, labelStyleOverrides]} />}

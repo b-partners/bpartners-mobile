@@ -4,6 +4,7 @@ import { AccountHolder } from '../../entities/account-holder/account-holder';
 import { Account } from '../../entities/account/account';
 import { User } from '../../entities/user/user';
 import { AuthStoreModel } from '../auth-store/auth-store';
+import { CustomerStoreModel } from '../customer-store/customer-store';
 import { FileStoreModel } from '../file-store/file-store';
 import { InvoiceStoreModel } from '../invoice-store/invoice-store';
 import { LegalFileStoreModel } from '../legal-file-store/legal-file-store';
@@ -24,7 +25,8 @@ export const RootStoreModel = types.model('RootStore').props({
     fileStore: types.optional(FileStoreModel, {} as any),
     invoiceStore: types.optional(InvoiceStoreModel, {} as any),
     marketplaceStore: types.optional(MarketplaceStoreModel, {} as any),
-    legalFilesStore: types.optional(LegalFileStoreModel, {} as any)
+    legalFilesStore: types.optional(LegalFileStoreModel, {} as any),
+    customerStore: types.optional(CustomerStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;
