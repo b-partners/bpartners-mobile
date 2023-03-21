@@ -3,23 +3,22 @@ import React, { PropsWithoutRef } from 'react';
 import { Platform, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { Dropdown, Text } from '../../../components';
-// import { Dropdown, Icon, Text } from '../../../components';
+import { Icon, Text } from '../../../components';
+import { Dropdown } from '../../../components/dropdown/dropdown';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { TransactionCategory, TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { printCurrencyToMajors } from '../../../utils/money';
-import { ICON_CONTAINER_STYLE, LIST_CONTAINER, TRANSACTION_ACTIONS, TRANSACTION_BOTTOM_SIDE } from '../styles';
-
-// import { ICON_CONTAINER_STYLE, ICON_STYLE, LIST_CONTAINER, TRANSACTION_ACTIONS, TRANSACTION_BOTTOM_SIDE } from '../styles';
+import { ICON_CONTAINER_STYLE, ICON_STYLE, LIST_CONTAINER, TRANSACTION_ACTIONS, TRANSACTION_BOTTOM_SIDE } from '../styles';
 
 const TRANSACTION_CATEGORY_LABEL_CONTAINER: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',
+  height: 50,
   borderRadius: 25,
   backgroundColor: color.palette.white,
   padding: spacing[3],
@@ -87,7 +86,9 @@ export const Transaction = (
             }}
             text={`${item.type === TransactionType.OUTCOME ? '-' : '+'}${printCurrencyToMajors(item.amount)}`}
           />
-          <TouchableOpacity style={{ marginHorizontal: spacing[2] }}>{/*<Icon icon='ellipsisV' />*/}</TouchableOpacity>
+          <TouchableOpacity style={{ marginHorizontal: spacing[2] }}>
+            <Icon icon='ellipsisV' />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={TRANSACTION_BOTTOM_SIDE}>
@@ -105,18 +106,18 @@ export const Transaction = (
               backgroundColor: color.palette.white,
               borderRadius: 25,
               paddingHorizontal: spacing[4],
+              height: 50,
             }}
             selectedItemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
             itemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria' }}
             placeholderTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
           >
             <View testID='transaction-category-container' style={TRANSACTION_CATEGORY_LABEL_CONTAINER}>
-              {item.category && item.category.description.length > 0 && (
+              {item.category && item.category.description && (
                 <View style={TRANSACTION_CATEGORY_LABEL_LEFT_ITEM}>
                   <Text
                     text={item.category.description}
                     testID='transaction-category'
-                    numberOfLines={2}
                     style={{
                       color: color.palette.textClassicColor,
                       fontFamily: 'Geometria-Bold',
@@ -128,9 +129,11 @@ export const Transaction = (
             </View>
           </Dropdown>
           <TouchableOpacity style={ICON_CONTAINER_STYLE}>
-            {/*<Icon icon={item.category && item.category.id ? 'check' : 'unchecked'} style={ICON_STYLE} />*/}
+            <Icon icon={item.category && item.category.id ? 'check' : 'unchecked'} style={ICON_STYLE} />
           </TouchableOpacity>
-          <TouchableOpacity style={ICON_CONTAINER_STYLE}>{/*<Icon icon='upload' style={ICON_STYLE} />*/}</TouchableOpacity>
+          <TouchableOpacity style={ICON_CONTAINER_STYLE}>
+            <Icon icon='upload' style={ICON_STYLE} />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
