@@ -1,18 +1,12 @@
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import React, { useCallback } from 'react';
 import { Alert, Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import Home from 'react-native-vector-icons/AntDesign';
-import Contact from 'react-native-vector-icons/AntDesign';
-import Right from 'react-native-vector-icons/Entypo';
-import ProspectList from 'react-native-vector-icons/FontAwesome';
-import Map from 'react-native-vector-icons/Ionicons';
-import Profile from 'react-native-vector-icons/Ionicons';
-import Power from 'react-native-vector-icons/Ionicons';
-import Lock from 'react-native-vector-icons/Ionicons';
-import Exit from 'react-native-vector-icons/MaterialCommunityIcons';
-import PaymentInit from 'react-native-vector-icons/MaterialCommunityIcons';
-import PaymentList from 'react-native-vector-icons/MaterialIcons';
-import TransactionList from 'react-native-vector-icons/Octicons';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import OcticonsIcon from 'react-native-vector-icons/Octicons';
 
 import env from '../../config/env';
 import { translate } from '../../i18n';
@@ -128,16 +122,15 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   const IconRoute: RouteNameProps = {
-    home: <Home name='home' size={22} color={color.palette.secondaryColor} />,
-    profile: <Profile name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
-    transactionList: <TransactionList name='checklist' size={22} color={color.palette.secondaryColor} />,
-    prospect: <ProspectList name='list-alt' size={22} color={color.palette.secondaryColor} />,
-    paymentInitiation: <PaymentInit name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
-    paymentList: <PaymentList name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
-    welcome: <Home name='home' size={22} color={color.palette.secondaryColor} />,
-    oauth: <Lock name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
-    marketplace: <Map name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
-    supportContact: <Contact name='contacts' size={22} color={color.palette.secondaryColor} />,
+    home: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
+    profile: <IoniconIcon name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
+    transactionList: <OcticonsIcon name='checklist' size={22} color={color.palette.secondaryColor} />,
+    paymentInitiation: <MaterialCommunityIcon name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
+    paymentList: <MaterialIcon name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
+    welcome: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
+    oauth: <IoniconIcon name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
+    marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
+    supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
   };
 
   const handlePress = useCallback(async () => {
@@ -172,14 +165,14 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
                   </Text>
                 </View>
                 <View style={ICON_CONTAINER_STYLE}>
-                  <Right name='chevron-thin-right' size={18} color='#000' />
+                  <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
                 </View>
               </TouchableOpacity>
             );
           })}
           <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress} testID='openSwan'>
             <View style={ICON_CONTAINER_STYLE}>
-              <Exit name='bank-outline' size={22} color={color.palette.secondaryColor} />
+              <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />
             </View>
             <View style={TEXT_CONTAINER_STYLE}>
               <Text style={TEXT_STYLE} testID='openSwanText'>
@@ -187,7 +180,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
               </Text>
             </View>
             <View style={ICON_CONTAINER_STYLE}>
-              <Right name='chevron-thin-right' size={18} color='#000' />
+              <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
             </View>
           </TouchableOpacity>
         </ScrollView>
@@ -200,7 +193,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
         }}
       >
         <View style={POWER_CONTAINER_STYLE}>
-          <Power name='ios-power-outline' size={18} color={color.palette.secondaryColor} />
+          <IoniconIcon name='ios-power-outline' size={18} color={color.palette.secondaryColor} />
         </View>
         <View style={CENTER_CONTAINER_STYLE}>
           <Text

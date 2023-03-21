@@ -87,7 +87,13 @@
       "payerEmail": "Client email",
       "submit": "Confirm",
       "paymentUrl": "Payment URL"
-    }
+    },
+    "instruction": "Your customer can scan this QR Code. You can also share it by clicking on the button below",
+    "share": "Share",
+    "copy": "Copy the link",
+    "whatsapp": "Whatsapp",
+    "sms": "SMS",
+    "or": "or"
   },
   "profileScreen": {
     "label": "Profil",
@@ -154,7 +160,10 @@
     },
     "errors": {
       "sendingDateLaterThanToday": "Invoice can not be sent no later than today.",
-      "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date."
+      "sendingDateLaterThanToPayAt": "Sending date can not be later than payment date.",
+      "validEmail": "Please enter a valid email address",
+      "validAmount": "Check that you have entered the correct amount",
+      "requiredField": "Please fill in this field"
     },
     "menu": {
       "markAsInvoice": "Mark as invoice",

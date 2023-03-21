@@ -57,7 +57,13 @@
       "payerEmail": "Email du client",
       "submit": "Confirmer",
       "paymentUrl": "Lien de paiement"
-    }
+    },
+    "instruction": "Votre client peut scanner ce QR Code. Vous pouvez également le partager en cliquant sur le bouton ci-dessous",
+    "share": "Partager",
+    "copy": "Copier le lien",
+    "whatsapp": "Whatsapp",
+    "sms": "SMS",
+    "or": "ou"
   },
   "signInScreen": {
     "title": "Connectez-vous à BPartners",
@@ -138,7 +144,10 @@
     },
     "errors": {
       "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
-      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
+      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement.",
+      "validEmail": "Veuillez saisir une adresse e-mail valide",
+      "validAmount": "Vérifiez que vous avez saisi un montant correct",
+      "requiredField": "Veuillez remplir ce champ"
     },
     "menu": {
       "markAsInvoice": "Transformer en facture",
