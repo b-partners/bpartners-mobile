@@ -145,9 +145,16 @@ export function InvoiceForm(props: InvoiceFormProps) {
     title: '',
     tva: '0',
   };
+
+  const generateRef = () => {
+    const date = new Date().toLocaleDateString().replace(/\//g, '');
+    const hour = new Date().toLocaleTimeString().replace(/:/g, '');
+    return `REF-${date}${hour}`;
+  };
+
   const [initialValues, setInitialValues] = useState({
     id: uuid.v4().toString(),
-    ref: '',
+    ref: generateRef(),
     title: '',
     comment: null,
     sendingDate: new Date(),
@@ -268,10 +275,10 @@ export function InvoiceForm(props: InvoiceFormProps) {
                   <View style={{ ...DATE_PICKER_FIELD_CONTAINER, ...FULL }}>
                     <DatePickerField
                       value={initialValues.sendingDate}
-                      onDateChange={date =>
+                      onDateChange={selectDate =>
                         setInitialValues({
                           ...initialValues,
-                          sendingDate: date,
+                          sendingDate: selectDate,
                         })
                       }
                       labelTx={'invoiceFormScreen.invoiceForm.issueDate'}
