@@ -76,7 +76,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
             </View>
           </View>
           <View style={STATUS_CONTAINER}>
-            <Text text={props.item.status} style={[STATUS_TEXT, textColor]} />
+            <Text tx={`invoiceScreen.status.${props.item.status}`} style={[STATUS_TEXT, textColor]} />
           </View>
         </View>
       </TouchableOpacity>

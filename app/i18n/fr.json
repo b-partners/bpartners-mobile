@@ -138,6 +138,13 @@
       "invoiceForm": "Créer un devis",
       "comment": "Commentaire"
     },
+    "status": {
+      "PAID": "Payée",
+      "PROPOSAL": "À confirmer",
+      "DRAFT": "Brouillon",
+      "CONFIRMED": "À payer",
+      "ACCEPTED": "accepté"
+    },
     "errors": {
       "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
       "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement.",
