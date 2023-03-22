@@ -82,12 +82,10 @@ export const createInvoiceDefaultModel = (status: InvoiceStatus = InvoiceStatus.
   const date = new Date().toLocaleDateString().replace(/\//g, '');
   const hour = new Date().toLocaleTimeString().replace(/:/g, '');
   const ref = `REF-${date}${hour}`;
-  const title = `${ref}`;
 
   return types.optional(InvoiceModel, {
     ...EMPTY_INVOICE,
     ref,
-    title,
     status,
   });
 };

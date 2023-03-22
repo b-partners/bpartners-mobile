@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
@@ -50,18 +50,20 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { customers, products, onSaveInvoice, invoiceType } = props;
 
-  console.tron.log({ invoiceType });
+  __DEV__ && console.tron.log({ invoiceType });
 
   const { control, handleSubmit } = useForm({
     defaultValues: createInvoiceDefaultModel(invoiceType).create(),
   });
 
   const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });
+    const [ title, setTitle ] = useState(null);
+    const [ comment, setComment ] = useState(null);
 
   const onSubmit = async invoice => {
     __DEV__ && console.tron.log({ invoice });
     try {
-      await onSaveInvoice({ ...invoice, metadata: { ...invoice.metadata, submittedAt: new Date() } });
+      await onSaveInvoice({ ...invoice, comment: comment ,title: title, metadata: { ...invoice.metadata, submittedAt: new Date() } });
     } catch (e) {
       showMessage(e);
       throw e;
@@ -81,7 +83,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.titlePlaceholder'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={ value => {onChange(); setTitle(value); console.log(title);}}
                 value={value}
               />
             );
@@ -209,7 +211,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.comment'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={ value => {onChange(); setComment(value); console.log(comment);}}
                 value={value?.toString()}
               />
             );
