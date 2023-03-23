@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { SectionList, View } from 'react-native';
 
 import { ErrorBoundary } from '..';
-import { Button, Screen, Separator, Text } from '../../components';
+import { Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -14,19 +14,10 @@ import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
 import { Invoice } from './components/invoice';
-import {
-  BUTTON_STYLE,
-  BUTTON_TEXT_STYLE,
-  CONTAINER,
-  FOOTER_COMPONENT_STYLE,
-  FULL,
-  SECTION_HEADER_TEXT_STYLE,
-  SECTION_LIST_CONTAINER_STYLE,
-  SEPARATOR_STYLE,
-} from './styles';
+import { CONTAINER, FOOTER_COMPONENT_STYLE, FULL, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from './styles';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
-export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore } = useStores();
   const { loading, quotations } = invoiceStore;
 
@@ -76,7 +67,6 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
               renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
             />
           </View>
-          <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
         </Screen>
       </View>
     </ErrorBoundary>
