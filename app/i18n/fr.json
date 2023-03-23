@@ -178,7 +178,6 @@
       "delayInPaymentAllowed": "Délai de retard de paiement autorisé",
       "delayInPaymentAllowedPlaceholder": "30",
       "delayPenaltyPercent": "Pourcentage de pénalité de retard",
-      "delayPenaltyPercentPlaceholder": "Pourcentage de pénalité de retard",
       "delayPenaltyPercentPlaceholder": "10",
       "comment": "Commentaire",
       "commentPlaceholder": "Entrer votre commentaire ici...",
@@ -223,7 +222,18 @@
         "added": "Ajouté",
         "fail": "Réessayer"
       }
-    }
+    },
+    "productForm": {
+      "addProduct": "Ajouter un produit",
+      "title": "Produit",
+      "placeholder": "Sélectionner un produit",
+      "unitPrice": "Prix Unit.",
+      "quantity": "Qté",
+      "totalWithVat": "Total",
+      "vat": "TVA",
+      "delete": "Supprimer"
+    },
+    "invoicePreview": "Aperçu du devis"
   },
   "paymentListScreen": {
     "title": "Facturation",

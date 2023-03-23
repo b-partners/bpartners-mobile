@@ -237,7 +237,18 @@
         "added": "Added",
         "fail": "Try again"
       }
-    }
+    },
+    "productForm": {
+      "addProduct": "Add a product",
+      "placeholder": "Choose a product",
+      "title": "Product",
+      "unitPrice": "Unit price",
+      "quantity": "Qty",
+      "vat": "VAT",
+      "totalWithVat": "Total",
+      "delete": "Delete"
+    },
+    "invoicePreview": "Invoice preview"
   },
   "paymentListScreen": {
     "title": "Invoicing",
