@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, Icon, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
+import { useStores } from '../../models';
+import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
@@ -13,8 +15,6 @@ import { CustomerFormFieldFooter } from './components/customer-form-field-footer
 import { InvoiceFormField } from './components/invoice-form-field';
 import { ProductFormField } from './components/product-form-field';
 import { SelectFormField } from './select-form-field/select-form-field';
-import {useStores} from "../../models";
-import {Customer} from "../../models/entities/customer/customer";
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -49,10 +49,10 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, onSaveInvoice, invoiceType } = props;
-    const { invoiceStore } = useStores();
-    const { customers } = invoiceStore;
-    const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
-    const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
+  const { invoiceStore } = useStores();
+  const { customers } = invoiceStore;
+  const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
 
   __DEV__ && console.tron.log({ invoiceType });
 
@@ -61,14 +61,20 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   });
 
   const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });
-    const [ title, setTitle ] = useState(null);
-    const [ comment, setComment ] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [comment, setComment] = useState(null);
 
   const onSubmit = async invoice => {
     __DEV__ && console.tron.log({ invoice });
     try {
-      await onSaveInvoice({ ...invoice, customer: selectedCustomer ,comment: comment ,title: title, metadata: { ...invoice.metadata, submittedAt: new Date() } });
-       /* console.log({ ...invoice, customer: selectedCustomer ,comment: comment ,title: title, metadata: { ...invoice.metadata, submittedAt: new Date() } })*/
+      await onSaveInvoice({
+        ...invoice,
+        customer: selectedCustomer,
+        comment: comment,
+        title: title,
+        metadata: { ...invoice.metadata, submittedAt: new Date() },
+      });
+      /* console.log({ ...invoice, customer: selectedCustomer ,comment: comment ,title: title, metadata: { ...invoice.metadata, submittedAt: new Date() } })*/
     } catch (e) {
       showMessage(e);
       throw e;
@@ -88,7 +94,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.titlePlaceholder'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={ value => {onChange(); setTitle(value);}}
+                onChangeText={newValue => {
+                  onChange();
+                  setTitle(newValue);
+                }}
                 value={value}
               />
             );
@@ -216,7 +225,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.comment'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={ value => {onChange(); setComment(value);}}
+                onChangeText={newValue => {
+                  onChange();
+                  setComment(newValue);
+                }}
                 value={value?.toString()}
               />
             );
@@ -278,11 +290,15 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           render={({ field: { value, onChange } }) => {
             return (
               <SelectFormField
-                  customers={customers}
-                  selectedCustomer={selectedCustomer}
-                  setSelectedCustomer={setSelectedCustomer}
+                customers={customers}
+                selectedCustomer={selectedCustomer}
+                setSelectedCustomer={setSelectedCustomer}
                 value={value?.id}
-                onValueChange={value => {onChange(); setSelectedCustomer(value); console.log(value?.firstName);}}
+                onValueChange={newValue => {
+                  onChange();
+                  setSelectedCustomer(newValue);
+                  console.log(newValue?.firstName);
+                }}
                 labelTx='invoiceScreen.labels.customerSection'
                 modalTx='invoiceFormScreen.customerSelectionForm.title'
                 placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'

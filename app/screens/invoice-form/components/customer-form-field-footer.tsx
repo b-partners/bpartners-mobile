@@ -4,7 +4,7 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, Separator, Text } from '../../../components';
 import { color, spacing } from '../../../theme';
-import {palette} from "../../../theme/palette";
+import { palette } from '../../../theme/palette';
 
 const SEPARATOR_STYLE = { flex: 1, borderColor: '#E1E5EF' };
 
