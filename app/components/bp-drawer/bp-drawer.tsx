@@ -3,11 +3,11 @@ import React, { useCallback } from 'react';
 import { Alert, Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import OcticonsIcon from 'react-native-vector-icons/Octicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import env from '../../config/env';
 import { translate } from '../../i18n';
@@ -16,7 +16,6 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { BPDrawerHeader } from './bp-drawer-header';
-import {FontAwesome} from "@expo/vector-icons";
 
 const LOGOUT_CONTAINER_STYLE: ViewStyle = {
   position: 'absolute',
