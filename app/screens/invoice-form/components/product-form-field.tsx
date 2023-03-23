@@ -169,21 +169,34 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             </Observer>
           </View>
           <View style={{ flexDirection: 'row', width: '100%'}}>
-            <InvoiceFormField
-              labelTx='invoiceFormScreen.productForm.quantity'
-              style={{ width: '20%' }}
-              keyboardType='numeric'
-              onChangeText={quantity => {
-                setCurrentProduct(product => ({ ...product, quantity: +quantity }));
-              }}
+            <TextField
+                labelTx='invoiceFormScreen.productForm.quantity'
+                labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', alignSelf: 'center'  }}
+                style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '25%'}}
+                inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
+                keyboardType='numeric'
+                onChangeText={quantity => {
+                  setCurrentProduct(product => ({ ...product, quantity: +quantity }));
+                }}
             />
-            <InvoiceFormField
-              labelTx='invoiceFormScreen.productForm.unitPrice'
-              style={{ width: '40%' }}
-              editable={false}
-              value={printCurrency(currentProduct?.unitPrice)?.toString()}
+            <TextField
+                labelTx='invoiceFormScreen.productForm.unitPrice'
+                labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase' }}
+                style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '50%', padding: spacing[2] }}
+                inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase' }}
+                keyboardType='numeric'
+                editable={false}
+                value={printCurrency(currentProduct?.unitPrice)?.toString()}
             />
-            <InvoiceFormField labelTx='invoiceFormScreen.productForm.vat' style={{ width: '40%' }} editable={false} value={printVat(currentProduct?.vatPercent)} />
+            <TextField
+                labelTx='invoiceFormScreen.productForm.vat'
+                labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', alignSelf: 'center' }}
+                style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '25%' }}
+                inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
+                keyboardType='numeric'
+                editable={false}
+                value={printVat(currentProduct?.vatPercent)}
+            />
           </View>
           <View>
             <InvoiceFormField
