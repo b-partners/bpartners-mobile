@@ -152,7 +152,7 @@
       "editInvoice": "Modifier la facture"
     },
     "messages": {
-      "successfullyMarkAsProposal": "Devis envoyé au client.",
+      "successfullyMarkAsProposal": "Le devis a bien été créé",
       "successfullyMarkAsInvoice": "Devis transformé en facture.",
       "downloadingInvoice": "Téléchargement de la facture en cours",
       "invoiceSuccessfullyDownload": "Facture téléchargée.",

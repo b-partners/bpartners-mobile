@@ -168,7 +168,7 @@
       "editInvoice": "Edit"
     },
     "messages": {
-      "successfullyMarkAsProposal": "Invoice proposed to customer.",
+      "successfullyMarkAsProposal": "The quote has been created",
       "successfullyMarkAsInvoice": "Quotation successfully transformed as invoice.",
       "downloadingInvoice": "Downloading invoice",
       "invoiceSuccessfullyDownload": "Invoice downloaded",
