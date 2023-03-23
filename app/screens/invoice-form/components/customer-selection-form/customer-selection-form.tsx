@@ -8,7 +8,7 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { BUTTON_STYLE } from '../../styles';
 import { CustomerCreationModal } from './customer-creation-modal';
-import CustomerRow from './customer-row';
+import CustomerRow from "../../select-form-field/customer-row";
 
 type TCustomerForm = {
   customers: Customer[];

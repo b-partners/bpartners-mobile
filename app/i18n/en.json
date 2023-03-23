@@ -222,7 +222,7 @@
         "tva": "TVA"
       }
     },
-    "customerForm": {
+    "customerSelectionForm": {
       "title": "Client Name",
       "addClient": "Add a client",
       "validate": "Validate",

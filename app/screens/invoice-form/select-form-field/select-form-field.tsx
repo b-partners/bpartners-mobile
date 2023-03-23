@@ -1,12 +1,23 @@
 import { Observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
-import { Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { RadioButton } from 'react-native-paper';
+import {
+  FlatList,
+  Modal,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+  ViewStyle
+} from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, Icon, Text, TextField, TextFieldProps } from '../../../components';
+import {Button, Icon, Separator, Text, TextField, TextFieldProps} from '../../../components';
 import { TxKeyPath } from '../../../i18n';
 import { color, spacing } from '../../../theme';
+import {palette} from "../../../theme/palette";
+import {Customer} from "../../../models/entities/customer/customer";
+import CustomerRow from "./customer-row";
 
 type SelectFormFieldProps = TextFieldProps & {
   value: any;
@@ -19,13 +30,21 @@ type SelectFormFieldProps = TextFieldProps & {
   itemSuffix?: React.ReactNode;
   itemSuffixAction?: (item: any) => void;
   footer?: React.ReactNode;
+  customers: Customer[];
+  selectedCustomer: Customer;
+  setSelectedCustomer: React.Dispatch<React.SetStateAction<Customer>>;
 };
 
 const LABEL_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase' };
-const INPUT_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase' };
+const INPUT_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' };
+
+const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
 export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
   const {
+    customers,
+      selectedCustomer,
+      setSelectedCustomer,
     onValueChange: parentOnValueChange,
     selectContainerStyle,
     labelStyle: labelStyleOverrides,
@@ -41,7 +60,9 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
   } = props;
 
   const [visible, setVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<{ label?: string; value?: string }>({});
+
+  const { height } = useWindowDimensions();
+  const MAX_HEIGHT = (6 * height) / 10;
 
   return (
     <Observer>
@@ -51,19 +72,19 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
             <TextField
               {...textFieldProps}
               editable={false}
-              value={selectedItem.label}
+              value={`${selectedCustomer?.firstName} ${selectedCustomer?.lastName}`}
               labelStyle={[LABEL_STYLE, labelStyleOverrides]}
               inputStyle={[INPUT_STYLE, inputStyleOverrides]}
             />
             <Icon icon='chevronDown' style={{ marginTop: 40 }} />
           </TouchableOpacity>
           <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
-            <View>
               <View
                 style={{
+                  flex: 1,
+                  justifyContent: 'center',
                   backgroundColor: 'rgba(10, 16, 69, 0.5)',
                   alignItems: 'center',
-                  justifyContent: 'center',
                   width: '100%',
                   height: '100%',
                 }}
@@ -71,93 +92,51 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                 <View
                   style={[
                     {
-                      padding: spacing[3],
-                      backgroundColor: color.palette.white,
+                      padding: spacing[4],
+                      backgroundColor: palette.white,
                       width: '100%',
+                      height: MAX_HEIGHT
                     },
                   ]}
                 >
-                  <View style={{ paddingVertical: spacing[4], paddingHorizontal: spacing[3] }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
                       <Text
                         tx={modalTx}
                         style={{
                           color: color.palette.lightGrey,
                           fontFamily: 'Geometria',
-                          fontSize: 13,
+                          fontSize: 15,
                         }}
                       />
                       <TouchableOpacity onPress={() => setVisible(false)}>
                         <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
                       </TouchableOpacity>
                     </View>
-                    <View style={{ paddingVertical: spacing[2] }}>
-                      <RadioButton.Group
-                        onValueChange={selectedValue => {
-                          const currentItem = items.find(item => item[itemValue] === selectedValue);
-                          if (!currentItem) {
-                            return;
-                          }
-                          setSelectedItem({
-                            label: currentItem[itemLabel],
-                            value: currentItem[itemValue],
-                          });
-                          parentOnValueChange(currentItem);
-                          setVisible(false);
-                        }}
-                        value={selectedItem.value}
-                      >
-                        {items.map(item => (
-                          <View
-                            key={item[itemValue]}
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              borderBottomWidth: 1,
-                              borderBottomColor: '#E1E5EF',
-                              paddingHorizontal: 0,
-                            }}
-                          >
-                            <RadioButton.Item
-                              labelStyle={{
-                                textAlign: 'left',
-                                fontFamily: 'Geometria-Bold',
-                                color: color.palette.textClassicColor,
-                                paddingHorizontal: 0,
-                              }}
-                              position='leading'
-                              value={item[itemValue]}
-                              label={item[itemLabel]}
-                            />
-                            <TouchableOpacity
-                              onPress={() => {
-                                itemSuffixAction(item);
-                              }}
-                            >
-                              {itemSuffix}
-                            </TouchableOpacity>
-                          </View>
-                        ))}
-                      </RadioButton.Group>
+                    <View style={{ paddingVertical: spacing[2], height: '80%' }}>
+                      <FlatList
+                          data={customers}
+                          keyExtractor={item => item.id}
+                          renderItem={({ item: customer }) => {
+                            return <CustomerRow customer={customer} isSelected={customer.id === selectedCustomer?.id} onSelect={() => setSelectedCustomer(customer)} />;
+                          }}
+                          ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
+                      />
                       {footer}
                     </View>
+                  <View style={{ height: '15%', justifyContent: 'center' }}>
                     <Button
-                      tx='components.button.close'
+                      tx='invoiceFormScreen.customerSelectionForm.validate'
                       style={{
                         backgroundColor: color.palette.secondaryColor,
                         borderRadius: 50,
                         paddingVertical: spacing[3],
-                        marginTop: spacing[5],
                       }}
                       textStyle={{ fontSize: 16, fontFamily: 'Geometria' }}
                       onPress={() => setVisible(false)}
                     />
                   </View>
-                </View>
+                  </View>
               </View>
-            </View>
           </Modal>
         </View>
       )}

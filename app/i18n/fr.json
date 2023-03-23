@@ -207,7 +207,7 @@
         "tva": "TVA"
       }
     },
-    "customerForm": {
+    "customerSelectionForm": {
       "title": "Nom du client",
       "addClient": "Ajouter un client",
       "validate": "Valider",

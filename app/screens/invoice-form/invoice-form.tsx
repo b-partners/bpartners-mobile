@@ -5,7 +5,6 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, Icon, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
-import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
@@ -14,10 +13,11 @@ import { CustomerFormFieldFooter } from './components/customer-form-field-footer
 import { InvoiceFormField } from './components/invoice-form-field';
 import { ProductFormField } from './components/product-form-field';
 import { SelectFormField } from './select-form-field/select-form-field';
+import {useStores} from "../../models";
+import {Customer} from "../../models/entities/customer/customer";
 
 type InvoiceFormProps = {
   invoice: Invoice;
-  customers: Customer[];
   products: Product[];
   onSaveInvoice: (invoice: Invoice) => Promise<void>;
   invoiceType?: InvoiceStatus;
@@ -48,7 +48,11 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { customers, products, onSaveInvoice, invoiceType } = props;
+  const { products, onSaveInvoice, invoiceType } = props;
+    const { invoiceStore } = useStores();
+    const { customers } = invoiceStore;
+    const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
+    const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
 
   __DEV__ && console.tron.log({ invoiceType });
 
@@ -63,7 +67,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const onSubmit = async invoice => {
     __DEV__ && console.tron.log({ invoice });
     try {
-      await onSaveInvoice({ ...invoice, comment: comment ,title: title, metadata: { ...invoice.metadata, submittedAt: new Date() } });
+      await onSaveInvoice({ ...invoice, customer: selectedCustomer ,comment: comment ,title: title, metadata: { ...invoice.metadata, submittedAt: new Date() } });
+       /* console.log({ ...invoice, customer: selectedCustomer ,comment: comment ,title: title, metadata: { ...invoice.metadata, submittedAt: new Date() } })*/
     } catch (e) {
       showMessage(e);
       throw e;
@@ -83,7 +88,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.titlePlaceholder'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={ value => {onChange(); setTitle(value); console.log(title);}}
+                onChangeText={ value => {onChange(); setTitle(value);}}
                 value={value}
               />
             );
@@ -211,7 +216,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.comment'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={ value => {onChange(); setComment(value); console.log(comment);}}
+                onChangeText={ value => {onChange(); setComment(value);}}
                 value={value?.toString()}
               />
             );
@@ -273,10 +278,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           render={({ field: { value, onChange } }) => {
             return (
               <SelectFormField
+                  customers={customers}
+                  selectedCustomer={selectedCustomer}
+                  setSelectedCustomer={setSelectedCustomer}
                 value={value?.id}
-                onValueChange={onChange}
+                onValueChange={value => {onChange(); setSelectedCustomer(value); console.log(value?.firstName);}}
                 labelTx='invoiceScreen.labels.customerSection'
-                modalTx='invoiceFormScreen.customerForm.title'
+                modalTx='invoiceFormScreen.customerSelectionForm.title'
                 placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
                 items={customers}
                 itemLabel='name'
