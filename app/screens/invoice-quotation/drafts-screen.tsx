@@ -66,7 +66,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   };
   const sectionedQuotations = sectionInvoicesByMonth(drafts);
   const items: MenuItem[] = [
-    { id: 'editInvoice', title: translate('invoiceScreen.menu.editInvoice') },
+    { id: 'editInvoice', title: translate('invoiceScreen.menu.editDraft') },
     { id: 'markAsProposal', title: translate('invoiceScreen.menu.markAsProposal') },
   ];
 
