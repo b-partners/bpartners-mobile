@@ -180,7 +180,7 @@
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
       "downloadInvoice": "Télécharger la facture ",
-      "editInvoice": "Modifier la facture"
+      "editDraft": "Modifier le brouillon"
     },
     "messages": {
       "successfullyMarkAsProposal": "Le devis a bien été créé",

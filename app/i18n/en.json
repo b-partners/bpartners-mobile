@@ -195,7 +195,7 @@
       "markAsInvoice": "Mark as invoice",
       "markAsProposal": "Mark as proposal",
       "downloadInvoice": "Download",
-      "editInvoice": "Edit"
+      "editDraft": "Edit"
     },
     "messages": {
       "successfullyMarkAsProposal": "The quote has been created",
