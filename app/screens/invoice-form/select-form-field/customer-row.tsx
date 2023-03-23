@@ -15,7 +15,7 @@ type TCustomerRow = {
 const CUSTOMER_NAME: TextStyle = {
     color: palette.textClassicColor,
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: 18,
 };
 const CUSTOMER_ROW_CONTAINER: ViewStyle = {
     flex: 1,

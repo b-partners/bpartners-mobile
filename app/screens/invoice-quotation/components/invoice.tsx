@@ -63,7 +63,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
     <View style={INVOICE_CONTAINER_STYLE}>
       <TouchableOpacity style={INVOICE_STYLE}>
         <View style={{ ...ROW_STYLE, ...BOTTOM_MARGIN_STYLE }}>
-          <Text text={props.item.customer.name} style={HEADER_TEXT_STYLE} />
+          <Text text={props.item.customer.firstName} style={HEADER_TEXT_STYLE} />
           <Text text={totalPriceWithVat} style={{ ...HEADER_TEXT_STYLE, ...TOTAL_PRICE_WITH_THAT_STYLE }} />
         </View>
 
