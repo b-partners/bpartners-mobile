@@ -12,6 +12,7 @@ import { Product, createProductDefaultModel } from '../../models/entities/produc
 import { color, spacing } from '../../theme';
 import { showMessage } from '../../utils/snackbar';
 import { CustomerFormFieldFooter } from './components/customer-form-field-footer';
+import { CustomerCreationModal } from './components/customer-selection-form/customer-creation-modal';
 import { InvoiceFormField } from './components/invoice-form-field';
 import { ProductFormField } from './components/product-form-field';
 import { SelectFormField } from './select-form-field/select-form-field';
@@ -53,6 +54,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { customers } = invoiceStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
+  const [creationModal, setCreationModal] = useState(false);
 
   __DEV__ && console.tron.log({ invoiceType });
 
@@ -67,14 +69,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const onSubmit = async invoice => {
     __DEV__ && console.tron.log({ invoice });
     try {
-      await onSaveInvoice({
+      await invoiceStore.saveInvoice({
         ...invoice,
         customer: selectedCustomer,
         comment: comment,
         title: title,
         metadata: { ...invoice.metadata, submittedAt: new Date() },
       });
-      /* console.log({ ...invoice, customer: selectedCustomer ,comment: comment ,title: title, metadata: { ...invoice.metadata, submittedAt: new Date() } })*/
     } catch (e) {
       showMessage(e);
       throw e;
@@ -237,14 +238,15 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       </View>
       <>
         <View style={{ paddingHorizontal: spacing[4] }}>
-          {fields.map((_, i) => {
+          {fields.map((item, i) => {
             return (
               <ProductFormField
                 key={i}
                 index={i}
                 items={products}
-                onDeleteItem={async (__, index) => {
-                  await remove(index);
+                onDeleteItem={async productItem => {
+                  const itemIndex = fields.findIndex(item => item.description === productItem.description && item.unitPrice === productItem.unitPrice);
+                  await remove(itemIndex);
                 }}
                 onValueChange={product => {
                   update(i, product);
@@ -297,7 +299,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 onValueChange={newValue => {
                   onChange();
                   setSelectedCustomer(newValue);
-                  console.log(newValue?.firstName);
                 }}
                 labelTx='invoiceScreen.labels.customerSection'
                 modalTx='invoiceFormScreen.customerSelectionForm.title'
@@ -307,9 +308,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 itemValue='id'
                 itemSuffix={<Icon icon='edit' />}
                 itemSuffixAction={() => {}}
-                footer={<CustomerFormFieldFooter />}
+                footer={<CustomerFormFieldFooter onPress={() => setCreationModal(true)} />}
                 selectContainerStyle={{
-                  padding: spacing[3],
+                  paddingHorizontal: spacing[3],
                   marginVertical: spacing[6],
                   width: '100%',
                   borderWidth: 1,
@@ -321,6 +322,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
+      <CustomerCreationModal creationModal={creationModal} setCreationModal={setCreationModal} />
       <View
         style={{
           ...ROW_STYLE,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { GestureResponderEvent, View } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, Separator, Text } from '../../../components';
@@ -8,7 +8,12 @@ import { palette } from '../../../theme/palette';
 
 const SEPARATOR_STYLE = { flex: 1, borderColor: '#E1E5EF' };
 
-export const CustomerFormFieldFooter: React.FC<{}> = () => {
+type CustomerFooterProps = {
+  onPress: (event: GestureResponderEvent) => void;
+};
+export const CustomerFormFieldFooter: React.FC<CustomerFooterProps> = props => {
+  const { onPress } = props;
+
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: spacing[2] }}>
       <Separator style={SEPARATOR_STYLE} />
@@ -22,6 +27,7 @@ export const CustomerFormFieldFooter: React.FC<{}> = () => {
           borderRadius: 25,
           paddingVertical: spacing[2],
         }}
+        onPress={onPress}
       >
         <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />
         <Text

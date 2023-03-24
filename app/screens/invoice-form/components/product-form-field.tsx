@@ -1,23 +1,22 @@
-import { Octicons as Icon } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
 import { Observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-import { Button, Separator, Text, TextField } from '../../../components';
+import { Button, Icon, Separator, Text, TextField } from '../../../components';
 import { Product } from '../../../models/entities/product/product';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrency, printVat } from '../../../utils/money';
 import RadioButton from '../select-form-field/radio-button';
-import { CustomerFormFieldFooter } from './customer-form-field-footer';
 import { InvoiceFormField } from './invoice-form-field';
 
 type ProductFormFieldProps = {
   index: number;
   items: Product[];
-  onDeleteItem: (product: Product, index: number) => void;
+  onDeleteItem: (product: Product) => void;
   onValueChange?: (product: Product) => void;
 };
 
@@ -26,6 +25,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
 
   const [visible, setVisible] = useState(false);
+  const [quantityValue, setQuantityValue] = useState('');
 
   useEffect(() => {
     onValueChange && onValueChange(currentProduct);
@@ -59,7 +59,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
               top: -10,
               right: -15,
             }}
-            onPress={() => onDeleteItem(currentProduct, index)}
+            onPress={() => {
+              onDeleteItem(currentProduct);
+            }}
           >
             <Text
               tx='invoiceFormScreen.productForm.delete'
@@ -119,7 +121,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                           <View style={{ paddingVertical: spacing[4], paddingHorizontal: spacing[3] }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                               <Text
-                                tx={'invoiceFormScreen.customerSelectionForm.title'}
+                                tx={'invoiceFormScreen.productForm.placeholder'}
                                 style={{
                                   color: color.palette.lightGrey,
                                   fontFamily: 'Geometria',
@@ -137,7 +139,13 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                 renderItem={({ item: product }) => {
                                   return (
                                     <View style={{ flex: 1, flexDirection: 'row', paddingVertical: spacing[2] }}>
-                                      <TouchableOpacity style={{ flex: 1, flexDirection: 'row' }} onPress={() => setCurrentProduct(product)}>
+                                      <TouchableOpacity
+                                        style={{ flex: 1, flexDirection: 'row' }}
+                                        onPress={() => {
+                                          setQuantityValue('');
+                                          setCurrentProduct(product);
+                                        }}
+                                      >
                                         <>
                                           <RadioButton isActive={product.id === currentProduct?.id} />
                                           <Text
@@ -148,17 +156,16 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                         </>
                                       </TouchableOpacity>
                                       <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
-                                        <Icon name={'pencil'} color={palette.greyDarker} size={20} />
+                                        <Octicons name={'pencil'} color={palette.greyDarker} size={20} />
                                       </TouchableOpacity>
                                     </View>
                                   );
                                 }}
                                 ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
                               />
-                              <CustomerFormFieldFooter />
                             </View>
                             <Button
-                              tx='components.button.close'
+                              tx='invoiceFormScreen.customerSelectionForm.validate'
                               style={{
                                 backgroundColor: color.palette.secondaryColor,
                                 borderRadius: 50,
@@ -184,7 +191,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
               style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '25%' }}
               inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
               keyboardType='numeric'
+              value={quantityValue}
               onChangeText={quantity => {
+                setQuantityValue(quantity);
                 setCurrentProduct(product => ({ ...product, quantity: +quantity }));
               }}
             />
