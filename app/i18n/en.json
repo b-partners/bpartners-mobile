@@ -108,10 +108,24 @@
       "accountHolder": {
         "section": "My society",
         "name": "Name",
-        "address": "Address",
-        "city": "City",
-        "country": "Country",
-        "postalCode": "Postal code"
+        "siren": "Siren",
+        "officialActivityName": "Official activity",
+        "contactAddress": {
+          "address": "Address",
+          "city": "City",
+          "country": "Country",
+          "postalCode": "Postal code"
+        },
+        "companyInfo": {
+          "socialCapital": "Social capital"
+        },
+        "businessActivities": {
+          "primary": "Main activity",
+          "secondary": "Secondary activity"
+        },
+        "revenueTargets": {
+          "amountTarget": "Annual revenue to be realized"
+        }
       }
     }
   },
