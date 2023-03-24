@@ -3,6 +3,9 @@
   "components": {
     "datePicker": {
       "pickADate": "Pick a date"
+    },
+    "button": {
+      "close": "Close"
     }
   },
   "common": {
@@ -157,6 +160,7 @@
     "title": "Invoice",
     "labels": {
       "customerSection": "Customer",
+      "customerSectionPlaceholder": "John Doe",
       "productSection": "Items",
       "totalSection": "Total",
       "addItem": "Add item",
@@ -166,6 +170,7 @@
       "sendingDate": "Sending date",
       "toPayAt": "To pay at",
       "invoiceForm": "Create invoice",
+      "invoicePreview": "Invoice Preview",
       "comment": "Comment"
     },
     "errors": {
@@ -191,12 +196,20 @@
   },
   "invoiceFormScreen": {
     "invoiceForm": {
-      "addItem": "Add another element",
-      "quotationTitle": "Quotation title",
-      "quotationTitlePlaceholder": "Type the title of the quote",
-      "quotationNumber": "Quotation number",
-      "quotationNumberPlaceholder": "Type the quotation number",
-      "issueDate": "Issue date",
+      "addItem": "Add a product",
+      "title": "Quotation title",
+      "titlePlaceholder": "Quotation No. 1702231023",
+      "reference": "Reference",
+      "referencePlaceholder": "QUOTATION-17022231023",
+      "sendingDate": "Issue date",
+      "validityDate": "Expiration date",
+      "toPayAt": "Payment date",
+      "delayInPaymentAllowed": "Allowed payment delay",
+      "delayInPaymentAllowedPlaceholder": "30",
+      "delayPenaltyPercent": "Late payment penalty rate",
+      "delayPenaltyPercentPlaceholder": "10",
+      "comment": "Comment",
+      "commentPlaceholder": "Type your comment here...",
       "paymentDelay": "Payment delays",
       "paymentDelayPlaceholder": "Type de payment delays",
       "downPayment": "Down Payment",
@@ -238,7 +251,18 @@
         "added": "Added",
         "fail": "Try again"
       }
-    }
+    },
+    "productForm": {
+      "addProduct": "Add a product",
+      "placeholder": "Choose a product",
+      "title": "Product",
+      "unitPrice": "Unit price",
+      "quantity": "Qty",
+      "vat": "VAT",
+      "totalWithVat": "Total",
+      "delete": "Delete"
+    },
+    "invoicePreview": "Invoice preview"
   },
   "paymentListScreen": {
     "title": "Invoicing",

@@ -55,8 +55,8 @@ export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFil
 
   return (
     <ErrorBoundary catchErrors='always'>
+      <Header style={HEADER_STYLE} headerText='General User Condition' titleStyle={HEADER_TEXT_STYLE} />
       <View testID='LegalFileScreen' style={FULL}>
-        <Header style={HEADER_STYLE} headerText='General User Condition' titleStyle={HEADER_TEXT_STYLE} />
         <Screen>{unApprovedFiles.length > 0 && <LegalFileView legalFile={unApprovedFiles[0]} />}</Screen>
       </View>
     </ErrorBoundary>

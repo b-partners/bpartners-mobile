@@ -16,6 +16,7 @@ export const icons = {
   trash: require('./trash.png'),
   save: require('./save.png'),
   chevronRight: require('./chevron-right.png'),
+  chevronDown: require('./chevron-down.png'),
   ellipsisV: require('./ellipsis-v.png'),
   bell: require('./bell.png'),
   magnifier: require('./magnifier.png'),
