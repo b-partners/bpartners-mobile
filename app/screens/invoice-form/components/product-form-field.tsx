@@ -21,7 +21,7 @@ type ProductFormFieldProps = {
 };
 
 export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
-  const { index, onValueChange, onDeleteItem, items } = props;
+  const { onValueChange, onDeleteItem, items } = props;
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
 
   const [visible, setVisible] = useState(false);

@@ -49,7 +49,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { products, onSaveInvoice, invoiceType } = props;
+  const { products, invoiceType } = props;
   const { invoiceStore } = useStores();
   const { customers } = invoiceStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
@@ -245,7 +245,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 index={i}
                 items={products}
                 onDeleteItem={async productItem => {
-                  const itemIndex = fields.findIndex(item => item.description === productItem.description && item.unitPrice === productItem.unitPrice);
+                  const itemIndex = fields.findIndex(
+                    itemProduct => itemProduct.description === productItem.description && itemProduct.unitPrice === productItem.unitPrice
+                  );
                   await remove(itemIndex);
                 }}
                 onValueChange={product => {
