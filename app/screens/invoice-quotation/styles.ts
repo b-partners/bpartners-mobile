@@ -72,7 +72,7 @@ export const SHADOW_STYLE: ViewStyle = {
 export const BUTTON_STYLE: ViewStyle = {
   ...SHADOW_STYLE,
   backgroundColor: color.primary,
-  marginBottom: spacing[2],
+  marginVertical: spacing[5],
   marginHorizontal: spacing[4],
   borderRadius: 40,
   paddingVertical: spacing[3],
