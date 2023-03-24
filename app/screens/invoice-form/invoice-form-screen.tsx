@@ -1,3 +1,4 @@
+import { useLinkTo } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
@@ -20,14 +21,21 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 };
 
-export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation }) {
+export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
   const { invoiceStore } = useStores();
   const { products, customers, invoice } = invoiceStore;
+
+  const linkTo = useLinkTo();
+
+  navigation.addListener('state', () => {
+    invoiceStore.getCustomers();
+    invoiceStore.getProducts();
+  });
 
   const saveInvoice = async (values: Invoice) => {
     try {
       await invoiceStore.saveInvoice(values);
-      navigation.navigate('paymentList');
+      linkTo('/paymentList');
     } catch (e) {
       __DEV__ && console.tron.log(e);
     }
@@ -43,11 +51,11 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
           leftIcon={'back'}
           rightIcon={'info'}
           onLeftPress={async () => {
-            navigation.navigate('paymentList');
+            linkTo('/paymentList');
           }}
         />
-        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
-          <InvoiceForm invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
+        <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
+          <InvoiceForm invoiceType={route.params.invoiceType} invoice={invoice} customers={customers} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>
     </ErrorBoundary>
