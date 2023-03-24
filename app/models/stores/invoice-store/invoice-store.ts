@@ -22,11 +22,7 @@ export const InvoiceStoreModel = types
     quotations: types.optional(types.array(InvoiceModel), []),
     drafts: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
-    loadingCreation: types.optional(types.boolean, false),
-    loadingInvoice: types.optional(types.boolean, false),
-    loadingDraft: types.optional(types.boolean, false),
-    loadingQuotation: types.optional(types.boolean, false),
-    checkInvoice: types.maybeNull(types.boolean),
+    loading: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -92,19 +88,19 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     getDrafts: flow(function* (criteria: Criteria) {
       detach(self.invoices);
-      self.loadingDraft = true;
+      self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         __DEV__ && console.tron.log(getInvoicesResult);
+        self.loading = false;
         self.getDraftsSuccess(getInvoicesResult.invoices);
       } catch (e) {
+        self.loading = false;
         __DEV__ && console.tron.log(e);
         showMessage(translate('errors.somethingWentWrong'));
         self.getDraftsFail(e.message);
         self.catchOrThrow(e);
-      } finally {
-        self.loadingDraft = false;
       }
     }),
   }))
@@ -121,16 +117,16 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     getQuotations: flow(function* (criteria: Criteria) {
       detach(self.invoices);
-      self.loadingQuotation = true;
+      self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
+        self.loading = false;
         self.getQuotationsSuccess(getInvoicesResult.invoices);
       } catch (e) {
+        self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
         self.catchOrThrow(e);
-      } finally {
-        self.loadingQuotation = false;
       }
     }),
   }))
@@ -148,17 +144,17 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     getInvoices: flow(function* (criteria: Criteria) {
       detach(self.invoices);
-      self.loadingInvoice = true;
+      self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
+        self.loading = false;
         self.getInvoicesSuccess(getInvoicesResult.invoices);
       } catch (e) {
+        self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
         self.getInvoicesFail(e.message);
         self.catchOrThrow(e);
-      } finally {
-        self.loadingInvoice = false;
       }
     }),
   }))
@@ -178,7 +174,6 @@ export const InvoiceStoreModel = types
       try {
         const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
         self.getInvoiceSuccess(getInvoiceResult.invoice);
-        return getInvoiceResult.invoice;
       } catch (e) {
         self.getInvoiceFail(e.message);
         self.catchOrThrow(e);
@@ -186,25 +181,17 @@ export const InvoiceStoreModel = types
     }),
   }))
   .actions(self => ({
-    saveInvoiceInit: () => {
-      self.checkInvoice = null;
-    },
-  }))
-  .actions(self => ({
     saveInvoiceSuccess: (invoice: Invoice) => {
-      self.checkInvoice = true;
       self.invoice = InvoiceModel.create(invoice);
     },
   }))
-  .actions(self => ({
+  .actions(() => ({
     saveInvoiceFail: error => {
-      self.checkInvoice = false;
       __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
     saveInvoice: flow(function* (invoice: Invoice) {
-      self.loadingCreation = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
@@ -212,8 +199,6 @@ export const InvoiceStoreModel = types
       } catch (e) {
         self.saveInvoiceFail(e.message);
         self.catchOrThrow(e);
-      } finally {
-        self.loadingCreation = false;
       }
     }),
   }))
