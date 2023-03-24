@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { Button, Header, Screen, Text } from '../../components';
+import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';
@@ -15,7 +15,6 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { DraftsScreen } from '../invoice-quotation/drafts-screen';
 import { InvoicesScreen } from '../invoice-quotation/invoices-screen';
 import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
-import { BUTTON_STYLE, BUTTON_TEXT_STYLE } from '../invoice-quotation/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
@@ -86,7 +85,6 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             }}
           />
         </Tab.Navigator>
-        <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
       </Screen>
     </ErrorBoundary>
   );
