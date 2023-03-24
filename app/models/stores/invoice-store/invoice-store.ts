@@ -92,13 +92,15 @@ export const InvoiceStoreModel = types
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
+        __DEV__ && console.tron.log(getInvoicesResult);
         self.loading = false;
         self.getDraftsSuccess(getInvoicesResult.invoices);
       } catch (e) {
         self.loading = false;
+        __DEV__ && console.tron.log(e);
         showMessage(translate('errors.somethingWentWrong'));
-        self.catchOrThrow(e);
         self.getDraftsFail(e.message);
+        self.catchOrThrow(e);
       }
     }),
   }))
