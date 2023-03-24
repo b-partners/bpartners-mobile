@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { Button, Screen, Separator, Text } from '../../components';
+import { Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import env from '../../config/env';
 import { translate } from '../../i18n';
@@ -17,19 +17,10 @@ import { fetchBinaryFile } from '../../utils/fetch-binary-file';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
-import {
-  BUTTON_STYLE,
-  BUTTON_TEXT_STYLE,
-  CONTAINER,
-  FOOTER_COMPONENT_STYLE,
-  FULL,
-  SECTION_HEADER_TEXT_STYLE,
-  SECTION_LIST_CONTAINER_STYLE,
-  SEPARATOR_STYLE,
-} from './styles';
+import { CONTAINER, FOOTER_COMPONENT_STYLE, FULL, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from './styles';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
-export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore, authStore } = useStores();
   const { invoices, loading } = invoiceStore;
   const { currentAccount, accessToken } = authStore;
