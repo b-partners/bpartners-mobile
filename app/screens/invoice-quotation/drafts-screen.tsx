@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { Button, Screen, Separator, Text } from '../../components';
+import { Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -15,19 +15,10 @@ import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
-import {
-  BUTTON_STYLE,
-  BUTTON_TEXT_STYLE,
-  CONTAINER,
-  FOOTER_COMPONENT_STYLE,
-  FULL,
-  SECTION_HEADER_TEXT_STYLE,
-  SECTION_LIST_CONTAINER_STYLE,
-  SEPARATOR_STYLE,
-} from './styles';
+import { CONTAINER, FOOTER_COMPONENT_STYLE, FULL, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from './styles';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
-export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen() {
   const { invoiceStore } = useStores();
   const { drafts, loading } = invoiceStore;
 
@@ -67,7 +58,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   };
   const sectionedQuotations = sectionInvoicesByMonth(drafts);
   const items: MenuItem[] = [
-    { id: 'editInvoice', title: translate('invoiceScreen.menu.editInvoice') },
+    { id: 'editInvoice', title: translate('invoiceScreen.menu.editDraft') },
     { id: 'markAsProposal', title: translate('invoiceScreen.menu.markAsProposal') },
   ];
 
