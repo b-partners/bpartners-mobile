@@ -10,6 +10,7 @@ import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { CustomerFormFieldFooter } from './components/customer-form-field-footer';
 import { CustomerCreationModal } from './components/customer-selection-form/customer-creation-modal';
@@ -50,7 +51,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoiceType } = props;
-  const { invoiceStore } = useStores();
+  const { invoiceStore, customerStore } = useStores();
   const { customers } = invoiceStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
@@ -310,7 +311,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 itemValue='id'
                 itemSuffix={<Icon icon='edit' />}
                 itemSuffixAction={() => {}}
-                footer={<CustomerFormFieldFooter onPress={() => setCreationModal(true)} />}
+                footer={<CustomerFormFieldFooter />}
                 selectContainerStyle={{
                   paddingHorizontal: spacing[3],
                   marginVertical: spacing[6],
@@ -324,6 +325,31 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
+      <Button
+        onPress={() => {
+          customerStore.saveCustomerInit();
+          setCreationModal(true);
+        }}
+        style={{
+          flexDirection: 'row',
+          marginBottom: spacing[6],
+          backgroundColor: palette.white,
+          borderColor: color.palette.secondaryColor,
+          borderWidth: 1,
+          borderRadius: 25,
+          paddingVertical: spacing[2],
+        }}
+      >
+        <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />
+        <Text
+          tx='invoiceFormScreen.customerSelectionForm.addClient'
+          style={{
+            color: color.palette.secondaryColor,
+            marginLeft: spacing[2],
+            fontFamily: 'Geometria',
+          }}
+        />
+      </Button>
       <CustomerCreationModal creationModal={creationModal} setCreationModal={setCreationModal} />
       <View
         style={{

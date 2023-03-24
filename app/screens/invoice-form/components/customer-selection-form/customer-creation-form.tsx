@@ -168,6 +168,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
                       borderRadius: 25,
+                      marginBottom: spacing[5],
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >

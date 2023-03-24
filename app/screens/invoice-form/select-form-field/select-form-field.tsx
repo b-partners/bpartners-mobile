@@ -40,7 +40,6 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
     labelStyle: labelStyleOverrides,
     inputStyle: inputStyleOverrides,
     modalTx,
-    footer,
     ...textFieldProps
   } = props;
 
@@ -110,7 +109,6 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                     }}
                     ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
                   />
-                  {footer}
                 </View>
                 <View style={{ height: '15%', justifyContent: 'center' }}>
                   <Button
