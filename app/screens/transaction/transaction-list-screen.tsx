@@ -36,15 +36,15 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='TransactionListScreen' style={FULL}>
+        <HeaderWithBalance
+          balance={availableBalance}
+          left={
+            <TouchableOpacity onPress={() => navigation.navigate('home')}>
+              <Icon icon='back' />
+            </TouchableOpacity>
+          }
+        />
         <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-          <HeaderWithBalance
-            balance={availableBalance}
-            left={
-              <TouchableOpacity onPress={() => navigation.navigate('home')}>
-                <Icon icon='back' />
-              </TouchableOpacity>
-            }
-          />
           {!loadingTransactionCategories ? (
             <FlatList
               testID='listContainer'
