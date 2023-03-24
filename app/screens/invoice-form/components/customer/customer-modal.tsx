@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Modal, View, ViewStyle } from 'react-native';
 
 import { Customer } from '../../../../models/entities/customer/customer';
-import CustomerSelectionForm from './customer-selection-form';
+import CustomerSelectionForm from '../customer-selection-form/customer-selection-form';
 
 const MODAL_ITEM_CONTAINER_STYLE: ViewStyle = {
   flex: 1,

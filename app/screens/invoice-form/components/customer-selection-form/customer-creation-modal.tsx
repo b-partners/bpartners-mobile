@@ -8,11 +8,10 @@ import { CustomerCreationForm } from './customer-creation-form';
 type ShareModalProps = {
   creationModal: boolean;
   setCreationModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
-  const { creationModal, setCreationModal, setShowUserListModal } = props;
+  const { creationModal, setCreationModal } = props;
 
   const closeShareModal = () => {
     setCreationModal(false);
@@ -31,7 +30,7 @@ export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
             />
           </View>
           <View style={{ width: '100%', height: '100%' }}>
-            <CustomerCreationForm setShowUserListModal={setShowUserListModal} />
+            <CustomerCreationForm />
           </View>
         </View>
       </View>

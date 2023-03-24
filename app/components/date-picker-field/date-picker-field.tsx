@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import DatePickerInput from 'react-native-date-picker';
 
@@ -21,6 +21,7 @@ type DatePickerProps = {
   textStyle?: TextStyle;
   dateSeparator?: string;
   containerStyle?: ViewStyle;
+  datePickerStyle?: ViewStyle;
 };
 
 const LABEL_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 13 };
@@ -43,14 +44,12 @@ export function DatePickerField(props: DatePickerProps) {
     isButtonPreset = true,
     dateSeparator,
     containerStyle,
+    datePickerStyle,
+    ...rest
   } = props;
   const [open, setOpen] = useState(false);
   let [date] = value && value.toISOString().split('T');
   date = date.split('-').join(dateSeparator);
-
-  useEffect(() => {
-    onDateChange(value);
-  }, [value]);
 
   return (
     <View style={[DATE_PICKER_CONTAINER_STYLE, containerStyle]}>
@@ -78,8 +77,10 @@ export function DatePickerField(props: DatePickerProps) {
           onDateChange(selectedDate);
         }}
         onCancel={() => setOpen(false)}
-        textColor={palette.white}
+        textColor={palette.textClassicColor}
         mode='date'
+        style={[datePickerStyle]}
+        {...rest}
       />
       {validationError && (
         <View>

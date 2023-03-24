@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { spacing } from '../../theme';
 import { printCurrencyToMajors } from '../../utils/money';
@@ -18,6 +19,7 @@ const SECONDARY_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 
 
 export function HeaderWithBalance(props: { balance: number; left?: React.ReactNode; right?: React.ReactNode }) {
   const { balance, left, right } = props;
+  const { top } = useSafeAreaInsets();
 
   return (
     <View>
@@ -27,13 +29,14 @@ export function HeaderWithBalance(props: { balance: number; left?: React.ReactNo
         resizeMethod='auto'
         resizeMode='stretch'
       />
-      <View style={HEADER_STYLE}>
+      <View style={{ ...HEADER_STYLE, height: +HEADER_STYLE.height + top }}>
         <View
           style={{
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
+            paddingTop: top,
           }}
         >
           {left}
