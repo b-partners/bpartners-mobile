@@ -4,6 +4,7 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 
 import { Button } from '../../../components';
+import { AccountHolder as IAccountHolder } from '../../../models/entities/account-holder/account-holder';
 import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -12,6 +13,7 @@ import { GoalProgressBar } from './goal-progress-bar';
 
 interface TransactionSummaryProps {
   summary: ITransactionSummary;
+  accountHolder: IAccountHolder;
 }
 
 const BOOST_MY_RESULT_BUTTON_STYLE: ViewStyle = {
@@ -27,7 +29,7 @@ const BOOST_MY_RESULT_BUTTON_TEXT_STYLE: TextStyle = {
   fontFamily: 'Geometria-Bold',
 };
 
-export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary }) => {
+export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary, accountHolder: accountHolder }) => {
   const showSnackbar = () => {
     Snackbar.show({
       text: 'Cette fonctionnalité est encore en construction',
@@ -47,7 +49,7 @@ export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({
     <>
       <View>
         {summary && <DonutChart summary={summary} />}
-        <GoalProgressBar />
+        <GoalProgressBar accountHolder={accountHolder} />
         <Button
           onPress={() => showSnackbar()}
           tx='homeScreen.summary.boostMyResult'
