@@ -60,7 +60,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             navigationKey='drafts'
             listeners={{
               tabPress: () => {
-                invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+                invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 15 });
               },
             }}
           />
@@ -70,7 +70,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             navigationKey='quotations'
             listeners={{
               tabPress: () => {
-                invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+                invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 15 });
               },
             }}
           />
@@ -80,7 +80,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             navigationKey='invoices'
             listeners={{
               tabPress: () => {
-                invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 30 });
+                invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 15 });
               },
             }}
           />

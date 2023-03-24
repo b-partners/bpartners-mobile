@@ -6,9 +6,9 @@ import { useStores } from '../../../../models';
 import { Customer } from '../../../../models/entities/customer/customer';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
+import CustomerRow from '../../select-form-field/customer-row';
 import { BUTTON_STYLE } from '../../styles';
 import { CustomerCreationModal } from './customer-creation-modal';
-import CustomerRow from './customer-row';
 
 type TCustomerForm = {
   customers: Customer[];

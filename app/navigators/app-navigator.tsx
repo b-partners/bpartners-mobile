@@ -23,7 +23,6 @@ import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
-import { ProspectScreen } from '../screens/prospect/prospect-screen';
 import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
@@ -46,11 +45,9 @@ export type NavigatorParamList = {
   oauth: { code: string; state: string };
   profile: undefined;
   legalFile: undefined;
-  prospect: undefined;
   invoices: undefined;
   invoiceForm: {
     invoiceType: InvoiceStatus;
-    invoiceID?: string;
   };
 };
 
@@ -108,9 +105,6 @@ const AppStack = observer(function () {
           <Drawer.Screen name='home' component={AppTabStack} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-          <Drawer.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />
-          <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
-          <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       ) : (
         <>
