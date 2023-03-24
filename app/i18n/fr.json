@@ -169,10 +169,10 @@
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
       "downloadInvoice": "Télécharger la facture ",
-      "editDraft": "Modifier le brouillon"
+      "editInvoice": "Modifier la facture"
     },
     "messages": {
-      "successfullyMarkAsProposal": "Le devis a bien été créé",
+      "successfullyMarkAsProposal": "Devis envoyé au client.",
       "successfullyMarkAsInvoice": "Devis transformé en facture.",
       "downloadingInvoice": "Téléchargement de la facture en cours",
       "invoiceSuccessfullyDownload": "Facture téléchargée.",
