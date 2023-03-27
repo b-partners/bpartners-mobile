@@ -261,7 +261,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
           <Button
             style={{
-              backgroundColor: color.transparent,
+              backgroundColor: palette.white,
               borderColor: color.palette.secondaryColor,
               borderWidth: 1,
               borderRadius: 25,
@@ -338,6 +338,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           borderWidth: 1,
           borderRadius: 25,
           paddingVertical: spacing[2],
+            marginHorizontal: spacing[2]
         }}
       >
         <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />
