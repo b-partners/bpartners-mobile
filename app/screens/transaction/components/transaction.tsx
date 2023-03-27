@@ -17,7 +17,6 @@ const TRANSACTION_CATEGORY_LABEL_CONTAINER: ViewStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   width: '100%',
-  height: 50,
   borderRadius: 25,
   backgroundColor: color.palette.white,
   padding: spacing[3],
@@ -105,7 +104,6 @@ export const Transaction = (
               backgroundColor: color.palette.white,
               borderRadius: 25,
               paddingHorizontal: spacing[4],
-              height: 50,
             }}
             selectedItemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
             itemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria' }}
@@ -117,6 +115,7 @@ export const Transaction = (
                   <Text
                     text={item.category.description}
                     testID='transaction-category'
+                    numberOfLines={2}
                     style={{
                       color: color.palette.textClassicColor,
                       fontFamily: 'Geometria',
