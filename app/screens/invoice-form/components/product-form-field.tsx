@@ -85,6 +85,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                     width: '80%',
                     borderWidth: 1,
                     borderColor: '#E1E5EF',
+                    borderRadius: 25
                   }}
                 >
                   <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setVisible(true)}>
@@ -191,7 +192,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
               labelTx='invoiceFormScreen.productForm.quantity'
               labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', alignSelf: 'center' }}
               style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '25%' }}
-              inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
+              inputStyle={{ borderRadius: 5 ,fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center', backgroundColor: palette.lighterGrey }}
               keyboardType='numeric'
               value={quantityValue}
               onChangeText={quantity => {
