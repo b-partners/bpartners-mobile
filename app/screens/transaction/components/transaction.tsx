@@ -3,8 +3,7 @@ import React, { PropsWithoutRef } from 'react';
 import { Platform, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { Icon, Text } from '../../../components';
-import { Dropdown } from '../../../components/dropdown/dropdown';
+import { Dropdown, Icon, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { TransactionCategory, TransactionType } from '../../../models/entities/transaction-category/transaction-category';
