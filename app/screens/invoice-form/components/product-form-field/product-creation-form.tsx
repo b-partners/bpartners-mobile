@@ -12,7 +12,7 @@ import { useStores } from '../../../../models';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import emptyToNull from '../../../../utils/empty-to-null';
-import {INVALID_FORM_FIELD} from "../../styles";
+import { INVALID_FORM_FIELD } from '../../styles';
 
 export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };

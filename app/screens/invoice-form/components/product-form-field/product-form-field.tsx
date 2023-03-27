@@ -10,9 +10,9 @@ import { Product } from '../../../../models/entities/product/product';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { printCurrency, printVat } from '../../../../utils/money';
-import RadioButton from '../select-form-field/radio-button';
 import { InvoiceFormField } from '../../invoice-form-field';
-import {ProductCreationModal} from "./product-creation-modal";
+import RadioButton from '../select-form-field/radio-button';
+import { ProductCreationModal } from './product-creation-modal';
 
 type ProductFormFieldProps = {
   index: number;
@@ -25,7 +25,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const { onValueChange, onDeleteItem, items } = props;
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
 
-  const [ creationModal, setCreationModal ] = useState(false);
+  const [creationModal, setCreationModal] = useState(false);
   const [visible, setVisible] = useState(false);
   const [quantityValue, setQuantityValue] = useState('');
 
@@ -79,119 +79,119 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
           <View>
             <Observer>
               {() => (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => setCreationModal(true)} style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                      <RNVIcon name='pluscircleo' size={35} color={color.palette.secondaryColor} />
-                    </TouchableOpacity>
-                <View
-                  style={{
-                    marginRight: '2.5%',
-                    paddingHorizontal: spacing[3],
-                    marginVertical: spacing[4],
-                    width: '80%',
-                    borderWidth: 1,
-                    borderColor: '#E1E5EF',
-                    borderRadius: 25,
-                  }}
-                >
-                  <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setVisible(true)}>
-                    <TextField
-                      editable={false}
-                      placeholderTx='invoiceFormScreen.productForm.placeholder'
-                      value={currentProduct?.description}
-                      labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' }}
-                      inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' }}
-                      style={{ width: '80%' }}
-                    />
-                    <View style={{ justifyContent: 'center' }}>
-                      <EntypoIcon name='chevron-thin-down' size={18} color='#000' />
-                    </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <TouchableOpacity onPress={() => setCreationModal(true)} style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                    <RNVIcon name='pluscircleo' size={35} color={color.palette.secondaryColor} />
                   </TouchableOpacity>
-                  <ProductCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal}/>
-                  <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
-                    <View>
-                      <View
-                        style={{
-                          backgroundColor: 'rgba(10, 16, 69, 0.5)',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      >
+                  <View
+                    style={{
+                      marginRight: '2.5%',
+                      paddingHorizontal: spacing[3],
+                      marginVertical: spacing[4],
+                      width: '80%',
+                      borderWidth: 1,
+                      borderColor: '#E1E5EF',
+                      borderRadius: 25,
+                    }}
+                  >
+                    <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setVisible(true)}>
+                      <TextField
+                        editable={false}
+                        placeholderTx='invoiceFormScreen.productForm.placeholder'
+                        value={currentProduct?.description}
+                        labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' }}
+                        inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' }}
+                        style={{ width: '80%' }}
+                      />
+                      <View style={{ justifyContent: 'center' }}>
+                        <EntypoIcon name='chevron-thin-down' size={18} color='#000' />
+                      </View>
+                    </TouchableOpacity>
+                    <ProductCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
+                    <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
+                      <View>
                         <View
-                          style={[
-                            {
-                              padding: spacing[3],
-                              backgroundColor: color.palette.white,
-                              width: '100%',
-                            },
-                          ]}
+                          style={{
+                            backgroundColor: 'rgba(10, 16, 69, 0.5)',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            height: '100%',
+                          }}
                         >
-                          <View style={{ paddingVertical: spacing[4], paddingHorizontal: spacing[3] }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                              <Text
-                                tx={'invoiceFormScreen.productForm.placeholder'}
+                          <View
+                            style={[
+                              {
+                                padding: spacing[3],
+                                backgroundColor: color.palette.white,
+                                width: '100%',
+                              },
+                            ]}
+                          >
+                            <View style={{ paddingVertical: spacing[4], paddingHorizontal: spacing[3] }}>
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text
+                                  tx={'invoiceFormScreen.productForm.placeholder'}
+                                  style={{
+                                    color: color.palette.lightGrey,
+                                    fontFamily: 'Geometria',
+                                    fontSize: 13,
+                                  }}
+                                />
+                                <TouchableOpacity onPress={() => setVisible(false)}>
+                                  <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
+                                </TouchableOpacity>
+                              </View>
+                              <View style={{ paddingVertical: spacing[2] }}>
+                                <FlatList
+                                  data={items}
+                                  keyExtractor={item => item.id}
+                                  renderItem={({ item: product }) => {
+                                    return (
+                                      <View style={{ flex: 1, flexDirection: 'row', paddingVertical: spacing[2] }}>
+                                        <TouchableOpacity
+                                          style={{ flex: 1, flexDirection: 'row' }}
+                                          onPress={() => {
+                                            setQuantityValue('');
+                                            setCurrentProduct(product);
+                                          }}
+                                        >
+                                          <>
+                                            <RadioButton isActive={product.id === currentProduct?.id} />
+                                            <Text
+                                              text={product.description}
+                                              style={{ color: palette.textClassicColor, fontWeight: 'bold', fontSize: 18, marginLeft: spacing[2] }}
+                                              numberOfLines={2}
+                                            />
+                                          </>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
+                                          <Octicons name={'pencil'} color={palette.greyDarker} size={20} />
+                                        </TouchableOpacity>
+                                      </View>
+                                    );
+                                  }}
+                                  ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
+                                />
+                              </View>
+                              <Button
+                                tx='invoiceFormScreen.customerSelectionForm.validate'
                                 style={{
-                                  color: color.palette.lightGrey,
-                                  fontFamily: 'Geometria',
-                                  fontSize: 13,
+                                  backgroundColor: color.palette.secondaryColor,
+                                  borderRadius: 50,
+                                  paddingVertical: spacing[3],
+                                  marginTop: spacing[5],
                                 }}
-                              />
-                              <TouchableOpacity onPress={() => setVisible(false)}>
-                                <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
-                              </TouchableOpacity>
-                            </View>
-                            <View style={{ paddingVertical: spacing[2] }}>
-                              <FlatList
-                                data={items}
-                                keyExtractor={item => item.id}
-                                renderItem={({ item: product }) => {
-                                  return (
-                                    <View style={{ flex: 1, flexDirection: 'row', paddingVertical: spacing[2] }}>
-                                      <TouchableOpacity
-                                        style={{ flex: 1, flexDirection: 'row' }}
-                                        onPress={() => {
-                                          setQuantityValue('');
-                                          setCurrentProduct(product);
-                                        }}
-                                      >
-                                        <>
-                                          <RadioButton isActive={product.id === currentProduct?.id} />
-                                          <Text
-                                            text={product.description}
-                                            style={{ color: palette.textClassicColor, fontWeight: 'bold', fontSize: 18, marginLeft: spacing[2] }}
-                                            numberOfLines={2}
-                                          />
-                                        </>
-                                      </TouchableOpacity>
-                                      <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
-                                        <Octicons name={'pencil'} color={palette.greyDarker} size={20} />
-                                      </TouchableOpacity>
-                                    </View>
-                                  );
-                                }}
-                                ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
+                                textStyle={{ fontSize: 16, fontFamily: 'Geometria' }}
+                                onPress={() => setVisible(false)}
                               />
                             </View>
-                            <Button
-                              tx='invoiceFormScreen.customerSelectionForm.validate'
-                              style={{
-                                backgroundColor: color.palette.secondaryColor,
-                                borderRadius: 50,
-                                paddingVertical: spacing[3],
-                                marginTop: spacing[5],
-                              }}
-                              textStyle={{ fontSize: 16, fontFamily: 'Geometria' }}
-                              onPress={() => setVisible(false)}
-                            />
                           </View>
                         </View>
                       </View>
-                    </View>
-                  </Modal>
-                </View>
+                    </Modal>
                   </View>
+                </View>
               )}
             </Observer>
           </View>
@@ -200,7 +200,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
               labelTx='invoiceFormScreen.productForm.quantity'
               labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', alignSelf: 'center' }}
               style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '25%' }}
-              inputStyle={{ borderRadius: 5 ,fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
+              inputStyle={{ borderRadius: 5, fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
               keyboardType='numeric'
               value={quantityValue}
               onChangeText={quantity => {

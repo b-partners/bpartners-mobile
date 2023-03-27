@@ -12,11 +12,11 @@ import { Product, createProductDefaultModel } from '../../models/entities/produc
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
-import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
-import { InvoiceFormField } from './invoice-form-field';
+import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
+import { InvoiceFormField } from './invoice-form-field';
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -338,7 +338,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           borderWidth: 1,
           borderRadius: 25,
           paddingVertical: spacing[2],
-            marginHorizontal: spacing[2]
+          marginHorizontal: spacing[2],
         }}
       >
         <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />

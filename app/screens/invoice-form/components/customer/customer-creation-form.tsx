@@ -12,16 +12,28 @@ import { useStores } from '../../../../models';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import emptyToNull from '../../../../utils/empty-to-null';
-import {INVALID_FORM_FIELD} from "../../styles";
+import { INVALID_FORM_FIELD } from '../../styles';
 
 export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
-    customerFirstName: yup.string().required(translate('errors.required')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName')),
-    customerLastName: yup.string().required(translate('errors.required')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName')),
-    customerAddress: yup.string().required(translate('errors.required')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.address')),
-    customerPhoneNumber: yup.string().required(translate('errors.required')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber')),
+    customerFirstName: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName')),
+    customerLastName: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName')),
+    customerAddress: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.address')),
+    customerPhoneNumber: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber')),
     customerEmail: yup.string().email(translate('errors.invalidEmail')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.email')),
   });
 
