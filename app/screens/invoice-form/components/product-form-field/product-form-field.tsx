@@ -12,6 +12,7 @@ import { palette } from '../../../../theme/palette';
 import { printCurrency, printVat } from '../../../../utils/money';
 import RadioButton from '../select-form-field/radio-button';
 import { InvoiceFormField } from '../../invoice-form-field';
+import {ProductCreationModal} from "./product-creation-modal";
 
 type ProductFormFieldProps = {
   index: number;
@@ -24,6 +25,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const { onValueChange, onDeleteItem, items } = props;
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
 
+  const [ creationModal, setCreationModal ] = useState(false);
   const [visible, setVisible] = useState(false);
   const [quantityValue, setQuantityValue] = useState('');
 
@@ -78,9 +80,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             <Observer>
               {() => (
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => setCreationModal(true)} style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}>
                       <RNVIcon name='pluscircleo' size={35} color={color.palette.secondaryColor} />
-                    </View>
+                    </TouchableOpacity>
                 <View
                   style={{
                     marginRight: '2.5%',
@@ -105,6 +107,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                       <EntypoIcon name='chevron-thin-down' size={18} color='#000' />
                     </View>
                   </TouchableOpacity>
+                  <ProductCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal}/>
                   <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
                     <View>
                       <View

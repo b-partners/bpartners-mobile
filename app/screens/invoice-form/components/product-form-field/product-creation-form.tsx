@@ -59,34 +59,6 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                   value={values.customerLastName}
                   inputStyle={[errors.customerLastName && INVALID_FORM_FIELD]}
                 />
-                <FormField
-                  testID='customerEmail'
-                  name='customerEmail'
-                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.email'
-                  keyboardType='email-address'
-                  value={values.customerEmail}
-                  inputStyle={[errors.customerEmail && INVALID_FORM_FIELD]}
-                />
-                <FormField
-                  testID='customerAddress'
-                  name='customerAddress'
-                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.address'
-                  value={values.customerAddress}
-                  inputStyle={[errors.customerAddress && INVALID_FORM_FIELD]}
-                />
-                <FormField
-                  testID='customerPhoneNumber'
-                  name='customerPhoneNumber'
-                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber'
-                  value={values.customerPhoneNumber}
-                  inputStyle={[errors.customerPhoneNumber && INVALID_FORM_FIELD]}
-                />
-                <FormField
-                  testID='customerComment'
-                  name='customerComment'
-                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.comment'
-                  value={values.customerComment}
-                />
               </View>
               <View>
                 {checkCustomer === true ? (
@@ -168,7 +140,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
-                    {loadingCustomerCreation === true ? <Loader /> : <Text tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.add' />}
+                    {loadingCustomerCreation === true ? <Loader /> : <Text tx='invoiceFormScreen.invoiceCreationForm.add' />}
                   </Button>
                 )}
               </View>

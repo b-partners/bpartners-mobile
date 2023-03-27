@@ -206,6 +206,9 @@
     }
   },
   "invoiceFormScreen": {
+    "invoiceCreationForm": {
+      "add": "Ajouter this product"
+    },
     "invoiceForm": {
       "addItem": "Add a product",
       "title": "Quotation title",
