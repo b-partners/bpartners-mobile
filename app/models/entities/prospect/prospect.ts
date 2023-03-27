@@ -19,7 +19,6 @@ export const ProspectModel = types.model('Account').props({
   phone: types.maybeNull(types.string),
   address: types.maybeNull(types.string),
   status: types.maybeNull(types.enumeration(Object.values(ProspectStatus))),
-  townCode: types.maybeNull(types.number),
   location: types.maybeNull(LocationModel),
 });
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import FileIcon from 'react-native-vector-icons/FontAwesome5';
 
-import { palette } from '../../theme/palette';
 import { Text } from '../text/text';
 
 export function NoDataProvided() {
@@ -21,7 +20,7 @@ export function NoDataProvided() {
           justifyContent: 'center',
           alignItems: 'center',
           borderWidth: 1,
-          borderColor: palette.white,
+          borderColor: 'transparent',
           borderRadius: 70,
           backgroundColor: '#EEF0F4',
           height: 70,
