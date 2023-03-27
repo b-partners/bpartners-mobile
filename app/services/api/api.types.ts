@@ -67,8 +67,6 @@ export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } |
 
 export type GetProspectResult = { kind: 'ok'; prospects: Prospect[] } | GeneralApiProblem;
 
-export type UpdateProspectResult = { kind: 'ok'; prospect: Prospect } | GeneralApiProblem;
-
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
 
 export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;

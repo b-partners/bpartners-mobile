@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import { Alert, Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -95,6 +96,7 @@ type RouteNameProps = {
   home: string | React.ReactElement;
   profile: string | React.ReactElement;
   transactionList: string | React.ReactElement;
+  prospect: string | React.ReactElement;
   paymentInitiation: string | React.ReactElement;
   paymentList: string | React.ReactElement;
   welcome: string | React.ReactElement;
@@ -111,6 +113,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     home: translate('homeScreen.title'),
     profile: translate('profileScreen.title'),
     transactionList: translate('transactionListScreen.title'),
+    prospect: translate('prospectScreen.title'),
     paymentInitiation: translate('paymentInitiationScreen.title'),
     paymentList: translate('paymentListScreen.title'),
     welcome: translate('homeScreen.title'),
@@ -129,6 +132,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     oauth: <IoniconIcon name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
     marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
     supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
+    prospect: <FontAwesome name='list-alt' size={22} color={color.palette.secondaryColor} />,
   };
 
   const handlePress = useCallback(async () => {
@@ -153,7 +157,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
-          {props.state.routes.slice(0, 3).map((route: any) => {
+          {props.state.routes.slice(0, 4).map((route: any) => {
             return (
               <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
                 <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
