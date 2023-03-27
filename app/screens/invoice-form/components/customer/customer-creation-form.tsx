@@ -18,11 +18,11 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
-    customerFirstName: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerLastName: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerAddress: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerPhoneNumber: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerEmail: yup.string().email().label(translate('paymentInitiationScreen.fields.payerEmail')),
+    customerFirstName: yup.string().required(translate('errors.required')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName')),
+    customerLastName: yup.string().required(translate('errors.required')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName')),
+    customerAddress: yup.string().required(translate('errors.required')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.address')),
+    customerPhoneNumber: yup.string().required(translate('errors.required')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber')),
+    customerEmail: yup.string().email(translate('errors.invalidEmail')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.email')),
   });
 
   const { customerStore, invoiceStore } = useStores();

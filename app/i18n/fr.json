@@ -17,7 +17,8 @@
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
     "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
-    "verifyConnection": "Verifier votre connexion"
+    "verifyConnection": "Verifier votre connexion",
+    "required": "Ce champ est requis"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
