@@ -90,9 +90,11 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                   <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setVisible(true)}>
                     <TextField
                       editable={false}
+                      placeholderTx='invoiceFormScreen.productForm.placeholder'
                       value={currentProduct?.description}
                       labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' }}
                       inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' }}
+                      style={{ width: '80%' }}
                     />
                     <View style={{ justifyContent: 'center' }}>
                       <EntypoIcon name='chevron-thin-down' size={18} color='#000' />
