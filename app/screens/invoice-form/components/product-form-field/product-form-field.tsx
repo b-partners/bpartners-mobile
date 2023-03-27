@@ -5,13 +5,13 @@ import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-import { Button, Icon, Separator, Text, TextField } from '../../../components';
-import { Product } from '../../../models/entities/product/product';
-import { color, spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
-import { printCurrency, printVat } from '../../../utils/money';
+import { Button, Icon, Separator, Text, TextField } from '../../../../components';
+import { Product } from '../../../../models/entities/product/product';
+import { color, spacing } from '../../../../theme';
+import { palette } from '../../../../theme/palette';
+import { printCurrency, printVat } from '../../../../utils/money';
 import RadioButton from '../select-form-field/radio-button';
-import { InvoiceFormField } from './invoice-form-field';
+import { InvoiceFormField } from '../../invoice-form-field';
 
 type ProductFormFieldProps = {
   index: number;
@@ -77,15 +77,19 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
           <View>
             <Observer>
               {() => (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                      <RNVIcon name='pluscircleo' size={35} color={color.palette.secondaryColor} />
+                    </View>
                 <View
                   style={{
-                    marginHorizontal: '10%',
+                    marginRight: '2.5%',
                     paddingHorizontal: spacing[3],
                     marginVertical: spacing[4],
                     width: '80%',
                     borderWidth: 1,
                     borderColor: '#E1E5EF',
-                    borderRadius: 25
+                    borderRadius: 25,
                   }}
                 >
                   <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setVisible(true)}>
@@ -184,6 +188,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                     </View>
                   </Modal>
                 </View>
+                  </View>
               )}
             </Observer>
           </View>
@@ -192,7 +197,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
               labelTx='invoiceFormScreen.productForm.quantity'
               labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', alignSelf: 'center' }}
               style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '25%' }}
-              inputStyle={{ borderRadius: 5 ,fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center', backgroundColor: palette.lighterGrey }}
+              inputStyle={{ borderRadius: 5 ,fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
               keyboardType='numeric'
               value={quantityValue}
               onChangeText={quantity => {

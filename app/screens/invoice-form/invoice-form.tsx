@@ -12,11 +12,11 @@ import { Product, createProductDefaultModel } from '../../models/entities/produc
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
-import { CustomerFormFieldFooter } from './components/customer-form-field-footer';
-import { CustomerCreationModal } from './components/customer-selection-form/customer-creation-modal';
-import { InvoiceFormField } from './components/invoice-form-field';
-import { ProductFormField } from './components/product-form-field';
-import { SelectFormField } from './select-form-field/select-form-field';
+import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
+import { CustomerCreationModal } from './components/customer/customer-creation-modal';
+import { InvoiceFormField } from './invoice-form-field';
+import { ProductFormField } from './components/product-form-field/product-form-field';
+import { SelectFormField } from './components/select-form-field/select-form-field';
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -351,7 +351,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </Button>
-      <CustomerCreationModal creationModal={creationModal} setCreationModal={setCreationModal} />
+      <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       <View
         style={{
           ...ROW_STYLE,

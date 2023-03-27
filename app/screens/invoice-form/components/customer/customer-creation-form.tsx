@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
 
@@ -12,11 +12,7 @@ import { useStores } from '../../../../models';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import emptyToNull from '../../../../utils/empty-to-null';
-
-const INVALID_FORM_FIELD: ViewStyle = {
-  borderBottomColor: '#FF5983',
-  borderBottomWidth: 2,
-};
+import {INVALID_FORM_FIELD} from "../utils";
 
 export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
