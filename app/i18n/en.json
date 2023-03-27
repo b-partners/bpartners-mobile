@@ -267,6 +267,10 @@
         "fail": "Try again"
       }
     },
+    "productCreationForm": {
+      "unitPrice": "Unit price before tax (in €)",
+      "description": "Desciption"
+    },
     "productForm": {
       "addProduct": "Add a product",
       "placeholder": "Choose a product",

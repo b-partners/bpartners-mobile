@@ -252,6 +252,10 @@
         "fail": "Réessayer"
       }
     },
+    "productCreationForm": {
+      "unitPrice": "Prix unitaire HT (en €)",
+      "description": "Desciption"
+    },
     "productForm": {
       "addProduct": "Ajouter un produit",
       "title": "Produit",

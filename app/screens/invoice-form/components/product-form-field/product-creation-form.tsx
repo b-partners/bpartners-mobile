@@ -18,11 +18,8 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
-    customerFirstName: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerLastName: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerAddress: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerPhoneNumber: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerEmail: yup.string().email().label(translate('paymentInitiationScreen.fields.payerEmail')),
+    unitPrice: yup.number().required().label(translate('paymentInitiationScreen.fields.amount')),
+    description: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
   });
 
   const { customerStore, invoiceStore } = useStores();
@@ -48,15 +45,16 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                 <FormField
                   testID='customerFirstName'
                   name='customerFirstName'
-                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName'
+                  labelTx='invoiceFormScreen.productCreationForm.unitPrice'
                   value={values.customerFirstName}
                   inputStyle={[errors.customerFirstName && INVALID_FORM_FIELD]}
                 />
                 <FormField
                   testID='customerLastName'
                   name='customerLastName'
-                  labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName'
+                  labelTx='invoiceFormScreen.productCreationForm.unitPrice'
                   value={values.customerLastName}
+                  numberOfLines={5}
                   inputStyle={[errors.customerLastName && INVALID_FORM_FIELD]}
                 />
               </View>
