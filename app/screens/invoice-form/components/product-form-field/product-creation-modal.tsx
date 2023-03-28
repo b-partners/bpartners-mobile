@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, View } from 'react-native';
 
-import {Header} from '../../../../components';
+import { Header } from '../../../../components';
 import { palette } from '../../../../theme/palette';
 import { ModalProps } from '../utils';
 import { ProductCreationForm } from './product-creation-form';
@@ -19,10 +19,10 @@ export const ProductCreationModal: React.FC<ModalProps> = props => {
         <View style={{ backgroundColor: palette.white, height: '80%', width: '100%' }}>
           <View style={{ width: '100%', height: '20%' }}>
             <Header
-                rightIcon='cross'
-                onRightPress={() => setVisibleModal(false)}
-                style={{ borderTopLeftRadius: 50 }}
-                headerTx='invoiceFormScreen.invoiceForm.addItem'
+              rightIcon='cross'
+              onRightPress={() => setVisibleModal(false)}
+              style={{ borderTopLeftRadius: 50 }}
+              headerTx='invoiceFormScreen.invoiceForm.addItem'
             />
           </View>
           <View style={{ width: '100%', height: '80%' }}>

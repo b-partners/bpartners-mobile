@@ -17,7 +17,11 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
   const initialValues = { unitPrice: '', description: '' };
 
   const validationSchema = yup.object().shape({
-    unitPrice: yup.number().required(translate('errors.required')).typeError(translate('errors.amount')).label(translate('paymentInitiationScreen.fields.amount')),
+    unitPrice: yup
+      .number()
+      .required(translate('errors.required'))
+      .typeError(translate('errors.amount'))
+      .label(translate('paymentInitiationScreen.fields.amount')),
     description: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.amount')),
   });
 
@@ -90,7 +94,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     <Text tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.fail' />
                     <SimpleLineIcons name='close' style={{ marginLeft: spacing[2] }} size={20} color='white' />
                   </Button>
-                ) : errors.unitPrice || errors.description  ? (
+                ) : errors.unitPrice || errors.description ? (
                   <View
                     testID='submit'
                     style={{
@@ -109,8 +113,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     testID='submit'
                     onPress={async () => {
                       try {
-                        await customerStore.saveCustomer({
-                        });
+                        await customerStore.saveCustomer({});
                         await invoiceStore.getCustomers();
                       } catch (e) {
                         __DEV__ && console.tron.log(e);
@@ -120,7 +123,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
                       borderRadius: 25,
-                      marginBottom: spacing[5]
+                      marginBottom: spacing[5],
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
