@@ -83,9 +83,7 @@ function LatestTransaction(props: { item: ITransaction }) {
           flex: 2,
         }}
       />
-      <TouchableOpacity>
-        <Icon icon='chevronRight' style={{ flex: 1 }} />
-      </TouchableOpacity>
+      <TouchableOpacity>{/*<Icon icon='chevronRight' style={{ flex: 1 }} />*/}</TouchableOpacity>
     </View>
   );
 }
@@ -118,9 +116,7 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
       <View>
         <View style={LAST_TRANSACTIONS_SECTION}>
           <Text tx='homeScreen.summary.lastTransactions' style={LAST_TRANSACTIONS_TEXT_STYLE} testID='latestTransactionText' />
-          <TouchableOpacity onPress={() => showSnackbar()}>
-            <Icon icon='settings' />
-          </TouchableOpacity>
+          <TouchableOpacity onPress={() => showSnackbar()}>{/*<Icon icon='settings' />*/}</TouchableOpacity>
         </View>
       </View>
       <View style={{ paddingLeft: spacing[6] }}>
