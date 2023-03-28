@@ -146,7 +146,6 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     }}
                   >
                     <Text style={{ fontSize: 14, fontFamily: 'Geometria-Bold' }} tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.add' />
-                    <SimpleLineIcons name='check' style={{ marginLeft: spacing[2] }} size={20} color='white' />
                   </View>
                 ) : (
                   <Button

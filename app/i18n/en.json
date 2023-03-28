@@ -18,7 +18,8 @@
     "invalidEmail": "Invalid email address.",
     "somethingWentWrong": "Something went wrong. Please retry later.",
     "verifyConnection": "Verify your connection",
-    "required": "This field is required"
+    "required": "This field is required",
+    "amount": "Invalid amount"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -269,7 +270,7 @@
     },
     "productCreationForm": {
       "unitPrice": "Unit price before tax (in €)",
-      "description": "Desciption"
+      "description": "Description"
     },
     "productForm": {
       "addProduct": "Add a product",

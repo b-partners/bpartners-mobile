@@ -11,15 +11,14 @@ import { translate } from '../../../../i18n';
 import { useStores } from '../../../../models';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import emptyToNull from '../../../../utils/empty-to-null';
 import { INVALID_FORM_FIELD } from '../../styles';
 
 export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
-  const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
+  const initialValues = { unitPrice: '', description: '' };
 
   const validationSchema = yup.object().shape({
-    unitPrice: yup.number().required().label(translate('paymentInitiationScreen.fields.amount')),
-    description: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
+    unitPrice: yup.number().required(translate('errors.required')).typeError(translate('errors.amount')).label(translate('paymentInitiationScreen.fields.amount')),
+    description: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.amount')),
   });
 
   const { customerStore, invoiceStore } = useStores();
@@ -40,25 +39,25 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
       >
         {({ values, errors }) => {
           return (
-            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '100%' }}>
-              <View style={{ height: '80%' }}>
+            <View style={{ paddingTop: spacing[6], paddingBottom: spacing[4], paddingHorizontal: spacing[3], height: '100%' }}>
+              <View style={{ height: '85%' }}>
                 <FormField
-                  testID='customerFirstName'
-                  name='customerFirstName'
+                  testID='productUnitPrice'
+                  name='unitPrice'
                   labelTx='invoiceFormScreen.productCreationForm.unitPrice'
-                  value={values.customerFirstName}
-                  inputStyle={[errors.customerFirstName && INVALID_FORM_FIELD]}
+                  value={values.unitPrice}
+                  inputStyle={[errors.unitPrice && INVALID_FORM_FIELD]}
                 />
                 <FormField
-                  testID='customerLastName'
-                  name='customerLastName'
-                  labelTx='invoiceFormScreen.productCreationForm.unitPrice'
-                  value={values.customerLastName}
-                  numberOfLines={5}
-                  inputStyle={[errors.customerLastName && INVALID_FORM_FIELD]}
+                  testID='productDescription'
+                  name='description'
+                  labelTx='invoiceFormScreen.productCreationForm.description'
+                  value={values.description}
+                  numberOfLines={3}
+                  inputStyle={[errors.description && INVALID_FORM_FIELD]}
                 />
               </View>
-              <View>
+              <View style={{ height: '15%' }}>
                 {checkCustomer === true ? (
                   <Button
                     testID='submit'
@@ -91,7 +90,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     <Text tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.fail' />
                     <SimpleLineIcons name='close' style={{ marginLeft: spacing[2] }} size={20} color='white' />
                   </Button>
-                ) : errors.customerEmail || errors.customerAddress || errors.customerFirstName || errors.customerLastName || errors.customerPhoneNumber ? (
+                ) : errors.unitPrice || errors.description  ? (
                   <View
                     testID='submit'
                     style={{
@@ -103,8 +102,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                       alignItems: 'center',
                     }}
                   >
-                    <Text style={{ fontSize: 14, fontFamily: 'Geometria-Bold' }} tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.add' />
-                    <SimpleLineIcons name='check' style={{ marginLeft: spacing[2] }} size={20} color='white' />
+                    <Text style={{ fontSize: 14, fontFamily: 'Geometria-Bold' }} tx='invoiceFormScreen.invoiceCreationForm.add' />
                   </View>
                 ) : (
                   <Button
@@ -112,18 +110,6 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     onPress={async () => {
                       try {
                         await customerStore.saveCustomer({
-                          ...emptyToNull({
-                            firstName: values.customerFirstName,
-                            lastName: values.customerLastName,
-                            email: values.customerEmail,
-                            phone: values.customerPhoneNumber,
-                            address: values.customerAddress,
-                            website: null,
-                            city: null,
-                            country: null,
-                            comment: null,
-                          }),
-                          zipCode: 0,
                         });
                         await invoiceStore.getCustomers();
                       } catch (e) {
@@ -134,7 +120,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
                       borderRadius: 25,
-                      marginBottom: spacing[5],
+                      marginBottom: spacing[5]
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
