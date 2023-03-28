@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+// import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -82,7 +82,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
       </TouchableOpacity>
       <View style={MENU_CONTAINER_STYLE}>
         <Menu items={menuItems} actions={menuAction}>
-          <MaterialCommunityIcons name='dots-vertical' size={22} color={palette.lightGrey} />
+          {/*<MaterialCommunityIcons name='dots-vertical' size={22} color={palette.lightGrey} />*/}
         </Menu>
       </View>
     </View>
