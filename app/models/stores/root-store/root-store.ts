@@ -13,6 +13,7 @@ import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
 import { PaymentInitiationStoreModel } from '../payment-initiation-store/payment-initiation-store';
 import { ProspectStoreModel } from '../prospect-store/prospect-store';
 import { TransactionStoreModel } from '../transaction-store/transaction-store';
+import {ProductStoreModel} from "../product-store/product-store";
 
 /**
  * A RootStore model.
@@ -28,7 +29,8 @@ export const RootStoreModel = types.model('RootStore').props({
     marketplaceStore: types.optional(MarketplaceStoreModel, {} as any),
     legalFilesStore: types.optional(LegalFileStoreModel, {} as any),
     customerStore: types.optional(CustomerStoreModel, {} as any),
-    prospectStore: types.optional(ProspectStoreModel, {} as any)
+    prospectStore: types.optional(ProspectStoreModel, {} as any),
+    productStore: types.optional(ProductStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;

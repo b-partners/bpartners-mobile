@@ -13,6 +13,7 @@ import { printCurrency, printVat } from '../../../../utils/money';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
 import { ProductCreationModal } from './product-creation-modal';
+import {useStores} from "../../../../models";
 
 type ProductFormFieldProps = {
   index: number;
@@ -28,6 +29,8 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const [creationModal, setCreationModal] = useState(false);
   const [visible, setVisible] = useState(false);
   const [quantityValue, setQuantityValue] = useState('');
+
+  const { productStore } = useStores();
 
   useEffect(() => {
     onValueChange && onValueChange(currentProduct);
@@ -80,7 +83,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             <Observer>
               {() => (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <TouchableOpacity onPress={() => setCreationModal(true)} style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                  <TouchableOpacity onPress={() => { productStore.saveProductInit(); setCreationModal(true);}} style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}>
                     <RNVIcon name='pluscircleo' size={35} color={color.palette.secondaryColor} />
                   </TouchableOpacity>
                   <View

@@ -11,7 +11,7 @@ export const ProductStoreModel = types
   .props({
     products: types.optional(types.array(ProductModel), []),
     checkProduct: types.maybeNull(types.boolean),
-    loadingProductCreation: types.optional(types.boolean, false),
+    loadingProductCreation: types.optional(types.boolean, false)
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -56,7 +56,7 @@ export const ProductStoreModel = types
         self.checkProduct = true;
       },
     })).actions(self => ({
-      saveCustomer: flow(function* (product: Product) {
+      saveProduct: flow(function* (product: Product) {
         self.loadingProductCreation = true;
         const productApi = new ProductApi(self.environment.api);
         try {

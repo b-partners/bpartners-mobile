@@ -27,7 +27,7 @@ export class ProductApi {
 
   async saveProduct(accountId: string, product: Product): Promise<GetProductsResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/customers`, [product]);
+    const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/products`, [product]);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

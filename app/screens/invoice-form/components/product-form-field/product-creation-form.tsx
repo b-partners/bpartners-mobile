@@ -13,9 +13,12 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { INVALID_FORM_FIELD } from '../../styles';
 
-export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
+export const ProductCreationForm: FC<PropsWithoutRef<{
+    setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
+}>> = observer(props => {
   const initialValues = { unitPrice: '', description: '' };
 
+    const { setVisibleModal } = props;
   const validationSchema = yup.object().shape({
     unitPrice: yup
       .number()
@@ -25,8 +28,8 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
     description: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.amount')),
   });
 
-  const { customerStore, invoiceStore } = useStores();
-  const { checkCustomer, loadingCustomerCreation } = customerStore;
+  const { productStore, invoiceStore } = useStores();
+    const { checkProduct, loadingProductCreation } = productStore;
 
   return (
     <View testID='paymentInitiationScreen' style={{ height: '100%', width: '100%' }}>
@@ -62,7 +65,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                 />
               </View>
               <View style={{ height: '15%' }}>
-                {checkCustomer === true ? (
+                {checkProduct === true ? (
                   <Button
                     testID='submit'
                     onPress={() => {}}
@@ -77,11 +80,11 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     <Text tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.added' />
                     <SimpleLineIcons name='check' style={{ marginLeft: spacing[2] }} size={20} color='white' />
                   </Button>
-                ) : checkCustomer === false ? (
+                ) : checkProduct === false ? (
                   <Button
                     testID='submit'
                     onPress={() => {
-                      customerStore.saveCustomerInit();
+                      productStore.saveCustomerInit();
                     }}
                     style={{
                       backgroundColor: palette.pastelRed,
@@ -113,8 +116,20 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     testID='submit'
                     onPress={async () => {
                       try {
-                        await customerStore.saveCustomer({});
-                        await invoiceStore.getCustomers();
+                          await productStore.saveProduct({
+                              description: values.description,
+                              quantity: null,
+                              unitPrice: values.unitPrice,
+                              unitPriceWithVat: null,
+                              vatPercent: null,
+                              totalVat: null,
+                              totalPriceWithVat: null,
+                              status: null,
+                              createdAt: new Date(),
+                          });
+                          productStore.saveProductSuccess();
+                          await invoiceStore.getProducts();
+                          setVisibleModal(false);
                       } catch (e) {
                         __DEV__ && console.tron.log(e);
                       }
@@ -127,7 +142,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
-                    {loadingCustomerCreation === true ? <Loader /> : <Text tx='invoiceFormScreen.invoiceCreationForm.add' />}
+                    {loadingProductCreation === true ? <Loader /> : <Text tx='invoiceFormScreen.invoiceCreationForm.add' />}
                   </Button>
                 )}
               </View>
