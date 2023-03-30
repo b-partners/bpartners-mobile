@@ -26,7 +26,7 @@ export const ProductCreationModal: React.FC<ModalProps> = props => {
             />
           </View>
           <View style={{ width: '100%', height: '80%' }}>
-            <ProductCreationForm setVisibleModal={setVisibleModal}/>
+            <ProductCreationForm setVisibleModal={setVisibleModal} />
           </View>
         </View>
       </View>

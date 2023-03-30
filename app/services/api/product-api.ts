@@ -1,9 +1,9 @@
 import { ApiResponse } from 'apisauce';
 
+import { Product } from '../../models/entities/product/product';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import {GetProductsResult} from './api.types';
-import {Product} from "../../models/entities/product/product";
+import { GetProductsResult } from './api.types';
 
 export class ProductApi {
   private api: Api;

@@ -13,12 +13,14 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { INVALID_FORM_FIELD } from '../../styles';
 
-export const ProductCreationForm: FC<PropsWithoutRef<{
+export const ProductCreationForm: FC<
+  PropsWithoutRef<{
     setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
-}>> = observer(props => {
+  }>
+> = observer(props => {
   const initialValues = { unitPrice: '', description: '' };
 
-    const { setVisibleModal } = props;
+  const { setVisibleModal } = props;
   const validationSchema = yup.object().shape({
     unitPrice: yup
       .number()
@@ -29,7 +31,7 @@ export const ProductCreationForm: FC<PropsWithoutRef<{
   });
 
   const { productStore, invoiceStore } = useStores();
-    const { checkProduct, loadingProductCreation } = productStore;
+  const { checkProduct, loadingProductCreation } = productStore;
 
   return (
     <View testID='paymentInitiationScreen' style={{ height: '100%', width: '100%' }}>
@@ -116,20 +118,20 @@ export const ProductCreationForm: FC<PropsWithoutRef<{
                     testID='submit'
                     onPress={async () => {
                       try {
-                          await productStore.saveProduct({
-                              description: values.description,
-                              quantity: null,
-                              unitPrice: values.unitPrice,
-                              unitPriceWithVat: null,
-                              vatPercent: null,
-                              totalVat: null,
-                              totalPriceWithVat: null,
-                              status: null,
-                              createdAt: new Date(),
-                          });
-                          productStore.saveProductSuccess();
-                          await invoiceStore.getProducts();
-                          setVisibleModal(false);
+                        await productStore.saveProduct({
+                          description: values.description,
+                          quantity: null,
+                          unitPrice: values.unitPrice,
+                          unitPriceWithVat: null,
+                          vatPercent: null,
+                          totalVat: null,
+                          totalPriceWithVat: null,
+                          status: null,
+                          createdAt: new Date(),
+                        });
+                        productStore.saveProductSuccess();
+                        await invoiceStore.getProducts();
+                        setVisibleModal(false);
                       } catch (e) {
                         __DEV__ && console.tron.log(e);
                       }

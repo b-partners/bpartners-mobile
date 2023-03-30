@@ -14,7 +14,9 @@ import { palette } from '../../../../theme/palette';
 import emptyToNull from '../../../../utils/empty-to-null';
 import { INVALID_FORM_FIELD } from '../../styles';
 
-export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
+export const CustomerCreationForm: FC<PropsWithoutRef<{
+    setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
+}>> = observer(props => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
@@ -39,6 +41,8 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
 
   const { customerStore, invoiceStore } = useStores();
   const { checkCustomer, loadingCustomerCreation } = customerStore;
+
+    const { setVisibleModal } = props;
 
   return (
     <View testID='paymentInitiationScreen' style={{ height: '100%', width: '100%' }}>
@@ -167,6 +171,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                           zipCode: 0,
                         });
                         await invoiceStore.getCustomers();
+                          setVisibleModal(false);
                       } catch (e) {
                         __DEV__ && console.tron.log(e);
                       }

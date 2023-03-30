@@ -6,6 +6,7 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Button, Icon, Separator, Text, TextField } from '../../../../components';
+import { useStores } from '../../../../models';
 import { Product } from '../../../../models/entities/product/product';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
@@ -13,7 +14,6 @@ import { printCurrency, printVat } from '../../../../utils/money';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
 import { ProductCreationModal } from './product-creation-modal';
-import {useStores} from "../../../../models";
 
 type ProductFormFieldProps = {
   index: number;
@@ -83,7 +83,13 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             <Observer>
               {() => (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <TouchableOpacity onPress={() => { productStore.saveProductInit(); setCreationModal(true);}} style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      productStore.saveProductInit();
+                      setCreationModal(true);
+                    }}
+                    style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}
+                  >
                     <RNVIcon name='pluscircleo' size={35} color={color.palette.secondaryColor} />
                   </TouchableOpacity>
                   <View
