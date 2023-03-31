@@ -27,6 +27,8 @@ type ModalRouteProps = {
   help: () => void | null | string;
 };
 
+const modalHeight = Dimensions.get('window').height - 120;
+
 export const NavigationModal: React.FC<NavigationModalProps> = props => {
   const { modalVisible, setModalVisible } = props;
 
@@ -50,7 +52,7 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
 
   const showSnackbar = () => {
     Snackbar.show({
-      text: 'Test',
+      text: 'Cette fonctionnalité est encore en construction',
       duration: Snackbar.LENGTH_LONG,
       numberOfLines: 3,
       textColor: 'white',
@@ -68,19 +70,19 @@ export const NavigationModal: React.FC<NavigationModalProps> = props => {
       visible={modalVisible}
       onDismiss={() => setModalVisible(false)}
       contentContainerStyle={{
-        position: 'relative',
+        zIndex: -100000000,
+        position: 'absolute',
+        top: 0,
         width: '100%',
         height: modalHeight,
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         padding: 20,
       }}
-      style={{
-        justifyContent: 'flex-start',
-      }}
     >
       <View
         testID='BottomTabModal'
         style={{
+          zIndex: -10000000,
           width: '18%',
           height: 200,
           backgroundColor: palette.purple,
