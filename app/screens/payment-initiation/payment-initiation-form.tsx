@@ -112,14 +112,7 @@ export const PaymentInitiationForm: FC<
           );
         }}
       </Formik>
-      <PaymentModal
-        paymentUrl={paymentUrl}
-        amount={amount}
-        label={label}
-        reference={reference}
-        showModal={showModal}
-        setShowModal={setShowModal}
-      ></PaymentModal>
+      <PaymentModal paymentUrl={paymentUrl} amount={amount} label={label} reference={reference} showModal={showModal} setShowModal={setShowModal} />
     </View>
   );
 });
