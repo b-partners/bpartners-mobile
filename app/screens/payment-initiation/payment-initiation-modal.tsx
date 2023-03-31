@@ -114,7 +114,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = props => {
               </TouchableOpacity>
               <QRCode value={paymentUrl} size={250} />
               <Text
-                tx={'paymentInitiationScreen.instruction'}
+                text={'paymentInitiationScreen.instruction'}
                 style={{
                   height: '15%',
                   color: color.palette.textClassicColor,
