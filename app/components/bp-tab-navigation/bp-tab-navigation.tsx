@@ -1,5 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ImageStyle, View, ViewStyle } from 'react-native';
 
 import { translate } from '../../i18n';
@@ -8,6 +8,7 @@ import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { BottomTab } from './bottom-tab';
 import { BOTTOM_TAB_ROUTES } from './constants';
+import { NavigationModal } from './navigation-modal';
 
 const TAB_VIEW_STYLE: ViewStyle = {
   position: 'relative',
@@ -62,6 +63,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   } = props;
   const currentTab = routeNames[index];
   const { marketplaceStore } = useStores();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleNavigationMarketplace = useCallback((routeName: string) => {
     navigate(routeName);
@@ -80,12 +82,16 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     navigate(routeName);
   }, []);
 
+  const openModal = useCallback(() => {
+    setModalVisible(true);
+  }, []);
+
   const BOTTOM_NAVBAR_ICONS: IconProps = {
     account: require('./icons/wallet.png'),
     activity: require('./icons/activity.png'),
     payment: require('./icons/paiment.png'),
     facturation: require('./icons/facturation.png'),
-    service: require('./icons/help-free-bg.png'),
+    service: require('./icons/service.png'),
   };
 
   const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
@@ -94,7 +100,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => {
-      null;
+      openModal();
     },
   };
 
@@ -121,15 +127,35 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
           return (
             <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
-              <BottomTab
-                onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
-                testID={`${RouteName[bottomTavNavItem]}Tab`}
-                source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
-                tabStyle={{ width: '100%', height: 50, marginTop: 18, alignItems: 'center' }}
-                imageStyle={{ width: 65, height: 55 }}
-                text={ROUTE[bottomTavNavItem]}
-                bottomNavItem={bottomTavNavItem}
-              />
+              {modalVisible && bottomTavNavItem === 'service' ? (
+                <BottomTab
+                  onPress={() => setModalVisible(false)}
+                  testID={`serviceTab`}
+                  source={require('./icons/anotherService.png')}
+                  tabStyle={{
+                    width: '100%',
+                    height: 90,
+                    marginTop: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: palette.deepPurple,
+                    borderRadius: 50,
+                  }}
+                  imageStyle={{ width: 50, height: 40, borderRadius: 10, marginBottom: 2 }}
+                  text={ROUTE[bottomTavNavItem]}
+                  bottomNavItem={bottomTavNavItem}
+                />
+              ) : (
+                <BottomTab
+                  onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
+                  testID={`${RouteName[bottomTavNavItem]}Tab`}
+                  source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
+                  tabStyle={{ width: '100%', height: 50, marginTop: 18, alignItems: 'center' }}
+                  imageStyle={{ width: 65, height: 55 }}
+                  text={ROUTE[bottomTavNavItem]}
+                  bottomNavItem={bottomTavNavItem}
+                />
+              )}
               {currentTab === RouteName[bottomTavNavItem] && (
                 <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
               )}
@@ -137,6 +163,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
           );
         })}
       </View>
+      <NavigationModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </>
   );
 };
