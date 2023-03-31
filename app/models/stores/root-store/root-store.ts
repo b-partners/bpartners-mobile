@@ -11,9 +11,9 @@ import { LegalFileStoreModel } from '../legal-file-store/legal-file-store';
 import { MarketplaceStoreModel } from '../marketplace-store/marketplace-store';
 import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
 import { PaymentInitiationStoreModel } from '../payment-initiation-store/payment-initiation-store';
+import { ProductStoreModel } from '../product-store/product-store';
 import { ProspectStoreModel } from '../prospect-store/prospect-store';
 import { TransactionStoreModel } from '../transaction-store/transaction-store';
-import {ProductStoreModel} from "../product-store/product-store";
 
 /**
  * A RootStore model.

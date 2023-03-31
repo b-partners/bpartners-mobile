@@ -18,12 +18,12 @@ import { ProductCreationModal } from './product-creation-modal';
 type ProductFormFieldProps = {
   index: number;
   items: Product[];
-  onDeleteItem: (product: Product) => void;
+  onDeleteItem: (product: Product, index: number) => void;
   onValueChange?: (product: Product) => void;
 };
 
 export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
-  const { onValueChange, onDeleteItem, items } = props;
+  const { onValueChange, onDeleteItem, items, index } = props;
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
 
   const [creationModal, setCreationModal] = useState(false);
@@ -65,7 +65,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
               right: -15,
             }}
             onPress={() => {
-              onDeleteItem(currentProduct);
+              onDeleteItem(currentProduct, index);
             }}
           >
             <Text

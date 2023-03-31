@@ -63,12 +63,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     defaultValues: createInvoiceDefaultModel(invoiceType).create(),
   });
 
-  const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });
+  const { fields, append, update, remove } = useFieldArray({ control, name: 'products' });
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
 
   const onSubmit = async invoice => {
-    __DEV__ && console.tron.log({ invoice });
     try {
       await invoiceStore.saveInvoice({
         ...invoice,
@@ -245,11 +244,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 key={i}
                 index={i}
                 items={products}
-                onDeleteItem={async productItem => {
-                  const itemIndex = fields.findIndex(
-                    itemProduct => itemProduct.description === productItem.description && itemProduct.unitPrice === productItem.unitPrice
-                  );
-                  await remove(itemIndex);
+                onDeleteItem={async (__, index) => {
+                  await remove(index);
                 }}
                 onValueChange={product => {
                   update(i, product);

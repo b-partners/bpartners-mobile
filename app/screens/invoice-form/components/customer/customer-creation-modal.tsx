@@ -26,7 +26,7 @@ export const CustomerCreationModal: React.FC<ModalProps> = props => {
             />
           </View>
           <View style={{ width: '100%', height: '100%' }}>
-            <CustomerCreationForm setVisibleModal={setVisibleModal}/>
+            <CustomerCreationForm setVisibleModal={setVisibleModal} />
           </View>
         </View>
       </View>
