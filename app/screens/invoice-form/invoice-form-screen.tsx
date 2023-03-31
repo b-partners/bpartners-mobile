@@ -49,7 +49,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
           style={HEADER}
           titleStyle={HEADER_TITLE}
           leftIcon={'back'}
-          // rightIcon={'info'}
+          rightIcon={'info'}
           onLeftPress={async () => {
             linkTo('/paymentList');
           }}
