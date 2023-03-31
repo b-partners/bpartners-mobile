@@ -371,7 +371,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             <RNVIcon name='save' size={25} color={color.palette.secondaryColor} />
           </View>
         </TouchableOpacity>
-        {/*<Button
+        <Button
           tx='invoiceFormScreen.invoicePreview'
           style={{
             backgroundColor: color.palette.secondaryColor,
@@ -384,7 +384,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             fontSize: 14,
             fontFamily: 'Geometria-Bold',
           }}
-        />*/}
+        />
       </View>
     </View>
   );

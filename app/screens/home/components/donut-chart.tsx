@@ -3,8 +3,7 @@ import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
 import Snackbar from 'react-native-snackbar';
 
-import { Text } from '../../../components';
-// import { Icon, Text } from '../../../components';
+import { Icon, Text } from '../../../components';
 import { TxKeyPath, translate } from '../../../i18n';
 import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
@@ -91,7 +90,9 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
     <View>
       <View style={TITLE_CONTAINER_STYLE}>
         <Text tx='homeScreen.summary.title' style={SUMMARY_TITLE_STYLE} />
-        <TouchableOpacity onPress={() => showSnackbar()}>{/*<Icon icon='settings' />*/}</TouchableOpacity>
+        <TouchableOpacity onPress={() => showSnackbar()}>
+          <Icon icon='settings' />
+        </TouchableOpacity>
       </View>
       <View style={CHART_CONTAINER}>
         <View style={LABELS_SECTION}>
