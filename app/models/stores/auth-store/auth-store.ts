@@ -42,17 +42,17 @@ export const AuthStoreModel = types
   .actions(self => ({
     catchOrThrow: (error: Error) => {
       const errorMessage = error.message;
-      const errorMessageOption = { backgroundColor: palette.pastelRed };
-
       if (errorMessage === 'server') {
-        return showMessage(translate('errors.somethingWentWrong'), errorMessageOption);
-      } else if (errorMessage === 'cannot-connect' || errorMessage === 'timeout') {
-        return showMessage(translate('errors.verifyConnection'), errorMessageOption);
-      } else if (errorMessage === 'forbidden') {
-        return self.reset();
-      } else {
-        return showMessage(translate('errors.somethingWentWrong'), errorMessageOption);
+        return showMessage("Impossible d'avoir les data", { backgroundColor: palette.pastelRed });
       }
+
+      if (errorMessage === 'cannot-connect' || errorMessage === 'timeout') {
+        return showMessage(translate('errors.verifyConnection'), { backgroundColor: palette.pastelRed });
+      }
+      if (errorMessage === 'forbidden') {
+        return self.reset();
+      }
+      throw error;
     },
   }))
   .actions(() => ({
