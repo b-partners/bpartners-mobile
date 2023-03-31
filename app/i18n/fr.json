@@ -11,8 +11,7 @@
   "common": {
     "ok": "OK!",
     "cancel": "Annuler",
-    "back": "Précédent",
-    "noDataProvided": "Aucun enregistrement à afficher"
+    "back": "Précédent"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -34,9 +33,6 @@
       }
     },
     "transactionCategoryPlaceholder": "Sélectionner un élément"
-  },
-  "prospectScreen": {
-    "title": "Prospects"
   },
   "onboardingScreen": {
     "title": "Créer un compte"
