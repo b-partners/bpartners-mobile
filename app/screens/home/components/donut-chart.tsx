@@ -12,15 +12,7 @@ import { printCurrency } from '../../../utils/money';
 
 const CHART_CONTAINER: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'flex-start' };
 const LABELS_SECTION: ViewStyle = { flex: 1 };
-const CHART_SECTION: ViewStyle = {
-  flex: 2,
-  position: 'absolute',
-  bottom: -121,
-  right: 0,
-  alignItems: 'center',
-  alignContent: 'center',
-  justifyContent: 'center',
-};
+const CHART_SECTION: ViewStyle = { flex: 2, position: 'absolute', bottom: -121, right: 0, alignItems: 'center', alignContent: 'center', justifyContent: 'center' };
 const LABEL_CONTAINER_STYLE: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
@@ -102,9 +94,7 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
               return (
                 <View style={LABEL_CONTAINER_STYLE} key={item}>
                   <View style={LABEL_COLOR_STYLE(COLORS[i])} />
-                  <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
-                    {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(summary[item])}
-                  </Text>
+                  <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>{translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(summary[item])}</Text>
                 </View>
               );
             })}

@@ -45,7 +45,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   const { transactionStore, legalFilesStore, authStore } = useStores();
 
   const { availableBalance } = authStore.currentAccount;
-  const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
+  const { currentAccount, currentUser, accessToken } = authStore;
 
   const uri = `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${currentUser.logoFileId}/raw?accessToken=${accessToken}&fileType=LOGO`;
 
@@ -69,7 +69,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
         <Screen preset='auto' backgroundColor={palette.white}>
           <HeaderWithBalance balance={availableBalance} left={<Logo uri={uri} />} right={<Menu navigation={navigation} />} />
           <View style={{ padding: spacing[3] }}>
-            <TransactionSummary summary={currentMonthSummary} accountHolder={currentAccountHolder} />
+            <TransactionSummary summary={currentMonthSummary} />
           </View>
           <HomeLatestTransactions
             transactions={latestTransactions}
