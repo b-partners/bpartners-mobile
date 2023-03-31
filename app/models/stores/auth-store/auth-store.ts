@@ -79,9 +79,13 @@ export const AuthStoreModel = types
   }))
   .actions(self => ({
     whoamiSuccess: (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
-      self.currentUser = { ...currentUser };
-      self.currentAccount = { ...currentAccount };
-      self.currentAccountHolder = { ...currentAccountHolder };
+      const user = UserModel.create(currentUser);
+      const account = AccountModel.create(currentAccount);
+      const accountHolder = AccountHolderModel.create(currentAccountHolder);
+
+      self.currentUser = { ...user };
+      self.currentAccount = { ...account };
+      self.currentAccountHolder = { ...accountHolder };
 
       save('currentUser', currentUser);
       save('currentAccount', currentAccount);
