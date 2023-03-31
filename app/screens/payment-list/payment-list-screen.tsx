@@ -26,8 +26,8 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <Screen>
+        <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
         <Tab.Navigator
           initialRouteName={translate('paymentListScreen.tabs.drafts')}
           style={TAB_BAR_STYLE}
@@ -59,7 +59,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             component={DraftsScreen}
             navigationKey='drafts'
             listeners={{
-              tabPress: () => {
+              focus: () => {
                 invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 15 });
               },
             }}
@@ -69,7 +69,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             component={QuotationsScreen}
             navigationKey='quotations'
             listeners={{
-              tabPress: () => {
+              focus: () => {
                 invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 15 });
               },
             }}
@@ -79,7 +79,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             component={InvoicesScreen}
             navigationKey='invoices'
             listeners={{
-              tabPress: () => {
+              focus: () => {
                 invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 15 });
               },
             }}

@@ -10,7 +10,6 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
-import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
@@ -60,8 +59,8 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
+      <View testID='PaymentInitiationScreen' style={FULL}>
+        <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
           <View>
             <SectionList<IInvoice>
               style={SECTION_LIST_CONTAINER_STYLE}
@@ -77,15 +76,8 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
               renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
             />
           </View>
+          <Button tx='quotationScreen.createQuotation' style={BUTTON_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={() => navigation.navigate('invoiceForm')} />
         </Screen>
-        <Button
-          tx='quotationScreen.createQuotation'
-          style={BUTTON_STYLE}
-          textStyle={BUTTON_TEXT_STYLE}
-          onPress={() => {
-            navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.PROPOSAL });
-          }}
-        />
       </View>
     </ErrorBoundary>
   );

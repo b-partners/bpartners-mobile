@@ -78,4 +78,4 @@ export const BUTTON_STYLE: ViewStyle = {
   paddingVertical: spacing[3],
   paddingHorizontal: spacing[2],
 };
-export const SECTION_LIST_CONTAINER_STYLE = { marginHorizontal: spacing[4], borderColor: color.transparent };
+export const SECTION_LIST_CONTAINER_STYLE = { marginHorizontal: spacing[4] };
