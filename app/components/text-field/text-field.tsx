@@ -65,7 +65,7 @@ export interface TextFieldProps extends TextInputProps {
 
   labelContainerStyle?: ViewStyle;
 
-  labelStyle?: StyleProp<TextStyle>;
+  labelStyle?: TextStyle;
 }
 
 /**
