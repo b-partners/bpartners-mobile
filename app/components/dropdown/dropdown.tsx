@@ -11,7 +11,7 @@ interface DropdownProps<T> extends PropsWithChildren<any> {
   value?: T;
   labelField: string;
   valueField: string;
-  onChange: (item: T) => Promise<void> | void;
+  onChange: (item: T) => Promise<void>;
   onChangeText: (search: string) => void;
   style?: ViewStyle;
   dropdownContainerStyle?: ViewStyle;
