@@ -113,7 +113,7 @@ export const Transaction = (
             placeholderTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
           >
             <View testID='transaction-category-container' style={TRANSACTION_CATEGORY_LABEL_CONTAINER}>
-              {item.category && item.category.description.length > 0 && (
+              {item.category && item.category.description && (
                 <View style={TRANSACTION_CATEGORY_LABEL_LEFT_ITEM}>
                   <Text
                     text={item.category.description}
