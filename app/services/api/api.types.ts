@@ -6,7 +6,6 @@ import { Invoice } from '../../models/entities/invoice/invoice';
 import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Marketplace } from '../../models/entities/marketplace/marketplace';
 import { Product } from '../../models/entities/product/product';
-import { Prospect } from '../../models/entities/prospect/prospect';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
@@ -64,8 +63,6 @@ export type GetFileInformation = { kind: 'ok'; fileInfos: File } | GeneralApiPro
 export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProblem;
 
 export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } | GeneralApiProblem;
-
-export type GetProspectResult = { kind: 'ok'; prospects: Prospect[] } | GeneralApiProblem;
 
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
 

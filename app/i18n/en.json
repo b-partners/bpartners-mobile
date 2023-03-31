@@ -11,8 +11,7 @@
   "common": {
     "ok": "OK!",
     "cancel": "Cancel",
-    "back": "Back",
-    "noDataProvided": "No records to display"
+    "back": "Back"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -53,9 +52,6 @@
       }
     },
     "transactionCategoryPlaceholder": "Select an item"
-  },
-  "prospectScreen": {
-    "title": "Prospects"
   },
   "onboardingScreen": {
     "title": "Onboarding"
