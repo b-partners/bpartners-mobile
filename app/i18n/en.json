@@ -212,18 +212,7 @@
     "customerSelectionForm": {
       "title": "Client Name",
       "addClient": "Add a client",
-      "validate": "Validate",
-      "customerCreationForm": {
-        "firstName": "First name",
-        "lastName": "Last name",
-        "email": "Email",
-        "address": "Address",
-        "phoneNumber": "Phone Number",
-        "comment": "Comment (Optional)",
-        "add": "Add this customer",
-        "added": "Added",
-        "fail": "Try again"
-      }
+      "validate": "Validate"
     }
   },
   "paymentListScreen": {
