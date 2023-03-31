@@ -140,10 +140,7 @@
     },
     "errors": {
       "sendingDateLaterThanToday": "La facture ne peut pas être envoyée au plus tard aujourd'hui.",
-      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement.",
-      "validEmail": "Veuillez saisir une adresse e-mail valide",
-      "validAmount": "Vérifiez que vous avez saisi un montant correct",
-      "requiredField": "Veuillez remplir ce champ"
+      "sendingDateLaterThanToPayAt": "La date d'envoi ne peut pas être postérieure à la date de paiement."
     },
     "menu": {
       "markAsInvoice": "Transformer en facture",
