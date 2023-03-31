@@ -42,11 +42,7 @@ export const AuthStoreModel = types
   .actions(self => ({
     catchOrThrow: (error: Error) => {
       const errorMessage = error.message;
-      if (errorMessage === 'server') {
-        return showMessage("Impossible d'avoir les data", { backgroundColor: palette.pastelRed });
-      }
-
-      if (errorMessage === 'cannot-connect' || errorMessage === 'timeout') {
+      if (errorMessage === 'cannot-connect') {
         return showMessage(translate('errors.verifyConnection'), { backgroundColor: palette.pastelRed });
       }
       if (errorMessage === 'forbidden') {
