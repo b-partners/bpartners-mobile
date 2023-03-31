@@ -3,9 +3,6 @@
   "components": {
     "datePicker": {
       "pickADate": "Sélectionner une date"
-    },
-    "button": {
-      "close": "Fermer"
     }
   },
   "common": {
@@ -144,7 +141,6 @@
     "title": "Devis / Facturation",
     "labels": {
       "customerSection": "Client",
-      "customerSectionPlaceholder": "John Doe",
       "productSection": "Produits",
       "totalSection": "Total",
       "addItem": "Add item",
@@ -152,10 +148,8 @@
       "title": "Titre",
       "vat": "TVA",
       "sendingDate": "Date d'envoi",
-      "validityDate": "Date de validité",
       "toPayAt": "Limite de paiement",
       "invoiceForm": "Créer un devis",
-      "invoicePreview": "Aperçu du devis",
       "comment": "Commentaire"
     },
     "errors": {
@@ -181,20 +175,12 @@
   },
   "invoiceFormScreen": {
     "invoiceForm": {
-      "addItem": "Ajouter un produit",
-      "title": "Titre du devis",
-      "titlePlaceholder": "Devis No. 1702231023",
-      "reference": "Référence",
-      "referencePlaceholder": "DEVIS-1702231023",
-      "sendingDate": "Emission",
-      "toPayAt": "Date de paiement",
-      "validityDate": "Limite de validité",
-      "delayInPaymentAllowed": "Délai de retard de paiement autorisé",
-      "delayInPaymentAllowedPlaceholder": "30",
-      "delayPenaltyPercent": "Pourcentage de pénalité de retard",
-      "delayPenaltyPercentPlaceholder": "10",
-      "comment": "Commentaire",
-      "commentPlaceholder": "Entrer votre commentaire ici...",
+      "addItem": "Ajouter un autre éléments",
+      "quotationTitle": "Titre du devis",
+      "quotationTitlePlaceholder": "Taper le titre du devis",
+      "quotationNumber": "Numéro du devis",
+      "quotationNumberPlaceholder": "Taper le numéros du devis",
+      "issueDate": "Date d'émission",
       "paymentDelay": "Délais de paiement",
       "paymentDelayPlaceholder": "Taper le délais de paiement",
       "downPayment": "Acompte",
@@ -222,7 +208,7 @@
       }
     },
     "customerSelectionForm": {
-      "title": "Nom du client",
+      "title": "Nom du Client",
       "addClient": "Ajouter un client",
       "validate": "Valider",
       "customerCreationForm": {
@@ -236,18 +222,7 @@
         "added": "Ajouté",
         "fail": "Réessayer"
       }
-    },
-    "productForm": {
-      "addProduct": "Ajouter un produit",
-      "title": "Produit",
-      "placeholder": "Sélectionner un produit",
-      "unitPrice": "Prix Unit.",
-      "quantity": "Qté",
-      "totalWithVat": "Total",
-      "vat": "TVA",
-      "delete": "Supprimer"
-    },
-    "invoicePreview": "Aperçu du devis"
+    }
   },
   "paymentListScreen": {
     "title": "Facturation",

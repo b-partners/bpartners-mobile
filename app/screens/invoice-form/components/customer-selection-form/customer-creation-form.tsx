@@ -18,7 +18,11 @@ const INVALID_FORM_FIELD: ViewStyle = {
   borderBottomWidth: 2,
 };
 
-export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
+export const CustomerCreationForm: FC<
+  PropsWithoutRef<{
+    setShowUserListModal: React.Dispatch<React.SetStateAction<boolean>>;
+  }>
+> = observer(() => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
@@ -168,7 +172,6 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
                       borderRadius: 25,
-                      marginBottom: spacing[5],
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >

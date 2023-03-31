@@ -1,9 +1,8 @@
 import React from 'react';
 import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { translate } from '../../i18n';
-import { color, spacing } from '../../theme';
+import { spacing } from '../../theme';
 import { AutoImage } from '../auto-image/auto-image';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
@@ -35,12 +34,11 @@ const WAVE_STYLE: ImageStyle = {
 export function Header(props: HeaderProps) {
   const { onLeftPress, onRightPress, rightIcon, leftIcon, headerText, headerTx, style, titleStyle } = props;
   const header = headerText || (headerTx && translate(headerTx)) || '';
-  const { top } = useSafeAreaInsets();
 
   return (
-    <View style={{ backgroundColor: color.palette.white }}>
+    <View>
       <AutoImage source={require('./header.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
-      <View style={[{ ...ROOT, height: +ROOT.height + top }, style]}>
+      <View style={[ROOT, style]}>
         {leftIcon ? (
           <TouchableOpacity onPress={onLeftPress} testID='header-left-button'>
             <Icon icon='back' />
