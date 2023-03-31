@@ -1,4 +1,4 @@
-// import { Octicons as Icon } from '@expo/vector-icons';
+import { Octicons as Icon } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -35,7 +35,9 @@ const CustomerRow: FC<TCustomerRow> = props => {
           <Text text={customerFullName} style={{ ...CUSTOMER_NAME, marginLeft: spacing[2] }} numberOfLines={2} />
         </>
       </TouchableOpacity>
-      <TouchableOpacity style={EDIT_BUTTON_STYLE}>{/*<Icon name={'pencil'} color={palette.greyDarker} size={20} />*/}</TouchableOpacity>
+      <TouchableOpacity style={EDIT_BUTTON_STYLE}>
+        <Icon name={'pencil'} color={palette.greyDarker} size={20} />
+      </TouchableOpacity>
     </View>
   );
 };

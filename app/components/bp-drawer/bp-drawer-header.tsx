@@ -1,8 +1,7 @@
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { DrawerActions } from '@react-navigation/native';
 import React from 'react';
-import { Platform, Text, TouchableOpacity, View } from 'react-native';
-// import { Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { color, spacing } from '../../theme';
@@ -38,7 +37,9 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
         </TouchableOpacity>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View>
-            <TouchableOpacity style={{ position: 'absolute', bottom: -10, left: 21, zIndex: 1 }}>{/*<Icon icon='edit' />*/}</TouchableOpacity>
+            <TouchableOpacity style={{ position: 'absolute', bottom: -10, left: 21, zIndex: 1 }}>
+              <Icon icon='edit' />
+            </TouchableOpacity>
             <AutoImage source={require('./profile-placeholder.png')} resizeMode='stretch' resizeMethod='auto' />
           </View>
           <View
@@ -70,11 +71,11 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
           </View>
         </View>
         <TouchableOpacity>
-          {/*<Icon icon='redBullet' style={{ position: 'absolute', top: 0, left: 0 }} />*/}
-          {/*<Icon icon='bell' />*/}
+          <Icon icon='redBullet' style={{ position: 'absolute', top: 0, left: 0 }} />
+          <Icon icon='bell' />
         </TouchableOpacity>
       </View>
-      {/*<View
+      <View
         style={{
           display: 'flex',
           flexDirection: 'row',
@@ -109,7 +110,7 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
           <Icon icon='magnifier' />
           <TextInput style={{ width: '100%', height: '100%', paddingHorizontal: spacing[4] }} />
         </View>
-      </View>*/}
+      </View>
     </View>
   );
 }
