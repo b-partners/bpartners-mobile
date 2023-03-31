@@ -32,7 +32,8 @@ export const BottomTab: React.FC<BottomTabProps> = props => {
       case 'service':
         setBottomTabText(
           <>
-            <Text style={{ color: palette.white, fontSize: 10 }}>{translate('bottomTab.help')}</Text>
+            <Text style={{ color: palette.white, fontSize: 10 }}>{translate('bottomTab.other')}</Text>
+            <Text style={{ color: palette.white, fontSize: 10 }}>{translate('bottomTab.service')}</Text>
           </>
         );
         break;
