@@ -92,7 +92,6 @@ function LatestTransaction(props: { item: ITransaction }) {
 
 export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
   const { loading, navigation } = props;
-
   const showSnackbar = () => {
     Snackbar.show({
       text: 'Cette fonctionnalité est encore en construction',
