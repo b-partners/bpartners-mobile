@@ -92,24 +92,10 @@
       "accountHolder": {
         "section": "Ma société",
         "name": "Nom",
-        "siren": "Siren",
-        "officialActivityName": "Activité officielle",
-        "contactAddress": {
-          "address": "Adresse",
-          "city": "Ville",
-          "country": "Pays",
-          "postalCode": "Code postal"
-        },
-        "companyInfo": {
-          "socialCapital": "Capital social"
-        },
-        "businessActivities": {
-          "primary": "Activité principale",
-          "secondary": "Activité secondaire"
-        },
-        "revenueTargets": {
-          "amountTarget": "Recette annuelle à réaliser"
-        }
+        "address": "Adresse",
+        "city": "Ville",
+        "country": "Pays",
+        "postalCode": "Code postal"
       }
     }
   },
