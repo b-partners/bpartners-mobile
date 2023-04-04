@@ -15,6 +15,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
+import {InvoiceStatus} from "../../models/entities/invoice/invoice";
 
 const BULLET_STYLE: ViewStyle = { position: 'absolute', top: -5, left: -5, zIndex: 1 };
 
@@ -42,7 +43,7 @@ export const Logo: FC<{ uri: string }> = observer(({ uri }) => {
 });
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFilesStore, authStore } = useStores();
+  const { transactionStore, legalFilesStore, authStore, invoiceStore, marketplaceStore } = useStores();
 
   const { availableBalance } = authStore.currentAccount;
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
@@ -61,6 +62,16 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   useEffect(() => {
     transactionStore.getTransactions();
     transactionStore.getTransactionCategories();
+  }, []);
+
+  useEffect(() => {
+    invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
+    invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
+    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 20 });
+    marketplaceStore.getMarketplaces({
+      page: 1,
+      pageSize: 15,
+    });
   }, []);
 
   return (
