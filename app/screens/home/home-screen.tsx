@@ -8,6 +8,7 @@ import { AutoImage, Icon, Screen } from '../../components';
 import { HeaderWithBalance } from '../../components/header-with-balance/header-with-balance';
 import env from '../../config/env';
 import { useStores } from '../../models';
+import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -15,7 +16,6 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
-import {InvoiceStatus} from "../../models/entities/invoice/invoice";
 
 const BULLET_STYLE: ViewStyle = { position: 'absolute', top: -5, left: -5, zIndex: 1 };
 

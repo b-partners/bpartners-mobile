@@ -105,6 +105,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
           style={BUTTON_STYLE}
           textStyle={BUTTON_TEXT_STYLE}
           onPress={() => {
+            invoiceStore.saveInvoiceInit();
             navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT });
           }}
         />

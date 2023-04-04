@@ -23,6 +23,7 @@ export const InvoiceStoreModel = types
     drafts: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loading: types.optional(types.boolean, false),
+    checkInvoice: types.maybeNull(types.boolean),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -181,13 +182,20 @@ export const InvoiceStoreModel = types
     }),
   }))
   .actions(self => ({
+    saveInvoiceInit: () => {
+      self.checkInvoice = null;
+    },
+  }))
+  .actions(self => ({
     saveInvoiceSuccess: (invoice: Invoice) => {
+      self.checkInvoice = true;
       self.invoice = InvoiceModel.create(invoice);
     },
   }))
-  .actions(() => ({
-    saveInvoiceFail: error => {
-      __DEV__ && console.tron.log(error);
+  .actions(self => ({
+    saveInvoiceFail: () => {
+      self.checkInvoice = false;
+      __DEV__ && console.tron.log();
     },
   }))
   .actions(self => ({
@@ -197,7 +205,7 @@ export const InvoiceStoreModel = types
         const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
         self.saveInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
       } catch (e) {
-        self.saveInvoiceFail(e.message);
+        self.saveInvoiceFail();
         self.catchOrThrow(e);
       }
     }),
