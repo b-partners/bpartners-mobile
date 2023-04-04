@@ -48,10 +48,10 @@ interface GoalProgressBarProps {
 }
 
 export const GoalProgressBar: React.FC<GoalProgressBarProps> = ({ accountHolder: accountHolder }) => {
-  const target = accountHolder.revenueTargets[0];
+  const target = accountHolder?.revenueTargets[0];
 
   const GoalAchievedInPercentage = (): string => {
-    return `${(target.amountAttempted * 100) / target.amountTarget}%`;
+    return `${(target?.amountAttempted * 100) / target?.amountTarget}%`;
   };
 
   return (
@@ -69,7 +69,7 @@ export const GoalProgressBar: React.FC<GoalProgressBarProps> = ({ accountHolder:
           <Text text='Réalisé' style={{ fontFamily: 'Geometria', color: '#BFC7DE' }} />
         </View>
         <View style={ROW}>
-          <Text text={target.amountTarget.toString()} style={{ fontFamily: 'Geometria', color: color.palette.textClassicColor }} />
+          <Text text={target?.amountTarget?.toString()} style={{ fontFamily: 'Geometria', color: color.palette.textClassicColor }} />
           <View style={{ marginHorizontal: spacing[1] }} />
           <Icon icon='coins' />
         </View>
