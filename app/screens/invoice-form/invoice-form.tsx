@@ -15,10 +15,10 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
+import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { ProductFormField } from './components/product-form-field/product-form-field';
+import { SelectFormField } from './components/select-form-field/select-form-field';
 import { InvoiceFormField } from './invoice-form-field';
-import {CustomerFormFieldFooter} from "./components/customer/customer-form-field-footer";
-import {SelectFormField} from "./components/select-form-field/select-form-field";
 
 type InvoiceFormProps = {
   invoice: Invoice;
