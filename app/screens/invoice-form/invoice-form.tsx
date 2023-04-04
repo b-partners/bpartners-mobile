@@ -76,6 +76,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         title: title,
         metadata: { ...invoice.metadata, submittedAt: new Date() },
       });
+      await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
     } catch (e) {
       showMessage(e);
       throw e;
