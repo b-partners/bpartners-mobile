@@ -10,6 +10,8 @@
   },
   "common": {
     "ok": "OK!",
+    "submit": "Confirm",
+    "or": "or",
     "cancel": "Cancel",
     "back": "Back",
     "noDataProvided": "No records to display"
@@ -233,6 +235,7 @@
       "viewMail": "View my email address",
       "limitedValidityPeriod": "Limited period of validity",
       "days": "Days",
+      "save": "save the quote",
       "editableTextField": {
         "error": {
           "required": "This field is required",

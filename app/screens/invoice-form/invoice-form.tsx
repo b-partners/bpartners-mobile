@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {Modal, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, Icon, Text } from '../../components';
+import {Button, Icon, Text} from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
@@ -17,6 +17,7 @@ import { CustomerFormFieldFooter } from './components/customer/customer-form-fie
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
 import { InvoiceFormField } from './invoice-form-field';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -56,6 +57,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [creationModal, setCreationModal] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(false);
 
   __DEV__ && console.tron.log({ invoiceType });
 
@@ -357,7 +359,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           paddingHorizontal: spacing[5],
         }}
       >
-        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+        <TouchableOpacity onPress={() => setConfirmationModal(true)}>
           <View
             style={{
               borderColor: color.palette.secondaryColor,
@@ -384,6 +386,68 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />*/}
       </View>
+        <Modal animationType='slide' transparent={true} visible={confirmationModal} onRequestClose={() => setConfirmationModal(false)}>
+            <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ backgroundColor: palette.white, height: '35%', width: '90%', borderRadius: 15 }}>
+                    <View style={{ width: '100%', height: '25%', borderBottomWidth: 1, borderBottomColor: palette.secondaryColor, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text tx={'invoiceFormScreen.invoiceForm.save'} style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 18 }}/>
+                    </View>
+                    <View style={{ width: '100%', height: '75%', flexDirection: 'column'}}>
+                        <View style={{ width: '100%', height: '45%', justifyContent: 'center'}}>
+                        <Button
+                            onPress={() => {}/*handleSubmit(onSubmit)*/}
+                            style={{
+                                flexDirection: 'row',
+                                backgroundColor: palette.green,
+                                borderRadius: 25,
+                                paddingVertical: spacing[2],
+                                marginHorizontal: spacing[6],
+                                height: 45
+                            }}
+                        >
+                            <Text
+                                tx='common.submit'
+                                style={{
+                                    color: palette.white,
+                                    marginRight: spacing[2],
+                                    fontFamily: 'Geometria',
+                                }}
+                            />
+                            <SimpleLineIcons name='check' size={20} color='white' />
+                        </Button>
+                        </View>
+                        <View style={{ width: '100%', height: '10%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text tx={'common.or'} style={{ color: palette.secondaryColor, fontFamily: 'Geometria' }}/>
+                        </View>
+                        <View style={{ width: '100%', height: '45%', justifyContent: 'center' }}>
+                        <Button
+                            onPress={() => {
+                                setConfirmationModal(false);
+                            }}
+                            style={{
+                                flexDirection: 'row',
+                                backgroundColor: palette.pastelRed,
+                                borderRadius: 25,
+                                paddingVertical: spacing[2],
+                                marginHorizontal: spacing[6],
+                                height: 45
+                            }}
+                        >
+                            <Text
+                                tx='common.cancel'
+                                style={{
+                                    color: palette.white,
+                                    marginRight: spacing[2],
+                                    fontFamily: 'Geometria',
+                                }}
+                            />
+                            <SimpleLineIcons name='close' size={20} color='white' />
+                        </Button>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
     </View>
   );
 };

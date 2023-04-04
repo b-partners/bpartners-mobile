@@ -10,6 +10,8 @@
   },
   "common": {
     "ok": "OK!",
+    "submit": "Confirmer",
+    "or": "ou",
     "cancel": "Annuler",
     "back": "Précédent",
     "noDataProvided": "Aucun enregistrement à afficher"
@@ -218,6 +220,7 @@
       "viewMail": "Afficher mon addresse email",
       "limitedValidityPeriod": "Durée de validité limitée",
       "days": "Jours",
+      "save": "Enregistrer le devis",
       "editableTextField": {
         "error": {
           "required": "Ce champ est requis",
