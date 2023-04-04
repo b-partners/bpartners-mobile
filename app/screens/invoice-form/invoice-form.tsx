@@ -5,7 +5,7 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-import {Button, Icon, Loader, Text} from '../../components';
+import { Button, Icon, Loader, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
@@ -15,10 +15,10 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
-import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { ProductFormField } from './components/product-form-field/product-form-field';
-import { SelectFormField } from './components/select-form-field/select-form-field';
 import { InvoiceFormField } from './invoice-form-field';
+import {CustomerFormFieldFooter} from "./components/customer/customer-form-field-footer";
+import {SelectFormField} from "./components/select-form-field/select-form-field";
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -80,7 +80,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         metadata: { ...invoice.metadata, submittedAt: new Date() },
       });
       await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
-        await invoiceStore.getDrafts({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
+      await invoiceStore.getDrafts({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
     } catch (e) {
       showMessage(e);
       throw e;
@@ -442,19 +442,21 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                     height: 45,
                   }}
                 >
-                    {saveLoading === true ? <Loader /> :
-                  <>
-                        <Text
-                    tx='common.submit'
-                    style={{
-                      color: palette.white,
-                      marginRight: spacing[2],
-                      fontFamily: 'Geometria',
-                    }}
-                  />
-                        <SimpleLineIcons name='check' size={20} color='white' />
-                  </>
-                    }
+                  {saveLoading === true ? (
+                    <Loader />
+                  ) : (
+                    <>
+                      <Text
+                        tx='common.submit'
+                        style={{
+                          color: palette.white,
+                          marginRight: spacing[2],
+                          fontFamily: 'Geometria',
+                        }}
+                      />
+                      <SimpleLineIcons name='check' size={20} color='white' />
+                    </>
+                  )}
                 </Button>
               </View>
               <View style={{ width: '100%', height: '10%', justifyContent: 'center', alignItems: 'center' }}>
