@@ -200,6 +200,7 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     saveInvoice: flow(function* (invoice: Invoice) {
+      self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
@@ -207,6 +208,8 @@ export const InvoiceStoreModel = types
       } catch (e) {
         self.saveInvoiceFail();
         self.catchOrThrow(e);
+      } finally {
+        self.loading = false;
       }
     }),
   }))

@@ -5,7 +5,7 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-import { Button, Icon, Text } from '../../components';
+import {Button, Icon, Loader, Text} from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
@@ -54,7 +54,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoiceType } = props;
   const { invoiceStore, customerStore } = useStores();
-  const { customers, checkInvoice } = invoiceStore;
+  const { customers, checkInvoice, loading } = invoiceStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [creationModal, setCreationModal] = useState(false);
@@ -442,6 +442,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                     height: 45,
                   }}
                 >
+                    {loading === true ? <Loader /> :
                   <Text
                     tx='common.submit'
                     style={{
@@ -450,6 +451,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                       fontFamily: 'Geometria',
                     }}
                   />
+                    }
                   <SimpleLineIcons name='check' size={20} color='white' />
                 </Button>
               </View>
