@@ -7,7 +7,7 @@ export const sectionInvoicesByMonth = (invoices: InvoiceSnapshotIn) => {
   for (const quotationByMonthKey in quotationGroupedByMonth) {
     if (quotationGroupedByMonth.hasOwnProperty(quotationByMonthKey)) {
       const quotationByMonthElement: InvoiceSnapshotOut[] = quotationGroupedByMonth[quotationByMonthKey];
-      sectionedQuotation.push({
+      sectionedQuotation.unshift({
         title: new Intl.DateTimeFormat('default', { month: 'long' }).format(new Date(quotationByMonthElement[0].sendingDate)),
         data: quotationByMonthElement,
       });
