@@ -194,9 +194,9 @@ export const InvoiceStoreModel = types
     },
   }))
   .actions(self => ({
-    saveInvoiceFail: () => {
+    saveInvoiceFail: error => {
       self.checkInvoice = false;
-      __DEV__ && console.tron.log();
+      __DEV__ && console.tron.log(error);
     },
   }))
   .actions(self => ({
@@ -207,7 +207,7 @@ export const InvoiceStoreModel = types
         const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
         self.saveInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
       } catch (e) {
-        self.saveInvoiceFail();
+        self.saveInvoiceFail(e.message);
         self.catchOrThrow(e);
       } finally {
         self.saveLoading = false;
