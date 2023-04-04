@@ -54,7 +54,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoiceType } = props;
   const { invoiceStore, customerStore } = useStores();
-  const { customers, checkInvoice, loading } = invoiceStore;
+  const { customers, checkInvoice, saveLoading } = invoiceStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [creationModal, setCreationModal] = useState(false);
@@ -442,8 +442,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                     height: 45,
                   }}
                 >
-                    {loading === true ? <Loader /> :
-                  <Text
+                    {saveLoading === true ? <Loader /> :
+                  <>
+                        <Text
                     tx='common.submit'
                     style={{
                       color: palette.white,
@@ -451,8 +452,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                       fontFamily: 'Geometria',
                     }}
                   />
+                        <SimpleLineIcons name='check' size={20} color='white' />
+                  </>
                     }
-                  <SimpleLineIcons name='check' size={20} color='white' />
                 </Button>
               </View>
               <View style={{ width: '100%', height: '10%', justifyContent: 'center', alignItems: 'center' }}>
