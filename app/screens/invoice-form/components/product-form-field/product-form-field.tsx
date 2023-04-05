@@ -10,7 +10,7 @@ import { useStores } from '../../../../models';
 import { Product } from '../../../../models/entities/product/product';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import { printCurrency, printVat } from '../../../../utils/money';
+import {printCurrencyToMajors, printVat} from '../../../../utils/money';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
 import { ProductCreationModal } from './product-creation-modal';
@@ -224,7 +224,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
               inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase' }}
               keyboardType='numeric'
               editable={false}
-              value={printCurrency(currentProduct?.unitPrice)?.toString()}
+              value={printCurrencyToMajors(currentProduct?.unitPrice)?.toString()}
             />
             <TextField
               labelTx='invoiceFormScreen.productForm.vat'
@@ -240,7 +240,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             <InvoiceFormField
               labelTx='invoiceFormScreen.productForm.totalWithVat'
               editable={false}
-              value={printCurrency(currentProduct?.unitPriceWithVat * currentProduct?.quantity)}
+              value={printCurrencyToMajors(currentProduct?.unitPriceWithVat * currentProduct?.quantity)}
             />
           </View>
         </View>
