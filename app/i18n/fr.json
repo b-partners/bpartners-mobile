@@ -184,10 +184,10 @@
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
       "downloadInvoice": "Télécharger la facture ",
-      "editInvoice": "Modifier la facture"
+      "editDraft": "Modifier le brouillon"
     },
     "messages": {
-      "successfullyMarkAsProposal": "Devis envoyé au client.",
+      "successfullyMarkAsProposal": "Le devis a bien été créé",
       "successfullyMarkAsInvoice": "Devis transformé en facture.",
       "downloadingInvoice": "Téléchargement de la facture en cours",
       "invoiceSuccessfullyDownload": "Facture téléchargée.",
@@ -301,7 +301,8 @@
   },
   "supportContactScreen": {
     "title": "Contacter le support",
-    "message": "Pour contacter le support, veuillez envoyer un courriel à",
+    "messagePartOne": "Pour contacter le support, veuillez",
+    "messagePartTwo": "envoyer un courriel à",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {
