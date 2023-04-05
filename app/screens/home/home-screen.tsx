@@ -68,6 +68,10 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
     invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
     invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 20 });
+  }, []);
+  
+  useEffect(() => {
+    prospectStore.getProspects();
     marketplaceStore.getMarketplaces({
       page: 1,
       pageSize: 15,

@@ -1,7 +1,8 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
+import ZocialIcon from 'react-native-vector-icons/Zocial';
 
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
@@ -9,11 +10,7 @@ import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { HEADER_TITLE, SUPPORT_HEADER } from '../payment-initiation/style';
-
-const FULL: ViewStyle = {
-  flex: 1,
-};
+import { SCREEN_STYLE } from '../marketplace/styles';
 
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
@@ -21,24 +18,62 @@ const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[4],
 };
 
-const MESSAGE_STYLE: TextStyle = { color: color.palette.black, textAlign: 'justify', lineHeight: 22 };
-
 export const SupportContactScreen: FC<StackScreenProps<TabNavigatorParamList, 'supportContact'>> = observer(function SupportContactScreen({ navigation }) {
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='PaymentInitiationScreen' style={FULL}>
+      <View testID='SupportContactScreen' style={SCREEN_STYLE}>
         <Header
           headerTx='supportContactScreen.title'
-          style={SUPPORT_HEADER}
-          titleStyle={HEADER_TITLE}
           leftIcon={'back'}
-          rightIcon={'info'}
+          // rightIcon={'info'}
           onLeftPress={async () => {
             navigation.navigate('home');
           }}
         />
         <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
-          <Text text={`${translate('supportContactScreen.message')} ${translate('supportContactScreen.mail')}.`} style={MESSAGE_STYLE} />
+          <View
+            style={{
+              width: '100%',
+              height: 150,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <View
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderWidth: 1,
+                borderColor: palette.white,
+                borderRadius: 70,
+                backgroundColor: '#EEF0F4',
+                height: 100,
+                width: 100,
+              }}
+            >
+              <ZocialIcon name='email' size={70} color='#D3D9DD' />
+            </View>
+            <Text
+              tx={'supportContactScreen.mail'}
+              style={{
+                color: palette.lightGrey,
+                marginTop: 2,
+                fontSize: 13,
+                fontFamily: 'Geometria',
+              }}
+            />
+          </View>
+          <Text
+            text={translate('supportContactScreen.messagePartOne')}
+            style={{ color: palette.lightGrey, textAlign: 'center', lineHeight: 22, fontFamily: 'Geometria' }}
+          />
+          <Text
+            text={`${translate('supportContactScreen.messagePartTwo')} ${translate('supportContactScreen.mail')}`}
+            style={{ color: palette.lightGrey, textAlign: 'center', lineHeight: 22, fontFamily: 'Geometria' }}
+          />
         </Screen>
       </View>
     </ErrorBoundary>
