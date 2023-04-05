@@ -23,10 +23,6 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
 
   const [status, setStatus] = useState<string>('TO_CONTACT');
 
-  useEffect(() => {
-    prospectStore.getProspects();
-  }, []);
-
   const Location = ({ prospect }) => {
     const geoJsonUrl = location => {
       const geojsonBaseurl = 'http://geojson.io/#data=data:application/json,';

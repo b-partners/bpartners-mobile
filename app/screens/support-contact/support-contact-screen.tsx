@@ -9,7 +9,6 @@ import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { HEADER_TITLE, SUPPORT_HEADER } from '../payment-initiation/style';
 import {SCREEN_STYLE} from "../marketplace/styles";
 
 const CONTAINER: ViewStyle = {
