@@ -31,8 +31,9 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   const { invoiceStore } = useStores();
   const { drafts, loading } = invoiceStore;
 
+  __DEV__ && console.tron.log('Voici les brouillons: ', drafts);
   const handleRefresh = async () => {
-    await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.DRAFT });
+    await invoiceStore.getQuotations({ page: 1, pageSize: 20, status: InvoiceStatus.DRAFT });
   };
 
   const editInvoice = async (item: IInvoice) => {
@@ -105,6 +106,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
           style={BUTTON_STYLE}
           textStyle={BUTTON_TEXT_STYLE}
           onPress={() => {
+            invoiceStore.saveInvoiceInit();
             navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT });
           }}
         />

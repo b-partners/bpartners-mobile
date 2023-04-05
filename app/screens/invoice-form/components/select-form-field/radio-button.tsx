@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 import React, { FC } from 'react';
 
-import { color } from '../../../theme';
+import { color } from '../../../../theme';
 import { CircleOutline } from './circle-outline';
 
 type TRadioButton = {

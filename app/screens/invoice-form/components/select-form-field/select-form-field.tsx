@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { FlatList, Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle, useWindowDimensions } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, Icon, Separator, Text, TextField, TextFieldProps } from '../../../components';
-import { TxKeyPath } from '../../../i18n';
-import { Customer } from '../../../models/entities/customer/customer';
-import { color, spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
+import { Button, Icon, Separator, Text, TextField, TextFieldProps } from '../../../../components';
+import { TxKeyPath } from '../../../../i18n';
+import { Customer } from '../../../../models/entities/customer/customer';
+import { color, spacing } from '../../../../theme';
+import { palette } from '../../../../theme/palette';
 import CustomerRow from './customer-row';
 
 type SelectFormFieldProps = TextFieldProps & {
