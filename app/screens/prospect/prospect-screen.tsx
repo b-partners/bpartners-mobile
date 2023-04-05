@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { Linking, ScrollView, View } from 'react-native';
 import { Card, Menu, Paragraph, Title } from 'react-native-paper';
 import LocationIcon from 'react-native-vector-icons/Entypo';
