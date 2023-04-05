@@ -17,19 +17,18 @@ import { ProductCreationModal } from './product-creation-modal';
 
 type ProductFormFieldProps = {
   index: number;
-  temp: Product;
   items: Product[];
   onDeleteItem: (product: Product, index: number) => void;
   onValueChange?: (product: Product) => void;
 };
 
 export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
-  const { onValueChange, onDeleteItem, items, temp, index } = props;
-  const [currentProduct, setCurrentProduct] = useState<Product | null>(temp);
+  const { onValueChange, onDeleteItem, items, index } = props;
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
 
   const [creationModal, setCreationModal] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [quantityValue, setQuantityValue] = useState(temp?.quantity?.toString());
+  const [quantityValue, setQuantityValue] = useState('');
 
   const { productStore } = useStores();
 
@@ -104,28 +103,13 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                       borderRadius: 25,
                     }}
                   >
-                    <TouchableOpacity
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}
-                      onPress={() => setVisible(true)}
-                    >
+                    <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setVisible(true)}>
                       <TextField
                         editable={false}
                         placeholderTx='invoiceFormScreen.productForm.placeholder'
                         value={currentProduct?.description}
-                        labelStyle={{
-                          fontFamily: 'Geometria-Bold',
-                          fontSize: 15,
-                          textTransform: 'uppercase',
-                        }}
-                        inputStyle={{
-                          fontFamily: 'Geometria-Bold',
-                          fontSize: 15,
-                          textTransform: 'uppercase',
-                        }}
+                        labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' }}
+                        inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' }}
                         style={{ width: '80%' }}
                       />
                       <View style={{ justifyContent: 'center' }}>
@@ -153,18 +137,8 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                               },
                             ]}
                           >
-                            <View
-                              style={{
-                                paddingVertical: spacing[4],
-                                paddingHorizontal: spacing[3],
-                              }}
-                            >
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                }}
-                              >
+                            <View style={{ paddingVertical: spacing[4], paddingHorizontal: spacing[3] }}>
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text
                                   tx={'invoiceFormScreen.productForm.placeholder'}
                                   style={{
@@ -183,18 +157,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                   keyExtractor={item => item.id}
                                   renderItem={({ item: product }) => {
                                     return (
-                                      <View
-                                        style={{
-                                          flex: 1,
-                                          flexDirection: 'row',
-                                          paddingVertical: spacing[2],
-                                        }}
-                                      >
+                                      <View style={{ flex: 1, flexDirection: 'row', paddingVertical: spacing[2] }}>
                                         <TouchableOpacity
-                                          style={{
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                          }}
+                                          style={{ flex: 1, flexDirection: 'row' }}
                                           onPress={() => {
                                             setQuantityValue('');
                                             setCurrentProduct(product);
@@ -204,12 +169,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                             <RadioButton isActive={product.id === currentProduct?.id} />
                                             <Text
                                               text={product.description}
-                                              style={{
-                                                color: palette.textClassicColor,
-                                                fontWeight: 'bold',
-                                                fontSize: 18,
-                                                marginLeft: spacing[2],
-                                              }}
+                                              style={{ color: palette.textClassicColor, fontWeight: 'bold', fontSize: 18, marginLeft: spacing[2] }}
                                               numberOfLines={2}
                                             />
                                           </>
@@ -247,20 +207,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
           <View style={{ flexDirection: 'row', width: '100%' }}>
             <TextField
               labelTx='invoiceFormScreen.productForm.quantity'
-              labelStyle={{
-                fontFamily: 'Geometria-Bold',
-                fontSize: 12,
-                textTransform: 'uppercase',
-                alignSelf: 'center',
-              }}
+              labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', alignSelf: 'center' }}
               style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '25%' }}
-              inputStyle={{
-                borderRadius: 5,
-                fontFamily: 'Geometria-Bold',
-                fontSize: 16,
-                textTransform: 'uppercase',
-                alignSelf: 'center',
-              }}
+              inputStyle={{ borderRadius: 5, fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
               keyboardType='numeric'
               value={quantityValue}
               onChangeText={quantity => {
@@ -279,19 +228,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             />
             <TextField
               labelTx='invoiceFormScreen.productForm.vat'
-              labelStyle={{
-                fontFamily: 'Geometria-Bold',
-                fontSize: 12,
-                textTransform: 'uppercase',
-                alignSelf: 'center',
-              }}
+              labelStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', alignSelf: 'center' }}
               style={{ borderColor: '#E1E5EF', borderWidth: 1, width: '25%' }}
-              inputStyle={{
-                fontFamily: 'Geometria-Bold',
-                fontSize: 16,
-                textTransform: 'uppercase',
-                alignSelf: 'center',
-              }}
+              inputStyle={{ fontFamily: 'Geometria-Bold', fontSize: 16, textTransform: 'uppercase', alignSelf: 'center' }}
               keyboardType='numeric'
               editable={false}
               value={printVat(currentProduct?.vatPercent)}
