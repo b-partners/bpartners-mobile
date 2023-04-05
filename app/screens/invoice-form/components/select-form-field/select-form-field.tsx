@@ -1,5 +1,5 @@
 import { Observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle, useWindowDimensions } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
@@ -40,7 +40,6 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
     labelStyle: labelStyleOverrides,
     inputStyle: inputStyleOverrides,
     modalTx,
-    value,
     ...textFieldProps
   } = props;
 
@@ -48,12 +47,6 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
 
   const { height } = useWindowDimensions();
   const MAX_HEIGHT = (6 * height) / 10;
-
-  useEffect(() => {
-    if (value && value !== selectedCustomer) {
-      setSelectedCustomer(value);
-    }
-  }, [value]);
 
   return (
     <Observer>
