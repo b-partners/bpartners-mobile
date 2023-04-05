@@ -10,7 +10,7 @@ import { useStores } from '../../../../models';
 import { Product } from '../../../../models/entities/product/product';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import {printCurrencyToMajors, printVat} from '../../../../utils/money';
+import { printCurrencyToMajors, printVat } from '../../../../utils/money';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
 import { ProductCreationModal } from './product-creation-modal';
