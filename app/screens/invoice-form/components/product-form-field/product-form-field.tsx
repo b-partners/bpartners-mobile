@@ -1,4 +1,4 @@
-import { Octicons } from '@expo/vector-icons';
+// *import { Octicons } from '@expo/vector-icons';
 import { Observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
@@ -174,9 +174,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                             />
                                           </>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
+                                        {/*<TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
                                           <Octicons name={'pencil'} color={palette.greyDarker} size={20} />
-                                        </TouchableOpacity>
+                                        </TouchableOpacity>*/}
                                       </View>
                                     );
                                   }}
