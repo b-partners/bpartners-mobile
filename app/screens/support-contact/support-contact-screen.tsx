@@ -10,10 +10,7 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER_TITLE, SUPPORT_HEADER } from '../payment-initiation/style';
-
-const FULL: ViewStyle = {
-  flex: 1,
-};
+import {SCREEN_STYLE} from "../marketplace/styles";
 
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
@@ -26,13 +23,11 @@ const MESSAGE_STYLE: TextStyle = { color: color.palette.black, textAlign: 'justi
 export const SupportContactScreen: FC<StackScreenProps<TabNavigatorParamList, 'supportContact'>> = observer(function SupportContactScreen({ navigation }) {
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='PaymentInitiationScreen' style={FULL}>
+      <View testID='SupportContactScreen' style={SCREEN_STYLE}>
         <Header
           headerTx='supportContactScreen.title'
-          style={SUPPORT_HEADER}
-          titleStyle={HEADER_TITLE}
           leftIcon={'back'}
-          rightIcon={'info'}
+          // rightIcon={'info'}
           onLeftPress={async () => {
             navigation.navigate('home');
           }}
