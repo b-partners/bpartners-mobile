@@ -176,6 +176,7 @@ export const InvoiceStoreModel = types
       try {
         const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
         self.getInvoiceSuccess(getInvoiceResult.invoice);
+        return getInvoiceResult.invoice;
       } catch (e) {
         self.getInvoiceFail(e.message);
         self.catchOrThrow(e);

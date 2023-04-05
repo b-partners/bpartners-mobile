@@ -24,6 +24,7 @@ import {
   STATUS_CONTAINER,
   STATUS_TEXT,
 } from '../styles';
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction };
 

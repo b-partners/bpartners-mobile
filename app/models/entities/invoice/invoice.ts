@@ -78,13 +78,20 @@ export const EMPTY_INVOICE: Invoice = {
   },
 };
 
-export const createInvoiceDefaultModel = (status: InvoiceStatus = InvoiceStatus.DRAFT) => {
+export const createInvoiceDefaultModel = (status: InvoiceStatus = InvoiceStatus.DRAFT, invoice: Invoice) => {
   const date = new Date().toLocaleDateString().replace(/\//g, '');
   const hour = new Date().toLocaleTimeString().replace(/:/g, '');
   const ref = `REF-${date}${hour}`;
 
+  __DEV__&&console.tron.log(invoice);
+  __DEV__&&console.tron.log("invoiceDefault: ");
+
+  let temp = invoice ? invoice : EMPTY_INVOICE;
+
+  __DEV__&&console.tron.log(temp);
+
   return types.optional(InvoiceModel, {
-    ...EMPTY_INVOICE,
+    ...temp,
     ref,
     status,
   });
