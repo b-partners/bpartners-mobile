@@ -305,7 +305,8 @@
   },
   "supportContactScreen": {
     "title": "Contact support",
-    "message": "To contact support, please send an email to",
+    "messagePartOne": "To contact support, please",
+    "messagePartTwo": "send an email to",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {
