@@ -289,7 +289,8 @@
   },
   "supportContactScreen": {
     "title": "Contacter le support",
-    "message": "Pour contacter le support, veuillez envoyer un courriel à",
+    "messagePartOne": "Pour contacter le support, veuillez",
+    "messagePartTwo": "envoyer un courriel à",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {
