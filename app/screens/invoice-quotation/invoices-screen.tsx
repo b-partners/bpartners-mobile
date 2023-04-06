@@ -13,7 +13,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
-import { fetchBinaryFile } from '../../utils/fetch-binary-file';
+import { fetchBinaryFiles } from '../../utils/file-utils';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
@@ -45,7 +45,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   const downloadInvoice = async (url: string, fileName: string) => {
     try {
       showMessage(translate('invoiceScreen.messages.downloadingInvoice'));
-      await fetchBinaryFile({
+      await fetchBinaryFiles({
         url,
         fileName,
       });
