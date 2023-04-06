@@ -37,3 +37,8 @@ export const CHEVRON_DOWN_ICON_STYLE: ViewStyle = {
   bottom: spacing[2],
   right: spacing[2],
 };
+
+export const INVALID_FORM_FIELD: ViewStyle = {
+  borderBottomColor: '#FF5983',
+  borderBottomWidth: 2,
+};

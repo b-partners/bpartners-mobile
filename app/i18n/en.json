@@ -10,6 +10,8 @@
   },
   "common": {
     "ok": "OK!",
+    "submit": "Confirm",
+    "or": "or",
     "cancel": "Cancel",
     "back": "Back",
     "noDataProvided": "No records to display"
@@ -17,7 +19,9 @@
   "errors": {
     "invalidEmail": "Invalid email address.",
     "somethingWentWrong": "Something went wrong. Please retry later.",
-    "verifyConnection": "Verify your connection"
+    "verifyConnection": "Verify your connection",
+    "required": "This field is required",
+    "amount": "Invalid amount"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -195,10 +199,10 @@
       "markAsInvoice": "Mark as invoice",
       "markAsProposal": "Mark as proposal",
       "downloadInvoice": "Download",
-      "editInvoice": "Edit"
+      "editDraft": "Edit"
     },
     "messages": {
-      "successfullyMarkAsProposal": "Invoice proposed to customer.",
+      "successfullyMarkAsProposal": "The quote has been created",
       "successfullyMarkAsInvoice": "Quotation successfully transformed as invoice.",
       "downloadingInvoice": "Downloading invoice",
       "invoiceSuccessfullyDownload": "Invoice downloaded",
@@ -206,6 +210,9 @@
     }
   },
   "invoiceFormScreen": {
+    "invoiceCreationForm": {
+      "add": "Ajouter this product"
+    },
     "invoiceForm": {
       "addItem": "Add a product",
       "title": "Quotation title",
@@ -228,6 +235,7 @@
       "viewMail": "View my email address",
       "limitedValidityPeriod": "Limited period of validity",
       "days": "Days",
+      "save": "save the quote",
       "editableTextField": {
         "error": {
           "required": "This field is required",
@@ -262,6 +270,10 @@
         "added": "Added",
         "fail": "Try again"
       }
+    },
+    "productCreationForm": {
+      "unitPrice": "Unit price before tax (in €)",
+      "description": "Description"
     },
     "productForm": {
       "addProduct": "Add a product",
@@ -305,7 +317,8 @@
   },
   "supportContactScreen": {
     "title": "Contact support",
-    "message": "To contact support, please send an email to",
+    "messagePartOne": "To contact support, please",
+    "messagePartTwo": "send an email to",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {

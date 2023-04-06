@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
 
@@ -12,25 +12,39 @@ import { useStores } from '../../../../models';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import emptyToNull from '../../../../utils/empty-to-null';
+import { INVALID_FORM_FIELD } from '../../styles';
 
-const INVALID_FORM_FIELD: ViewStyle = {
-  borderBottomColor: '#FF5983',
-  borderBottomWidth: 2,
-};
-
-export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
+export const CustomerCreationForm: FC<
+  PropsWithoutRef<{
+    setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
+  }>
+> = observer(props => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
 
   const validationSchema = yup.object().shape({
-    customerFirstName: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerLastName: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerAddress: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerPhoneNumber: yup.string().required().label(translate('paymentInitiationScreen.fields.amount')),
-    customerEmail: yup.string().email().label(translate('paymentInitiationScreen.fields.payerEmail')),
+    customerFirstName: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName')),
+    customerLastName: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName')),
+    customerAddress: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.address')),
+    customerPhoneNumber: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber')),
+    customerEmail: yup.string().email(translate('errors.invalidEmail')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.email')),
   });
 
   const { customerStore, invoiceStore } = useStores();
   const { checkCustomer, loadingCustomerCreation } = customerStore;
+
+  const { setVisibleModal } = props;
 
   return (
     <View testID='paymentInitiationScreen' style={{ height: '100%', width: '100%' }}>
@@ -138,7 +152,6 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                     }}
                   >
                     <Text style={{ fontSize: 14, fontFamily: 'Geometria-Bold' }} tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.add' />
-                    <SimpleLineIcons name='check' style={{ marginLeft: spacing[2] }} size={20} color='white' />
                   </View>
                 ) : (
                   <Button
@@ -160,6 +173,7 @@ export const CustomerCreationForm: FC<PropsWithoutRef<{}>> = observer(() => {
                           zipCode: 0,
                         });
                         await invoiceStore.getCustomers();
+                        setVisibleModal(false);
                       } catch (e) {
                         __DEV__ && console.tron.log(e);
                       }

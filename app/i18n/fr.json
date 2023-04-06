@@ -10,6 +10,8 @@
   },
   "common": {
     "ok": "OK!",
+    "submit": "Confirmer",
+    "or": "ou",
     "cancel": "Annuler",
     "back": "Précédent",
     "noDataProvided": "Aucun enregistrement à afficher"
@@ -17,7 +19,9 @@
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
     "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
-    "verifyConnection": "Verifier votre connexion"
+    "verifyConnection": "Verifier votre connexion",
+    "required": "Ce champ est requis",
+    "amount": "Montant invalide"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
@@ -180,10 +184,10 @@
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
       "downloadInvoice": "Télécharger la facture ",
-      "editInvoice": "Modifier la facture"
+      "editDraft": "Modifier le brouillon"
     },
     "messages": {
-      "successfullyMarkAsProposal": "Devis envoyé au client.",
+      "successfullyMarkAsProposal": "Le devis a bien été créé",
       "successfullyMarkAsInvoice": "Devis transformé en facture.",
       "downloadingInvoice": "Téléchargement de la facture en cours",
       "invoiceSuccessfullyDownload": "Facture téléchargée.",
@@ -191,6 +195,9 @@
     }
   },
   "invoiceFormScreen": {
+    "invoiceCreationForm": {
+      "add": "Ajouter ce produit"
+    },
     "invoiceForm": {
       "addItem": "Ajouter un produit",
       "title": "Titre du devis",
@@ -213,6 +220,7 @@
       "viewMail": "Afficher mon addresse email",
       "limitedValidityPeriod": "Durée de validité limitée",
       "days": "Jours",
+      "save": "Enregistrer le devis",
       "editableTextField": {
         "error": {
           "required": "Ce champ est requis",
@@ -247,6 +255,10 @@
         "added": "Ajouté",
         "fail": "Réessayer"
       }
+    },
+    "productCreationForm": {
+      "unitPrice": "Prix unitaire HT (en €)",
+      "description": "Description"
     },
     "productForm": {
       "addProduct": "Ajouter un produit",
@@ -289,7 +301,8 @@
   },
   "supportContactScreen": {
     "title": "Contacter le support",
-    "message": "Pour contacter le support, veuillez envoyer un courriel à",
+    "messagePartOne": "Pour contacter le support, veuillez",
+    "messagePartTwo": "envoyer un courriel à",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {

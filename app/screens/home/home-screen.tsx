@@ -8,6 +8,7 @@ import { AutoImage, Icon, Screen } from '../../components';
 import { HeaderWithBalance } from '../../components/header-with-balance/header-with-balance';
 import env from '../../config/env';
 import { useStores } from '../../models';
+import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -42,7 +43,7 @@ export const Logo: FC<{ uri: string }> = observer(({ uri }) => {
 });
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFilesStore, authStore } = useStores();
+  const { transactionStore, legalFilesStore, authStore, invoiceStore, marketplaceStore, prospectStore } = useStores();
 
   const { availableBalance } = authStore.currentAccount;
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
@@ -61,6 +62,22 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   useEffect(() => {
     transactionStore.getTransactions();
     transactionStore.getTransactionCategories();
+  }, []);
+
+  useEffect(() => {
+    invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
+    invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
+    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 20 });
+    invoiceStore.getCustomers();
+    invoiceStore.getProducts();
+  }, []);
+
+  useEffect(() => {
+    prospectStore.getProspects();
+    marketplaceStore.getMarketplaces({
+      page: 1,
+      pageSize: 15,
+    });
   }, []);
 
   return (

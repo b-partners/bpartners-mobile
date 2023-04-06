@@ -3,22 +3,18 @@ import { Modal, View } from 'react-native';
 
 import { Header } from '../../../../components';
 import { palette } from '../../../../theme/palette';
+import { ModalProps } from '../utils';
 import { CustomerCreationForm } from './customer-creation-form';
 
-type ShareModalProps = {
-  creationModal: boolean;
-  setCreationModal: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
-  const { creationModal, setCreationModal } = props;
+export const CustomerCreationModal: React.FC<ModalProps> = props => {
+  const { visibleModal, setVisibleModal } = props;
 
   const closeShareModal = () => {
-    setCreationModal(false);
+    setVisibleModal(false);
   };
 
   return (
-    <Modal animationType='slide' transparent={true} visible={creationModal} onRequestClose={closeShareModal}>
+    <Modal animationType='slide' transparent={true} visible={visibleModal} onRequestClose={closeShareModal}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'flex-end', alignItems: 'center' }}>
         <View style={{ backgroundColor: palette.white, height: '100%', width: '100%' }}>
           <View>
@@ -30,7 +26,7 @@ export const CustomerCreationModal: React.FC<ShareModalProps> = props => {
             />
           </View>
           <View style={{ width: '100%', height: '100%' }}>
-            <CustomerCreationForm />
+            <CustomerCreationForm setVisibleModal={setVisibleModal} />
           </View>
         </View>
       </View>
