@@ -83,12 +83,12 @@ export const createInvoiceDefaultModel = (status: InvoiceStatus = InvoiceStatus.
   const hour = new Date().toLocaleTimeString().replace(/:/g, '');
   const ref = `REF-${date}${hour}`;
 
-  __DEV__&&console.tron.log(invoice);
-  __DEV__&&console.tron.log("invoiceDefault: ");
+  __DEV__ && console.tron.log(invoice);
+  __DEV__ && console.tron.log('invoiceDefault: ');
 
   let temp = invoice ? invoice : EMPTY_INVOICE;
 
-  __DEV__&&console.tron.log(temp);
+  __DEV__ && console.tron.log(temp);
 
   return types.optional(InvoiceModel, {
     ...temp,

@@ -42,7 +42,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
     }
     try {
       await invoiceStore.getInvoice(item.id);
-      navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT , invoiceID: item.id});
+      navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT, invoiceID: item.id });
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to edit invoice, ${e}`);
     }
@@ -68,7 +68,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   };
   const sectionedQuotations = sectionInvoicesByMonth(drafts);
   const items: MenuItem[] = [
-    /*{ id: 'editInvoice', title: translate('invoiceScreen.menu.editDraft') },*/
+    { id: 'editInvoice', title: translate('invoiceScreen.menu.editDraft') },
     { id: 'markAsProposal', title: translate('invoiceScreen.menu.markAsProposal') },
   ];
 

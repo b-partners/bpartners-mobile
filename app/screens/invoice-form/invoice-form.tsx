@@ -66,48 +66,22 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
-  const tempProduct = [
-      {
-          id:'a5eb5728-ff2b-4581-a724-84af40c26af4',
-          status:'TESTSTZTD',
-          description:'Produit à 100 €',
-          quantity:null,
-          unitPrice:100,
-          unitPriceWithVat:100,
-          vatPercent:0,
-          totalVat:null,
-          totalPriceWithVat:null,
-          createdAt:'2023-04-05T11:02:32.093821Z'
-      },
-      {
-          id:'a5eb5728-ff2b-4581-a724-89af40c26af4',
-          status:'IOH',
-          description:'Produit à 200 €',
-          quantity:null,
-          unitPrice:700,
-          unitPriceWithVat:200,
-          vatPercent:0,
-          totalVat:null,
-          totalPriceWithVat:null,
-          createdAt:'2023-04-05T11:02:32.098821Z'
-      }
-  ]
   const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
 
-    __DEV__ && console.tron.log(fields);
-    __DEV__ && console.tron.log('fields ....');
+  __DEV__ && console.tron.log(fields);
+  __DEV__ && console.tron.log('fields ....');
 
-  const onSubmit = async invoice => {
-    __DEV__ && console.tron.log({ invoice });
+  const onSubmit = async invoices => {
+    __DEV__ && console.tron.log({ invoices });
     try {
       await invoiceStore.saveInvoice({
-        ...invoice,
+        ...invoices,
         customer: selectedCustomer,
         comment: comment,
         title: title,
-        metadata: { ...invoice.metadata, submittedAt: new Date() },
+        metadata: { ...invoices.metadata, submittedAt: new Date() },
       });
       await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
       await invoiceStore.getDrafts({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
@@ -278,6 +252,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               <ProductFormField
                 key={i}
                 index={i}
+                temp={item}
                 items={products}
                 onDeleteItem={async (__, index) => {
                   await remove(index);
@@ -304,7 +279,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             }}
             onPress={async () => {
               const product = await createProductDefaultModel().create();
-              await append(tempProduct);
+              await append(product);
             }}
           >
             <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />

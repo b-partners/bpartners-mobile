@@ -1,7 +1,7 @@
 import { useLinkTo } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
-import React, {FC, useEffect, useState} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View, ViewStyle } from 'react-native';
 
 import { ErrorBoundary } from '..';
@@ -22,18 +22,18 @@ const CONTAINER: ViewStyle = {
 };
 
 export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
-  const invoiceId =  route.params.invoiceID;
+  const invoiceId = route.params.invoiceID;
   const { invoiceStore } = useStores();
-  const { products, customers, invoice } = invoiceStore;
-  const [toEdit, setToEdit]= useState<Invoice>();
+  const { products } = invoiceStore;
+  const [toEdit, setToEdit] = useState<Invoice>();
 
-  useEffect(()=> {
-
+  useEffect(() => {
     const getInvoiceById = async () => {
-     await invoiceStore.getInvoice(invoiceId)
-         .then(response => setToEdit(response))
-         .catch(error => __DEV__&&console.tron.log(error));
-    }
+      await invoiceStore
+        .getInvoice(invoiceId)
+        .then(response => setToEdit(response))
+        .catch(error => __DEV__ && console.tron.log(error));
+    };
 
     getInvoiceById();
 
@@ -42,12 +42,11 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
       __DEV__&&console.tron.log('response: ' + response);
 //      setToEdit(response)
     })()*/
+  }, [invoiceId]);
 
-  }, [invoiceId])
-
-  useEffect( () => {
+  useEffect(() => {
     __DEV__ && console.tron.log('toEdit: ' + toEdit);
-  }, [toEdit])
+  }, [toEdit]);
 
   const linkTo = useLinkTo();
 
@@ -79,7 +78,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
           }}
         />
         <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
-          <InvoiceForm invoiceType={route.params.invoiceType} invoice={toEdit} customers={customers} products={products} onSaveInvoice={saveInvoice} />
+          <InvoiceForm invoiceType={route.params.invoiceType} invoice={toEdit} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>
     </ErrorBoundary>
