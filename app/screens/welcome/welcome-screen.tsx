@@ -14,6 +14,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 WebBrowser.maybeCompleteAuthSession();
 
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
+
   if (env.isCi) {
     navigation.navigate('oauth');
     return null;
