@@ -288,7 +288,8 @@
     "messageContent": "Bientôt, nous vous proposerons de nouveaux clients ici !"
   },
   "quotationScreen": {
-    "createQuotation": "Créer un Devis"
+    "createQuotation": "Créer un Devis",
+    "createInvoice": "Créer une Facture"
   },
   "logoutScreen": {
     "title": "Déconnexion",
