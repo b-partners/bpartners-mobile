@@ -303,7 +303,8 @@
     "messageContent": "Soon, we will offer you new customers here!"
   },
   "quotationScreen": {
-    "createQuotation": "Create a Quotation"
+    "createQuotation": "Create a Quotation",
+    "createInvoice": "Create an Invoice"
   },
   "logoutScreen": {
     "title": "Logout",
