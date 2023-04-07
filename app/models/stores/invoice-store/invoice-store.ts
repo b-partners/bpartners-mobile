@@ -22,7 +22,7 @@ export const InvoiceStoreModel = types
     quotations: types.optional(types.array(InvoiceModel), []),
     drafts: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
-    loading: types.optional(types.boolean, false),
+    loadingInvoice: types.optional(types.boolean, false),
     loadingDraft: types.optional(types.boolean, false),
     loadingQuotation: types.optional(types.boolean, false),
     saveLoading: types.optional(types.boolean, false),
@@ -148,17 +148,17 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     getInvoices: flow(function* (criteria: Criteria) {
       detach(self.invoices);
-      self.loading = true;
+      self.loadingInvoice = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        self.loading = false;
         self.getInvoicesSuccess(getInvoicesResult.invoices);
       } catch (e) {
-        self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
         self.getInvoicesFail(e.message);
         self.catchOrThrow(e);
+      } finally {
+        self.loadingInvoice = false;
       }
     }),
   }))
