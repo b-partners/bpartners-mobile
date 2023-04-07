@@ -23,6 +23,7 @@ export const InvoiceStoreModel = types
     drafts: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loading: types.optional(types.boolean, false),
+    loadingDraft: types.optional(types.boolean, false),
     saveLoading: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
   })
@@ -90,15 +91,15 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     getDrafts: flow(function* (criteria: Criteria) {
       detach(self.invoices);
-      self.loading = true;
+      self.loadingDraft = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         __DEV__ && console.tron.log(getInvoicesResult);
-        self.loading = false;
+        self.loadingDraft = false;
         self.getDraftsSuccess(getInvoicesResult.invoices);
       } catch (e) {
-        self.loading = false;
+        self.loadingDraft = false;
         __DEV__ && console.tron.log(e);
         showMessage(translate('errors.somethingWentWrong'));
         self.getDraftsFail(e.message);

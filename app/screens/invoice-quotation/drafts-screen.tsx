@@ -3,13 +3,13 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { Button, Screen, Separator, Text } from '../../components';
+import {Button, Loader, Screen, Separator, Text} from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
-import { color } from '../../theme';
+import {color, spacing} from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
@@ -18,9 +18,8 @@ import { Invoice } from './components/invoice';
 import {
   BUTTON_STYLE,
   BUTTON_TEXT_STYLE,
-  CONTAINER,
   FOOTER_COMPONENT_STYLE,
-  FULL,
+  FULL, LOADER_STYLE,
   SECTION_HEADER_TEXT_STYLE,
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
@@ -29,7 +28,7 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
-  const { drafts, loading } = invoiceStore;
+  const { drafts, loadingDraft } = invoiceStore;
 
   __DEV__ && console.tron.log('Voici les brouillons: ', drafts);
   const handleRefresh = async () => {
@@ -75,9 +74,10 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
+        <Screen style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[6], }} preset='scroll' backgroundColor={palette.white}>
           <View>
-            <SectionList<IInvoice>
+            {!loadingDraft ? (
+                <SectionList<IInvoice>
               style={SECTION_LIST_CONTAINER_STYLE}
               sections={[...sectionedQuotations]}
               renderItem={({ item }) => (
@@ -92,13 +92,16 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
               )}
               keyExtractor={item => item.id}
               renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
-              refreshing={loading}
+              refreshing={loadingDraft}
               onRefresh={handleRefresh}
               progressViewOffset={100}
               stickySectionHeadersEnabled={true}
               ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
               renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
             />
+            ) : (
+                <Loader size='large' containerStyle={LOADER_STYLE} />
+            )}
           </View>
         </Screen>
         <Button
