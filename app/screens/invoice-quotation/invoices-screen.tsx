@@ -94,7 +94,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
           </View>
         </Screen>
         <Button
-          tx='quotationScreen.createQuotation'
+          tx='quotationScreen.createInvoice'
           style={BUTTON_STYLE}
           textStyle={BUTTON_TEXT_STYLE}
           onPress={() => {
