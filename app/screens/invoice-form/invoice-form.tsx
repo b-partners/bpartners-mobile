@@ -56,7 +56,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoiceType, invoice } = props;
   const { invoiceStore, customerStore } = useStores();
-  const { customers, checkInvoice, saveLoading } = invoiceStore;
+  const { customers, checkInvoice, loadingCreation } = invoiceStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [creationModal, setCreationModal] = useState(false);
@@ -73,7 +73,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [comment, setComment] = useState(null);
 
   __DEV__ && console.tron.log(fields);
-  __DEV__ && console.tron.log('fields ....');
 
   const onSubmit = async invoices => {
     __DEV__ && console.tron.log({ invoices });
@@ -440,7 +439,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             </View>
             <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
               <View style={{ width: '100%', height: '45%', justifyContent: 'center' }}>
-                <Button
+                  <Button
                   onPress={handleSubmit(onSubmit)}
                   style={{
                     flexDirection: 'row',
@@ -451,8 +450,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                     height: 45,
                   }}
                 >
-                  {!saveLoading ? (
-                      <>
+                      {!loadingCreation ? (
+                          <>
                           <Text
                               tx='common.submit'
                               style={{
@@ -462,10 +461,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                               }}
                           />
                           <SimpleLineIcons name='check' size={20} color='white' />
-                      </>
-                  ) : (
-                      <Loader size='large' containerStyle={LOADER_STYLE} />
-                  )}
+                          </>
+                      ) : (
+                          <Loader size='large' color={palette.white} containerStyle={LOADER_STYLE} />
+                      )}
                 </Button>
               </View>
               <View style={{ width: '100%', height: '10%', justifyContent: 'center', alignItems: 'center' }}>

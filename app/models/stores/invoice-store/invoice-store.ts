@@ -22,10 +22,10 @@ export const InvoiceStoreModel = types
     quotations: types.optional(types.array(InvoiceModel), []),
     drafts: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
+    loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
     loadingDraft: types.optional(types.boolean, false),
     loadingQuotation: types.optional(types.boolean, false),
-    saveLoading: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
   })
   .extend(withRootStore)
@@ -204,7 +204,7 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     saveInvoice: flow(function* (invoice: Invoice) {
-      self.saveLoading = true;
+      self.loadingCreation = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
@@ -213,7 +213,7 @@ export const InvoiceStoreModel = types
         self.saveInvoiceFail(e.message);
         self.catchOrThrow(e);
       } finally {
-        self.saveLoading = false;
+        self.loadingCreation = false;
       }
     }),
   }))
