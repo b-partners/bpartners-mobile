@@ -1,8 +1,9 @@
 import { ApiResponse } from 'apisauce';
 
+import { Prospect } from '../../models/entities/prospect/prospect';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetProspectResult } from './api.types';
+import { GetProspectResult, UpdateProspectResult } from './api.types';
 
 export class ProspectApi {
   private api: Api;
@@ -10,6 +11,12 @@ export class ProspectApi {
   constructor(api: Api) {
     this.api = api;
   }
+
+  // private mapProspect(item: Prospect): Prospect {
+  //   return {
+  //     ...item
+  //   }
+  // }
 
   async getProspects(ahId: string): Promise<GetProspectResult> {
     // make the api call
@@ -25,5 +32,16 @@ export class ProspectApi {
     }
     const prospects = response.data;
     return { kind: 'ok', prospects };
+  }
+  async updateProspects(ahId: string, payload: Prospect): Promise<UpdateProspectResult> {
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.put(`accountHolders/${ahId}/prospects`, payload);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const prospect = response.data;
+    return { kind: 'ok', prospect };
   }
 }
