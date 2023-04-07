@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { SectionList, View } from 'react-native';
 
 import { ErrorBoundary } from '..';
-import { Button, Screen, Separator, Text } from '../../components';
+import { Button, Loader, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -21,6 +21,7 @@ import {
   CONTAINER,
   FOOTER_COMPONENT_STYLE,
   FULL,
+  LOADER_STYLE,
   SECTION_HEADER_TEXT_STYLE,
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
@@ -29,10 +30,10 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
-  const { loading, quotations } = invoiceStore;
+  const { loadingQuotation, quotations } = invoiceStore;
 
   const handleRefresh = async () => {
-    await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.PROPOSAL });
+    await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
     __DEV__ && console.tron.log(quotations);
   };
 
@@ -48,7 +49,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
         status: InvoiceStatus.CONFIRMED,
       };
       await invoiceStore.saveInvoice(editedItem);
-      await invoiceStore.getQuotations({ page: 1, pageSize: 15, status: InvoiceStatus.PROPOSAL });
+      await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsInvoice'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
@@ -63,19 +64,23 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
           <View>
-            <SectionList<IInvoice>
-              style={SECTION_LIST_CONTAINER_STYLE}
-              sections={[...sectionedQuotations]}
-              renderItem={({ item }) => <Invoice item={item} menuItems={items} menuAction={{ markAsInvoice: () => markAsInvoice(item) }} />}
-              keyExtractor={item => item.id}
-              renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
-              refreshing={loading}
-              onRefresh={handleRefresh}
-              progressViewOffset={100}
-              stickySectionHeadersEnabled={true}
-              ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
-              renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
-            />
+            {!loadingQuotation ? (
+              <SectionList<IInvoice>
+                style={SECTION_LIST_CONTAINER_STYLE}
+                sections={[...sectionedQuotations]}
+                renderItem={({ item }) => <Invoice item={item} menuItems={items} menuAction={{ markAsInvoice: () => markAsInvoice(item) }} />}
+                keyExtractor={item => item.id}
+                renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
+                refreshing={loadingQuotation}
+                onRefresh={handleRefresh}
+                progressViewOffset={100}
+                stickySectionHeadersEnabled={true}
+                ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
+                renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
+              />
+            ) : (
+              <Loader size='large' containerStyle={LOADER_STYLE} />
+            )}
           </View>
         </Screen>
         <Button
