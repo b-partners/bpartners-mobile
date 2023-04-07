@@ -23,7 +23,6 @@ const CONTAINER: ViewStyle = {
 
 export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
   const invoiceId = route.params.invoiceID;
-  const { invoiceType } = route.params;
   const { invoiceStore } = useStores();
   const { products } = invoiceStore;
   const [toEdit, setToEdit] = useState<Invoice>();
