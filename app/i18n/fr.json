@@ -40,7 +40,12 @@
     "transactionCategoryPlaceholder": "Sélectionner un élément"
   },
   "prospectScreen": {
-    "title": "Prospects"
+    "title": "Prospects",
+    "tab": {
+      "toContact": "À Contacter",
+      "contacted": "Contacté",
+      "converted": "Converti"
+    }
   },
   "onboardingScreen": {
     "title": "Créer un compte"
