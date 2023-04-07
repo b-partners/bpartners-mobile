@@ -24,6 +24,7 @@ export const InvoiceStoreModel = types
     invoice: types.optional(InvoiceModel, {}),
     loading: types.optional(types.boolean, false),
     loadingDraft: types.optional(types.boolean, false),
+    loadingQuotation: types.optional(types.boolean, false),
     saveLoading: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
   })
@@ -96,14 +97,14 @@ export const InvoiceStoreModel = types
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         __DEV__ && console.tron.log(getInvoicesResult);
-        self.loadingDraft = false;
         self.getDraftsSuccess(getInvoicesResult.invoices);
       } catch (e) {
-        self.loadingDraft = false;
         __DEV__ && console.tron.log(e);
         showMessage(translate('errors.somethingWentWrong'));
         self.getDraftsFail(e.message);
         self.catchOrThrow(e);
+      } finally {
+        self.loadingDraft = false;
       }
     }),
   }))
@@ -120,16 +121,16 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     getQuotations: flow(function* (criteria: Criteria) {
       detach(self.invoices);
-      self.loading = true;
+      self.loadingQuotation = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        self.loading = false;
         self.getQuotationsSuccess(getInvoicesResult.invoices);
       } catch (e) {
-        self.loading = false;
         showMessage(translate('errors.somethingWentWrong'));
         self.catchOrThrow(e);
+      } finally {
+        self.loadingQuotation = false;
       }
     }),
   }))
