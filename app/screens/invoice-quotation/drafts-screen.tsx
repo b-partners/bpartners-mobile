@@ -3,13 +3,13 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { SectionList, View } from 'react-native';
 
-import {Button, Loader, Screen, Separator, Text} from '../../components';
+import { Button, Loader, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
-import {color, spacing} from '../../theme';
+import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
@@ -19,7 +19,8 @@ import {
   BUTTON_STYLE,
   BUTTON_TEXT_STYLE,
   FOOTER_COMPONENT_STYLE,
-  FULL, LOADER_STYLE,
+  FULL,
+  LOADER_STYLE,
   SECTION_HEADER_TEXT_STYLE,
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
@@ -32,7 +33,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
 
   __DEV__ && console.tron.log('Voici les brouillons: ', drafts);
   const handleRefresh = async () => {
-    await invoiceStore.getQuotations({ page: 1, pageSize: 20, status: InvoiceStatus.DRAFT });
+    await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.DRAFT });
   };
 
   const editInvoice = async (item: IInvoice) => {
@@ -59,7 +60,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
         status: InvoiceStatus.PROPOSAL,
       };
       await invoiceStore.saveInvoice(editedItem);
-      await invoiceStore.getDrafts({ page: 1, pageSize: 15, status: InvoiceStatus.DRAFT });
+      await invoiceStore.getDrafts({ page: 1, pageSize: 30, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
@@ -74,33 +75,37 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <Screen style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[6], }} preset='scroll' backgroundColor={palette.white}>
+        <Screen
+          style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[6] }}
+          preset='scroll'
+          backgroundColor={palette.white}
+        >
           <View>
             {!loadingDraft ? (
-                <SectionList<IInvoice>
-              style={SECTION_LIST_CONTAINER_STYLE}
-              sections={[...sectionedQuotations]}
-              renderItem={({ item }) => (
-                <Invoice
-                  item={item}
-                  menuItems={items}
-                  menuAction={{
-                    editInvoice: () => editInvoice(item),
-                    markAsProposal: () => markAsProposal(item),
-                  }}
-                />
-              )}
-              keyExtractor={item => item.id}
-              renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
-              refreshing={loadingDraft}
-              onRefresh={handleRefresh}
-              progressViewOffset={100}
-              stickySectionHeadersEnabled={true}
-              ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
-              renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
-            />
+              <SectionList<IInvoice>
+                style={SECTION_LIST_CONTAINER_STYLE}
+                sections={[...sectionedQuotations]}
+                renderItem={({ item }) => (
+                  <Invoice
+                    item={item}
+                    menuItems={items}
+                    menuAction={{
+                      editInvoice: () => editInvoice(item),
+                      markAsProposal: () => markAsProposal(item),
+                    }}
+                  />
+                )}
+                keyExtractor={item => item.id}
+                renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
+                refreshing={loadingDraft}
+                onRefresh={handleRefresh}
+                progressViewOffset={100}
+                stickySectionHeadersEnabled={true}
+                ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
+                renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
+              />
             ) : (
-                <Loader size='large' containerStyle={LOADER_STYLE} />
+              <Loader size='large' containerStyle={LOADER_STYLE} />
             )}
           </View>
         </Screen>
