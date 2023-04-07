@@ -65,9 +65,9 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   }, []);
 
   useEffect(() => {
-    invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
-    invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
-    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 20 });
+    invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+    invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 30 });
     invoiceStore.getCustomers();
     invoiceStore.getProducts();
   }, []);
