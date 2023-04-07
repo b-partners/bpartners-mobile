@@ -50,6 +50,7 @@ export type NavigatorParamList = {
   invoices: undefined;
   invoiceForm: {
     invoiceType: InvoiceStatus;
+    invoiceID?: string;
   };
 };
 
