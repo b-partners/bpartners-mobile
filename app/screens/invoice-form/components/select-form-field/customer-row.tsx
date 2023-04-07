@@ -25,7 +25,7 @@ const CUSTOMER_ROW_CONTAINER: ViewStyle = {
 
 const EDIT_BUTTON_STYLE: ViewStyle = { flex: 1, justifyContent: 'center', alignItems: 'flex-end' };
 const CustomerRow: FC<TCustomerRow> = props => {
-  const { customer, onSelect, isSelected = false } = props;
+  const { customer, onSelect, isSelected } = props;
   const customerFullName = `${customer.firstName}  ${customer.lastName}`;
   return (
     <View style={{ ...CUSTOMER_ROW_CONTAINER, paddingVertical: spacing[2] }}>
