@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { Button, Screen, Separator, Text } from '../../components';
+import {Button, Loader, Screen, Separator, Text} from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import env from '../../config/env';
 import { translate } from '../../i18n';
@@ -18,20 +18,20 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
 import {
-  BUTTON_STYLE,
-  BUTTON_TEXT_STYLE,
-  CONTAINER,
-  FOOTER_COMPONENT_STYLE,
-  FULL,
-  SECTION_HEADER_TEXT_STYLE,
-  SECTION_LIST_CONTAINER_STYLE,
-  SEPARATOR_STYLE,
+    BUTTON_STYLE,
+    BUTTON_TEXT_STYLE,
+    CONTAINER,
+    FOOTER_COMPONENT_STYLE,
+    FULL, LOADER_STYLE,
+    SECTION_HEADER_TEXT_STYLE,
+    SECTION_LIST_CONTAINER_STYLE,
+    SEPARATOR_STYLE,
 } from './styles';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
-  const { invoices, loading } = invoiceStore;
+  const { invoices, loadingInvoice } = invoiceStore;
   const { currentAccount, accessToken } = authStore;
 
   const handleRefresh = async () => {
@@ -69,28 +69,32 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
       >
         <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
           <View>
-            <SectionList<IInvoice>
-              style={SECTION_LIST_CONTAINER_STYLE}
-              sections={[...sectionedQuotations]}
-              renderItem={({ item }) => (
-                <Invoice
-                  item={item}
-                  menuItems={items}
-                  menuAction={{
-                    downloadInvoice: () =>
-                      downloadInvoice(`${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`, `${item.ref}.pdf`),
-                  }}
-                />
+              {!loadingInvoice ? (
+                  <SectionList<IInvoice>
+                      style={SECTION_LIST_CONTAINER_STYLE}
+                      sections={[...sectionedQuotations]}
+                      renderItem={({ item }) => (
+                          <Invoice
+                              item={item}
+                              menuItems={items}
+                              menuAction={{
+                                  downloadInvoice: () =>
+                                      downloadInvoice(`${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`, `${item.ref}.pdf`),
+                              }}
+                          />
+                      )}
+                      keyExtractor={item => item.id}
+                      renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
+                      refreshing={loadingInvoice}
+                      onRefresh={handleRefresh}
+                      progressViewOffset={100}
+                      stickySectionHeadersEnabled={true}
+                      ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
+                      renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
+                  />
+              ) : (
+                  <Loader size='large' containerStyle={LOADER_STYLE} />
               )}
-              keyExtractor={item => item.id}
-              renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
-              refreshing={loading}
-              onRefresh={handleRefresh}
-              progressViewOffset={100}
-              stickySectionHeadersEnabled={true}
-              ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
-              renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
-            />
           </View>
         </Screen>
         <Button
