@@ -1,7 +1,7 @@
 import { useLinkTo } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View, ViewStyle } from 'react-native';
 
 import { ErrorBoundary } from '..';
@@ -22,9 +22,32 @@ const CONTAINER: ViewStyle = {
 };
 
 export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
+  const invoiceId = route.params.invoiceID;
   const { invoiceType } = route.params;
   const { invoiceStore } = useStores();
-  const { products, invoice } = invoiceStore;
+  const { products } = invoiceStore;
+  const [toEdit, setToEdit] = useState<Invoice>();
+
+  useEffect(() => {
+    const getInvoiceById = async () => {
+      await invoiceStore
+        .getInvoice(invoiceId)
+        .then(response => setToEdit(response))
+        .catch(error => __DEV__ && console.tron.log(error));
+    };
+
+    getInvoiceById();
+
+    /*(async function () {
+      const response = (await getInvoiceById()).ref;
+      __DEV__&&console.tron.log('response: ' + response);
+//      setToEdit(response)
+    })()*/
+  }, [invoiceId]);
+
+  useEffect(() => {
+    __DEV__ && console.tron.log('toEdit: ' + toEdit);
+  }, [toEdit]);
 
   const linkTo = useLinkTo();
 
@@ -56,7 +79,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
           }}
         />
         <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
-          <InvoiceForm invoiceType={invoiceType} invoice={invoice} products={products} onSaveInvoice={saveInvoice} />
+          <InvoiceForm invoiceType={route.params.invoiceType} invoice={toEdit} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>
     </ErrorBoundary>
