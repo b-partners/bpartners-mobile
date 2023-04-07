@@ -52,7 +52,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { products, invoiceType } = props;
+  const { products, invoiceType, invoice } = props;
   const { invoiceStore, customerStore } = useStores();
   const { customers, checkInvoice, saveLoading } = invoiceStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
@@ -63,21 +63,25 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   __DEV__ && console.tron.log({ invoiceType });
 
   const { control, handleSubmit } = useForm({
-    defaultValues: createInvoiceDefaultModel(invoiceType).create(),
+    defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
-  const { fields, append, update, remove } = useFieldArray({ control, name: 'products' });
+  const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
 
-  const onSubmit = async invoice => {
+  __DEV__ && console.tron.log(fields);
+  __DEV__ && console.tron.log('fields ....');
+
+  const onSubmit = async invoices => {
+    __DEV__ && console.tron.log({ invoices });
     try {
       await invoiceStore.saveInvoice({
-        ...invoice,
+        ...invoices,
         customer: selectedCustomer,
         comment: comment,
         title: title,
-        metadata: { ...invoice.metadata, submittedAt: new Date() },
+        metadata: { ...invoices.metadata, submittedAt: new Date() },
       });
       await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
       await invoiceStore.getDrafts({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
@@ -248,6 +252,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               <ProductFormField
                 key={i}
                 index={i}
+                temp={item}
                 items={products}
                 onDeleteItem={async (__, index) => {
                   await remove(index);
@@ -299,7 +304,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 customers={customers}
                 selectedCustomer={selectedCustomer}
                 setSelectedCustomer={setSelectedCustomer}
-                value={value?.id}
+                value={value}
                 onValueChange={newValue => {
                   onChange();
                   setSelectedCustomer(newValue);
