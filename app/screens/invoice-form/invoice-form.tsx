@@ -11,16 +11,16 @@ import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
+import { navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
+import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
 import { InvoiceFormField } from './invoice-form-field';
-import {LOADER_STYLE} from "../invoice-quotation/styles";
-import {navigate} from "../../navigators";
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -84,10 +84,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         title: title,
         metadata: { ...invoices.metadata, submittedAt: new Date() },
       });
-        setConfirmationModal(false);
-        invoiceType === 'DRAFT' && await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-        invoiceType === 'PROPOSAL' && await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
-        navigate('home');
+      setConfirmationModal(false);
+      invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
+      invoiceType === 'PROPOSAL' && (await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 }));
+      navigate('home');
     } catch (e) {
       showMessage(e);
       throw e;
@@ -393,6 +393,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               <IoniconIcon name='md-reload' size={27} color={palette.white} />
             </View>
           </TouchableOpacity>
+        ) : loadingCreation === true ? (
+          <Loader size='large' color={palette.white} containerStyle={LOADER_STYLE} />
         ) : (
           <TouchableOpacity onPress={() => setConfirmationModal(true)}>
             <View
@@ -439,7 +441,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             </View>
             <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
               <View style={{ width: '100%', height: '45%', justifyContent: 'center' }}>
-                  <Button
+                <Button
                   onPress={handleSubmit(onSubmit)}
                   style={{
                     flexDirection: 'row',
@@ -450,21 +452,17 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                     height: 45,
                   }}
                 >
-                      {!loadingCreation ? (
-                          <>
-                          <Text
-                              tx='common.submit'
-                              style={{
-                                  color: palette.white,
-                                  marginRight: spacing[2],
-                                  fontFamily: 'Geometria',
-                              }}
-                          />
-                          <SimpleLineIcons name='check' size={20} color='white' />
-                          </>
-                      ) : (
-                          <Loader size='large' color={palette.white} containerStyle={LOADER_STYLE} />
-                      )}
+                  <>
+                    <Text
+                      tx='common.submit'
+                      style={{
+                        color: palette.white,
+                        marginRight: spacing[2],
+                        fontFamily: 'Geometria',
+                      }}
+                    />
+                    <SimpleLineIcons name='check' size={20} color='white' />
+                  </>
                 </Button>
               </View>
               <View style={{ width: '100%', height: '10%', justifyContent: 'center', alignItems: 'center' }}>
