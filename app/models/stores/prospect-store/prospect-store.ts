@@ -1,7 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { ProspectApi } from '../../../services/api/prospect-api';
-import { ProspectModel, ProspectSnapshotOut } from '../../entities/prospect/prospect';
+import { Prospect, ProspectModel, ProspectSnapshotOut } from '../../entities/prospect/prospect';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -35,6 +35,28 @@ export const ProspectStoreModel = types
         self.getProspectsSuccess(getProspectsResult.prospects);
       } catch (e) {
         self.getProspectsFail(e.message);
+        self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(() => ({
+    saveProspectSuccess: (prospect: Prospect) => {
+      __DEV__ && console.tron.log(prospect);
+    },
+  }))
+  .actions(() => ({
+    saveProspectFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
+    updateProspects: flow(function* (ahId, prospect: Prospect) {
+      const prospectApi = new ProspectApi(self.environment.api);
+      try {
+        const UpdateProspectResult = yield prospectApi.updateProspects(ahId, prospect);
+        self.saveProspectSuccess(UpdateProspectResult.prospect);
+      } catch (e) {
+        self.saveProspectFail(e.message);
         self.catchOrThrow(e);
       }
     }),
