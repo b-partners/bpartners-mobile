@@ -1,61 +1,47 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useState } from 'react';
-import { Linking, ScrollView, View } from 'react-native';
-import { Card, Menu, Paragraph, Title } from 'react-native-paper';
-import LocationIcon from 'react-native-vector-icons/Entypo';
-import PhoneIcon from 'react-native-vector-icons/FontAwesome';
-import EmailIcon from 'react-native-vector-icons/Fontisto';
-import AddressIcon from 'react-native-vector-icons/MaterialIcons';
+import { ScrollView, View } from 'react-native';
+import { Menu } from 'react-native-paper';
 
-import { Header, Screen, Text } from '../../components';
+import { Header, Screen } from '../../components';
+import { MenuItem } from '../../components/menu/menu';
 import { NoDataProvided } from '../../components/no-data-provided/no-data-provided';
+import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
+import { ProspectItem } from './components/prospect-item';
 
 export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
-  const { prospectStore } = useStores();
+  const { authStore, prospectStore } = useStores();
   const { prospects } = prospectStore;
 
-  const [status, setStatus] = useState<string>('TO_CONTACT');
+  const [currentStatus, setCurrentStatus] = useState<string>('TO_CONTACT');
 
-  const Location = ({ prospect }) => {
-    const geoJsonUrl = location => {
-      const geojsonBaseurl = 'http://geojson.io/#data=data:application/json,';
-      const data = { coordinates: [location.longitude, location.latitude], type: location.type };
-
-      return encodeURI(`${geojsonBaseurl}${JSON.stringify(data)}`);
-    };
-
-    return (
-      <Text style={{ color: 'blue' }} onPress={() => Linking.openURL(geoJsonUrl(prospect.location))}>
-        <LocationIcon name='location' size={22} color={color.palette.secondaryColor} />,
-      </Text>
-    );
-  };
-
-  const IconGroup = {
-    email: <EmailIcon name='email' size={18} color={color.palette.secondaryColor} />,
-    phone: <PhoneIcon name='mobile-phone' size={24} color={color.palette.secondaryColor} />,
-    address: <AddressIcon name='my-location' size={18} color={color.palette.secondaryColor} />,
-  };
+  const currentAccountHolderId: string = authStore.currentAccountHolder?.id;
 
   const getActiveClassName = useCallback(
     (activeStatus): object => {
-      return status === activeStatus && { borderBottomWidth: 2, borderColor: '#9C255A' };
+      return currentStatus === activeStatus && { borderBottomWidth: 2, borderColor: '#9C255A' };
     },
-    [status]
+    [currentStatus]
   );
 
   const handleClickMenu = actualStatus => {
-    setStatus(actualStatus);
+    setCurrentStatus(actualStatus);
   };
 
-  const filteredProspect = prospects.filter(item => item.status === status);
+  const filteredProspect = prospects.filter(item => item.status === currentStatus);
+
+  const items: MenuItem[] = [
+    { id: 'toContact', title: translate('prospectScreen.tab.toContact') },
+    { id: 'contacted', title: translate('prospectScreen.tab.contacted') },
+    { id: 'converted', title: translate('prospectScreen.tab.converted') },
+  ];
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -105,54 +91,8 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
             contentContainerStyle={{ alignItems: 'center' }}
           >
             {filteredProspect.length > 0 ? (
-              filteredProspect.map((item: Prospect) => {
-                return (
-                  <View
-                    key={item.id}
-                    style={{
-                      width: '95%',
-                      alignItems: 'center',
-                      marginVertical: 5,
-                    }}
-                  >
-                    <Card style={{ width: '100%', backgroundColor: 'white' }}>
-                      <Card.Content style={{ display: 'flex', flexDirection: 'row' }}>
-                        <View style={{ width: '80%' }}>
-                          <Title style={{ fontSize: 16 }}>{item.name ? item.name : 'Non renseigné'}</Title>
-                          <Paragraph>
-                            {item.email ? (
-                              <>
-                                {IconGroup.email} {item.email}
-                              </>
-                            ) : (
-                              'Non renseigné'
-                            )}
-                          </Paragraph>
-                          <Paragraph>
-                            {item.phone ? (
-                              <>
-                                {' '}
-                                {IconGroup.phone} {item.phone}{' '}
-                              </>
-                            ) : (
-                              'Non renseigné'
-                            )}
-                          </Paragraph>
-                          <Paragraph>
-                            {item.address ? (
-                              <>
-                                {IconGroup.address} {item.address}
-                              </>
-                            ) : (
-                              'Non renseigné'
-                            )}
-                          </Paragraph>
-                        </View>
-                        <View style={{ paddingTop: 9 }}>{item.location && <Location prospect={item} />}</View>
-                      </Card.Content>
-                    </Card>
-                  </View>
-                );
+              filteredProspect.map((item: Prospect, index: number) => {
+                return <ProspectItem menuItem={items} prospect={item} ahId={currentAccountHolderId} setCurrentStatus={setCurrentStatus} key={index} />;
               })
             ) : (
               <NoDataProvided />
