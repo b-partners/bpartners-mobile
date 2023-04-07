@@ -19,6 +19,7 @@ import { CustomerFormFieldFooter } from './components/customer/customer-form-fie
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
 import { InvoiceFormField } from './invoice-form-field';
+import {LOADER_STYLE} from "../invoice-quotation/styles";
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -447,20 +448,20 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                     height: 45,
                   }}
                 >
-                  {saveLoading === true ? (
-                    <Loader />
+                  {!saveLoading ? (
+                      <>
+                          <Text
+                              tx='common.submit'
+                              style={{
+                                  color: palette.white,
+                                  marginRight: spacing[2],
+                                  fontFamily: 'Geometria',
+                              }}
+                          />
+                          <SimpleLineIcons name='check' size={20} color='white' />
+                      </>
                   ) : (
-                    <>
-                      <Text
-                        tx='common.submit'
-                        style={{
-                          color: palette.white,
-                          marginRight: spacing[2],
-                          fontFamily: 'Geometria',
-                        }}
-                      />
-                      <SimpleLineIcons name='check' size={20} color='white' />
-                    </>
+                      <Loader size='large' containerStyle={LOADER_STYLE} />
                   )}
                 </Button>
               </View>
