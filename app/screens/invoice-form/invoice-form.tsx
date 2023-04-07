@@ -20,6 +20,7 @@ import { ProductFormField } from './components/product-form-field/product-form-f
 import { SelectFormField } from './components/select-form-field/select-form-field';
 import { InvoiceFormField } from './invoice-form-field';
 import {LOADER_STYLE} from "../invoice-quotation/styles";
+import {navigate} from "../../navigators";
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -84,8 +85,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         title: title,
         metadata: { ...invoices.metadata, submittedAt: new Date() },
       });
-      await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 20 });
-      await invoiceStore.getDrafts({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 20 });
+        setConfirmationModal(false);
+        invoiceType === 'DRAFT' && await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+        invoiceType === 'PROPOSAL' && await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+        navigate('home');
     } catch (e) {
       showMessage(e);
       throw e;
