@@ -119,7 +119,7 @@ export const Transaction = (
                     numberOfLines={2}
                     style={{
                       color: color.palette.textClassicColor,
-                      fontFamily: 'Geometria-Bold',
+                      fontFamily: 'Geometria',
                     }}
                   />
                 </View>
