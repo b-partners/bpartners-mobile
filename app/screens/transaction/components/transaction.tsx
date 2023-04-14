@@ -120,7 +120,7 @@ export const Transaction = (
                     testID='transaction-category'
                     style={{
                       color: color.palette.textClassicColor,
-                      fontFamily: 'Geometria-Bold',
+                      fontFamily: 'Geometria',
                     }}
                   />
                 </View>

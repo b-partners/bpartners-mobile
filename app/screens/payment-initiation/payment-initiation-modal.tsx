@@ -98,7 +98,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = props => {
                 </View>
                 <View style={{ height: 70, alignItems: 'center', marginBottom: 10, width: '100%' }}>
                   <Text
-                    text={printCurrency(amount)}
+                    text={printCurrency(amount * 100)}
                     style={{
                       width: '100%',
                       height: '100%',
