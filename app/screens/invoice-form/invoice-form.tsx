@@ -87,7 +87,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       setConfirmationModal(false);
       invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
       invoiceType === 'PROPOSAL' && (await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 }));
-      navigate('home');
+      navigate('paymentList');
     } catch (e) {
       showMessage(e);
       throw e;
