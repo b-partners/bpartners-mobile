@@ -20,6 +20,13 @@ const INPUT: TextStyle = {
   backgroundColor: color.palette.white,
 };
 
+const suffixStyles: TextStyle = {
+  color: color.palette.black,
+  position: 'absolute',
+  top: '68.5%',
+  left: '26.5%',
+  fontWeight: 'bold',
+};
 // currently we have no presets, but that changes quickly when you build your app.
 const PRESETS: { [name: string]: ViewStyle } = {
   default: {},
@@ -66,6 +73,8 @@ export interface TextFieldProps extends TextInputProps {
   labelContainerStyle?: ViewStyle;
 
   labelStyle?: StyleProp<TextStyle>;
+
+  suffix?: string;
 }
 
 /**
@@ -83,6 +92,7 @@ export function TextField(props: TextFieldProps) {
     forwardedRef,
     labelContainerStyle,
     labelStyle,
+    suffix = '',
     ...rest
   } = props;
 
@@ -105,6 +115,7 @@ export function TextField(props: TextFieldProps) {
         style={[inputStyles, { color: palette.black }]}
         ref={forwardedRef}
       />
+      <Text text={suffix} style={suffixStyles} />
     </View>
   );
 }

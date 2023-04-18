@@ -198,6 +198,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           name='delayInPaymentAllowed'
           control={control}
           render={({ field: { value, onBlur, onChange } }) => {
+            let suffix: string;
+            value > 1 ? (suffix = 'Jours') : (suffix = 'Jour');
             return (
               <InvoiceFormField
                 labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
@@ -206,6 +208,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value?.toString()}
+                suffix={suffix}
               />
             );
           }}
@@ -222,6 +225,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value?.toString()}
+                suffix='%'
               />
             );
           }}
