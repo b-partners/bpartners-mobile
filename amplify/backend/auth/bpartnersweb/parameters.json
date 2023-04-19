@@ -1,0 +1,14 @@
+{
+  "authSelections": "userPoolOnly",
+  "resourceName": "bpartnersweb",
+  "serviceType": "imported",
+  "region": "eu-west-3",
+  "usernameAttributes": ["email"],
+  "authProvidersUserPool": [],
+  "requiredAttributes": ["email", "phone_number"],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": ["Requires Lowercase", "Requires Uppercase", "Requires Numbers", "Requires Symbols"],
+  "mfaConfiguration": "OPTIONAL",
+  "autoVerifiedAttributes": ["email"],
+  "mfaTypes": ["TOTP"]
+}

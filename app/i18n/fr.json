@@ -56,7 +56,12 @@
     "start": "OUVRIR UN COMPTE",
     "login": "SE CONNECTER",
     "noAccount": "Pas de compte ?",
-    "itsThisWay": "C'est par ici"
+    "itsThisWay": "C'est par ici",
+    "email": "Email",
+    "password": "Mot de passe",
+    "emailRequired": "votre email est requis",
+    "passwordRequired": "votre mot de passe est requis",
+    "checkYourIdentity": "Veuillez vérifier votre email ou votre mot de passe, s'il vous plaît."
   },
   "paymentInitiationScreen": {
     "label": "Paiement",

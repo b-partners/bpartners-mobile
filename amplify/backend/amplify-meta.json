@@ -1,0 +1,44 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bpartnersweb-preprod-104655-authRole",
+      "UnauthRoleArn": "arn:aws:iam::688605879718:role/amplify-bpartnersweb-preprod-104655-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::688605879718:role/amplify-bpartnersweb-preprod-104655-authRole",
+      "Region": "eu-west-3",
+      "DeploymentBucketName": "amplify-bpartnersweb-preprod-104655-deployment",
+      "UnauthRoleName": "amplify-bpartnersweb-preprod-104655-unauthRole",
+      "StackName": "amplify-bpartnersweb-preprod-104655",
+      "StackId": "arn:aws:cloudformation:eu-west-3:688605879718:stack/amplify-bpartnersweb-preprod-104655/2ede1300-d39f-11ed-b396-0a8a88c86c38",
+      "AmplifyAppId": "d1wtl0q81nazmd"
+    }
+  },
+  "auth": {
+    "bpartnersweb": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "output": {
+        "UserPoolId": "eu-west-3_Fv8n7AfVo",
+        "UserPoolName": "preprod-bpartners-api",
+        "AppClientID": "4v0n3pk2j0b12m3aascud4us6h",
+        "AppClientIDWeb": "4v0n3pk2j0b12m3aascud4us6h",
+        "HostedUIDomain": "preprod-bpartners-api"
+      },
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": ["EMAIL"],
+        "signupAttributes": ["EMAIL", "PHONE_NUMBER"],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": ["REQUIRES_LOWERCASE", "REQUIRES_UPPERCASE", "REQUIRES_NUMBERS", "REQUIRES_SYMBOLS"]
+        },
+        "mfaConfiguration": "OPTIONAL",
+        "mfaTypes": ["TOTP"],
+        "verificationMechanisms": ["EMAIL"]
+      },
+      "lastPushTimeStamp": "2023-04-05T10:57:32.521Z"
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { withEnvironment, withRootStore } from '../..';
@@ -98,27 +97,11 @@ export const AuthStoreModel = types
       throw error;
     },
   }))
-  .actions(self => ({
-    whoami: flow(function* () {
-      const signInApi = new AuthApi(self.environment.api);
-      const accountApi = new AccountApi(self.environment.api);
-      let whoAmiResult, getAccountResult, getAccountHolderResult;
-      try {
-        whoAmiResult = yield signInApi.whoami();
-        self.currentUser = whoAmiResult.user;
-        yield self.rootStore.legalFilesStore.getLegalFiles();
-        getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
-        getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
-        self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
-      } catch (e) {
-        self.whoamiFail(e.message);
-      }
-      yield self.rootStore.legalFilesStore.getLegalFiles();
-    }),
-  }))
+
   .actions(self => ({
     setCachedCredentials: flow(function* () {
-      yield AsyncStorage.multiSet([['accessToken', self.accessToken]]);
+      // yield AsyncStorage.multiSet([['accessToken', self.accessToken]]);
+      yield save('accessToken', self.accessToken);
     }),
   }))
   .actions(() => ({
@@ -141,6 +124,9 @@ export const AuthStoreModel = types
     getTokenSuccess: flow(function* ({ accessToken, refreshToken }) {
       self.accessToken = accessToken;
       self.refreshToken = refreshToken;
+      __DEV__ && console.tron.log('getToken success');
+      __DEV__ && console.tron.log(self.accessToken);
+      __DEV__ && console.tron.log(self.refreshToken);
       yield self.setCachedCredentials();
     }),
   }))
@@ -148,11 +134,45 @@ export const AuthStoreModel = types
     getToken: flow(function* (code) {
       const signInApi = new AuthApi(self.environment.api);
       try {
-        const { accessToken, refreshToken } = env.isCi ? { accessToken: env.ciAccessToken, refreshToken: null } : yield signInApi.getToken(code);
+        const { accessToken, refreshToken } = env.isCi
+          ? {
+              accessToken: env.ciAccessToken,
+              refreshToken: null,
+            }
+          : yield signInApi.getToken(code);
         yield self.getTokenSuccess({ accessToken: accessToken, refreshToken: refreshToken });
       } catch (e) {
         self.getTokenFail(e);
       }
+    }),
+  }))
+  .actions(self => ({
+    whoami: flow(function* (accessToken: string) {
+      // const securityApi = new SecurityApi(conf);
+      // const {data} = await securityApi.whoami();
+      // return data;
+      const signInApi = new AuthApi(self.environment.api);
+
+      const accountApi = new AccountApi(self.environment.api);
+      let whoAmiResult, getAccountResult, getAccountHolderResult;
+
+      try {
+        // const session = yield Auth.currentSession();
+        // const accessToken = session.getIdToken().getJwtToken();
+
+        yield self.getTokenSuccess({ accessToken });
+        whoAmiResult = yield signInApi.whoami();
+        self.currentUser = whoAmiResult.user;
+
+        yield self.rootStore.legalFilesStore.getLegalFiles();
+
+        getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
+        getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
+        self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
+      } catch (e) {
+        self.whoamiFail(e.message);
+      }
+      yield self.rootStore.legalFilesStore.getLegalFiles();
     }),
   }));
 
