@@ -43,7 +43,7 @@ export const Logo: FC<{ uri: string }> = observer(({ uri }) => {
 });
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFilesStore, authStore, invoiceStore, marketplaceStore, prospectStore, customerStore } = useStores();
+  const { transactionStore, legalFilesStore, authStore, invoiceStore, marketplaceStore, prospectStore, customerStore, productStore } = useStores();
 
   const { availableBalance } = authStore.currentAccount;
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
@@ -69,7 +69,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
     invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 30 });
     customerStore.getCustomers();
-    invoiceStore.getProducts();
+    productStore.getProducts();
   }, []);
 
   useEffect(() => {

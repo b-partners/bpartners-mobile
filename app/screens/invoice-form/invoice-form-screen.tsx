@@ -23,8 +23,8 @@ const CONTAINER: ViewStyle = {
 
 export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
   const invoiceId = route.params.invoiceID;
-  const { invoiceStore, customerStore } = useStores();
-  const { products } = invoiceStore;
+  const { invoiceStore, customerStore, productStore } = useStores();
+  const { products } = productStore;
   const [toEdit, setToEdit] = useState<Invoice>();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
 
   navigation.addListener('state', () => {
     customerStore.getCustomers();
-    invoiceStore.getProducts();
+    productStore.getProducts();
   });
 
   const saveInvoice = async (values: Invoice) => {
