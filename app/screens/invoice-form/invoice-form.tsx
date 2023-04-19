@@ -87,7 +87,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       setConfirmationModal(false);
       invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
       invoiceType === 'PROPOSAL' && (await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 }));
-      navigate('home');
+      navigate('paymentList');
     } catch (e) {
       showMessage(e);
       throw e;
@@ -255,6 +255,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               <ProductFormField
                 key={i}
                 index={i}
+                // @ts-ignore
                 temp={item}
                 items={products}
                 onDeleteItem={async (__, index) => {
@@ -303,6 +304,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           control={control}
           render={({ field: { value, onChange } }) => {
             return (
+              // @ts-ignore
               <SelectFormField
                 customers={customers}
                 selectedCustomer={selectedCustomer}
