@@ -8,6 +8,7 @@ import { Menu, MenuAction, MenuItem } from '../../../components/menu/menu';
 import { Invoice as IInvoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { printCurrencyToMajors } from '../../../utils/money';
 import { datePipe } from '../../../utils/pipes';
 import {
   BODY_TEXT_CONTAINER,
@@ -22,7 +23,6 @@ import {
   STATUS_CONTAINER,
   STATUS_TEXT,
 } from '../styles';
-import {printCurrencyToMajors} from "../../../utils/money";
 
 type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction };
 

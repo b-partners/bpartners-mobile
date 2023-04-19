@@ -1,7 +1,8 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
+import { Snackbar } from 'react-native-paper';
 
 import { Button, Loader, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
@@ -30,13 +31,15 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
   const { drafts, loadingDraft } = invoiceStore;
+  const [navigationState, setNavigationState] = useState(false);
 
   __DEV__ && console.tron.log('Voici les brouillons: ', drafts);
   const handleRefresh = async () => {
-    await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.DRAFT });
+    await invoiceStore.getDrafts({ page: 1, pageSize: 30, status: InvoiceStatus.DRAFT });
   };
 
   const editInvoice = async (item: IInvoice) => {
+    setNavigationState(true);
     if (item.status !== InvoiceStatus.DRAFT) {
       return;
     }
@@ -46,6 +49,8 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT, invoiceID: item.id });
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to edit invoice, ${e}`);
+    } finally {
+      setNavigationState(false);
     }
   };
 
@@ -77,13 +82,13 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <Screen
-          style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[6] }}
-          preset='scroll'
-          backgroundColor={palette.white}
-        >
-          <View>
-            {!loadingDraft ? (
+        {!loadingDraft ? (
+          <Screen
+            style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[6] }}
+            preset='scroll'
+            backgroundColor={palette.white}
+          >
+            <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
                 sections={[...sectionedQuotations]}
@@ -106,20 +111,37 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
                 renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
               />
-            ) : (
-              <Loader size='large' containerStyle={LOADER_STYLE} />
-            )}
-          </View>
-        </Screen>
-        <Button
-          tx='quotationScreen.createQuotation'
-          style={BUTTON_STYLE}
-          textStyle={BUTTON_TEXT_STYLE}
-          onPress={() => {
-            invoiceStore.saveInvoiceInit();
-            navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT });
-          }}
-        />
+            </View>
+          </Screen>
+        ) : (
+          <Loader size='large' containerStyle={LOADER_STYLE} />
+        )}
+        {navigationState ? (
+          <Snackbar
+            visible={navigationState}
+            elevation={5}
+            style={{
+              backgroundColor: palette.yellow,
+              marginVertical: spacing[5],
+              marginHorizontal: spacing[4],
+              borderRadius: 40,
+              paddingHorizontal: spacing[2],
+            }}
+            onDismiss={() => setNavigationState(false)}
+          >
+            {translate('common.loading')}
+          </Snackbar>
+        ) : (
+          <Button
+            tx='quotationScreen.createQuotation'
+            style={BUTTON_STYLE}
+            textStyle={BUTTON_TEXT_STYLE}
+            onPress={() => {
+              invoiceStore.saveInvoiceInit();
+              navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT });
+            }}
+          />
+        )}
       </View>
     </ErrorBoundary>
   );

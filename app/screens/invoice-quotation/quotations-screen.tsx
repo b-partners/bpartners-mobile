@@ -63,9 +63,9 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
-          <View>
-            {!loadingQuotation ? (
+        {!loadingQuotation ? (
+          <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
+            <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
                 sections={[...sectionedQuotations]}
@@ -79,11 +79,11 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
                 renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
               />
-            ) : (
-              <Loader size='large' containerStyle={LOADER_STYLE} />
-            )}
-          </View>
-        </Screen>
+            </View>
+          </Screen>
+        ) : (
+          <Loader size='large' containerStyle={LOADER_STYLE} />
+        )}
         <Button
           tx='quotationScreen.createQuotation'
           style={BUTTON_STYLE}

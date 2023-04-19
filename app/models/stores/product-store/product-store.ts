@@ -19,29 +19,29 @@ export const ProductStoreModel = types
   .actions(self => ({
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
-    .actions(self => ({
-      getProductsSuccess: (products: ProductSnapshotOut[]) => {
-        self.products.replace(products);
-      },
-    }))
-    .actions(() => ({
-      getProductsFail: error => {
-        __DEV__ && console.tron.log(error);
-      },
-    }))
-    .actions(self => ({
-      getProducts: flow(function* (description: string) {
-        const productApi = new ProductApi(self.environment.api);
-        try {
-          const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
+  .actions(self => ({
+    getProductsSuccess: (products: ProductSnapshotOut[]) => {
+      self.products.replace(products);
+    },
+  }))
+  .actions(() => ({
+    getProductsFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
+    getProducts: flow(function* (description: string) {
+      const productApi = new ProductApi(self.environment.api);
+      try {
+        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
 
-          self.getProductsSuccess(getProductsResult.products);
-        } catch (e) {
-          self.getProductsFail(e.message);
-          self.catchOrThrow(e);
-        }
-      }),
-    }))
+        self.getProductsSuccess(getProductsResult.products);
+      } catch (e) {
+        self.getProductsFail(e.message);
+        self.catchOrThrow(e);
+      }
+    }),
+  }))
   .actions(self => ({
     saveProductInit: () => {
       self.checkProduct = null;
