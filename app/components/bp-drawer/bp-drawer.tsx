@@ -1,4 +1,6 @@
+import { Auth } from '@aws-amplify/auth';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
+import { Amplify } from 'aws-amplify';
 import React, { useCallback } from 'react';
 import { Alert, Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -9,6 +11,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import OcticonsIcon from 'react-native-vector-icons/Octicons';
 
+import awsExports from '../../../src/aws-exports';
 import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -16,6 +19,8 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { BPDrawerHeader } from './bp-drawer-header';
+
+Amplify.configure(awsExports);
 
 const LOGOUT_CONTAINER_STYLE: ViewStyle = {
   position: 'absolute',
@@ -189,8 +194,9 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       </View>
       <TouchableOpacity
         style={LOGOUT_CONTAINER_STYLE}
-        onPress={() => {
-          authStore.logout();
+        onPress={async () => {
+          await Auth.signOut();
+          await authStore.logout();
           props.navigation.closeDrawer();
         }}
       >

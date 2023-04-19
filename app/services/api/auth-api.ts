@@ -50,6 +50,7 @@ export class AuthApi {
 
   async whoami(): Promise<GetWhoAmIResult> {
     const response: ApiResponse<any> = await this.api.apisauce.get('whoami');
+    __DEV__ && console.tron.log(response);
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);

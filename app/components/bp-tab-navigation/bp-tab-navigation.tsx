@@ -123,7 +123,12 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                 onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
                 testID={`${RouteName[bottomTavNavItem]}Tab`}
                 source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
-                tabStyle={{ width: '100%', height: 50, marginTop: 18, alignItems: 'center' }}
+                tabStyle={{
+                  width: '100%',
+                  height: 50,
+                  marginTop: 18,
+                  alignItems: 'center',
+                }}
                 // tabStyle={{ width: '100%', height: 50, marginTop: 18, alignItems: 'center', display: bottomTavNavItem === 'service' ? 'none' : 'flex' }}
                 imageStyle={{ width: 65, height: 55 }}
                 text={ROUTE[bottomTavNavItem]}

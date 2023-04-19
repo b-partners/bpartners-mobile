@@ -81,7 +81,6 @@ const AppStack = observer(function () {
 
   const { authStore, legalFilesStore } = useStores();
   const { accessToken, currentAccount, currentAccountHolder, currentUser } = authStore;
-
   const hasAccount = currentAccount && !!currentAccount?.id;
   const hasAccountHolder = currentAccountHolder && !!currentAccountHolder?.id;
   const hasUser = currentUser && !!currentUser?.id;
