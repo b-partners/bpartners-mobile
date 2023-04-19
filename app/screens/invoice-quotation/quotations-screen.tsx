@@ -45,10 +45,11 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
       const editedItem = {
         ...item,
         ref: item.ref.replace('-TMP', ''),
-        title: item.title.replace('-TMP', ''),
+        title: item.title?.replace('-TMP', ''),
         status: InvoiceStatus.CONFIRMED,
       };
       await invoiceStore.saveInvoice(editedItem);
+      await invoiceStore.getInvoices({ page: 1, pageSize: 30, status: InvoiceStatus.CONFIRMED });
       await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsInvoice'));
     } catch (e) {

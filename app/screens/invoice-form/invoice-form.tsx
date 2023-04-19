@@ -72,8 +72,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
 
-  __DEV__ && console.tron.log(fields);
-
   const onSubmit = async invoices => {
     __DEV__ && console.tron.log({ invoices });
     try {

@@ -57,10 +57,11 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       const editedItem = {
         ...item,
         ref: item.ref.replace('-TMP', ''),
-        title: item.title.replace('-TMP', ''),
+        title: item.title?.replace('-TMP', ''),
         status: InvoiceStatus.PROPOSAL,
       };
       await invoiceStore.saveInvoice(editedItem);
+      await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
       await invoiceStore.getDrafts({ page: 1, pageSize: 30, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {

@@ -6,8 +6,8 @@ import { TextStyle, ViewStyle } from 'react-native';
 
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
-import { useStores } from '../../models';
-import { InvoiceStatus } from '../../models/entities/invoice/invoice';
+/*import { useStores } from '../../models';
+import { InvoiceStatus } from '../../models/entities/invoice/invoice';*/
 import { TabNavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -22,7 +22,7 @@ const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW 
 
 export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
-  const { invoiceStore } = useStores();
+  // const { invoiceStore } = useStores();
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -60,7 +60,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             navigationKey='drafts'
             listeners={{
               tabPress: () => {
-                invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+                // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
               },
             }}
           />
@@ -70,7 +70,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             navigationKey='quotations'
             listeners={{
               tabPress: () => {
-                invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+                // invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
               },
             }}
           />
@@ -80,7 +80,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             navigationKey='invoices'
             listeners={{
               tabPress: () => {
-                invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 30 });
+                // invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 30 });
               },
             }}
           />
