@@ -412,6 +412,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </TouchableOpacity>
         <Button
           tx='invoiceFormScreen.invoicePreview'
+          onPress={() => navigate('invoicePreview', { fileId: 'something' })}
           style={{
             backgroundColor: color.palette.secondaryColor,
             borderRadius: 25,
