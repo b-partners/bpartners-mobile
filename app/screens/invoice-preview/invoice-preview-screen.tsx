@@ -7,6 +7,7 @@ import { Header, Loader, PDFView, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList, goBack } from '../../navigators';
 import { color, spacing } from '../../theme';
+import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
 
 const ROOT: ViewStyle = {
@@ -24,10 +25,9 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
   const {
     route: { params },
   } = props;
-  const { fileId } = params;
-  __DEV__ && console.tron.log(fileId);
-  const { authStore } = useStores();
-
+  //const { fileId } = params;
+  //createFileUrl(fileId);
+  // todo: programmatically reference pdf url
   return (
     <ErrorBoundary catchErrors={'always'}>
       <Header leftIcon={'back'} headerText={'Invoice Preview'} onLeftPress={() => goBack()} />
