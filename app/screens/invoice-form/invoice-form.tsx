@@ -410,7 +410,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             <Octicons name='file-submodule' size={25} color={color.palette.secondaryColor} />
           </View>
         </TouchableOpacity>
-        {/*<Button
+        <Button
           tx='invoiceFormScreen.invoicePreview'
           style={{
             backgroundColor: color.palette.secondaryColor,
@@ -423,7 +423,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             fontSize: 14,
             fontFamily: 'Geometria-Bold',
           }}
-        />*/}
+        />
       </View>
       <InvoiceCreationModal
         invoiceType={invoiceType}
