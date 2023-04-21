@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import Pdf from 'react-native-pdf';
 
 type TSource = { uri: string; cache?: boolean } | number;
@@ -35,6 +35,7 @@ export function PDFView(props: IPDFView) {
 
 const PDF_STYLE: ViewStyle = {
   flex: 1,
-  width: Dimensions.get('window').width,
-  height: Dimensions.get('window').height,
+  // Todo: verify if it does not break legal file view
+  // width: Dimensions.get('window').width,
+  // height: Dimensions.get('window').height,
 };

@@ -3,24 +3,17 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { View, ViewStyle } from 'react-native';
 
-import { Header, Loader, PDFView, Screen, Text } from '../../components';
-import { useStores } from '../../models';
+import { Header, Loader, PDFView } from '../../components';
 import { NavigatorParamList, goBack } from '../../navigators';
-import { color, spacing } from '../../theme';
-import { createFileUrl } from '../../utils/file-utils';
+import { spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 
-const ROOT: ViewStyle = {
-  backgroundColor: color.palette.white,
+const PDF_STYLE: ViewStyle = {
   flex: 1,
+  padding: spacing[4],
 };
 
-const PDF_CONTAINER: ViewStyle = {
-  flex: 1,
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  margin: spacing[48],
-};
 export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invoicePreview'>> = observer(props => {
   const {
     route: { params },
@@ -28,27 +21,24 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
   //const { fileId } = params;
   //createFileUrl(fileId);
   // todo: programmatically reference pdf url
+
   return (
     <ErrorBoundary catchErrors={'always'}>
-      <Header leftIcon={'back'} headerText={'Invoice Preview'} onLeftPress={() => goBack()} />
-      <Screen style={ROOT} preset='scroll'>
-        <Text preset='header' text='invoicePreview' />
-        <View style={PDF_CONTAINER}>
-          <PDFView
-            style={{ borderWidth: 2, borderColor: color.palette.angry }}
-            source={{ uri: 'https://calendar.hei.school' }}
-            renderActivityIndicator={progress => {
-              __DEV__ && console.tron.log(progress);
-              return <Loader size={'large'} color={color.palette.deepPurple} />;
-            }}
-            onError={error => {
-              __DEV__ && console.tron.log('An errror occured');
-              __DEV__ && console.tron.log(error.message);
-            }}
-            onLoadComplete={() => __DEV__ && console.tron.log('compolete')}
-          />
-        </View>
-      </Screen>
+      <Header leftIcon={'back'} headerText={'Invoice Preview'} onLeftPress={goBack} />
+      <View style={{ flex: 1 }}>
+        <PDFView
+          style={PDF_STYLE}
+          enablePaging={false}
+          // TODO replace this to the invoice pdf link
+          source={{ uri: 'https://www.africau.edu/images/default/sample.pdf' }}
+          renderActivityIndicator={() => <Loader size={'small'} color={palette.greyDarker} />}
+          onError={error => {
+            __DEV__ && console.tron.log('An errror occured');
+            __DEV__ && console.tron.log(error.message);
+          }}
+          onLoadComplete={() => __DEV__ && console.tron.log('compolete')}
+        />
+      </View>
     </ErrorBoundary>
   );
 });
