@@ -302,6 +302,9 @@
     },
     "invoicePreview": "Invoice preview"
   },
+  "invoicePreviewScreen": {
+    "previewOfInvoice": "Preview of invoice No."
+  },
   "paymentListScreen": {
     "title": "Invoicing",
     "tabs": {
