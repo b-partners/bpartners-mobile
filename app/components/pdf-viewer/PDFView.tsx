@@ -9,17 +9,18 @@ interface IPDFView {
   onLoadProgress?: (percent: number) => void;
   onLoadComplete?: (numberOfPages?: number, path?: string) => void;
   onError?: (error) => any;
+  enablePaging?: boolean;
   onPageChanged?: (page: number, numberOfPages: number) => void;
   style?: ViewStyle;
   renderActivityIndicator: (progress?: number) => React.ReactElement;
 }
 
 export function PDFView(props: IPDFView) {
-  const { source, onPageChanged, onLoadComplete, onError, style, onLoadProgress, renderActivityIndicator } = props;
+  const { source, onPageChanged, onLoadComplete, onError, style, onLoadProgress, renderActivityIndicator, enablePaging = true } = props;
 
   return (
     <Pdf
-      enablePaging={true}
+      enablePaging={enablePaging}
       trustAllCerts={false}
       source={source}
       onLoadComplete={onLoadComplete}
