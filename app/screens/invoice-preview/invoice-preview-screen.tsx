@@ -11,6 +11,7 @@ import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
+import Footer from './Footer';
 
 const PDF_STYLE: ViewStyle = {
   flex: 1,
@@ -43,6 +44,9 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
           }}
           onLoadComplete={() => __DEV__ && console.tron.log('compolete')}
         />
+      </View>
+      <View>
+        <Footer />
       </View>
     </ErrorBoundary>
   );
