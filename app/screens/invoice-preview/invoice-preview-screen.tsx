@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { View, ViewStyle } from 'react-native';
 
 import { Header, Loader, PDFView } from '../../components';
+import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { NavigatorParamList, goBack } from '../../navigators';
 import { spacing } from '../../theme';
@@ -20,7 +21,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
   const {
     route: { params },
   } = props;
-  const { fileId } = params;
+  const { fileId, invoiceTitle } = params;
   const {
     authStore: { accesToken, currentAccount },
   } = useStores();
@@ -29,12 +30,11 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
 
   return (
     <ErrorBoundary catchErrors={'always'}>
-      <Header leftIcon={'back'} headerText={'Invoice Preview'} onLeftPress={goBack} />
+      <Header leftIcon={'back'} headerText={translate('invoicePreviewScreen.previewOfInvoice') + invoiceTitle} onLeftPress={goBack} />
       <View style={{ flex: 1 }}>
         <PDFView
           style={PDF_STYLE}
           enablePaging={false}
-          // TODO replace this to the invoice pdf link
           source={{ uri: invoiceUrl }}
           renderActivityIndicator={() => <Loader size={'small'} color={palette.greyDarker} />}
           onError={error => {
