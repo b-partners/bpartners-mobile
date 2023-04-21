@@ -4,9 +4,11 @@ import React, { FC } from 'react';
 import { View, ViewStyle } from 'react-native';
 
 import { Header, Loader, PDFView } from '../../components';
+import { useStores } from '../../models';
 import { NavigatorParamList, goBack } from '../../navigators';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
 
 const PDF_STYLE: ViewStyle = {
@@ -18,9 +20,12 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
   const {
     route: { params },
   } = props;
-  //const { fileId } = params;
-  //createFileUrl(fileId);
-  // todo: programmatically reference pdf url
+  const { fileId } = params;
+  const {
+    authStore: { accesToken, currentAccount },
+  } = useStores();
+  // TODO: what about draft and quotation
+  const invoiceUrl = createFileUrl(fileId, currentAccount.id, accesToken, 'INVOICE');
 
   return (
     <ErrorBoundary catchErrors={'always'}>
@@ -30,7 +35,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
           style={PDF_STYLE}
           enablePaging={false}
           // TODO replace this to the invoice pdf link
-          source={{ uri: 'https://www.africau.edu/images/default/sample.pdf' }}
+          source={{ uri: invoiceUrl }}
           renderActivityIndicator={() => <Loader size={'small'} color={palette.greyDarker} />}
           onError={error => {
             __DEV__ && console.tron.log('An errror occured');
