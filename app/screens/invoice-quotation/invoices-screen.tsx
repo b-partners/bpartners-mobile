@@ -81,6 +81,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
                     menuAction={{
                       downloadInvoice: () =>
                         downloadInvoice(
+                          // TODO: use utility func here
                           `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`,
                           `${item.ref}.pdf`
                         ),

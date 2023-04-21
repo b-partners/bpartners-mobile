@@ -99,6 +99,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
+  const handleInvoicePreviewPress = () => {
+    const { fileId, title: invoiceTitle } = invoice;
+    const submitedValue = handleSubmit(onSubmit);
+    __DEV__ && console.tron.log('submited value' + submitedValue);
+    navigate('invoicePreview', { fileId, invoiceTitle });
+  };
+
   return (
     <View style={{ paddingBottom: spacing[6] }}>
       <View style={ROW_STYLE}>
@@ -412,7 +419,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </TouchableOpacity>
         <Button
           tx='invoiceFormScreen.invoicePreview'
-          onPress={() => navigate('invoicePreview', { fileId: 'something' })}
+          onPress={handleInvoicePreviewPress}
           style={{
             backgroundColor: color.palette.secondaryColor,
             borderRadius: 25,

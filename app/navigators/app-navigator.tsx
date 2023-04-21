@@ -54,6 +54,7 @@ export type NavigatorParamList = {
   };
   invoicePreview: {
     fileId: string;
+    invoiceTitle: string;
   };
 };
 
@@ -69,6 +70,7 @@ export type TabNavigatorParamList = {
   };
   invoicePreview: {
     fileId: string;
+    invoiceTitle: string;
   };
 };
 
