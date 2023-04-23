@@ -16,7 +16,7 @@ import { BPDrawer, BpTabNavigation, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
-import { InvoiceStatus } from '../models/entities/invoice/invoice';
+import { Invoice, InvoiceStatus } from "../models/entities/invoice/invoice";
 import { ErrorBoundary, HomeScreen, LegalFileScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen } from '../screens';
 import { CodeExchangeScreen } from '../screens/code-exchange/code-exchange-screen';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
@@ -55,6 +55,7 @@ export type NavigatorParamList = {
   invoicePreview: {
     fileId: string;
     invoiceTitle: string;
+    invoice: Invoice;
   };
 };
 
@@ -71,6 +72,7 @@ export type TabNavigatorParamList = {
   invoicePreview: {
     fileId: string;
     invoiceTitle: string;
+    invoice: Invoice;
   };
 };
 

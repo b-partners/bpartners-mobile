@@ -22,7 +22,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
   const {
     route: { params },
   } = props;
-  const { fileId, invoiceTitle } = params;
+  const { fileId, invoiceTitle, invoice } = params;
   const {
     authStore: { accessToken, currentAccount },
   } = useStores();
@@ -40,13 +40,13 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
           renderActivityIndicator={() => <Loader size={'small'} color={palette.greyDarker} />}
           onError={error => {
             __DEV__ && console.tron.log('An errror occured');
-            __DEV__ && console.tron.log(error.message);
+            __DEV__ && console.tron.error(error.message, [error.stackTrace]);
           }}
-          onLoadComplete={() => __DEV__ && console.tron.log('compolete')}
+          onLoadComplete={() => __DEV__ && console.tron.log('complete')}
         />
       </View>
       <View>
-        <Footer />
+        <Footer invoice={invoice} invoiceUrl={invoiceUrl}/>
       </View>
     </ErrorBoundary>
   );
