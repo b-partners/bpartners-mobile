@@ -46,7 +46,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
     try {
       await invoiceStore.getInvoice(item.id);
       invoiceStore.saveInvoiceInit();
-      navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT, invoiceID: item.id });
+      navigation.navigate('invoiceForm', { invoiceID: item.id });
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to edit invoice, ${e}`);
     } finally {
@@ -140,7 +140,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
             textStyle={BUTTON_TEXT_STYLE}
             onPress={() => {
               invoiceStore.saveInvoiceInit();
-              navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.DRAFT });
+              navigation.navigate('invoiceForm');
             }}
           />
         )}
