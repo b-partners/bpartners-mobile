@@ -1,14 +1,13 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';
 
-import { Icon, Text, TextField } from '../../components';
+import { Text, TextField } from '../../components';
 import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { color, spacing } from '../../theme';
-import { fetchBinaryFiles } from '../../utils/file-utils';
+import { fetchBinaryFileV2 } from '../../utils/file-utils';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
 const EMAIL_FIELD_CONTAINER: ViewStyle = {};
@@ -41,32 +40,18 @@ const Footer: FC<IFooter> = props => {
   } = useStores();
 
   async function handleSendInvoice() {
-    // TODO: extract an utility function
-    const dirs = ReactNativeBlobUtil.fs.dirs;
-    let downloadedFilePath = null;
-    ReactNativeBlobUtil.config({
-      fileCache: true,
-      path: dirs.DownloadDir + `/Invoice-${title}.pdf`,
-      overwrite: true,
-    })
-      .fetch('GET', invoiceUrl, {
-        // some headers ..
-      })
-      .then(res => {
-        __DEV__ && console.tron.log('The file saved to ', res.path());
-        downloadedFilePath = res.path();
-      });
+    const downloadedFileTempPath = await fetchBinaryFileV2({ url: invoiceUrl, fileName:`/Invoice-${title}.pdf`, temp: true})
 
     // Open mail client and preload with some default values
     // and pass as attachment the pdf
     const email = {
       subject: `Facture No.${title}`,
-      recipients: ['customer.email'],
+      recipients: [customer.email],
       body: '<p>Ci-joint la facture</p>',
       isHTML: true,
       attachments: [
         {
-          path: downloadedFilePath,
+          path: downloadedFileTempPath,
           type: 'pdf',
           name: 'Invoice.pdf',
         },
@@ -82,24 +67,7 @@ const Footer: FC<IFooter> = props => {
   }
 
   async function download() {
-    // TODO: extract an utility function
-    __DEV__ && console.tron.log('download started');
-    const dirs = ReactNativeBlobUtil.fs.dirs;
-    ReactNativeBlobUtil.config({
-      fileCache: true,
-      path: dirs.LegacyDownloadDir + `/Invoice.pdf`,
-      overwrite: true,
-    })
-      .fetch('GET', invoiceUrl, {})
-      .then(
-        res => {
-          __DEV__ && console.tron.log('The file saved to ', res.path());
-        },
-        reason => {
-          __DEV__ && console.tron.log('an error occured');
-          __DEV__ && console.tron.log(reason);
-        }
-      );
+    await fetchBinaryFileV2({ fileName: 'Invoice.pdf', url: invoiceUrl, accessToken });
   }
 
   return (
