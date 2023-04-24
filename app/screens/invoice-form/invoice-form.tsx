@@ -1,25 +1,26 @@
-import React, {useState} from 'react';
-import {Controller, useFieldArray, useForm} from 'react-hook-form';
-import {TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
+import React, { useState } from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import {Button, Icon, Text} from '../../components';
-import {DatePickerField} from '../../components/date-picker-field/date-picker-field';
-import {useStores} from '../../models';
-import {Customer} from '../../models/entities/customer/customer';
-import {createInvoiceDefaultModel, Invoice, InvoiceStatus} from '../../models/entities/invoice/invoice';
-import {createProductDefaultModel, Product} from '../../models/entities/product/product';
-import {color, spacing} from '../../theme';
-import {palette} from '../../theme/palette';
-import {showMessage} from '../../utils/snackbar';
-import {CustomerCreationModal} from './components/customer/customer-creation-modal';
-import {CustomerFormFieldFooter} from './components/customer/customer-form-field-footer';
-import {ProductFormField} from './components/product-form-field/product-form-field';
-import {SelectFormField} from './components/select-form-field/select-form-field';
-import {InvoiceFormField} from './invoice-form-field';
-import {InvoiceCreationModal} from "./invoice-creation-modal";
-import {translate} from "../../i18n";
+import { Button, Icon, Text } from '../../components';
+import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
+import { translate } from '../../i18n';
+import { useStores } from '../../models';
+import { Customer } from '../../models/entities/customer/customer';
+import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
+import { Product, createProductDefaultModel } from '../../models/entities/product/product';
+import { navigate } from '../../navigators';
+import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
+import { showMessage } from '../../utils/snackbar';
+import { CustomerCreationModal } from './components/customer/customer-creation-modal';
+import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
+import { ProductFormField } from './components/product-form-field/product-form-field';
+import { SelectFormField } from './components/select-form-field/select-form-field';
+import { InvoiceCreationModal } from './invoice-creation-modal';
+import { InvoiceFormField } from './invoice-form-field';
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -54,7 +55,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoice } = props;
   const { invoiceStore, customerStore } = useStores();
-  const { checkInvoice, loadingCreation } = invoiceStore;
+  const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
@@ -73,28 +74,25 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [comment, setComment] = useState(null);
 
   const onSubmit = async invoices => {
-    //__DEV__ && console.tron.log({ invoices });
     try {
-      /*await invoiceStore.saveInvoice({
+      await invoiceStore.saveInvoice({
         ...invoices,
         customer: selectedCustomer,
         comment: comment,
         title: title,
         metadata: { ...invoices.metadata, submittedAt: new Date() },
-          status: invoiceType,
+        status: invoiceType,
       });
       setConfirmationModal(false);
-      invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
-      invoiceType === 'PROPOSAL' && (await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 }));
-      navigate('paymentList');*/
-        __DEV__ && console.tron.log({
-            ...invoices,
-            customer: selectedCustomer,
-            comment: comment,
-            title: title,
-            metadata: { ...invoices.metadata, submittedAt: new Date() },
-            status: invoiceType,
-        })
+      if (invoiceType === InvoiceStatus.DRAFT) {
+        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+      }
+      if (invoiceType === InvoiceStatus.PROPOSAL) {
+        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+      }
+      navigate('paymentList');
     } catch (e) {
       showMessage(e);
       throw e;
@@ -376,41 +374,42 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         style={{
           ...ROW_STYLE,
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'space-evenly',
           paddingHorizontal: spacing[5],
         }}
       >
-          { checkInvoice === true && ( showMessage(translate('common.added'), { backgroundColor: palette.green }))}
-          { checkInvoice === false && ( showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed }))}
+        {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
+        {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
 
-          <TouchableOpacity onPress={() => setConfirmationModal(true)}>
-            <View
-              style={{
-                borderColor: color.palette.secondaryColor,
-                borderWidth: 2,
-                borderRadius: 100,
-                padding: spacing[3],
-              }}
-            >
-              <RNVIcon name='save' size={25} color={color.palette.secondaryColor} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-              setInvoiceType(InvoiceStatus.PROPOSAL);
-              setConfirmationModal(true);
-          }
-          }>
-              <View
-                  style={{
-                      borderColor: color.palette.secondaryColor,
-                      borderWidth: 2,
-                      borderRadius: 100,
-                      padding: spacing[3],
-                  }}
-              >
-                  <Octicons name='file-submodule' size={25} color={color.palette.secondaryColor} />
-              </View>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={() => setConfirmationModal(true)}>
+          <View
+            style={{
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 2,
+              borderRadius: 100,
+              padding: spacing[3],
+            }}
+          >
+            <RNVIcon name='save' size={25} color={color.palette.secondaryColor} />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setInvoiceType(InvoiceStatus.PROPOSAL);
+            setConfirmationModal(true);
+          }}
+        >
+          <View
+            style={{
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 2,
+              borderRadius: 100,
+              padding: spacing[3],
+            }}
+          >
+            <Octicons name='file-submodule' size={25} color={color.palette.secondaryColor} />
+          </View>
+        </TouchableOpacity>
         {/*<Button
           tx='invoiceFormScreen.invoicePreview'
           style={{
@@ -426,7 +425,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />*/}
       </View>
-      <InvoiceCreationModal invoiceType={invoiceType} confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} handleSubmit={handleSubmit} onSubmit={onSubmit}/>
+      <InvoiceCreationModal
+        invoiceType={invoiceType}
+        confirmationModal={confirmationModal}
+        setConfirmationModal={setConfirmationModal}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+      />
     </View>
   );
 };
