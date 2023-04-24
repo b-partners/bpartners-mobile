@@ -33,8 +33,8 @@ const Footer: FC<IFooter> = props => {
           <AntDesign name='download' size={24} color='black' />
         </TouchableOpacity>
       </View>
-      <View style={EMAIL_FIELD_CONTAINER}></View>
-      <View style={EMAIL_COPY_CONTAINER}></View>
+      <View style={EMAIL_FIELD_CONTAINER} />
+      <View style={EMAIL_COPY_CONTAINER} />
       <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
         {/*TODO use text style */}
       </TouchableOpacity>

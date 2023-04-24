@@ -288,8 +288,8 @@
     "invoicePreview": "Aperçu du devis"
   },
   "invoicePreviewScreen": {
-  "previewOfInvoice": "Apercu du devis N°"
-},
+    "previewOfInvoice": "Apercu du devis N°"
+  },
   "paymentListScreen": {
     "title": "Facturation",
     "tabs": {
