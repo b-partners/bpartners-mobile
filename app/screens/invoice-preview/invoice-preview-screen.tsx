@@ -46,7 +46,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
         />
       </View>
       <View>
-        <Footer invoice={invoice} invoiceUrl={invoiceUrl}/>
+        <Footer invoice={invoice} invoiceUrl={invoiceUrl} />
       </View>
     </ErrorBoundary>
   );

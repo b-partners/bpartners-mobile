@@ -1,8 +1,8 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
-import Mailer from "react-native-mail"
-import RNFetchBlob from "rn-fetch-blob"
+import Mailer from 'react-native-mail';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import { Icon, Text, TextField } from '../../components';
 import { Invoice } from '../../models/entities/invoice/invoice';
@@ -16,7 +16,7 @@ const SEND_INVOICE_BUTTON_STYLE: ViewStyle = {
   borderRadius: 25,
   marginLeft: 15,
   flex: 1,
-  marginTop: spacing[6]
+  marginTop: spacing[6],
 };
 const BUTTON_STYLE: ViewStyle = {
   flex: 1,
@@ -24,7 +24,7 @@ const BUTTON_STYLE: ViewStyle = {
   borderWidth: 2,
   borderColor: color.primary,
   borderRadius: 50,
-}
+};
 type IFooter = {
   invoice: Invoice;
   invoiceUrl: string;
@@ -67,7 +67,7 @@ const Footer: FC<IFooter> = props => {
         },
       ],
     };
-    Mailer.mail(email, (error) => {
+    Mailer.mail(email, error => {
       if (error) {
         __DEV__ && console.tron.error('Could not send email', error);
       } else {
@@ -100,10 +100,10 @@ const Footer: FC<IFooter> = props => {
           placeholder={'user@mail.com'}
         />
       </View>
-      <View style={EMAIL_COPY_CONTAINER}></View>
+      <View style={EMAIL_COPY_CONTAINER} />
       <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
         {/*TODO use text style */}
-        <MaterialIcons name={"send"}/> <Text text={"Envoyer le mail"}/>
+        <MaterialIcons name={'send'} /> <Text text={'Envoyer le mail'} />
       </TouchableOpacity>
       {/*<Button*/}
       {/*  tx='invoicePreviewScreen.sendInvoice'*/}
