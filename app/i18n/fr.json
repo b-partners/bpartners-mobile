@@ -234,7 +234,8 @@
       "viewMail": "Afficher mon addresse email",
       "limitedValidityPeriod": "Durée de validité limitée",
       "days": "Jours",
-      "save": "Enregistrer le devis",
+      "saveDraft": "Enregistrer en brouillon",
+      "saveQuotation": "Enregistrer en devis",
       "editableTextField": {
         "error": {
           "required": "Ce champ est requis",

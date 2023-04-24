@@ -1,28 +1,25 @@
-import React, { useState } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, {useState} from 'react';
+import {Controller, useFieldArray, useForm} from 'react-hook-form';
+import {TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
-import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Button, Icon, Loader, Text } from '../../components';
-import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
-import { useStores } from '../../models';
-import { Customer } from '../../models/entities/customer/customer';
-import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
-import { Product, createProductDefaultModel } from '../../models/entities/product/product';
-import { navigate } from '../../navigators';
-import { color, spacing } from '../../theme';
-import { palette } from '../../theme/palette';
-import { showMessage } from '../../utils/snackbar';
-import { CustomerCreationModal } from './components/customer/customer-creation-modal';
-import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
-import { ProductFormField } from './components/product-form-field/product-form-field';
-import { SelectFormField } from './components/select-form-field/select-form-field';
-import { InvoiceFormField } from './invoice-form-field';
+import {Button, Icon, Text} from '../../components';
+import {DatePickerField} from '../../components/date-picker-field/date-picker-field';
+import {useStores} from '../../models';
+import {Customer} from '../../models/entities/customer/customer';
+import {createInvoiceDefaultModel, Invoice, InvoiceStatus} from '../../models/entities/invoice/invoice';
+import {createProductDefaultModel, Product} from '../../models/entities/product/product';
+import {color, spacing} from '../../theme';
+import {palette} from '../../theme/palette';
+import {showMessage} from '../../utils/snackbar';
+import {CustomerCreationModal} from './components/customer/customer-creation-modal';
+import {CustomerFormFieldFooter} from './components/customer/customer-form-field-footer';
+import {ProductFormField} from './components/product-form-field/product-form-field';
+import {SelectFormField} from './components/select-form-field/select-form-field';
+import {InvoiceFormField} from './invoice-form-field';
 import {InvoiceCreationModal} from "./invoice-creation-modal";
 import {translate} from "../../i18n";
-import {Snackbar} from "react-native-paper";
 
 type InvoiceFormProps = {
   invoice: Invoice;
@@ -379,7 +376,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         style={{
           ...ROW_STYLE,
           flexDirection: 'row',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           paddingHorizontal: spacing[5],
         }}
       >
@@ -398,7 +395,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               <RNVIcon name='save' size={25} color={color.palette.secondaryColor} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setConfirmationModal(true)}>
+          <TouchableOpacity onPress={() => {
+              setInvoiceType(InvoiceStatus.PROPOSAL);
+              setConfirmationModal(true);
+          }
+          }>
               <View
                   style={{
                       borderColor: color.palette.secondaryColor,
@@ -425,7 +426,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />*/}
       </View>
-      <InvoiceCreationModal confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} handleSubmit={handleSubmit} onSubmit={onSubmit}/>
+      <InvoiceCreationModal invoiceType={invoiceType} confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} handleSubmit={handleSubmit} onSubmit={onSubmit}/>
     </View>
   );
 };

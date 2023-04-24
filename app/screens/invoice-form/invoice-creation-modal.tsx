@@ -1,20 +1,22 @@
 import React from 'react';
-import { Modal, View } from 'react-native';
+import {Modal, View} from 'react-native';
 
 import {Button, Text} from "../../components";
 import {spacing} from "../../theme";
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {palette} from "../../theme/palette";
+import {InvoiceStatus} from "../../models/entities/invoice/invoice";
 
 type InvoiceCreationModalProps = {
   confirmationModal: boolean;
   setConfirmationModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmit: any;
   onSubmit: (invoices: any) => Promise<void>;
+  invoiceType: InvoiceStatus;
 };
 
 export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props => {
-  const { confirmationModal, setConfirmationModal, handleSubmit, onSubmit } = props;
+  const { confirmationModal, setConfirmationModal, handleSubmit, onSubmit, invoiceType } = props;
 
   return (
       <Modal animationType='slide' transparent={true} visible={confirmationModal} onRequestClose={() => setConfirmationModal(false)}>
@@ -30,7 +32,7 @@ export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props =
                   alignItems: 'center',
                 }}
             >
-              <Text tx={'invoiceFormScreen.invoiceForm.save'} style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 18 }} />
+              <Text tx={invoiceType === InvoiceStatus.DRAFT ? 'invoiceFormScreen.invoiceForm.saveDraft' : 'invoiceFormScreen.invoiceForm.saveQuotation'} style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 18 }} />
             </View>
             <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
               <View style={{ width: '100%', height: '45%', justifyContent: 'center' }}>

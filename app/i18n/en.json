@@ -249,7 +249,8 @@
       "viewMail": "View my email address",
       "limitedValidityPeriod": "Limited period of validity",
       "days": "Days",
-      "save": "save the quote",
+      "saveDraft": "Save the draft",
+      "saveQuotation": "Save the quote",
       "editableTextField": {
         "error": {
           "required": "This field is required",
