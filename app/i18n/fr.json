@@ -15,7 +15,8 @@
     "cancel": "Annuler",
     "back": "Précédent",
     "noDataProvided": "Aucun enregistrement à afficher",
-    "loading": "Chargement en cours ..."
+    "loading": "Chargement en cours ...",
+    "added": "Ajouté avec succès"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -23,6 +24,7 @@
     "verifyConnection": "Verifier votre connexion",
     "required": "Ce champ est requis",
     "amount": "Montant invalide",
+    "operation": "Échec de l'ajout",
     "credentials": "Veuillez vérifier vos identifiants!"
   },
   "drawer": {

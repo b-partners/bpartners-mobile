@@ -110,7 +110,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
             textStyle={BUTTON_TEXT_STYLE}
             onPress={() => {
               invoiceStore.saveInvoiceInit();
-              navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.PROPOSAL });
+              navigation.navigate('invoiceForm');
             }}
           />
         )}
