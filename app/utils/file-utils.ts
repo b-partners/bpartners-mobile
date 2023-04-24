@@ -14,5 +14,5 @@ export const fetchBinaryFiles = async (options: DownloadOptions) => {
 };
 
 export const createFileUrl = (fileId: string, accountId: string, accessToken: string, fileType: string, baseUrl = env.apiBaseUrl) => {
-  return `${baseUrl}/accounts/${accountId}/files/${fileId}/raw?accessToken=${accessToken}&fileType=${fileType}`;
+  return baseUrl + `accounts/${accountId}/files/${fileId}/raw?accessToken=${accessToken}&fileType=${fileType}`;
 };
