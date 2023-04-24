@@ -18,6 +18,7 @@ const PDF_STYLE: ViewStyle = {
   padding: spacing[4],
 };
 
+const FULL: ViewStyle = { flex: 1 };
 export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invoicePreview'>> = observer(props => {
   const {
     route: { params },
@@ -32,7 +33,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
   return (
     <ErrorBoundary catchErrors={'always'}>
       <Header leftIcon={'back'} headerText={translate('invoicePreviewScreen.previewOfInvoice') + invoiceTitle} onLeftPress={goBack} />
-      <View style={{ flex: 1 }}>
+      <View style={FULL}>
         <PDFView
           style={PDF_STYLE}
           enablePaging={false}
@@ -45,9 +46,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
           onLoadComplete={() => __DEV__ && console.tron.log('complete')}
         />
       </View>
-      <View>
-        <Footer invoice={invoice} invoiceUrl={invoiceUrl} />
-      </View>
+      <Footer invoice={invoice} invoiceUrl={invoiceUrl} />
     </ErrorBoundary>
   );
 });

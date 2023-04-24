@@ -115,6 +115,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       navigate('invoicePreview', {
         fileId: savedInvoice.fileId,
         invoiceTitle: savedInvoice.title,
+        invoice: savedInvoice,
       });
     } catch (e) {
       showMessage(e);

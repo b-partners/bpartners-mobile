@@ -1,12 +1,14 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';
-import RNFetchBlob from 'rn-fetch-blob';
 
 import { Icon, Text, TextField } from '../../components';
+import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { color, spacing } from '../../theme';
+import { fetchBinaryFiles } from '../../utils/file-utils';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
 const EMAIL_FIELD_CONTAINER: ViewStyle = {};
@@ -31,15 +33,18 @@ type IFooter = {
 };
 const Footer: FC<IFooter> = props => {
   const {
-    invoice: { title },
+    invoice: { title, customer },
     invoiceUrl,
   } = props;
+  const {
+    authStore: { accessToken },
+  } = useStores();
 
   async function handleSendInvoice() {
     // TODO: extract an utility function
-    const dirs = RNFetchBlob.fs.dirs;
+    const dirs = ReactNativeBlobUtil.fs.dirs;
     let downloadedFilePath = null;
-    RNFetchBlob.config({
+    ReactNativeBlobUtil.config({
       fileCache: true,
       path: dirs.DownloadDir + `/Invoice-${title}.pdf`,
       overwrite: true,
@@ -56,7 +61,7 @@ const Footer: FC<IFooter> = props => {
     // and pass as attachment the pdf
     const email = {
       subject: `Facture No.${title}`,
-      recipients: ['john@gmail.com'],
+      recipients: ['customer.email'],
       body: '<p>Ci-joint la facture</p>',
       isHTML: true,
       attachments: [
@@ -76,23 +81,47 @@ const Footer: FC<IFooter> = props => {
     });
   }
 
+  async function download() {
+    // TODO: extract an utility function
+    __DEV__ && console.tron.log('download started');
+    const dirs = ReactNativeBlobUtil.fs.dirs;
+    ReactNativeBlobUtil.config({
+      fileCache: true,
+      path: dirs.LegacyDownloadDir + `/Invoice.pdf`,
+      overwrite: true,
+    })
+      .fetch('GET', invoiceUrl, {})
+      .then(
+        res => {
+          __DEV__ && console.tron.log('The file saved to ', res.path());
+        },
+        reason => {
+          __DEV__ && console.tron.log('an error occured');
+          __DEV__ && console.tron.log(reason);
+        }
+      );
+  }
+
   return (
     <View>
       <View style={ACTION_CONTAINER}>
         <TouchableOpacity style={BUTTON_STYLE}>
-          <MaterialIcons name='delete-outline' size={24} color={color.primary} />
-          <Text text={'Supprimer'} />
+          <View style={{ flexDirection: 'row' }}>
+            <MaterialIcons name='delete-outline' size={24} color={color.primary} />
+            <Text tx={'invoicePreviewScreen.delete'} style={{ color: color.primary }} />
+          </View>
         </TouchableOpacity>
         <TouchableOpacity style={BUTTON_STYLE}>
-          <Icon icon={'edit'} />
-          <Text text={'modifier'} />
+          <View style={{ flexDirection: 'row' }}>
+            <MaterialIcons name='edit' size={24} color={color.primary} />
+            <Text tx={'invoicePreviewScreen.edit'} style={{ color: color.primary }} />
+          </View>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <AntDesign name='download' size={24} color={color.primary} />
+        <TouchableOpacity onPress={download}>
+          <AntDesign name='download' size={24} color={color.primary} onPressIn={download} />
         </TouchableOpacity>
       </View>
       <View style={EMAIL_FIELD_CONTAINER}>
-        <Text text={'Send an email copy'} style={{ marginBottom: spacing[3] }} />
         <TextField
           textContentType={'emailAddress'}
           keyboardType={'email-address'}
@@ -103,7 +132,10 @@ const Footer: FC<IFooter> = props => {
       <View style={EMAIL_COPY_CONTAINER} />
       <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
         {/*TODO use text style */}
-        <MaterialIcons name={'send'} /> <Text text={'Envoyer le mail'} />
+        <View style={{ flexDirection: 'row' }}>
+          <MaterialIcons name={'send'} />
+          <Text tx={'invoicePreview.send'} />
+        </View>
       </TouchableOpacity>
       {/*<Button*/}
       {/*  tx='invoicePreviewScreen.sendInvoice'*/}
