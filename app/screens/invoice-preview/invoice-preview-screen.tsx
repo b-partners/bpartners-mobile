@@ -24,10 +24,10 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
   } = props;
   const { fileId, invoiceTitle } = params;
   const {
-    authStore: { accesToken, currentAccount },
+    authStore: { accessToken, currentAccount },
   } = useStores();
   // TODO: what about draft and quotation
-  const invoiceUrl = createFileUrl(fileId, currentAccount.id, accesToken, 'INVOICE');
+  const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
 
   return (
     <ErrorBoundary catchErrors={'always'}>
@@ -36,7 +36,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
         <PDFView
           style={PDF_STYLE}
           enablePaging={false}
-          source={{ uri: invoiceUrl }}
+          source={{ uri: invoiceUrl, cache: false }}
           renderActivityIndicator={() => <Loader size={'small'} color={palette.greyDarker} />}
           onError={error => {
             __DEV__ && console.tron.log('An errror occured');
