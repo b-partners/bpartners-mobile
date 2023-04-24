@@ -15,7 +15,8 @@
     "cancel": "Cancel",
     "back": "Back",
     "noDataProvided": "No records to display",
-    "loading": "Loading in progress ..."
+    "loading": "Loading in progress ...",
+    "added": "Successfully added"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -23,6 +24,7 @@
     "verifyConnection": "Verify your connection",
     "required": "This field is required",
     "amount": "Invalid amount",
+    "operation": "Failed to add",
     "credentials": "please check your credentials!"
   },
   "drawer": {
