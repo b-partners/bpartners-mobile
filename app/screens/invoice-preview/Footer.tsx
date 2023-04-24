@@ -1,6 +1,6 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
-import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import Mailer from 'react-native-mail';
 
 import { Text, TextField } from '../../components';
@@ -30,6 +30,7 @@ type IFooter = {
   invoice: Invoice;
   invoiceUrl: string;
 };
+const BUTTON_TEXT_STYLE: TextStyle = { color: color.primary };
 const Footer: FC<IFooter> = props => {
   const {
     invoice: { title, customer },
@@ -76,13 +77,13 @@ const Footer: FC<IFooter> = props => {
         <TouchableOpacity style={BUTTON_STYLE}>
           <View style={{ flexDirection: 'row' }}>
             <MaterialIcons name='delete-outline' size={24} color={color.primary} />
-            <Text tx={'invoicePreviewScreen.delete'} style={{ color: color.primary }} />
+            <Text tx={'invoicePreviewScreen.delete'} style={BUTTON_TEXT_STYLE} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={BUTTON_STYLE}>
           <View style={{ flexDirection: 'row' }}>
             <MaterialIcons name='edit' size={24} color={color.primary} />
-            <Text tx={'invoicePreviewScreen.edit'} style={{ color: color.primary }} />
+            <Text tx={'invoicePreviewScreen.edit'} style={BUTTON_TEXT_STYLE} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={download}>
@@ -99,10 +100,9 @@ const Footer: FC<IFooter> = props => {
       </View>
       <View style={EMAIL_COPY_CONTAINER} />
       <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
-        {/*TODO use text style */}
         <View style={{ flexDirection: 'row' }}>
           <MaterialIcons name={'send'} />
-          <Text tx={'invoicePreview.send'} />
+          <Text tx={'invoicePreviewScreen.send'} style={BUTTON_TEXT_STYLE}/>
         </View>
       </TouchableOpacity>
       {/*<Button*/}
