@@ -16,7 +16,7 @@ const SEND_INVOICE_BUTTON_STYLE: ViewStyle = {
   borderRadius: 25,
   marginLeft: 15,
   flex: 1,
-  marginTop: spacing[6];
+  marginTop: spacing[6]
 };
 const BUTTON_STYLE: ViewStyle = {
   flex: 1,
