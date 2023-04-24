@@ -288,7 +288,10 @@
     "invoicePreview": "Aperçu du devis"
   },
   "invoicePreviewScreen": {
-    "previewOfInvoice": "Apercu du devis N°"
+    "previewOfInvoice": "Apercu du devis N°",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "send": "Envoyer le devis"
   },
   "paymentListScreen": {
     "title": "Facturation",

@@ -303,7 +303,10 @@
     "invoicePreview": "Invoice preview"
   },
   "invoicePreviewScreen": {
-    "previewOfInvoice": "Preview of invoice No."
+    "previewOfInvoice": "Preview of invoice No.",
+    "delete": "Delete",
+    "edit": "Edit",
+    "send": "Send this invoice"
   },
   "paymentListScreen": {
     "title": "Invoicing",
