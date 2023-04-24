@@ -22,7 +22,7 @@ const CONTAINER: ViewStyle = {
 };
 
 export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
-  const invoiceId = route.params.invoiceID;
+  const invoiceId = route.params?.invoiceID;
   const { invoiceStore, customerStore, productStore } = useStores();
   const { products } = productStore;
   const [toEdit, setToEdit] = useState<Invoice>();
@@ -78,7 +78,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
           }}
         />
         <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
-          <InvoiceForm invoiceType={route.params.invoiceType} invoice={toEdit} products={products} onSaveInvoice={saveInvoice} />
+          <InvoiceForm invoice={toEdit} products={products} onSaveInvoice={saveInvoice} />
         </Screen>
       </View>
     </ErrorBoundary>

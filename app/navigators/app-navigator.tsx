@@ -49,7 +49,6 @@ export type NavigatorParamList = {
   prospect: undefined;
   invoices: undefined;
   invoiceForm: {
-    invoiceType: InvoiceStatus;
     invoiceID?: string;
   };
 };
@@ -62,7 +61,7 @@ export type TabNavigatorParamList = {
   supportContact: undefined;
   invoices: undefined;
   invoiceForm: {
-    invoiceType: InvoiceStatus;
+    invoiceID?: string;
   };
 };
 
