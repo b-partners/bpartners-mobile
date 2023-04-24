@@ -99,11 +99,27 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
-  const handleInvoicePreviewPress = () => {
-    const { fileId, title: invoiceTitle } = invoice;
-    const submitedValue = handleSubmit(onSubmit);
-    __DEV__ && console.tron.log('submited value' + submitedValue);
-    navigate('invoicePreview', { fileId, invoiceTitle });
+  const handleInvoicePreviewPress = async invoices => {
+    // TODO(UI): error handling
+    try {
+      const savedInvoice = await invoiceStore.saveInvoice({
+        ...invoices,
+        customer: selectedCustomer,
+        comment: comment,
+        title: title,
+        metadata: { ...invoices.metadata, submittedAt: new Date() },
+      });
+      setConfirmationModal(false);
+      invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
+      invoiceType === 'PROPOSAL' && (await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 }));
+      navigate('invoicePreview', {
+        fileId: savedInvoice.fileId,
+        invoiceTitle: savedInvoice.title,
+      });
+    } catch (e) {
+      showMessage(e);
+      throw e;
+    }
   };
 
   return (
@@ -419,7 +435,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </TouchableOpacity>
         <Button
           tx='invoiceFormScreen.invoicePreview'
-          onPress={handleInvoicePreviewPress}
+          onPress={handleSubmit(handleInvoicePreviewPress)}
           style={{
             backgroundColor: color.palette.secondaryColor,
             borderRadius: 25,
