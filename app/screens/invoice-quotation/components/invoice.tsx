@@ -5,11 +5,11 @@ import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Text } from '../../../components';
 import { BulletSeparator } from '../../../components/bullet-separator/bullet-separator';
 import { Menu, MenuAction, MenuItem } from '../../../components/menu/menu';
-import { translate } from '../../../i18n';
 import { Invoice as IInvoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { currencyPipe, datePipe } from '../../../utils/pipes';
+import { printCurrencyToMajors } from '../../../utils/money';
+import { datePipe } from '../../../utils/pipes';
 import {
   BODY_TEXT_CONTAINER,
   BODY_TEXT_STYLE,
@@ -56,15 +56,12 @@ export const Invoice: React.FC<InvoiceProps> = props => {
 
   const textColor: TextStyle = { color: getStatusTextColor(item.status) };
 
-  const { format } = currencyPipe(translate('currency'));
-  const totalPriceWithVat = format(item.totalPriceWithVat);
-
   return (
     <View style={INVOICE_CONTAINER_STYLE}>
       <TouchableOpacity style={INVOICE_STYLE}>
         <View style={{ ...ROW_STYLE, ...BOTTOM_MARGIN_STYLE }}>
           <Text text={props.item.customer.firstName} style={HEADER_TEXT_STYLE} />
-          <Text text={totalPriceWithVat} style={{ ...HEADER_TEXT_STYLE, ...TOTAL_PRICE_WITH_THAT_STYLE }} />
+          <Text text={printCurrencyToMajors(item.totalPriceWithVat)} style={{ ...HEADER_TEXT_STYLE, ...TOTAL_PRICE_WITH_THAT_STYLE }} />
         </View>
 
         <View style={{ ...ROW_STYLE, ...{ flex: 1 } }}>

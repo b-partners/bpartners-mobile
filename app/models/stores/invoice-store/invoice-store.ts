@@ -3,21 +3,15 @@ import uuid from 'react-native-uuid';
 
 import { withEnvironment, withRootStore } from '../..';
 import { translate } from '../../../i18n';
-import { CustomerApi } from '../../../services/api/customer-api';
 import { PaymentApi } from '../../../services/api/payment-api';
-import { ProductApi } from '../../../services/api/product-api';
 import { showMessage } from '../../../utils/snackbar';
 import { Criteria } from '../../entities/criteria/criteria';
-import { CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
 import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
-import { ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')
   .props({
-    products: types.optional(types.array(ProductModel), []),
-    customers: types.optional(types.array(CustomerModel), []),
     invoices: types.optional(types.array(InvoiceModel), []),
     quotations: types.optional(types.array(InvoiceModel), []),
     drafts: types.optional(types.array(InvoiceModel), []),
@@ -33,51 +27,6 @@ export const InvoiceStoreModel = types
   .extend(withCredentials)
   .actions(self => ({
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
-  }))
-  .actions(self => ({
-    getCustomersSuccess: (customers: CustomerSnapshotOut[]) => {
-      self.customers.replace(customers);
-    },
-  }))
-  .actions(() => ({
-    getCustomersFail: error => {
-      __DEV__ && console.tron.log(error);
-    },
-  }))
-  .actions(self => ({
-    getCustomers: flow(function* () {
-      const customerApi = new CustomerApi(self.environment.api);
-      try {
-        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id);
-        self.getCustomersSuccess(getCustomersResult.customers);
-      } catch (e) {
-        self.getCustomersFail(e.message);
-        self.catchOrThrow(e);
-      }
-    }),
-  }))
-  .actions(self => ({
-    getProductsSuccess: (products: ProductSnapshotOut[]) => {
-      self.products.replace(products);
-    },
-  }))
-  .actions(() => ({
-    getProductsFail: error => {
-      __DEV__ && console.tron.log(error);
-    },
-  }))
-  .actions(self => ({
-    getProducts: flow(function* (description: string) {
-      const productApi = new ProductApi(self.environment.api);
-      try {
-        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
-
-        self.getProductsSuccess(getProductsResult.products);
-      } catch (e) {
-        self.getProductsFail(e.message);
-        self.catchOrThrow(e);
-      }
-    }),
   }))
   .actions(self => ({
     getDraftsSuccess: (invoices: InvoiceStoreSnapshotOut[]) => {

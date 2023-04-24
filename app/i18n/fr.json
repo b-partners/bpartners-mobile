@@ -14,7 +14,8 @@
     "or": "ou",
     "cancel": "Annuler",
     "back": "Précédent",
-    "noDataProvided": "Aucun enregistrement à afficher"
+    "noDataProvided": "Aucun enregistrement à afficher",
+    "loading": "Chargement en cours ..."
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",

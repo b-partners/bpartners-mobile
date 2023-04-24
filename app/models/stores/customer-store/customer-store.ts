@@ -20,12 +20,12 @@ export const CustomerStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    getCustomersSuccess: (customerSnapshotOuts: CustomerSnapshotOut[]) => {
-      self.customers.replace(customerSnapshotOuts);
+    getCustomersSuccess: (customers: CustomerSnapshotOut[]) => {
+      self.customers.replace(customers);
     },
   }))
   .actions(() => ({
-    getCustomerFail: error => {
+    getCustomersFail: error => {
       __DEV__ && console.tron.log(error);
     },
   }))
@@ -36,7 +36,7 @@ export const CustomerStoreModel = types
         const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id);
         self.getCustomersSuccess(getCustomersResult.customers);
       } catch (e) {
-        self.getCustomerFail(e.message);
+        self.getCustomersFail(e.message);
         self.catchOrThrow(e);
       }
     }),
