@@ -56,7 +56,8 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoiceType, invoice } = props;
   const { invoiceStore, customerStore } = useStores();
-  const { customers, checkInvoice, loadingCreation } = invoiceStore;
+  const { checkInvoice, loadingCreation } = invoiceStore;
+  const { customers } = customerStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [creationModal, setCreationModal] = useState(false);
@@ -71,8 +72,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
-
-  __DEV__ && console.tron.log(fields);
 
   const onSubmit = async invoices => {
     __DEV__ && console.tron.log({ invoices });

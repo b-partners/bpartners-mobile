@@ -41,7 +41,7 @@ export const CustomerCreationForm: FC<
     customerEmail: yup.string().email(translate('errors.invalidEmail')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.email')),
   });
 
-  const { customerStore, invoiceStore } = useStores();
+  const { customerStore } = useStores();
   const { checkCustomer, loadingCustomerCreation } = customerStore;
 
   const { setVisibleModal } = props;
@@ -172,7 +172,7 @@ export const CustomerCreationForm: FC<
                           }),
                           zipCode: 0,
                         });
-                        await invoiceStore.getCustomers();
+                        await customerStore.getCustomers();
                         setVisibleModal(false);
                       } catch (e) {
                         __DEV__ && console.tron.log(e);

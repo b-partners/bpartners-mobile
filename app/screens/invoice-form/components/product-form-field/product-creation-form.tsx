@@ -30,7 +30,7 @@ export const ProductCreationForm: FC<
     description: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.amount')),
   });
 
-  const { productStore, invoiceStore } = useStores();
+  const { productStore } = useStores();
   const { checkProduct, loadingProductCreation } = productStore;
 
   return (
@@ -130,7 +130,7 @@ export const ProductCreationForm: FC<
                           createdAt: new Date(),
                         });
                         productStore.saveProductSuccess();
-                        await invoiceStore.getProducts();
+                        await productStore.getProducts();
                         setVisibleModal(false);
                       } catch (e) {
                         __DEV__ && console.tron.log(e);

@@ -14,7 +14,8 @@
     "or": "or",
     "cancel": "Cancel",
     "back": "Back",
-    "noDataProvided": "No records to display"
+    "noDataProvided": "No records to display",
+    "loading": "Loading in progress ..."
   },
   "errors": {
     "invalidEmail": "Invalid email address.",

@@ -68,9 +68,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
           borderWidth: 0,
         }}
       >
-        <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
-          <View>
-            {!loadingInvoice ? (
+        {!loadingInvoice ? (
+          <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
+            <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
                 sections={[...sectionedQuotations]}
@@ -96,11 +96,11 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
                 renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
               />
-            ) : (
-              <Loader size='large' containerStyle={LOADER_STYLE} />
-            )}
-          </View>
-        </Screen>
+            </View>
+          </Screen>
+        ) : (
+          <Loader size='large' containerStyle={LOADER_STYLE} />
+        )}
         <Button
           tx='quotationScreen.createInvoice'
           style={BUTTON_STYLE}
