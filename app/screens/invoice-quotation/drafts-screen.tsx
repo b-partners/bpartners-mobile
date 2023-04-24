@@ -59,6 +59,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       return;
     }
     try {
+      setNavigationState(true);
       const editedItem = {
         ...item,
         ref: item.ref.replace('-TMP', ''),
@@ -67,6 +68,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       };
       await invoiceStore.saveInvoice(editedItem);
       await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
+      setNavigationState(false);
       await invoiceStore.getDrafts({ page: 1, pageSize: 30, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {
