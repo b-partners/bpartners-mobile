@@ -1,13 +1,13 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { Modal, ScrollView, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 import { Header, Loader, PDFView } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { NavigatorParamList, goBack } from '../../navigators';
-import { color, spacing } from '../../theme';
+import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';

@@ -59,5 +59,4 @@ export type RootStore = Instance<typeof RootStoreModel>;
  */
 export type RootStoreSnapshot = SnapshotOut<typeof RootStoreModel>;
 
-
-export type TRootStoreModelKey = keyof typeof RootStoreModel.properties
+export type TRootStoreModelKey = keyof typeof RootStoreModel.properties;
