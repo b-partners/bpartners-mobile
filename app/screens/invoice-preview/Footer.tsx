@@ -1,6 +1,6 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import React, { FC } from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Mailer from 'react-native-mail';
 
 import { Text, TextField } from '../../components';
@@ -41,7 +41,7 @@ const Footer: FC<IFooter> = props => {
   } = useStores();
 
   async function handleSendInvoice() {
-    const downloadedFileTempPath = await fetchBinaryFileV2({ url: invoiceUrl, fileName:`/Invoice-${title}.pdf`, temp: true})
+    const downloadedFileTempPath = await fetchBinaryFileV2({ url: invoiceUrl, fileName: `/Invoice-${title}.pdf`, temp: true });
 
     // Open mail client and preload with some default values
     // and pass as attachment the pdf
@@ -72,10 +72,10 @@ const Footer: FC<IFooter> = props => {
   }
 
   return (
-    <View>
+    <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: color.palette.white }}>
       <View style={ACTION_CONTAINER}>
         <TouchableOpacity style={BUTTON_STYLE}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: spacing[2] }}>
             <MaterialIcons name='delete-outline' size={24} color={color.primary} />
             <Text tx={'invoicePreviewScreen.delete'} style={BUTTON_TEXT_STYLE} />
           </View>
@@ -102,7 +102,7 @@ const Footer: FC<IFooter> = props => {
       <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
         <View style={{ flexDirection: 'row' }}>
           <MaterialIcons name={'send'} />
-          <Text tx={'invoicePreviewScreen.send'} style={BUTTON_TEXT_STYLE}/>
+          <Text tx={'invoicePreviewScreen.send'} style={BUTTON_TEXT_STYLE} />
         </View>
       </TouchableOpacity>
       {/*<Button*/}

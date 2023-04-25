@@ -19,7 +19,7 @@ export const fetchBinaryFileV2 = async (options: DownloadOptionsV2) => {
   const { url, fileName, mimeType, temp = false } = options;
   const dirs = ReactNativeBlobUtil.fs.dirs;
   let downloadedFilePath = null;
-
+  __DEV__ && console.tron.log('downloading file');
   ReactNativeBlobUtil.config({
     fileCache: true,
     path: dirs.DownloadDir + fileName,
@@ -27,21 +27,22 @@ export const fetchBinaryFileV2 = async (options: DownloadOptionsV2) => {
   })
     .fetch('GET', url, {})
     .then(async (res: FetchBlobResponse) => {
-      if (temp){
-        downloadedFilePath=res.path();
-        return
+      if (temp) {
+        downloadedFilePath = res.path();
+        __DEV__ && console.tron.log('download finished' + downloadedFilePath);
+      } else {
+        const result = await ReactNativeBlobUtil.MediaCollection.copyToMediaStore(
+          {
+            name: fileName,
+            parentFolder: '',
+            mimeType,
+          },
+          'Download', // Media Collection to store the file in ("Audio" | "Image" | "Video" | "Download")
+          res.path()
+        );
+        downloadedFilePath = result;
+        __DEV__ && console.tron.log('download finished' + downloadedFilePath);
       }
-
-      const result = await ReactNativeBlobUtil.MediaCollection.copyToMediaStore(
-        {
-          name: fileName,
-          parentFolder: '',
-          mimeType,
-        },
-        'Download', // Media Collection to store the file in ("Audio" | "Image" | "Video" | "Download")
-        res.path()
-      );
-      downloadedFilePath = result;
     });
 
   return downloadedFilePath;
