@@ -7,7 +7,7 @@ import { Header, Loader, PDFView } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { NavigatorParamList, goBack } from '../../navigators';
-import { spacing } from '../../theme';
+import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -16,6 +16,7 @@ import Footer from './Footer';
 const PDF_STYLE: ViewStyle = {
   flex: 1,
   padding: spacing[4],
+  backgroundColor: color.palette.greyDarker,
 };
 
 const FULL: ViewStyle = { flex: 1 };

@@ -89,8 +89,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
       }
-      if (invoiceType === InvoiceStatus.PROPOSAL) {
-        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+      if (invoiceType === InvoiceStatus.PROPOSAL) {await invoiceStore.getQuotations({
+          status: InvoiceStatus.PROPOSAL,
+          page: 1,
+          pageSize: 30,
+        });
         await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
       }
       navigate('paymentList');
@@ -112,6 +115,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         metadata: { ...invoices.metadata, submittedAt: new Date() },
       });
       setConfirmationModal(false);
+
+      navigate('invoicePreview', {
+        fileId: savedInvoice.fileId,
+        invoiceTitle: savedInvoice.title,
+        invoice: savedInvoice,
+      });
       invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
       invoiceType === 'PROPOSAL' &&
         (await invoiceStore.getQuotations({
@@ -119,11 +128,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           page: 1,
           pageSize: 30,
         }));
-      navigate('invoicePreview', {
-        fileId: savedInvoice.fileId,
-        invoiceTitle: savedInvoice.title,
-        invoice: savedInvoice,
-      });
     } catch (e) {
       __DEV__ && console.tron.error(e.message, e.stacktrace);
       showMessage(e);
