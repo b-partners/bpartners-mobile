@@ -23,7 +23,7 @@ import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
 type InvoiceFormProps = {
-  invoice: Invoice;
+  invoice?: Invoice;
   products: Product[];
   onSaveInvoice: (invoice: Invoice) => Promise<void>;
 };
