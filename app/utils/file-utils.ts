@@ -18,30 +18,40 @@ type DownloadOptionsV2 = { mimeType?: string; temp?: boolean } & DownloadOptions
 export const fetchBinaryFileV2 = async (options: DownloadOptionsV2) => {
   const { url, fileName, mimeType, temp = false } = options;
   const dirs = ReactNativeBlobUtil.fs.dirs;
+
   let downloadedFilePath = null;
-  __DEV__ && console.tron.log('downloading file');
+  __DEV__ && console.tron.log('downloading file from' + url);
   ReactNativeBlobUtil.config({
     fileCache: true,
-    path: dirs.DownloadDir + fileName,
+    path: dirs.DownloadDir + `/${fileName}`,
     overwrite: true,
   })
     .fetch('GET', url, {})
     .then(async (res: FetchBlobResponse) => {
+      __DEV__ && console.tron.logImportant(dirs.DownloadDir + `/${fileName}`);
+      __DEV__ && console.tron.logImportant(res.path());
+
+      downloadedFilePath = res.path();
       if (temp) {
-        downloadedFilePath = res.path();
         __DEV__ && console.tron.log('download finished' + downloadedFilePath);
       } else {
-        const result = await ReactNativeBlobUtil.MediaCollection.copyToMediaStore(
+        ReactNativeBlobUtil.MediaCollection.copyToMediaStore(
           {
             name: fileName,
             parentFolder: '',
             mimeType,
           },
-          'Download', // Media Collection to store the file in ("Audio" | "Image" | "Video" | "Download")
-          res.path()
+          // Media Collection to store the file in ("Audio" | "Image" | "Video" | "Download")
+          'Download',
+          downloadedFilePath
+        ).then(
+          response => {
+            __DEV__ && console.tron.log('copied successfully');
+            __DEV__ && console.tron.log(response);
+          },
+          reason => __DEV__ && console.tron.error(reason.message, reason.stacktrace)
         );
-        downloadedFilePath = result;
-        __DEV__ && console.tron.log('download finished' + downloadedFilePath);
+        __DEV__ && console.tron.log('download finished 2' + downloadedFilePath);
       }
     });
 
