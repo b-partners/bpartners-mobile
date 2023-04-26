@@ -168,7 +168,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 const styles = StyleSheet.create({
   container: {
     marginTop: '5%',
-    padding: 20,
+    padding: 15,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   field: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   label: {
     fontWeight: 'bold',
