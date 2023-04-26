@@ -22,7 +22,8 @@
     "somethingWentWrong": "Something went wrong. Please retry later.",
     "verifyConnection": "Verify your connection",
     "required": "This field is required",
-    "amount": "Invalid amount"
+    "amount": "Invalid amount",
+    "credentials": "please check your credentials!"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
