@@ -153,6 +153,7 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     saveInvoice: flow(function* (invoice: Invoice) {
+      detach(self.invoice);
       self.loadingCreation = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
