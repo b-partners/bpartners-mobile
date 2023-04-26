@@ -1,16 +1,14 @@
-import { AntDesign, MaterialIcons, Octicons } from '@expo/vector-icons';
-import React, { FC } from 'react';
+import { AntDesign, Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
+import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Mailer from 'react-native-mail';
 
-import { Text, TextField } from '../../components';
-import { translate } from '../../i18n';
+import { Loader, Text, TextField } from '../../components';
 import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { goBack } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { fetchBinaryFileV2 } from '../../utils/file-utils';
-import { showMessage } from '../../utils/snackbar';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
 const EMAIL_FIELD_CONTAINER: ViewStyle = {};
@@ -43,6 +41,53 @@ const BUTTON_STYLE: ViewStyle = {
   paddingVertical: spacing[3],
   paddingHorizontal: spacing[4],
 };
+const DOWNLOAD_BUTTON_STYLE: ViewStyle = {
+  borderWidth: 1,
+  width: 48,
+  height: 48,
+  borderRadius: 24,
+  borderColor: color.primary,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  shadowColor: '#171717',
+  shadowOffset: { width: -4, height: 0 },
+  shadowOpacity: 0.2,
+  shadowRadius: 3,
+};
+
+type TDownloadButton = { onPress: () => Promise<void>; loading: boolean; downloadFinished: boolean; downloadError };
+
+function DownloadButton(props: TDownloadButton) {
+  const { downloadFinished, loading, onPress, downloadError } = props;
+  if (loading) {
+    return (
+      <TouchableOpacity style={{ ...DOWNLOAD_BUTTON_STYLE }} onPress={onPress}>
+        <Loader size={'small'} color={color.palette.black} />
+      </TouchableOpacity>
+    );
+  }
+  if (downloadError) {
+    return (
+      <TouchableOpacity style={{ ...DOWNLOAD_BUTTON_STYLE, backgroundColor: color.palette.angry }} onPress={onPress}>
+        <Ionicons name='reload' size={24} color={color.palette.white} />
+      </TouchableOpacity>
+    );
+  }
+  if (!loading && downloadFinished) {
+    return (
+      <TouchableOpacity style={{ ...DOWNLOAD_BUTTON_STYLE, backgroundColor: color.primary }} onPress={onPress} disabled={true}>
+        <Octicons name='check' size={24} color={color.palette.white} />
+      </TouchableOpacity>
+    );
+  }
+  return (
+    <TouchableOpacity style={{ ...DOWNLOAD_BUTTON_STYLE }} onPress={onPress}>
+      <AntDesign name='download' size={24} color={color.primary} />
+    </TouchableOpacity>
+  );
+}
+
 const Footer: FC<IFooter> = props => {
   const {
     invoice: { title, customer },
@@ -51,6 +96,9 @@ const Footer: FC<IFooter> = props => {
   const {
     authStore: { accessToken },
   } = useStores();
+  const [isLoading, setIsLoading] = useState(false);
+  const [downloadError, setDownloadError] = useState(false);
+  const [downloadFinished, setDownloadFinished] = useState(false);
 
   async function handleSendInvoice() {
     const downloadedFileTempPath = await fetchBinaryFileV2({
@@ -84,15 +132,22 @@ const Footer: FC<IFooter> = props => {
   }
 
   async function download() {
-    await fetchBinaryFileV2({
-      fileName: 'Invoice.pdf',
-      mimeType: 'application/pdf',
-      url: invoiceUrl,
-      accessToken,
-      temp: false,
-    });
+    setIsLoading(true);
+    try {
+      await fetchBinaryFileV2({
+        fileName: 'Invoice.pdf',
+        mimeType: 'application/pdf',
+        url: invoiceUrl,
+        accessToken,
+        temp: false,
+      });
+      setDownloadFinished(true);
+      setIsLoading(false);
+    } catch (e) {
+      setDownloadError(true);
+      setIsLoading(false);
+    }
   }
-
   return (
     <View
       style={{
@@ -120,31 +175,7 @@ const Footer: FC<IFooter> = props => {
             </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            width: 48,
-            height: 48,
-            borderRadius: 24,
-            borderColor: color.primary,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            shadowColor: '#171717',
-            shadowOffset: { width: -4, height: 0 },
-            shadowOpacity: 0.2,
-            shadowRadius: 3,
-          }}
-          onPress={async function () {
-            await download();
-            showMessage(translate('invoicePreviewScreen.action.downloadedSuccessFully'), {
-              backgroundColor: color.palette.green,
-              textColor: color.palette.white,
-            });
-          }}
-        >
-          <AntDesign name='download' size={24} color={color.primary} />
-        </TouchableOpacity>
+        <DownloadButton onPress={download} loading={isLoading} downloadFinished={downloadFinished} downloadError={downloadError} />
       </View>
       <View style={EMAIL_FIELD_CONTAINER}>
         <TextField
