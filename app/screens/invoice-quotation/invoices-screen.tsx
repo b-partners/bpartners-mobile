@@ -106,7 +106,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
           style={BUTTON_STYLE}
           textStyle={BUTTON_TEXT_STYLE}
           onPress={() => {
-            navigation.navigate('invoiceForm', { invoiceType: InvoiceStatus.CONFIRMED });
+            navigation.navigate('invoiceForm');
           }}
         />
       </View>
