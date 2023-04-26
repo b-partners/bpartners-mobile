@@ -11,7 +11,7 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
-import Footer from './Footer';
+import Footer from './components/Footer';
 
 const PDF_STYLE: ViewStyle = {
   flex: 1,

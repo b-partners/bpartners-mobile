@@ -1,14 +1,15 @@
-import { AntDesign, Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
-import React, { FC, useEffect, useState } from 'react';
+import { MaterialIcons, Octicons } from '@expo/vector-icons';
+import React, { FC, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Mailer from 'react-native-mail';
 
-import { Loader, Text, TextField } from '../../components';
-import { useStores } from '../../models';
-import { Invoice } from '../../models/entities/invoice/invoice';
-import { goBack } from '../../navigators';
-import { color, spacing } from '../../theme';
-import { fetchBinaryFileV2 } from '../../utils/file-utils';
+import { Text, TextField } from '../../../components';
+import { useStores } from '../../../models';
+import { Invoice } from '../../../models/entities/invoice/invoice';
+import { goBack } from '../../../navigators';
+import { color, spacing } from '../../../theme';
+import { fetchBinaryFileV2 } from '../../../utils/file-utils';
+import { DownloadButton } from './DownloadButton';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
 const EMAIL_FIELD_CONTAINER: ViewStyle = {};
@@ -41,53 +42,16 @@ const BUTTON_STYLE: ViewStyle = {
   paddingVertical: spacing[3],
   paddingHorizontal: spacing[4],
 };
-const DOWNLOAD_BUTTON_STYLE: ViewStyle = {
-  borderWidth: 1,
-  width: 48,
-  height: 48,
-  borderRadius: 24,
-  borderColor: color.primary,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  shadowColor: '#171717',
-  shadowOffset: { width: -4, height: 0 },
-  shadowOpacity: 0.2,
-  shadowRadius: 3,
+
+const FOOTER_WRAPPER: ViewStyle = {
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: color.palette.white,
+  paddingHorizontal: spacing[4],
+  paddingTop: spacing[3],
 };
-
-type TDownloadButton = { onPress: () => Promise<void>; loading: boolean; downloadFinished: boolean; downloadError };
-
-function DownloadButton(props: TDownloadButton) {
-  const { downloadFinished, loading, onPress, downloadError } = props;
-  if (loading) {
-    return (
-      <TouchableOpacity style={{ ...DOWNLOAD_BUTTON_STYLE }} onPress={onPress}>
-        <Loader size={'small'} color={color.palette.black} />
-      </TouchableOpacity>
-    );
-  }
-  if (downloadError) {
-    return (
-      <TouchableOpacity style={{ ...DOWNLOAD_BUTTON_STYLE, backgroundColor: color.palette.angry }} onPress={onPress}>
-        <Ionicons name='reload' size={24} color={color.palette.white} />
-      </TouchableOpacity>
-    );
-  }
-  if (!loading && downloadFinished) {
-    return (
-      <TouchableOpacity style={{ ...DOWNLOAD_BUTTON_STYLE, backgroundColor: color.primary }} onPress={onPress} disabled={true}>
-        <Octicons name='check' size={24} color={color.palette.white} />
-      </TouchableOpacity>
-    );
-  }
-  return (
-    <TouchableOpacity style={{ ...DOWNLOAD_BUTTON_STYLE }} onPress={onPress}>
-      <AntDesign name='download' size={24} color={color.primary} />
-    </TouchableOpacity>
-  );
-}
-
 const Footer: FC<IFooter> = props => {
   const {
     invoice: { title, customer },
@@ -150,15 +114,7 @@ const Footer: FC<IFooter> = props => {
   }
   return (
     <View
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: color.palette.white,
-        paddingHorizontal: spacing[4],
-        paddingTop: spacing[3],
-      }}
+      style={FOOTER_WRAPPER}
     >
       <View style={ACTION_CONTAINER}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
