@@ -19,12 +19,13 @@ export const fetchBinaryFileV2 = async (options: DownloadOptionsV2) => {
   const { url, fileName, mimeType, temp = false } = options;
   const dirs = ReactNativeBlobUtil.fs.dirs;
 
-  let downloadedFilePath = null;
+  let downloadedFilePath: string = null;
   __DEV__ && console.tron.log('downloading file from' + url);
   ReactNativeBlobUtil.config({
     fileCache: true,
     path: dirs.DownloadDir + `/${fileName}`,
     overwrite: true,
+    timeout: 10000,
   })
     .fetch('GET', url, {})
     .then(async (res: FetchBlobResponse) => {
