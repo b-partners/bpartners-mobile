@@ -291,7 +291,10 @@
     "previewOfInvoice": "Apercu du devis N°",
     "delete": "Supprimer",
     "edit": "Modifier",
-    "send": "Envoyer le devis"
+    "send": "Envoyer le devis",
+    "action": {
+      "downloadedSuccessFully": "Fichier téléchargé"
+    }
   },
   "paymentListScreen": {
     "title": "Facturation",
