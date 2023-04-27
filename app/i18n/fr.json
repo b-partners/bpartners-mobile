@@ -293,7 +293,8 @@
     "edit": "Modifier",
     "send": "Envoyer le devis",
     "action": {
-      "downloadedSuccessFully": "Fichier téléchargé"
+      "downloadedSuccessFully": "Fichier téléchargé",
+      "sendMeACopy": "M'ajouter en copie de cet e-mail"
     }
   },
   "paymentListScreen": {

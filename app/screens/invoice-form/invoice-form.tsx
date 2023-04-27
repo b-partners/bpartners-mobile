@@ -130,7 +130,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         }));
     } catch (e) {
       __DEV__ && console.tron.error(e.message, e.stacktrace);
-      showMessage(e);
       throw e;
     } finally {
       setIsLoading(false);

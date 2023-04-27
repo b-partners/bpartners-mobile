@@ -1,9 +1,9 @@
-import { MaterialIcons, Octicons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome, MaterialIcons, Octicons } from '@expo/vector-icons';
 import React, { FC, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Mailer from 'react-native-mail';
 
-import { Text, TextField } from '../../../components';
+import { Switch, Text, TextField } from '../../../components';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators';
@@ -12,8 +12,12 @@ import { fetchBinaryFileV2 } from '../../../utils/file-utils';
 import { DownloadButton } from './DownloadButton';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
-const EMAIL_FIELD_CONTAINER: ViewStyle = {};
-const EMAIL_COPY_CONTAINER: ViewStyle = {};
+const EMAIL_FIELD_CONTAINER: ViewStyle = { marginTop: spacing[3] };
+const EMAIL_COPY_CONTAINER: ViewStyle = {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignContent: 'center',
+};
 const BUTTON_CONTAINER_STYLE: ViewStyle = {
   padding: 0,
   borderWidth: 1,
@@ -22,12 +26,11 @@ const BUTTON_CONTAINER_STYLE: ViewStyle = {
   width: 131,
 };
 const SEND_INVOICE_BUTTON_STYLE: ViewStyle = {
-  backgroundColor: color.palette.secondaryColor,
-  borderRadius: 25,
-  marginLeft: 15,
-  flex: 1,
-  marginTop: spacing[6],
   ...BUTTON_CONTAINER_STYLE,
+  backgroundColor: color.palette.secondaryColor,
+  marginTop: spacing[6],
+  flex: 1,
+  width: '100%',
 };
 
 type IFooter = {
@@ -50,7 +53,7 @@ const FOOTER_WRAPPER: ViewStyle = {
   right: 0,
   backgroundColor: color.palette.white,
   paddingHorizontal: spacing[4],
-  paddingTop: spacing[3],
+  paddingVertical: spacing[4],
 };
 const Footer: FC<IFooter> = props => {
   const {
@@ -60,6 +63,7 @@ const Footer: FC<IFooter> = props => {
   const {
     authStore: { accessToken },
   } = useStores();
+  const [sendCopy, setSendCopy] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
   const [downloadFinished, setDownloadFinished] = useState(false);
@@ -76,6 +80,8 @@ const Footer: FC<IFooter> = props => {
     const email = {
       subject: `Facture No.${title}`,
       recipients: [customer.email],
+      // TODO add current account holder email
+      ccRecipients: [],
       body: '<p>Ci-joint la facture</p>',
       isHTML: true,
       attachments: [
@@ -112,10 +118,9 @@ const Footer: FC<IFooter> = props => {
       setIsLoading(false);
     }
   }
+
   return (
-    <View
-      style={FOOTER_WRAPPER}
-    >
+    <View style={FOOTER_WRAPPER}>
       <View style={ACTION_CONTAINER}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <TouchableOpacity style={[BUTTON_CONTAINER_STYLE, { marginRight: spacing[3] }]}>
@@ -135,28 +140,41 @@ const Footer: FC<IFooter> = props => {
       </View>
       <View style={EMAIL_FIELD_CONTAINER}>
         <TextField
+          label={'Email'}
           textContentType={'emailAddress'}
           keyboardType={'email-address'}
-          style={{ width: '70%', borderColor: color.palette.textClassicColor }}
+          style={{ width: '70%', borderColor: color.palette.lighterGrey }}
+          inputStyle={{ color: color.palette.textClassicColor }}
           placeholder={'user@mail.com'}
         />
       </View>
-      <View style={EMAIL_COPY_CONTAINER} />
+      <View>
+        <View style={EMAIL_COPY_CONTAINER}>
+          <Text tx={'invoicePreviewScreen.action.sendMeACopy'} style={{ color: color.palette.textClassicColor }} />
+          <Switch value={sendCopy} onToggle={newValue => setSendCopy(newValue)} />
+        </View>
+        <TouchableOpacity
+          style={{
+            ...BUTTON_CONTAINER_STYLE,
+            ...BUTTON_STYLE,
+            width: 'auto',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'flex-end',
+            marginTop: spacing[3],
+          }}
+        >
+          <AntDesign name={'mail'} color={color.primary} size={24} />
+          <Text text={"M'envoyer un e-mail test"} style={{ color: color.primary, marginLeft: spacing[2] }} />
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
-        <View style={{ flexDirection: 'row' }}>
-          <MaterialIcons name={'send'} color={color.palette.white} />
-          <Text tx={'invoicePreviewScreen.send'} style={BUTTON_TEXT_STYLE} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', ...BUTTON_STYLE }}>
+          <FontAwesome name={'send'} color={color.palette.white} />
+          <Text tx={'invoicePreviewScreen.send'} style={{ ...BUTTON_TEXT_STYLE, color: color.palette.white }} />
         </View>
       </TouchableOpacity>
-      {/*<Button*/}
-      {/*  tx='invoicePreviewScreen.sendInvoice'*/}
-      {/*  onPress={handleInvoicePreviewPress}*/}
-      {/*  textStyle={{*/}
-      {/*    color: color.palette.white,*/}
-      {/*    fontSize: 14,*/}
-      {/*    fontFamily: 'Geometria-Bold',*/}
-      {/*  }}*/}
-      {/*/>*/}
     </View>
   );
 };

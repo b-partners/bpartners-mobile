@@ -308,7 +308,8 @@
     "edit": "Edit",
     "send": "Send this invoice",
     "action": {
-      "downloadedSuccessFully": "File downloaded"
+      "downloadedSuccessFully": "File downloaded",
+      "sendMeACopy": "Add me to this e-mail copy"
     }
   },
   "paymentListScreen": {
