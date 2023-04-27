@@ -124,9 +124,6 @@ export const AuthStoreModel = types
     getTokenSuccess: flow(function* ({ accessToken, refreshToken }) {
       self.accessToken = accessToken;
       self.refreshToken = refreshToken;
-      __DEV__ && console.tron.log('getToken success');
-      __DEV__ && console.tron.log(self.accessToken);
-      __DEV__ && console.tron.log(self.refreshToken);
       yield self.setCachedCredentials();
     }),
   }))
@@ -148,14 +145,9 @@ export const AuthStoreModel = types
   }))
   .actions(self => ({
     whoami: flow(function* (accessToken: string) {
-      // const securityApi = new SecurityApi(conf);
-      // const {data} = await securityApi.whoami();
-      // return data;
       const signInApi = new AuthApi(self.environment.api);
-
       const accountApi = new AccountApi(self.environment.api);
       let whoAmiResult, getAccountResult, getAccountHolderResult;
-
       try {
         // const session = yield Auth.currentSession();
         // const accessToken = session.getIdToken().getJwtToken();
@@ -171,6 +163,7 @@ export const AuthStoreModel = types
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
         self.whoamiFail(e.message);
+        __DEV__ && console.tron.log('Handle who am I error here');
       }
       yield self.rootStore.legalFilesStore.getLegalFiles();
     }),

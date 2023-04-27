@@ -35,7 +35,7 @@ export default KeyboardAvoidingWrapper;
 const styles = StyleSheet.create({
   keyboardOn: {
     position: 'relative',
-    bottom: Platform.OS == 'android' ? '45%' : '20%',
+    bottom: Platform.OS === 'android' ? '45%' : '20%',
   },
   keyboardOff: {
     marginVertical: 0,
