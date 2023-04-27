@@ -1,7 +1,7 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { SectionList, View } from 'react-native';
+import {SectionList, TouchableOpacity, View} from 'react-native';
 import { Snackbar } from 'react-native-paper';
 
 import { Button, Loader, Screen, Separator, Text } from '../../components';
@@ -16,8 +16,9 @@ import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 import {
-  BUTTON_STYLE,
+  BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
   FOOTER_COMPONENT_STYLE,
   FULL,
@@ -86,7 +87,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         {!loadingDraft ? (
           <Screen
-            style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[6] }}
+            style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[3] }}
             preset='scroll'
             backgroundColor={palette.white}
           >
@@ -118,32 +119,44 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        {navigationState ? (
-          <Snackbar
-            visible={navigationState}
-            elevation={5}
-            style={{
-              backgroundColor: palette.yellow,
-              marginVertical: spacing[5],
-              marginHorizontal: spacing[4],
-              borderRadius: 40,
-              paddingHorizontal: spacing[2],
-            }}
-            onDismiss={() => setNavigationState(false)}
-          >
-            {translate('common.loading')}
-          </Snackbar>
-        ) : (
-          <Button
-            tx='quotationScreen.createQuotation'
-            style={BUTTON_STYLE}
-            textStyle={BUTTON_TEXT_STYLE}
-            onPress={() => {
-              invoiceStore.saveInvoiceInit();
-              navigation.navigate('invoiceForm');
-            }}
-          />
-        )}
+        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 50 }}>
+          <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
+            <TouchableOpacity style={{ width: '45%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+              <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ width: '45%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+              <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '75%' }}>
+            {navigationState ? (
+                <Snackbar
+                    visible={navigationState}
+                    elevation={5}
+                    style={{
+                      backgroundColor: palette.yellow,
+                      marginVertical: spacing[5],
+                      marginHorizontal: spacing[4],
+                      borderRadius: 40,
+                      paddingHorizontal: spacing[2],
+                    }}
+                    onDismiss={() => setNavigationState(false)}
+                >
+                  {translate('common.loading')}
+                </Snackbar>
+            ) : (
+                <Button
+                    tx='quotationScreen.createQuotation'
+                    style={BUTTON_INVOICE_STYLE}
+                    textStyle={BUTTON_TEXT_STYLE}
+                    onPress={() => {
+                      invoiceStore.saveInvoiceInit();
+                      navigation.navigate('invoiceForm');
+                    }}
+                />
+            )}
+          </View>
+        </View>
       </View>
     </ErrorBoundary>
   );
