@@ -4,8 +4,9 @@ import { Amplify } from 'aws-amplify';
 import * as WebBrowser from 'expo-web-browser';
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 import * as yup from 'yup';
 
 import awsExports from '../../../src/aws-exports';
@@ -34,6 +35,11 @@ interface IdentityState {
   refreshToken: string;
 }
 
+interface UserCredentials {
+  password: string;
+  username: string;
+}
+
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
   if (env.isCi) {
     navigation.navigate('oauth');
@@ -42,19 +48,42 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   const { authStore } = useStores();
   const errorMessageStyles = { backgroundColor: palette.pastelRed };
+  const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({});
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const credentials = await Keychain.getGenericPassword();
+        if (credentials) {
+          setUserDetailValue(credentials);
+        }
+      } catch (error) {
+        __DEV__ && console.tron.log("Keychain couldn't be accessed!", error);
+      }
+    })();
+  }, []);
+
+  const userDetails: UserCredentials = {
+    password: userDetailValue.password,
+    username: userDetailValue.username,
+  };
+
   async function signIn(username: string, password: string) {
     try {
-      const user = await Auth.signIn(username, password);
+      const inputUsername = userDetails.username ? userDetails.username : username;
+      const inputPassword = userDetails.username ? userDetails.password : password;
+
+      const user = await Auth.signIn(inputUsername, inputPassword);
       const session = await Auth.currentSession();
 
       const newIdentity: IdentityState = {
         accessToken: session.getIdToken().getJwtToken(),
         refreshToken: user.signInUserSession.refreshToken.token,
       };
+      await Keychain.setGenericPassword(inputUsername, inputPassword);
       authStore.whoami(newIdentity.accessToken);
       navigation.navigate('oauth');
     } catch (error) {
-      __DEV__ && console.tron.log('Error signing in: ', error);
       showMessage(translate('errors.credentials'), errorMessageStyles);
     }
   }
@@ -98,7 +127,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       style={styles.input}
                       onChangeText={handleChange('email')}
                       onBlur={handleBlur('email')}
-                      value={values.email}
+                      defaultValue={userDetails.username !== null ? userDetails.username : values.email}
                       keyboardType='email-address'
                       autoCapitalize='none'
                       autoCorrect={false}
@@ -111,7 +140,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       style={styles.input}
                       onChangeText={handleChange('password')}
                       onBlur={handleBlur('password')}
-                      value={values.password}
+                      defaultValue={userDetails.username !== null ? userDetails.password : values.password}
                       secureTextEntry
                     />
                     {errors.password && touched.password && <Text style={styles.error}>{errors.password}</Text>}
@@ -119,7 +148,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                   <Button
                     onPress={async () => {
                       await signIn(values.email, values.password);
-                      __DEV__ && console.tron.log(values.email, values.password);
                     }}
                     style={{
                       borderRadius: 50,

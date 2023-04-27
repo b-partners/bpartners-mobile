@@ -3,6 +3,7 @@ import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-nav
 import { Amplify } from 'aws-amplify';
 import React, { useCallback } from 'react';
 import { Alert, Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -197,6 +198,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
         onPress={async () => {
           await Auth.signOut();
           await authStore.logout();
+          await Keychain.resetGenericPassword();
           props.navigation.closeDrawer();
         }}
       >
