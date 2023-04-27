@@ -78,4 +78,14 @@ export const BUTTON_STYLE: ViewStyle = {
   paddingVertical: spacing[3],
   paddingHorizontal: spacing[2],
 };
+
+export const BUTTON_INVOICE_STYLE: ViewStyle = {
+  ...SHADOW_STYLE,
+  backgroundColor: color.primary,
+  marginVertical: spacing[1],
+  marginHorizontal: spacing[1],
+  borderRadius: 40,
+  paddingVertical: spacing[3],
+  paddingHorizontal: spacing[2],
+};
 export const SECTION_LIST_CONTAINER_STYLE = { marginHorizontal: spacing[4], borderColor: color.transparent };
