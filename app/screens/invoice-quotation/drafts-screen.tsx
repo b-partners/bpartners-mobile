@@ -119,7 +119,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 50 }}>
+        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
             <TouchableOpacity style={{ width: '45%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
               <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
@@ -128,7 +128,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
               <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
             </TouchableOpacity>
           </View>
-          <View style={{ width: '75%' }}>
+          <View style={{ width: '75%', justifyContent: 'center' }}>
             {navigationState ? (
                 <Snackbar
                     visible={navigationState}
