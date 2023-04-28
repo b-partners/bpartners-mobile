@@ -91,7 +91,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       });
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
-        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
