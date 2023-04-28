@@ -292,9 +292,11 @@
     "delete": "Supprimer",
     "edit": "Modifier",
     "send": "Envoyer le devis",
+    "invoice": "facture",
     "action": {
       "downloadedSuccessFully": "Fichier téléchargé",
-      "sendMeACopy": "M'ajouter en copie de cet e-mail"
+      "sendMeACopy": "M'ajouter en copie de cet e-mail",
+      "sendTestEmail": "M'envoyer un e-mail test"
     }
   },
   "paymentListScreen": {

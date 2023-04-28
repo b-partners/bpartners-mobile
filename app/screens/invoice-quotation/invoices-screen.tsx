@@ -45,10 +45,11 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   const downloadInvoice = async (url: string, fileName: string) => {
     try {
       showMessage(translate('invoiceScreen.messages.downloadingInvoice'));
-      await fetchBinaryFiles({
+      let downloadResult = await fetchBinaryFiles({
         url,
         fileName,
       });
+      __DEV__ && console.tron.log('downloaded successfully' + downloadResult);
       showMessage(translate('invoiceScreen.messages.invoiceSuccessfullyDownload'));
     } catch (e) {
       showMessage(translate('invoiceScreen.messages.downloadingInvoiceFailed'));

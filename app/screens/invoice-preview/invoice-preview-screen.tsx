@@ -15,7 +15,7 @@ import Footer from './components/Footer';
 
 const PDF_STYLE: ViewStyle = {
   flex: 1,
-  padding: spacing[4],
+  paddingHorizontal: spacing[2],
   backgroundColor: color.palette.greyDarker,
 };
 
@@ -37,7 +37,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
       <View style={FULL}>
         <PDFView
           style={PDF_STYLE}
-          enablePaging={false}
+          enablePaging={true}
           source={{ uri: invoiceUrl, cache: false }}
           renderActivityIndicator={() => <Loader size={'small'} color={palette.greyDarker} />}
           onError={error => {

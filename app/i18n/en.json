@@ -307,9 +307,14 @@
     "delete": "Delete",
     "edit": "Edit",
     "send": "Send this invoice",
+    "invoice": "invoice",
+    "email": {
+      "body": "Ci-joint la facture"
+    },
     "action": {
       "downloadedSuccessFully": "File downloaded",
-      "sendMeACopy": "Add me to this e-mail copy"
+      "sendMeACopy": "Add me to this e-mail copy",
+      "sendTestEmail": "Send to me a test e-mail"
     }
   },
   "paymentListScreen": {

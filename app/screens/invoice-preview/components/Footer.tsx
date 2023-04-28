@@ -1,14 +1,15 @@
 import { AntDesign, FontAwesome, MaterialIcons, Octicons } from '@expo/vector-icons';
 import React, { FC, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';
 
 import { Switch, Text, TextField } from '../../../components';
-import { useStores } from '../../../models';
+import { translate } from '../../../i18n';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators';
 import { color, spacing } from '../../../theme';
-import { fetchBinaryFileV2 } from '../../../utils/file-utils';
+import { fetchBinaryFiles } from '../../../utils/file-utils';
 import { DownloadButton } from './DownloadButton';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
@@ -60,61 +61,66 @@ const Footer: FC<IFooter> = props => {
     invoice: { title, customer },
     invoiceUrl,
   } = props;
-  const {
-    authStore: { accessToken },
-  } = useStores();
+
   const [sendCopy, setSendCopy] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
   const [downloadFinished, setDownloadFinished] = useState(false);
+  const fileName = `${translate('invoicePreviewScreen.invoice')}-${title}.pdf`;
 
   async function handleSendInvoice() {
-    const downloadedFileTempPath = await fetchBinaryFileV2({
-      url: invoiceUrl,
-      fileName: `/Invoice-${title}.pdf`,
-      temp: true,
-    });
+    const dirs = ReactNativeBlobUtil.fs.dirs;
+    let downloadedFilePath = null;
 
-    // Open mail client and preload with some default values
-    // and pass as attachment the pdf
-    const email = {
-      subject: `Facture No.${title}`,
-      recipients: [customer.email],
-      // TODO add current account holder email
-      ccRecipients: [],
-      body: '<p>Ci-joint la facture</p>',
-      isHTML: true,
-      attachments: [
-        {
-          path: downloadedFileTempPath,
-          type: 'pdf',
-          name: 'Invoice.pdf',
-        },
-      ],
-    };
-    Mailer.mail(email, error => {
-      if (error) {
-        __DEV__ && console.tron.error('Could not send email', error);
-      } else {
-        __DEV__ && console.tron.log('Email sent successfully');
-      }
-    });
+    ReactNativeBlobUtil.config({
+      fileCache: true,
+      path: dirs.DownloadDir + `/${fileName}`,
+      overwrite: true,
+    })
+      .fetch('GET', invoiceUrl, {})
+      .then(res => {
+        __DEV__ && console.tron.log('The file saved to ', res.path());
+        downloadedFilePath = res.path();
+        const email = {
+          subject: `${translate('invoicePreviewScreen.invoice')} ${title}`,
+          recipients: [customer.email],
+          // TODO add current account holder email
+          ccRecipients: [],
+          body: `<p>${translate('invoicePreviewScreen.email.body')}</p>`,
+          isHTML: true,
+          attachments: [
+            {
+              path: downloadedFilePath,
+              type: 'pdf',
+              name: fileName,
+            },
+          ],
+        };
+
+        // Open mail client and preload with some default values
+        // and pass as attachment the pdf
+        Mailer.mail(email, error => {
+          if (error) {
+            __DEV__ && console.tron.error('Could not send email: ' + error, error);
+          } else {
+            __DEV__ && console.tron.log('Email sent successfully');
+          }
+        });
+      });
   }
 
   async function download() {
     setIsLoading(true);
     try {
-      await fetchBinaryFileV2({
-        fileName: 'Invoice.pdf',
-        mimeType: 'application/pdf',
-        url: invoiceUrl,
-        accessToken,
-        temp: false,
-      });
+      const downloadResult = await fetchBinaryFiles({ url: invoiceUrl, fileName });
+      __DEV__ && console.tron.log(downloadResult);
       setDownloadFinished(true);
       setIsLoading(false);
     } catch (e) {
+      __DEV__ && console.tron.log(e);
       setDownloadError(true);
+      setIsLoading(false);
+    } finally {
       setIsLoading(false);
     }
   }
@@ -166,7 +172,7 @@ const Footer: FC<IFooter> = props => {
           }}
         >
           <AntDesign name={'mail'} color={color.primary} size={24} />
-          <Text text={"M'envoyer un e-mail test"} style={{ color: color.primary, marginLeft: spacing[2] }} />
+          <Text tx={'invoicePreviewScreen.action.sendTestEmail'} style={{ color: color.primary, marginLeft: spacing[2] }} />
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
