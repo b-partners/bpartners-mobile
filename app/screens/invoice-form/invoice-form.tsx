@@ -4,7 +4,7 @@ import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Button, Icon, Text, Loader } from '../../components';
+import { Button, Icon, Loader, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -89,7 +89,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
       }
-      if (invoiceType === InvoiceStatus.PROPOSAL) {await invoiceStore.getQuotations({
+      if (invoiceType === InvoiceStatus.PROPOSAL) {
+        await invoiceStore.getQuotations({
           status: InvoiceStatus.PROPOSAL,
           page: 1,
           pageSize: 30,
