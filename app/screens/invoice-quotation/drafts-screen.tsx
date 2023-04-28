@@ -1,8 +1,9 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
-import {SectionList, TouchableOpacity, View} from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
+import { SectionList, TouchableOpacity, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Button, Loader, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
@@ -16,7 +17,6 @@ import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 import {
   BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
@@ -31,12 +31,40 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
-  const { drafts, loadingDraft } = invoiceStore;
+  const { drafts, loadingDraft, allDrafts } = invoiceStore;
   const [navigationState, setNavigationState] = useState(false);
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(Math.ceil(allDrafts.length / 10));
 
   __DEV__ && console.tron.log('Voici les brouillons: ', drafts);
   const handleRefresh = async () => {
-    await invoiceStore.getDrafts({ page: 1, pageSize: 30, status: InvoiceStatus.DRAFT });
+    await invoiceStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
+  };
+
+  //TODO 1: update maxPage value when allDrafts value change
+  //TODO 2: get all Drafts number when create Draft
+  //TODO 3: format the unit price of a product when creating a new product before sending it to the back office
+
+  useEffect(() => {
+    setMaxPage(Math.ceil(allDrafts.length / 10));
+  }, [allDrafts]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [drafts]);
+
+  const increasePages = async () => {
+    if (page < maxPage) {
+      setPage(page + 1);
+      await invoiceStore.getDrafts({ page: page, pageSize: 10, status: InvoiceStatus.DRAFT });
+    }
+  };
+
+  const reducePages = async () => {
+    if (page > 1) {
+      setPage(page - 1);
+      await invoiceStore.getDrafts({ page: page, pageSize: 10, status: InvoiceStatus.DRAFT });
+    }
   };
 
   const editInvoice = async (item: IInvoice) => {
@@ -70,7 +98,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       await invoiceStore.saveInvoice(editedItem);
       await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
-      await invoiceStore.getDrafts({ page: 1, pageSize: 30, status: InvoiceStatus.DRAFT });
+      await invoiceStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
@@ -121,39 +149,54 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
-            <TouchableOpacity style={{ width: '45%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-              <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
-            </TouchableOpacity>
-            <TouchableOpacity style={{ width: '45%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-              <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
-            </TouchableOpacity>
+            {page == 1 ? (
+              <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
+              </View>
+            ) : (
+              <TouchableOpacity style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }} onPress={reducePages}>
+                <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
+              </TouchableOpacity>
+            )}
+            <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+              <Text text={page.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
+            </View>
+            {page == maxPage ? (
+              <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
+              </View>
+            ) : (
+              <TouchableOpacity style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }} onPress={increasePages}>
+                <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
+              </TouchableOpacity>
+            )}
           </View>
           <View style={{ width: '75%', justifyContent: 'center' }}>
             {navigationState ? (
-                <Snackbar
-                    visible={navigationState}
-                    elevation={5}
-                    style={{
-                      backgroundColor: palette.yellow,
-                      marginVertical: spacing[5],
-                      marginHorizontal: spacing[4],
-                      borderRadius: 40,
-                      paddingHorizontal: spacing[2],
-                    }}
-                    onDismiss={() => setNavigationState(false)}
-                >
-                  {translate('common.loading')}
-                </Snackbar>
+              <Snackbar
+                visible={navigationState}
+                elevation={5}
+                style={{
+                  backgroundColor: palette.yellow,
+                  marginVertical: spacing[5],
+                  marginHorizontal: spacing[4],
+                  borderRadius: 40,
+                  paddingHorizontal: spacing[2],
+                }}
+                onDismiss={() => setNavigationState(false)}
+              >
+                {translate('common.loading')}
+              </Snackbar>
             ) : (
-                <Button
-                    tx='quotationScreen.createQuotation'
-                    style={BUTTON_INVOICE_STYLE}
-                    textStyle={BUTTON_TEXT_STYLE}
-                    onPress={() => {
-                      invoiceStore.saveInvoiceInit();
-                      navigation.navigate('invoiceForm');
-                    }}
-                />
+              <Button
+                tx='quotationScreen.createQuotation'
+                style={BUTTON_INVOICE_STYLE}
+                textStyle={BUTTON_TEXT_STYLE}
+                onPress={() => {
+                  invoiceStore.saveInvoiceInit();
+                  navigation.navigate('invoiceForm');
+                }}
+              />
             )}
           </View>
         </View>
