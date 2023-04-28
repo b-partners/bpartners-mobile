@@ -1,5 +1,5 @@
 import { AntDesign, FontAwesome, MaterialIcons, Octicons } from '@expo/vector-icons';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';
@@ -56,6 +56,7 @@ const FOOTER_WRAPPER: ViewStyle = {
   paddingHorizontal: spacing[4],
   paddingVertical: spacing[4],
 };
+// TODO: What concretely those other button is use for
 const Footer: FC<IFooter> = props => {
   const {
     invoice: { title, customer },
@@ -67,6 +68,11 @@ const Footer: FC<IFooter> = props => {
   const [downloadError, setDownloadError] = useState(false);
   const [downloadFinished, setDownloadFinished] = useState(false);
   const fileName = `${translate('invoicePreviewScreen.invoice')}-${title}.pdf`;
+  useEffect(() => {
+    setDownloadFinished(false);
+    setDownloadError(false);
+    setIsLoading(false);
+  }, [props.invoice]);
 
   async function handleSendInvoice() {
     const dirs = ReactNativeBlobUtil.fs.dirs;
@@ -129,12 +135,12 @@ const Footer: FC<IFooter> = props => {
     <View style={FOOTER_WRAPPER}>
       <View style={ACTION_CONTAINER}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          <TouchableOpacity style={[BUTTON_CONTAINER_STYLE, { marginRight: spacing[3] }]}>
-            <View style={BUTTON_STYLE}>
-              <MaterialIcons name='delete-outline' size={24} color={color.primary} />
-              <Text tx={'invoicePreviewScreen.delete'} style={BUTTON_TEXT_STYLE} />
-            </View>
-          </TouchableOpacity>
+          {/*<TouchableOpacity style={[BUTTON_CONTAINER_STYLE, { marginRight: spacing[3] }]}>*/}
+          {/*  <View style={BUTTON_STYLE}>*/}
+          {/*    <MaterialIcons name='delete-outline' size={24} color={color.primary} />*/}
+          {/*    <Text tx={'invoicePreviewScreen.delete'} style={BUTTON_TEXT_STYLE} />*/}
+          {/*  </View>*/}
+          {/*</TouchableOpacity>*/}
           <TouchableOpacity style={BUTTON_CONTAINER_STYLE} onPress={goBack}>
             <View style={BUTTON_STYLE}>
               <Octicons name='pencil' size={24} color={color.primary} />
@@ -144,36 +150,36 @@ const Footer: FC<IFooter> = props => {
         </View>
         <DownloadButton onPress={download} loading={isLoading} downloadFinished={downloadFinished} downloadError={downloadError} />
       </View>
-      <View style={EMAIL_FIELD_CONTAINER}>
-        <TextField
-          label={'Email'}
-          textContentType={'emailAddress'}
-          keyboardType={'email-address'}
-          style={{ width: '70%', borderColor: color.palette.lighterGrey }}
-          inputStyle={{ color: color.palette.textClassicColor }}
-          placeholder={'user@mail.com'}
-        />
-      </View>
+      {/*<View style={EMAIL_FIELD_CONTAINER}>*/}
+      {/*  <TextField*/}
+      {/*    label={'Email'}*/}
+      {/*    textContentType={'emailAddress'}*/}
+      {/*    keyboardType={'email-address'}*/}
+      {/*    style={{ width: '70%', borderColor: color.palette.lighterGrey }}*/}
+      {/*    inputStyle={{ color: color.palette.textClassicColor }}*/}
+      {/*    placeholder={'user@mail.com'}*/}
+      {/*  />*/}
+      {/*</View>*/}
       <View>
-        <View style={EMAIL_COPY_CONTAINER}>
-          <Text tx={'invoicePreviewScreen.action.sendMeACopy'} style={{ color: color.palette.textClassicColor }} />
-          <Switch value={sendCopy} onToggle={newValue => setSendCopy(newValue)} />
-        </View>
-        <TouchableOpacity
-          style={{
-            ...BUTTON_CONTAINER_STYLE,
-            ...BUTTON_STYLE,
-            width: 'auto',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            alignSelf: 'flex-end',
-            marginTop: spacing[3],
-          }}
-        >
-          <AntDesign name={'mail'} color={color.primary} size={24} />
-          <Text tx={'invoicePreviewScreen.action.sendTestEmail'} style={{ color: color.primary, marginLeft: spacing[2] }} />
-        </TouchableOpacity>
+        {/*<View style={EMAIL_COPY_CONTAINER}>*/}
+        {/*  <Text tx={'invoicePreviewScreen.action.sendMeACopy'} style={{ color: color.palette.textClassicColor }} />*/}
+        {/*  <Switch value={sendCopy} onToggle={newValue => setSendCopy(newValue)} />*/}
+        {/*</View>*/}
+        {/*<TouchableOpacity*/}
+        {/*  style={{*/}
+        {/*    ...BUTTON_CONTAINER_STYLE,*/}
+        {/*    ...BUTTON_STYLE,*/}
+        {/*    width: 'auto',*/}
+        {/*    flexDirection: 'row',*/}
+        {/*    justifyContent: 'center',*/}
+        {/*    alignItems: 'center',*/}
+        {/*    alignSelf: 'flex-end',*/}
+        {/*    marginTop: spacing[3],*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  <AntDesign name={'mail'} color={color.primary} size={24} />*/}
+        {/*  <Text tx={'invoicePreviewScreen.action.sendTestEmail'} style={{ color: color.primary, marginLeft: spacing[2] }} />*/}
+        {/*</TouchableOpacity>*/}
       </View>
       <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', ...BUTTON_STYLE }}>
