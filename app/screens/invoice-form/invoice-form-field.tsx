@@ -17,7 +17,7 @@ export const InvoiceFormField: React.FC<InvoiceFormFieldProps> = props => {
       labelTx={props.labelTx}
       placeholderTx={props.placeholderTx}
       labelStyle={[LABEL_STYLE, labelStyleOverrides]}
-      style={[{ borderColor: '#E1E5EF', borderWidth: 1, padding: spacing[4] }, styleOverrides]}
+      style={[{ borderColor: '#E1E5EF', borderWidth: 1, paddingHorizontal: spacing[4], paddingTop: '2.5%' }, styleOverrides]}
       inputStyle={[INPUT_STYLE, inputStyleOverrides]}
       suffix={suffix}
       {...rest}
