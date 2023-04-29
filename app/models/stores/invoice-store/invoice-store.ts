@@ -159,6 +159,7 @@ export const InvoiceStoreModel = types
       try {
         const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
         self.saveInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
+        return createOrUpdateInvoiceResult.invoice;
       } catch (e) {
         self.saveInvoiceFail(e.message);
         self.catchOrThrow(e);
