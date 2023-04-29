@@ -16,10 +16,11 @@ import { BPDrawer, BpTabNavigation, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
-import { InvoiceStatus } from '../models/entities/invoice/invoice';
+import { Invoice, InvoiceStatus } from '../models/entities/invoice/invoice';
 import { ErrorBoundary, HomeScreen, LegalFileScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen } from '../screens';
 import { CodeExchangeScreen } from '../screens/code-exchange/code-exchange-screen';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
+import { InvoicePreviewScreen } from '../screens/invoice-preview/invoice-preview-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
@@ -51,6 +52,11 @@ export type NavigatorParamList = {
   invoiceForm: {
     invoiceID?: string;
   };
+  invoicePreview: {
+    fileId: string;
+    invoiceTitle: string;
+    invoice: Invoice;
+  };
 };
 
 export type TabNavigatorParamList = {
@@ -62,6 +68,11 @@ export type TabNavigatorParamList = {
   invoices: undefined;
   invoiceForm: {
     invoiceID?: string;
+  };
+  invoicePreview: {
+    fileId: string;
+    invoiceTitle: string;
+    invoice: Invoice;
   };
 };
 
@@ -109,6 +120,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       ) : (
         <>

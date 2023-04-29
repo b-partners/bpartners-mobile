@@ -4,7 +4,7 @@ import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Button, Icon, Text } from '../../components';
+import { Button, Icon, Loader, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -23,7 +23,7 @@ import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
 type InvoiceFormProps = {
-  invoice: Invoice;
+  invoice?: Invoice;
   products: Product[];
   onSaveInvoice: (invoice: Invoice) => Promise<void>;
 };
@@ -62,6 +62,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [creationModal, setCreationModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
+  const [isLoading, setIsLoading] = useState(false);
 
   __DEV__ && console.tron.log({ invoiceType });
 
@@ -89,13 +90,50 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
-        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+        await invoiceStore.getQuotations({
+          status: InvoiceStatus.PROPOSAL,
+          page: 1,
+          pageSize: 30,
+        });
         await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
       }
       navigate('paymentList');
     } catch (e) {
       showMessage(e);
       throw e;
+    }
+  };
+
+  const handleInvoicePreviewPress = async invoices => {
+    // TODO(UI): error handling
+    setIsLoading(true);
+    try {
+      const savedInvoice = await invoiceStore.saveInvoice({
+        ...invoices,
+        customer: selectedCustomer,
+        comment: comment,
+        title: title,
+        metadata: { ...invoices.metadata, submittedAt: new Date() },
+      });
+      setConfirmationModal(false);
+
+      navigate('invoicePreview', {
+        fileId: savedInvoice.fileId,
+        invoiceTitle: savedInvoice.title,
+        invoice: savedInvoice,
+      });
+      invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
+      invoiceType === 'PROPOSAL' &&
+        (await invoiceStore.getQuotations({
+          status: InvoiceStatus.PROPOSAL,
+          page: 1,
+          pageSize: 30,
+        }));
+    } catch (e) {
+      __DEV__ && console.tron.error(e.message, e.stacktrace);
+      throw e;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -410,8 +448,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             <Octicons name='file-submodule' size={25} color={color.palette.secondaryColor} />
           </View>
         </TouchableOpacity>
-        {/*<Button
+        {isLoading && <Loader size={'large'} animating={true} />}
+        <Button
           tx='invoiceFormScreen.invoicePreview'
+          onPress={handleSubmit(handleInvoicePreviewPress)}
           style={{
             backgroundColor: color.palette.secondaryColor,
             borderRadius: 25,
@@ -423,7 +463,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             fontSize: 14,
             fontFamily: 'Geometria-Bold',
           }}
-        />*/}
+        />
       </View>
       <InvoiceCreationModal
         invoiceType={invoiceType}

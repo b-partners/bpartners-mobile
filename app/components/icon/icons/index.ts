@@ -22,6 +22,7 @@ export const icons = {
   magnifier: require('./magnifier.png'),
   edit: require('./edit.png'),
   user: require('./user.png'),
+  downloadCircleOutline: require('./download-circle-outline.png'),
 };
 
 export type IconTypes = keyof typeof icons;
