@@ -25,28 +25,18 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
   const invoiceId = route.params?.invoiceID;
   const { invoiceStore, customerStore, productStore } = useStores();
   const { products } = productStore;
-  const [toEdit, setToEdit] = useState<Invoice>();
+  const [toEdit, setToEdit] = useState<Invoice>(null);
 
   useEffect(() => {
-    const getInvoiceById = async () => {
+    const getInvoiceById = async invoiceID => {
       await invoiceStore
-        .getInvoice(invoiceId)
+        .getInvoice(invoiceID)
         .then(response => setToEdit(response))
         .catch(error => __DEV__ && console.tron.log(error));
     };
 
-    getInvoiceById();
-
-    /*(async function () {
-      const response = (await getInvoiceById()).ref;
-      __DEV__&&console.tron.log('response: ' + response);
-//      setToEdit(response)
-    })()*/
+    invoiceId && getInvoiceById(invoiceId);
   }, [invoiceId]);
-
-  useEffect(() => {
-    __DEV__ && console.tron.log('toEdit: ' + toEdit);
-  }, [toEdit]);
 
   const linkTo = useLinkTo();
 

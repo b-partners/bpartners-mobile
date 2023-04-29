@@ -6,12 +6,12 @@ import { ImageStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { AutoImage, Icon, Screen } from '../../components';
 import { HeaderWithBalance } from '../../components/header-with-balance/header-with-balance';
-import env from '../../config/env';
 import { useStores } from '../../models';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { TransactionSummary } from './components/transaction-summary';
@@ -48,7 +48,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   const { availableBalance } = authStore.currentAccount;
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
 
-  const uri = `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${currentUser.logoFileId}/raw?accessToken=${accessToken}&fileType=LOGO`;
+  const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
 
   const { loadingTransactions, currentMonthSummary, latestTransactions } = transactionStore;
 
