@@ -1,10 +1,16 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Button, Icon, Loader, Text } from '../../components';
+import {
+  Button,
+  Icon,
+  /*Loader*/
+  Text,
+} from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -62,9 +68,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [creationModal, setCreationModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
-
-  __DEV__ && console.tron.log({ invoiceType });
 
   const { control, handleSubmit } = useForm({
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
@@ -416,8 +421,22 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           paddingHorizontal: spacing[5],
         }}
       >
-        {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
+        {/*{checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}*/}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
+
+        {/*{isLoading && <Loader size={'large'} animating={true} />}*/}
+        <TouchableOpacity onPress={handleSubmit(handleInvoicePreviewPress)}>
+          <View
+            style={{
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 2,
+              borderRadius: 100,
+              padding: spacing[3],
+            }}
+          >
+            <MaterialCommunityIcons name='attachment' size={25} color={color.palette.secondaryColor} />
+          </View>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setConfirmationModal(true)}>
           <View
@@ -448,22 +467,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             <Octicons name='file-submodule' size={25} color={color.palette.secondaryColor} />
           </View>
         </TouchableOpacity>
-        {isLoading && <Loader size={'large'} animating={true} />}
-        <Button
-          tx='invoiceFormScreen.invoicePreview'
-          onPress={handleSubmit(handleInvoicePreviewPress)}
-          style={{
-            backgroundColor: color.palette.secondaryColor,
-            borderRadius: 25,
-            marginLeft: 15,
-            flex: 1,
-          }}
-          textStyle={{
-            color: color.palette.white,
-            fontSize: 14,
-            fontFamily: 'Geometria-Bold',
-          }}
-        />
       </View>
       <InvoiceCreationModal
         invoiceType={invoiceType}
