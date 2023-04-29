@@ -1,10 +1,10 @@
-import { AntDesign, FontAwesome, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
 import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';
 
-import { Switch, Text, TextField } from '../../../components';
+import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators';
@@ -13,7 +13,9 @@ import { fetchBinaryFiles } from '../../../utils/file-utils';
 import { DownloadButton } from './DownloadButton';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EMAIL_FIELD_CONTAINER: ViewStyle = { marginTop: spacing[3] };
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EMAIL_COPY_CONTAINER: ViewStyle = {
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -26,6 +28,7 @@ const BUTTON_CONTAINER_STYLE: ViewStyle = {
   borderRadius: 45,
   width: 131,
 };
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SEND_INVOICE_BUTTON_STYLE: ViewStyle = {
   ...BUTTON_CONTAINER_STYLE,
   backgroundColor: color.palette.secondaryColor,
@@ -63,7 +66,7 @@ const Footer: FC<IFooter> = props => {
     invoiceUrl,
   } = props;
 
-  const [sendCopy, setSendCopy] = useState(true);
+  // const [sendCopy, setSendCopy] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
   const [downloadFinished, setDownloadFinished] = useState(false);
@@ -74,6 +77,7 @@ const Footer: FC<IFooter> = props => {
     setIsLoading(false);
   }, [props.invoice]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function handleSendInvoice() {
     const dirs = ReactNativeBlobUtil.fs.dirs;
     let downloadedFilePath = null;
@@ -181,12 +185,12 @@ const Footer: FC<IFooter> = props => {
         {/*  <Text tx={'invoicePreviewScreen.action.sendTestEmail'} style={{ color: color.primary, marginLeft: spacing[2] }} />*/}
         {/*</TouchableOpacity>*/}
       </View>
-      <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
+      {/* <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', ...BUTTON_STYLE }}>
           <FontAwesome name={'send'} color={color.palette.white} />
           <Text tx={'invoicePreviewScreen.send'} style={{ ...BUTTON_TEXT_STYLE, color: color.palette.white }} />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
     </View>
   );
 };
