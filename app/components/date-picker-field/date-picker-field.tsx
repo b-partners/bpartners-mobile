@@ -48,7 +48,10 @@ export function DatePickerField(props: DatePickerProps) {
     ...rest
   } = props;
   const [open, setOpen] = useState(false);
-  let [date] = value && value.toISOString().split('T');
+  const isoDate = value && value.toISOString();
+  const dateParts = isoDate.split('T')[0].split('-');
+  let date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+
   date = date.split('-').join(dateSeparator);
 
   return (
