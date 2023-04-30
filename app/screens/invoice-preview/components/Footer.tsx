@@ -6,8 +6,6 @@ import {
 } from '@expo/vector-icons';
 import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import ReactNativeBlobUtil from 'react-native-blob-util';
-import Mailer from 'react-native-mail';
 
 import {
   /*Switch*/
@@ -19,6 +17,10 @@ import { Invoice } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { fetchBinaryFiles } from '../../../utils/file-utils';
+
+/*import ReactNativeBlobUtil from 'react-native-blob-util';
+import Mailer from 'react-native-mail';*/
+import { sendInvoiceByEmail } from '../../../utils/send-invoice-by-email';
 import { DownloadButton } from './DownloadButton';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
@@ -86,6 +88,7 @@ const Footer: FC<IFooter> = props => {
     setIsLoading(false);
   }, [props.invoice]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function handleSendInvoice() {
     const dirs = ReactNativeBlobUtil.fs.dirs;
     let downloadedFilePath = null;
@@ -126,6 +129,14 @@ const Footer: FC<IFooter> = props => {
         });
       });
   }
+=======
+  const handleSendInvoice = () => {
+    __DEV__ && console.tron.log('invoiceUrl', invoiceUrl);
+    sendInvoiceByEmail(invoiceUrl, title, customer, fileName)
+      .then(() => {})
+      .catch(() => {});
+  };
+>>>>>>> fedc081 (fix: send email functionality)
 
   async function download() {
     setIsLoading(true);
