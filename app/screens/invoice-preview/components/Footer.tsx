@@ -1,10 +1,19 @@
-import { Octicons } from '@expo/vector-icons';
+import {
+  /*AntDesign*/
+  FontAwesome,
+  /*MaterialIcons*/
+  Octicons,
+} from '@expo/vector-icons';
 import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';
 
-import { Text } from '../../../components';
+import {
+  /*Switch*/
+  Text,
+  /*TextField*/
+} from '../../../components';
 import { translate } from '../../../i18n';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators';
@@ -28,7 +37,6 @@ const BUTTON_CONTAINER_STYLE: ViewStyle = {
   borderRadius: 45,
   width: 131,
 };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SEND_INVOICE_BUTTON_STYLE: ViewStyle = {
   ...BUTTON_CONTAINER_STYLE,
   backgroundColor: color.palette.secondaryColor,
@@ -66,7 +74,8 @@ const Footer: FC<IFooter> = props => {
     invoiceUrl,
   } = props;
 
-  // const [sendCopy, setSendCopy] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [sendCopy, setSendCopy] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
   const [downloadFinished, setDownloadFinished] = useState(false);
@@ -77,7 +86,6 @@ const Footer: FC<IFooter> = props => {
     setIsLoading(false);
   }, [props.invoice]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function handleSendInvoice() {
     const dirs = ReactNativeBlobUtil.fs.dirs;
     let downloadedFilePath = null;
@@ -185,12 +193,12 @@ const Footer: FC<IFooter> = props => {
         {/*  <Text tx={'invoicePreviewScreen.action.sendTestEmail'} style={{ color: color.primary, marginLeft: spacing[2] }} />*/}
         {/*</TouchableOpacity>*/}
       </View>
-      {/* <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
+      <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', ...BUTTON_STYLE }}>
           <FontAwesome name={'send'} color={color.palette.white} />
           <Text tx={'invoicePreviewScreen.send'} style={{ ...BUTTON_TEXT_STYLE, color: color.palette.white }} />
         </View>
-      </TouchableOpacity>*/}
+      </TouchableOpacity>
     </View>
   );
 };
