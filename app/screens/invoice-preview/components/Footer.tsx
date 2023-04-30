@@ -1,15 +1,26 @@
-import { Octicons } from '@expo/vector-icons';
+import {
+  /*AntDesign*/
+  FontAwesome,
+  /*MaterialIcons*/
+  Octicons,
+} from '@expo/vector-icons';
 import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import ReactNativeBlobUtil from 'react-native-blob-util';
-import Mailer from 'react-native-mail';
 
-import { Text } from '../../../components';
+import {
+  /*Switch*/
+  Text,
+  /*TextField*/
+} from '../../../components';
 import { translate } from '../../../i18n';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { fetchBinaryFiles } from '../../../utils/file-utils';
+
+/*import ReactNativeBlobUtil from 'react-native-blob-util';
+import Mailer from 'react-native-mail';*/
+import { sendInvoiceByEmail } from '../../../utils/send-invoice-by-email';
 import { DownloadButton } from './DownloadButton';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
@@ -28,7 +39,6 @@ const BUTTON_CONTAINER_STYLE: ViewStyle = {
   borderRadius: 45,
   width: 131,
 };
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SEND_INVOICE_BUTTON_STYLE: ViewStyle = {
   ...BUTTON_CONTAINER_STYLE,
   backgroundColor: color.palette.secondaryColor,
@@ -66,7 +76,8 @@ const Footer: FC<IFooter> = props => {
     invoiceUrl,
   } = props;
 
-  // const [sendCopy, setSendCopy] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [sendCopy, setSendCopy] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
   const [downloadFinished, setDownloadFinished] = useState(false);
@@ -77,47 +88,12 @@ const Footer: FC<IFooter> = props => {
     setIsLoading(false);
   }, [props.invoice]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function handleSendInvoice() {
-    const dirs = ReactNativeBlobUtil.fs.dirs;
-    let downloadedFilePath = null;
-
-    ReactNativeBlobUtil.config({
-      fileCache: true,
-      path: dirs.DownloadDir + `/${fileName}`,
-      overwrite: true,
-    })
-      .fetch('GET', invoiceUrl, {})
-      .then(res => {
-        __DEV__ && console.tron.log('The file saved to ', res.path());
-        downloadedFilePath = res.path();
-        const email = {
-          subject: `${translate('invoicePreviewScreen.invoice')} ${title}`,
-          recipients: [customer.email],
-          // TODO add current account holder email
-          ccRecipients: [],
-          body: `<p>${translate('invoicePreviewScreen.email.body')}</p>`,
-          isHTML: true,
-          attachments: [
-            {
-              path: downloadedFilePath,
-              type: 'pdf',
-              name: fileName,
-            },
-          ],
-        };
-
-        // Open mail client and preload with some default values
-        // and pass as attachment the pdf
-        Mailer.mail(email, error => {
-          if (error) {
-            __DEV__ && console.tron.error('Could not send email: ' + error, error);
-          } else {
-            __DEV__ && console.tron.log('Email sent successfully');
-          }
-        });
-      });
-  }
+  const handleSendInvoice = () => {
+    __DEV__ && console.tron.log('invoiceUrl', invoiceUrl);
+    sendInvoiceByEmail(invoiceUrl, title, customer, fileName)
+      .then(() => {})
+      .catch(() => {});
+  };
 
   async function download() {
     setIsLoading(true);
@@ -185,12 +161,12 @@ const Footer: FC<IFooter> = props => {
         {/*  <Text tx={'invoicePreviewScreen.action.sendTestEmail'} style={{ color: color.primary, marginLeft: spacing[2] }} />*/}
         {/*</TouchableOpacity>*/}
       </View>
-      {/* <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
+      <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', ...BUTTON_STYLE }}>
           <FontAwesome name={'send'} color={color.palette.white} />
           <Text tx={'invoicePreviewScreen.send'} style={{ ...BUTTON_TEXT_STYLE, color: color.palette.white }} />
         </View>
-      </TouchableOpacity>*/}
+      </TouchableOpacity>
     </View>
   );
 };
