@@ -5,7 +5,7 @@ import { SectionList, View } from 'react-native';
 
 import { Button, Loader, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
-import env from '../../config/env';
+// import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
@@ -13,7 +13,8 @@ import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
-import { fetchBinaryFiles } from '../../utils/file-utils';
+import { createFileUrl, fetchBinaryFiles } from '../../utils/file-utils';
+import { sendInvoiceByEmail } from '../../utils/send-invoice-by-email';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
@@ -40,22 +41,40 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   };
 
   const sectionedQuotations = sectionInvoicesByMonth(invoices);
-  const items: MenuItem[] = [{ id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') }];
+  const items: MenuItem[] = [
+    { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
+    { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
+  ];
 
-  const downloadInvoice = async (url: string, fileName: string) => {
-    try {
-      showMessage(translate('invoiceScreen.messages.downloadingInvoice'));
-      let downloadResult = await fetchBinaryFiles({
-        url,
-        fileName,
-      });
-      __DEV__ && console.tron.log('downloaded successfully' + downloadResult);
-      showMessage(translate('invoiceScreen.messages.invoiceSuccessfullyDownload'));
-    } catch (e) {
-      showMessage(translate('invoiceScreen.messages.downloadingInvoiceFailed'));
-      __DEV__ && console.tron.log(e);
-      throw e;
-    }
+  const downloadInvoice = (item: IInvoice) => {
+    const downloading = async (fileNameInput, invoiceUrlInput: any) => {
+      try {
+        showMessage(translate('invoiceScreen.messages.downloadingInvoice'));
+        let downloadResult = await fetchBinaryFiles({
+          invoiceUrlInput,
+          fileNameInput,
+        });
+        __DEV__ && console.tron.log('downloaded successfully' + downloadResult);
+        showMessage(translate('invoiceScreen.messages.invoiceSuccessfullyDownload'));
+      } catch (e) {
+        showMessage(translate('invoiceScreen.messages.downloadingInvoiceFailed'));
+        __DEV__ && console.tron.log(e);
+        throw e;
+      }
+    };
+    const fileId = item.fileId;
+    const fileName = `${translate('invoicePreviewScreen.invoice')}-${item.title}.pdf`;
+    const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
+
+    downloading(fileName, invoiceUrl);
+  };
+
+  const sendInvoice = (item: IInvoice) => {
+    const fileId = item.fileId;
+    const fileName = `${translate('invoicePreviewScreen.invoice')}-${item.title}.pdf`;
+    const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
+
+    sendInvoiceByEmail(invoiceUrl, item.title, item.customer, fileName);
   };
 
   return (
@@ -80,12 +99,8 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
                     item={item}
                     menuItems={items}
                     menuAction={{
-                      downloadInvoice: () =>
-                        downloadInvoice(
-                          // TODO: use utility func here
-                          `${env.apiBaseUrl}/accounts/${currentAccount.id}/files/${item.fileId}/raw?accessToken=${accessToken}`,
-                          `${item.ref}.pdf`
-                        ),
+                      downloadInvoice: () => downloadInvoice(item),
+                      sendInvoice: () => sendInvoice(item),
                     }}
                   />
                 )}

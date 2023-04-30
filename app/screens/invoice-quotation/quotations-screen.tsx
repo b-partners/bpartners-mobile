@@ -14,6 +14,8 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { createFileUrl } from '../../utils/file-utils';
+import { sendInvoiceByEmail } from '../../utils/send-invoice-by-email';
 import { showMessage } from '../../utils/snackbar';
 import { Invoice } from './components/invoice';
 import {
@@ -30,7 +32,10 @@ import {
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-  const { invoiceStore } = useStores();
+  const {
+    invoiceStore,
+    authStore: { currentAccount, accessToken },
+  } = useStores();
   const { loadingQuotation, quotations } = invoiceStore;
   const [navigationState, setNavigationState] = useState(false);
 
@@ -40,6 +45,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   };
 
   const markAsInvoice = async (item: IInvoice) => {
+    __DEV__ && console.tron.log('am I here');
     if (item.status === InvoiceStatus.DRAFT || item.status === InvoiceStatus.CONFIRMED) {
       return;
     }
@@ -61,8 +67,19 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
     }
   };
 
+  const sendEmail = (item: IInvoice) => {
+    const fileId = item.fileId;
+    const fileName = `${translate('invoicePreviewScreen.invoice')}-${item.title}.pdf`;
+    const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
+
+    sendInvoiceByEmail(invoiceUrl, item.title, item.customer, fileName);
+  };
+
   const sectionedQuotations = sectionInvoicesByMonth(quotations);
-  const items: MenuItem[] = [{ id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') }];
+  const items: MenuItem[] = [
+    { id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') },
+    { id: 'sendEmail', title: translate('invoicePreviewScreen.send') },
+  ];
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -73,7 +90,9 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
                 sections={[...sectionedQuotations]}
-                renderItem={({ item }) => <Invoice item={item} menuItems={items} menuAction={{ markAsInvoice: () => markAsInvoice(item) }} />}
+                renderItem={({ item }) => (
+                  <Invoice item={item} menuItems={items} menuAction={{ markAsInvoice: () => markAsInvoice(item), sendEmail: () => sendEmail(item) }} />
+                )}
                 keyExtractor={item => item.id}
                 renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
                 refreshing={loadingQuotation}
