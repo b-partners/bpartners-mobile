@@ -71,7 +71,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
@@ -98,6 +98,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
         await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
       }
+        reset();
       navigate('paymentList');
     } catch (e) {
       showMessage(e);
