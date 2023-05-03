@@ -40,9 +40,6 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
     await invoiceStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
   };
 
-  //TODO 3: format the unit price of a product when creating a new product before sending it to the back office
-  //TODO 4: submit invoice form value when creating invoice in invoice form
-
   useEffect(() => {
     setPage(1);
     setMaxPage(Math.ceil(allDrafts.length / 10));
