@@ -105,7 +105,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
-            {page == 1 ? (
+            {page === 1 ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
               </View>
@@ -122,7 +122,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
             <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
               <Text text={page.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
             </View>
-            {page == maxPage ? (
+            {page === maxPage ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
               </View>
