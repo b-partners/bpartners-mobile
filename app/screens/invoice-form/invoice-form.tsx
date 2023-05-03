@@ -95,17 +95,16 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
-        await invoiceStore.getQuotations({
-          status: InvoiceStatus.PROPOSAL,
-          page: 1,
-          pageSize: 30,
-        });
-        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
       }
       navigate('paymentList');
     } catch (e) {
       showMessage(e);
       throw e;
+    } finally {
+            await invoiceStore.getAllInvoices({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
+            await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
 
@@ -421,7 +420,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           paddingHorizontal: spacing[5],
         }}
       >
-        {/*{checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}*/}
+        {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
 
         {/*{isLoading && <Loader size={'large'} animating={true} />}*/}
