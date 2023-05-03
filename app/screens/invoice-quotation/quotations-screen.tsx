@@ -1,8 +1,9 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
-import { SectionList, View } from 'react-native';
+import React, {FC, useEffect, useState} from 'react';
+import {SectionList, TouchableOpacity, View} from 'react-native';
 import { Snackbar } from 'react-native-paper';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { ErrorBoundary } from '..';
 import { Button, Loader, Screen, Separator, Text } from '../../components';
@@ -17,7 +18,7 @@ import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
 import { Invoice } from './components/invoice';
 import {
-  BUTTON_STYLE,
+  BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
   CONTAINER,
   FOOTER_COMPONENT_STYLE,
@@ -31,13 +32,24 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore } = useStores();
-  const { loadingQuotation, quotations } = invoiceStore;
+  const { loadingQuotation, quotations, allQuotations } = invoiceStore;
   const [navigationState, setNavigationState] = useState(false);
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(Math.ceil(allQuotations.length / 10));
 
   const handleRefresh = async () => {
-    await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
+    await invoiceStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
     __DEV__ && console.tron.log(quotations);
   };
+
+  useEffect(() => {
+    setPage(1);
+    setMaxPage(Math.ceil(allQuotations.length / 10));
+  }, [allQuotations]);
+
+  useEffect(() => {
+    invoiceStore.getQuotations({ page: page, pageSize: 10, status: InvoiceStatus.PROPOSAL });
+  }, [page]);
 
   const markAsInvoice = async (item: IInvoice) => {
     if (item.status === InvoiceStatus.DRAFT || item.status === InvoiceStatus.CONFIRMED) {
@@ -54,10 +66,13 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
       await invoiceStore.saveInvoice(editedItem);
       await invoiceStore.getInvoices({ page: 1, pageSize: 30, status: InvoiceStatus.CONFIRMED });
       setNavigationState(false);
-      await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
+      await invoiceStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsInvoice'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
+    }finally {
+      await invoiceStore.getAllInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 500 });
+      await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
 
@@ -88,32 +103,69 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        {navigationState ? (
-          <Snackbar
-            visible={navigationState}
-            elevation={5}
-            style={{
-              backgroundColor: palette.yellow,
-              marginVertical: spacing[5],
-              marginHorizontal: spacing[4],
-              borderRadius: 40,
-              paddingHorizontal: spacing[2],
-            }}
-            onDismiss={() => setNavigationState(false)}
-          >
-            {translate('common.loading')}
-          </Snackbar>
-        ) : (
-          <Button
-            tx='quotationScreen.createQuotation'
-            style={BUTTON_STYLE}
-            textStyle={BUTTON_TEXT_STYLE}
-            onPress={() => {
-              invoiceStore.saveInvoiceInit();
-              navigation.navigate('invoiceForm');
-            }}
-          />
-        )}
+        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
+          <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
+            {page == 1 ? (
+                <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                  <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
+                </View>
+            ) : (
+                <TouchableOpacity
+                    style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                    onPress={async () => {
+                      setPage(page - 1);
+                    }}
+                >
+                  <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
+                </TouchableOpacity>
+            )}
+            <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+              <Text text={page.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
+            </View>
+            {page == maxPage ? (
+                <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                  <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
+                </View>
+            ) : (
+                <TouchableOpacity
+                    style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                    onPress={async () => {
+                      setPage(page + 1);
+                    }}
+                >
+                  <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
+                </TouchableOpacity>
+            )}
+          </View>
+          <View style={{ width: '75%', justifyContent: 'center' }}>
+            {navigationState ? (
+                <Snackbar
+                    visible={navigationState}
+                    elevation={5}
+                    style={{
+                      backgroundColor: palette.yellow,
+                      marginVertical: spacing[5],
+                      marginHorizontal: spacing[4],
+                      borderRadius: 40,
+                      paddingHorizontal: spacing[2],
+                    }}
+                    onDismiss={() => setNavigationState(false)}
+                >
+                  {translate('common.loading')}
+                </Snackbar>
+            ) : (
+                <Button
+                    tx='quotationScreen.createQuotation'
+                    style={BUTTON_INVOICE_STYLE}
+                    textStyle={BUTTON_TEXT_STYLE}
+                    onPress={() => {
+                      invoiceStore.saveInvoiceInit();
+                      navigation.navigate('invoiceForm');
+                    }}
+                />
+            )}
+          </View>
+        </View>
       </View>
     </ErrorBoundary>
   );

@@ -36,12 +36,10 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(allDrafts.length / 10));
 
-  __DEV__ && console.tron.log('Voici les brouillons: ', drafts);
   const handleRefresh = async () => {
     await invoiceStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
   };
 
-  //TODO 2: get all Drafts number when create Draft
   //TODO 3: format the unit price of a product when creating a new product before sending it to the back office
   //TODO 4: submit invoice form value when creating invoice in invoice form
 
@@ -83,7 +81,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
         status: InvoiceStatus.PROPOSAL,
       };
       await invoiceStore.saveInvoice(editedItem);
-      await invoiceStore.getQuotations({ page: 1, pageSize: 30, status: InvoiceStatus.PROPOSAL });
+      await invoiceStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
       await invoiceStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
