@@ -41,18 +41,14 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
     await invoiceStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
   };
 
-  //TODO 1: update maxPage value when allDrafts value change
   //TODO 2: get all Drafts number when create Draft
   //TODO 3: format the unit price of a product when creating a new product before sending it to the back office
   //TODO 4: submit invoice form value when creating invoice in invoice form
 
   useEffect(() => {
+    setPage(1);
     setMaxPage(Math.ceil(allDrafts.length / 10));
   }, [allDrafts]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [drafts]);
 
   useEffect(() => {
     invoiceStore.getDrafts({ page: page, pageSize: 10, status: InvoiceStatus.DRAFT });
@@ -93,6 +89,9 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
+    } finally {
+      await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
+      await invoiceStore.getAllInvoices({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
     }
   };
   const sectionedQuotations = sectionInvoicesByMonth(drafts);
@@ -145,9 +144,12 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
                 <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
               </View>
             ) : (
-              <TouchableOpacity style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }} onPress={async () => {
-                setPage(page - 1);
-              }}>
+              <TouchableOpacity
+                style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                onPress={async () => {
+                  setPage(page - 1);
+                }}
+              >
                 <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
               </TouchableOpacity>
             )}
@@ -159,9 +161,12 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
                 <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
               </View>
             ) : (
-              <TouchableOpacity style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }} onPress={async () => {
-                setPage(page + 1);
-              }}>
+              <TouchableOpacity
+                style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                onPress={async () => {
+                  setPage(page + 1);
+                }}
+              >
                 <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
               </TouchableOpacity>
             )}
