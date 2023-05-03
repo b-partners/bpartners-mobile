@@ -33,23 +33,23 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     getAllInvoices: flow(function* (criteria: Criteria) {
-      {
-        criteria.status === InvoiceStatus.DRAFT
-          ? detach(self.allDrafts)
-          : criteria.status === InvoiceStatus.PROPOSAL
-          ? detach(self.allQuotations)
-          : detach(self.allInvoices);
+      if (criteria.status === InvoiceStatus.DRAFT) {
+        detach(self.allDrafts);
+      } else if (criteria.status === InvoiceStatus.PROPOSAL) {
+        detach(self.allQuotations);
+      } else {
+        detach(self.allInvoices);
       }
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         __DEV__ && console.tron.log(getInvoicesResult);
-        {
-          criteria.status === InvoiceStatus.DRAFT
-            ? self.allDrafts.replace(getInvoicesResult.invoices as any)
-            : criteria.status === InvoiceStatus.PROPOSAL
-            ? self.allQuotations.replace(getInvoicesResult.invoices as any)
-            : self.allInvoices.replace(getInvoicesResult.invoices as any);
+        if (criteria.status === InvoiceStatus.DRAFT) {
+          self.allDrafts.replace(getInvoicesResult.invoices as any);
+        } else if (criteria.status === InvoiceStatus.PROPOSAL) {
+          self.allQuotations.replace(getInvoicesResult.invoices as any);
+        } else {
+          self.allInvoices.replace(getInvoicesResult.invoices as any);
         }
       } catch (e) {
         __DEV__ && console.tron.log(e);
