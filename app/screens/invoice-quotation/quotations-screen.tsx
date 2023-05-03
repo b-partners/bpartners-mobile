@@ -1,7 +1,7 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, {FC, useEffect, useState} from 'react';
-import {SectionList, TouchableOpacity, View} from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
+import { SectionList, TouchableOpacity, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
@@ -64,13 +64,13 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
         status: InvoiceStatus.CONFIRMED,
       };
       await invoiceStore.saveInvoice(editedItem);
-      await invoiceStore.getInvoices({ page: 1, pageSize: 30, status: InvoiceStatus.CONFIRMED });
+      await invoiceStore.getInvoices({ page: 1, pageSize: 10, status: InvoiceStatus.CONFIRMED });
       setNavigationState(false);
       await invoiceStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsInvoice'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
-    }finally {
+    } finally {
       await invoiceStore.getAllInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 500 });
       await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
@@ -106,63 +106,63 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
             {page == 1 ? (
-                <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                  <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
-                </View>
+              <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
+              </View>
             ) : (
-                <TouchableOpacity
-                    style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                    onPress={async () => {
-                      setPage(page - 1);
-                    }}
-                >
-                  <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
-                </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                onPress={async () => {
+                  setPage(page - 1);
+                }}
+              >
+                <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
+              </TouchableOpacity>
             )}
             <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
               <Text text={page.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
             </View>
             {page == maxPage ? (
-                <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                  <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
-                </View>
+              <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
+              </View>
             ) : (
-                <TouchableOpacity
-                    style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                    onPress={async () => {
-                      setPage(page + 1);
-                    }}
-                >
-                  <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
-                </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                onPress={async () => {
+                  setPage(page + 1);
+                }}
+              >
+                <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
+              </TouchableOpacity>
             )}
           </View>
           <View style={{ width: '75%', justifyContent: 'center' }}>
             {navigationState ? (
-                <Snackbar
-                    visible={navigationState}
-                    elevation={5}
-                    style={{
-                      backgroundColor: palette.yellow,
-                      marginVertical: spacing[5],
-                      marginHorizontal: spacing[4],
-                      borderRadius: 40,
-                      paddingHorizontal: spacing[2],
-                    }}
-                    onDismiss={() => setNavigationState(false)}
-                >
-                  {translate('common.loading')}
-                </Snackbar>
+              <Snackbar
+                visible={navigationState}
+                elevation={5}
+                style={{
+                  backgroundColor: palette.yellow,
+                  marginVertical: spacing[5],
+                  marginHorizontal: spacing[4],
+                  borderRadius: 40,
+                  paddingHorizontal: spacing[2],
+                }}
+                onDismiss={() => setNavigationState(false)}
+              >
+                {translate('common.loading')}
+              </Snackbar>
             ) : (
-                <Button
-                    tx='quotationScreen.createQuotation'
-                    style={BUTTON_INVOICE_STYLE}
-                    textStyle={BUTTON_TEXT_STYLE}
-                    onPress={() => {
-                      invoiceStore.saveInvoiceInit();
-                      navigation.navigate('invoiceForm');
-                    }}
-                />
+              <Button
+                tx='quotationScreen.createQuotation'
+                style={BUTTON_INVOICE_STYLE}
+                textStyle={BUTTON_TEXT_STYLE}
+                onPress={() => {
+                  invoiceStore.saveInvoiceInit();
+                  navigation.navigate('invoiceForm');
+                }}
+              />
             )}
           </View>
         </View>
