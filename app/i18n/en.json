@@ -131,25 +131,25 @@
         "phone": "Phone"
       },
       "accountHolder": {
-        "section": "My society",
-        "name": "Name",
-        "siren": "Siren",
-        "officialActivityName": "Official activity",
+        "section": "My society: ",
+        "name": "Company Name: ",
+        "siren": "Siren: ",
+        "officialActivityName": "Official activity: ",
         "contactAddress": {
-          "address": "Address",
-          "city": "City",
-          "country": "Country",
-          "postalCode": "Postal code"
+          "address": "Address: ",
+          "city": "City: ",
+          "country": "Country: ",
+          "postalCode": "Postal code: "
         },
         "companyInfo": {
-          "socialCapital": "Social capital"
+          "socialCapital": "Social capital: "
         },
         "businessActivities": {
-          "primary": "Main activity",
-          "secondary": "Secondary activity"
+          "primary": "Main activity: ",
+          "secondary": "Secondary activity: "
         },
         "revenueTargets": {
-          "amountTarget": "Annual revenue to be realized"
+          "amountTarget": "Annual revenue to be realized: "
         }
       }
     }
