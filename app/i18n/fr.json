@@ -237,6 +237,7 @@
       "days": "Jours",
       "saveDraft": "Enregistrer en brouillon",
       "saveQuotation": "Enregistrer en devis",
+      "saveInvoice": "Enregistrer en facture",
       "editableTextField": {
         "error": {
           "required": "Ce champ est requis",

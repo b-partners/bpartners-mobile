@@ -252,6 +252,7 @@
       "days": "Days",
       "saveDraft": "Save the draft",
       "saveQuotation": "Save the quote",
+      "saveInvoice": "Save the invoice",
       "editableTextField": {
         "error": {
           "required": "This field is required",
