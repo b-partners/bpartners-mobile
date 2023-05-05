@@ -1,5 +1,5 @@
 {
-  "preprod": {
+  "prod": {
     "configLevel": "amplifyAdmin"
   }
 }
