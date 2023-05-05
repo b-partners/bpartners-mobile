@@ -115,25 +115,25 @@
         "phone": "Téléphone"
       },
       "accountHolder": {
-        "section": "Ma société",
-        "name": "Nom",
-        "siren": "Siren",
-        "officialActivityName": "Activité officielle",
+        "section": "Ma société: ",
+        "name": "Raison sociale: ",
+        "siren": "Siren: ",
+        "officialActivityName": "Activité officielle: ",
         "contactAddress": {
-          "address": "Adresse",
-          "city": "Ville",
-          "country": "Pays",
-          "postalCode": "Code postal"
+          "address": "Adresse: ",
+          "city": "Ville: ",
+          "country": "Pays: ",
+          "postalCode": "Code postal: "
         },
         "companyInfo": {
-          "socialCapital": "Capital social"
+          "socialCapital": "Capital social: "
         },
         "businessActivities": {
-          "primary": "Activité principale",
-          "secondary": "Activité secondaire"
+          "primary": "Activité principale: ",
+          "secondary": "Activité secondaire: "
         },
         "revenueTargets": {
-          "amountTarget": "Recette annuelle à réaliser"
+          "amountTarget": "Recette annuelle à réaliser: "
         }
       }
     }

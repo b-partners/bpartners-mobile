@@ -5,6 +5,7 @@ export * from './form-row/form-row';
 export * from './header/header';
 export * from './gradient-background/gradient-background';
 export * from './icon/icon';
+export * from './label-with-text/label-with-text';
 export * from './screen/screen';
 export * from './switch/switch';
 export * from './text/text';
