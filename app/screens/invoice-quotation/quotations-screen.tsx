@@ -136,7 +136,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
             ) : (
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                onPress={async () => {
+                onPress={() => {
                   setPage(page - 1);
                 }}
               >
@@ -153,7 +153,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
             ) : (
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                onPress={async () => {
+                onPress={() => {
                   setPage(page + 1);
                 }}
               >
