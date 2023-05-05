@@ -21,6 +21,7 @@
   "errors": {
     "invalidEmail": "Invalid email address.",
     "somethingWentWrong": "Something went wrong. Please retry later.",
+    "paymentInitiation": "An error has occurred. Please check your IBAN",
     "verifyConnection": "Verify your connection",
     "required": "This field is required",
     "amount": "Invalid amount",
