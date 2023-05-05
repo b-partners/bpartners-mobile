@@ -10,7 +10,7 @@ import * as Keychain from 'react-native-keychain';
 import * as yup from 'yup';
 
 import awsExports from '../../../src/aws-exports';
-import { AutoImage, Button, Icon, Screen, Text } from '../../components';
+import {AutoImage, Button, Icon, Loader, Screen, Text} from '../../components';
 import env from '../../config/env';
 import { translate } from '../../i18n/translate';
 import { useStores } from '../../models';
@@ -51,6 +51,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   const errorMessageStyles = { backgroundColor: palette.pastelRed };
   const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
 
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
 
   const toggleShowPassword = () => {
@@ -77,6 +78,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   async function signIn(username: string, password: string) {
     try {
+      setLoading(true);
       const inputUsername = userDetails.username ? userDetails.username : username;
       const inputPassword = userDetails.username ? userDetails.password : password;
 
@@ -92,6 +94,8 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       navigation.navigate('oauth');
     } catch (error) {
       showMessage(translate('errors.credentials'), errorMessageStyles);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -166,27 +170,30 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                     {errors.password && touched.password && <Text style={styles.error}>{errors.password}</Text>}
                   </View>
                   <Button
-                    onPress={async () => {
-                      await signIn(values.email, values.password);
-                    }}
-                    style={{
-                      borderRadius: 50,
-                      paddingVertical: spacing[3],
-                      backgroundColor: '#fff',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      marginTop: spacing[4],
-                    }}
-                  >
-                    <Text
-                      tx='welcomeScreen.login'
-                      style={{
-                        color: color.palette.secondaryColor,
-                        fontFamily: 'Geometria-Bold',
-                        marginRight: spacing[2],
+                      onPress={async () => {
+                        await signIn(values.email, values.password);
                       }}
+                      style={{
+                        borderRadius: 50,
+                        paddingVertical: spacing[3],
+                        backgroundColor: '#fff',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginTop: spacing[4],
+                      }}
+                  >
+                    {loading ? <Loader size={25}/> :
+                        <>
+                      <Text
+                        tx='welcomeScreen.login'
+                        style={{
+                          color: color.palette.secondaryColor,
+                          fontFamily: 'Geometria-Bold',
+                          marginRight: spacing[2],
+                        }}
                     />
-                    <Icon icon='user' />
+                      <Icon icon='user'/>
+                        </>}
                   </Button>
                 </View>
               )}
