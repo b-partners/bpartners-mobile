@@ -21,7 +21,7 @@
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
     "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
-    "paymentInitiation": "Une erreur s'est produite. Veuillez vérifier votre IBAN",
+    "paymentInitiation": "Votre IBAN est nécessaire pour poursuivre cette action",
     "verifyConnection": "Verifier votre connexion",
     "required": "Ce champ est requis",
     "amount": "Montant invalide",
