@@ -295,7 +295,6 @@
     "edit": "Modifier",
     "send": "Envoyer le devis",
     "invoice": "facture",
-    "sendInvoice": "Envoyer la facture",
     "action": {
       "downloadedSuccessFully": "Fichier téléchargé",
       "sendMeACopy": "M'ajouter en copie de cet e-mail",

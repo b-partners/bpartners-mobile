@@ -308,9 +308,8 @@
     "previewOfInvoice": "Preview of invoice No.",
     "delete": "Delete",
     "edit": "Edit",
-    "send": "Send this quotation",
+    "send": "Send this invoice",
     "invoice": "invoice",
-    "sendInvoice": "Send this invoice",
     "email": {
       "body": "Ci-joint la facture"
     },

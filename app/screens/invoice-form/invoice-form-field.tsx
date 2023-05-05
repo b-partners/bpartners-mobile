@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, TextStyle } from 'react-native';
+import { TextStyle } from 'react-native';
 
 import { TextField, TextFieldProps } from '../../components';
 import { spacing } from '../../theme';
@@ -17,15 +17,7 @@ export const InvoiceFormField: React.FC<InvoiceFormFieldProps> = props => {
       labelTx={props.labelTx}
       placeholderTx={props.placeholderTx}
       labelStyle={[LABEL_STYLE, labelStyleOverrides]}
-      style={[
-        {
-          borderColor: '#E1E5EF',
-          borderWidth: 1,
-          paddingHorizontal: Platform.OS === 'ios' ? spacing[4] : spacing[3],
-          paddingTop: Platform.OS === 'ios' ? '2.5%' : '3%',
-        },
-        styleOverrides,
-      ]}
+      style={[{ borderColor: '#E1E5EF', borderWidth: 1, paddingHorizontal: spacing[4], paddingTop: '2.5%' }, styleOverrides]}
       inputStyle={[INPUT_STYLE, inputStyleOverrides]}
       suffix={suffix}
       {...rest}
