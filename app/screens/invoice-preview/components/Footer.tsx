@@ -6,6 +6,8 @@ import {
 } from '@expo/vector-icons';
 import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import Mailer from 'react-native-mail';
 
 import {
   /*Switch*/
@@ -20,6 +22,7 @@ import { fetchBinaryFiles } from '../../../utils/file-utils';
 
 /*import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';*/
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { sendInvoiceByEmail } from '../../../utils/send-invoice-by-email';
 import { DownloadButton } from './DownloadButton';
 
@@ -129,14 +132,6 @@ const Footer: FC<IFooter> = props => {
         });
       });
   }
-=======
-  const handleSendInvoice = () => {
-    __DEV__ && console.tron.log('invoiceUrl', invoiceUrl);
-    sendInvoiceByEmail(invoiceUrl, title, customer, fileName)
-      .then(() => {})
-      .catch(() => {});
-  };
->>>>>>> fedc081 (fix: send email functionality)
 
   async function download() {
     setIsLoading(true);

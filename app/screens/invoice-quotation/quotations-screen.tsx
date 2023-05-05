@@ -33,16 +33,11 @@ import {
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-<<<<<<< HEAD
   const {
     invoiceStore,
     authStore: { currentAccount, accessToken },
   } = useStores();
-  const { loadingQuotation, quotations } = invoiceStore;
-=======
-  const { invoiceStore } = useStores();
   const { loadingQuotation, quotations, allQuotations } = invoiceStore;
->>>>>>> 3459335 (feat: add pagination in quotation screen)
   const [navigationState, setNavigationState] = useState(false);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(allQuotations.length / 10));
