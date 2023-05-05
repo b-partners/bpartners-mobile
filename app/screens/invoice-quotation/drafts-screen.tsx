@@ -141,7 +141,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
             ) : (
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                onPress={async () => {
+                onPress={() => {
                   setPage(page - 1);
                 }}
               >
@@ -158,7 +158,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
             ) : (
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                onPress={async () => {
+                onPress={() => {
                   setPage(page + 1);
                 }}
               >
