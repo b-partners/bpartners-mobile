@@ -95,6 +95,12 @@ project.ext.react = [
 // This method of including other gradle files is to support symlinks.
 apply from: new File(["node", "--print", "require.resolve('react-native/package.json')"].execute().text.trim(), "../react.gradle");
 
+project.ext.react = [
+        enableHermes: false,
+        bundleInDebug: false,
+        bundleInRelease: true
+]
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices

@@ -48,7 +48,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   const { authStore } = useStores();
   const errorMessageStyles = { backgroundColor: palette.pastelRed };
-  const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({});
+  const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
 
   useEffect(() => {
     (async () => {

@@ -71,7 +71,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
@@ -91,21 +91,21 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       });
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
-        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
-        await invoiceStore.getQuotations({
-          status: InvoiceStatus.PROPOSAL,
-          page: 1,
-          pageSize: 30,
-        });
-        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
       }
+      reset();
       navigate('paymentList');
     } catch (e) {
       showMessage(e);
       throw e;
+    } finally {
+      await invoiceStore.getAllInvoices({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
+      await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
 
@@ -421,7 +421,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           paddingHorizontal: spacing[5],
         }}
       >
-        {/*{checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}*/}
+        {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
 
         {/*{isLoading && <Loader size={'large'} animating={true} />}*/}
