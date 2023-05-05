@@ -20,6 +20,7 @@ import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import KeyboardAvoidingWrapper from './keyboardAvoidingWrapper';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -49,6 +50,12 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   const { authStore } = useStores();
   const errorMessageStyles = { backgroundColor: palette.pastelRed };
   const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
+
+  const [showPassword, setShowPassword] = useState(true);
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   useEffect(() => {
     (async () => {
@@ -136,13 +143,26 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                   </View>
                   <View style={styles.field}>
                     <Text tx='welcomeScreen.password' style={styles.label} />
+                    <View style={{ width: '100%', flexDirection: 'row', borderWidth: 1,
+                      borderColor: '#ccc',
+                      borderRadius: 5 }}>
                     <TextInput
-                      style={styles.input}
+                      style={{
+                          backgroundColor: '#fff',
+                          padding: 10,
+                        width: '75%'
+                        }}
                       onChangeText={handleChange('password')}
                       onBlur={handleBlur('password')}
                       defaultValue={userDetails.username !== null ? userDetails.password : values.password}
-                      secureTextEntry
+                      secureTextEntry={showPassword}
                     />
+                      <View style={{ width: '25%', backgroundColor: '#fff', justifyContent: 'center',   alignItems: 'center' }}>
+                        { showPassword ? <IoniconIcon name='eye-off-outline' size={28} color={color.palette.secondaryColor} onPress={() => toggleShowPassword()}/> :
+                            <IoniconIcon name='eye-sharp' size={28} color={color.palette.secondaryColor} onPress={() => toggleShowPassword()}/>
+                        }
+                      </View>
+                    </View>
                     {errors.password && touched.password && <Text style={styles.error}>{errors.password}</Text>}
                   </View>
                   <Button
