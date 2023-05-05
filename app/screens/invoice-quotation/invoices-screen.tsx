@@ -124,7 +124,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
             ) : (
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                onPress={async () => {
+                onPress={() => {
                   setPage(page - 1);
                 }}
               >
@@ -141,7 +141,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
             ) : (
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                onPress={async () => {
+                onPress={() => {
                   setPage(page + 1);
                 }}
               >
