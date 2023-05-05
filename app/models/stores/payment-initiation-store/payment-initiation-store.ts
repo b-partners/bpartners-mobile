@@ -17,6 +17,7 @@ export const PaymentInitiationStoreModel = types
     paymentUrl: types.maybeNull(types.string),
     products: types.optional(types.array(ProductModel), []),
     customers: types.optional(types.array(CustomerModel), []),
+    checkInit: types.maybeNull(types.boolean)
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -72,6 +73,13 @@ export const PaymentInitiationStoreModel = types
       self.paymentUrl = paymentUrl;
     },
   }))
+    .actions(self => ({
+      initFail: () => {
+        self.initiatingPayment = false;
+        self.paymentUrl = '';
+        self.checkInit = false;
+      },
+    }))
   .actions(self => ({
     init: flow(function* (payload: PaymentInitiation) {
       self.initiatingPayment = true;
@@ -83,9 +91,8 @@ export const PaymentInitiationStoreModel = types
         self.initSuccess(initPaymentResult.paymentInitiation.redirectionUrl);
       } catch (e) {
         self.actionFail(e.message);
-        self.initiatingPayment = false;
-        self.paymentUrl = '';
         self.catchOrThrow(e);
+        self.initFail();
       }
     }),
   }));

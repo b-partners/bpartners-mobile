@@ -18,7 +18,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList
   navigation,
 }) {
   const { paymentInitiationStore } = useStores();
-  const { paymentUrl, initiatingPayment: loading } = paymentInitiationStore;
+  const { paymentUrl, initiatingPayment: loading, checkInit } = paymentInitiationStore;
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -32,7 +32,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList
             onLeftPress={() => navigation.navigate('home')}
           />
           <ScrollView style={FORM_FIELD_CONTAINER}>
-            <PaymentInitiationForm init={paymentInitiationStore.init} paymentUrl={paymentUrl} loading={loading} />
+            <PaymentInitiationForm init={paymentInitiationStore.init} paymentUrl={paymentUrl} loading={loading} check={checkInit}/>
           </ScrollView>
         </Screen>
       </View>

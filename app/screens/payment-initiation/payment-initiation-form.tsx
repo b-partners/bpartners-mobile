@@ -22,6 +22,7 @@ export const PaymentInitiationForm: FC<
     init: (values: unknown) => void;
     loading: boolean;
     paymentUrl?: string;
+    check: boolean;
   }>
 > = observer(props => {
   const initialValues = { label: '', reference: '', amount: null, payerName: '', payerEmail: '' };
@@ -39,7 +40,7 @@ export const PaymentInitiationForm: FC<
       .label(translate('paymentInitiationScreen.fields.payerEmail')),
   });
 
-  const { init, paymentUrl, loading } = props;
+  const { init, paymentUrl, loading, check } = props;
 
   const [amount, setAmount] = useState(0);
   const [label, setLabel] = useState('');
@@ -120,7 +121,7 @@ export const PaymentInitiationForm: FC<
           );
         }}
       </Formik>
-      <PaymentModal paymentUrl={paymentUrl} amount={amount} label={label} reference={reference} showModal={showModal} setShowModal={setShowModal} />
+      <PaymentModal paymentUrl={paymentUrl} amount={amount} label={label} reference={reference} showModal={showModal} setShowModal={setShowModal} check={check}/>
     </View>
   );
 });
