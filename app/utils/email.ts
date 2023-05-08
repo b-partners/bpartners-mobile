@@ -1,3 +1,5 @@
+// TODO: mae this more extensible
+/*
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';
 
@@ -19,6 +21,7 @@ type TSendEmail = {
   attachment?: TAttachment;
 };
 
+*/
 /*export function sendEmail(params: TSendEmail) {
   const { email, invoice, attachment } = params;
   const { subject, recipients, body } = params.email;
