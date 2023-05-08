@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
@@ -6,7 +7,7 @@ import { View, ViewStyle } from 'react-native';
 import { Header, Loader, PDFView } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { NavigatorParamList, goBack } from '../../navigators';
+import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
@@ -23,13 +24,18 @@ const FULL: ViewStyle = { flex: 1 };
 export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invoicePreview'>> = observer(props => {
   const {
     route: { params },
+    navigation: { goBack },
   } = props;
   const { fileId, invoiceTitle, invoice } = params;
   const {
     authStore: { accessToken, currentAccount },
   } = useStores();
-  // TODO: what about draft and quotation
-  const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
+  let invoiceUrl = '';
+  const isFocused = useIsFocused();
+  if (isFocused) {
+    // TODO: what about draft and quotation
+    invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
+  }
 
   return (
     <ErrorBoundary catchErrors={'always'}>
