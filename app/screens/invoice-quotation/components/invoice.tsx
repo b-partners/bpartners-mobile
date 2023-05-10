@@ -46,6 +46,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
   const getStatusTextColor = (status: InvoiceStatus) => {
     switch (status) {
       case InvoiceStatus.PROPOSAL:
+      case InvoiceStatus.CONFIRMED:
         return palette.orange;
       case InvoiceStatus.DRAFT:
         return palette.greyDarker;
