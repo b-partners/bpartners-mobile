@@ -3,25 +3,12 @@
   "resourceName": "bpartnersweb",
   "serviceType": "imported",
   "region": "eu-west-3",
-  "usernameAttributes": [
-    "email"
-  ],
+  "usernameAttributes": ["email"],
   "authProvidersUserPool": [],
-  "requiredAttributes": [
-    "email"
-  ],
+  "requiredAttributes": ["email"],
   "passwordPolicyMinLength": 8,
-  "passwordPolicyCharacters": [
-    "Requires Lowercase",
-    "Requires Uppercase",
-    "Requires Numbers",
-    "Requires Symbols"
-  ],
+  "passwordPolicyCharacters": ["Requires Lowercase", "Requires Uppercase", "Requires Numbers", "Requires Symbols"],
   "mfaConfiguration": "OPTIONAL",
-  "autoVerifiedAttributes": [
-    "email"
-  ],
-  "mfaTypes": [
-    "TOTP"
-  ]
+  "autoVerifiedAttributes": ["email"],
+  "mfaTypes": ["TOTP"]
 }
