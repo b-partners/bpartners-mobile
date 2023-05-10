@@ -14,8 +14,8 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { sendEmail } from '../../utils/core/invoicing-utils';
 import { createFileUrl, fetchBinaryFiles } from '../../utils/file-utils';
-import { sendInvoiceByEmail } from '../../utils/send-invoice-by-email';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
@@ -82,11 +82,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   };
 
   const sendInvoice = (item: IInvoice) => {
-    const fileId = item.fileId;
-    const fileName = `${translate('invoicePreviewScreen.invoice')}-${item.title}.pdf`;
-    const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
-
-    sendInvoiceByEmail(invoiceUrl, item.title, item.customer, fileName);
+    sendEmail(authStore, item);
   };
 
   return (
@@ -131,7 +127,15 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
-          <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
+          <View
+            style={{
+              width: '25%',
+              alignItems: 'center',
+              flexDirection: 'row',
+              height: '100%',
+              justifyContent: 'space-evenly',
+            }}
+          >
             {page === 1 ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
