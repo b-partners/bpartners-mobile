@@ -99,7 +99,9 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
                     menuItems={items}
                     menuAction={{
                       markAsInvoice: () => markAsInvoice(item),
-                      senByEmail: () => sendEmail(authStore, item)}} />
+                      senByEmail: () => sendEmail(authStore, item),
+                    }}
+                  />
                 )}
                 keyExtractor={item => item.id}
                 renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
