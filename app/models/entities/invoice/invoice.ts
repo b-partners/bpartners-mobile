@@ -78,14 +78,20 @@ export const EMPTY_INVOICE: Invoice = {
   },
 };
 
-export const createInvoiceDefaultModel = (status: InvoiceStatus = InvoiceStatus.DRAFT, invoice: Invoice) => {
-  const date = new Date().toLocaleDateString().replace(/\//g, '');
-  const hour = new Date().toLocaleTimeString().replace(/:/g, '');
-  const ref = `REF-${date}${hour}`;
+export const createInvoiceDefaultModel = (status: InvoiceStatus = InvoiceStatus.DRAFT, invoiceToBeUpdated: Invoice) => {
+  const generatedInvoiceRef = () => {
+    const todayDate = new Date()
+      .toLocaleString('fr-ca')
+      .replace(/[:hmins\- ]/g, '')
+      .slice(2, 12);
+    return `REF-${todayDate}`;
+  };
 
-  let temp = invoice ? invoice : EMPTY_INVOICE;
+  const ref = generatedInvoiceRef();
+  let invoicePattern = invoiceToBeUpdated ? invoiceToBeUpdated : EMPTY_INVOICE;
+
   return types.optional(InvoiceModel, {
-    ...temp,
+    ...invoicePattern,
     ref,
     status,
   });
