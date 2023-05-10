@@ -1,5 +1,6 @@
 {
   "projectPath": "/Users/tahiry/Documents/sources_numer/bpartners-mobile",
-  "envName": "prod",
-  "defaultEditor": "intellij"
+  "envName": "preprod",
+  "defaultEditor": "intellij",
+  "noUpdateBackend": true
 }
