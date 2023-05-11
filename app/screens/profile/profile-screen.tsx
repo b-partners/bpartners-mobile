@@ -10,6 +10,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
+import { printCurrency } from '../../utils/money';
 import { ErrorBoundary } from '../error/error-boundary';
 
 const FULL: ViewStyle = {
@@ -31,6 +32,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const { authStore } = useStores();
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
   const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
+  const country = currentAccountHolder?.contactAddress?.country;
 
   // TODO: change filename
   return (
@@ -117,17 +119,46 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           <LabelWithText label='profileScreen.fields.accountHolder.officialActivityName' text={currentAccountHolder?.officialActivityName} />
           <LabelWithText
             label='profileScreen.fields.accountHolder.companyInfo.socialCapital'
-            text={currentAccountHolder?.companyInfo?.socialCapital?.toString()}
+            text={printCurrency(currentAccountHolder?.companyInfo?.socialCapital)}
           />
           <LabelWithText
             label='profileScreen.fields.accountHolder.revenueTargets.amountTarget'
-            text={currentAccountHolder?.revenueTargets[0]?.amountTarget?.toString()}
+            text={printCurrency(currentAccountHolder?.revenueTargets[0]?.amountTarget)}
           />
-          <LabelWithText label='profileScreen.fields.accountHolder.contactAddress.country' text={currentAccountHolder?.contactAddress?.country} />
+          <LabelWithText
+            label='profileScreen.fields.accountHolder.contactAddress.country'
+            text={country}
+            countryFlag={`https://flagsapi.com/${country.slice(0, 2)}/flat/64.png`}
+          />
           <LabelWithText label='profileScreen.fields.accountHolder.contactAddress.city' text={currentAccountHolder?.contactAddress?.city} />
           <LabelWithText label='profileScreen.fields.accountHolder.contactAddress.address' text={currentAccountHolder?.contactAddress?.address} />
           <LabelWithText label='profileScreen.fields.accountHolder.contactAddress.postalCode' text={currentAccountHolder?.contactAddress?.postalCode} />
           <LabelWithText label='profileScreen.fields.accountHolder.siren' text={currentAccountHolder?.siren} />
+          <View
+            style={{
+              marginHorizontal: '5%',
+              marginVertical: 22,
+            }}
+          >
+            <Text
+              text="L'Essentiel"
+              style={{
+                fontSize: 15,
+                color: palette.darkBlack,
+                fontFamily: 'Geometria',
+              }}
+            />
+            <Text
+              text="Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant"
+              style={{
+                fontSize: 15,
+                fontWeight: '100',
+                color: palette.lighterBlack,
+                fontFamily: 'Geometria',
+                marginTop: 11,
+              }}
+            />
+          </View>
         </Screen>
       </View>
     </ErrorBoundary>
