@@ -11,8 +11,8 @@ import { translate } from '../../../../i18n';
 import { useStores } from '../../../../models';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
+import { vatToMinors } from '../../../../utils/money';
 import { INVALID_FORM_FIELD } from '../../styles';
-import {vatToMinors} from "../../../../utils/money";
 
 export const ProductCreationForm: FC<
   PropsWithoutRef<{
