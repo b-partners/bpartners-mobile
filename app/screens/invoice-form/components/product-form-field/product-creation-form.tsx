@@ -12,13 +12,14 @@ import { useStores } from '../../../../models';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { INVALID_FORM_FIELD } from '../../styles';
+import {vatToMinors} from "../../../../utils/money";
 
 export const ProductCreationForm: FC<
   PropsWithoutRef<{
     setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
   }>
 > = observer(props => {
-  const initialValues = { unitPrice: '', description: '' };
+  const initialValues = { unitPrice: 0, description: '' };
 
   const { setVisibleModal } = props;
   const validationSchema = yup.object().shape({
@@ -54,7 +55,7 @@ export const ProductCreationForm: FC<
                   testID='productUnitPrice'
                   name='unitPrice'
                   labelTx='invoiceFormScreen.productCreationForm.unitPrice'
-                  value={values.unitPrice}
+                  value={values.unitPrice.toString()}
                   inputStyle={[errors.unitPrice && INVALID_FORM_FIELD]}
                 />
                 <FormField
@@ -121,7 +122,7 @@ export const ProductCreationForm: FC<
                         await productStore.saveProduct({
                           description: values.description,
                           quantity: null,
-                          unitPrice: values.unitPrice,
+                          unitPrice: vatToMinors(values.unitPrice),
                           unitPriceWithVat: null,
                           vatPercent: null,
                           totalVat: null,
