@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
@@ -79,6 +79,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
 
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, []);
+
   const onSubmit = async invoices => {
     try {
       await invoiceStore.saveInvoice({
@@ -98,7 +104,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
         await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
       }
-      reset();
       navigate('paymentList');
     } catch (e) {
       showMessage(e);
