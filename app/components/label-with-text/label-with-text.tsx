@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import { palette } from '../../theme/palette';
 import { Text } from '../text/text';
 
 export function LabelWithText(props) {
-  const { label, text } = props;
+  const { label, text, countryFlag } = props;
   return (
     <View
       style={{
-        height: 50,
+        height: 60,
         marginHorizontal: '5%',
         flexDirection: 'row',
         alignItems: 'center',
@@ -18,20 +18,31 @@ export function LabelWithText(props) {
       <Text
         tx={label}
         style={{
-          fontSize: 15,
-          color: palette.greyDarker,
+          fontSize: 13,
+          color: palette.lighterBlack,
           fontFamily: 'Geometria',
           width: '50%',
+          textTransform: 'uppercase',
         }}
       />
       <Text
         text={text}
         style={{
           fontSize: 15,
-          color: palette.black,
+          color: palette.darkBlack,
           fontFamily: 'Geometria',
         }}
       />
+      {countryFlag && (
+        <Image
+          source={{ uri: countryFlag }}
+          style={{
+            width: 30,
+            height: 30,
+            marginLeft: 30,
+          }}
+        />
+      )}
     </View>
   );
 }
