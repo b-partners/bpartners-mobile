@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
@@ -328,6 +328,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 <ProductFormField
                   key={i}
                   index={i}
+                  // @ts-ignore
                   temp={item}
                   items={products}
                   onDeleteItem={async (__, index) => {
@@ -379,6 +380,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           control={control}
           render={({ field: { value, onChange } }) => {
             return (
+              // @ts-ignore
               <SelectFormField
                 customers={customers}
                 selectedCustomer={selectedCustomer}
@@ -458,7 +460,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               padding: spacing[3],
             }}
           >
-            <MaterialCommunityIcons name='attachment' size={25} color={color.palette.secondaryColor} />
+            <MaterialIcons name='preview' size={25} color={color.palette.secondaryColor} />
           </View>
         </TouchableOpacity>
 
