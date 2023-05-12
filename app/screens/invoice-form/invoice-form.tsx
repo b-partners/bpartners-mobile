@@ -77,10 +77,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
-  const { fields, append, remove, update, swap } = useFieldArray({ control, name: 'products' });
+  const { fields, append, remove, update, move } = useFieldArray({ control, name: 'products' });
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
-  const [isSwapCalled, setIsSwapCalled] = useState(false);
+  const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
 
     removeField().then(error => __DEV__ && console.tron.log(error));
     setRemoveProduct(false);
-  }, [isSwapCalled]);
+  }, [isMoveCalled]);
 
   useEffect(() => {
     return () => {
@@ -332,8 +332,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                   items={products}
                   onDeleteItem={async (__, index) => {
                     setRemoveProduct(true);
-                    await swap(index, fields.length - 1);
-                    setIsSwapCalled(!isSwapCalled);
+                    await move(index, fields.length - 1);
+                    setIsMoveCalled(!isMoveCalled);
                   }}
                   onValueChange={product => {
                     update(i, product);
