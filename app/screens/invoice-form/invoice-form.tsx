@@ -70,6 +70,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [creationModal, setCreationModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
+  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
@@ -328,6 +329,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 <ProductFormField
                   key={i}
                   index={i}
+                  // @ts-ignore
                   // @ts-ignore
                   temp={item}
                   items={products}
