@@ -58,6 +58,7 @@ const SEND_INVOICE_BUTTON_STYLE: ViewStyle = {
 type IFooter = {
   invoice: Invoice;
   invoiceUrl: string;
+  situation: boolean;
 };
 const BUTTON_TEXT_STYLE: TextStyle = { color: color.primary, marginLeft: spacing[1] };
 const BUTTON_STYLE: ViewStyle = {
@@ -82,8 +83,8 @@ const Footer: FC<IFooter> = props => {
   const {
     invoice: { title, customer },
     invoiceUrl,
+    situation,
   } = props;
-
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sendCopy, setSendCopy] = useState(true);
@@ -180,12 +181,14 @@ const Footer: FC<IFooter> = props => {
           {/*    <Text tx={'invoicePreviewScreen.delete'} style={BUTTON_TEXT_STYLE} />*/}
           {/*  </View>*/}
           {/*</TouchableOpacity>*/}
-          <TouchableOpacity style={BUTTON_CONTAINER_STYLE} onPress={goBack}>
-            <View style={BUTTON_STYLE}>
-              <Octicons name='pencil' size={24} color={color.primary} />
-              <Text tx={'invoicePreviewScreen.edit'} style={BUTTON_TEXT_STYLE} />
-            </View>
-          </TouchableOpacity>
+          {situation && (
+            <TouchableOpacity style={BUTTON_CONTAINER_STYLE} onPress={goBack}>
+              <View style={BUTTON_STYLE}>
+                <Octicons name='pencil' size={24} color={color.primary} />
+                <Text tx={'invoicePreviewScreen.edit'} style={BUTTON_TEXT_STYLE} />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
         <DownloadButton onPress={download} loading={isLoading} downloadFinished={downloadFinished} downloadError={downloadError} />
       </View>
@@ -220,12 +223,14 @@ const Footer: FC<IFooter> = props => {
         {/*  <Text tx={'invoicePreviewScreen.action.sendTestEmail'} style={{ color: color.primary, marginLeft: spacing[2] }} />*/}
         {/*</TouchableOpacity>*/}
       </View>
-      <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', ...BUTTON_STYLE }}>
-          <FontAwesome name={'send'} color={color.palette.white} />
-          <Text tx={'invoicePreviewScreen.send'} style={{ ...BUTTON_TEXT_STYLE, color: color.palette.white }} />
-        </View>
-      </TouchableOpacity>
+      {situation && (
+        <TouchableOpacity style={SEND_INVOICE_BUTTON_STYLE} onPress={handleSendInvoice}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', ...BUTTON_STYLE }}>
+            <FontAwesome name={'send'} color={color.palette.white} />
+            <Text tx={'invoicePreviewScreen.send'} style={{ ...BUTTON_TEXT_STYLE, color: color.palette.white }} />
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

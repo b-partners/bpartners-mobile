@@ -21,7 +21,9 @@
   "errors": {
     "invalidEmail": "Invalid email address.",
     "somethingWentWrong": "Something went wrong. Please retry later.",
-    "paymentInitiation": "Your IBAN is required to continue this action",
+    "paymentInitiation": "It seems that your bank is not synchronized to support payment collection",
+    "paymentInitM1": "Log in to BPartners.app from a bank / computer, then click on synchronize.",
+    "paymentInitM2": "If you have any difficulties, please contact support by phone or at contact@bpartners.app",
     "verifyConnection": "Verify your connection",
     "required": "This field is required",
     "amount": "Invalid amount",

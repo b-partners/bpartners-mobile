@@ -145,6 +145,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         fileId: savedInvoice.fileId,
         invoiceTitle: savedInvoice.title,
         invoice: savedInvoice,
+        situation: true,
       });
       invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
       invoiceType === 'PROPOSAL' &&

@@ -26,6 +26,8 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
     route: { params },
     navigation: { goBack },
   } = props;
+  // @ts-ignore
+  const { situation } = props.route.params;
   const { fileId, invoiceTitle, invoice } = params;
   const {
     authStore: { accessToken, currentAccount },
@@ -53,7 +55,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
           onLoadComplete={() => __DEV__ && console.tron.log('complete')}
         />
       </View>
-      <Footer invoice={invoice} invoiceUrl={invoiceUrl} />
+      <Footer situation={situation} invoice={invoice} invoiceUrl={invoiceUrl} />
     </ErrorBoundary>
   );
 });
