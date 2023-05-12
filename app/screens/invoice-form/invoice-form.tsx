@@ -8,6 +8,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import {
   Button,
   Icon,
+  Loader,
   /*Loader*/
   Text,
 } from '../../components';
@@ -21,6 +22,7 @@ import { navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
+import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { ProductFormField } from './components/product-form-field/product-form-field';
@@ -75,9 +77,20 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
-  const { fields, append, remove, update } = useFieldArray({ control, name: 'products' });
+  const { fields, append, remove, update, swap } = useFieldArray({ control, name: 'products' });
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
+  const [isSwapCalled, setIsSwapCalled] = useState(false);
+  const [removeProduct, setRemoveProduct] = useState(false);
+
+  useEffect(() => {
+    const removeField = async () => {
+      await remove(fields.length - 1);
+    };
+
+    removeField().then(error => __DEV__ && console.tron.log(error));
+    setRemoveProduct(false);
+  }, [isSwapCalled]);
 
   useEffect(() => {
     return () => {
@@ -307,22 +320,28 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       </View>
       <>
         <View style={{ paddingHorizontal: spacing[4] }}>
-          {fields.map((item, i) => {
-            return (
-              <ProductFormField
-                key={i}
-                index={i}
-                temp={item}
-                items={products}
-                onDeleteItem={async (__, index) => {
-                  await remove(index);
-                }}
-                onValueChange={product => {
-                  update(i, product);
-                }}
-              />
-            );
-          })}
+          {removeProduct ? (
+            <Loader size='large' containerStyle={LOADER_STYLE} />
+          ) : (
+            fields.map((item, i) => {
+              return (
+                <ProductFormField
+                  key={i}
+                  index={i}
+                  temp={item}
+                  items={products}
+                  onDeleteItem={async (__, index) => {
+                    setRemoveProduct(true);
+                    await swap(index, fields.length - 1);
+                    setIsSwapCalled(!isSwapCalled);
+                  }}
+                  onValueChange={product => {
+                    update(i, product);
+                  }}
+                />
+              );
+            })
+          )}
         </View>
         <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
           <Button
