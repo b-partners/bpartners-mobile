@@ -51,6 +51,7 @@ export type NavigatorParamList = {
   invoices: undefined;
   invoiceForm: {
     invoiceID?: string;
+    isInvoice?: boolean;
   };
   invoicePreview: {
     fileId: string;
@@ -68,6 +69,7 @@ export type TabNavigatorParamList = {
   invoices: undefined;
   invoiceForm: {
     invoiceID?: string;
+    isInvoice?: boolean;
   };
   invoicePreview: {
     fileId: string;

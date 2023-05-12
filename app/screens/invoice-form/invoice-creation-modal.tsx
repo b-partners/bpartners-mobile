@@ -33,7 +33,13 @@ export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props =
             }}
           >
             <Text
-              tx={invoiceType === InvoiceStatus.DRAFT ? 'invoiceFormScreen.invoiceForm.saveDraft' : 'invoiceFormScreen.invoiceForm.saveQuotation'}
+              tx={
+                invoiceType === InvoiceStatus.DRAFT
+                  ? 'invoiceFormScreen.invoiceForm.saveDraft'
+                  : invoiceType === InvoiceStatus.PROPOSAL
+                  ? 'invoiceFormScreen.invoiceForm.saveQuotation'
+                  : 'invoiceFormScreen.invoiceForm.saveInvoice'
+              }
               style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 18 }}
             />
           </View>

@@ -34,6 +34,7 @@ type InvoiceFormProps = {
   invoice?: Invoice;
   products: Product[];
   onSaveInvoice: (invoice: Invoice) => Promise<void>;
+  isInvoice?: boolean;
 };
 
 const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
@@ -61,7 +62,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { products, invoice } = props;
+  const { products, invoice, isInvoice } = props;
   const { invoiceStore, customerStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
@@ -117,6 +118,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       if (invoiceType === InvoiceStatus.PROPOSAL) {
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
         await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+      }
+      if (invoiceType === InvoiceStatus.CONFIRMED) {
+        await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
       }
       navigate('paymentList');
     } catch (e) {
@@ -480,7 +484,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setInvoiceType(InvoiceStatus.PROPOSAL);
+            isInvoice === true ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
             setConfirmationModal(true);
           }}
         >
