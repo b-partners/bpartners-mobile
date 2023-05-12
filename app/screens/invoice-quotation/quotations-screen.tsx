@@ -53,7 +53,6 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   }, [page]);
 
   const markAsInvoice = async (item: IInvoice) => {
-    __DEV__ && console.tron.log('am I here');
     if (item.status === InvoiceStatus.DRAFT || item.status === InvoiceStatus.CONFIRMED) {
       return;
     }

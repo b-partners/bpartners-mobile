@@ -10,13 +10,12 @@ import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { navigate } from '../../navigators';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
-import { createFileUrl, fetchBinaryFiles } from '../../utils/file-utils';
-import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Invoice } from './components/invoice';
 import {
@@ -35,7 +34,6 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
   const { invoices, loadingInvoice, allInvoices } = invoiceStore;
-  const { currentAccount, accessToken } = authStore;
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(allInvoices.length / 10));
 
@@ -59,27 +57,12 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
   ];
 
   const downloadInvoice = (item: IInvoice) => {
-    const downloading = async (fileNameInput, invoiceUrlInput: any) => {
-      try {
-        showMessage(translate('invoiceScreen.messages.downloadingInvoice'));
-        let downloadResult = await fetchBinaryFiles({
-          // @ts-ignore
-          invoiceUrlInput,
-          fileNameInput,
-        });
-        __DEV__ && console.tron.log('downloaded successfully' + downloadResult);
-        showMessage(translate('invoiceScreen.messages.invoiceSuccessfullyDownload'));
-      } catch (e) {
-        showMessage(translate('invoiceScreen.messages.downloadingInvoiceFailed'));
-        __DEV__ && console.tron.log(e);
-        throw e;
-      }
-    };
-    const fileId = item.fileId;
-    const fileName = `${translate('invoicePreviewScreen.invoice')}-${item.title}.pdf`;
-    const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
-
-    downloading(fileName, invoiceUrl);
+    navigate('invoicePreview', {
+      fileId: item.fileId,
+      invoiceTitle: item.title,
+      invoice: item,
+      situation: false,
+    });
   };
 
   const sendInvoice = (item: IInvoice) => {

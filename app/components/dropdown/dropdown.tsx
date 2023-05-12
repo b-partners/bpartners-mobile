@@ -20,6 +20,7 @@ interface DropdownProps<T> extends PropsWithChildren<any> {
   placeholderTextStyle?: TextStyle;
   inputSearchTextStyle?: TextStyle;
   placeholder?: string;
+  situation?: boolean;
 }
 
 const DROPDOWN_CONTAINER_STYLE: ViewStyle = { flex: 1, paddingVertical: spacing[2], paddingHorizontal: spacing[1] };
