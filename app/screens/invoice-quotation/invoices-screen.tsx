@@ -63,6 +63,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'i
       try {
         showMessage(translate('invoiceScreen.messages.downloadingInvoice'));
         let downloadResult = await fetchBinaryFiles({
+          // @ts-ignore
           invoiceUrlInput,
           fileNameInput,
         });

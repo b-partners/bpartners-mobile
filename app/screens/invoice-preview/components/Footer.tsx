@@ -18,17 +18,22 @@ import { translate } from '../../../i18n';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators';
 import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 import { fetchBinaryFiles } from '../../../utils/file-utils';
 
 /*import ReactNativeBlobUtil from 'react-native-blob-util';
 import Mailer from 'react-native-mail';*/
+// @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { sendInvoiceByEmail } from '../../../utils/send-invoice-by-email';
+import { showMessage } from '../../../utils/snackbar';
 import { DownloadButton } from './DownloadButton';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
+// @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EMAIL_FIELD_CONTAINER: ViewStyle = { marginTop: spacing[3] };
+// @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EMAIL_COPY_CONTAINER: ViewStyle = {
   flexDirection: 'row',
@@ -79,6 +84,7 @@ const Footer: FC<IFooter> = props => {
     invoiceUrl,
   } = props;
 
+  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sendCopy, setSendCopy] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -139,6 +145,22 @@ const Footer: FC<IFooter> = props => {
       __DEV__ && console.tron.log(downloadResult);
       setDownloadFinished(true);
       setIsLoading(false);
+
+      const dirs = ReactNativeBlobUtil.fs.dirs;
+      let downloadedFilePath = null;
+
+      ReactNativeBlobUtil.config({
+        fileCache: true,
+        path: dirs.DownloadDir + `/${fileName}`,
+        overwrite: true,
+      })
+        .fetch('GET', invoiceUrl, {})
+        .then(res => {
+          downloadedFilePath = res.path();
+          __DEV__ && console.tron.log('downloadedFilePath', downloadedFilePath);
+          let thePath = downloadedFilePath.split('/').slice(-2).join('/');
+          showMessage(translate('invoicePreviewScreen.savedFile') + ' ' + thePath, { duration: 9000, backgroundColor: palette.green });
+        });
     } catch (e) {
       __DEV__ && console.tron.log(e);
       setDownloadError(true);
