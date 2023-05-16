@@ -78,6 +78,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = props => {
               <Text style={{ marginLeft: '5%', color: 'black' }}>{translate('errors.paymentInitM1')}</Text>
             </View>
             <Text style={{ alignSelf: 'center', color: 'black' }}>{translate('errors.paymentInitM2')}</Text>
+            <Text style={{ alignSelf: 'center', color: 'black' }}>{translate('errors.phoneNumber')}</Text>
           </View>
         ) : (
           <View

@@ -23,7 +23,8 @@
     "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
     "paymentInitiation": "Il semblerait que votre banque ne soit pas synchronisée pour supporter la collecte de paiement",
     "paymentInitM1": "Connectez-vous sur BPartners.app depuis un ordinateur / banque  puis synchroniser.",
-    "paymentInitM2": "En cas de difficulté, contactez le support par mail : contact@bpartners.app ou par téléphone",
+    "paymentInitM2": "En cas de difficulté, contactez le support par mail : contact@bpartners.app ou par téléphone au:",
+    "phoneNumber": "01 84 80 31 69",
     "verifyConnection": "Verifier votre connexion",
     "required": "Ce champ est requis",
     "amount": "Montant invalide",
@@ -337,6 +338,7 @@
     "title": "Contacter le support",
     "messagePartOne": "Pour contacter le support, veuillez",
     "messagePartTwo": "envoyer un courriel à",
+    "messagePartThree": "ou nous appeler directement au:",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {
