@@ -74,6 +74,10 @@ export const SupportContactScreen: FC<StackScreenProps<TabNavigatorParamList, 's
             text={`${translate('supportContactScreen.messagePartTwo')} ${translate('supportContactScreen.mail')}`}
             style={{ color: palette.lightGrey, textAlign: 'center', lineHeight: 22, fontFamily: 'Geometria' }}
           />
+          <Text
+            text={`${translate('supportContactScreen.messagePartThree')} ${translate('errors.phoneNumber')}`}
+            style={{ color: palette.lightGrey, textAlign: 'center', lineHeight: 22, fontFamily: 'Geometria' }}
+          />
         </Screen>
       </View>
     </ErrorBoundary>
