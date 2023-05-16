@@ -98,7 +98,6 @@ const Footer: FC<IFooter> = props => {
     setIsLoading(false);
   }, [props.invoice]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function handleSendInvoice() {
     const dirs = ReactNativeBlobUtil.fs.dirs;
     let downloadedFilePath = null;

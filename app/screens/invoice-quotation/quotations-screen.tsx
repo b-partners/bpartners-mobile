@@ -11,6 +11,7 @@ import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { navigate } from '../../navigators';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -76,11 +77,20 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
       await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
+  const previewQuotation = item => {
+    navigate('invoicePreview', {
+      fileId: item.fileId,
+      invoiceTitle: item.title,
+      invoice: item,
+      situation: false,
+    });
+  };
 
   const sectionedQuotations = sectionInvoicesByMonth(quotations);
   const items: MenuItem[] = [
     { id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') },
     { id: 'senByEmail', title: translate('invoicePreviewScreen.send') },
+    { id: 'previewQuotation', title: translate('invoicePreviewScreen.previewQuotation') },
   ];
 
   return (
@@ -99,6 +109,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
                     menuAction={{
                       markAsInvoice: () => markAsInvoice(item),
                       senByEmail: () => sendEmail(authStore, item),
+                      previewQuotation: () => previewQuotation(item),
                     }}
                   />
                 )}
