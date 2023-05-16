@@ -43,7 +43,7 @@ export const Logo: FC<{ uri: string }> = observer(({ uri }) => {
 });
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFilesStore, authStore, invoiceStore, marketplaceStore, prospectStore, customerStore, productStore } = useStores();
+  const { transactionStore, legalFilesStore, authStore, invoiceStore, marketplaceStore, prospectStore, customerStore, productStore, draftStore } = useStores();
 
   const { availableBalance } = authStore.currentAccount;
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
@@ -65,10 +65,10 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   }, []);
 
   useEffect(() => {
-    invoiceStore.getAllInvoices({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
+    draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
     invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     invoiceStore.getAllInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 500 });
-    invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+    draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
     invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
     invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
     customerStore.getCustomers();
