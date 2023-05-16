@@ -63,7 +63,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoice, isInvoice } = props;
-  const { invoiceStore, customerStore, draftStore } = useStores();
+  const { invoiceStore, customerStore, draftStore, quotationStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
@@ -113,10 +113,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
-        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
-        await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
@@ -127,8 +127,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       showMessage(e);
       throw e;
     } finally {
-      await invoiceStore.getAllInvoices({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
-      await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
+      await draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
+      await quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
 
@@ -153,7 +153,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       });
       invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }));
       invoiceType === 'PROPOSAL' &&
-        (await invoiceStore.getQuotations({
+        (await quotationStore.getQuotations({
           status: InvoiceStatus.PROPOSAL,
           page: 1,
           pageSize: 10,
