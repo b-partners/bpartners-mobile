@@ -11,17 +11,7 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrency } from '../../../utils/money';
 
-const CHART_CONTAINER: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'flex-start' };
-const LABELS_SECTION: ViewStyle = { flex: 1 };
-const CHART_SECTION: ViewStyle = {
-  flex: 2,
-  position: 'absolute',
-  bottom: -121,
-  right: 0,
-  alignItems: 'center',
-  alignContent: 'center',
-  justifyContent: 'center',
-};
+const CHART_CONTAINER: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%', height: 150 };
 const LABEL_CONTAINER_STYLE: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
@@ -38,13 +28,13 @@ const LABEL_COLOR_STYLE = (backgroundColor: string): ViewStyle => ({
 
 const COLORS = [
   palette.midnightGreen,
-  palette.purpleNavy,
-  palette.mulberry,
+  palette.secondaryColor,
+  palette.green,
   palette.pastelRed,
   palette.cheese,
   palette.saffron,
   palette.japaneseLaurel,
-  palette.green,
+  palette.mulberry,
   palette.deepPurple,
 ];
 
@@ -58,7 +48,7 @@ const TITLE_CONTAINER_STYLE: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  marginBottom: spacing[8],
+  marginBottom: spacing[2],
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
 };
@@ -94,7 +84,7 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
         <TouchableOpacity onPress={() => showSnackbar()}>{/*<Icon icon='settings' />*/}</TouchableOpacity>
       </View>
       <View style={CHART_CONTAINER}>
-        <View style={LABELS_SECTION}>
+        <View style={{ width: '30%', justifyContent: 'center' }}>
           {Object.keys(summary)
             .filter(key => !FILTERED_KEYS.includes(key))
             .map((item, i) => {
@@ -108,27 +98,26 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
               );
             })}
         </View>
-        <View style={{ flex: 3 }} />
-        <View style={CHART_SECTION}>
-          <PieChart
-            donut
-            semiCircle
-            radius={110}
-            showText
-            textSize={15}
-            labelsPosition='outward'
-            data={[
-              ...Object.keys(summary)
-                .filter(key => !FILTERED_KEYS.includes(key))
-                .map((key, i) => {
-                  return {
-                    value: summary[key],
-                    text: printCurrency(summary[key]),
-                    color: COLORS[i],
-                  };
-                }),
-            ]}
-          />
+        <View style={{ width: '70%', height: '100%', justifyContent: 'flex-start', alignItems: 'center' }}>
+          <View style={{ height: 120, width: 240}}>
+            <PieChart
+                donut
+                semiCircle
+                radius={120}
+                showText
+                innerRadius={65}
+                data={[
+                  ...Object.keys(summary)
+                      .filter(key => !FILTERED_KEYS.includes(key))
+                      .map((key, i) => {
+                        return {
+                          value: summary[key],
+                          color: COLORS[i],
+                        };
+                      }),
+                ]}
+            />
+          </View>
         </View>
       </View>
     </View>
