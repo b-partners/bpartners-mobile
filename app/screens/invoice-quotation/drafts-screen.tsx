@@ -30,7 +30,7 @@ import {
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-  const { invoiceStore, draftStore } = useStores();
+  const { invoiceStore, draftStore, quotationStore } = useStores();
   const { drafts, loadingDraft, allDrafts } = draftStore;
   const [navigationState, setNavigationState] = useState(false);
   const [page, setPage] = useState(1);
@@ -78,7 +78,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
         status: InvoiceStatus.PROPOSAL,
       };
       await invoiceStore.saveInvoice(editedItem);
-      await invoiceStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
+      await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
       await draftStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));

@@ -33,14 +33,14 @@ import {
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-  const { invoiceStore, authStore } = useStores();
-  const { loadingQuotation, quotations, allQuotations } = invoiceStore;
+  const { invoiceStore, authStore, quotationStore } = useStores();
+  const { loadingQuotation, quotations, allQuotations } = quotationStore;
   const [navigationState, setNavigationState] = useState(false);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(allQuotations.length / 10));
 
   const handleRefresh = async () => {
-    await invoiceStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
+    await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
     __DEV__ && console.tron.log(quotations);
   };
 
@@ -50,7 +50,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
   }, [allQuotations]);
 
   useEffect(() => {
-    invoiceStore.getQuotations({ page: page, pageSize: 10, status: InvoiceStatus.PROPOSAL });
+    quotationStore.getQuotations({ page: page, pageSize: 10, status: InvoiceStatus.PROPOSAL });
   }, [page]);
 
   const markAsInvoice = async (item: IInvoice) => {
@@ -68,13 +68,13 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 
       await invoiceStore.saveInvoice(editedItem);
       await invoiceStore.getInvoices({ page: 1, pageSize: 10, status: InvoiceStatus.CONFIRMED });
       setNavigationState(false);
-      await invoiceStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
+      await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsInvoice'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
     } finally {
       await invoiceStore.getAllInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 500 });
-      await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
+      await quotationStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
   const previewQuotation = item => {
