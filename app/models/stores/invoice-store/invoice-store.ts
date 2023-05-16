@@ -13,16 +13,10 @@ export const InvoiceStoreModel = types
   .model('InvoiceStore')
   .props({
     invoices: types.optional(types.array(InvoiceModel), []),
-    quotations: types.optional(types.array(InvoiceModel), []),
-    drafts: types.optional(types.array(InvoiceModel), []),
     allInvoices: types.optional(types.array(InvoiceModel), []),
-    allQuotations: types.optional(types.array(InvoiceModel), []),
-    allDrafts: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
-    loadingDraft: types.optional(types.boolean, false),
-    loadingQuotation: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
   })
   .extend(withRootStore)
@@ -33,83 +27,16 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     getAllInvoices: flow(function* (criteria: Criteria) {
-      if (criteria.status === InvoiceStatus.DRAFT) {
-        detach(self.allDrafts);
-      } else if (criteria.status === InvoiceStatus.PROPOSAL) {
-        detach(self.allQuotations);
-      } else {
         detach(self.allInvoices);
-      }
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         __DEV__ && console.tron.log(getInvoicesResult);
-        if (criteria.status === InvoiceStatus.DRAFT) {
-          self.allDrafts.replace(getInvoicesResult.invoices as any);
-        } else if (criteria.status === InvoiceStatus.PROPOSAL) {
-          self.allQuotations.replace(getInvoicesResult.invoices as any);
-        } else {
           self.allInvoices.replace(getInvoicesResult.invoices as any);
-        }
       } catch (e) {
         __DEV__ && console.tron.log(e);
         showMessage(translate('errors.somethingWentWrong'));
         self.catchOrThrow(e);
-      }
-    }),
-  }))
-  .actions(self => ({
-    getDraftsSuccess: (invoices: InvoiceStoreSnapshotOut[]) => {
-      self.drafts.replace(invoices as any);
-    },
-  }))
-  .actions(() => ({
-    getDraftsFail: error => {
-      __DEV__ && console.tron.log(error);
-    },
-  }))
-  .actions(self => ({
-    getDrafts: flow(function* (criteria: Criteria) {
-      detach(self.invoices);
-      self.loadingDraft = true;
-      const paymentApi = new PaymentApi(self.environment.api);
-      try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        __DEV__ && console.tron.log(getInvoicesResult);
-        self.getDraftsSuccess(getInvoicesResult.invoices);
-      } catch (e) {
-        __DEV__ && console.tron.log(e);
-        showMessage(translate('errors.somethingWentWrong'));
-        self.getDraftsFail(e.message);
-        self.catchOrThrow(e);
-      } finally {
-        self.loadingDraft = false;
-      }
-    }),
-  }))
-  .actions(self => ({
-    getQuotationsSuccess: (invoices: InvoiceStoreSnapshotOut[]) => {
-      self.quotations.replace(invoices as any);
-    },
-  }))
-  .actions(() => ({
-    getQuotationsFail: error => {
-      __DEV__ && console.tron.log(error);
-    },
-  }))
-  .actions(self => ({
-    getQuotations: flow(function* (criteria: Criteria) {
-      detach(self.invoices);
-      self.loadingQuotation = true;
-      const paymentApi = new PaymentApi(self.environment.api);
-      try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        self.getQuotationsSuccess(getInvoicesResult.invoices);
-      } catch (e) {
-        showMessage(translate('errors.somethingWentWrong'));
-        self.catchOrThrow(e);
-      } finally {
-        self.loadingQuotation = false;
       }
     }),
   }))
