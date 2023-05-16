@@ -15,6 +15,7 @@ import { ProductStoreModel } from '../product-store/product-store';
 import { ProspectStoreModel } from '../prospect-store/prospect-store';
 import { TransactionStoreModel } from '../transaction-store/transaction-store';
 import {DraftStoreModel} from "../draft-store/draft-store";
+import {QuotationStoreModel} from "../quotation-store/quotation-store";
 
 /**
  * A RootStore model.
@@ -32,7 +33,8 @@ export const RootStoreModel = types.model('RootStore').props({
     customerStore: types.optional(CustomerStoreModel, {} as any),
     prospectStore: types.optional(ProspectStoreModel, {} as any),
     productStore: types.optional(ProductStoreModel, {} as any),
-    draftStore: types.optional(DraftStoreModel, {} as any)
+    draftStore: types.optional(DraftStoreModel, {} as any),
+    quoationStore: types.optional(QuotationStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;
