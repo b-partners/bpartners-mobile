@@ -315,6 +315,7 @@
     "invoice": "invoice",
     "sendInvoice": "Send this invoice",
     "savedFile": "File saved under",
+    "previewQuotation": "Preview quotation",
     "email": {
       "body": "Ci-joint la facture"
     },
