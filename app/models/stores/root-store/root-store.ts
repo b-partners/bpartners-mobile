@@ -34,7 +34,7 @@ export const RootStoreModel = types.model('RootStore').props({
     prospectStore: types.optional(ProspectStoreModel, {} as any),
     productStore: types.optional(ProductStoreModel, {} as any),
     draftStore: types.optional(DraftStoreModel, {} as any),
-    quoationStore: types.optional(QuotationStoreModel, {} as any)
+    quotationStore: types.optional(QuotationStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;
