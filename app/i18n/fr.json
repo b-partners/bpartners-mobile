@@ -300,6 +300,7 @@
     "invoice": "facture",
     "sendInvoice": "Envoyer la facture",
     "savedFile": "Fichier enregistrer sous",
+    "previewQuotation": "Aperçu du devis",
     "action": {
       "downloadedSuccessFully": "Fichier téléchargé",
       "sendMeACopy": "M'ajouter en copie de cet e-mail",
