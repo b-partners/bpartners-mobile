@@ -24,6 +24,7 @@
     "paymentInitiation": "It seems that your bank is not synchronized to support payment collection",
     "paymentInitM1": "Log in to BPartners.app from a bank / computer, then click on synchronize.",
     "paymentInitM2": "If you have any difficulties, please contact support by phone or at contact@bpartners.app",
+    "phoneNumber": "01 84 80 31 69",
     "verifyConnection": "Verify your connection",
     "required": "This field is required",
     "amount": "Invalid amount",
@@ -356,6 +357,7 @@
     "title": "Contact support",
     "messagePartOne": "To contact support, please",
     "messagePartTwo": "send an email to",
+    "messagePartThree": "you can also call us on :",
     "mail": "contact@bpartners.app"
   },
   "bottomTab": {
