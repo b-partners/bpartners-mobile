@@ -16,6 +16,7 @@ import { GoalProgressBar } from './goal-progress-bar';
 interface TransactionSummaryProps {
   summary: ITransactionSummary;
   accountHolder: IAccountHolder;
+  balance: number;
 }
 
 /*const BOOST_MY_RESULT_BUTTON_STYLE: ViewStyle = {
@@ -31,7 +32,7 @@ interface TransactionSummaryProps {
   fontFamily: 'Geometria-Bold',
 };*/
 
-export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary, accountHolder: accountHolder }) => {
+export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary, accountHolder: accountHolder, balance: balance }) => {
   /* const showSnackbar = () => {
     Snackbar.show({
       text: 'Cette fonctionnalité est encore en construction',
@@ -50,7 +51,7 @@ export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({
   return (
     <>
       <View>
-        {summary && <DonutChart summary={summary} />}
+        {summary && <DonutChart summary={summary} balance={balance} />}
         <GoalProgressBar accountHolder={accountHolder} />
         {/*<Button
           onPress={() => showSnackbar()}

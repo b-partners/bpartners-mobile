@@ -42,6 +42,7 @@ const FILTERED_KEYS = ['id', 'month', 'updatedAt'];
 
 type DonutChartProps = {
   summary: ITransactionSummary;
+  balance: number;
 };
 
 const TITLE_CONTAINER_STYLE: ViewStyle = {
@@ -60,7 +61,7 @@ const SUMMARY_TITLE_STYLE: TextStyle = {
 };
 
 export const DonutChart: React.FC<DonutChartProps> = props => {
-  const { summary } = props;
+  const { summary, balance } = props;
 
   const showSnackbar = () => {
     Snackbar.show({
@@ -92,30 +93,30 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
                 <View style={LABEL_CONTAINER_STYLE} key={item}>
                   <View style={LABEL_COLOR_STYLE(COLORS[i])} />
                   <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
-                    {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(summary[item])}
+                    {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(item === 'cashFlow' ? balance : summary[item])}
                   </Text>
                 </View>
               );
             })}
         </View>
         <View style={{ width: '70%', height: '100%', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <View style={{ height: 120, width: 240}}>
+          <View style={{ height: 120, width: 240 }}>
             <PieChart
-                donut
-                semiCircle
-                radius={120}
-                showText
-                innerRadius={65}
-                data={[
-                  ...Object.keys(summary)
-                      .filter(key => !FILTERED_KEYS.includes(key))
-                      .map((key, i) => {
-                        return {
-                          value: summary[key],
-                          color: COLORS[i],
-                        };
-                      }),
-                ]}
+              donut
+              semiCircle
+              radius={120}
+              showText
+              innerRadius={65}
+              data={[
+                ...Object.keys(summary)
+                  .filter(key => !FILTERED_KEYS.includes(key))
+                  .map((key, i) => {
+                    return {
+                      value: summary[key],
+                      color: COLORS[i],
+                    };
+                  }),
+              ]}
             />
           </View>
         </View>
