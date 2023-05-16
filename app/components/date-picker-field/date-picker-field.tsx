@@ -53,7 +53,6 @@ export function DatePickerField(props: DatePickerProps) {
   let date = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
 
   date = date.split('-').join(dateSeparator);
-
   return (
     <View style={[DATE_PICKER_CONTAINER_STYLE, containerStyle]}>
       <View style={[LABEL_CONTAINER_STYLE, labelContainerStyleOverride]}>
@@ -73,8 +72,12 @@ export function DatePickerField(props: DatePickerProps) {
       </View>
       <DatePickerInput
         modal
+        locale='fr-FR'
         open={open}
         date={value}
+        title={translate('components.datePicker.pickADate')}
+        confirmText={translate('common.submit')}
+        cancelText={translate('common.cancel')}
         onConfirm={selectedDate => {
           setOpen(false);
           onDateChange(selectedDate);
