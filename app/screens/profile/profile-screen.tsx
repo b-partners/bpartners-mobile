@@ -1,7 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { Linking, TextStyle, View, ViewStyle } from 'react-native';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
 
 import { AutoImage, GradientBackground, Header, LabelWithText, Screen, Text } from '../../components';
@@ -158,6 +158,41 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
                 marginTop: 11,
               }}
             />
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: '100',
+                color: palette.lighterBlack,
+                fontFamily: 'Geometria',
+                marginTop: 11,
+              }}
+            >
+              Pour modifier vos informations de profil; rendez-vous sur la version web de BPartners à l’adresse:
+            </Text>
+
+            <Text style={{ flexDirection: 'row', flexWrap: 'wrap', marginVertical: '5%' }}>
+              <Text
+                onPress={() => Linking.openURL('https://www.bpartners.app/home')}
+                text='BPartners, l’assistant intelligent des artisans et indépendants'
+                style={{
+                  fontSize: 15,
+                  fontWeight: '100',
+                  color: 'blue',
+                  fontFamily: 'Geometria',
+                  marginTop: 11,
+                }}
+              />
+              <Text
+                text=', section mon compte'
+                style={{
+                  fontSize: 15,
+                  fontWeight: '100',
+                  color: palette.lighterBlack,
+                  fontFamily: 'Geometria',
+                  marginTop: 11,
+                }}
+              />
+            </Text>
           </View>
         </Screen>
       </View>
