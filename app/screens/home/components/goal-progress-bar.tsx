@@ -2,11 +2,11 @@ import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { Icon, Text } from '../../../components';
+import { translate } from '../../../i18n';
 import { AccountHolder as IAccountHolder } from '../../../models/entities/account-holder/account-holder';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import {currencyPipe} from "../../../utils/pipes";
-import {translate} from "../../../i18n";
+import { currencyPipe } from '../../../utils/pipes';
 
 const ROW: ViewStyle = {
   display: 'flex',
@@ -26,15 +26,15 @@ const PROGRESS_BAR_STYLE: ViewStyle = {
   backgroundColor: palette.lightGrey,
   height: 30,
   borderTopLeftRadius: 50,
-  borderBottomLeftRadius: 50
+  borderBottomLeftRadius: 50,
 };
 
 const PROGRESS_BAR_STYLE_WITH_RADIUS: ViewStyle = {
   position: 'absolute',
   backgroundColor: palette.lightGrey,
   height: 30,
-  borderRadius: 50
-}
+  borderRadius: 50,
+};
 
 const PROGRESS_BAR_CONTAINER: ViewStyle = { marginVertical: spacing[4] };
 
@@ -63,7 +63,7 @@ export const GoalProgressBar: React.FC<GoalProgressBarProps> = ({ accountHolder:
     const achieved = (target?.amountAttempted * 100) / target?.amountTarget;
     return achieved >= 100 ? '100' : achieved.toFixed(2);
   };
-  const progressBarStyle = parseInt(GoalAchievedInPercentage()) > 95 ? PROGRESS_BAR_STYLE_WITH_RADIUS : PROGRESS_BAR_STYLE;
+  const progressBarStyle = parseInt(GoalAchievedInPercentage(), 10) > 95 ? PROGRESS_BAR_STYLE_WITH_RADIUS : PROGRESS_BAR_STYLE;
 
   return (
     <View style={PROGRESS_BAR_CONTAINER}>
@@ -80,7 +80,10 @@ export const GoalProgressBar: React.FC<GoalProgressBarProps> = ({ accountHolder:
           <Text text='Réalisé' style={{ fontFamily: 'Geometria', color: '#BFC7DE' }} />
         </View>
         <View style={ROW}>
-          <Text text={currencyPipe(translate('currency')).format(target?.amountTarget / 100)} style={{ fontFamily: 'Geometria', color: color.palette.textClassicColor }} />
+          <Text
+            text={currencyPipe(translate('currency')).format(target?.amountTarget / 100)}
+            style={{ fontFamily: 'Geometria', color: color.palette.textClassicColor }}
+          />
           <View style={{ marginHorizontal: spacing[1] }} />
           <Icon icon='coins' />
         </View>

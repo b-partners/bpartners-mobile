@@ -89,7 +89,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
         <Screen preset='auto' backgroundColor={palette.white}>
           <HeaderWithBalance balance={availableBalance} left={<Logo uri={uri} />} right={<Menu navigation={navigation} />} />
           <View style={{ padding: spacing[3] }}>
-            <TransactionSummary summary={currentMonthSummary} accountHolder={currentAccountHolder} />
+            <TransactionSummary summary={currentMonthSummary} accountHolder={currentAccountHolder} balance={availableBalance} />
           </View>
           <HomeLatestTransactions
             transactions={latestTransactions}
