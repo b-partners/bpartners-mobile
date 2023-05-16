@@ -10,6 +10,7 @@ export const ProspectStoreModel = types
   .model('Prospect')
   .props({
     prospects: types.optional(types.array(ProspectModel), []),
+    loadingProspect: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -29,6 +30,7 @@ export const ProspectStoreModel = types
   }))
   .actions(self => ({
     getProspects: flow(function* () {
+      self.loadingProspect = true;
       const prospectApi = new ProspectApi(self.environment.api);
       try {
         const getProspectsResult = yield prospectApi.getProspects(self.currentAccountHolder.id);
@@ -36,6 +38,8 @@ export const ProspectStoreModel = types
       } catch (e) {
         self.getProspectsFail(e.message);
         self.catchOrThrow(e);
+      } finally {
+        self.loadingProspect = false;
       }
     }),
   }))

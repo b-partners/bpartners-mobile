@@ -43,7 +43,7 @@ export const Logo: FC<{ uri: string }> = observer(({ uri }) => {
 });
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFilesStore, authStore, invoiceStore, marketplaceStore, prospectStore, customerStore, productStore, draftStore, quotationStore } = useStores();
+  const { transactionStore, legalFilesStore, authStore, invoiceStore, marketplaceStore, customerStore, productStore, draftStore, quotationStore } = useStores();
 
   const { availableBalance } = authStore.currentAccount;
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
@@ -76,7 +76,6 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   }, []);
 
   useEffect(() => {
-    prospectStore.getProspects();
     marketplaceStore.getMarketplaces({
       page: 1,
       pageSize: 15,
