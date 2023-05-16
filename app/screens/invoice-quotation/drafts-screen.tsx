@@ -30,14 +30,14 @@ import {
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-  const { invoiceStore } = useStores();
-  const { drafts, loadingDraft, allDrafts } = invoiceStore;
+  const { invoiceStore, draftStore } = useStores();
+  const { drafts, loadingDraft, allDrafts } = draftStore;
   const [navigationState, setNavigationState] = useState(false);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(allDrafts.length / 10));
 
   const handleRefresh = async () => {
-    await invoiceStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
+    await draftStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
   }, [allDrafts]);
 
   useEffect(() => {
-    invoiceStore.getDrafts({ page: page, pageSize: 10, status: InvoiceStatus.DRAFT });
+    draftStore.getDrafts({ page: page, pageSize: 10, status: InvoiceStatus.DRAFT });
   }, [page]);
 
   const editInvoice = async (item: IInvoice) => {
@@ -80,13 +80,13 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
       await invoiceStore.saveInvoice(editedItem);
       await invoiceStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
-      await invoiceStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
+      await draftStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
     } finally {
       await invoiceStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
-      await invoiceStore.getAllInvoices({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
+      await draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
     }
   };
   const sectionedQuotations = sectionInvoicesByMonth(drafts);
