@@ -175,8 +175,8 @@
     "summary": {
       "title": "Stats",
       "goals": "Goals",
-      "income": "Income",
-      "outcome": "Outcome",
+      "income": "Incomes",
+      "outcome": "Outcomes",
       "cashFlow": "Cash Flow",
       "boostMyResult": "Boost my result",
       "lastTransactions": "Last Transcations"
