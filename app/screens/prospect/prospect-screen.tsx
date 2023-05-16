@@ -1,10 +1,10 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useState } from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import { ScrollView, View } from 'react-native';
 import { Menu } from 'react-native-paper';
 
-import { Header, Screen } from '../../components';
+import {Header, Loader, Screen} from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { NoDataProvided } from '../../components/no-data-provided/no-data-provided';
 import { translate } from '../../i18n';
@@ -15,10 +15,11 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { ProspectItem } from './components/prospect-item';
+import {LOADER_STYLE} from "../invoice-quotation/styles";
 
 export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
   const { authStore, prospectStore } = useStores();
-  const { prospects } = prospectStore;
+  const { prospects, loadingProspect } = prospectStore;
 
   const [currentStatus, setCurrentStatus] = useState<string>('TO_CONTACT');
 
@@ -42,6 +43,10 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
     { id: 'contacted', title: translate('prospectScreen.tab.contacted') },
     { id: 'converted', title: translate('prospectScreen.tab.converted') },
   ];
+
+    useEffect(() => {
+        prospectStore.getProspects();
+    }, []);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -90,7 +95,9 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
             }}
             contentContainerStyle={{ alignItems: 'center' }}
           >
-            {filteredProspect.length > 0 ? (
+            { loadingProspect ?
+                <Loader size='large' containerStyle={LOADER_STYLE} />
+                : filteredProspect.length > 0 ? (
               filteredProspect.map((item: Prospect, index: number) => {
                 return <ProspectItem menuItem={items} prospect={item} ahId={currentAccountHolderId} setCurrentStatus={setCurrentStatus} key={index} />;
               })
