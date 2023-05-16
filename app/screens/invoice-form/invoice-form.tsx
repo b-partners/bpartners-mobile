@@ -63,7 +63,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoice, isInvoice } = props;
-  const { invoiceStore, customerStore } = useStores();
+  const { invoiceStore, customerStore, draftStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
@@ -112,12 +112,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       });
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
-        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
         await invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
-        await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
         await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
@@ -151,12 +151,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         invoice: savedInvoice,
         situation: true,
       });
-      invoiceType === 'DRAFT' && (await invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 }));
+      invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }));
       invoiceType === 'PROPOSAL' &&
         (await invoiceStore.getQuotations({
           status: InvoiceStatus.PROPOSAL,
           page: 1,
-          pageSize: 30,
+          pageSize: 10,
         }));
     } catch (e) {
       __DEV__ && console.tron.error(e.message, e.stacktrace);
