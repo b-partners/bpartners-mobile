@@ -11,6 +11,7 @@ export const MarketplaceStoreModel = types
   .model('Marketplace')
   .props({
     marketplaces: types.optional(types.array(MarketplaceModel), []),
+    loadingMarketplace: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -30,6 +31,7 @@ export const MarketplaceStoreModel = types
   }))
   .actions(self => ({
     getMarketplaces: flow(function* (criteria: PageCriteria) {
+      self.loadingMarketplace = true;
       const marketplaceApi = new MarketplaceApi(self.environment.api);
       try {
         const getMarketplacesResult = yield marketplaceApi.getMarketplaces(self.currentAccount.id, criteria);
@@ -37,6 +39,8 @@ export const MarketplaceStoreModel = types
       } catch (e) {
         self.getMarketplaceFail(e.message);
         self.catchOrThrow(e);
+      } finally {
+        self.loadingMarketplace = false;
       }
     }),
   }));
