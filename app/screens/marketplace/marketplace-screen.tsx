@@ -1,9 +1,9 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, {FC, useEffect} from 'react';
 import { Dimensions, Text, View } from 'react-native';
 
-import { Header, Screen } from '../../components';
+import {Header, Loader, Screen} from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators';
@@ -17,7 +17,14 @@ import { FULL_HEIGHT, SCREEN_STYLE } from './styles';
 export const MarketPlaceScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
   const screenWidth = Dimensions.get('screen').width;
   const { marketplaceStore } = useStores();
-  const { marketplaces } = marketplaceStore;
+  const { marketplaces, loadingMarketplace } = marketplaceStore;
+
+    useEffect(() => {
+        marketplaceStore.getMarketplaces({
+            page: 1,
+            pageSize: 15,
+        });
+    }, []);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -38,7 +45,11 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'mar
             <Text style={{ alignSelf: 'center', color: 'black' }}>{translate('marketPlaceScreen.messageTitle')}</Text>
             <Text style={{ alignSelf: 'center', color: 'black' }}>{translate('marketPlaceScreen.messageContent')}</Text>
           </View>
-          {screenWidth < 720 ? <ColumnList marketplaces={marketplaces} /> : <RowList marketplaces={marketplaces} />}
+          {loadingMarketplace ?
+              <View style={{ width: '100%', height: 200}}>
+                  <Loader size='large' style={{ width: '100%', height: '100%' }}/>
+              </View> :
+              screenWidth < 720 ? <ColumnList marketplaces={marketplaces} /> : <RowList marketplaces={marketplaces} />}
         </Screen>
       </View>
     </ErrorBoundary>
