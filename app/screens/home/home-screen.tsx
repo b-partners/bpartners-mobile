@@ -57,10 +57,6 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     legalFilesStore.getLegalFiles();
     transactionStore.getTransactions();
     transactionStore.getTransactionsSummary(date.getFullYear());
-  }, []);
-
-  useEffect(() => {
-    transactionStore.getTransactions();
     transactionStore.getTransactionCategories();
   }, []);
 
@@ -73,13 +69,6 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
     customerStore.getCustomers();
     productStore.getProducts();
-  }, []);
-
-  useEffect(() => {
-    marketplaceStore.getMarketplaces({
-      page: 1,
-      pageSize: 15,
-    });
   }, []);
 
   return (
