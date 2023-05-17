@@ -1,11 +1,13 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
 
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
+import { useStores } from '../../models';
+import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 
 /*import { useStores } from '../../models';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';*/
@@ -23,7 +25,16 @@ const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW 
 
 export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
+  const { invoiceStore, customerStore, productStore, draftStore, quotationStore } = useStores();
   // const { invoiceStore } = useStores();
+
+  useEffect(() => {
+    draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+    quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
+    productStore.getProducts();
+    customerStore.getCustomers();
+  }, []);
 
   return (
     <ErrorBoundary catchErrors='always'>

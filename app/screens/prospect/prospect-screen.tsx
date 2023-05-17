@@ -1,10 +1,10 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Menu } from 'react-native-paper';
 
-import {Header, Loader, Screen} from '../../components';
+import { Header, Loader, Screen } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { NoDataProvided } from '../../components/no-data-provided/no-data-provided';
 import { translate } from '../../i18n';
@@ -43,9 +43,9 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
     { id: 'converted', title: translate('prospectScreen.tab.converted') },
   ];
 
-    useEffect(() => {
-        prospectStore.getProspects();
-    }, []);
+  useEffect(() => {
+    prospectStore.getProspects();
+  }, []);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -94,11 +94,11 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
             }}
             contentContainerStyle={{ alignItems: 'center' }}
           >
-            { loadingProspect ?
-                <View style={{ width: '100%', height: 200}}>
-                    <Loader size='large' style={{ width: '100%', height: '100%' }}/>
-                </View>
-                : filteredProspect.length > 0 ? (
+            {loadingProspect ? (
+              <View style={{ width: '100%', height: 200 }}>
+                <Loader size='large' style={{ width: '100%', height: '100%' }} />
+              </View>
+            ) : filteredProspect.length > 0 ? (
               filteredProspect.map((item: Prospect, index: number) => {
                 return <ProspectItem menuItem={items} prospect={item} ahId={currentAccountHolderId} setCurrentStatus={setCurrentStatus} key={index} />;
               })

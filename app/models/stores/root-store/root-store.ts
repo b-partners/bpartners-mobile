@@ -5,6 +5,7 @@ import { Account } from '../../entities/account/account';
 import { User } from '../../entities/user/user';
 import { AuthStoreModel } from '../auth-store/auth-store';
 import { CustomerStoreModel } from '../customer-store/customer-store';
+import { DraftStoreModel } from '../draft-store/draft-store';
 import { FileStoreModel } from '../file-store/file-store';
 import { InvoiceStoreModel } from '../invoice-store/invoice-store';
 import { LegalFileStoreModel } from '../legal-file-store/legal-file-store';
@@ -13,9 +14,8 @@ import { OnboardingStoreModel } from '../onboarding-store/onboarding-store';
 import { PaymentInitiationStoreModel } from '../payment-initiation-store/payment-initiation-store';
 import { ProductStoreModel } from '../product-store/product-store';
 import { ProspectStoreModel } from '../prospect-store/prospect-store';
+import { QuotationStoreModel } from '../quotation-store/quotation-store';
 import { TransactionStoreModel } from '../transaction-store/transaction-store';
-import {DraftStoreModel} from "../draft-store/draft-store";
-import {QuotationStoreModel} from "../quotation-store/quotation-store";
 
 /**
  * A RootStore model.
