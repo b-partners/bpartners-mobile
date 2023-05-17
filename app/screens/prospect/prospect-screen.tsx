@@ -15,7 +15,6 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { ProspectItem } from './components/prospect-item';
-import {LOADER_STYLE} from "../invoice-quotation/styles";
 
 export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
   const { authStore, prospectStore } = useStores();
@@ -96,7 +95,9 @@ export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'
             contentContainerStyle={{ alignItems: 'center' }}
           >
             { loadingProspect ?
-                <Loader size='large' containerStyle={LOADER_STYLE} />
+                <View style={{ width: '100%', height: 200}}>
+                    <Loader size='large' style={{ width: '100%', height: '100%' }}/>
+                </View>
                 : filteredProspect.length > 0 ? (
               filteredProspect.map((item: Prospect, index: number) => {
                 return <ProspectItem menuItem={items} prospect={item} ahId={currentAccountHolderId} setCurrentStatus={setCurrentStatus} key={index} />;
