@@ -113,7 +113,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               </View>
             </View>
           </View>
-          <LabelWithText label='profileScreen.fields.accountHolder.name' text={currentAccountHolder.name} />
+          <LabelWithText label='profileScreen.fields.accountHolder.name' text={currentAccountHolder?.name} />
           <LabelWithText label='profileScreen.fields.accountHolder.businessActivities.primary' text={currentAccountHolder?.businessActivities?.primary} />
           <LabelWithText label='profileScreen.fields.accountHolder.businessActivities.secondary' text={currentAccountHolder?.businessActivities?.secondary} />
           <LabelWithText label='profileScreen.fields.accountHolder.officialActivityName' text={currentAccountHolder?.officialActivityName} />
