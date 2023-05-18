@@ -133,6 +133,15 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     bridge: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
   };
 
+  const handlePress = useCallback(async () => {
+    const supported = await Linking.canOpenURL(env.swanUrl);
+    if (supported) {
+      await Linking.openURL(env.swanUrl);
+    } else {
+      Alert.alert(translate('errors.somethingWentWrong'));
+    }
+  }, [env.swanUrl]);
+
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
       <AutoImage source={require('./drawer-header-background.png')} resizeMode='stretch' resizeMethod='auto' style={{ position: 'absolute', zIndex: 1 }} />
@@ -146,12 +155,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
-          {props.state.routes.slice(0, 8).map((route: any) => {
-            const routeTitle = TitleRoute[route.name];
-            if (routeTitle === undefined) {
-              return null;
-            }
-
+          {props.state.routes.slice(0, 4).map((route: any) => {
             return (
               <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
                 <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
@@ -166,6 +170,19 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
               </TouchableOpacity>
             );
           })}
+          <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress} testID='openSwan'>
+            <View style={ICON_CONTAINER_STYLE}>
+              <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />
+            </View>
+            <View style={TEXT_CONTAINER_STYLE}>
+              <Text style={TEXT_STYLE} testID='openSwanText'>
+                {translate('logoutScreen.swan')}
+              </Text>
+            </View>
+            <View style={ICON_CONTAINER_STYLE}>
+              <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
+            </View>
+          </TouchableOpacity>
         </ScrollView>
       </View>
       <TouchableOpacity
