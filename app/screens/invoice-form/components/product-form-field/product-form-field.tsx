@@ -11,6 +11,7 @@ import { Product } from '../../../../models/entities/product/product';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { printCurrencyToMajors, printVat } from '../../../../utils/money';
+import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoice-quotation/styles';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
 import { ProductCreationModal } from './product-creation-modal';
@@ -32,6 +33,13 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const [quantityValue, setQuantityValue] = useState(temp?.quantity?.toString());
 
   const { productStore } = useStores();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const startItemIndex = (currentPage - 1) * itemsPerPage;
+  const endItemIndex = currentPage * itemsPerPage;
+  const displayedItems = items.slice(startItemIndex, endItemIndex);
 
   useEffect(() => {
     onValueChange && onValueChange(currentProduct);
@@ -179,7 +187,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                               </View>
                               <View style={{ paddingVertical: spacing[2] }}>
                                 <FlatList
-                                  data={items}
+                                  data={displayedItems}
                                   keyExtractor={item => item.id}
                                   renderItem={({ item: product }) => {
                                     return (
@@ -223,17 +231,49 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                   ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
                                 />
                               </View>
-                              <Button
-                                tx='invoiceFormScreen.customerSelectionForm.validate'
-                                style={{
-                                  backgroundColor: color.palette.secondaryColor,
-                                  borderRadius: 50,
-                                  paddingVertical: spacing[3],
-                                  marginTop: spacing[5],
-                                }}
-                                textStyle={{ fontSize: 16, fontFamily: 'Geometria' }}
-                                onPress={() => setVisible(false)}
-                              />
+                              <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
+                                <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
+                                  {currentPage === 1 ? (
+                                    <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                                      <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
+                                    </View>
+                                  ) : (
+                                    <TouchableOpacity
+                                      style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                                      onPress={() => {
+                                        setCurrentPage(currentPage - 1);
+                                      }}
+                                    >
+                                      <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
+                                    </TouchableOpacity>
+                                  )}
+                                  <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
+                                  </View>
+                                  {currentPage === items.length ? (
+                                    <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                                      <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
+                                    </View>
+                                  ) : (
+                                    <TouchableOpacity
+                                      style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                                      onPress={() => {
+                                        setCurrentPage(currentPage + 1);
+                                      }}
+                                    >
+                                      <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
+                                    </TouchableOpacity>
+                                  )}
+                                </View>
+                                <View style={{ width: '75%', justifyContent: 'center' }}>
+                                  <Button
+                                    tx='invoiceFormScreen.customerSelectionForm.validate'
+                                    style={BUTTON_INVOICE_STYLE}
+                                    textStyle={BUTTON_TEXT_STYLE}
+                                    onPress={() => setVisible(false)}
+                                  />
+                                </View>
+                              </View>
                             </View>
                           </View>
                         </View>
