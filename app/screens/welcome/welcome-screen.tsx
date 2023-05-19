@@ -153,6 +153,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                           backgroundColor: '#fff',
                           padding: 10,
                           width: '75%',
+                          color: palette.secondaryColor,
                         }}
                         onChangeText={handleChange('password')}
                         onBlur={handleBlur('password')}
@@ -250,6 +251,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
+    color: palette.secondaryColor,
   },
   error: {
     color: 'red',
