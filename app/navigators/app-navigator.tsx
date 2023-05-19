@@ -17,7 +17,16 @@ import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { Invoice, InvoiceStatus } from '../models/entities/invoice/invoice';
-import { ErrorBoundary, HomeScreen, LegalFileScreen, PaymentInitiationScreen, ProfileScreen, TransactionListScreen, WelcomeScreen, BankPageScreen } from '../screens';
+import {
+  BankPageScreen,
+  ErrorBoundary,
+  HomeScreen,
+  LegalFileScreen,
+  PaymentInitiationScreen,
+  ProfileScreen,
+  TransactionListScreen,
+  WelcomeScreen,
+} from '../screens';
 import { CodeExchangeScreen } from '../screens/code-exchange/code-exchange-screen';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicePreviewScreen } from '../screens/invoice-preview/invoice-preview-screen';
