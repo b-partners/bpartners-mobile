@@ -1,8 +1,8 @@
 import { Auth } from '@aws-amplify/auth';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
-import React, { useCallback } from 'react';
-import { Alert, Linking, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
@@ -13,7 +13,6 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import OcticonsIcon from 'react-native-vector-icons/Octicons';
 
 import awsExports from '../../../src/aws-exports';
-import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { color, spacing } from '../../theme';
@@ -44,16 +43,6 @@ const NAVIGATION_STYLE: ViewStyle = {
   borderBottomWidth: 0.5,
   borderColor: palette.lighterGrey,
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-around',
-};
-
-const SWAN_CONTAINER_STYLE: ViewStyle = {
-  backgroundColor: palette.white,
-  height: 50,
-  borderBottomWidth: 0.5,
-  borderColor: palette.lighterGrey,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-around',
@@ -144,15 +133,6 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     bridge: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
   };
 
-  /* const handlePress = useCallback(async () => {
-    const supported = await Linking.canOpenURL(env.swanUrl);
-    if (supported) {
-      await Linking.openURL(env.swanUrl);
-    } else {
-      Alert.alert(translate('errors.somethingWentWrong'));
-    }
-  }, [env.swanUrl]);*/
-
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
       <AutoImage source={require('./drawer-header-background.png')} resizeMode='stretch' resizeMethod='auto' style={{ position: 'absolute', zIndex: 1 }} />
@@ -166,14 +146,18 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
-          {props.state.routes.slice(0, 4).map((route: any) => {
-            __DEV__ && console.tron.log('ROUTE NAME LIST', route.name);
+          {props.state.routes.slice(0, 8).map((route: any) => {
+            const routeTitle = TitleRoute[route.name];
+            if (routeTitle === undefined) {
+              return null;
+            }
+
             return (
               <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
                 <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
                 <View style={TEXT_CONTAINER_STYLE}>
                   <Text style={TEXT_STYLE} testID={`${route.name}Text`}>
-                    {TitleRoute[route.name]}
+                    {routeTitle}
                   </Text>
                 </View>
                 <View style={ICON_CONTAINER_STYLE}>
@@ -182,19 +166,6 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
               </TouchableOpacity>
             );
           })}
-          {/*<TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress} testID='openSwan'>
-            <View style={ICON_CONTAINER_STYLE}>
-              <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />
-            </View>
-            <View style={TEXT_CONTAINER_STYLE}>
-              <Text style={TEXT_STYLE} testID='openSwanText'>
-                {translate('logoutScreen.swan')}
-              </Text>
-            </View>
-            <View style={ICON_CONTAINER_STYLE}>
-              <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
-            </View>
-          </TouchableOpacity>*/}
         </ScrollView>
       </View>
       <TouchableOpacity
