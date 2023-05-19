@@ -133,14 +133,14 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     bridge: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
   };
 
-  const handlePress = useCallback(async () => {
+  /* const handlePress = useCallback(async () => {
     const supported = await Linking.canOpenURL(env.swanUrl);
     if (supported) {
       await Linking.openURL(env.swanUrl);
     } else {
       Alert.alert(translate('errors.somethingWentWrong'));
     }
-  }, [env.swanUrl]);
+  }, [env.swanUrl]);*/
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
@@ -156,6 +156,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
           {props.state.routes.slice(0, 4).map((route: any) => {
+            __DEV__ && console.tron.log('ROUTE NAME LIST', route.name);
             return (
               <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
                 <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
@@ -170,7 +171,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
               </TouchableOpacity>
             );
           })}
-          <TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress} testID='openSwan'>
+          {/*<TouchableOpacity style={SWAN_CONTAINER_STYLE} onPress={handlePress} testID='openSwan'>
             <View style={ICON_CONTAINER_STYLE}>
               <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />
             </View>
@@ -182,7 +183,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
             <View style={ICON_CONTAINER_STYLE}>
               <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
         </ScrollView>
       </View>
       <TouchableOpacity
