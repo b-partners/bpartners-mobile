@@ -57,8 +57,8 @@ interface GoalProgressBarProps {
 }
 
 export const GoalProgressBar: React.FC<GoalProgressBarProps> = ({ accountHolder: accountHolder }) => {
-  // const target = accountHolder?.revenueTargets[0];
-  const target = 1000;
+  const target = accountHolder?.revenueTargets[0];
+
   const GoalAchievedInPercentage = (): string => {
     const achieved = (target?.amountAttempted * 100) / target?.amountTarget;
     return achieved >= 100 ? '100' : achieved.toFixed(2);
