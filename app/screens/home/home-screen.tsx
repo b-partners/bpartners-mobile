@@ -9,7 +9,7 @@ import { HeaderWithBalance } from '../../components/header-with-balance/header-w
 import { useStores } from '../../models';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
-import { spacing } from '../../theme';``
+import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
