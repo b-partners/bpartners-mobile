@@ -23,7 +23,14 @@ import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
 const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW };
 
-export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation }) {
+type TabNameProps = {
+  drafts: string;
+  quotations: string;
+  invoices: string;
+};
+
+export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation, route }) {
+  const initialRoute = route.params?.initialRoute;
   const Tab = createMaterialTopTabNavigator();
   const { invoiceStore, customerStore, productStore, draftStore, quotationStore } = useStores();
   // const { invoiceStore } = useStores();
@@ -36,14 +43,20 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
     customerStore.getCustomers();
   }, []);
 
+  const TabName: TabNameProps = {
+    drafts: translate('paymentListScreen.tabs.drafts'),
+    quotations: translate('paymentListScreen.tabs.quotations'),
+    invoices: translate('paymentListScreen.tabs.invoices'),
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <Screen>
         <Tab.Navigator
-          initialRouteName={translate('paymentListScreen.tabs.drafts')}
+          initialRouteName={initialRoute}
           style={TAB_BAR_STYLE}
-          screenOptions={({ route }) => ({
+          screenOptions={({ route: tabRoute }) => ({
             tabBarIndicatorStyle: { backgroundColor: color.primary },
             tabBarActiveTintColor: color.primary,
             tabBarLabel: ({ focused }) => {
@@ -54,7 +67,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
 
               return (
                 <>
-                  <Text text={route.name} style={labelStyle} />
+                  <Text text={TabName[tabRoute.name]} style={labelStyle} />
                 </>
               );
             },
@@ -67,7 +80,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
           }}
         >
           <Tab.Screen
-            name={translate('paymentListScreen.tabs.drafts')}
+            name={'drafts'}
             component={DraftsScreen}
             navigationKey='drafts'
             listeners={{
@@ -77,7 +90,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             }}
           />
           <Tab.Screen
-            name={translate('paymentListScreen.tabs.quotations')}
+            name={'quotations'}
             component={QuotationsScreen}
             navigationKey='quotations'
             listeners={{
@@ -87,7 +100,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             }}
           />
           <Tab.Screen
-            name={translate('paymentListScreen.tabs.invoices')}
+            name={'invoices'}
             component={InvoicesScreen}
             navigationKey='invoices'
             listeners={{

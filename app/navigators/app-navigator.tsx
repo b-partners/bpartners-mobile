@@ -74,7 +74,9 @@ export type TabNavigatorParamList = {
   home: undefined;
   marketplace: undefined;
   paymentInitiation: undefined;
-  paymentList: undefined;
+  paymentList: {
+    initialRoute?: string;
+  };
   supportContact: undefined;
   invoices: undefined;
   invoiceForm: {

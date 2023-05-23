@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
@@ -18,7 +19,7 @@ import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
-import { navigate } from '../../navigators';
+import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
@@ -35,6 +36,7 @@ type InvoiceFormProps = {
   products: Product[];
   onSaveInvoice: (invoice: Invoice) => Promise<void>;
   isInvoice?: boolean;
+  navigation: StackNavigationProp<TabNavigatorParamList, 'invoiceForm', undefined>;
 };
 
 const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
@@ -62,7 +64,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
 };
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { products, invoice, isInvoice } = props;
+  const { products, invoice, isInvoice, navigation } = props;
   const { invoiceStore, customerStore, draftStore, quotationStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
@@ -84,6 +86,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [comment, setComment] = useState(null);
   const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
+
+  const navigateToTab = (tab: string) => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'paymentList', params: { initialRoute: tab } }],
+    });
+  };
 
   useEffect(() => {
     const removeField = async () => {
@@ -112,17 +121,19 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       });
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
+        navigateToTab('drafts');
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
         await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
+        navigateToTab('quotations');
         await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
+        navigateToTab('invoices');
         await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
       }
-      navigate('paymentList');
     } catch (e) {
       showMessage(e);
       throw e;
