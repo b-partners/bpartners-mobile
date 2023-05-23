@@ -11,7 +11,7 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { navigate } from '../../navigators';
-import { NavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
@@ -31,7 +31,7 @@ import {
 } from './styles';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
-export const InvoicesScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore, quotationStore } = useStores();
   const { invoices, loadingInvoice, allInvoices } = invoiceStore;
   const [page, setPage] = useState(1);

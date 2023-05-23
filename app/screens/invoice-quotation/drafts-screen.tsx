@@ -10,7 +10,7 @@ import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { NavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
@@ -27,9 +27,10 @@ import {
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
 } from './styles';
+import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
-export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, draftStore, quotationStore } = useStores();
   const { drafts, loadingDraft, allDrafts } = draftStore;
   const [navigationState, setNavigationState] = useState(false);
@@ -77,6 +78,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<NavigatorParamList, 'inv
         title: item.title?.replace('-TMP', ''),
         status: InvoiceStatus.PROPOSAL,
       };
+      navigateToTab(navigation, 'quotations');
       await invoiceStore.saveInvoice(editedItem);
       await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
