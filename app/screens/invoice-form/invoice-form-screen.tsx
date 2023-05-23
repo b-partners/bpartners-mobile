@@ -8,7 +8,7 @@ import { ErrorBoundary } from '..';
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
-import { NavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
@@ -21,10 +21,10 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
 };
 
-export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
+export const InvoiceFormScreen: FC<StackScreenProps<TabNavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
   const invoiceId = route.params?.invoiceID;
   const isInvoice = route.params?.isInvoice;
-  const { invoiceStore, customerStore, productStore } = useStores();
+  const { invoiceStore, productStore } = useStores();
   const { products } = productStore;
   const [toEdit, setToEdit] = useState<Invoice>(null);
 
@@ -40,11 +40,6 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
   }, [invoiceId]);
 
   const linkTo = useLinkTo();
-
-  navigation.addListener('state', () => {
-    customerStore.getCustomers();
-    productStore.getProducts();
-  });
 
   const saveInvoice = async (values: Invoice) => {
     try {
@@ -69,7 +64,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<NavigatorParamList, 'invoice
           }}
         />
         <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
-          <InvoiceForm invoice={toEdit} products={products} onSaveInvoice={saveInvoice} isInvoice={isInvoice} />
+          <InvoiceForm invoice={toEdit} products={products} onSaveInvoice={saveInvoice} isInvoice={isInvoice} navigation={navigation} />
         </Screen>
       </View>
     </ErrorBoundary>
