@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Linking } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import * as yup from 'yup';
@@ -199,6 +200,39 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       </>
                     )}
                   </Button>
+
+                  <Button
+                    onPress={async () => {
+                      await await Linking.openURL('https://dashboard.bpartners.app/sign-up');
+                    }}
+                    style={{
+                      borderRadius: 50,
+                      paddingVertical: spacing[3],
+                      backgroundColor: '#fff',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      marginTop: spacing[4],
+                    }}
+                  >
+                    {loading ? (
+                      <Loader size={25} />
+                    ) : (
+                      <>
+                        <Text
+                          tx='welcomeScreen.signup'
+                          style={{
+                            color: color.palette.secondaryColor,
+                            fontFamily: 'Geometria-Bold',
+                            marginRight: spacing[2],
+                            textTransform: 'uppercase',
+                          }}
+                        />
+                      </>
+                    )}
+                  </Button>
+                  <View>
+                    <Text style={styles.signup}>(sans engagement)</Text>
+                  </View>
                 </View>
               )}
             </Formik>
@@ -259,5 +293,11 @@ const styles = StyleSheet.create({
   },
   danger: {
     color: 'red',
+  },
+  signup: {
+    textAlign: 'center',
+    color: palette.lightGrey,
+    fontSize: 20,
+    fontWeight: '700',
   },
 });
