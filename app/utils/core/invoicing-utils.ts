@@ -1,9 +1,10 @@
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import Mailer from 'react-native-mail';
 
 import { translate } from '../../i18n';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { AuthStore } from '../../models/stores/auth-store/auth-store';
+import { sendError } from '../../services/logs/logs';
+import { sendEmail as sendInvoiceAttachment } from '../email';
 import { createFileUrl } from '../file-utils';
 
 export function sendEmail(authStore: AuthStore, invoice: Invoice) {
@@ -26,6 +27,7 @@ export function sendEmail(authStore: AuthStore, invoice: Invoice) {
     .then(res => {
       __DEV__ && console.tron.log('The file saved to ', res.path());
       downloadedFilePath = res.path();
+
       const emailToSend = {
         subject: `${translate('invoicePreviewScreen.invoice')} ${title}`,
         recipients: [customer.email],
@@ -41,15 +43,13 @@ export function sendEmail(authStore: AuthStore, invoice: Invoice) {
           },
         ],
       };
-      __DEV__ && console.tron.log('email>' + emailToSend);
       // Open mail client and preload with some default values
       // and pass as attachment the pdf
-      return Mailer.mail(emailToSend, error => {
-        if (error) {
-          __DEV__ && console.tron.error('Could not send email: ' + error, error);
-        } else {
-          __DEV__ && console.tron.log('Email sent successfully');
-        }
-      });
+      try {
+        sendInvoiceAttachment(emailToSend);
+      } catch (e) {
+        sendError(e, { email: emailToSend });
+        __DEV__ && console.tron.log(e.message);
+      }
     });
 }
