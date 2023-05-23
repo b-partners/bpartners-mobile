@@ -69,7 +69,8 @@
     "password": "Mot de passe",
     "emailRequired": "votre email est requis",
     "passwordRequired": "votre mot de passe est requis",
-    "checkYourIdentity": "Veuillez vérifier votre email ou votre mot de passe, s'il vous plaît."
+    "checkYourIdentity": "Veuillez vérifier votre email ou votre mot de passe, s'il vous plaît.",
+    "signup": "s'inscrire"
   },
   "paymentInitiationScreen": {
     "label": "Paiement",
