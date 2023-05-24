@@ -24,7 +24,11 @@ type SendEmailParams = {
   isHTML?: boolean;
   attachments?: string[];
 };
-
+/**
+ * **[ios]** User must log in to Mail app of iPhone(the default one).
+ * https://developer.apple.com/documentation/messageui/mfmailcomposeviewcontroller
+ * https://github.com/expo/expo/pull/5622
+ * */
 export const sendEmail = async (email: SendEmailParams) => {
   let mailIsAvailable = false;
   try {
