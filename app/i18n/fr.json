@@ -10,7 +10,8 @@
     "mailAlert": {
       "noMailClientFound": {
         "title": "Mail non disponible",
-        "message": "Les services de messagerie ne sont pas disponibles. Assurez-vous d'être connecté à l'application Mail"
+        "message": "Les services de messagerie ne sont pas disponibles. Assurez-vous d'être connecté à l'application Mail",
+        "iosMessage": "Les services de messagerie ne sont pas disponibles. Assurez-vous d'être connecté à l'application Mail par défaut"
       }
     }
   },
