@@ -1,5 +1,5 @@
 import * as MailCompose from 'expo-mail-composer';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 import { translate } from '../i18n';
 import { sendError } from '../services/logs/logs';
@@ -34,7 +34,9 @@ export const sendEmail = async (email: SendEmailParams) => {
     __DEV__ && console.tron.error(e.message, e.stacktrace);
     if (!mailIsAvailable) {
       const title = translate('components.mailAlert.noMailClientFound.title');
-      const message = translate('components.mailAlert.noMailClientFound.message');
+      const message =
+        Platform.OS === 'ios' ? translate('components.mailAlert.noMailClientFound.iosMessage') : translate('components.mailAlert.noMailClientFound.message');
+
       Alert.alert(title, message);
     } else {
       Alert.alert("Une érreure s'est produite", e.message);
