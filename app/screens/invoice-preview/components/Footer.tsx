@@ -1,19 +1,9 @@
-import {
-  /*AntDesign*/
-  FontAwesome,
-  /*MaterialIcons*/
-  Octicons,
-} from '@expo/vector-icons';
+import { FontAwesome, Octicons } from '@expo/vector-icons';
 import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import Mailer from 'react-native-mail';
 
-import {
-  /*Switch*/
-  Text,
-  /*TextField*/
-} from '../../../components';
+import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
@@ -27,7 +17,6 @@ import { fetchBinaryFiles } from '../../../utils/file-utils';
 import Mailer from 'react-native-mail';*/
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { sendInvoiceByEmail } from '../../../utils/send-invoice-by-email';
 import { showMessage } from '../../../utils/snackbar';
 import { DownloadButton } from './DownloadButton';
 
