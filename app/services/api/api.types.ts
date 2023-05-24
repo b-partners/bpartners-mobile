@@ -39,6 +39,17 @@ export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl:
 
 export type SignInResult = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
 
+export type BankConnection =
+  | {
+      kind: 'ok';
+      redirectionUrl: string;
+      redirectionStatusUrls: {
+        successUrl: string;
+        failureUrl: string;
+      };
+    }
+  | GeneralApiProblem;
+
 export type GetTokenResult = { kind: 'ok'; accessToken: string; refreshToken: string; whoami: Whoami } | GeneralApiProblem;
 
 export type GetWhoAmIResult = { kind: 'ok'; user: User } | GeneralApiProblem;
