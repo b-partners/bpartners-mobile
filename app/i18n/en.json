@@ -6,6 +6,12 @@
     },
     "button": {
       "close": "Close"
+    },
+    "mailAlert": {
+      "noMailClientFound": {
+        "title": "Mail not available",
+        "message": "Mail services are not available. Make sure you're signed into the Mail app"
+      }
     }
   },
   "common": {
