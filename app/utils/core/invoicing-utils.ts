@@ -1,4 +1,5 @@
-import ReactNativeBlobUtil from 'react-native-blob-util';
+import * as FileSystem from 'expo-file-system';
+import { Platform } from 'react-native';
 
 import { translate } from '../../i18n';
 import { Invoice } from '../../models/entities/invoice/invoice';
@@ -7,49 +8,48 @@ import { sendError } from '../../services/logs/logs';
 import { sendEmail as sendInvoiceAttachment } from '../email';
 import { createFileUrl } from '../file-utils';
 
-export function sendEmail(authStore: AuthStore, invoice: Invoice) {
+function formatMailBody(bodyMessage: string) {
+  // email body as html does not work perfectly on android
+  // https://docs.expo.dev/versions/latest/sdk/mail-composer/#mailcomposercomposeasyncoptions
+  return Platform.OS === 'android' ? bodyMessage : `<p>${bodyMessage}</p>`;
+}
+
+export async function sendEmail(authStore: AuthStore, invoice: Invoice) {
   const { accessToken, currentAccount } = authStore;
-
-  const dirs = ReactNativeBlobUtil.fs.dirs;
-  let downloadedFilePath = null;
-
-  // TODO: delegate this library to the library
+  const { fileId, customer, title } = invoice;
   const fileName = `temp.pdf`;
-
-  const { fileId, customer, title } = invoice; // TODO: what about draft and quotation
+  // TODO: what about draft and quotation
   const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
-  ReactNativeBlobUtil.config({
-    fileCache: true,
-    path: dirs.DownloadDir + `/${fileName}`,
-    overwrite: true,
-  })
-    .fetch('GET', invoiceUrl, {})
-    .then(res => {
-      __DEV__ && console.tron.log('The file saved to ', res.path());
-      downloadedFilePath = res.path();
 
-      const emailToSend = {
-        subject: `${translate('invoicePreviewScreen.invoice')} ${title}`,
-        recipients: [customer.email],
-        // TODO add current account holder email
-        ccRecipients: [],
-        body: `<p>${translate('invoicePreviewScreen.email.body')}</p>`,
-        isHTML: true,
-        attachments: [
-          {
-            path: downloadedFilePath,
-            type: 'pdf',
-            name: fileName,
-          },
-        ],
-      };
-      // Open mail client and preload with some default values
-      // and pass as attachment the pdf
-      try {
-        sendInvoiceAttachment(emailToSend);
-      } catch (e) {
-        sendError(e, { email: emailToSend });
-        __DEV__ && console.tron.log(e.message);
-      }
-    });
+  // Download the invoice into a cache dir of bp-app
+  const fileUri = FileSystem.cacheDirectory + fileName;
+  let downloadedFileUri = null;
+  const downloadResumable = FileSystem.createDownloadResumable(invoiceUrl, fileUri, {});
+  try {
+    const { uri } = await downloadResumable.downloadAsync();
+    downloadedFileUri = uri;
+    __DEV__ && console.tron.log('Finished downloading to ' + uri);
+  } catch (e) {
+    __DEV__ && console.tron.error(e.message, e.stacktrace);
+    sendError({ message: 'Error occured while downloading file: ' + fileUri, exception: e }, {});
+  }
+
+  const bodyMessage = `${translate('invoicePreviewScreen.email.body')}`;
+  const body = formatMailBody(bodyMessage);
+  const emailToSend = {
+    subject: `${translate('invoicePreviewScreen.invoice')} ${title}`,
+    recipients: [customer.email],
+    // TODO add current account holder email
+    ccRecipients: [],
+    body: body,
+    isHTML: true,
+    attachments: [downloadedFileUri],
+  };
+
+  try {
+    await sendInvoiceAttachment(emailToSend);
+  } catch (e) {
+    sendError(e, { email: emailToSend });
+    __DEV__ && console.tron.log(e.message);
+  }
 }
