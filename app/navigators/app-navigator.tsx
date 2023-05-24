@@ -16,7 +16,7 @@ import { BPDrawer, BpTabNavigation, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
-import { Invoice, InvoiceStatus } from '../models/entities/invoice/invoice';
+import { Invoice } from '../models/entities/invoice/invoice';
 import {
   BankPageScreen,
   ErrorBoundary,
@@ -174,7 +174,7 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore, invoiceStore } = useStores();
+  const { transactionStore } = useStores();
   const { setError } = useError();
 
   const handleError = async (asyncFunc: () => any) => {
@@ -191,21 +191,21 @@ export function AppNavigator(props: NavigationProps) {
       case 'transactionList':
         await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
         break;
-      case 'paymentList':
+      /*case 'paymentList':
         await handleError(
           async () =>
             await Promise.all([
-              invoiceStore.getDrafts({
-                status: InvoiceStatus.DRAFT,
-                page: 1,
-                pageSize: 15,
-              } as any),
+              draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }),
+              quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 }),
+              invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 }),
+              productStore.getProducts(),
+              customerStore.getCustomers(),
             ])
         );
         break;
       case 'invoiceForm':
         await handleError(async () => await Promise.all([invoiceStore.getProducts(), invoiceStore.getCustomers()]));
-        break;
+        break;*/
     }
   };
 
