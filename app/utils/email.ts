@@ -43,7 +43,7 @@ export const sendEmail = async (email: SendEmailParams) => {
 
       Alert.alert(title, message);
     } else {
-      Alert.alert("Une érreure s'est produite", e.message);
+      Alert.alert(translate('errors.somethingWentWrong'), e.message);
     }
     sendError(e);
     throw e;
