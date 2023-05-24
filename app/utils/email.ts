@@ -1,5 +1,7 @@
-import Mailer from 'react-native-mail';
+import * as MailCompose from 'expo-mail-composer';
 
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type TAttachment = {
   path?: string; // Specify either 'path' or 'uri'
   uri?: string;
@@ -8,20 +10,21 @@ type TAttachment = {
   name?: string;
 };
 
+// This interface need to be as stable as possible to avoid breaking change
 type SendEmailParams = {
   subject?: string;
   recipients?: string[];
   ccRecipients?: string[];
   bccRecipients?: string[];
   body?: string;
-  customChooserTitle?: string;
   isHTML?: boolean;
-  attachments?: TAttachment[];
+  attachments?: string[];
 };
 
-export const sendEmail = (email: SendEmailParams) => {
-  Mailer.mail({ ...email }, error => {
-    __DEV__ && console.tron.error(error, []);
-    throw new Error('An error occurred while sending mail ' + error);
-  });
+export const sendEmail = async (email: SendEmailParams) => {
+  try {
+    await MailCompose.composeAsync({ ...email });
+  } catch (e) {
+    __DEV__ && console.tron.error(e.message, e.stacktrace);
+  }
 };
