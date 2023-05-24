@@ -26,5 +26,6 @@ export const sendEmail = async (email: SendEmailParams) => {
     await MailCompose.composeAsync({ ...email });
   } catch (e) {
     __DEV__ && console.tron.error(e.message, e.stacktrace);
+    throw e;
   }
 };
