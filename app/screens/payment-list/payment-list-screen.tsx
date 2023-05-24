@@ -20,6 +20,9 @@ import { InvoicesScreen } from '../invoice-quotation/invoices-screen';
 import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 
+/*import { useStores } from '../../models';
+ */
+
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
 const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW };
 
