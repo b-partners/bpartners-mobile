@@ -12,11 +12,6 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { sendEmail } from '../../../utils/core/invoicing-utils';
 import { fetchBinaryFiles } from '../../../utils/file-utils';
-
-/*import ReactNativeBlobUtil from 'react-native-blob-util';
-import Mailer from 'react-native-mail';*/
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { showMessage } from '../../../utils/snackbar';
 import { DownloadButton } from './DownloadButton';
 
@@ -72,7 +67,7 @@ const FOOTER_WRAPPER: ViewStyle = {
 // TODO: What concretely those other button is use for
 const Footer: FC<IFooter> = props => {
   const {
-    invoice: { title, customer },
+    invoice: { title },
     invoiceUrl,
     situation,
     invoice,
