@@ -10,7 +10,8 @@
     "mailAlert": {
       "noMailClientFound": {
         "title": "Mail not available",
-        "message": "Mail services are not available. Make sure you're signed into the Mail app"
+        "message": "Mail services are not available. Make sure you're signed into the Mail app",
+        "iosMessage": "Mail services are not available. Make sure you're signed into the Mail app"
       }
     }
   },
