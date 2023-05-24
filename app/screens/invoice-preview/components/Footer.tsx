@@ -15,10 +15,12 @@ import {
   /*TextField*/
 } from '../../../components';
 import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { sendEmail } from '../../../utils/core/invoicing-utils';
 import { fetchBinaryFiles } from '../../../utils/file-utils';
 
 /*import ReactNativeBlobUtil from 'react-native-blob-util';
@@ -84,6 +86,7 @@ const Footer: FC<IFooter> = props => {
     invoice: { title, customer },
     invoiceUrl,
     situation,
+    invoice,
   } = props;
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -92,51 +95,16 @@ const Footer: FC<IFooter> = props => {
   const [downloadError, setDownloadError] = useState(false);
   const [downloadFinished, setDownloadFinished] = useState(false);
   const fileName = `${translate('invoicePreviewScreen.invoice')}-${title}.pdf`;
+
+  const { authStore } = useStores();
   useEffect(() => {
     setDownloadFinished(false);
     setDownloadError(false);
     setIsLoading(false);
-  }, [props.invoice]);
+  }, [invoice]);
 
   async function handleSendInvoice() {
-    const dirs = ReactNativeBlobUtil.fs.dirs;
-    let downloadedFilePath = null;
-
-    ReactNativeBlobUtil.config({
-      fileCache: true,
-      path: dirs.DownloadDir + `/${fileName}`,
-      overwrite: true,
-    })
-      .fetch('GET', invoiceUrl, {})
-      .then(res => {
-        __DEV__ && console.tron.log('The file saved to ', res.path());
-        downloadedFilePath = res.path();
-        const email = {
-          subject: `${translate('invoicePreviewScreen.invoice')} ${title}`,
-          recipients: [customer.email],
-          // TODO add current account holder email
-          ccRecipients: [],
-          body: `<p>${translate('invoicePreviewScreen.email.body')}</p>`,
-          isHTML: true,
-          attachments: [
-            {
-              path: downloadedFilePath,
-              type: 'pdf',
-              name: fileName,
-            },
-          ],
-        };
-
-        // Open mail client and preload with some default values
-        // and pass as attachment the pdf
-        Mailer.mail(email, error => {
-          if (error) {
-            __DEV__ && console.tron.error('Could not send email: ' + error, error);
-          } else {
-            __DEV__ && console.tron.log('Email sent successfully');
-          }
-        });
-      });
+    await sendEmail(authStore, invoice);
   }
 
   async function download() {
@@ -160,7 +128,10 @@ const Footer: FC<IFooter> = props => {
           downloadedFilePath = res.path();
           __DEV__ && console.tron.log('downloadedFilePath', downloadedFilePath);
           let thePath = downloadedFilePath.split('/').slice(-2).join('/');
-          showMessage(translate('invoicePreviewScreen.savedFile') + ' ' + thePath, { duration: 9000, backgroundColor: palette.green });
+          showMessage(translate('invoicePreviewScreen.savedFile') + ' ' + thePath, {
+            duration: 9000,
+            backgroundColor: palette.green,
+          });
         });
     } catch (e) {
       __DEV__ && console.tron.log(e);
