@@ -92,7 +92,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     account: () => handleNavigation('home'),
     activity: () => handleNavigationMarketplace('marketplace'),
     payment: () => handleNavigation('paymentInitiation'),
-    facturation: () => navigate('paymentList'),
+    facturation: () => handleNavigation('paymentList'),
     service: () => handleNavigation('supportContact'),
   };
 
