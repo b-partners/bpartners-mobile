@@ -14,6 +14,7 @@ function formatMailBody(bodyMessage: string) {
   return Platform.OS === 'android' ? bodyMessage : `<p>${bodyMessage}</p>`;
 }
 
+// Used to send an invoice attachment
 export async function sendEmail(authStore: AuthStore, invoice: Invoice) {
   const { accessToken, currentAccount } = authStore;
   const { fileId, customer, title } = invoice;
