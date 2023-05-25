@@ -36,7 +36,8 @@
     "required": "This field is required",
     "amount": "Invalid amount",
     "operation": "Failed to add",
-    "credentials": "please check your credentials!"
+    "credentials": "please check your credentials!",
+    "invalidPrice": "Invalid price"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
