@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { Button, Loader, Text } from '../../components';
 import FormField from '../../components/forms/form-field';
 import { translate } from '../../i18n';
+import { Account } from '../../models/entities/account/account';
 import { color, spacing } from '../../theme';
 import { amountToMinors } from '../../utils/money';
 import { PaymentModal } from './payment-initiation-modal';
@@ -23,6 +24,8 @@ export const PaymentInitiationForm: FC<
     loading: boolean;
     paymentUrl?: string;
     check: boolean;
+    currentAccount: Account;
+    setIbanModal: React.Dispatch<React.SetStateAction<boolean>>;
   }>
 > = observer(props => {
   const initialValues = { label: '', reference: '', amount: null, payerName: '', payerEmail: '' };
@@ -40,7 +43,7 @@ export const PaymentInitiationForm: FC<
       .label(translate('paymentInitiationScreen.fields.payerEmail')),
   });
 
-  const { init, paymentUrl, loading, check } = props;
+  const { init, paymentUrl, loading, check, currentAccount, setIbanModal } = props;
 
   const [amount, setAmount] = useState(0);
   const [label, setLabel] = useState('');
@@ -55,9 +58,13 @@ export const PaymentInitiationForm: FC<
         onSubmit={async (values, { resetForm }) => {
           __DEV__ && console.tron.log({ values });
           try {
-            await init({ id: uuid.v4() as string, ...values, amount: amountToMinors(values.amount) });
-            resetForm();
-            setShowModal(true);
+            if (currentAccount.IBAN == null) {
+              setIbanModal(true);
+            } else {
+              await init({ id: uuid.v4() as string, ...values, amount: amountToMinors(values.amount) });
+              resetForm();
+              setShowModal(true);
+            }
           } catch (e) {
             __DEV__ && console.tron.log(e);
           }
