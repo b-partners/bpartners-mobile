@@ -10,6 +10,7 @@ import FormField from '../../components/forms/form-field';
 import { translate } from '../../i18n';
 import { Account } from '../../models/entities/account/account';
 import { color, spacing } from '../../theme';
+import { commaToDot, commaValidation } from '../../utils/comma-to-dot';
 import { amountToMinors } from '../../utils/money';
 import { PaymentModal } from './payment-initiation-modal';
 
@@ -28,13 +29,13 @@ export const PaymentInitiationForm: FC<
     setIbanModal: React.Dispatch<React.SetStateAction<boolean>>;
   }>
 > = observer(props => {
-  const initialValues = { label: '', reference: '', amount: null, payerName: '', payerEmail: '' };
+  const initialValues = { label: '', reference: '', amount: '', payerName: '', payerEmail: '' };
 
   const validationSchema = yup.object().shape({
     amount: yup
-      .number()
+      .string()
       .required(translate('invoiceScreen.errors.requiredField'))
-      .typeError(translate('invoiceScreen.errors.validAmount'))
+      .test('unit-price-validation', translate('errors.invalidPrice'), commaValidation)
       .label(translate('paymentInitiationScreen.fields.amount')),
     payerEmail: yup
       .string()
@@ -45,7 +46,7 @@ export const PaymentInitiationForm: FC<
 
   const { init, paymentUrl, loading, check, currentAccount, setIbanModal } = props;
 
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
   const [label, setLabel] = useState('');
   const [reference, setReference] = useState('');
   const [showModal, setShowModal] = useState(false);

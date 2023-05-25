@@ -11,9 +11,9 @@ import { translate } from '../../../../i18n';
 import { useStores } from '../../../../models';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
+import { commaToDot, commaValidation } from '../../../../utils/comma-to-dot';
 import { vatToMinors } from '../../../../utils/money';
 import { INVALID_FORM_FIELD } from '../../styles';
-import {commaToDot} from "../../../../utils/comma-to-dot";
 
 export const ProductCreationForm: FC<
   PropsWithoutRef<{
@@ -24,19 +24,11 @@ export const ProductCreationForm: FC<
 
   const { setVisibleModal } = props;
 
-    const unitPriceValidation = (unitPrice: string): boolean => {
-        const numberWithPoint = unitPrice.replace(',', '.');
-        const regex = /^\d+(\.\d+)?$/;
-        const isValid = regex.test(numberWithPoint);
-
-        return isValid;
-    }
-
   const validationSchema = yup.object().shape({
     unitPrice: yup
       .string()
       .required(translate('errors.required'))
-        .test('unit-price-validation', translate('errors.invalidPrice'), unitPriceValidation)
+      .test('unit-price-validation', translate('errors.invalidPrice'), commaValidation)
       .label(translate('paymentInitiationScreen.fields.amount')),
     description: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.amount')),
   });
