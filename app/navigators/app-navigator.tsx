@@ -174,7 +174,7 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore } = useStores();
+  const { transactionStore, bankInfo, currentUser } = useStores();
   const { setError } = useError();
 
   const handleError = async (asyncFunc: () => any) => {
@@ -188,24 +188,27 @@ export function AppNavigator(props: NavigationProps) {
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
     switch (route) {
+      case 'bridge':
+        bankInfo.fetchBankInfo(currentUser.id);
+        break;
       case 'transactionList':
         await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
         break;
       /*case 'paymentList':
-        await handleError(
-          async () =>
-            await Promise.all([
-              draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }),
-              quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 }),
-              invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 }),
-              productStore.getProducts(),
-              customerStore.getCustomers(),
-            ])
-        );
-        break;
-      case 'invoiceForm':
-        await handleError(async () => await Promise.all([invoiceStore.getProducts(), invoiceStore.getCustomers()]));
-        break;*/
+              await handleError(
+                async () =>
+                  await Promise.all([
+                    draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }),
+                    quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 }),
+                    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 }),
+                    productStore.getProducts(),
+                    customerStore.getCustomers(),
+                  ])
+              );
+              break;
+            case 'invoiceForm':
+              await handleError(async () => await Promise.all([invoiceStore.getProducts(), invoiceStore.getCustomers()]));
+              break;*/
     }
   };
 
