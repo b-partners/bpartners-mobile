@@ -8,12 +8,13 @@ import { Button, Header, Text } from '../../components';
 import { translate } from '../../i18n';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { commaToDot } from '../../utils/comma-to-dot';
 import { printCurrency } from '../../utils/money';
 import { ShareModal } from './share-modal';
 
 type PaymentModalProps = {
   paymentUrl: string;
-  amount: number;
+  amount: string;
   label: string;
   reference: string;
   showModal: boolean;
@@ -136,7 +137,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = props => {
                   </View>
                   <View style={{ height: 70, alignItems: 'center', marginBottom: 10, width: '100%' }}>
                     <Text
-                      text={printCurrency(amount * 100)}
+                      text={printCurrency(commaToDot(amount) * 100)}
                       style={{
                         width: '100%',
                         height: '100%',
