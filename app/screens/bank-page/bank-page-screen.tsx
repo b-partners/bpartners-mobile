@@ -7,6 +7,9 @@ import { GradientBackground, Header, Screen } from '../../components';
 import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
+import Bank from './bank';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import NoBank from './no-bank';
 
 const FULL: ViewStyle = {
@@ -37,7 +40,8 @@ export const BankPageScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>>
               alignItems: 'center',
             }}
           >
-            <NoBank />
+            {/*<NoBank />*/}
+            <Bank />
           </View>
         </Screen>
       </View>
