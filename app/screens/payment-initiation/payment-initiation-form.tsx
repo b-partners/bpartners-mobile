@@ -62,7 +62,7 @@ export const PaymentInitiationForm: FC<
             if (currentAccount.IBAN == null) {
               setIbanModal(true);
             } else {
-              await init({ id: uuid.v4() as string, ...values, amount: amountToMinors(values.amount) });
+              await init({ id: uuid.v4() as string, ...values, amount: amountToMinors(commaToDot(values.amount)) });
               resetForm();
               setShowModal(true);
             }
