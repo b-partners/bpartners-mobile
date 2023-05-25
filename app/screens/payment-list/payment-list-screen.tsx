@@ -63,7 +63,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
             tabBarIndicatorStyle: { backgroundColor: color.primary },
             tabBarActiveTintColor: color.primary,
             tabBarLabel: ({ focused }) => {
-              const activeLabelStyle: TextStyle = { color: color.primary, fontWeight: '900' };
+              const activeLabelStyle: TextStyle = { width: 75, color: color.primary, fontWeight: '900' };
 
               let labelStyle: TextStyle = { color: palette.textClassicColor };
               labelStyle = focused ? { ...labelStyle, ...activeLabelStyle } : { ...labelStyle };
