@@ -36,7 +36,8 @@
     "required": "Ce champ est requis",
     "amount": "Montant invalide",
     "operation": "Échec de l'ajout",
-    "credentials": "Veuillez vérifier vos identifiants!"
+    "credentials": "Veuillez vérifier vos identifiants!",
+    "invalidPrice": "Prix invalide"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
