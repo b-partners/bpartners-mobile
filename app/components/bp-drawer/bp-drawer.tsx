@@ -134,64 +134,64 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   return (
-      <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
-        <AutoImage source={require('./drawer-header-background.png')} resizeMode='stretch' resizeMethod='auto' style={{ position: 'absolute', zIndex: 1 }} />
-        <BPDrawerHeader
-            onPress={() => {
-              props.navigation.closeDrawer();
-            }}
-            currentUser={currentUser}
-            onChangeText={() => {}}
-            navigation={props.navigation}
-        />
-        <View style={SCROLLVIEW_CONTAINER_STYLE}>
-          <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
-            {props.state.routes.slice(0, 8).map((route: any) => {
-              const routeTitle = TitleRoute[route.name];
-              if (routeTitle === undefined) {
-                return null;
-              }
+    <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
+      <AutoImage source={require('./drawer-header-background.png')} resizeMode='stretch' resizeMethod='auto' style={{ position: 'absolute', zIndex: 1 }} />
+      <BPDrawerHeader
+        onPress={() => {
+          props.navigation.closeDrawer();
+        }}
+        currentUser={currentUser}
+        onChangeText={() => {}}
+        navigation={props.navigation}
+      />
+      <View style={SCROLLVIEW_CONTAINER_STYLE}>
+        <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
+          {props.state.routes.slice(0, 8).map((route: any) => {
+            const routeTitle = TitleRoute[route.name];
+            if (routeTitle === undefined) {
+              return null;
+            }
 
-              return (
-                  <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
-                    <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
-                    <View style={TEXT_CONTAINER_STYLE}>
-                      <Text style={TEXT_STYLE} testID={`${route.name}Text`}>
-                        {routeTitle}
-                      </Text>
-                    </View>
-                    <View style={ICON_CONTAINER_STYLE}>
-                      <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
-                    </View>
-                  </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
+            return (
+              <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
+                <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
+                <View style={TEXT_CONTAINER_STYLE}>
+                  <Text style={TEXT_STYLE} testID={`${route.name}Text`}>
+                    {routeTitle}
+                  </Text>
+                </View>
+                <View style={ICON_CONTAINER_STYLE}>
+                  <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
+      <TouchableOpacity
+        style={LOGOUT_CONTAINER_STYLE}
+        onPress={async () => {
+          await Auth.signOut();
+          await authStore.logout();
+          await Keychain.resetGenericPassword();
+          props.navigation.closeDrawer();
+        }}
+      >
+        <View style={POWER_CONTAINER_STYLE}>
+          <IoniconIcon name='ios-power-outline' size={18} color={color.palette.secondaryColor} />
         </View>
-        <TouchableOpacity
-            style={LOGOUT_CONTAINER_STYLE}
-            onPress={async () => {
-              await Auth.signOut();
-              await authStore.logout();
-              await Keychain.resetGenericPassword();
-              props.navigation.closeDrawer();
+        <View style={CENTER_CONTAINER_STYLE}>
+          <Text
+            style={{
+              ...TEXT_STYLE,
+              color: color.palette.secondaryColor,
+              fontFamily: 'Geometria',
             }}
-        >
-          <View style={POWER_CONTAINER_STYLE}>
-            <IoniconIcon name='ios-power-outline' size={18} color={color.palette.secondaryColor} />
-          </View>
-          <View style={CENTER_CONTAINER_STYLE}>
-            <Text
-                style={{
-                  ...TEXT_STYLE,
-                  color: color.palette.secondaryColor,
-                  fontFamily: 'Geometria',
-                }}
-            >
-              {translate('logoutScreen.title')}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </DrawerContentScrollView>
+          >
+            {translate('logoutScreen.title')}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </DrawerContentScrollView>
   );
 };

@@ -43,15 +43,15 @@ export const BankStoreModel = types
           self.successUrl = bankConnectionResult.redirectionStatusUrls.successUrl;
           self.failureUrl = bankConnectionResult.redirectionStatusUrls.failureUrl;
           self.connectToBankSuccess();
-          __DEV__ && console.tron.log(`Bank connection success`);
+          __DEV__ && console.tron.log('Bank connection success');
         } else {
           // Handle the case when the bank connection result is not successful
-          __DEV__ && console.tron.log(`Failed to connect to bank`);
+          __DEV__ && console.tron.log('Failed to connect to bank');
           self.connectToBankFail(bankConnectionResult);
           self.catchOrThrow(new Error('Failed to connect to bank'));
         }
       } catch (e) {
-        __DEV__ && console.tron.log(`Failed to connect to bank`);
+        __DEV__ && console.tron.log('Failed to connect to bank');
         self.connectToBankFail(e);
         self.catchOrThrow(e);
       } finally {
