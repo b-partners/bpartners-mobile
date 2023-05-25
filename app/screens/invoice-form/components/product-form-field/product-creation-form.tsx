@@ -13,20 +13,30 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { vatToMinors } from '../../../../utils/money';
 import { INVALID_FORM_FIELD } from '../../styles';
+import {commaToDot} from "../../../../utils/comma-to-dot";
 
 export const ProductCreationForm: FC<
   PropsWithoutRef<{
     setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
   }>
 > = observer(props => {
-  const initialValues = { unitPrice: 0, description: '' };
+  const initialValues = { unitPrice: '', description: '' };
 
   const { setVisibleModal } = props;
+
+    const unitPriceValidation = (unitPrice: string): boolean => {
+        const numberWithPoint = unitPrice.replace(',', '.');
+        const regex = /^\d+(\.\d+)?$/;
+        const isValid = regex.test(numberWithPoint);
+
+        return isValid;
+    }
+
   const validationSchema = yup.object().shape({
     unitPrice: yup
-      .number()
+      .string()
       .required(translate('errors.required'))
-      .typeError(translate('errors.amount'))
+        .test('unit-price-validation', translate('errors.invalidPrice'), unitPriceValidation)
       .label(translate('paymentInitiationScreen.fields.amount')),
     description: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.amount')),
   });
@@ -55,7 +65,7 @@ export const ProductCreationForm: FC<
                   testID='productUnitPrice'
                   name='unitPrice'
                   labelTx='invoiceFormScreen.productCreationForm.unitPrice'
-                  value={values.unitPrice.toString()}
+                  value={values.unitPrice}
                   inputStyle={[errors.unitPrice && INVALID_FORM_FIELD]}
                 />
                 <FormField
@@ -122,7 +132,7 @@ export const ProductCreationForm: FC<
                         await productStore.saveProduct({
                           description: values.description,
                           quantity: null,
-                          unitPrice: vatToMinors(values.unitPrice),
+                          unitPrice: vatToMinors(commaToDot(values.unitPrice)),
                           unitPriceWithVat: null,
                           vatPercent: null,
                           totalVat: null,
