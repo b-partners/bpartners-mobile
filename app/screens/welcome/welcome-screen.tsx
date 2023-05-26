@@ -214,21 +214,17 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       marginTop: spacing[4],
                     }}
                   >
-                    {loading ? (
-                      <Loader size={25} />
-                    ) : (
-                      <>
-                        <Text
-                          tx='welcomeScreen.signup'
-                          style={{
-                            color: color.palette.secondaryColor,
-                            fontFamily: 'Geometria-Bold',
-                            marginRight: spacing[2],
-                            textTransform: 'uppercase',
-                          }}
-                        />
-                      </>
-                    )}
+                    <>
+                      <Text
+                        tx='welcomeScreen.signup'
+                        style={{
+                          color: color.palette.secondaryColor,
+                          fontFamily: 'Geometria-Bold',
+                          marginRight: spacing[2],
+                          textTransform: 'uppercase',
+                        }}
+                      />
+                    </>
                   </Button>
                   <View>
                     <Text style={styles.signup}>(sans engagement)</Text>
