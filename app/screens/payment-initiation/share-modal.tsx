@@ -116,7 +116,7 @@ export const ShareModal: React.FC<ShareModalProps> = props => {
                 testID='submit'
                 tx='paymentInitiationScreen.fields.submit'
                 onPress={() => {
-                  Linking.openURL(`sms:?body=${paymentUrl}`);
+                  Linking.openURL(`whatsapp://send?text=${paymentUrl}`);
                 }}
                 style={{
                   display: 'flex',
@@ -145,7 +145,7 @@ export const ShareModal: React.FC<ShareModalProps> = props => {
                 testID='submit'
                 tx='paymentInitiationScreen.fields.submit'
                 onPress={() => {
-                  Linking.openURL(`whatsapp://send?text=${paymentUrl}`);
+                  Linking.openURL(`sms:?body=${paymentUrl}`);
                 }}
                 style={{
                   display: 'flex',
