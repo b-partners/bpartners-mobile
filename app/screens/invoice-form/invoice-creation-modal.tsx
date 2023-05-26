@@ -13,10 +13,11 @@ type InvoiceCreationModalProps = {
   handleSubmit: any;
   onSubmit: (invoices: any) => Promise<void>;
   invoiceType: InvoiceStatus;
+  status: string;
 };
 
 export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props => {
-  const { confirmationModal, setConfirmationModal, handleSubmit, onSubmit, invoiceType } = props;
+  const { confirmationModal, setConfirmationModal, handleSubmit, onSubmit, invoiceType, status } = props;
 
   return (
     <Modal animationType='slide' transparent={true} visible={confirmationModal} onRequestClose={() => setConfirmationModal(false)}>
@@ -36,8 +37,10 @@ export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props =
               tx={
                 invoiceType === InvoiceStatus.DRAFT
                   ? 'invoiceFormScreen.invoiceForm.saveDraft'
-                  : invoiceType === InvoiceStatus.PROPOSAL
+                  : invoiceType === InvoiceStatus.PROPOSAL && status !== 'draft'
                   ? 'invoiceFormScreen.invoiceForm.saveQuotation'
+                  : invoiceType === InvoiceStatus.PROPOSAL && status === 'draft'
+                  ? 'invoiceFormScreen.invoiceForm.saveDraftToQuotation'
                   : 'invoiceFormScreen.invoiceForm.saveInvoice'
               }
               style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 18 }}

@@ -78,7 +78,7 @@
     "emailRequired": "votre email est requis",
     "passwordRequired": "votre mot de passe est requis",
     "checkYourIdentity": "Veuillez vérifier votre email ou votre mot de passe, s'il vous plaît.",
-    "signup": "s'inscrire"
+    "signup": "S'inscrire"
   },
   "paymentInitiationScreen": {
     "label": "Paiement",
@@ -248,6 +248,7 @@
       "limitedValidityPeriod": "Durée de validité limitée",
       "days": "Jours",
       "saveDraft": "Enregistrer en brouillon",
+      "saveDraftToQuotation": "Convertir votre brouillon en devis",
       "saveQuotation": "Enregistrer en devis",
       "saveInvoice": "Enregistrer en facture",
       "editableTextField": {
