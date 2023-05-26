@@ -52,7 +52,8 @@
     "password": "Password",
     "emailRequired": "your email is required",
     "passwordRequired": "your password is required",
-    "checkYourIdentity": "Please check your email or password"
+    "checkYourIdentity": "Please check your email or password",
+    "signup": "Sign up"
   },
   "demoScreen": {
     "howTo": "HOW TO",
@@ -262,6 +263,7 @@
       "limitedValidityPeriod": "Limited period of validity",
       "days": "Days",
       "saveDraft": "Save the draft",
+      "saveDraftToQuotation": "Convert your draft into a quote",
       "saveQuotation": "Save the quote",
       "saveInvoice": "Save the invoice",
       "editableTextField": {
