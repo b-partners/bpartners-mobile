@@ -24,7 +24,6 @@ export const PaymentInitiationForm: FC<
     init: (values: unknown) => void;
     loading: boolean;
     paymentUrl?: string;
-    check: boolean;
     currentAccount: Account;
     setIbanModal: React.Dispatch<React.SetStateAction<boolean>>;
   }>
@@ -44,7 +43,7 @@ export const PaymentInitiationForm: FC<
       .label(translate('paymentInitiationScreen.fields.payerEmail')),
   });
 
-  const { init, paymentUrl, loading, check, currentAccount, setIbanModal } = props;
+  const { init, paymentUrl, loading, currentAccount, setIbanModal } = props;
 
   const [amount, setAmount] = useState('');
   const [label, setLabel] = useState('');
@@ -59,7 +58,7 @@ export const PaymentInitiationForm: FC<
         onSubmit={async (values, { resetForm }) => {
           __DEV__ && console.tron.log({ values });
           try {
-            if (currentAccount.IBAN == null) {
+            if (!currentAccount.iban || !currentAccount.bic) {
               setIbanModal(true);
             } else {
               await init({ id: uuid.v4() as string, ...values, amount: amountToMinors(commaToDot(values.amount)) });
@@ -129,15 +128,7 @@ export const PaymentInitiationForm: FC<
           );
         }}
       </Formik>
-      <PaymentModal
-        paymentUrl={paymentUrl}
-        amount={amount}
-        label={label}
-        reference={reference}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        check={check}
-      />
+      <PaymentModal paymentUrl={paymentUrl} amount={amount} label={label} reference={reference} showModal={showModal} setShowModal={setShowModal} />
     </View>
   );
 });
