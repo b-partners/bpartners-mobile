@@ -21,9 +21,10 @@ export const LegalFileStoreModel = types
       self.legalFiles.replace(legalFiles);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     getLegalFileFail: error => {
       __DEV__ && console.tron.log(`${error}`);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -33,7 +34,7 @@ export const LegalFileStoreModel = types
         const result = yield legalFileApi.getLegalFiles(self.currentUser.id);
         self.getLegalFileSuccess(result.legalFiles);
       } catch (e) {
-        self.getLegalFileFail(e.message);
+        self.getLegalFileFail(e);
         // self.catchOrThrow(e);
       }
     }),
@@ -65,7 +66,7 @@ export const LegalFileStoreModel = types
         const { legalFile } = yield legalFileApi.approveLegalFiles(self.currentUser.id, lId);
         self.approveLegalFileSuccess(legalFile);
       } catch (e) {
-        self.approveLegalFileFail(e.message);
+        self.approveLegalFileFail(e);
         self.catchOrThrow(e);
       }
     }),

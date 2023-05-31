@@ -76,7 +76,7 @@ export const AuthStoreModel = types
         self.signInSuccess(urls);
       } catch (e) {
         self.signInFail(e);
-        self.catchOrThrow(e.message);
+        self.catchOrThrow(e);
       }
     }),
   }))
@@ -91,10 +91,10 @@ export const AuthStoreModel = types
       save('currentAccountHolder', currentAccountHolder);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     whoamiFail: error => {
       __DEV__ && console.tron.log(error.message || error);
-      throw error;
+      self.catchOrThrow(error);
     },
   }))
 
@@ -162,7 +162,7 @@ export const AuthStoreModel = types
         getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
         self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
-        self.whoamiFail(e.message);
+        self.whoamiFail(e);
         __DEV__ && console.tron.log('Handle who am I error here');
       }
       yield self.rootStore.legalFilesStore.getLegalFiles();

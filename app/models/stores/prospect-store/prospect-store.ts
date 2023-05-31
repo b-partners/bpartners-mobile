@@ -23,9 +23,10 @@ export const ProspectStoreModel = types
       self.prospects.replace(prospectSnapshotOuts);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     getProspectsFail: error => {
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -36,8 +37,7 @@ export const ProspectStoreModel = types
         const getProspectsResult = yield prospectApi.getProspects(self.currentAccountHolder.id);
         self.getProspectsSuccess(getProspectsResult.prospects);
       } catch (e) {
-        self.getProspectsFail(e.message);
-        self.catchOrThrow(e);
+        self.getProspectsFail(e);
       } finally {
         self.loadingProspect = false;
       }
@@ -48,9 +48,10 @@ export const ProspectStoreModel = types
       __DEV__ && console.tron.log(prospect);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     saveProspectFail: error => {
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -60,8 +61,7 @@ export const ProspectStoreModel = types
         const UpdateProspectResult = yield prospectApi.updateProspects(ahId, prospect);
         self.saveProspectSuccess(UpdateProspectResult.prospect);
       } catch (e) {
-        self.saveProspectFail(e.message);
-        self.catchOrThrow(e);
+        self.saveProspectFail(e);
       }
     }),
   }));

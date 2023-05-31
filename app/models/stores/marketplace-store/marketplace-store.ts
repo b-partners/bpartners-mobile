@@ -24,9 +24,10 @@ export const MarketplaceStoreModel = types
       self.marketplaces.replace(marketplaceSnapshotOuts);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     getMarketplaceFail: error => {
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -37,8 +38,7 @@ export const MarketplaceStoreModel = types
         const getMarketplacesResult = yield marketplaceApi.getMarketplaces(self.currentAccount.id, criteria);
         self.getMarketplacesSuccess(getMarketplacesResult.marketplaces);
       } catch (e) {
-        self.getMarketplaceFail(e.message);
-        self.catchOrThrow(e);
+        self.getMarketplaceFail(e);
       } finally {
         self.loadingMarketplace = false;
       }
