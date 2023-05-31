@@ -36,6 +36,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
   const [navigationState, setNavigationState] = useState(false);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(allDrafts.length / 10));
+  const messageOption = { backgroundColor: palette.green };
 
   const handleRefresh = async () => {
     await draftStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
@@ -83,7 +84,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
       await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
       await draftStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
-      showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'));
+      showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'), messageOption);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
     } finally {
