@@ -16,7 +16,7 @@ import { BPDrawer, BpTabNavigation, Text } from '../components';
 import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
-import { Invoice } from '../models/entities/invoice/invoice';
+import { Invoice, InvoiceStatus } from '../models/entities/invoice/invoice';
 import {
   BankPageScreen,
   ErrorBoundary,
@@ -60,7 +60,7 @@ export type NavigatorParamList = {
   invoices: undefined;
   invoiceForm: {
     invoiceID?: string;
-    status?: string;
+    status?: InvoiceStatus;
   };
   invoicePreview: {
     fileId: string;
@@ -81,7 +81,7 @@ export type TabNavigatorParamList = {
   invoices: undefined;
   invoiceForm: {
     invoiceID?: string;
-    status?: string;
+    status?: InvoiceStatus;
   };
   invoicePreview: {
     fileId: string;
