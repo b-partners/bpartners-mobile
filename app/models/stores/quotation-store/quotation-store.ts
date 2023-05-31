@@ -1,9 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
 
 import { withEnvironment, withRootStore } from '../..';
-import { translate } from '../../../i18n';
 import { PaymentApi } from '../../../services/api/payment-api';
-import { showMessage } from '../../../utils/snackbar';
 import { Criteria } from '../../entities/criteria/criteria';
 import { InvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
@@ -32,7 +30,6 @@ export const QuotationStoreModel = types
         self.allQuotations.replace(getInvoicesResult.invoices as any);
       } catch (e) {
         __DEV__ && console.tron.log(e);
-        showMessage(translate('errors.somethingWentWrong'));
         self.catchOrThrow(e);
       }
     }),
@@ -42,9 +39,10 @@ export const QuotationStoreModel = types
       self.quotations.replace(quotations as any);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     getQuotationsFail: error => {
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -56,8 +54,7 @@ export const QuotationStoreModel = types
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         self.getQuotationsSuccess(getInvoicesResult.invoices);
       } catch (e) {
-        showMessage(translate('errors.somethingWentWrong'));
-        self.catchOrThrow(e);
+        self.getQuotationsFail(e);
       } finally {
         self.loadingQuotation = false;
       }

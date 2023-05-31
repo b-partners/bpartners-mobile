@@ -1,9 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
 
 import { withEnvironment, withRootStore } from '../..';
-import { translate } from '../../../i18n';
 import { PaymentApi } from '../../../services/api/payment-api';
-import { showMessage } from '../../../utils/snackbar';
 import { Criteria } from '../../entities/criteria/criteria';
 import { InvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
@@ -32,7 +30,6 @@ export const DraftStoreModel = types
         self.allDrafts.replace(getInvoicesResult.invoices as any);
       } catch (e) {
         __DEV__ && console.tron.log(e);
-        showMessage(translate('errors.somethingWentWrong'));
         self.catchOrThrow(e);
       }
     }),
@@ -42,9 +39,10 @@ export const DraftStoreModel = types
       self.drafts.replace(drafts as any);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     getDraftsFail: error => {
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -57,10 +55,7 @@ export const DraftStoreModel = types
         __DEV__ && console.tron.log(getInvoicesResult);
         self.getDraftsSuccess(getInvoicesResult.invoices);
       } catch (e) {
-        __DEV__ && console.tron.log(e);
-        showMessage(translate('errors.somethingWentWrong'));
-        self.getDraftsFail(e.message);
-        self.catchOrThrow(e);
+        self.getDraftsFail(e);
       } finally {
         self.loadingDraft = false;
       }
