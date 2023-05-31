@@ -24,9 +24,10 @@ export const ProductStoreModel = types
       self.products.replace(products);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     getProductsFail: error => {
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -34,11 +35,9 @@ export const ProductStoreModel = types
       const productApi = new ProductApi(self.environment.api);
       try {
         const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
-
         self.getProductsSuccess(getProductsResult.products);
       } catch (e) {
-        self.getProductsFail(e.message);
-        self.catchOrThrow(e);
+        self.getProductsFail(e);
       }
     }),
   }))
@@ -51,6 +50,7 @@ export const ProductStoreModel = types
     saveProductFail: error => {
       self.checkProduct = false;
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -69,7 +69,6 @@ export const ProductStoreModel = types
       } catch (e) {
         __DEV__ && console.tron.log(`FAIL TO SAVE PRODUCT`);
         self.saveProductFail(e);
-        self.catchOrThrow(e);
       } finally {
         self.loadingProductCreation = false;
       }
