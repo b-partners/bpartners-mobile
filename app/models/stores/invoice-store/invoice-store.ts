@@ -2,9 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-sta
 import uuid from 'react-native-uuid';
 
 import { withEnvironment, withRootStore } from '../..';
-import { translate } from '../../../i18n';
 import { PaymentApi } from '../../../services/api/payment-api';
-import { showMessage } from '../../../utils/snackbar';
 import { Criteria } from '../../entities/criteria/criteria';
 import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
@@ -35,8 +33,6 @@ export const InvoiceStoreModel = types
         self.allInvoices.replace(getInvoicesResult.invoices as any);
       } catch (e) {
         __DEV__ && console.tron.log(e);
-        showMessage(translate('errors.somethingWentWrong'));
-        self.catchOrThrow(e);
       }
     }),
   }))
@@ -45,9 +41,10 @@ export const InvoiceStoreModel = types
       self.invoices.replace(invoices as any);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     getInvoicesFail: error => {
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -59,9 +56,7 @@ export const InvoiceStoreModel = types
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
         self.getInvoicesSuccess(getInvoicesResult.invoices);
       } catch (e) {
-        showMessage(translate('errors.somethingWentWrong'));
-        self.getInvoicesFail(e.message);
-        self.catchOrThrow(e);
+        self.getInvoicesFail(e);
       } finally {
         self.loadingInvoice = false;
       }
@@ -72,9 +67,10 @@ export const InvoiceStoreModel = types
       self.invoice = InvoiceModel.create(invoice);
     },
   }))
-  .actions(() => ({
+  .actions(self => ({
     getInvoiceFail: error => {
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -85,8 +81,7 @@ export const InvoiceStoreModel = types
         self.getInvoiceSuccess(getInvoiceResult.invoice);
         return getInvoiceResult.invoice;
       } catch (e) {
-        self.getInvoiceFail(e.message);
-        self.catchOrThrow(e);
+        self.getInvoiceFail(e);
       }
     }),
   }))
@@ -105,6 +100,7 @@ export const InvoiceStoreModel = types
     saveInvoiceFail: error => {
       self.checkInvoice = false;
       __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
     },
   }))
   .actions(self => ({
@@ -117,8 +113,7 @@ export const InvoiceStoreModel = types
         self.saveInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
         return createOrUpdateInvoiceResult.invoice;
       } catch (e) {
-        self.saveInvoiceFail(e.message);
-        self.catchOrThrow(e);
+        self.saveInvoiceFail(e);
       } finally {
         self.loadingCreation = false;
       }
