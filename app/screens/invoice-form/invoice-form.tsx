@@ -29,7 +29,7 @@ type InvoiceFormProps = {
   invoice?: Invoice;
   products: Product[];
   onSaveInvoice: (invoice: Invoice) => Promise<void>;
-  status?: string;
+  status?: InvoiceStatus;
   navigation: StackNavigationProp<TabNavigatorParamList, 'invoiceForm', undefined>;
 };
 
@@ -495,7 +495,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            status === 'invoice' ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
+            status === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
             setConfirmationModal(true);
           }}
         >

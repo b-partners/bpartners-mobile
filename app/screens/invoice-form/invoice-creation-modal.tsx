@@ -13,11 +13,23 @@ type InvoiceCreationModalProps = {
   handleSubmit: any;
   onSubmit: (invoices: any) => Promise<void>;
   invoiceType: InvoiceStatus;
-  status: string;
+  status: InvoiceStatus;
 };
 
 export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props => {
   const { confirmationModal, setConfirmationModal, handleSubmit, onSubmit, invoiceType, status } = props;
+
+  const getTx = () => {
+    if (invoiceType === InvoiceStatus.DRAFT) {
+      return 'invoiceFormScreen.invoiceForm.saveDraft';
+    } else if (invoiceType === InvoiceStatus.PROPOSAL && status === undefined) {
+      return 'invoiceFormScreen.invoiceForm.saveQuotation';
+    } else if (invoiceType === InvoiceStatus.PROPOSAL && status === InvoiceStatus.DRAFT) {
+      return 'invoiceFormScreen.invoiceForm.saveDraftToQuotation';
+    } else {
+      return 'invoiceFormScreen.invoiceForm.saveInvoice';
+    }
+  };
 
   return (
     <Modal animationType='slide' transparent={true} visible={confirmationModal} onRequestClose={() => setConfirmationModal(false)}>
@@ -33,18 +45,7 @@ export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props =
               alignItems: 'center',
             }}
           >
-            <Text
-              tx={
-                invoiceType === InvoiceStatus.DRAFT
-                  ? 'invoiceFormScreen.invoiceForm.saveDraft'
-                  : invoiceType === InvoiceStatus.PROPOSAL && status !== 'draft'
-                  ? 'invoiceFormScreen.invoiceForm.saveQuotation'
-                  : invoiceType === InvoiceStatus.PROPOSAL && status === 'draft'
-                  ? 'invoiceFormScreen.invoiceForm.saveDraftToQuotation'
-                  : 'invoiceFormScreen.invoiceForm.saveInvoice'
-              }
-              style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 18 }}
-            />
+            <Text tx={getTx()} style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 18 }} />
           </View>
           <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
             <View style={{ width: '100%', height: '45%', justifyContent: 'center' }}>
