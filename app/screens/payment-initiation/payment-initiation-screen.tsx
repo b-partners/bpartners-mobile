@@ -22,7 +22,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList
   navigation,
 }) {
   const { paymentInitiationStore, authStore } = useStores();
-  const { paymentUrl, initiatingPayment: loading, checkInit } = paymentInitiationStore;
+  const { paymentUrl, initiatingPayment: loading } = paymentInitiationStore;
   const { currentAccount } = authStore;
 
   const [ibanModal, setIbanModal] = useState(false);
@@ -43,7 +43,6 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList
               init={paymentInitiationStore.init}
               paymentUrl={paymentUrl}
               loading={loading}
-              check={checkInit}
               currentAccount={currentAccount}
               setIbanModal={setIbanModal}
             />
