@@ -6,13 +6,7 @@ import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import {
-  Button,
-  Icon,
-  Loader,
-  /*Loader*/
-  Text,
-} from '../../components';
+import { Button, Icon, Loader, Text } from '../../components';
 import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -482,7 +476,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setConfirmationModal(true)}>
+        <TouchableOpacity
+          onPress={() => {
+            setInvoiceType(InvoiceStatus.DRAFT);
+            setConfirmationModal(true);
+          }}
+        >
           <View
             style={{
               borderColor: color.palette.secondaryColor,
