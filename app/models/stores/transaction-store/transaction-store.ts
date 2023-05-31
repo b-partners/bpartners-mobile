@@ -21,9 +21,9 @@ export const TransactionStoreModel = types
   .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
-    .actions(self => ({
-      catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
-    }))
+  .actions(self => ({
+    catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
+  }))
   .actions(self => ({
     getTransactionsSummarySuccess: (transactionSummaries: TransactionSummary[]) => {
       self.transactionsSummary.replace(transactionSummaries);
