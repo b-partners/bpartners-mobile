@@ -37,7 +37,8 @@
     "amount": "Invalid amount",
     "operation": "Failed to add",
     "credentials": "please check your credentials!",
-    "invalidPrice": "Invalid price"
+    "invalidPrice": "Invalid price",
+    "mandatoryTitle": "please fill out the title of your quotation !"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
