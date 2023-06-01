@@ -6,7 +6,7 @@ import { useStores } from '../../models';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 
-const NoBank = () => {
+export const NoBank = () => {
   const { bankStore, authStore } = useStores();
 
   const { currentUser, currentAccount } = authStore;
@@ -47,5 +47,3 @@ const styles = StyleSheet.create({
     color: palette.secondaryColor,
   },
 });
-
-export default NoBank;
