@@ -5,7 +5,6 @@ import { Account } from '../../entities/account/account';
 import { User } from '../../entities/user/user';
 import { AuthStoreModel } from '../auth-store/auth-store';
 import { BankStoreModel } from '../bank-store/bank-store';
-import { BankInfoStoreModel } from '../bank-store/bankInfo-store';
 import { CustomerStoreModel } from '../customer-store/customer-store';
 import { DraftStoreModel } from '../draft-store/draft-store';
 import { FileStoreModel } from '../file-store/file-store';
@@ -38,7 +37,6 @@ export const RootStoreModel = types.model('RootStore').props({
     draftStore: types.optional(DraftStoreModel, {} as any),
     quotationStore: types.optional(QuotationStoreModel, {} as any),
     bankStore: types.optional(BankStoreModel, {} as any),
-    bankInfo: types.optional(BankInfoStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;
