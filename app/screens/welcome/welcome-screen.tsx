@@ -74,7 +74,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           setUserDetailValue(credentials);
         }
       } catch (error) {
-        __DEV__ && console.tron.log("Keychain couldn't be accessed!", error);
+        __DEV__ && console.tron.error("Keychain couldn't be accessed!", error);
       }
     })();
   }, []);
