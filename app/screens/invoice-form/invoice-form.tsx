@@ -80,6 +80,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [comment, setComment] = useState(null);
   const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
+  const [quotationTitle, setQuotationTitle] = useState<String>('');
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -140,34 +141,38 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const handleInvoicePreviewPress = async invoices => {
     // TODO(UI): error handling
     setIsLoading(true);
-    try {
-      const savedInvoice = await invoiceStore.saveInvoice({
-        ...invoices,
-        customer: selectedCustomer,
-        comment: comment,
-        title: title,
-        metadata: { ...invoices.metadata, submittedAt: new Date() },
-      });
-      setConfirmationModal(false);
+    if (quotationTitle) {
+      try {
+        const savedInvoice = await invoiceStore.saveInvoice({
+          ...invoices,
+          customer: selectedCustomer,
+          comment: comment,
+          title: title,
+          metadata: { ...invoices.metadata, submittedAt: new Date() },
+        });
+        setConfirmationModal(false);
 
-      navigate('invoicePreview', {
-        fileId: savedInvoice.fileId,
-        invoiceTitle: savedInvoice.title,
-        invoice: savedInvoice,
-        situation: true,
-      });
-      invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }));
-      invoiceType === 'PROPOSAL' &&
-        (await quotationStore.getQuotations({
-          status: InvoiceStatus.PROPOSAL,
-          page: 1,
-          pageSize: 10,
-        }));
-    } catch (e) {
-      __DEV__ && console.tron.error(e.message, e.stacktrace);
-      throw e;
-    } finally {
-      setIsLoading(false);
+        navigate('invoicePreview', {
+          fileId: savedInvoice.fileId,
+          invoiceTitle: savedInvoice.title,
+          invoice: savedInvoice,
+          situation: true,
+        });
+        invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }));
+        invoiceType === 'PROPOSAL' &&
+          (await quotationStore.getQuotations({
+            status: InvoiceStatus.PROPOSAL,
+            page: 1,
+            pageSize: 10,
+          }));
+      } catch (e) {
+        __DEV__ && console.tron.error(e.message, e.stacktrace);
+        throw e;
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
     }
   };
 
@@ -187,6 +192,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 onChangeText={newValue => {
                   onChange();
                   setTitle(newValue);
+                  setQuotationTitle(newValue);
                 }}
                 value={value}
               />
@@ -478,8 +484,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
 
         <TouchableOpacity
           onPress={() => {
-            setInvoiceType(InvoiceStatus.DRAFT);
-            setConfirmationModal(true);
+            if (quotationTitle) {
+              setInvoiceType(InvoiceStatus.DRAFT);
+              setConfirmationModal(true);
+            } else {
+              showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
+            }
           }}
         >
           <View
@@ -495,8 +505,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            status === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
-            setConfirmationModal(true);
+            if (quotationTitle) {
+              status === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
+              setConfirmationModal(true);
+            } else {
+              showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
+            }
           }}
         >
           <View
