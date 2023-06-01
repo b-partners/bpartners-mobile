@@ -9,8 +9,7 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import Bank from './bank';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-import NoBank from './no-bank';
+//import NoBank from './no-bank';
 
 const FULL: ViewStyle = {
   flex: 1,

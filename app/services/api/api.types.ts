@@ -1,6 +1,6 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
-import { BankInfo } from '../../models/entities/bank/bankInfo';
+import { BankInfo } from '../../models/entities/bank/bank-info';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
 import { Invoice } from '../../models/entities/invoice/invoice';
