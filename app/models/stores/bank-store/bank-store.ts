@@ -1,4 +1,4 @@
-import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
+import {Instance, SnapshotIn, SnapshotOut, flow, types} from 'mobx-state-tree';
 
 import { BankConnection } from '../../../services/api';
 import { BankApi } from '../../../services/api/bank-api';

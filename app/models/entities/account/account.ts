@@ -11,7 +11,14 @@ export const AccountModel = types.model('Account').props({
   bank: types.maybe(BankModel),
 });
 
+export const AccountInfosModel = types.model('AccountInfos').props({
+  name: types.maybe(types.maybeNull(types.string)),
+  iban: types.maybe(types.maybeNull(types.string)),
+  bic: types.maybe(types.maybeNull(types.string)),
+})
+
 export interface Account extends Instance<typeof AccountModel> {}
+export interface AccountInfos extends Instance<typeof AccountInfosModel> {}
 
 export interface AccountSnapshotOut extends SnapshotOut<typeof AccountModel> {}
 

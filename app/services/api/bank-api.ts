@@ -3,7 +3,7 @@ import { ApiResponse } from 'apisauce';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { BankConnection } from './api.types';
-import {Account} from "../../models/entities/account/account";
+import {Account, AccountInfos} from "../../models/entities/account/account";
 
 export class BankApi {
   private api: Api;
@@ -23,8 +23,8 @@ export class BankApi {
     return response.data;
   }
 
-  async updateBankInfos(userId: string, accountId: string): Promise<Account> {
-    const response: ApiResponse<Account> = await this.api.apisauce.put(`users/${userId}/accounts/${accountId}/identity`);
+  async updateAccountInfos(userId: string, accountId: string, infos: AccountInfos): Promise<Account> {
+    const response: ApiResponse<Account> = await this.api.apisauce.put(`users/${userId}/accounts/${accountId}/identity`, infos);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
