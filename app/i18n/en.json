@@ -375,7 +375,8 @@
   "bankScreen": {
     "accountName": "Account Name",
     "bic": "BIC",
-    "iban": "IBAN"
+    "iban": "IBAN",
+    "logout": "Disconnect my Bank"
   },
   "bottomTab": {
     "account": "Accounts",
