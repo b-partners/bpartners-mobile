@@ -10,7 +10,8 @@ import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
-import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
+import { Account, AccountInfos,AccountModel } from '../../entities/account/account';
+import { AuthUserModel } from '../../entities/user/AuthUser';
 import { User, UserModel } from '../../entities/user/user';
 
 export const AuthStoreModel = types
@@ -25,6 +26,7 @@ export const AuthStoreModel = types
     currentAccount: types.maybe(types.maybeNull(AccountModel)),
     currentAccountHolder: types.maybe(types.maybeNull(AccountHolderModel)),
     loadingUpdateInfos: types.optional(types.boolean, false),
+    userAuth: types.maybe(types.maybeNull(AuthUserModel)),
   })
   .extend(withEnvironment)
   .extend(withRootStore)
@@ -196,6 +198,11 @@ export const AuthStoreModel = types
         self.loadingUpdateInfos = false;
       }
     }),
+  }))
+  .actions(self => ({
+    setUserAuthUserName: (userName: string) => {
+      self.userAuth.userName = userName;
+    },
   }));
 
 export interface AuthStore extends Instance<typeof AuthStoreModel> {}
