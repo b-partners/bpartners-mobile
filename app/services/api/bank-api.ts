@@ -21,5 +21,4 @@ export class BankApi {
 
     return response.data;
   }
-
 }

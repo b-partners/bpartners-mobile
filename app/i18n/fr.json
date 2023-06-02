@@ -357,7 +357,9 @@
     "accountName": "Nom du compte",
     "bic": "BIC",
     "iban": "IBAN",
-    "logout": "Déconnecter Ma Banque"
+    "logout": "Déconnecter Ma Banque",
+    "noBank": "Aucune banque associé",
+    "associate": "Associer une banque"
   },
   "bottomTab": {
     "account": "Comptes",
