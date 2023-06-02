@@ -1,7 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import {Dimensions, TextStyle, View, ViewStyle} from 'react-native';
+import {TextStyle, View, ViewStyle} from 'react-native';
 
 import { GradientBackground, Header, Screen } from '../../components';
 import { useStores } from '../../models';
