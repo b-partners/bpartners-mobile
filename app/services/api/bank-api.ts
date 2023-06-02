@@ -2,7 +2,7 @@ import { ApiResponse } from 'apisauce';
 
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import {BankConnection, GetBankInformationResult} from './api.types';
+import { BankConnection, GetBankInformationResult } from './api.types';
 
 export class BankApi {
   private api: Api;

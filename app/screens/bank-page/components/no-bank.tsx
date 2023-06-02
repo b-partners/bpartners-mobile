@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useStores } from '../../models';
-import { color } from '../../theme';
-import { palette } from '../../theme/palette';
+import { useStores } from '../../../models';
+import { color } from '../../../theme';
+import { palette } from '../../../theme/palette';
 
 export const NoBank = () => {
   const { bankStore, authStore } = useStores();
