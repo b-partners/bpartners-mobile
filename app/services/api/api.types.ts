@@ -1,6 +1,5 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
-import { BankInfo } from '../../models/entities/bank/bank-info';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
 import { Invoice } from '../../models/entities/invoice/invoice';
@@ -84,5 +83,3 @@ export type UpdateProspectResult = { kind: 'ok'; prospect: Prospect } | GeneralA
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
 
 export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;
-
-export type GetBankInformationResult = { kind: 'ok'; bankInfo: BankInfo } | GeneralApiProblem;
