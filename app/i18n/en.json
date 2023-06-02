@@ -376,7 +376,9 @@
     "accountName": "Account Name",
     "bic": "BIC",
     "iban": "IBAN",
-    "logout": "Disconnect my Bank"
+    "logout": "Disconnect my Bank",
+    "noBank": "No associated bank",
+    "associate": "Associate a bank"
   },
   "bottomTab": {
     "account": "Accounts",

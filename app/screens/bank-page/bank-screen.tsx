@@ -1,18 +1,18 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import {TextStyle, View, ViewStyle} from 'react-native';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { GradientBackground, Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
+import {NoBank} from "./components/no-bank";
 import { Bank } from './components/bank';
 
-//import NoBank from './no-bank';
 const FULL: ViewStyle = {
-  flex: 1
+  flex: 1,
 };
 const CONTAINER: ViewStyle = {
   backgroundColor: palette.white,
@@ -37,8 +37,7 @@ export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>> = o
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='auto'>
           <Header headerTx='logoutScreen.swan' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
-          {/*<NoBank />*/}
-          <Bank currentAccount={currentAccount} />
+          { currentAccount.bank ? <Bank currentAccount={currentAccount} /> :  <NoBank/>}
         </Screen>
       </View>
     </ErrorBoundary>
