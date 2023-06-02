@@ -23,7 +23,8 @@
     "back": "Précédent",
     "noDataProvided": "Aucun enregistrement à afficher",
     "loading": "Chargement en cours ...",
-    "added": "Ajouté avec succès"
+    "added": "Ajouté avec succès",
+    "edit": "Modifier"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
