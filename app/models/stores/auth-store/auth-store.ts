@@ -9,8 +9,9 @@ import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
-import { Account, AccountModel } from '../../entities/account/account';
+import {Account, AccountInfos, AccountModel} from '../../entities/account/account';
 import { User, UserModel } from '../../entities/user/user';
+import {BankApi} from "../../../services/api/bank-api";
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -23,6 +24,7 @@ export const AuthStoreModel = types
     currentUser: types.maybe(types.maybe(UserModel)),
     currentAccount: types.maybe(types.maybeNull(AccountModel)),
     currentAccountHolder: types.maybe(types.maybeNull(AccountHolderModel)),
+    loadingUpdateInfos: types.optional(types.boolean, false),
   })
   .extend(withEnvironment)
   .extend(withRootStore)
@@ -167,7 +169,34 @@ export const AuthStoreModel = types
       }
       yield self.rootStore.legalFilesStore.getLegalFiles();
     }),
-  }));
+  }))
+    .actions(self => ({
+      updateAccountInfosSuccess: (account: Account) => {
+        self.currentAccount = account;
+      },
+    }))
+    .actions(self => ({
+      updateAccountInfosFail: error => {
+        __DEV__ && console.tron.log(error);
+        self.catchOrThrow(error);
+      },
+    }))
+    .actions(self => ({
+      updateAccountInfos: flow(function* (infos: AccountInfos) {
+        self.loadingUpdateInfos = true;
+        const bankApi = new BankApi(self.environment.api);
+        const successMessageOption = { backgroundColor: palette.green };
+        try {
+          const updateAccountResult = yield bankApi.updateAccountInfos(self.currentUser.id, self.currentAccount.id, infos);
+          self.updateAccountInfosSuccess(updateAccountResult.account);
+          showMessage(translate('common.added'), successMessageOption);
+        } catch (e) {
+          self.updateAccountInfosFail(e);
+        } finally {
+          self.loadingUpdateInfos = false;
+        }
+      }),
+    }));
 
 export interface AuthStore extends Instance<typeof AuthStoreModel> {}
 
