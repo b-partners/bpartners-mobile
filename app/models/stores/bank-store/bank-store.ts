@@ -2,7 +2,6 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree'
 
 import { BankConnection } from '../../../services/api';
 import { BankApi } from '../../../services/api/bank-api';
-import { BankInfo, BankInfoModel } from '../../entities/bank/bank-info';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -12,7 +11,6 @@ export const BankStoreModel = types
   .props({
     loadingBankConnection: types.optional(types.boolean, false),
     bankConnectionResult: types.maybeNull(types.boolean),
-    bank: types.optional(BankInfoModel, {}),
     redirectionUrl: types.maybeNull(types.string),
     successUrl: types.maybeNull(types.string),
     failureUrl: types.maybeNull(types.string),
@@ -58,26 +56,6 @@ export const BankStoreModel = types
         self.catchOrThrow(e);
       } finally {
         self.loadingBankConnection = false;
-      }
-    }),
-  }))
-  .actions(self => ({
-    fetchBankInfoSuccess: function (bankData: BankInfo) {
-      __DEV__ && console.tron.log(bankData);
-      self.bank = bankData;
-    },
-  }))
-  .actions(self => ({
-    fetchBankInfo: flow(function* () {
-      const bankApi = new BankApi(self.environment.api);
-      try {
-        const bankData = yield bankApi.getBankInfo(self.currentAccount.id);
-        self.fetchBankInfoSuccess(bankData.bankInfo);
-      } catch (e) {
-        console.log(e);
-        __DEV__ && console.tron.error(e, e.stackTrace);
-        __DEV__ && console.tron.log('Failed to fetch bank information');
-        self.catchOrThrow(e);
       }
     }),
   }));
