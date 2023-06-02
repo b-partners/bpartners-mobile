@@ -1,7 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import {Dimensions, TextStyle, View, ViewStyle} from 'react-native';
 
 import { GradientBackground, Header, Screen } from '../../components';
 import { useStores } from '../../models';
@@ -11,9 +11,8 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { Bank } from './components/bank';
 
 //import NoBank from './no-bank';
-
 const FULL: ViewStyle = {
-  flex: 1,
+  flex: 1
 };
 const CONTAINER: ViewStyle = {
   backgroundColor: palette.white,
