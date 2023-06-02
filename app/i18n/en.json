@@ -372,6 +372,11 @@
     "messagePartThree": "you can also call us on :",
     "mail": "contact@bpartners.app"
   },
+  "bankScreen": {
+    "accountName": "Account Name",
+    "bic": "BIC",
+    "iban": "IBAN"
+  },
   "bottomTab": {
     "account": "Accounts",
     "activity": "Activity",

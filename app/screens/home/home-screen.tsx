@@ -32,11 +32,11 @@ export const Menu: FC<{ navigation: DrawerNavigationProp<any> }> = observer(({ n
   );
 });
 
-export const Logo: FC<{ uri: string }> = observer(({ uri }) => {
+export const Logo: FC<{ uri: string; logoStyle: ViewStyle }> = observer(({ uri, logoStyle }) => {
   const LOGO_STYLE: ImageStyle = { width: '100%', height: '100%' };
 
   return (
-    <View style={{ height: 50, width: 50 }}>
+    <View style={logoStyle}>
       <AutoImage source={{ uri }} style={LOGO_STYLE} resizeMethod='resize' resizeMode='stretch' />
     </View>
   );
@@ -73,7 +73,11 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     <ErrorBoundary catchErrors='always'>
       <View testID='homeScreen' style={FULL}>
         <Screen preset='auto' backgroundColor={palette.white}>
-          <HeaderWithBalance balance={availableBalance} left={<Logo uri={uri} />} right={<Menu navigation={navigation} />} />
+          <HeaderWithBalance
+            balance={availableBalance}
+            left={<Logo uri={uri} logoStyle={{ width: 50, height: 50 }} />}
+            right={<Menu navigation={navigation} />}
+          />
           <View style={{ padding: spacing[3] }}>
             <TransactionSummary summary={currentMonthSummary} accountHolder={currentAccountHolder} balance={availableBalance} />
           </View>

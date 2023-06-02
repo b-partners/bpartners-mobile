@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { Linking, TextStyle, View, ViewStyle } from 'react-native';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
 
-import { AutoImage, GradientBackground, Header, LabelWithText, Screen, Text } from '../../components';
+import { AutoImage, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
@@ -113,27 +113,30 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               </View>
             </View>
           </View>
-          <LabelWithText label='profileScreen.fields.accountHolder.name' text={currentAccountHolder.name} />
-          <LabelWithText label='profileScreen.fields.accountHolder.businessActivities.primary' text={currentAccountHolder?.businessActivities?.primary} />
-          <LabelWithText label='profileScreen.fields.accountHolder.businessActivities.secondary' text={currentAccountHolder?.businessActivities?.secondary} />
-          <LabelWithText label='profileScreen.fields.accountHolder.officialActivityName' text={currentAccountHolder?.officialActivityName} />
-          <LabelWithText
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.name' text={currentAccountHolder.name} />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.businessActivities.primary' text={currentAccountHolder?.businessActivities?.primary} />
+          <LabelWithTextRow
+            label='profileScreen.fields.accountHolder.businessActivities.secondary'
+            text={currentAccountHolder?.businessActivities?.secondary}
+          />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.officialActivityName' text={currentAccountHolder?.officialActivityName} />
+          <LabelWithTextRow
             label='profileScreen.fields.accountHolder.companyInfo.socialCapital'
             text={printCurrency(currentAccountHolder?.companyInfo?.socialCapital)}
           />
-          <LabelWithText
+          <LabelWithTextRow
             label='profileScreen.fields.accountHolder.revenueTargets.amountTarget'
             text={printCurrency(currentAccountHolder?.revenueTargets[0]?.amountTarget)}
           />
-          <LabelWithText
+          <LabelWithTextRow
             label='profileScreen.fields.accountHolder.contactAddress.country'
             text={country}
             countryFlag={`https://flagsapi.com/${country.slice(0, 2)}/flat/64.png`}
           />
-          <LabelWithText label='profileScreen.fields.accountHolder.contactAddress.city' text={currentAccountHolder?.contactAddress?.city} />
-          <LabelWithText label='profileScreen.fields.accountHolder.contactAddress.address' text={currentAccountHolder?.contactAddress?.address} />
-          <LabelWithText label='profileScreen.fields.accountHolder.contactAddress.postalCode' text={currentAccountHolder?.contactAddress?.postalCode} />
-          <LabelWithText label='profileScreen.fields.accountHolder.siren' text={currentAccountHolder?.siren} />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.contactAddress.city' text={currentAccountHolder?.contactAddress?.city} />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.contactAddress.address' text={currentAccountHolder?.contactAddress?.address} />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.contactAddress.postalCode' text={currentAccountHolder?.contactAddress?.postalCode} />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.siren' text={currentAccountHolder?.siren} />
           <View
             style={{
               marginHorizontal: '5%',
