@@ -4,10 +4,11 @@ import React, { FC } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { GradientBackground, Header, Screen } from '../../components';
+import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import Bank from './bank';
+import { Bank } from './components/bank';
 
 //import NoBank from './no-bank';
 
@@ -26,7 +27,10 @@ const HEADER_TITLE: TextStyle = {
   textAlign: 'center',
 };
 
-export const BankPageScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>> = observer(({ navigation }) => {
+export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>> = observer(({ navigation }) => {
+  const { bankStore } = useStores();
+  const { bank } = bankStore;
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View style={FULL}>
@@ -40,7 +44,7 @@ export const BankPageScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>>
             }}
           >
             {/*<NoBank />*/}
-            <Bank />
+            <Bank bank={bank} />
           </View>
         </Screen>
       </View>
