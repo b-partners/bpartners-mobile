@@ -1,14 +1,15 @@
 import React from 'react';
-import { /*TouchableOpacity,*/ View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 //import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { LabelWithTextColumn } from '../../../components';
 import { Text } from '../../../components/text/text';
-//import { translate } from '../../../i18n';
+import { translate } from '../../../i18n';
 import { Account } from '../../../models/entities/account/account';
-//import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { Logo } from '../../home/home-screen';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
+import {color} from "../../../theme";
 
 type BankInfosProps = {
   currentAccount: Account;
@@ -44,6 +45,36 @@ export const Bank: React.FC<BankInfosProps> = props => {
           <LabelWithTextColumn label='bankScreen.iban' text={currentAccount.iban} />
         </View>
       </View>
+        <TouchableOpacity
+        style={{
+          position: 'relative',
+          backgroundColor: palette.white,
+          width: '70%',
+          height: 40,
+          marginTop: 30,
+          alignSelf: 'center',
+          borderRadius: 40,
+          justifyContent: 'center',
+          flexDirection: 'row',
+          borderWidth: 1,
+          borderColor: palette.secondaryColor,
+        }}
+      >
+        <View style={{ justifyContent: 'center', marginRight: 8 }}>
+            <IoniconIcon name='ios-pencil' size={22} color={color.palette.secondaryColor} />
+        </View>
+        <View style={{ justifyContent: 'center' }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: color.palette.secondaryColor,
+              fontFamily: 'Geometria',
+            }}
+          >
+            {translate('common.edit')}
+          </Text>
+        </View>
+      </TouchableOpacity>
         {/*<TouchableOpacity
         style={{
           position: 'relative',

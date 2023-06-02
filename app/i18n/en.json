@@ -23,7 +23,8 @@
     "back": "Back",
     "noDataProvided": "No records to display",
     "loading": "Loading in progress ...",
-    "added": "Successfully added"
+    "added": "Successfully added",
+    "edit": "Modifier"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
