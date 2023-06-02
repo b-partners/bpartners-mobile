@@ -18,7 +18,7 @@ import { translate } from '../i18n';
 import { useStores } from '../models';
 import { Invoice, InvoiceStatus } from '../models/entities/invoice/invoice';
 import {
-  BankPageScreen,
+  BankScreen,
   ErrorBoundary,
   HomeScreen,
   LegalFileScreen,
@@ -135,7 +135,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
-          <Drawer.Screen name='bridge' component={BankPageScreen} />
+          <Drawer.Screen name='bridge' component={BankScreen} />
         </>
       ) : (
         <>

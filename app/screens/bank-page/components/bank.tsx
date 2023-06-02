@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { useStores } from '../../models';
+import { useStores } from '../../../models';
+import { BankInfo } from '../../../models/entities/bank/bank-info';
 
 /*import AccountBalanceIcon from 'path/to/AccountBalanceIcon'; // Replace with the correct path
 import BankDisconnection from './BankDisconnection'; // Replace with the correct path
 import BankInformationForm from './BankInformationForm'; // Replace with the correct path*/
+type BankInfosProps = {
+  bank: BankInfo;
+};
 
-const Bank = () => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  const [isDialogOpen, setDialogState] = useState(false);
+export const Bank: React.FC<BankInfosProps> = props => {
+  const { bank } = props;
+
+  // const [isDialogOpen, setDialogState] = useState(false);
 
   const { bankInfo, authStore } = useStores();
 
@@ -20,17 +25,16 @@ const Bank = () => {
     __DEV__ && console.tron.log('now, Bank Info', bankInfo.bankInformation);
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  const handleCloseDialog = () => setDialogState(false);
-  const handleOpenDialog = () => setDialogState(true);
+  /*const handleCloseDialog = () => setDialogState(false);*/
+  // const handleOpenDialog = () => setDialogState(true);
 
   return (
     <>
       {/*<BankDisconnection setAccount={setAccount} isOpen={isDialogOpen} onClose={handleCloseDialog} bank={account.bank} />*/}
       <View style={styles.card}>
         <View style={styles.cardHeader}>
-          <Text style={styles.title}>Ma banque</Text>
-          <TouchableOpacity style={styles.disconnectButton} onPress={handleOpenDialog}>
+          <Text style={styles.title}>{bank.name}</Text>
+          <TouchableOpacity style={styles.disconnectButton} >
             {/*<Image source={AccountBalanceIcon} style={styles.buttonIcon} />*/}
             <Text style={styles.buttonLabel}>Déconnecter ma banque</Text>
           </TouchableOpacity>
@@ -121,5 +125,3 @@ const styles = StyleSheet.create({
     // Define your styles for bank details
   },
 });
-
-export default Bank;
