@@ -29,5 +29,5 @@ export const palette = {
   Khaki: '#FFFBAC',
   lightYellow: '#F5DF4D',
   yellow: '#E7B10A',
-  solidGrey: '#00000008',
+  solidGrey: '#0000000d',
 };
