@@ -21,7 +21,6 @@ import { AutoImage } from '../auto-image/auto-image';
 import { BPDrawerHeader } from './bp-drawer-header';
 
 Amplify.configure(awsExports);
-
 const LOGOUT_CONTAINER_STYLE: ViewStyle = {
   position: 'absolute',
   backgroundColor: palette.white,
