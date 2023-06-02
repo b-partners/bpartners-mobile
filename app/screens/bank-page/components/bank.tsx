@@ -1,12 +1,12 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { /*TouchableOpacity,*/ View } from 'react-native';
+//import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { LabelWithTextColumn } from '../../../components';
 import { Text } from '../../../components/text/text';
-import { translate } from '../../../i18n';
+//import { translate } from '../../../i18n';
 import { Account } from '../../../models/entities/account/account';
-import { color } from '../../../theme';
+//import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { Logo } from '../../home/home-screen';
 
@@ -44,7 +44,7 @@ export const Bank: React.FC<BankInfosProps> = props => {
           <LabelWithTextColumn label='bankScreen.iban' text={currentAccount.iban} />
         </View>
       </View>
-      <TouchableOpacity
+        {/*<TouchableOpacity
         style={{
           position: 'relative',
           backgroundColor: palette.white,
@@ -73,7 +73,7 @@ export const Bank: React.FC<BankInfosProps> = props => {
             {translate('bankScreen.logout')}
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
     </View>
   );
 };
