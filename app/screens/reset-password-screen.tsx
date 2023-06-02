@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import * as yup from 'yup';
 
@@ -11,25 +11,26 @@ import { color, spacing } from '../theme';
 import { palette } from '../theme/palette';
 import { ErrorBoundary } from './error/error-boundary';
 import KeyboardAvoidingWrapper from './welcome/keyboardAvoidingWrapper';
-import { forgotPassword } from './welcome/utils/auth-util';
+import { resetPassword } from './welcome/utils/auth-util';
 
-export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forgotPassword'>> = observer(function ForgotPasswordScreen({ navigation }) {
-  const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
-  const [loading, setLoading] = useState(false);
-  const [emailWasSent, setMailWasSent] = useState(false);
-
-  const LoginFormSchema = yup.object().shape({
+export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'resetPassword'>> = observer(function ResetPasswordScreen({ navigation }) {
+  // const { someStore, anotherStore } = useStores()
+  const emailDangerMessage = '';
+  const shape = yup.object().shape({
     email: yup
       .string()
       .email('Entrer un email valide')
       // @ts-ignore
       .required(emailDangerMessage || 'Email is required'),
+    confirmationCode: yup.string().required('Code de confirmation code'),
+    newPassword: yup.string().required('Nouveau mot de passe requis'),
   });
 
   const initialValues = {
     email: '',
+    confirmationCode: '',
+    newPassword: '',
   };
-
   return (
     <ErrorBoundary catchErrors='always'>
       <Header leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
@@ -38,17 +39,9 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
           <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
             <Formik
               initialValues={initialValues}
-              validationSchema={LoginFormSchema}
+              validationSchema={shape}
               onSubmit={async values => {
-                setLoading(true);
-                try {
-                  await forgotPassword(values.email);
-                  setMailWasSent(true);
-                } catch (e) {
-                  setLoading(false);
-                } finally {
-                  setLoading(false);
-                }
+                await resetPassword(values.email, values.confirmationCode, values.newPassword);
               }}
             >
               {({ handleChange, handleBlur, values, errors, touched, handleSubmit }) => (
@@ -64,6 +57,30 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
                       autoCorrect={false}
                     />
                     {!!errors.email && touched.email && <Text style={styles.error}>{errors.email}</Text>}
+                  </View>
+                  <View style={styles.field}>
+                    <Text text={'Code de confirmation'} style={styles.label} />
+                    <TextInput
+                      style={styles.input}
+                      onChangeText={handleChange('confirmationCode')}
+                      onBlur={handleBlur('confirmationCode')}
+                      autoCapitalize='none'
+                      autoCorrect={false}
+                      secureTextEntry={true}
+                    />
+                    {!!errors.confirmationCode && touched.confirmationCode && <Text style={styles.error}>{errors.confirmationCode}</Text>}
+                  </View>
+                  <View style={styles.field}>
+                    <Text text={'Nouveau mot de passe'} style={styles.label} />
+                    <TextInput
+                      style={styles.input}
+                      onChangeText={handleChange('newPassword')}
+                      onBlur={handleBlur('newPassword')}
+                      autoCapitalize='none'
+                      autoCorrect={false}
+                      secureTextEntry={true}
+                    />
+                    {!!errors.newPassword && touched.newPassword && <Text style={styles.error}>{errors.newPassword}</Text>}
                   </View>
                   <Button
                     onPress={() => handleSubmit()}
