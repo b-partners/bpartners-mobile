@@ -353,6 +353,11 @@
     "messagePartThree": "ou nous appeler directement au:",
     "mail": "contact@bpartners.app"
   },
+  "bankScreen": {
+    "accountName": "Nom du compte",
+    "bic": "BIC",
+    "iban": "IBAN"
+  },
   "bottomTab": {
     "account": "Comptes",
     "activity": "Activité",

@@ -1,127 +1,46 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 
-import { useStores } from '../../../models';
-import { BankInfo } from '../../../models/entities/bank/bank-info';
+import { LabelWithTextColumn } from '../../../components';
+import { Text } from '../../../components/text/text';
+import { Account } from '../../../models/entities/account/account';
+import { palette } from '../../../theme/palette';
+import { Logo } from '../../home/home-screen';
 
-/*import AccountBalanceIcon from 'path/to/AccountBalanceIcon'; // Replace with the correct path
-import BankDisconnection from './BankDisconnection'; // Replace with the correct path
-import BankInformationForm from './BankInformationForm'; // Replace with the correct path*/
 type BankInfosProps = {
-  bank: BankInfo;
+  currentAccount: Account;
 };
 
 export const Bank: React.FC<BankInfosProps> = props => {
-  const { bank } = props;
-
-  // const [isDialogOpen, setDialogState] = useState(false);
-
-  const { bankInfo, authStore } = useStores();
-
-  const { currentUser } = authStore;
-
-  useEffect(() => {
-    bankInfo.fetchBankInfo(currentUser.id);
-    __DEV__ && console.tron.log('now, Bank Info', bankInfo.bankInformation);
-  }, []);
-
-  /*const handleCloseDialog = () => setDialogState(false);*/
-  // const handleOpenDialog = () => setDialogState(true);
+  const { currentAccount } = props;
 
   return (
-    <>
-      {/*<BankDisconnection setAccount={setAccount} isOpen={isDialogOpen} onClose={handleCloseDialog} bank={account.bank} />*/}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.title}>{bank.name}</Text>
-          <TouchableOpacity style={styles.disconnectButton} >
-            {/*<Image source={AccountBalanceIcon} style={styles.buttonIcon} />*/}
-            <Text style={styles.buttonLabel}>Déconnecter ma banque</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.cardContent}>
-          <View style={styles.rowContainer}>
-            <View style={styles.bankCard}>
-              {/*<Image source={{ uri: account.bank.logoUrl }} style={styles.bankLogo} resizeMode='contain' />*/}
-              {/*<Text style={styles.bankName}>{account.bank.name}</Text>*/}
-              <View style={styles.bankDetails}>
-                {/* <BankCardText label={account.name} title='Nom du compte' />
-                                <BankCardText label={account.bic} title='BIC' />
-                                <BankCardText label={account.iban} title='IBAN' />*/}
-              </View>
-            </View>
-            {/*<BankInformationForm setAccount={setAccount} account={account} />*/}
+    <View style={{ width: '100%', height: '100%' }}>
+      <View
+        style={{
+          width: '90%',
+          height: 400,
+          backgroundColor: palette.solidGrey,
+          marginHorizontal: '5%',
+          marginTop: 20,
+          borderRadius: 10,
+          flexDirection: 'column',
+        }}
+      >
+        <View style={{ width: '100%', height: 70, marginTop: 20, flexDirection: 'row' }}>
+          <View style={{ width: '70%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 32, fontFamily: 'Geometria', color: palette.black }}>{currentAccount.bank.name}</Text>
+          </View>
+          <View style={{ width: '30%', height: '100%', justifyContent: 'center', alignItems: 'flex-end' }}>
+            <Logo uri={currentAccount.bank.logoUrl} logoStyle={{ width: 140, height: 70 }} />
           </View>
         </View>
+        <View style={{ width: '100%', flex: 1, marginTop: 5, flexDirection: 'column', marginBottom: 10}}>
+          <LabelWithTextColumn label='bankScreen.accountName' text={currentAccount.name} />
+          <LabelWithTextColumn label='bankScreen.bic' text={currentAccount.bic} />
+          <LabelWithTextColumn label='bankScreen.iban' text={currentAccount.iban} />
+        </View>
       </View>
-    </>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 3,
-    backgroundColor: '#fff',
-    marginBottom: 10,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  disconnectButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  buttonIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 8,
-  },
-  buttonLabel: {
-    fontSize: 16,
-  },
-  cardContent: {
-    padding: 16,
-  },
-  rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  bankCard: {
-    width: 440,
-    height: 300,
-    paddingLeft: 5,
-    borderRadius: 3,
-    backgroundColor: 'rgba(0, 0, 0, 0.03)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-  },
-  bankLogo: {
-    position: 'absolute',
-    top: 24,
-    right: 0,
-    borderRadius: 10,
-    height: 80,
-    width: 80,
-  },
-  bankName: {
-    marginTop: 8,
-    fontSize: 18,
-  },
-  bankDetails: {
-    // Define your styles for bank details
-  },
-});
