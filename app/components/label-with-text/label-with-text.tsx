@@ -4,7 +4,7 @@ import { Image, View } from 'react-native';
 import { palette } from '../../theme/palette';
 import { Text } from '../text/text';
 
-export function LabelWithText(props) {
+export function LabelWithTextRow(props) {
   const { label, text, countryFlag } = props;
   return (
     <View
@@ -43,6 +43,43 @@ export function LabelWithText(props) {
           }}
         />
       )}
+    </View>
+  );
+}
+
+export function LabelWithTextColumn(props) {
+  const { label, text } = props;
+  return (
+    <View
+      style={{
+        height: 60,
+        marginHorizontal: '5%',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Text
+        tx={label}
+        style={{
+          fontSize: 13,
+          color: palette.lighterBlack,
+          fontFamily: 'Geometria',
+          width: '100%',
+          textTransform: 'uppercase',
+          marginVertical: 5,
+        }}
+      />
+      <Text
+        text={text}
+        style={{
+          width: '100%',
+          fontSize: 15,
+          color: palette.darkBlack,
+          fontFamily: 'Geometria',
+          marginVertical: 5,
+        }}
+      />
     </View>
   );
 }

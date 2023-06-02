@@ -17,6 +17,7 @@ const FULL: ViewStyle = {
 };
 const CONTAINER: ViewStyle = {
   backgroundColor: palette.white,
+  height: '100%',
 };
 const HEADER: TextStyle = {};
 const HEADER_TITLE: TextStyle = {
@@ -28,8 +29,8 @@ const HEADER_TITLE: TextStyle = {
 };
 
 export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>> = observer(({ navigation }) => {
-  const { bankStore } = useStores();
-  const { bank } = bankStore;
+  const { authStore } = useStores();
+  const { currentAccount } = authStore;
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -37,15 +38,8 @@ export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>> = o
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='auto'>
           <Header headerTx='logoutScreen.swan' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            {/*<NoBank />*/}
-            <Bank bank={bank} />
-          </View>
+          {/*<NoBank />*/}
+          <Bank currentAccount={currentAccount} />
         </Screen>
       </View>
     </ErrorBoundary>
