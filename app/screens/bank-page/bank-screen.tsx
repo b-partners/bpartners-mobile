@@ -8,8 +8,8 @@ import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import {NoBank} from "./components/no-bank";
 import { Bank } from './components/bank';
+import { NoBank } from './components/no-bank';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -17,6 +17,7 @@ const FULL: ViewStyle = {
 const CONTAINER: ViewStyle = {
   backgroundColor: palette.white,
   height: '100%',
+  width: '100%',
 };
 const HEADER: TextStyle = {};
 const HEADER_TITLE: TextStyle = {
@@ -37,7 +38,7 @@ export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>> = o
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={CONTAINER} preset='auto'>
           <Header headerTx='logoutScreen.swan' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
-          { currentAccount.bank ? <Bank currentAccount={currentAccount} /> :  <NoBank/>}
+          {currentAccount.bank ? <Bank currentAccount={currentAccount} /> : <NoBank />}
         </Screen>
       </View>
     </ErrorBoundary>

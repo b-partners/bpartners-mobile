@@ -1,9 +1,9 @@
 import { ApiResponse } from 'apisauce';
 
+import { Account, AccountInfos } from '../../models/entities/account/account';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { BankConnection } from './api.types';
-import {Account, AccountInfos} from "../../models/entities/account/account";
 
 export class BankApi {
   private api: Api;
