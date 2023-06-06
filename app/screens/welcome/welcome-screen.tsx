@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import { Linking } from 'react-native';
+/*import { Linking } from 'react-native';*/
 import * as Keychain from 'react-native-keychain';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import * as yup from 'yup';
@@ -201,7 +201,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                     )}
                   </Button>
 
-                  <Button
+                  {/*<Button
                     onPress={async () => {
                       await await Linking.openURL('https://dashboard.bpartners.app/sign-up');
                     }}
@@ -228,7 +228,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                   </Button>
                   <View>
                     <Text style={styles.signup}>(sans engagement)</Text>
-                  </View>
+                  </View>*/}
                 </View>
               )}
             </Formik>
