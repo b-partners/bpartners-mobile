@@ -8,7 +8,7 @@ export const AccountModel = types.model('Account').props({
   name: types.maybe(types.maybeNull(types.string)),
   iban: types.maybe(types.maybeNull(types.string)),
   bic: types.maybe(types.maybeNull(types.string)),
-  bank: types.maybe(BankModel),
+  bank: types.maybeNull(BankModel),
 });
 
 export const AccountInfosModel = types.model('AccountInfos').props({
