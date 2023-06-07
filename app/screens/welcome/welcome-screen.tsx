@@ -6,7 +6,6 @@ import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-/*import { Linking } from 'react-native';*/
 import * as Keychain from 'react-native-keychain';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import * as yup from 'yup';
@@ -14,7 +13,7 @@ import * as yup from 'yup';
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
 import env from '../../config/env';
-import { translate } from '../../i18n/translate';
+import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -91,7 +90,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
         refreshToken: user.signInUserSession.refreshToken.token,
       };
       await Keychain.setGenericPassword(inputUsername, inputPassword);
-      authStore.whoami(newIdentity.accessToken);
+      await authStore.whoami(newIdentity.accessToken);
       navigation.navigate('oauth');
     } catch (error) {
       showMessage(translate('errors.credentials'), errorMessageStyles);
@@ -200,35 +199,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       </>
                     )}
                   </Button>
-
-                  {/*<Button
-                    onPress={async () => {
-                      await await Linking.openURL('https://dashboard.bpartners.app/sign-up');
-                    }}
-                    style={{
-                      borderRadius: 50,
-                      paddingVertical: spacing[3],
-                      backgroundColor: '#fff',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      marginTop: spacing[4],
-                    }}
-                  >
-                    <>
-                      <Text
-                        tx='welcomeScreen.signup'
-                        style={{
-                          color: color.palette.secondaryColor,
-                          fontFamily: 'Geometria-Bold',
-                          marginRight: spacing[2],
-                          textTransform: 'uppercase',
-                        }}
-                      />
-                    </>
-                  </Button>
-                  <View>
-                    <Text style={styles.signup}>(sans engagement)</Text>
-                  </View>*/}
                 </View>
               )}
             </Formik>
