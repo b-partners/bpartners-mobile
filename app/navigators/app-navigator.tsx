@@ -34,6 +34,7 @@ import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
 import { ProspectScreen } from '../screens/prospect/prospect-screen';
+import { RegistrationScreen } from '../screens/registration/registration-screen';
 import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
@@ -51,6 +52,7 @@ import { navigationRef, useBackButtonHandler } from './navigation-utilities';
  */
 export type NavigatorParamList = {
   welcome: undefined;
+  registration: undefined;
   home: undefined;
   transactionList: undefined;
   oauth: { code: string; state: string };
@@ -140,6 +142,7 @@ const AppStack = observer(function () {
       ) : (
         <>
           <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='registration' component={RegistrationScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       )}
