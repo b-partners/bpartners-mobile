@@ -2,12 +2,10 @@ import { Auth } from '@aws-amplify/auth';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
 import * as WebBrowser from 'expo-web-browser';
-import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
-import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import * as yup from 'yup';
 
 import awsExports from '../../../src/aws-exports';
@@ -22,6 +20,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL_HEIGHT } from '../marketplace/styles';
 import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
+import InputField from './components/input-field';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -53,11 +52,6 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
   const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
 
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(true);
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
   useEffect(() => {
     (async () => {
@@ -113,11 +107,6 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
     password: yup.string().required(passwordDangerMessage || 'Password is required'),
   });
 
-  const initialValues: LoginFormValues = {
-    email: '',
-    password: '',
-  };
-
   return (
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingWrapper>
@@ -128,6 +117,68 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
             resizeMethod='auto'
             style={{ position: 'absolute', height: '100%', width: '100%' }}
           />
+          <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
+            <AutoImage
+              source={require('../welcome/welcome.logo.png')}
+              resizeMode='contain'
+              resizeMethod='auto'
+              style={{ width: '100%', marginTop: spacing[8], height: 150 }}
+            />
+            <View style={styles.container}>
+              <View style={styles.field}>
+                <InputField labelTx={'registrationScreen.name'} error={false} />
+              </View>
+              <View style={styles.field}>
+                <InputField labelTx={'registrationScreen.firstname'} error={false} />
+              </View>
+              <View style={styles.field}>
+                <InputField labelTx={'registrationScreen.email'} error={false} />
+              </View>
+              <View style={styles.field}>
+                <InputField labelTx={'registrationScreen.phone'} error={false} />
+              </View>
+              <View style={styles.field}>
+                <InputField labelTx={'registrationScreen.company'} error={false} />
+              </View>
+              <Button
+                style={{
+                  borderRadius: 50,
+                  paddingVertical: spacing[3],
+                  backgroundColor: '#fff',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginTop: spacing[4],
+                }}
+              >
+                {loading ? (
+                  <Loader size={25} />
+                ) : (
+                  <>
+                    <Text
+                      tx='welcomeScreen.login'
+                      style={{
+                        color: color.palette.secondaryColor,
+                        fontFamily: 'Geometria-Bold',
+                        marginRight: spacing[2],
+                      }}
+                    />
+                    <Icon icon='user' />
+                  </>
+                )}
+              </Button>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
+                <Text tx='registrationScreen.already' style={{ fontFamily: 'Geometria', marginRight: spacing[1] }} />
+                <TouchableOpacity onPress={() => navigation.navigate('welcome')}>
+                  <Text tx='registrationScreen.connect' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View
+              style={{
+                marginTop: spacing[8] + spacing[2],
+              }}
+            />
+          </View>
         </Screen>
       </KeyboardAvoidingWrapper>
     </ErrorBoundary>
@@ -146,7 +197,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
   },
   field: {
     marginBottom: 10,

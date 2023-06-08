@@ -82,6 +82,15 @@
     "checkYourIdentity": "Veuillez vérifier votre email ou votre mot de passe, s'il vous plaît.",
     "signup": "S'inscrire"
   },
+  "registrationScreen": {
+    "already": "Déjà un compte ?",
+    "connect": "Se connecter",
+    "name": "Nom",
+    "firstname": "Prénom",
+    "email": "Adresse mail",
+    "phone": "Numéro de téléphone",
+    "company": "Nom de la société"
+  },
   "paymentInitiationScreen": {
     "label": "Paiement",
     "title": "Collecter un paiement",
