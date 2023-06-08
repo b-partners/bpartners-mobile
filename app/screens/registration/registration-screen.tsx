@@ -21,7 +21,7 @@ import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL_HEIGHT } from '../marketplace/styles';
-import KeyboardAvoidingWrapper from './keyboardAvoidingWrapper';
+import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -42,7 +42,7 @@ interface UserCredentials {
   username: string;
 }
 
-export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
+export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'registration'>> = observer(({ navigation }) => {
   if (env.isCi) {
     navigation.navigate('oauth');
     return null;
@@ -123,98 +123,11 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       <KeyboardAvoidingWrapper>
         <Screen backgroundColor={palette.white} style={FULL_HEIGHT}>
           <AutoImage
-            source={require('./welcome.background.png')}
+            source={require('../welcome/welcome.background.png')}
             resizeMode='stretch'
             resizeMethod='auto'
             style={{ position: 'absolute', height: '100%', width: '100%' }}
           />
-          <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
-            <AutoImage source={require('./welcome.logo.png')} resizeMode='contain' resizeMethod='auto' style={{ width: '100%', marginTop: spacing[8] }} />
-            <Formik initialValues={initialValues} validationSchema={LoginFormSchema} onSubmit={values => __DEV__ && console.tron.log(values)}>
-              {({ handleChange, handleBlur, values, errors, touched }) => (
-                <View style={styles.container}>
-                  <View style={styles.field}>
-                    <Text tx='welcomeScreen.email' style={styles.label} />
-                    <TextInput
-                      style={styles.input}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      defaultValue={userDetails.username !== null ? userDetails.username : values.email}
-                      keyboardType='email-address'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                    />
-                    {errors.email && touched.email && <Text style={styles.error}>{errors.email}</Text>}
-                  </View>
-                  <View style={styles.field}>
-                    <Text tx='welcomeScreen.password' style={styles.label} />
-                    <View style={{ width: '100%', flexDirection: 'row', borderWidth: 1, borderColor: '#ccc', borderRadius: 5 }}>
-                      <TextInput
-                        style={{
-                          backgroundColor: '#fff',
-                          padding: 10,
-                          width: '75%',
-                          color: palette.secondaryColor,
-                        }}
-                        onChangeText={handleChange('password')}
-                        onBlur={handleBlur('password')}
-                        defaultValue={userDetails.username !== null ? userDetails.password : values.password}
-                        secureTextEntry={showPassword}
-                      />
-                      <View style={{ width: '25%', backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>
-                        {showPassword ? (
-                          <IoniconIcon name='eye-off-outline' size={28} color={color.palette.secondaryColor} onPress={() => toggleShowPassword()} />
-                        ) : (
-                          <IoniconIcon name='eye-sharp' size={28} color={color.palette.secondaryColor} onPress={() => toggleShowPassword()} />
-                        )}
-                      </View>
-                    </View>
-                    {errors.password && touched.password && <Text style={styles.error}>{errors.password}</Text>}
-                  </View>
-                  <Button
-                    onPress={async () => {
-                      await signIn(values.email, values.password);
-                    }}
-                    style={{
-                      borderRadius: 50,
-                      paddingVertical: spacing[3],
-                      backgroundColor: '#fff',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      marginTop: spacing[4],
-                    }}
-                  >
-                    {loading ? (
-                      <Loader size={25} />
-                    ) : (
-                      <>
-                        <Text
-                          tx='welcomeScreen.login'
-                          style={{
-                            color: color.palette.secondaryColor,
-                            fontFamily: 'Geometria-Bold',
-                            marginRight: spacing[2],
-                          }}
-                        />
-                        <Icon icon='user' />
-                      </>
-                    )}
-                  </Button>
-                  <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
-                    <Text tx='welcomeScreen.noAccount' style={{ fontFamily: 'Geometria', marginRight: spacing[1] }} />
-                    <TouchableOpacity onPress={() => navigation.navigate('registration')}>
-                      <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-            </Formik>
-            <View
-              style={{
-                marginTop: spacing[8] + spacing[3],
-              }}
-            />
-          </View>
         </Screen>
       </KeyboardAvoidingWrapper>
     </ErrorBoundary>
