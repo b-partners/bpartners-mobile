@@ -3,14 +3,14 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
 import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import * as yup from 'yup';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
-import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
@@ -26,79 +26,23 @@ WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 
-type LoginFormValues = {
-  email: string;
-  password: string;
-};
-
 interface IdentityState {
   accessToken: string;
   refreshToken: string;
 }
 
-interface UserCredentials {
-  password: string;
-  username: string;
-}
-
 export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'registration'>> = observer(({ navigation }) => {
-  if (env.isCi) {
-    navigation.navigate('oauth');
-    return null;
-  }
-
-  const { authStore } = useStores();
-  const errorMessageStyles = { backgroundColor: palette.pastelRed };
-  const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
-
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const credentials = await Keychain.getGenericPassword();
-        if (credentials) {
-          setUserDetailValue(credentials);
-        }
-      } catch (error) {
-        __DEV__ && console.tron.log("Keychain couldn't be accessed!", error);
-      }
-    })();
-  }, []);
-
-  const userDetails: UserCredentials = {
-    password: userDetailValue.password,
-    username: userDetailValue.username,
-  };
-
-  async function signIn(username: string, password: string) {
-    try {
-      setLoading(true);
-      const inputUsername = userDetails.username ? userDetails.username : username;
-      const inputPassword = userDetails.username ? userDetails.password : password;
-
-      const user = await Auth.signIn(inputUsername, inputPassword);
-      const session = await Auth.currentSession();
-
-      const newIdentity: IdentityState = {
-        accessToken: session.getIdToken().getJwtToken(),
-        refreshToken: user.signInUserSession.refreshToken.token,
-      };
-      await Keychain.setGenericPassword(inputUsername, inputPassword);
-      await authStore.whoami(newIdentity.accessToken);
-      navigation.navigate('oauth');
-    } catch (error) {
-      showMessage(translate('errors.credentials'), errorMessageStyles);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { handleSubmit, register } = useForm({
+    defaultValues: { name: '', firstname: '', email: '', phone: '', company: '' },
+  });
 
   const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
   const passwordDangerMessage = <Text tx='welcomeScreen.passwordRequired' style={styles.danger} />;
 
   const LoginFormSchema = yup.object().shape({
-    email: yup
+    name: yup
       .string()
       .email()
       // @ts-ignore
@@ -126,19 +70,19 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
             />
             <View style={styles.container}>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.name'} error={false} />
+                <InputField labelTx={'registrationScreen.name'} error={false} {...register('name')} />
               </View>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.firstname'} error={false} />
+                <InputField labelTx={'registrationScreen.firstname'} error={false} {...register('firstname')} />
               </View>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.email'} error={false} />
+                <InputField labelTx={'registrationScreen.email'} error={false} {...register('email')} />
               </View>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.phone'} error={false} />
+                <InputField labelTx={'registrationScreen.phone'} error={false} {...register('phone')} />
               </View>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.company'} error={false} />
+                <InputField labelTx={'registrationScreen.company'} error={false} {...register('company')} />
               </View>
               <Button
                 style={{
