@@ -57,6 +57,15 @@
     "checkYourIdentity": "Please check your email or password",
     "signup": "Sign up"
   },
+  "registrationScreen": {
+    "already": "Already have an account",
+    "connect": "Login",
+    "name": "Name",
+    "firstname": "Firstname",
+    "email": "E-mail Address",
+    "phone": "Phone Number",
+    "company": "Company Name"
+  },
   "demoScreen": {
     "howTo": "HOW TO",
     "title": "What’s In This Stack?",
