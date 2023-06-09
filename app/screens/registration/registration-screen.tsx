@@ -1,18 +1,15 @@
-import { Auth } from '@aws-amplify/auth';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
 import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import * as Keychain from 'react-native-keychain';
 import * as yup from 'yup';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
-import { translate } from '../../i18n';
-import { useStores } from '../../models';
+import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -34,7 +31,7 @@ interface IdentityState {
 export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'registration'>> = observer(({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
-  const { handleSubmit, register } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: { name: '', firstname: '', email: '', phone: '', company: '' },
   });
 
@@ -50,6 +47,15 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
     // @ts-ignore
     password: yup.string().required(passwordDangerMessage || 'Password is required'),
   });
+
+  const onSubmit = async userInfos => {
+    try {
+      __DEV__ && console.tron.log(userInfos);
+    } catch (e) {
+      showMessage(e);
+      throw e;
+    }
+  };
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -70,19 +76,54 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
             />
             <View style={styles.container}>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.name'} error={false} {...register('name')} />
+                <Controller
+                  control={control}
+                  name='name'
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField labelTx={'registrationScreen.name'} error={false} value={value} onChange={onChange} />
+                  )}
+                />
               </View>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.firstname'} error={false} {...register('firstname')} />
+                <Controller
+                  control={control}
+                  name='firstname'
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField labelTx={'registrationScreen.firstname'} error={false} value={value} onChange={onChange} />
+                  )}
+                />
               </View>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.email'} error={false} {...register('email')} />
+                <Controller
+                  control={control}
+                  name='email'
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField labelTx={'registrationScreen.email'} error={false} value={value} onChange={onChange} />
+                  )}
+                />
               </View>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.phone'} error={false} {...register('phone')} />
+                <Controller
+                  control={control}
+                  name='phone'
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField labelTx={'registrationScreen.phone'} error={false} value={value} onChange={onChange} />
+                  )}
+                />
               </View>
               <View style={styles.field}>
-                <InputField labelTx={'registrationScreen.company'} error={false} {...register('company')} />
+                <Controller
+                  control={control}
+                  name='company'
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField labelTx={'registrationScreen.company'} error={false} value={value} onChange={onChange} />
+                  )}
+                />
               </View>
               <Button
                 style={{
@@ -93,13 +134,14 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                   flexDirection: 'row',
                   marginTop: spacing[4],
                 }}
+                onPress={handleSubmit(onSubmit)}
               >
                 {loading ? (
                   <Loader size={25} />
                 ) : (
                   <>
                     <Text
-                      tx='welcomeScreen.login'
+                      tx='welcomeScreen.signup'
                       style={{
                         color: color.palette.secondaryColor,
                         fontFamily: 'Geometria-Bold',
