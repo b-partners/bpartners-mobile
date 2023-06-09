@@ -5,11 +5,10 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import * as yup from 'yup';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
-import { InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -23,29 +22,23 @@ WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 
-interface IdentityState {
-  accessToken: string;
-  refreshToken: string;
+export interface UserInfos {
+  name: string;
+  firstname: string;
+  email: string;
+  phone: string;
+  company: string;
 }
 
 export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'registration'>> = observer(({ navigation }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
-  const { handleSubmit, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<UserInfos>({
     defaultValues: { name: '', firstname: '', email: '', phone: '', company: '' },
-  });
-
-  const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
-  const passwordDangerMessage = <Text tx='welcomeScreen.passwordRequired' style={styles.danger} />;
-
-  const LoginFormSchema = yup.object().shape({
-    name: yup
-      .string()
-      .email()
-      // @ts-ignore
-      .required(emailDangerMessage || 'Email is required'),
-    // @ts-ignore
-    password: yup.string().required(passwordDangerMessage || 'Password is required'),
   });
 
   const onSubmit = async userInfos => {
@@ -79,9 +72,18 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                 <Controller
                   control={control}
                   name='name'
+                  rules={{
+                    required: translate('errors.required'),
+                  }}
                   defaultValue=''
                   render={({ field: { onChange, value } }) => (
-                    <InputField labelTx={'registrationScreen.name'} error={false} value={value} onChange={onChange} />
+                    <InputField
+                      labelTx={'registrationScreen.name'}
+                      error={!!errors.name}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.name?.message}
+                    />
                   )}
                 />
               </View>
@@ -89,9 +91,17 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                 <Controller
                   control={control}
                   name='firstname'
-                  defaultValue=''
+                  rules={{
+                    required: translate('errors.required'),
+                  }}
                   render={({ field: { onChange, value } }) => (
-                    <InputField labelTx={'registrationScreen.firstname'} error={false} value={value} onChange={onChange} />
+                    <InputField
+                      labelTx={'registrationScreen.firstname'}
+                      error={!!errors.firstname}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.firstname?.message}
+                    />
                   )}
                 />
               </View>
@@ -99,9 +109,21 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                 <Controller
                   control={control}
                   name='email'
-                  defaultValue=''
+                  rules={{
+                    required: translate('errors.required'),
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: translate('errors.invalidEmail'),
+                    },
+                  }}
                   render={({ field: { onChange, value } }) => (
-                    <InputField labelTx={'registrationScreen.email'} error={false} value={value} onChange={onChange} />
+                    <InputField
+                      labelTx={'registrationScreen.email'}
+                      error={!!errors.email}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.email?.message}
+                    />
                   )}
                 />
               </View>
@@ -109,9 +131,17 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                 <Controller
                   control={control}
                   name='phone'
-                  defaultValue=''
+                  rules={{
+                    required: translate('errors.required'),
+                  }}
                   render={({ field: { onChange, value } }) => (
-                    <InputField labelTx={'registrationScreen.phone'} error={false} value={value} onChange={onChange} />
+                    <InputField
+                      labelTx={'registrationScreen.phone'}
+                      error={!!errors.phone}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.phone?.message}
+                    />
                   )}
                 />
               </View>
@@ -120,8 +150,17 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                   control={control}
                   name='company'
                   defaultValue=''
+                  rules={{
+                    required: translate('errors.required'),
+                  }}
                   render={({ field: { onChange, value } }) => (
-                    <InputField labelTx={'registrationScreen.company'} error={false} value={value} onChange={onChange} />
+                    <InputField
+                      labelTx={'registrationScreen.company'}
+                      error={!!errors.company}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.company?.message}
+                    />
                   )}
                 />
               </View>
