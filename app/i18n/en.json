@@ -39,7 +39,9 @@
     "operation": "Failed to add",
     "credentials": "please check your credentials!",
     "invalidPrice": "Invalid price",
-    "mandatoryTitle": "please fill out the title of your quotation !"
+    "mandatoryTitle": "please fill out the title of your quotation !",
+    "minPassword": "Password must contain at least 8 characters",
+    "invalidPassword": "The password must contain at least one capital letter, one special character and one number"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -67,6 +69,11 @@
     "company": "Company Name",
     "checkEmail": "To finalize your registration, an e-mail has been sent to you at",
     "confirm": "Confirmation"
+  },
+  "changePasswordScreen": {
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "firstConnexion": "First connexion ?"
   },
   "demoScreen": {
     "howTo": "HOW TO",
