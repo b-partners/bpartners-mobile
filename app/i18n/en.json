@@ -64,7 +64,7 @@
   "registrationScreen": {
     "already": "Already have an account",
     "connect": "Login",
-    "name": "Name",
+    "lastname": "Name",
     "firstname": "Firstname",
     "email": "E-mail Address",
     "phone": "Phone Number",
