@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
@@ -21,32 +21,21 @@ WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 
-export interface UserInfos {
-  name: string;
-  firstname: string;
-  email: string;
-  phone: string;
-  company: string;
-}
-
-export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'registration'>> = observer(({ navigation }) => {
+export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'changePassword'>> = observer(() => {
   const [loading] = useState(false);
-  const [isOpen, setOpen] = useState(false);
-  const [email, setEmail] = useState('');
 
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<UserInfos>({
+  } = useForm({
     mode: 'all',
-    defaultValues: { name: '', firstname: '', email: '', phone: '', company: '' },
+    defaultValues: { phoneNumber: '', newPassword: '', confirmPassword: '' },
   });
 
   const onSubmit = async userInfos => {
-    setEmail(userInfos.email);
     try {
-      setOpen(true);
+      __DEV__ && console.tron.log(userInfos);
     } catch (e) {
       showMessage(e);
       throw e;
@@ -68,24 +57,27 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               source={require('../welcome/welcome.logo.png')}
               resizeMode='contain'
               resizeMethod='auto'
-              style={{ width: '100%', marginTop: spacing[8], height: 150 }}
+              style={{ width: '100%', marginTop: spacing[8], height: 250 }}
             />
             <View style={styles.container}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: spacing[2] }}>
+                <Text tx='changePasswordScreen.firstConnexion' style={{ fontFamily: 'Geometria', marginRight: spacing[1] }} />
+              </View>
               <View style={styles.field}>
                 <Controller
                   control={control}
-                  name='name'
+                  name='phoneNumber'
                   rules={{
                     required: translate('errors.required'),
                   }}
                   defaultValue=''
                   render={({ field: { onChange, value } }) => (
                     <InputField
-                      labelTx={'registrationScreen.name'}
-                      error={!!errors.name}
+                      labelTx={'registrationScreen.phone'}
+                      error={!!errors.phoneNumber}
                       value={value}
                       onChange={onChange}
-                      errorMessage={errors.name?.message}
+                      errorMessage={errors.phoneNumber?.message}
                     />
                   )}
                 />
@@ -93,17 +85,25 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               <View style={styles.field}>
                 <Controller
                   control={control}
-                  name='firstname'
+                  name='newPassword'
                   rules={{
                     required: translate('errors.required'),
+                    minLength: {
+                      value: 8,
+                      message: translate('errors.minPassword', { length: 8 }),
+                    },
+                    pattern: {
+                      value: /[^(?=.*[!@#$%^&*()_+\-=])(?=.*\d)(?=.*[A-Z]).*$]/,
+                      message: translate('errors.invalidPassword'),
+                    },
                   }}
                   render={({ field: { onChange, value } }) => (
                     <InputField
-                      labelTx={'registrationScreen.firstname'}
-                      error={!!errors.firstname}
+                      labelTx={'changePasswordScreen.newPassword'}
+                      error={!!errors.newPassword}
                       value={value}
                       onChange={onChange}
-                      errorMessage={errors.firstname?.message}
+                      errorMessage={errors.newPassword?.message}
                     />
                   )}
                 />
@@ -111,7 +111,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               <View style={styles.field}>
                 <Controller
                   control={control}
-                  name='email'
+                  name='confirmPassword'
                   rules={{
                     required: translate('errors.required'),
                     pattern: {
@@ -121,53 +121,16 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                   }}
                   render={({ field: { onChange, value } }) => (
                     <InputField
-                      labelTx={'registrationScreen.email'}
-                      error={!!errors.email}
+                      labelTx={'changePasswordScreen.confirmPassword'}
+                      error={!!errors.confirmPassword}
                       value={value}
                       onChange={onChange}
-                      errorMessage={errors.email?.message}
+                      errorMessage={errors.confirmPassword?.message}
                     />
                   )}
                 />
               </View>
-              <View style={styles.field}>
-                <Controller
-                  control={control}
-                  name='phone'
-                  rules={{
-                    required: translate('errors.required'),
-                  }}
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'registrationScreen.phone'}
-                      error={!!errors.phone}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.phone?.message}
-                    />
-                  )}
-                />
-              </View>
-              <View style={styles.field}>
-                <Controller
-                  control={control}
-                  name='company'
-                  defaultValue=''
-                  rules={{
-                    required: translate('errors.required'),
-                  }}
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'registrationScreen.company'}
-                      error={!!errors.company}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.company?.message}
-                    />
-                  )}
-                />
-              </View>
-              {errors.company || errors.phone || errors.email || errors.name || errors.firstname ? (
+              {errors.phoneNumber || errors.newPassword || errors.confirmPassword ? (
                 <View
                   style={{
                     borderRadius: 50,
@@ -218,12 +181,6 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                   )}
                 </Button>
               )}
-              <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
-                <Text tx='registrationScreen.already' style={{ fontFamily: 'Geometria', marginRight: spacing[1] }} />
-                <TouchableOpacity onPress={() => navigation.navigate('welcome')}>
-                  <Text tx='registrationScreen.connect' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
-                </TouchableOpacity>
-              </View>
             </View>
             <View
               style={{
