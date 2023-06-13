@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
 
-import { color, spacing } from '../../theme';
+import { color } from '../../theme';
 
 const ERROR_TEXT: TextStyle = {
   color: color.error,
@@ -12,7 +12,6 @@ const ERROR_MESSAGE_CONTAINER: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  marginBottom: spacing[4],
 };
 
 interface ErrorMessageProps {
