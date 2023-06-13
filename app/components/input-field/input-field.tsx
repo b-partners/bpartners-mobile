@@ -2,10 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-import ErrorMessage from '../../../components/forms/error-message';
-import { TxKeyPath, translate } from '../../../i18n';
-import { color } from '../../../theme';
-import { palette } from '../../../theme/palette';
+import { TxKeyPath, translate } from '../../i18n';
+import { color } from '../../theme';
+import { palette } from '../../theme/palette';
+import ErrorMessage from '../forms/error-message';
 
 interface InputFieldProps {
   labelTx: TxKeyPath;
