@@ -7,7 +7,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
-import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
+import { AutoImage, Button, Loader, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -28,6 +28,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm({
     mode: 'all',
     defaultValues: { phoneNumber: '', newPassword: '', confirmPassword: '' },
@@ -41,6 +42,8 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
       throw e;
     }
   };
+
+  const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=])[A-Za-z\d!@#$%^&*()_+\-=]+$/;
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -93,7 +96,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                       message: translate('errors.minPassword', { length: 8 }),
                     },
                     pattern: {
-                      value: /[^(?=.*[!@#$%^&*()_+\-=])(?=.*\d)(?=.*[A-Z]).*$]/,
+                      value: passwordPattern,
                       message: translate('errors.invalidPassword'),
                     },
                   }}
@@ -114,9 +117,8 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                   name='confirmPassword'
                   rules={{
                     required: translate('errors.required'),
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: translate('errors.invalidEmail'),
+                    validate: {
+                      matchesPassword: value => value === watch('newPassword') || translate('errors.invalidConfirmPassword'),
                     },
                   }}
                   render={({ field: { onChange, value } }) => (
@@ -143,14 +145,13 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                   }}
                 >
                   <Text
-                    tx='welcomeScreen.signup'
+                    tx='common.register'
                     style={{
                       color: color.palette.secondaryColor,
                       fontFamily: 'Geometria-Bold',
                       marginRight: spacing[2],
                     }}
                   />
-                  <Icon icon='user' />
                 </View>
               ) : (
                 <Button
@@ -167,17 +168,14 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                   {loading ? (
                     <Loader size={25} />
                   ) : (
-                    <>
-                      <Text
-                        tx='welcomeScreen.signup'
-                        style={{
-                          color: color.palette.secondaryColor,
-                          fontFamily: 'Geometria-Bold',
-                          marginRight: spacing[2],
-                        }}
-                      />
-                      <Icon icon='user' />
-                    </>
+                    <Text
+                      tx='common.register'
+                      style={{
+                        color: color.palette.secondaryColor,
+                        fontFamily: 'Geometria-Bold',
+                        marginRight: spacing[2],
+                      }}
+                    />
                   )}
                 </Button>
               )}
