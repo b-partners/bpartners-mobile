@@ -1,3 +1,4 @@
+import { Auth } from '@aws-amplify/auth';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
 import * as WebBrowser from 'expo-web-browser';
@@ -11,19 +12,24 @@ import { AutoImage, Button, Loader, Screen, Text } from '../../components';
 import InputFieldPassword from '../../components/input-field-password/input-field-password';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
+import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
+import { IdentityState } from '../welcome/welcome-screen';
 
 WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 
-export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'changePassword'>> = observer(() => {
-  const [loading] = useState(false);
+export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'changePassword'>> = observer(({ navigation, route }) => {
+  const username = route.params?.userName;
+  const temporaryPassword = route.params?.password;
+  const [loading, setLoading] = useState(false);
+  const { authStore } = useStores();
 
   const {
     handleSubmit,
@@ -38,9 +44,22 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
   const onSubmit = async userInfos => {
     try {
       __DEV__ && console.tron.log(userInfos);
+      setLoading(true);
+      const user = await Auth.signIn(username, temporaryPassword);
+      const newUser = await Auth.completeNewPassword(user, userInfos.newPassword, { phone_number: userInfos.phoneNumber });
+      const session = await Auth.currentSession();
+
+      const newIdentity: IdentityState = {
+        accessToken: session.getIdToken().getJwtToken(),
+        refreshToken: newUser.signInUserSession.refreshToken.token,
+      };
+      await authStore.whoami(newIdentity.accessToken);
+      navigation.navigate('oauth');
     } catch (e) {
-      showMessage(e);
+      showMessage(e.message);
       throw e;
+    } finally {
+      setLoading(false);
     }
   };
 
