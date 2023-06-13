@@ -11,7 +11,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
-import { User, UserModel } from '../../entities/user/user';
+import { CreateUser, User, UserModel } from '../../entities/user/user';
 
 export const AuthStoreModel = types
   .model('SignIn')
@@ -79,6 +79,23 @@ export const AuthStoreModel = types
       } catch (e) {
         self.signInFail(e);
         self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    signUpFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    signUp: flow(function* (userInfos: CreateUser) {
+      const signUpApi = new AuthApi(self.environment.api);
+      try {
+        yield signUpApi.signUp(userInfos);
+        __DEV__ && console.tron.log('Sign Up Successfully ');
+      } catch (e) {
+        self.signInFail(e);
       }
     }),
   }))
