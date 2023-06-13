@@ -71,7 +71,10 @@ export type NavigatorParamList = {
     invoice: Invoice;
   };
   bridge: undefined;
-  changePassword: undefined;
+  changePassword: {
+    userName: string;
+    password: string;
+  };
 };
 
 export type TabNavigatorParamList = {
