@@ -14,9 +14,8 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
+import InputField from '../registration/components/input-field';
 import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
-import { CheckEmailModal } from './components/check-email-modal';
-import InputField from './components/input-field';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -232,7 +231,6 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               }}
             />
           </View>
-          <CheckEmailModal isOpen={isOpen} setOpen={setOpen} email={email} />
         </Screen>
       </KeyboardAvoidingWrapper>
     </ErrorBoundary>
