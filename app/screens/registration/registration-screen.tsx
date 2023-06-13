@@ -38,6 +38,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
     control,
     formState: { errors },
   } = useForm<UserInfos>({
+    mode: 'all',
     defaultValues: { name: '', firstname: '', email: '', phone: '', company: '' },
   });
 
@@ -164,33 +165,57 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                   )}
                 />
               </View>
-              <Button
-                style={{
-                  borderRadius: 50,
-                  paddingVertical: spacing[3],
-                  backgroundColor: '#fff',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  marginTop: spacing[4],
-                }}
-                onPress={handleSubmit(onSubmit)}
-              >
-                {loading ? (
-                  <Loader size={25} />
-                ) : (
-                  <>
-                    <Text
-                      tx='welcomeScreen.signup'
-                      style={{
-                        color: color.palette.secondaryColor,
-                        fontFamily: 'Geometria-Bold',
-                        marginRight: spacing[2],
-                      }}
-                    />
-                    <Icon icon='user' />
-                  </>
-                )}
-              </Button>
+              {errors.company || errors.phone || errors.email || errors.name || errors.firstname ? (
+                <View
+                  style={{
+                    borderRadius: 50,
+                    paddingVertical: spacing[3],
+                    backgroundColor: palette.solidGrey,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: spacing[4],
+                  }}
+                >
+                  <Text
+                    tx='welcomeScreen.signup'
+                    style={{
+                      color: color.palette.secondaryColor,
+                      fontFamily: 'Geometria-Bold',
+                      marginRight: spacing[2],
+                    }}
+                  />
+                  <Icon icon='user' />
+                </View>
+              ) : (
+                <Button
+                  style={{
+                    borderRadius: 50,
+                    paddingVertical: spacing[3],
+                    backgroundColor: '#fff',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginTop: spacing[4],
+                  }}
+                  onPress={handleSubmit(onSubmit)}
+                >
+                  {loading ? (
+                    <Loader size={25} />
+                  ) : (
+                    <>
+                      <Text
+                        tx='welcomeScreen.signup'
+                        style={{
+                          color: color.palette.secondaryColor,
+                          fontFamily: 'Geometria-Bold',
+                          marginRight: spacing[2],
+                        }}
+                      />
+                      <Icon icon='user' />
+                    </>
+                  )}
+                </Button>
+              )}
               <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
                 <Text tx='registrationScreen.already' style={{ fontFamily: 'Geometria', marginRight: spacing[1] }} />
                 <TouchableOpacity onPress={() => navigation.navigate('welcome')}>
