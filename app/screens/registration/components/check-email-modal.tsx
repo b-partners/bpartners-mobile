@@ -39,7 +39,7 @@ export const CheckEmailModal = ({ isOpen, setOpen, email }: InputFieldProps) => 
             borderColor: palette.secondaryColor,
           }}
         >
-          <Text tx={'registrationScreen.confirm'} style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 20 }}></Text>
+          <Text tx={'registrationScreen.confirm'} style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 20 }} />
           <Button
             onPress={() => {
               setOpen(false);
