@@ -24,7 +24,8 @@
     "noDataProvided": "No records to display",
     "loading": "Loading in progress ...",
     "added": "Successfully added",
-    "edit": "Modifier"
+    "edit": "Edit",
+    "register": "REGISTER"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -41,7 +42,8 @@
     "invalidPrice": "Invalid price",
     "mandatoryTitle": "please fill out the title of your quotation !",
     "minPassword": "Password must contain at least 8 characters",
-    "invalidPassword": "The password must contain at least one capital letter, one special character and one number"
+    "invalidPassword": "The password must contain at least one capital letter, one special character and one number",
+    "invalidConfirmPassword": "The passwords don't match !"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
