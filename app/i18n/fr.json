@@ -89,7 +89,7 @@
   "registrationScreen": {
     "already": "Déjà un compte ?",
     "connect": "Se connecter",
-    "name": "Nom",
+    "lastname": "Nom",
     "firstname": "Prénom",
     "email": "Adresse mail",
     "phone": "Numéro de téléphone",

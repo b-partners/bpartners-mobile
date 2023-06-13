@@ -10,6 +10,7 @@ import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
+import { CreateUser } from '../../models/entities/user/user';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -22,14 +23,6 @@ WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 
-export interface UserInfos {
-  name: string;
-  firstname: string;
-  email: string;
-  phone: string;
-  company: string;
-}
-
 export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'registration'>> = observer(({ navigation }) => {
   const [loading] = useState(false);
   const [isOpen, setOpen] = useState(false);
@@ -39,9 +32,9 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<UserInfos>({
+  } = useForm<CreateUser>({
     mode: 'all',
-    defaultValues: { name: '', firstname: '', email: '', phone: '', company: '' },
+    defaultValues: { lastName: '', firstName: '', email: '', phone: '', society: '' },
   });
 
   const onSubmit = async userInfos => {
@@ -75,18 +68,18 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               <View style={styles.field}>
                 <Controller
                   control={control}
-                  name='name'
+                  name='lastName'
                   rules={{
                     required: translate('errors.required'),
                   }}
                   defaultValue=''
                   render={({ field: { onChange, value } }) => (
                     <InputField
-                      labelTx={'registrationScreen.name'}
-                      error={!!errors.name}
+                      labelTx={'registrationScreen.lastname'}
+                      error={!!errors.lastName}
                       value={value}
                       onChange={onChange}
-                      errorMessage={errors.name?.message}
+                      errorMessage={errors.lastName?.message}
                     />
                   )}
                 />
@@ -94,17 +87,17 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               <View style={styles.field}>
                 <Controller
                   control={control}
-                  name='firstname'
+                  name='firstName'
                   rules={{
                     required: translate('errors.required'),
                   }}
                   render={({ field: { onChange, value } }) => (
                     <InputField
                       labelTx={'registrationScreen.firstname'}
-                      error={!!errors.firstname}
+                      error={!!errors.firstName}
                       value={value}
                       onChange={onChange}
-                      errorMessage={errors.firstname?.message}
+                      errorMessage={errors.firstName?.message}
                     />
                   )}
                 />
@@ -152,7 +145,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               <View style={styles.field}>
                 <Controller
                   control={control}
-                  name='company'
+                  name='society'
                   defaultValue=''
                   rules={{
                     required: translate('errors.required'),
@@ -160,15 +153,15 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                   render={({ field: { onChange, value } }) => (
                     <InputField
                       labelTx={'registrationScreen.company'}
-                      error={!!errors.company}
+                      error={!!errors.society}
                       value={value}
                       onChange={onChange}
-                      errorMessage={errors.company?.message}
+                      errorMessage={errors.society?.message}
                     />
                   )}
                 />
               </View>
-              {errors.company || errors.phone || errors.email || errors.name || errors.firstname ? (
+              {errors.society || errors.phone || errors.email || errors.lastName || errors.firstName ? (
                 <View
                   style={{
                     borderRadius: 50,
