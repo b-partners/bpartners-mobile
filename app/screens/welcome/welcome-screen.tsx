@@ -32,7 +32,7 @@ type LoginFormValues = {
   password: string;
 };
 
-interface IdentityState {
+export interface IdentityState {
   accessToken: string;
   refreshToken: string;
 }
@@ -84,7 +84,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
       const user = await Auth.signIn(inputUsername, inputPassword);
       if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-        navigation.navigate('changePassword');
+        navigation.navigate('changePassword', { userName: inputUsername, password: inputPassword });
       }
       const session = await Auth.currentSession();
 
