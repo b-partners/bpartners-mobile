@@ -10,6 +10,7 @@ import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
+import { useStores } from '../../models';
 import { CreateUser } from '../../models/entities/user/user';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -24,13 +25,15 @@ WebBrowser.maybeCompleteAuthSession();
 Amplify.configure(awsExports);
 
 export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'registration'>> = observer(({ navigation }) => {
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const { authStore } = useStores();
 
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<CreateUser>({
     mode: 'all',
@@ -40,7 +43,15 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
   const onSubmit = async userInfos => {
     setEmail(userInfos.email);
     try {
+      __DEV__ && console.tron.log(userInfos);
+      setLoading(true);
+      await authStore.signUp(userInfos);
+      setLoading(false);
       setOpen(true);
+      setTimeout(() => {
+        navigation.navigate('welcome');
+      }, 3000);
+      reset();
     } catch (e) {
       showMessage(e);
       throw e;
