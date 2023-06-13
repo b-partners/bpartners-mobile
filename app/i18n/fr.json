@@ -112,7 +112,9 @@
     "firstname": "Prénom",
     "email": "Adresse mail",
     "phone": "Numéro de téléphone",
-    "company": "Nom de la société"
+    "company": "Nom de la société",
+    "checkEmail": "Pour finaliser votre inscription, un mail vous a été envoyé au",
+    "confirm": "Confirmation"
   },
   "paymentInitiationScreen": {
     "label": "Paiement",
