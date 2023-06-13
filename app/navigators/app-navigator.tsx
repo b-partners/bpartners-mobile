@@ -27,6 +27,7 @@ import {
   TransactionListScreen,
   WelcomeScreen,
 } from '../screens';
+import { ChangePasswordScreen } from '../screens/change-password/change-password-screen';
 import { CodeExchangeScreen } from '../screens/code-exchange/code-exchange-screen';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicePreviewScreen } from '../screens/invoice-preview/invoice-preview-screen';
@@ -70,6 +71,7 @@ export type NavigatorParamList = {
     invoice: Invoice;
   };
   bridge: undefined;
+  changePassword: undefined;
 };
 
 export type TabNavigatorParamList = {
@@ -143,6 +145,7 @@ const AppStack = observer(function () {
         <>
           <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='registration' component={RegistrationScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='changePassword' component={ChangePasswordScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       )}

@@ -39,7 +39,9 @@
     "operation": "Échec de l'ajout",
     "credentials": "Veuillez vérifier vos identifiants!",
     "invalidPrice": "Prix invalide",
-    "mandatoryTitle": "veuillez renseigner le titre du devis !"
+    "mandatoryTitle": "veuillez renseigner le titre du devis !",
+    "minPassword": "Le mot de passe doit contenir au moins 8 caractères",
+    "invalidPassword": "Le mot de passe doit au moins contenir une majuscule, un caractère spécial et un chiffre"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
@@ -91,7 +93,14 @@
     "phone": "Numéro de téléphone",
     "company": "Nom de la société",
     "checkEmail": "Pour finaliser votre inscription, un mail vous a été envoyé au",
-    "confirm": "Confirmation"
+    "confirm": "Confirmation",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmez le mot de passe"
+  },
+  "changePasswordScreen": {
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmez le mot de passe",
+    "firstConnexion": "Première connexion ?"
   },
   "paymentInitiationScreen": {
     "label": "Paiement",
