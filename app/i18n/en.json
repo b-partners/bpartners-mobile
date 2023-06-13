@@ -98,7 +98,9 @@
     "firstname": "Firstname",
     "email": "E-mail Address",
     "phone": "Phone Number",
-    "company": "Company Name"
+    "company": "Company Name",
+    "checkEmail": "To finalize your registration, an e-mail has been sent to you at",
+    "confirm": "Confirmation"
   },
   "demoScreen": {
     "howTo": "HOW TO",
