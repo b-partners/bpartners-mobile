@@ -83,6 +83,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       const inputPassword = userDetails.username ? userDetails.password : password;
 
       const user = await Auth.signIn(inputUsername, inputPassword);
+      if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+        navigation.navigate('changePassword');
+      }
       const session = await Auth.currentSession();
 
       const newIdentity: IdentityState = {
