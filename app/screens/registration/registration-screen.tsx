@@ -8,6 +8,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
+import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -16,7 +17,6 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
 import { CheckEmailModal } from './components/check-email-modal';
-import InputField from './components/input-field';
 
 WebBrowser.maybeCompleteAuthSession();
 

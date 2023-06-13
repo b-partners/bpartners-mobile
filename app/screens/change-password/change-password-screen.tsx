@@ -8,13 +8,14 @@ import { StyleSheet, View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Loader, Screen, Text } from '../../components';
+import InputFieldPassword from '../../components/input-field-password/input-field-password';
+import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import InputField from '../registration/components/input-field';
 import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
 
 WebBrowser.maybeCompleteAuthSession();
@@ -101,7 +102,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                     },
                   }}
                   render={({ field: { onChange, value } }) => (
-                    <InputField
+                    <InputFieldPassword
                       labelTx={'changePasswordScreen.newPassword'}
                       error={!!errors.newPassword}
                       value={value}
@@ -122,7 +123,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                     },
                   }}
                   render={({ field: { onChange, value } }) => (
-                    <InputField
+                    <InputFieldPassword
                       labelTx={'changePasswordScreen.confirmPassword'}
                       error={!!errors.confirmPassword}
                       value={value}
