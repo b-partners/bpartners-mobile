@@ -54,7 +54,7 @@ export type GetTokenResult = { kind: 'ok'; accessToken: string; refreshToken: st
 
 export type GetWhoAmIResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
-export type CreateUserResult = { kind: 'ok'; pre_user: any } | GeneralApiProblem;
+export type CreateUserResult = { kind: 'ok'; newUser: User } | GeneralApiProblem;
 
 export type GetUserAccount = { kind: 'ok'; account: Account } | GeneralApiProblem;
 
