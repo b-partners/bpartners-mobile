@@ -58,6 +58,14 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     setShowPassword(!showPassword);
   };
 
+  const userDetails: UserCredentials = {
+    password: userDetailValue.password,
+    username: userDetailValue.username,
+  };
+
+  const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
+  const passwordDangerMessage = <Text tx='welcomeScreen.passwordRequired' style={styles.danger} />;
+
   useEffect(() => {
     (async () => {
       try {
@@ -71,17 +79,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     })();
   }, []);
 
-  const userDetails: UserCredentials = {
-    password: userDetailValue.password,
-    username: userDetailValue.username,
-  };
-
-  async function signIn(username: string, password: string) {
+  async function signIn(inputUsername: string, inputPassword: string) {
     try {
       setLoading(true);
-      const inputUsername = username;
-      const inputPassword = password;
-      __DEV__ && console.tron.log(inputPassword, inputUsername);
       const user = await Auth.signIn(inputUsername, inputPassword);
       if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
         navigation.navigate('changePassword', { userName: inputUsername, password: inputPassword });
@@ -93,12 +93,13 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
         refreshToken: user.signInUserSession.refreshToken.token,
       };
       await Keychain.setGenericPassword(inputUsername, inputPassword);
-      await authStore.checkLegalFile(newIdentity.accessToken);
+      await authStore.whoami(newIdentity.accessToken);
+      await legalFilesStore.getLegalFiles();
       const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
       if (!hasApprovedLegalFiles) {
         navigation.navigate('legalFile');
       } else {
-        await authStore.whoami();
+        await authStore.getAccounts();
         navigation.navigate('oauth');
       }
     } catch (error) {
@@ -108,8 +109,10 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     }
   }
 
-  const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
-  const passwordDangerMessage = <Text tx='welcomeScreen.passwordRequired' style={styles.danger} />;
+  const initialValues: LoginFormValues = {
+    email: userDetails.username ?? '',
+    password: userDetails.password ?? '',
+  };
 
   const LoginFormSchema = yup.object().shape({
     email: yup
@@ -120,11 +123,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     // @ts-ignore
     password: yup.string().required(passwordDangerMessage || 'Password is required'),
   });
-
-  const initialValues: LoginFormValues = {
-    email: userDetails.username ? userDetails.username : '',
-    password: userDetails.password ? userDetails.password : '',
-  };
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -147,7 +145,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       style={styles.input}
                       onChangeText={handleChange('email')}
                       onBlur={handleBlur('email')}
-                      defaultValue={userDetails.username !== null ? userDetails.username : values.email}
+                      defaultValue={userDetails.username ?? values.email}
                       keyboardType='email-address'
                       autoCapitalize='none'
                       autoCorrect={false}
@@ -166,7 +164,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                         }}
                         onChangeText={handleChange('password')}
                         onBlur={handleBlur('password')}
-                        defaultValue={userDetails.username !== null ? userDetails.password : values.password}
+                        defaultValue={userDetails.password ?? values.password}
                         secureTextEntry={showPassword}
                       />
                       <View style={{ width: '25%', backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>

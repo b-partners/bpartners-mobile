@@ -83,24 +83,6 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    whoamiSuccess: (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
-      self.currentUser = { ...currentUser };
-      self.currentAccount = { ...currentAccount };
-      self.currentAccountHolder = { ...currentAccountHolder };
-
-      save('currentUser', currentUser);
-      save('currentAccount', currentAccount);
-      save('currentAccountHolder', currentAccountHolder);
-    },
-  }))
-  .actions(self => ({
-    whoamiFail: error => {
-      __DEV__ && console.tron.log(error.message || error);
-      self.catchOrThrow(error);
-    },
-  }))
-
-  .actions(self => ({
     setCachedCredentials: flow(function* () {
       // yield AsyncStorage.multiSet([['accessToken', self.accessToken]]);
       yield save('accessToken', self.accessToken);
@@ -146,39 +128,45 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    whoami: flow(function* () {
-      __DEV__ && console.tron.log('WHO AM I CALLED');
-      const accountApi = new AccountApi(self.environment.api);
-      let getAccountResult, getAccountHolderResult;
+    whoami: flow(function* (accessToken: string) {
+      __DEV__ && console.tron.log('WHO AM I ?');
+      const signInApi = new AuthApi(self.environment.api);
       try {
-        // const session = yield Auth.currentSession();
-        // const accessToken = session.getIdToken().getJwtToken();
-
-        getAccountResult = yield accountApi.getAccounts(self.currentUser.id);
-        getAccountHolderResult = yield accountApi.getAccountHolders(self.currentUser.id, getAccountResult.account.id);
-        self.whoamiSuccess(self.currentUser, getAccountResult.account, getAccountHolderResult.accountHolder);
+        yield self.getTokenSuccess({ accessToken });
+        const whoAmiResult = yield signInApi.whoami();
+        self.currentUser = whoAmiResult.user;
       } catch (e) {
-        self.whoamiFail(e);
+        self.catchOrThrow(e);
         __DEV__ && console.tron.log('Handle who am I error here');
       }
     }),
   }))
   .actions(self => ({
-    checkLegalFile: flow(function* (accessToken: string) {
-      const signInApi = new AuthApi(self.environment.api);
-      let whoAmiResult;
+    getAccountSuccess: (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
+      self.currentAccount = { ...currentAccount };
+      self.currentAccountHolder = { ...currentAccountHolder };
+
+      save('currentUser', currentUser);
+      save('currentAccount', currentAccount);
+      save('currentAccountHolder', currentAccountHolder);
+    },
+  }))
+  .actions(self => ({
+    getAccountFail: error => {
+      __DEV__ && console.tron.log(error.message);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getAccounts: flow(function* () {
+      const accountApi = new AccountApi(self.environment.api);
       try {
-        // const session = yield Auth.currentSession();
-        // const accessToken = session.getIdToken().getJwtToken();
-
-        yield self.getTokenSuccess({ accessToken });
-        whoAmiResult = yield signInApi.whoami();
-        self.currentUser = whoAmiResult.user;
-
-        yield self.rootStore.legalFilesStore.getLegalFiles();
+        const getAccountResult = yield accountApi.getAccounts(self.currentUser.id);
+        const getAccountHolderResult = yield accountApi.getAccountHolders(self.currentUser.id, getAccountResult.account.id);
+        self.getAccountSuccess(self.currentUser, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
-        self.catchOrThrow(e);
-        __DEV__ && console.tron.log('Handle get Legal Files');
+        self.getAccountFail(e);
+        __DEV__ && console.tron.log('Handle who am I error here');
       }
     }),
   }))
