@@ -16,11 +16,6 @@ export interface ApiConfig {
   tokenWhiteList: string[];
 }
 
-export interface ApiConfigWithoutToken {
-  url: string;
-  timeout: number;
-}
-
 /**
  * The default configuration for the app.
  */
@@ -28,9 +23,4 @@ export const DEFAULT_API_CONFIG: ApiConfig = {
   url: env.apiBaseUrl || '',
   timeout: 10000,
   tokenWhiteList: ['authInitiation', 'token'],
-};
-
-export const API_CONFIG_WITHOUT_TOKEN: ApiConfigWithoutToken = {
-  url: env.apiBaseUrl || '',
-  timeout: 10000,
 };
