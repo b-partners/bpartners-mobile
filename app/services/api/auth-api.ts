@@ -2,10 +2,9 @@ import { ApiResponse } from 'apisauce';
 import { v4 as uuid } from 'uuid';
 
 import env from '../../config/env';
-import { CreateUser } from '../../models/entities/user/user';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { CreateUserResult, GetTokenResult, GetWhoAmIResult, SignInResult } from './api.types';
+import { GetTokenResult, GetWhoAmIResult, SignInResult } from './api.types';
 
 export class AuthApi {
   private api: Api;
@@ -30,19 +29,6 @@ export class AuthApi {
     const { redirectionUrl, successUrl, failureUrl } = response.data;
 
     return { kind: 'ok', redirectionUrl, successUrl, failureUrl };
-  }
-
-  async signUp(user: CreateUser): Promise<CreateUserResult> {
-    const response: ApiResponse<any> = await this.api.apisauce.post('preUsers', {
-      user,
-    });
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response);
-      if (problem) throw new Error(problem.kind);
-    }
-    const pre_user = response.data;
-
-    return { kind: 'ok', pre_user };
   }
 
   async getToken(code: string): Promise<GetTokenResult> {
