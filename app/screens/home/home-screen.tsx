@@ -43,7 +43,7 @@ export const Logo: FC<{ uri: string; logoStyle: ViewStyle }> = observer(({ uri, 
 });
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, legalFilesStore, authStore, invoiceStore, draftStore, quotationStore } = useStores();
+  const { transactionStore, authStore, invoiceStore, draftStore, quotationStore } = useStores();
 
   const { availableBalance } = authStore.currentAccount;
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
@@ -54,7 +54,6 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
   useEffect(() => {
     const date = new Date();
-    legalFilesStore.getLegalFiles();
     transactionStore.getTransactions();
     transactionStore.getTransactionsSummary(date.getFullYear());
   }, []);
