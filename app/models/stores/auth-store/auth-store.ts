@@ -146,10 +146,27 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    whoami: flow(function* (accessToken: string) {
-      const signInApi = new AuthApi(self.environment.api);
+    whoami: flow(function* () {
+      __DEV__ && console.tron.log('WHO AM I CALLED');
       const accountApi = new AccountApi(self.environment.api);
-      let whoAmiResult, getAccountResult, getAccountHolderResult;
+      let getAccountResult, getAccountHolderResult;
+      try {
+        // const session = yield Auth.currentSession();
+        // const accessToken = session.getIdToken().getJwtToken();
+
+        getAccountResult = yield accountApi.getAccounts(self.currentUser.id);
+        getAccountHolderResult = yield accountApi.getAccountHolders(self.currentUser.id, getAccountResult.account.id);
+        self.whoamiSuccess(self.currentUser, getAccountResult.account, getAccountHolderResult.accountHolder);
+      } catch (e) {
+        self.whoamiFail(e);
+        __DEV__ && console.tron.log('Handle who am I error here');
+      }
+    }),
+  }))
+  .actions(self => ({
+    checkLegalFile: flow(function* (accessToken: string) {
+      const signInApi = new AuthApi(self.environment.api);
+      let whoAmiResult;
       try {
         // const session = yield Auth.currentSession();
         // const accessToken = session.getIdToken().getJwtToken();
@@ -159,15 +176,10 @@ export const AuthStoreModel = types
         self.currentUser = whoAmiResult.user;
 
         yield self.rootStore.legalFilesStore.getLegalFiles();
-
-        getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
-        getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
-        self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
-        self.whoamiFail(e);
-        __DEV__ && console.tron.log('Handle who am I error here');
+        self.catchOrThrow(e);
+        __DEV__ && console.tron.log('Handle get Legal Files');
       }
-      yield self.rootStore.legalFilesStore.getLegalFiles();
     }),
   }))
   .actions(self => ({

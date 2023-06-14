@@ -5,6 +5,7 @@ export const LegalFileModel = types.model('LegalFile').props({
   name: types.maybe(types.maybeNull(types.string)),
   fileUrl: types.maybe(types.maybeNull(types.string)),
   approvalDatetime: types.maybe(types.maybeNull(types.string)),
+  toBeConfirmed: types.maybe(types.maybeNull(types.boolean)),
 });
 
 export interface LegalFile extends Instance<typeof LegalFileModel> {}
@@ -17,4 +18,5 @@ export const createLegalFileDefaultModel = () =>
     name: '',
     fileUrl: '',
     approvalDatetime: '',
+    toBeConfirmed: false,
   });
