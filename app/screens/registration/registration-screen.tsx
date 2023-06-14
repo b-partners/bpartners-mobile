@@ -28,7 +28,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
   const [loading, setLoading] = useState(false);
   const [isOpen, setOpen] = useState(false);
   const [email, setEmail] = useState('');
-  const { authStore } = useStores();
+  const { onboardingStore } = useStores();
 
   const {
     handleSubmit,
@@ -37,7 +37,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
     formState: { errors },
   } = useForm<CreateUser>({
     mode: 'all',
-    defaultValues: { lastName: '', firstName: '', email: '', phone: '', society: '' },
+    defaultValues: { lastName: '', firstName: '', email: '', phoneNumber: '', companyName: '' },
   });
 
   const onSubmit = async userInfos => {
@@ -45,16 +45,20 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
     try {
       __DEV__ && console.tron.log(userInfos);
       setLoading(true);
-      await authStore.signUp(userInfos);
+      await onboardingStore.signUp(userInfos);
       setLoading(false);
       setOpen(true);
       setTimeout(() => {
         navigation.navigate('welcome');
-      }, 3000);
-      reset();
+      }, 5000);
     } catch (e) {
       showMessage(e);
       throw e;
+    } finally {
+      reset();
+      setTimeout(() => {
+        setOpen(false);
+      }, 5000);
     }
   };
 
@@ -138,17 +142,17 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               <View style={styles.field}>
                 <Controller
                   control={control}
-                  name='phone'
+                  name='phoneNumber'
                   rules={{
                     required: translate('errors.required'),
                   }}
                   render={({ field: { onChange, value } }) => (
                     <InputField
                       labelTx={'registrationScreen.phone'}
-                      error={!!errors.phone}
+                      error={!!errors.phoneNumber}
                       value={value}
                       onChange={onChange}
-                      errorMessage={errors.phone?.message}
+                      errorMessage={errors.phoneNumber?.message}
                     />
                   )}
                 />
@@ -156,7 +160,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               <View style={styles.field}>
                 <Controller
                   control={control}
-                  name='society'
+                  name='companyName'
                   defaultValue=''
                   rules={{
                     required: translate('errors.required'),
@@ -164,15 +168,15 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                   render={({ field: { onChange, value } }) => (
                     <InputField
                       labelTx={'registrationScreen.company'}
-                      error={!!errors.society}
+                      error={!!errors.companyName}
                       value={value}
                       onChange={onChange}
-                      errorMessage={errors.society?.message}
+                      errorMessage={errors.companyName?.message}
                     />
                   )}
                 />
               </View>
-              {errors.society || errors.phone || errors.email || errors.lastName || errors.firstName ? (
+              {errors.companyName || errors.phoneNumber || errors.email || errors.lastName || errors.firstName ? (
                 <View
                   style={{
                     borderRadius: 50,

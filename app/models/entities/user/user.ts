@@ -24,7 +24,7 @@ export interface UserSnapshotIn extends SnapshotIn<typeof UserModel> {}
 export const CreateUserModel = types.model('CreateUser').props({
   firstName: types.maybeNull(types.string),
   lastName: types.maybeNull(types.string),
-  society: types.maybeNull(types.string),
+  companyName: types.maybeNull(types.string),
   email: types.maybeNull(types.string),
-  phone: types.maybeNull(types.string),
+  phoneNumber: types.maybeNull(types.string),
 });
