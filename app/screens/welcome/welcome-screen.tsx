@@ -48,7 +48,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     return null;
   }
 
-  const { authStore } = useStores();
+  const { authStore, legalFilesStore } = useStores();
   const errorMessageStyles = { backgroundColor: palette.pastelRed };
   const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
   const [loading, setLoading] = useState(false);
@@ -93,8 +93,14 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
         refreshToken: user.signInUserSession.refreshToken.token,
       };
       await Keychain.setGenericPassword(inputUsername, inputPassword);
-      await authStore.whoami(newIdentity.accessToken);
-      navigation.navigate('oauth');
+      await authStore.checkLegalFile(newIdentity.accessToken);
+      const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
+      if (!hasApprovedLegalFiles) {
+        navigation.navigate('legalFile');
+      } else {
+        await authStore.whoami();
+        navigation.navigate('oauth');
+      }
     } catch (error) {
       showMessage(translate('errors.credentials'), errorMessageStyles);
     } finally {

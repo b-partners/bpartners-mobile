@@ -29,7 +29,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
   const username = route.params?.userName;
   const temporaryPassword = route.params?.password;
   const [loading, setLoading] = useState(false);
-  const { authStore } = useStores();
+  const { authStore, legalFilesStore } = useStores();
 
   const {
     handleSubmit,
@@ -53,6 +53,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
         accessToken: session.getIdToken().getJwtToken(),
         refreshToken: newUser.signInUserSession.refreshToken.token,
       };
+      await legalFilesStore.getLegalFiles();
       await authStore.whoami(newIdentity.accessToken);
       navigation.navigate('oauth');
     } catch (e) {
