@@ -49,7 +49,11 @@ export class Api {
       if (!this.config.tokenWhiteList.includes(request.url)) {
         try {
           const accessToken = await AsyncStorage.getItem('accessToken');
-          request.headers.Authorization = `Bearer ${accessToken.replace(/"/g, '')}`;
+          if (accessToken && accessToken.trim() !== '') {
+            request.headers.Authorization = `Bearer ${accessToken.replace(/"/g, '')}`;
+          } else {
+            request.headers.Authorization = 'Bearer null';
+          }
         } catch (e) {
           throw new Error(e);
         }
