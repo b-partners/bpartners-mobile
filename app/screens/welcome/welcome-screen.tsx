@@ -79,9 +79,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   async function signIn(username: string, password: string) {
     try {
       setLoading(true);
-      const inputUsername = userDetails.username ? userDetails.username : username;
-      const inputPassword = userDetails.username ? userDetails.password : password;
-
+      const inputUsername = username;
+      const inputPassword = password;
+      __DEV__ && console.tron.log(inputPassword, inputUsername);
       const user = await Auth.signIn(inputUsername, inputPassword);
       if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
         navigation.navigate('changePassword', { userName: inputUsername, password: inputPassword });
@@ -122,8 +122,8 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   });
 
   const initialValues: LoginFormValues = {
-    email: '',
-    password: '',
+    email: userDetails.username ? userDetails.username : '',
+    password: userDetails.password ? userDetails.password : '',
   };
 
   return (
