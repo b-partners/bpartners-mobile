@@ -70,7 +70,7 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
                 }
               }}
             >
-              {({ handleChange, handleBlur, values, errors, touched, handleSubmit }) => (
+              {({ handleChange, handleBlur, errors, touched, handleSubmit }) => (
                 <View style={styles.container}>
                   <View style={styles.field}>
                     <Text tx='welcomeScreen.email' style={styles.label} />

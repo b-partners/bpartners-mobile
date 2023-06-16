@@ -149,7 +149,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
             resizeMethod='auto'
             style={{ position: 'absolute', height: '100%', width: '100%' }}
           />
-          <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
+          <View style={{ paddingHorizontal: spacing[8], height: '100%', marginBottom: spacing[8] }}>
             <AutoImage source={require('./welcome.logo.png')} resizeMode='contain' resizeMethod='auto' style={{ width: '100%', marginTop: spacing[8] }} />
             <Formik initialValues={initialValues} validationSchema={LoginFormSchema} onSubmit={values => __DEV__ && console.tron.log(values)}>
               {({ handleChange, handleBlur, values, errors, touched }) => (
