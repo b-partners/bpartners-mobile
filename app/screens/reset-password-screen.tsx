@@ -33,7 +33,7 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
   };
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
+      <Header leftIcon={'back'} onLeftPress={() => navigation.navigate('forgotPassword')} />
       <Screen preset='scroll' backgroundColor='#fff'>
         <KeyboardAvoidingWrapper>
           <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
