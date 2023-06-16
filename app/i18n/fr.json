@@ -386,6 +386,9 @@
     "noBank": "Aucune banque associé",
     "associate": "Associer une banque"
   },
+  "forgotPasswordScreen": {
+    "title": "Mot de passe oublié ?"
+  },
   "bottomTab": {
     "account": "Comptes",
     "activity": "Activité",
