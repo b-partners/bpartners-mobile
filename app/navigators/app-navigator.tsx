@@ -36,7 +36,8 @@ import { InvoicePreviewScreen } from '../screens/invoice-preview/invoice-preview
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
-import { ProspectScreen } from '../screens/prospect/prospect-screen';import { RegistrationScreen } from '../screens/registration/registration-screen';
+import { ProspectScreen } from '../screens/prospect/prospect-screen';
+import { RegistrationScreen } from '../screens/registration/registration-screen';
 import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 

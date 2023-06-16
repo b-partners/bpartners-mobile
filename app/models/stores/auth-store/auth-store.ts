@@ -10,7 +10,7 @@ import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
-import { Account, AccountInfos,AccountModel } from '../../entities/account/account';
+import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
 import { AuthUserModel } from '../../entities/user/AuthUser';
 import { User, UserModel } from '../../entities/user/user';
 
