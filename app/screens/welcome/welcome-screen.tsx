@@ -5,7 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TextInput, TextStyle, TouchableOpacity, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import * as yup from 'yup';
@@ -53,6 +53,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -124,6 +125,20 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     password: yup.string().required(passwordDangerMessage || 'Password is required'),
   });
 
+  const toggleMouseEnter = () => {
+    setIsHovered(!isHovered);
+  };
+
+  const normalText: TextStyle = {
+    textDecorationLine: 'none',
+  };
+
+  const underlinedText: TextStyle = {
+    textDecorationLine: 'underline',
+  };
+
+  const textStyle = isHovered ? underlinedText : normalText;
+
   return (
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingWrapper>
@@ -176,6 +191,11 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       </View>
                     </View>
                     {errors.password && touched.password && <Text style={styles.error}>{errors.password}</Text>}
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
+                      <TouchableOpacity onPress={() => navigation.navigate('forgotPassword')} onPressIn={toggleMouseEnter} onPressOut={toggleMouseEnter}>
+                        <Text tx='welcomeScreen.forgotPassword' style={[{ fontFamily: 'Geometria-Bold' }, textStyle]} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <Button
                     onPress={async () => {
