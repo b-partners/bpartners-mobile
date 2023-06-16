@@ -3,7 +3,7 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { Icon, Text } from '../../../components';
 import { translate } from '../../../i18n';
-import { AccountHolder as IAccountHolder } from '../../../models/entities/account-holder/account-holder';
+import { RevenueTarget } from '../../../models/entities/revenue-target/revenue-target';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { currencyPipe } from '../../../utils/pipes';
@@ -53,15 +53,13 @@ const PROGRESS_BAR_TEXT_STYLE: TextStyle = {
 };
 
 interface GoalProgressBarProps {
-  accountHolder: IAccountHolder;
+  target: RevenueTarget;
 }
 
-export const GoalProgressBar: React.FC<GoalProgressBarProps> = ({ accountHolder: accountHolder }) => {
-  const target = accountHolder?.revenueTargets[0];
-
+export const GoalProgressBar: React.FC<GoalProgressBarProps> = ({ target }) => {
   const GoalAchievedInPercentage = (): string => {
     const achieved = (target?.amountAttempted * 100) / target?.amountTarget;
-    return achieved >= 100 ? '100' : achieved.toFixed(2);
+    return !achieved ? '0' : achieved >= 100 ? '100' : achieved.toFixed(2);
   };
   const progressBarStyle = parseInt(GoalAchievedInPercentage(), 10) > 95 ? PROGRESS_BAR_STYLE_WITH_RADIUS : PROGRESS_BAR_STYLE;
 

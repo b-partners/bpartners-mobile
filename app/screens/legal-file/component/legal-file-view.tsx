@@ -40,7 +40,7 @@ const FOOTER_CONTENT: ViewStyle = {
 const CONTINUE_BUTTON_STYLE: ViewStyle = {
   flexDirection: 'row',
   paddingHorizontal: spacing[2],
-  backgroundColor: palette.deepPurple,
+  backgroundColor: palette.secondaryColor,
 };
 
 const FOOTER_ACCEPT_TEXT_STYLE: TextStyle = {

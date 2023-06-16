@@ -365,9 +365,10 @@
     "swan": "Ma Banque"
   },
   "legalFileScreen": {
-    "accept": "Accept",
-    "continue": "Continue",
-    "reload": "recharger"
+    "condition": "Conditions générales d'utilisation",
+    "accept": "Accepter",
+    "continue": "Continuer",
+    "reload": "Recharger"
   },
   "supportContactScreen": {
     "title": "Contacter le support",

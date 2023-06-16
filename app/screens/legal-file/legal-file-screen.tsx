@@ -7,17 +7,9 @@ import { ErrorBoundary } from '..';
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
-import { spacing } from '../../theme';
-import { palette } from '../../theme/palette';
 import { LegalFileView } from './component/legal-file-view';
 
 const FULL: ViewStyle = { flex: 1 };
-const HEADER_STYLE: ViewStyle = {
-  paddingTop: spacing[3],
-  paddingBottom: spacing[4] + spacing[1],
-  paddingHorizontal: 0,
-  backgroundColor: palette.deepPurple,
-};
 const HEADER_TEXT_STYLE: TextStyle = {
   fontSize: 15,
   fontWeight: 'bold',
@@ -26,26 +18,19 @@ const HEADER_TEXT_STYLE: TextStyle = {
   textAlign: 'center',
 };
 
-export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFile'>> = observer(() => {
-  const { legalFilesStore, transactionStore, authStore } = useStores();
+export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFile'>> = observer(({ navigation }) => {
+  const { legalFilesStore, authStore } = useStores();
   const { unApprovedFiles } = legalFilesStore;
 
   useEffect(() => {
     const fetchLegalFiles = async () => {
-      try {
-        await legalFilesStore.getLegalFiles();
-      } catch (e) {
-        throw e;
-      }
+      await legalFilesStore.getLegalFiles();
     };
-
-    fetchLegalFiles();
-  }, []);
-
-  useEffect(() => {
     const fetchUserData = async () => {
-      await Promise.all([authStore.whoami(), transactionStore.getTransactions(), transactionStore.getTransactionCategories()]);
+      await authStore.getAccounts();
+      navigation.navigate('oauth');
     };
+    fetchLegalFiles();
 
     if (unApprovedFiles.length <= 0) {
       fetchUserData();
@@ -55,7 +40,7 @@ export const LegalFileScreen: FC<DrawerScreenProps<NavigatorParamList, 'legalFil
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header style={HEADER_STYLE} headerText='General User Condition' titleStyle={HEADER_TEXT_STYLE} />
+      <Header headerTx='legalFileScreen.condition' titleStyle={HEADER_TEXT_STYLE} />
       <View testID='LegalFileScreen' style={FULL}>
         <Screen>{unApprovedFiles.length > 0 && <LegalFileView legalFile={unApprovedFiles[0]} />}</Screen>
       </View>
