@@ -26,6 +26,7 @@ export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessa
   return (
     <View>
       <TextInput
+        autoCapitalize='none'
         secureTextEntry={showPassword}
         label={translate(labelTx)}
         error={error}

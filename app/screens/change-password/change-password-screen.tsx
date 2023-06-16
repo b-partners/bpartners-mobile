@@ -53,9 +53,15 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
         accessToken: session.getIdToken().getJwtToken(),
         refreshToken: newUser.signInUserSession.refreshToken.token,
       };
-      await legalFilesStore.getLegalFiles();
       await authStore.whoami(newIdentity.accessToken);
-      navigation.navigate('oauth');
+      await legalFilesStore.getLegalFiles();
+      const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
+      if (!hasApprovedLegalFiles) {
+        navigation.navigate('legalFile');
+      } else {
+        await authStore.getAccounts();
+        navigation.navigate('oauth');
+      }
     } catch (e) {
       showMessage(e.message);
       throw e;

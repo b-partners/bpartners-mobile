@@ -19,6 +19,7 @@ export const InputField = ({ labelTx, error, value, onChange, errorMessage }: In
   return (
     <View>
       <TextInput
+        autoCapitalize='none'
         label={translate(labelTx)}
         error={error}
         textColor={palette.secondaryColor}
