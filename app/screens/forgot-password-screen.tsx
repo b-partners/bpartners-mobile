@@ -32,7 +32,7 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
+      <Header headerTx='forgotPasswordScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
       <Screen preset='scroll' backgroundColor='#fff'>
         <KeyboardAvoidingWrapper>
           <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
@@ -42,8 +42,10 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
               onSubmit={async values => {
                 setLoading(true);
                 try {
+                  __DEV__ && console.log(values.email);
                   await forgotPassword(values.email);
                   setMailWasSent(true);
+                  navigation.navigate('resetPassword');
                 } catch (e) {
                   setLoading(false);
                 } finally {
