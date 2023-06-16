@@ -6,6 +6,8 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import * as yup from 'yup';
 
 import { Button, Header, Loader, Screen, Text } from '../../components';
+import { CheckEmailModal } from '../../components/check-email/check-email-modal';
+import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -16,7 +18,8 @@ import { forgotPassword } from './utils/function';
 export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forgotPassword'>> = observer(function ForgotPasswordScreen({ navigation }) {
   const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
   const [loading, setLoading] = useState(false);
-  const [emailWasSent, setMailWasSent] = useState(false);
+  const [emailWasSent, setEMailWasSent] = useState(false);
+  const [email, setEmail] = useState('');
 
   const LoginFormSchema = yup.object().shape({
     email: yup
@@ -49,16 +52,21 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
               initialValues={initialValues}
               validationSchema={LoginFormSchema}
               onSubmit={async values => {
+                setEmail(values.email);
                 setLoading(true);
                 try {
-                  __DEV__ && console.log(values.email);
                   await forgotPassword(values.email);
-                  setMailWasSent(true);
-                  navigation.navigate('resetPassword');
+                  setEMailWasSent(true);
+                  setTimeout(() => {
+                    navigation.navigate('resetPassword');
+                  }, 5000);
                 } catch (e) {
                   setLoading(false);
                 } finally {
                   setLoading(false);
+                  setTimeout(() => {
+                    setEMailWasSent(false);
+                  }, 5000);
                 }
               }}
             >
@@ -87,20 +95,17 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
                       marginTop: spacing[4],
                     }}
                   >
-                    {false ? (
+                    {loading ? (
                       <Loader size={25} />
                     ) : (
-                      <>
-                        <Text
-                          text={'Confirmer'}
-                          style={{
-                            color: color.palette.secondaryColor,
-                            fontFamily: 'Geometria-Bold',
-                            marginRight: spacing[2],
-                          }}
-                        />
-                        {/*  mlaybe some icon here*/}
-                      </>
+                      <Text
+                        tx={'common.submit'}
+                        style={{
+                          color: color.palette.secondaryColor,
+                          fontFamily: 'Geometria-Bold',
+                          marginRight: spacing[2],
+                        }}
+                      />
                     )}
                   </Button>
                 </View>
@@ -124,6 +129,13 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
           </View>
         </KeyboardAvoidingWrapper>
       </Screen>
+      <CheckEmailModal
+        isOpen={emailWasSent}
+        setOpen={setEMailWasSent}
+        email={email}
+        title={'forgotPasswordScreen.sentTitle'}
+        text={translate('forgotPasswordScreen.checkEmail')}
+      />
     </ErrorBoundary>
   );
 });

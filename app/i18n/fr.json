@@ -387,7 +387,9 @@
     "associate": "Associer une banque"
   },
   "forgotPasswordScreen": {
-    "title": "Mot de passe oublié ?"
+    "title": "Mot de passe oublié ?",
+    "sentTitle": "Code envoyé",
+    "checkEmail": "Vérifier votre e-mail, votre code de validation à été envoyé au"
   },
   "bottomTab": {
     "account": "Comptes",
