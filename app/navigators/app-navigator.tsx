@@ -29,15 +29,14 @@ import {
 } from '../screens';
 import { ChangePasswordScreen } from '../screens/change-password/change-password-screen';
 import { CodeExchangeScreen } from '../screens/code-exchange/code-exchange-screen';
-import { ForgotPasswordScreen } from '../screens/forgot-password-screen';
+import { ForgotPasswordScreen } from '../screens/forgot-password/forgot-password-screen';
+import { ResetPasswordScreen } from '../screens/forgot-password/reset-password-screen';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicePreviewScreen } from '../screens/invoice-preview/invoice-preview-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
-import { ProspectScreen } from '../screens/prospect/prospect-screen';
-import { ResetPasswordScreen } from '../screens/reset-password-screen';
-import { RegistrationScreen } from '../screens/registration/registration-screen';
+import { ProspectScreen } from '../screens/prospect/prospect-screen';import { RegistrationScreen } from '../screens/registration/registration-screen';
 import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 

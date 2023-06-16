@@ -1,47 +1,65 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import * as yup from 'yup';
 
-import { Button, Header, Loader, Screen, Text } from '../components';
-import { NavigatorParamList } from '../navigators';
-import { color, spacing } from '../theme';
-import { palette } from '../theme/palette';
-import { ErrorBoundary } from './error/error-boundary';
-import KeyboardAvoidingWrapper from './welcome/keyboardAvoidingWrapper';
-import { resetPassword } from './welcome/utils/auth-util';
+import { Button, Header, Loader, Screen, Text } from '../../components';
+import { NavigatorParamList } from '../../navigators';
+import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
+import { ErrorBoundary } from '../error/error-boundary';
+import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
+import { forgotPassword } from './utils/function';
 
-export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'resetPassword'>> = observer(function ResetPasswordScreen({ navigation }) {
-  // const { someStore, anotherStore } = useStores()
-  const emailDangerMessage = '';
-  const shape = yup.object().shape({
+export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forgotPassword'>> = observer(function ForgotPasswordScreen({ navigation }) {
+  const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
+  const [loading, setLoading] = useState(false);
+  const [emailWasSent, setMailWasSent] = useState(false);
+
+  const LoginFormSchema = yup.object().shape({
     email: yup
       .string()
       .email('Entrer un email valide')
       // @ts-ignore
       .required(emailDangerMessage || 'Email is required'),
-    confirmationCode: yup.string().required('Code de confirmation code'),
-    newPassword: yup.string().required('Nouveau mot de passe requis'),
   });
 
   const initialValues = {
     email: '',
-    confirmationCode: '',
-    newPassword: '',
   };
+
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header leftIcon={'back'} onLeftPress={() => navigation.navigate('forgotPassword')} />
-      <Screen preset='scroll' backgroundColor='#fff'>
+      <Header headerTx='forgotPasswordScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
+      <Screen preset='scroll' backgroundColor='#fff' style={{ width: '100%', height: '100%' }}>
         <KeyboardAvoidingWrapper>
-          <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
+          <View
+            style={{
+              padding: spacing[8],
+              marginTop: spacing[4],
+              height: 400,
+              backgroundColor: palette.lighterGrey,
+              marginHorizontal: spacing[4],
+              borderRadius: 20,
+            }}
+          >
             <Formik
               initialValues={initialValues}
-              validationSchema={shape}
+              validationSchema={LoginFormSchema}
               onSubmit={async values => {
-                await resetPassword(values.email, values.confirmationCode, values.newPassword);
+                setLoading(true);
+                try {
+                  __DEV__ && console.log(values.email);
+                  await forgotPassword(values.email);
+                  setMailWasSent(true);
+                  navigation.navigate('resetPassword');
+                } catch (e) {
+                  setLoading(false);
+                } finally {
+                  setLoading(false);
+                }
               }}
             >
               {({ handleChange, handleBlur, values, errors, touched, handleSubmit }) => (
@@ -57,30 +75,6 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
                       autoCorrect={false}
                     />
                     {!!errors.email && touched.email && <Text style={styles.error}>{errors.email}</Text>}
-                  </View>
-                  <View style={styles.field}>
-                    <Text text={'Code de confirmation'} style={styles.label} />
-                    <TextInput
-                      style={styles.input}
-                      onChangeText={handleChange('confirmationCode')}
-                      onBlur={handleBlur('confirmationCode')}
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                    />
-                    {!!errors.confirmationCode && touched.confirmationCode && <Text style={styles.error}>{errors.confirmationCode}</Text>}
-                  </View>
-                  <View style={styles.field}>
-                    <Text text={'Nouveau mot de passe'} style={styles.label} />
-                    <TextInput
-                      style={styles.input}
-                      onChangeText={handleChange('newPassword')}
-                      onBlur={handleBlur('newPassword')}
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                    />
-                    {!!errors.newPassword && touched.newPassword && <Text style={styles.error}>{errors.newPassword}</Text>}
                   </View>
                   <Button
                     onPress={() => handleSubmit()}
