@@ -395,6 +395,9 @@
     "messagePartThree": "you can also call us on :",
     "mail": "contact@bpartners.app"
   },
+  "forgotPasswordScreen": {
+    "title": "Forgot your password ?"
+  },
   "bankScreen": {
     "accountName": "Account Name",
     "bic": "BIC",
