@@ -1,20 +1,23 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import { Auth } from 'aws-amplify';
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import * as yup from 'yup';
 
 import { Button, Header, Loader, Screen, Text } from '../../components';
+import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
-import { resetPassword } from './utils/function';
 
 export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'resetPassword'>> = observer(function ResetPasswordScreen({ navigation }) {
-  // const { someStore, anotherStore } = useStores()
+  const [loading, setLoading] = useState(false);
+
   const emailDangerMessage = '';
   const shape = yup.object().shape({
     email: yup
@@ -31,12 +34,40 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
     confirmationCode: '',
     newPassword: '',
   };
+
+  const resetPassword = async (username: string, confirmationCode: string, newPassword: string) => {
+    setLoading(true);
+    let response;
+    try {
+      response = await Auth.forgotPasswordSubmit(username, confirmationCode, newPassword);
+      showMessage(translate('forgotPasswordScreen.success'), { backgroundColor: palette.green });
+      setTimeout(() => {
+        navigation.navigate('welcome');
+      }, 4000);
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      __DEV__ && console.tron.logImportant(response);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header leftIcon={'back'} onLeftPress={() => navigation.navigate('forgotPassword')} />
+      <Header headerTx='forgotPasswordScreen.resetTitle' leftIcon={'back'} onLeftPress={() => navigation.navigate('forgotPassword')} />
       <Screen preset='scroll' backgroundColor='#fff'>
         <KeyboardAvoidingWrapper>
-          <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
+          <View
+            style={{
+              paddingTop: spacing[6],
+              paddingHorizontal: spacing[8],
+              marginTop: spacing[4],
+              height: 400,
+              backgroundColor: palette.solidGrey,
+              marginHorizontal: spacing[4],
+              borderRadius: 20,
+            }}
+          >
             <Formik
               initialValues={initialValues}
               validationSchema={shape}
@@ -44,7 +75,7 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
                 await resetPassword(values.email, values.confirmationCode, values.newPassword);
               }}
             >
-              {({ handleChange, handleBlur, values, errors, touched, handleSubmit }) => (
+              {({ handleChange, handleBlur, errors, touched, handleSubmit }) => (
                 <View style={styles.container}>
                   <View style={styles.field}>
                     <Text tx='welcomeScreen.email' style={styles.label} />
@@ -93,20 +124,17 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
                       marginTop: spacing[4],
                     }}
                   >
-                    {false ? (
+                    {loading ? (
                       <Loader size={25} />
                     ) : (
-                      <>
-                        <Text
-                          text={'Confirmer'}
-                          style={{
-                            color: color.palette.secondaryColor,
-                            fontFamily: 'Geometria-Bold',
-                            marginRight: spacing[2],
-                          }}
-                        />
-                        {/*  mlaybe some icon here*/}
-                      </>
+                      <Text
+                        text={'Confirmer'}
+                        style={{
+                          color: color.palette.secondaryColor,
+                          fontFamily: 'Geometria-Bold',
+                          marginRight: spacing[2],
+                        }}
+                      />
                     )}
                   </Button>
                 </View>

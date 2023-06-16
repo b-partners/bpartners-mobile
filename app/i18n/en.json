@@ -398,7 +398,10 @@
   "forgotPasswordScreen": {
     "title": "Forgot your password ?",
     "sentTitle": "Code sent",
-    "checkEmail": "Check your e-mail, your validation code has been sent to"
+    "checkEmail": "Check your e-mail, your validation code has been sent to",
+    "success": "Successfully modified",
+    "resetTitle": "Change password",
+    "error": "Wrong validation code"
   },
   "bankScreen": {
     "accountName": "Account Name",
