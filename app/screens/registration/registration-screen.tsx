@@ -8,6 +8,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
+import { CheckEmailModal } from '../../components/check-email/check-email-modal';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -18,7 +19,6 @@ import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
-import { CheckEmailModal } from './components/check-email-modal';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -240,7 +240,13 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               }}
             />
           </View>
-          <CheckEmailModal isOpen={isOpen} setOpen={setOpen} email={email} />
+          <CheckEmailModal
+            isOpen={isOpen}
+            setOpen={setOpen}
+            email={email}
+            title={'registrationScreen.confirm'}
+            text={translate('registrationScreen.checkEmail')}
+          />
         </Screen>
       </KeyboardAvoidingWrapper>
     </ErrorBoundary>

@@ -3,17 +3,19 @@ import { View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, Text } from '../../../components';
-import { translate } from '../../../i18n';
-import { palette } from '../../../theme/palette';
+import { TxKeyPath } from '../../i18n';
+import { palette } from '../../theme/palette';
+import { Button, Text } from '../index';
 
 interface InputFieldProps {
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   email: string;
+  title: TxKeyPath;
+  text: string;
 }
 
-export const CheckEmailModal = ({ isOpen, setOpen, email }: InputFieldProps) => {
+export const CheckEmailModal = ({ isOpen, setOpen, email, title, text }: InputFieldProps) => {
   return (
     <Modal visible={isOpen} onDismiss={() => setOpen(false)} style={{ width: '100%', height: '100%' }}>
       <View
@@ -39,7 +41,7 @@ export const CheckEmailModal = ({ isOpen, setOpen, email }: InputFieldProps) => 
             borderColor: palette.secondaryColor,
           }}
         >
-          <Text tx={'registrationScreen.confirm'} style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 20 }} />
+          <Text tx={title} style={{ color: palette.secondaryColor, fontFamily: 'Geometria', fontSize: 20 }} />
           <Button
             onPress={() => {
               setOpen(false);
@@ -65,7 +67,7 @@ export const CheckEmailModal = ({ isOpen, setOpen, email }: InputFieldProps) => 
             paddingHorizontal: 10,
           }}
         >
-          <Text style={{ color: palette.secondaryColor }}>{`${translate('registrationScreen.checkEmail')} ${email}`}</Text>
+          <Text style={{ color: palette.secondaryColor }}>{`${text} ${email}`}</Text>
         </View>
       </View>
     </Modal>
