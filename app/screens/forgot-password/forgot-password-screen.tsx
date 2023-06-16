@@ -40,7 +40,7 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
               padding: spacing[8],
               marginTop: spacing[4],
               height: 400,
-              backgroundColor: palette.lighterGrey,
+              backgroundColor: palette.solidGrey,
               marginHorizontal: spacing[4],
               borderRadius: 20,
             }}
