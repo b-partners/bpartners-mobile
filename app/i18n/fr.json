@@ -389,7 +389,10 @@
   "forgotPasswordScreen": {
     "title": "Mot de passe oublié ?",
     "sentTitle": "Code envoyé",
-    "checkEmail": "Vérifier votre e-mail, votre code de validation à été envoyé au"
+    "checkEmail": "Vérifier votre e-mail, votre code de validation à été envoyé au",
+    "success": "Modifié avec succès",
+    "resetTitle": "Changer le mot de passe",
+    "error": "Code de validation incorrecte"
   },
   "bottomTab": {
     "account": "Comptes",
