@@ -396,7 +396,9 @@
     "mail": "contact@bpartners.app"
   },
   "forgotPasswordScreen": {
-    "title": "Forgot your password ?"
+    "title": "Forgot your password ?",
+    "sentTitle": "Code sent",
+    "checkEmail": "Check your e-mail, your validation code has been sent to"
   },
   "bankScreen": {
     "accountName": "Account Name",
