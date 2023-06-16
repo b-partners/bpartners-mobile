@@ -381,6 +381,7 @@
     "swan": "My Bank"
   },
   "legalFileScreen": {
+    "condition": "General User Condition",
     "accept": "Accept",
     "continue": "Continue",
     "reload": "Reload",

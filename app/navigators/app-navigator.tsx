@@ -111,12 +111,11 @@ const AppStack = observer(function () {
   };
 
   const { authStore, legalFilesStore } = useStores();
-  const { accessToken, currentAccount, currentAccountHolder, currentUser } = authStore;
+  const { accessToken, currentAccount, currentUser } = authStore;
   const hasAccount = currentAccount && !!currentAccount?.id;
-  const hasAccountHolder = currentAccountHolder && !!currentAccountHolder?.id;
   const hasUser = currentUser && !!currentUser?.id;
   const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
-  const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
+  const isAuthenticated = !!accessToken && hasAccount && hasUser;
 
   return (
     <Drawer.Navigator
