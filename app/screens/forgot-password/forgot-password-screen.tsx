@@ -1,4 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import { Auth } from 'aws-amplify';
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
@@ -11,9 +12,9 @@ import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
-import { forgotPassword } from './utils/function';
 
 export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forgotPassword'>> = observer(function ForgotPasswordScreen({ navigation }) {
   const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
@@ -31,6 +32,23 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
 
   const initialValues = {
     email: '',
+  };
+
+  const forgotPassword = async (username: string) => {
+    let response;
+    try {
+      response = await Auth.forgotPassword(username);
+      __DEV__ && console.tron.logImportant('successfuly sent');
+      setEMailWasSent(true);
+      setTimeout(() => {
+        navigation.navigate('resetPassword');
+      }, 5000);
+    } catch (e) {
+      __DEV__ && console.tron.error(e, e.stackTrace);
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      throw e;
+    }
+    return response;
   };
 
   return (
@@ -56,10 +74,6 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
                 setLoading(true);
                 try {
                   await forgotPassword(values.email);
-                  setEMailWasSent(true);
-                  setTimeout(() => {
-                    navigation.navigate('resetPassword');
-                  }, 5000);
                 } catch (e) {
                   setLoading(false);
                 } finally {
