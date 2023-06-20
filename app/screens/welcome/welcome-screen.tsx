@@ -27,11 +27,6 @@ WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 
-type LoginFormValues = {
-  email: string;
-  password: string;
-};
-
 export interface IdentityState {
   accessToken: string;
   refreshToken: string;
@@ -39,7 +34,7 @@ export interface IdentityState {
 
 interface UserCredentials {
   password: string;
-  username: string;
+  email: string;
 }
 
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
@@ -50,18 +45,13 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   const { authStore, legalFilesStore } = useStores();
   const errorMessageStyles = { backgroundColor: palette.pastelRed };
-  const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
+  const [userDetails, setUserDetails] = useState<UserCredentials>({ email: null, password: null });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
-  };
-
-  const userDetails: UserCredentials = {
-    password: userDetailValue.password,
-    username: userDetailValue.username,
   };
 
   const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
@@ -72,7 +62,10 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       try {
         const credentials = await Keychain.getGenericPassword();
         if (credentials) {
-          setUserDetailValue(credentials);
+          setUserDetails({
+            email: credentials.username ?? '',
+            password: credentials.username ? credentials.password : '',
+          });
         }
       } catch (error) {
         __DEV__ && console.tron.error("Keychain couldn't be accessed!", error);
@@ -80,9 +73,12 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     })();
   }, []);
 
-  async function signIn(inputUsername: string, inputPassword: string) {
+  async function signIn(username: string, password: string) {
+    __DEV__ && console.tron.log(username, password);
     try {
       setLoading(true);
+      const inputUsername = username ?? userDetails.email;
+      const inputPassword = password ?? userDetails.password;
       const user = await Auth.signIn(inputUsername, inputPassword);
       if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
         navigation.navigate('changePassword', { userName: inputUsername, password: inputPassword });
@@ -109,11 +105,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       setLoading(false);
     }
   }
-
-  const initialValues: LoginFormValues = {
-    email: userDetails.username ?? '',
-    password: userDetails.password ?? '',
-  };
 
   const LoginFormSchema = yup.object().shape({
     email: yup
@@ -151,7 +142,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           />
           <View style={{ paddingHorizontal: spacing[8], height: '100%', marginBottom: spacing[8] }}>
             <AutoImage source={require('./welcome.logo.png')} resizeMode='contain' resizeMethod='auto' style={{ width: '100%', marginTop: spacing[8] }} />
-            <Formik initialValues={initialValues} validationSchema={LoginFormSchema} onSubmit={values => __DEV__ && console.tron.log(values)}>
+            <Formik initialValues={userDetails} validationSchema={LoginFormSchema} onSubmit={values => __DEV__ && console.tron.log(values)}>
               {({ handleChange, handleBlur, values, errors, touched }) => (
                 <View style={styles.container}>
                   <View style={styles.field}>
@@ -160,8 +151,8 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       style={styles.input}
                       onChangeText={handleChange('email')}
                       onBlur={handleBlur('email')}
-                      defaultValue={userDetails.username ?? values.email}
                       keyboardType='email-address'
+                      defaultValue={userDetails.email}
                       autoCapitalize='none'
                       autoCorrect={false}
                     />
@@ -177,9 +168,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                           width: '75%',
                           color: palette.secondaryColor,
                         }}
+                        defaultValue={userDetails.password}
                         onChangeText={handleChange('password')}
                         onBlur={handleBlur('password')}
-                        defaultValue={userDetails.password ?? values.password}
                         secureTextEntry={showPassword}
                       />
                       <View style={{ width: '25%', backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>
@@ -199,6 +190,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                   </View>
                   <Button
                     onPress={async () => {
+                      if (values.email && values.password) {
+                        setUserDetails({ email: values.email, password: values.password });
+                      }
                       await signIn(values.email, values.password);
                     }}
                     style={{
