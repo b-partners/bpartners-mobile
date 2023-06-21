@@ -42,7 +42,7 @@
     "invalidPrice": "Prix invalide",
     "mandatoryTitle": "veuillez renseigner le titre du devis !",
     "minPassword": "Le mot de passe doit contenir au moins 8 caractères",
-    "invalidPassword": "Le mot de passe doit au moins contenir une majuscule, un caractère spécial et un chiffre",
+    "invalidPassword": "Le mot de passe doit au moins contenir une majuscule, un caractère spécial (., -, &, @ etc) et un chiffre",
     "invalidConfirmPassword": "Les mots de passe ne correspondent pas !"
   },
   "drawer": {
