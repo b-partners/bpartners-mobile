@@ -135,6 +135,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.newPassword?.message}
+                      width={270}
                     />
                   )}
                 />
@@ -156,6 +157,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.confirmPassword?.message}
+                      width={270}
                     />
                   )}
                 />

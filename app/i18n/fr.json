@@ -392,7 +392,9 @@
     "checkEmail": "Vérifier votre e-mail, votre code de validation à été envoyé au",
     "success": "Modifié avec succès",
     "resetTitle": "Changer le mot de passe",
-    "error": "Code de validation incorrecte"
+    "error": "Code de validation incorrecte",
+    "code": "Code de confirmation",
+    "newPassword": "Nouveau mot de passe"
   },
   "bottomTab": {
     "account": "Comptes",

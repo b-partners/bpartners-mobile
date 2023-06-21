@@ -403,7 +403,9 @@
     "checkEmail": "Check your e-mail, your validation code has been sent to",
     "success": "Successfully modified",
     "resetTitle": "Change password",
-    "error": "Wrong validation code"
+    "error": "Wrong validation code",
+    "code": "Confirmation code",
+    "newPassword": "Nouveau mot de passe"
   },
   "bankScreen": {
     "accountName": "Account Name",
