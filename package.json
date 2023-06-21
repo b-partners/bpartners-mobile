@@ -59,9 +59,11 @@
     "eslint-plugin-no-inline-styles": "^1.0.5",
     "expo": "^45.0.0",
     "expo-auth-session": "~3.6.1",
+    "expo-file-system": "~14.0.0",
     "expo-linear-gradient": "^11.3.0",
     "expo-linking": "~3.1.0",
     "expo-localization": "13.0.0",
+    "expo-mail-composer": "~11.2.0",
     "expo-modules-core": "^0.9.2",
     "expo-random": "~12.2.0",
     "formik": "^2.2.9",
@@ -108,9 +110,7 @@
     "reactotron-react-js": "^3.3.7",
     "reactotron-react-native": "5.0.2",
     "validate.js": "0.13.1",
-    "yup": "^0.32.11",
-    "expo-mail-composer": "~11.2.0",
-    "expo-file-system": "~14.0.0"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.18.0",
