@@ -5,7 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Loader, Screen, Text } from '../../components';
@@ -71,18 +71,19 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
   };
 
   const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=])[A-Za-z\d!@#$%^&*()_+\-=]+$/;
+  const screenHeight = Dimensions.get('screen').height;
 
   return (
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingWrapper>
-        <Screen backgroundColor={palette.white} style={{ height: '100%', width: '100%' }}>
+        <Screen backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
           <AutoImage
             source={require('../welcome/welcome.background.png')}
             resizeMode='stretch'
             resizeMethod='auto'
             style={{ position: 'absolute', height: '100%', width: '100%' }}
           />
-          <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
+          <View style={{ paddingHorizontal: spacing[7], height: '100%', width: '100%' }}>
             <AutoImage
               source={require('../welcome/welcome.logo.png')}
               resizeMode='contain'
@@ -207,11 +208,6 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                 </Button>
               )}
             </View>
-            <View
-              style={{
-                marginTop: spacing[8] + spacing[2],
-              }}
-            />
           </View>
         </Screen>
       </KeyboardAvoidingWrapper>
@@ -231,6 +227,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    width: '100%',
   },
   field: {
     marginBottom: 10,
