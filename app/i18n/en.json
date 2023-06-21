@@ -71,7 +71,9 @@
     "phone": "Phone Number",
     "company": "Company Name",
     "checkEmail": "To finalize your registration, an e-mail has been sent to you at",
-    "confirm": "Confirmation"
+    "confirm": "Confirmation",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm password"
   },
   "changePasswordScreen": {
     "newPassword": "New password",

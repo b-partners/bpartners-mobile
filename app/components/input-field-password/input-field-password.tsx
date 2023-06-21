@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import IoniconIcon from 'react-native-vector-icons/Ionicons';
 
 import { TxKeyPath, translate } from '../../i18n';
 import { color } from '../../theme';
@@ -35,17 +34,16 @@ export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessa
         value={value}
         onChangeText={onChange}
         right={
-          <View style={{ width: 30, height: 30, backgroundColor: palette.pastelRed }}>
-            {showPassword ? (
-              <IoniconIcon name='eye-off-outline' size={28} color={color.palette.secondaryColor} onPress={() => toggleShowPassword()} />
-            ) : (
-              <IoniconIcon name='eye-sharp' size={28} color={color.palette.secondaryColor} onPress={() => toggleShowPassword()} />
-            )}
-          </View>
+          showPassword ? (
+            <TextInput.Icon icon='eye' onPress={() => toggleShowPassword()} />
+          ) : (
+            <TextInput.Icon icon='eye-off' onPress={() => toggleShowPassword()} />
+          )
         }
         style={{
           backgroundColor: 'white',
           borderRadius: 5,
+          width: 270,
         }}
         theme={{
           colors: {
