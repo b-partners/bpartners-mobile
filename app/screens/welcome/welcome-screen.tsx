@@ -5,7 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, TextStyle, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, TextInput, TextStyle, TouchableOpacity, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import * as yup from 'yup';
@@ -20,7 +20,6 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { FULL_HEIGHT } from '../marketplace/styles';
 import KeyboardAvoidingWrapper from './keyboardAvoidingWrapper';
 
 WebBrowser.maybeCompleteAuthSession();
@@ -129,11 +128,12 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   };
 
   const textStyle = isHovered ? underlinedText : normalText;
+  const screenHeight = Dimensions.get('screen').height;
 
   return (
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingWrapper>
-        <Screen backgroundColor={palette.white} style={FULL_HEIGHT}>
+        <Screen backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
           <AutoImage
             source={require('./welcome.background.png')}
             resizeMode='stretch'
@@ -229,11 +229,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                 </View>
               )}
             </Formik>
-            <View
-              style={{
-                marginTop: spacing[8] + spacing[3],
-              }}
-            />
           </View>
         </Screen>
       </KeyboardAvoidingWrapper>
