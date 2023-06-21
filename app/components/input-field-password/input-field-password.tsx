@@ -13,9 +13,10 @@ interface InputFieldProps {
   value: string;
   onChange: ((text: string) => void) & Function;
   errorMessage: string;
+  width?: number;
 }
 
-export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessage }: InputFieldProps) => {
+export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessage, width }: InputFieldProps) => {
   const [showPassword, setShowPassword] = useState(true);
 
   const toggleShowPassword = () => {
@@ -43,7 +44,7 @@ export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessa
         style={{
           backgroundColor: 'white',
           borderRadius: 5,
-          width: 270,
+          width: width,
         }}
         theme={{
           colors: {

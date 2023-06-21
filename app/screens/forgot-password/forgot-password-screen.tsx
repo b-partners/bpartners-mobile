@@ -1,38 +1,34 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Auth } from 'aws-amplify';
-import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import * as yup from 'yup';
+import { Controller, useForm } from 'react-hook-form';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Button, Header, Loader, Screen, Text } from '../../components';
 import { CheckEmailModal } from '../../components/check-email/check-email-modal';
+import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import KeyboardAvoidingWrapper from '../welcome/keyboardAvoidingWrapper';
 
 export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forgotPassword'>> = observer(function ForgotPasswordScreen({ navigation }) {
-  const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
   const [loading, setLoading] = useState(false);
   const [emailWasSent, setEMailWasSent] = useState(false);
   const [email, setEmail] = useState('');
 
-  const LoginFormSchema = yup.object().shape({
-    email: yup
-      .string()
-      .email('Entrer un email valide')
-      // @ts-ignore
-      .required(emailDangerMessage || 'Email is required'),
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
+    defaultValues: { email: '' },
   });
-
-  const initialValues = {
-    email: '',
-  };
 
   const forgotPassword = async (username: string) => {
     let response;
@@ -51,97 +47,95 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
     return response;
   };
 
+  const onSubmit = async values => {
+    setEmail(values.email);
+    setLoading(true);
+    try {
+      await forgotPassword(values.email);
+      reset();
+    } catch (e) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setEMailWasSent(false);
+      }, 5000);
+    }
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header headerTx='forgotPasswordScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
       <Screen preset='scroll' backgroundColor='#fff' style={{ width: '100%', height: '100%' }}>
-        <KeyboardAvoidingWrapper>
-          <View
-            style={{
-              padding: spacing[8],
-              marginTop: spacing[4],
-              height: 400,
-              backgroundColor: palette.solidGrey,
-              marginHorizontal: spacing[4],
-              borderRadius: 20,
-            }}
-          >
-            <Formik
-              initialValues={initialValues}
-              validationSchema={LoginFormSchema}
-              onSubmit={async values => {
-                setEmail(values.email);
-                setLoading(true);
-                try {
-                  await forgotPassword(values.email);
-                } catch (e) {
-                  setLoading(false);
-                } finally {
-                  setLoading(false);
-                  setTimeout(() => {
-                    setEMailWasSent(false);
-                  }, 5000);
-                }
-              }}
-            >
-              {({ handleChange, handleBlur, errors, touched, handleSubmit }) => (
-                <View style={styles.container}>
-                  <View style={styles.field}>
-                    <Text tx='welcomeScreen.email' style={styles.label} />
-                    <TextInput
-                      style={styles.input}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      keyboardType='email-address'
-                      autoCapitalize='none'
-                      autoCorrect={false}
-                    />
-                    {!!errors.email && touched.email && <Text style={styles.error}>{errors.email}</Text>}
-                  </View>
-                  <Button
-                    onPress={() => handleSubmit()}
-                    style={{
-                      borderRadius: 50,
-                      paddingVertical: spacing[3],
-                      backgroundColor: '#fff',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      marginTop: spacing[4],
-                    }}
-                  >
-                    {loading ? (
-                      <Loader size={25} />
-                    ) : (
-                      <Text
-                        tx={'common.submit'}
-                        style={{
-                          color: color.palette.secondaryColor,
-                          fontFamily: 'Geometria-Bold',
-                          marginRight: spacing[2],
-                        }}
-                      />
-                    )}
-                  </Button>
-                </View>
-              )}
-            </Formik>
-            <View
+        <Header headerTx='forgotPasswordScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
+        <View
+          style={{
+            padding: spacing[8],
+            marginTop: spacing[4],
+            height: 400,
+            backgroundColor: palette.solidGrey,
+            marginHorizontal: spacing[4],
+            borderRadius: 20,
+          }}
+        >
+          <View style={styles.container}>
+            <View style={styles.field}>
+              <Controller
+                control={control}
+                name='email'
+                rules={{
+                  required: translate('errors.required'),
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: translate('errors.invalidEmail'),
+                  },
+                }}
+                defaultValue=''
+                render={({ field: { onChange, value } }) => (
+                  <InputField labelTx={'welcomeScreen.email'} error={!!errors.email} value={value} onChange={onChange} errorMessage={errors.email?.message} />
+                )}
+              />
+            </View>
+            <Button
+              onPress={handleSubmit(onSubmit)}
               style={{
-                marginTop: spacing[8] + spacing[3],
+                borderRadius: 50,
+                paddingVertical: spacing[3],
+                backgroundColor: '#fff',
                 display: 'flex',
                 flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                opacity: 0,
+                marginTop: spacing[4],
               }}
             >
-              <Text tx='welcomeScreen.noAccount' style={{ fontFamily: 'Geometria', marginRight: spacing[2] }} />
-              <TouchableOpacity>
-                <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
-              </TouchableOpacity>
-            </View>
+              {loading ? (
+                <Loader size={25} />
+              ) : (
+                <Text
+                  tx={'common.submit'}
+                  style={{
+                    color: color.palette.secondaryColor,
+                    fontFamily: 'Geometria-Bold',
+                    marginRight: spacing[2],
+                  }}
+                />
+              )}
+            </Button>
           </View>
-        </KeyboardAvoidingWrapper>
+          <View
+            style={{
+              marginTop: spacing[8] + spacing[3],
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 0,
+            }}
+          >
+            <Text tx='welcomeScreen.noAccount' style={{ fontFamily: 'Geometria', marginRight: spacing[2] }} />
+            <TouchableOpacity>
+              <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
+            </TouchableOpacity>
+          </View>
+        </View>
       </Screen>
       <CheckEmailModal
         isOpen={emailWasSent}
@@ -166,7 +160,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
   },
   field: {
     marginBottom: 10,
