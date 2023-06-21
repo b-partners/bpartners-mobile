@@ -394,7 +394,8 @@
     "resetTitle": "Changer le mot de passe",
     "error": "Code de validation incorrecte",
     "code": "Code de confirmation",
-    "newPassword": "Nouveau mot de passe"
+    "newPassword": "Nouveau mot de passe",
+    "confirm": "Confirmez le mot de passe"
   },
   "bottomTab": {
     "account": "Comptes",

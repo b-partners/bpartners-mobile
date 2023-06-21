@@ -57,7 +57,7 @@ export type NavigatorParamList = {
   welcome: undefined;
   forgotPassword: undefined;
   registration: undefined;
-  resetPassword: undefined;
+  resetPassword: { email: string };
   home: undefined;
   transactionList: undefined;
   oauth: { code: string; state: string };
@@ -109,8 +109,6 @@ const windowWidth = Dimensions.get('window').width;
 const AppStack = observer(function () {
   const HIDE_DRAWER_OPTIONS: any = {
     swipeEnabled: false,
-    drawerLabel: () => null,
-    drawerIcon: () => null,
     title: null,
     drawerItemStyle: { display: 'none' },
   };
