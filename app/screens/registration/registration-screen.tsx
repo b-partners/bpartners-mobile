@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
@@ -62,17 +62,19 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
     }
   };
 
+  const screenHeight = Dimensions.get('screen').height;
+
   return (
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingWrapper>
-        <Screen backgroundColor={palette.white} style={{ height: '100%', width: '100%' }}>
+        <Screen backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
           <AutoImage
             source={require('../welcome/welcome.background.png')}
             resizeMode='stretch'
             resizeMethod='auto'
             style={{ position: 'absolute', height: '100%', width: '100%' }}
           />
-          <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
+          <View style={{ paddingHorizontal: spacing[8], height: 750 }}>
             <AutoImage
               source={require('../welcome/welcome.logo.png')}
               resizeMode='contain'
@@ -234,11 +236,6 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                 </TouchableOpacity>
               </View>
             </View>
-            <View
-              style={{
-                marginTop: spacing[8] + spacing[2],
-              }}
-            />
           </View>
           <CheckEmailModal
             isOpen={isOpen}
