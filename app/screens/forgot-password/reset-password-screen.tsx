@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 
 import { Button, Header, Loader, Screen, Text } from '../../components';
 import InputFieldPassword from '../../components/input-field-password/input-field-password';
@@ -15,16 +15,18 @@ import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 
-export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'resetPassword'>> = observer(function ResetPasswordScreen({ navigation }) {
+export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'resetPassword'>> = observer(function ResetPasswordScreen({ navigation, route }) {
+  const email = route.params?.email;
   const [loading, setLoading] = useState(false);
 
   const {
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm({
     mode: 'all',
-    defaultValues: { email: '', confirmationCode: '', newPassword: '' },
+    defaultValues: { confirmPassword: '', confirmationCode: '', newPassword: '' },
   });
 
   const resetPassword = async (username: string, confirmationCode: string, newPassword: string) => {
@@ -45,17 +47,20 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
   };
 
   const onSubmit = async values => {
-    await resetPassword(values.email, values.confirmationCode, values.newPassword);
+    await resetPassword(email, values.confirmationCode, values.newPassword);
   };
+
+  const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=])[A-Za-z\d!@#$%^&*()_+\-=]+$/;
+  const screenHeight = Dimensions.get('screen').height;
 
   return (
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='forgotPasswordScreen.resetTitle' leftIcon={'back'} onLeftPress={() => navigation.navigate('forgotPassword')} />
-      <Screen preset='scroll' backgroundColor='#fff'>
+      <Screen backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
         <View
           style={{
             paddingTop: spacing[6],
-            paddingHorizontal: spacing[7],
+            paddingHorizontal: spacing[6],
             marginTop: spacing[4],
             height: 400,
             backgroundColor: palette.solidGrey,
@@ -64,23 +69,6 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
           }}
         >
           <View style={styles.container}>
-            <View style={styles.field}>
-              <Controller
-                control={control}
-                name='email'
-                rules={{
-                  required: translate('errors.required'),
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: translate('errors.invalidEmail'),
-                  },
-                }}
-                defaultValue=''
-                render={({ field: { onChange, value } }) => (
-                  <InputField labelTx={'welcomeScreen.email'} error={!!errors.email} value={value} onChange={onChange} errorMessage={errors.email?.message} />
-                )}
-              />
-            </View>
             <View style={styles.field}>
               <Controller
                 control={control}
@@ -106,6 +94,14 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
                 name='newPassword'
                 rules={{
                   required: translate('errors.required'),
+                  minLength: {
+                    value: 8,
+                    message: translate('errors.minPassword', { length: 8 }),
+                  },
+                  pattern: {
+                    value: passwordPattern,
+                    message: translate('errors.invalidPassword'),
+                  },
                 }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
@@ -115,50 +111,80 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
                     value={value}
                     onChange={onChange}
                     errorMessage={errors.newPassword?.message}
-                    width={240}
                   />
                 )}
               />
             </View>
-            <Button
-              onPress={handleSubmit(onSubmit)}
-              style={{
-                borderRadius: 50,
-                paddingVertical: spacing[3],
-                backgroundColor: '#fff',
-                display: 'flex',
-                flexDirection: 'row',
-                marginTop: spacing[4],
-              }}
-            >
-              {loading ? (
-                <Loader size={25} />
-              ) : (
+            <View style={styles.field}>
+              <Controller
+                control={control}
+                name='confirmPassword'
+                rules={{
+                  required: translate('errors.required'),
+                  validate: {
+                    matchesPassword: value => value === watch('newPassword') || translate('errors.invalidConfirmPassword'),
+                  },
+                }}
+                defaultValue=''
+                render={({ field: { onChange, value } }) => (
+                  <InputFieldPassword
+                    labelTx={'forgotPasswordScreen.confirm'}
+                    error={!!errors.confirmPassword}
+                    value={value}
+                    onChange={onChange}
+                    errorMessage={errors.confirmPassword?.message}
+                  />
+                )}
+              />
+            </View>
+            {errors.newPassword || errors.confirmPassword || errors.confirmationCode ? (
+              <View
+                style={{
+                  borderRadius: 50,
+                  paddingVertical: spacing[3],
+                  backgroundColor: palette.solidGrey,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginTop: spacing[4],
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
                 <Text
-                  text={'Confirmer'}
+                  tx={'common.submit'}
                   style={{
                     color: color.palette.secondaryColor,
                     fontFamily: 'Geometria-Bold',
                     marginRight: spacing[2],
                   }}
                 />
-              )}
-            </Button>
-          </View>
-          <View
-            style={{
-              marginTop: spacing[8] + spacing[3],
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: 0,
-            }}
-          >
-            <Text tx='welcomeScreen.noAccount' style={{ fontFamily: 'Geometria', marginRight: spacing[2] }} />
-            <TouchableOpacity>
-              <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
-            </TouchableOpacity>
+              </View>
+            ) : (
+              <Button
+                onPress={handleSubmit(onSubmit)}
+                style={{
+                  borderRadius: 50,
+                  paddingVertical: spacing[3],
+                  backgroundColor: '#fff',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginTop: spacing[4],
+                }}
+              >
+                {loading ? (
+                  <Loader size={25} />
+                ) : (
+                  <Text
+                    tx={'common.submit'}
+                    style={{
+                      color: color.palette.secondaryColor,
+                      fontFamily: 'Geometria-Bold',
+                      marginRight: spacing[2],
+                    }}
+                  />
+                )}
+              </Button>
+            )}
           </View>
         </View>
       </Screen>

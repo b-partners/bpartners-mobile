@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 
 import { Button, Header, Loader, Screen, Text } from '../../components';
 import { CheckEmailModal } from '../../components/check-email/check-email-modal';
@@ -37,7 +37,7 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
       __DEV__ && console.tron.logImportant('successfuly sent');
       setEMailWasSent(true);
       setTimeout(() => {
-        navigation.navigate('resetPassword');
+        navigation.navigate('resetPassword', { email: username });
       }, 5000);
     } catch (e) {
       __DEV__ && console.tron.error(e, e.stackTrace);
@@ -63,10 +63,12 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
     }
   };
 
+  const screenHeight = Dimensions.get('screen').height;
+
   return (
     <ErrorBoundary catchErrors='always'>
-      <Screen preset='scroll' backgroundColor='#fff' style={{ width: '100%', height: '100%' }}>
-        <Header headerTx='forgotPasswordScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
+      <Header headerTx='forgotPasswordScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
+      <Screen backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
         <View
           style={{
             padding: spacing[8],
@@ -95,20 +97,19 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
                 )}
               />
             </View>
-            <Button
-              onPress={handleSubmit(onSubmit)}
-              style={{
-                borderRadius: 50,
-                paddingVertical: spacing[3],
-                backgroundColor: '#fff',
-                display: 'flex',
-                flexDirection: 'row',
-                marginTop: spacing[4],
-              }}
-            >
-              {loading ? (
-                <Loader size={25} />
-              ) : (
+            {errors.email ? (
+              <View
+                style={{
+                  borderRadius: 50,
+                  paddingVertical: spacing[3],
+                  backgroundColor: palette.solidGrey,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginTop: spacing[4],
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
                 <Text
                   tx={'common.submit'}
                   style={{
@@ -117,23 +118,33 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
                     marginRight: spacing[2],
                   }}
                 />
-              )}
-            </Button>
-          </View>
-          <View
-            style={{
-              marginTop: spacing[8] + spacing[3],
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: 0,
-            }}
-          >
-            <Text tx='welcomeScreen.noAccount' style={{ fontFamily: 'Geometria', marginRight: spacing[2] }} />
-            <TouchableOpacity>
-              <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
-            </TouchableOpacity>
+              </View>
+            ) : (
+              <Button
+                onPress={handleSubmit(onSubmit)}
+                style={{
+                  borderRadius: 50,
+                  paddingVertical: spacing[3],
+                  backgroundColor: '#fff',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginTop: spacing[4],
+                }}
+              >
+                {loading ? (
+                  <Loader size={25} />
+                ) : (
+                  <Text
+                    tx={'common.submit'}
+                    style={{
+                      color: color.palette.secondaryColor,
+                      fontFamily: 'Geometria-Bold',
+                      marginRight: spacing[2],
+                    }}
+                  />
+                )}
+              </Button>
+            )}
           </View>
         </View>
       </Screen>

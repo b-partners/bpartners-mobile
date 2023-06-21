@@ -405,7 +405,8 @@
     "resetTitle": "Change password",
     "error": "Wrong validation code",
     "code": "Confirmation code",
-    "newPassword": "Nouveau mot de passe"
+    "newPassword": "New password",
+    "confirm": "Confirm password"
   },
   "bankScreen": {
     "accountName": "Account Name",
