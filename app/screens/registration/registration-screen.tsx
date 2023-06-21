@@ -230,7 +230,16 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                 </Button>
               )}
               <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
-                <Text tx='registrationScreen.already' style={{ fontFamily: 'Geometria', marginRight: spacing[1] }} />
+                <Text
+                  tx='registrationScreen.already'
+                  style={{
+                    fontFamily: 'Geometria',
+                    marginRight: spacing[1],
+                    textShadowColor: palette.greyDarker,
+                    textShadowOffset: { width: 1, height: 1 },
+                    textShadowRadius: 2,
+                  }}
+                />
                 <TouchableOpacity onPress={() => navigation.navigate('welcome')}>
                   <Text tx='registrationScreen.connect' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
                 </TouchableOpacity>

@@ -221,7 +221,16 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                     )}
                   </Button>
                   <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
-                    <Text tx='welcomeScreen.noAccount' style={{ fontFamily: 'Geometria', marginRight: spacing[1] }} />
+                    <Text
+                      tx='welcomeScreen.noAccount'
+                      style={{
+                        fontFamily: 'Geometria',
+                        marginRight: spacing[1],
+                        textShadowColor: palette.greyDarker,
+                        textShadowOffset: { width: 1, height: 1 },
+                        textShadowRadius: 2,
+                      }}
+                    />
                     <TouchableOpacity onPress={() => navigation.navigate('registration')}>
                       <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
                     </TouchableOpacity>
