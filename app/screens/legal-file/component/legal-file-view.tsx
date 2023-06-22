@@ -34,7 +34,7 @@ const CHECKBOX_STYLE: CheckboxProps['style'] = {
 const FOOTER_CONTENT: ViewStyle = {
   alignItems: 'flex-end',
   paddingRight: spacing[6],
-  paddingBottom: spacing[6],
+  paddingBottom: spacing[4],
 };
 
 const CONTINUE_BUTTON_STYLE: ViewStyle = {
