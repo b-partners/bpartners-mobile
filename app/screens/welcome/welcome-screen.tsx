@@ -5,7 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, TextInput, TextStyle, TouchableOpacity, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import * as yup from 'yup';
@@ -13,7 +13,7 @@ import * as yup from 'yup';
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Screen, Text } from '../../components';
 import env from '../../config/env';
-import { translate } from '../../i18n/translate';
+import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -26,19 +26,14 @@ WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 
-type LoginFormValues = {
-  email: string;
-  password: string;
-};
-
-interface IdentityState {
+export interface IdentityState {
   accessToken: string;
   refreshToken: string;
 }
 
 interface UserCredentials {
   password: string;
-  username: string;
+  email: string;
 }
 
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
@@ -47,42 +42,46 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     return null;
   }
 
-  const { authStore } = useStores();
+  const { authStore, legalFilesStore } = useStores();
   const errorMessageStyles = { backgroundColor: palette.pastelRed };
-  const [userDetailValue, setUserDetailValue] = useState<UserCredentials>({ password: '', username: '' });
-
+  const [userDetails, setUserDetails] = useState<UserCredentials>({ email: null, password: null });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
+  const passwordDangerMessage = <Text tx='welcomeScreen.passwordRequired' style={styles.danger} />;
 
   useEffect(() => {
     (async () => {
       try {
         const credentials = await Keychain.getGenericPassword();
         if (credentials) {
-          setUserDetailValue(credentials);
+          setUserDetails({
+            email: credentials.username ?? '',
+            password: credentials.username ? credentials.password : '',
+          });
         }
       } catch (error) {
-        __DEV__ && console.tron.log("Keychain couldn't be accessed!", error);
+        __DEV__ && console.tron.error("Keychain couldn't be accessed!", error);
       }
     })();
   }, []);
 
-  const userDetails: UserCredentials = {
-    password: userDetailValue.password,
-    username: userDetailValue.username,
-  };
-
   async function signIn(username: string, password: string) {
+    __DEV__ && console.tron.log(username, password);
     try {
       setLoading(true);
-      const inputUsername = userDetails.username ? userDetails.username : username;
-      const inputPassword = userDetails.username ? userDetails.password : password;
-
+      const inputUsername = username ?? userDetails.email;
+      const inputPassword = password ?? userDetails.password;
       const user = await Auth.signIn(inputUsername, inputPassword);
+      if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+        navigation.navigate('changePassword', { userName: inputUsername, password: inputPassword });
+      }
       const session = await Auth.currentSession();
 
       const newIdentity: IdentityState = {
@@ -90,17 +89,21 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
         refreshToken: user.signInUserSession.refreshToken.token,
       };
       await Keychain.setGenericPassword(inputUsername, inputPassword);
-      authStore.whoami(newIdentity.accessToken);
-      navigation.navigate('oauth');
+      await authStore.whoami(newIdentity.accessToken);
+      await legalFilesStore.getLegalFiles();
+      const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
+      if (!hasApprovedLegalFiles) {
+        navigation.navigate('legalFile');
+      } else {
+        await authStore.getAccounts();
+        navigation.navigate('oauth');
+      }
     } catch (error) {
       showMessage(translate('errors.credentials'), errorMessageStyles);
     } finally {
       setLoading(false);
     }
   }
-
-  const emailDangerMessage = <Text tx='welcomeScreen.emailRequired' style={styles.danger} />;
-  const passwordDangerMessage = <Text tx='welcomeScreen.passwordRequired' style={styles.danger} />;
 
   const LoginFormSchema = yup.object().shape({
     email: yup
@@ -112,24 +115,34 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     password: yup.string().required(passwordDangerMessage || 'Password is required'),
   });
 
-  const initialValues: LoginFormValues = {
-    email: '',
-    password: '',
+  const toggleMouseEnter = () => {
+    setIsHovered(!isHovered);
   };
+
+  const normalText: TextStyle = {
+    textDecorationLine: 'none',
+  };
+
+  const underlinedText: TextStyle = {
+    textDecorationLine: 'underline',
+  };
+
+  const textStyle = isHovered ? underlinedText : normalText;
+  const screenHeight = Dimensions.get('screen').height;
 
   return (
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingWrapper>
-        <Screen backgroundColor='#fff'>
+        <Screen backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
           <AutoImage
             source={require('./welcome.background.png')}
             resizeMode='stretch'
             resizeMethod='auto'
             style={{ position: 'absolute', height: '100%', width: '100%' }}
           />
-          <View style={{ paddingHorizontal: spacing[8], height: '100%' }}>
+          <View style={{ paddingHorizontal: spacing[8], height: '100%', marginBottom: spacing[8] }}>
             <AutoImage source={require('./welcome.logo.png')} resizeMode='contain' resizeMethod='auto' style={{ width: '100%', marginTop: spacing[8] }} />
-            <Formik initialValues={initialValues} validationSchema={LoginFormSchema} onSubmit={values => __DEV__ && console.tron.log(values)}>
+            <Formik initialValues={userDetails} validationSchema={LoginFormSchema} onSubmit={values => __DEV__ && console.tron.log(values)}>
               {({ handleChange, handleBlur, values, errors, touched }) => (
                 <View style={styles.container}>
                   <View style={styles.field}>
@@ -138,8 +151,8 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       style={styles.input}
                       onChangeText={handleChange('email')}
                       onBlur={handleBlur('email')}
-                      defaultValue={userDetails.username !== null ? userDetails.username : values.email}
                       keyboardType='email-address'
+                      defaultValue={userDetails.email}
                       autoCapitalize='none'
                       autoCorrect={false}
                     />
@@ -155,9 +168,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                           width: '75%',
                           color: palette.secondaryColor,
                         }}
+                        defaultValue={userDetails.password}
                         onChangeText={handleChange('password')}
                         onBlur={handleBlur('password')}
-                        defaultValue={userDetails.username !== null ? userDetails.password : values.password}
                         secureTextEntry={showPassword}
                       />
                       <View style={{ width: '25%', backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>
@@ -169,9 +182,17 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       </View>
                     </View>
                     {errors.password && touched.password && <Text style={styles.error}>{errors.password}</Text>}
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
+                      <TouchableOpacity onPress={() => navigation.navigate('forgotPassword')} onPressIn={toggleMouseEnter} onPressOut={toggleMouseEnter}>
+                        <Text tx='welcomeScreen.forgotPassword' style={[{ fontFamily: 'Geometria-Bold' }, textStyle]} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <Button
                     onPress={async () => {
+                      if (values.email && values.password) {
+                        setUserDetails({ email: values.email, password: values.password });
+                      }
                       await signIn(values.email, values.password);
                     }}
                     style={{
@@ -199,24 +220,24 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                       </>
                     )}
                   </Button>
+                  <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
+                    <Text
+                      tx='welcomeScreen.noAccount'
+                      style={{
+                        fontFamily: 'Geometria',
+                        marginRight: spacing[1],
+                        textShadowColor: palette.greyDarker,
+                        textShadowOffset: { width: 1, height: 1 },
+                        textShadowRadius: 2,
+                      }}
+                    />
+                    <TouchableOpacity onPress={() => navigation.navigate('registration')}>
+                      <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               )}
             </Formik>
-            <View
-              style={{
-                marginTop: spacing[8] + spacing[3],
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                opacity: 0,
-              }}
-            >
-              <Text tx='welcomeScreen.noAccount' style={{ fontFamily: 'Geometria', marginRight: spacing[2] }} />
-              <TouchableOpacity>
-                <Text tx='welcomeScreen.itsThisWay' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
-              </TouchableOpacity>
-            </View>
           </View>
         </Screen>
       </KeyboardAvoidingWrapper>
@@ -236,7 +257,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
   },
   field: {
     marginBottom: 10,

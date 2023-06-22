@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { OnboardingApi } from '../../../services/api/onboarding-api';
+import { CreateUser } from '../../entities/user/user';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
 
@@ -40,6 +41,23 @@ export const OnboardingStoreModel = types
       } catch (e) {
         self.getOnboardingUrlFail(e.message);
         self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    signUpFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    signUp: flow(function* (userInfos: CreateUser) {
+      const signUpApi = new OnboardingApi(self.environment.api);
+      try {
+        const result = yield signUpApi.signUp(userInfos);
+        __DEV__ && console.tron.log(result);
+      } catch (e) {
+        self.signUpFail(e);
       }
     }),
   }));

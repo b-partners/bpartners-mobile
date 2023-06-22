@@ -11,6 +11,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
+import { AuthUserModel } from '../../entities/user/AuthUser';
 import { User, UserModel } from '../../entities/user/user';
 
 export const AuthStoreModel = types
@@ -25,6 +26,7 @@ export const AuthStoreModel = types
     currentAccount: types.maybe(types.maybeNull(AccountModel)),
     currentAccountHolder: types.maybe(types.maybeNull(AccountHolderModel)),
     loadingUpdateInfos: types.optional(types.boolean, false),
+    userAuth: types.maybe(types.maybeNull(AuthUserModel)),
   })
   .extend(withEnvironment)
   .extend(withRootStore)
@@ -83,24 +85,6 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    whoamiSuccess: (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
-      self.currentUser = { ...currentUser };
-      self.currentAccount = { ...currentAccount };
-      self.currentAccountHolder = { ...currentAccountHolder };
-
-      save('currentUser', currentUser);
-      save('currentAccount', currentAccount);
-      save('currentAccountHolder', currentAccountHolder);
-    },
-  }))
-  .actions(self => ({
-    whoamiFail: error => {
-      __DEV__ && console.tron.log(error.message || error);
-      self.catchOrThrow(error);
-    },
-  }))
-
-  .actions(self => ({
     setCachedCredentials: flow(function* () {
       // yield AsyncStorage.multiSet([['accessToken', self.accessToken]]);
       yield save('accessToken', self.accessToken);
@@ -147,27 +131,45 @@ export const AuthStoreModel = types
   }))
   .actions(self => ({
     whoami: flow(function* (accessToken: string) {
+      __DEV__ && console.tron.log('WHO AM I ?');
       const signInApi = new AuthApi(self.environment.api);
-      const accountApi = new AccountApi(self.environment.api);
-      let whoAmiResult, getAccountResult, getAccountHolderResult;
       try {
-        // const session = yield Auth.currentSession();
-        // const accessToken = session.getIdToken().getJwtToken();
-
         yield self.getTokenSuccess({ accessToken });
-        whoAmiResult = yield signInApi.whoami();
+        const whoAmiResult = yield signInApi.whoami();
         self.currentUser = whoAmiResult.user;
-
-        yield self.rootStore.legalFilesStore.getLegalFiles();
-
-        getAccountResult = yield accountApi.getAccounts(whoAmiResult.user.id);
-        getAccountHolderResult = yield accountApi.getAccountHolders(whoAmiResult.user.id, getAccountResult.account.id);
-        self.whoamiSuccess(whoAmiResult.user, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
-        self.whoamiFail(e);
+        self.catchOrThrow(e);
         __DEV__ && console.tron.log('Handle who am I error here');
       }
-      yield self.rootStore.legalFilesStore.getLegalFiles();
+    }),
+  }))
+  .actions(self => ({
+    getAccountSuccess: (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
+      self.currentAccount = { ...currentAccount };
+      self.currentAccountHolder = { ...currentAccountHolder };
+
+      save('currentUser', currentUser);
+      save('currentAccount', currentAccount);
+      save('currentAccountHolder', currentAccountHolder);
+    },
+  }))
+  .actions(self => ({
+    getAccountFail: error => {
+      __DEV__ && console.tron.log(error.message);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getAccounts: flow(function* () {
+      const accountApi = new AccountApi(self.environment.api);
+      try {
+        const getAccountResult = yield accountApi.getAccounts(self.currentUser.id);
+        const getAccountHolderResult = yield accountApi.getAccountHolders(self.currentUser.id, getAccountResult.account.id);
+        self.getAccountSuccess(self.currentUser, getAccountResult.account, getAccountHolderResult.accountHolder);
+      } catch (e) {
+        self.getAccountFail(e);
+        __DEV__ && console.tron.log('Handle who am I error here');
+      }
     }),
   }))
   .actions(self => ({
@@ -196,6 +198,11 @@ export const AuthStoreModel = types
         self.loadingUpdateInfos = false;
       }
     }),
+  }))
+  .actions(self => ({
+    setUserAuthUserName: (userName: string) => {
+      self.userAuth.userName = userName;
+    },
   }));
 
 export interface AuthStore extends Instance<typeof AuthStoreModel> {}

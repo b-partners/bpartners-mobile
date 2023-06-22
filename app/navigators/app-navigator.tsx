@@ -27,13 +27,17 @@ import {
   TransactionListScreen,
   WelcomeScreen,
 } from '../screens';
+import { ChangePasswordScreen } from '../screens/change-password/change-password-screen';
 import { CodeExchangeScreen } from '../screens/code-exchange/code-exchange-screen';
+import { ForgotPasswordScreen } from '../screens/forgot-password/forgot-password-screen';
+import { ResetPasswordScreen } from '../screens/forgot-password/reset-password-screen';
 import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
 import { InvoicePreviewScreen } from '../screens/invoice-preview/invoice-preview-screen';
 import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
 import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
 import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
 import { ProspectScreen } from '../screens/prospect/prospect-screen';
+import { RegistrationScreen } from '../screens/registration/registration-screen';
 import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
@@ -51,6 +55,9 @@ import { navigationRef, useBackButtonHandler } from './navigation-utilities';
  */
 export type NavigatorParamList = {
   welcome: undefined;
+  forgotPassword: undefined;
+  registration: undefined;
+  resetPassword: { email: string };
   home: undefined;
   transactionList: undefined;
   oauth: { code: string; state: string };
@@ -68,9 +75,14 @@ export type NavigatorParamList = {
     invoice: Invoice;
   };
   bridge: undefined;
+  changePassword: {
+    userName: string;
+    password: string;
+  };
 };
 
 export type TabNavigatorParamList = {
+  forgotPassword: undefined;
   home: undefined;
   marketplace: undefined;
   paymentInitiation: undefined;
@@ -97,19 +109,16 @@ const windowWidth = Dimensions.get('window').width;
 const AppStack = observer(function () {
   const HIDE_DRAWER_OPTIONS: any = {
     swipeEnabled: false,
-    drawerLabel: () => null,
-    drawerIcon: () => null,
     title: null,
     drawerItemStyle: { display: 'none' },
   };
 
   const { authStore, legalFilesStore } = useStores();
-  const { accessToken, currentAccount, currentAccountHolder, currentUser } = authStore;
+  const { accessToken, currentAccount, currentUser } = authStore;
   const hasAccount = currentAccount && !!currentAccount?.id;
-  const hasAccountHolder = currentAccountHolder && !!currentAccountHolder?.id;
   const hasUser = currentUser && !!currentUser?.id;
   const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
-  const isAuthenticated = !!accessToken && hasAccount && hasAccountHolder && hasUser;
+  const isAuthenticated = !!accessToken && hasAccount && hasUser;
 
   return (
     <Drawer.Navigator
@@ -140,6 +149,10 @@ const AppStack = observer(function () {
       ) : (
         <>
           <Drawer.Screen name='welcome' component={WelcomeScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='registration' component={RegistrationScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='changePassword' component={ChangePasswordScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='forgotPassword' component={ForgotPasswordScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='resetPassword' component={ResetPasswordScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='oauth' component={CodeExchangeScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       )}

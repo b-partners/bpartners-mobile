@@ -15,21 +15,16 @@ export const UserModel = types.model('User').props({
 });
 
 export interface User extends Instance<typeof UserModel> {}
+export interface CreateUser extends Instance<typeof CreateUserModel> {}
 
 export interface UserSnapshotOut extends SnapshotOut<typeof UserModel> {}
 
 export interface UserSnapshotIn extends SnapshotIn<typeof UserModel> {}
 
-export const createUserDefaultModel = () =>
-  types.optional(UserModel, {
-    firstName: null,
-    lastName: null,
-    birthDate: null,
-    idVerified: null,
-    identificationStatus: null,
-    nationalityCCA3: null,
-    phone: null,
-    monthlySubscriptionAmount: null,
-    logoFileId: null,
-    status: null,
-  });
+export const CreateUserModel = types.model('CreateUser').props({
+  firstName: types.maybeNull(types.string),
+  lastName: types.maybeNull(types.string),
+  companyName: types.maybeNull(types.string),
+  email: types.maybeNull(types.string),
+  phoneNumber: types.maybeNull(types.string),
+});

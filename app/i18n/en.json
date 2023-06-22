@@ -24,7 +24,8 @@
     "noDataProvided": "No records to display",
     "loading": "Loading in progress ...",
     "added": "Successfully added",
-    "edit": "Modifier"
+    "edit": "Edit",
+    "register": "REGISTER"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -39,7 +40,10 @@
     "operation": "Failed to add",
     "credentials": "please check your credentials!",
     "invalidPrice": "Invalid price",
-    "mandatoryTitle": "please fill out the title of your quotation !"
+    "mandatoryTitle": "please fill out the title of your quotation !",
+    "minPassword": "Password must contain at least 8 characters",
+    "invalidPassword": "The password must contain at least one capital letter, one special character (., -, &, @ etc) and one number",
+    "invalidConfirmPassword": "The passwords don't match !"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -52,10 +56,29 @@
     "login": "LOGIN",
     "email": "Email",
     "password": "Password",
+    "forgotPassword": "Forgot password?",
     "emailRequired": "your email is required",
     "passwordRequired": "your password is required",
     "checkYourIdentity": "Please check your email or password",
-    "signup": "Sign up"
+    "signup": "SIGN UP"
+  },
+  "registrationScreen": {
+    "already": "Already have an account",
+    "connect": "Login",
+    "lastname": "Name",
+    "firstname": "Firstname",
+    "email": "E-mail Address",
+    "phone": "Phone Number",
+    "company": "Company Name",
+    "checkEmail": "To finalize your registration, an e-mail has been sent to you at",
+    "confirm": "Confirmation",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm password"
+  },
+  "changePasswordScreen": {
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "firstConnexion": "First connexion ?"
   },
   "demoScreen": {
     "howTo": "HOW TO",
@@ -361,6 +384,7 @@
     "swan": "My Bank"
   },
   "legalFileScreen": {
+    "condition": "General User Condition",
     "accept": "Accept",
     "continue": "Continue",
     "reload": "Reload",
@@ -372,6 +396,17 @@
     "messagePartTwo": "send an email to",
     "messagePartThree": "you can also call us on :",
     "mail": "contact@bpartners.app"
+  },
+  "forgotPasswordScreen": {
+    "title": "Forgot your password ?",
+    "sentTitle": "Code sent",
+    "checkEmail": "Check your e-mail, your validation code has been sent to",
+    "success": "Successfully modified",
+    "resetTitle": "Change password",
+    "error": "Wrong validation code",
+    "code": "Confirmation code",
+    "newPassword": "New password",
+    "confirm": "Confirm password"
   },
   "bankScreen": {
     "accountName": "Account Name",

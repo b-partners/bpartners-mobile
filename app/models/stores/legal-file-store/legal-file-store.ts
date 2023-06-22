@@ -42,7 +42,6 @@ export const LegalFileStoreModel = types
   .actions(self => {
     const fileIndexById = (id: string) => self.legalFiles.findIndex(file => file.id === id);
     const approveLegalFileSuccess = flow(function* (approvedLegalFile: LegalFileSnapshotOut) {
-      yield self.rootStore.authStore.whoami();
       // replace the unapproved file to the approved one
       // to avoid low latency internet connection
       const fileIndex = fileIndexById(approvedLegalFile.id);
