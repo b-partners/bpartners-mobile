@@ -48,7 +48,7 @@ export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessa
         }}
         theme={{
           colors: {
-            primary: palette.greyDarker,
+            primary: palette.secondaryColor,
           },
         }}
       />

@@ -31,6 +31,9 @@ export const PaymentInitiationForm: FC<
   const initialValues = { label: '', reference: '', amount: '', payerName: '', payerEmail: '' };
 
   const validationSchema = yup.object().shape({
+    reference: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.reference')),
+    label: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.label')),
+    payerName: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.payerName')),
     amount: yup
       .string()
       .required(translate('invoiceScreen.errors.requiredField'))
@@ -56,12 +59,23 @@ export const PaymentInitiationForm: FC<
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { resetForm }) => {
-          __DEV__ && console.tron.log({ values });
           try {
             if (!currentAccount.iban || !currentAccount.bic) {
               setIbanModal(true);
             } else {
-              await init({ id: uuid.v4() as string, ...values, amount: amountToMinors(commaToDot(values.amount)) });
+              __DEV__ &&
+                console.tron.log({
+                  id: uuid.v4() as string,
+                  ...values,
+                  amount: amountToMinors(commaToDot(values.amount)),
+                  redirectionStatusUrls: { successUrl: '', failureUrl: '' },
+                });
+              await init({
+                id: uuid.v4() as string,
+                ...values,
+                amount: amountToMinors(commaToDot(values.amount)),
+                redirectionStatusUrls: { successUrl: '', failureUrl: '' },
+              });
               resetForm();
               setShowModal(true);
             }
@@ -78,14 +92,14 @@ export const PaymentInitiationForm: FC<
                 name='reference'
                 labelTx='paymentInitiationScreen.fields.reference'
                 value={values.reference}
-                inputStyle={{ textTransform: 'none' }}
+                inputStyle={[errors.reference && INVALID_FORM_FIELD]}
               />
               <FormField
                 testID='label'
                 name='label'
                 labelTx='paymentInitiationScreen.fields.label'
                 value={values.label}
-                inputStyle={{ textTransform: 'none' }}
+                inputStyle={[errors.label && INVALID_FORM_FIELD]}
               />
               <FormField
                 testID='amount'
@@ -95,7 +109,13 @@ export const PaymentInitiationForm: FC<
                 keyboardType='phone-pad'
                 value={values.amount}
               />
-              <FormField testID='clientName' name='payerName' labelTx='paymentInitiationScreen.fields.payerName' value={values.payerName} />
+              <FormField
+                testID='clientName'
+                name='payerName'
+                labelTx='paymentInitiationScreen.fields.payerName'
+                value={values.payerName}
+                inputStyle={[errors.payerName && INVALID_FORM_FIELD]}
+              />
               <FormField
                 testID='clientEmail'
                 name='payerEmail'
