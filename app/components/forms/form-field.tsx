@@ -28,6 +28,7 @@ const INPUT_STYLE: TextStyle = {
   backgroundColor: color.transparent,
   paddingTop: 0,
   fontFamily: 'Geometria',
+  textTransform: 'none',
 };
 const ERROR_STYLE: TextStyle = { color: color.error };
 
