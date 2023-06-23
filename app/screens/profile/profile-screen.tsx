@@ -1,11 +1,12 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Linking, TextStyle, View, ViewStyle } from 'react-native';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
 
 import { AutoImage, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
 import { useStores } from '../../models';
+import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { NavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -32,7 +33,42 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const { authStore } = useStores();
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
   const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
-  const country = currentAccountHolder?.contactAddress?.country;
+
+  let accountHolder: AccountHolder;
+  useEffect(() => {
+    if (currentAccountHolder) {
+      accountHolder = currentAccountHolder;
+    } else {
+      // @ts-ignore
+      accountHolder = {
+        name: '',
+        siren: '',
+        officialActivityName: '',
+        contactAddress: {
+          address: '',
+          city: '',
+          country: '',
+          postalCode: '',
+        },
+        businessActivities: {
+          primary: '',
+          secondary: '',
+        },
+        companyInfo: {
+          socialCapital: 0,
+        },
+        revenueTargets: {
+          year: null,
+          amountTarget: null,
+          amountAttempted: null,
+          amountAttemptedPercent: null,
+          updatedAt: null,
+        },
+      };
+    }
+  }, []);
+
+  const country = accountHolder?.contactAddress?.country;
 
   // TODO: change filename
   return (
@@ -113,30 +149,42 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               </View>
             </View>
           </View>
-          <LabelWithTextRow label='profileScreen.fields.accountHolder.name' text={currentAccountHolder.name} />
-          <LabelWithTextRow label='profileScreen.fields.accountHolder.businessActivities.primary' text={currentAccountHolder?.businessActivities?.primary} />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.name' text={accountHolder?.name ?? 'Aucune information'} />
+          <LabelWithTextRow
+            label='profileScreen.fields.accountHolder.businessActivities.primary'
+            text={accountHolder?.businessActivities?.primary ?? 'Aucune information'}
+          />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.businessActivities.secondary'
-            text={currentAccountHolder?.businessActivities?.secondary}
+            text={accountHolder?.businessActivities?.secondary ?? 'Aucune information'}
           />
-          <LabelWithTextRow label='profileScreen.fields.accountHolder.officialActivityName' text={currentAccountHolder?.officialActivityName} />
+          <LabelWithTextRow
+            label='profileScreen.fields.accountHolder.officialActivityName'
+            text={accountHolder?.officialActivityName ?? 'Aucune information'}
+          />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.companyInfo.socialCapital'
-            text={printCurrency(currentAccountHolder?.companyInfo?.socialCapital)}
+            text={printCurrency(accountHolder?.companyInfo?.socialCapital)}
           />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.revenueTargets.amountTarget'
-            text={printCurrency(currentAccountHolder?.revenueTargets[0]?.amountTarget)}
+            text={printCurrency(accountHolder?.revenueTargets[0]?.amountTarget) ?? 0}
           />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.contactAddress.country'
-            text={country}
-            countryFlag={`https://flagsapi.com/${country.slice(0, 2)}/flat/64.png`}
+            text={country ?? 'Aucune information'}
+            countryFlag={`https://flagsapi.com/${country?.slice(0, 2)}/flat/64.png`}
           />
-          <LabelWithTextRow label='profileScreen.fields.accountHolder.contactAddress.city' text={currentAccountHolder?.contactAddress?.city} />
-          <LabelWithTextRow label='profileScreen.fields.accountHolder.contactAddress.address' text={currentAccountHolder?.contactAddress?.address} />
-          <LabelWithTextRow label='profileScreen.fields.accountHolder.contactAddress.postalCode' text={currentAccountHolder?.contactAddress?.postalCode} />
-          <LabelWithTextRow label='profileScreen.fields.accountHolder.siren' text={currentAccountHolder?.siren} />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.contactAddress.city' text={accountHolder?.contactAddress?.city ?? 'Aucune information'} />
+          <LabelWithTextRow
+            label='profileScreen.fields.accountHolder.contactAddress.address'
+            text={accountHolder?.contactAddress?.address ?? 'Aucune information'}
+          />
+          <LabelWithTextRow
+            label='profileScreen.fields.accountHolder.contactAddress.postalCode'
+            text={accountHolder?.contactAddress?.postalCode ?? 'Aucune information'}
+          />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.siren' text={accountHolder?.siren ?? 'Aucune information'} />
           <View
             style={{
               marginHorizontal: '5%',
