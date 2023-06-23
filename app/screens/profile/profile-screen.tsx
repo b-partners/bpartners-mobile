@@ -58,7 +58,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           socialCapital: 0,
         },
         revenueTargets: {
-          year: null,
+          year: 0,
           amountTarget: null,
           amountAttempted: null,
           amountAttemptedPercent: null,
@@ -168,7 +168,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.revenueTargets.amountTarget'
-            text={printCurrency(accountHolder?.revenueTargets[0]?.amountTarget) ?? 0}
+            text={printCurrency(accountHolder?.revenueTargets[0]?.amountTarget)}
           />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.contactAddress.country'
