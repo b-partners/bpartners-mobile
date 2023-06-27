@@ -6,7 +6,6 @@ import { ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from '
 import * as Keychain from 'react-native-keychain';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -90,7 +89,6 @@ type RouteNameProps = {
   home: string | React.ReactElement;
   profile: string | React.ReactElement;
   transactionList: string | React.ReactElement;
-  prospect: string | React.ReactElement;
   paymentInitiation: string | React.ReactElement;
   paymentList: string | React.ReactElement;
   welcome: string | React.ReactElement;
@@ -108,7 +106,6 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     home: translate('homeScreen.title'),
     profile: translate('profileScreen.title'),
     transactionList: translate('transactionListScreen.title'),
-    prospect: translate('prospectScreen.title'),
     paymentInitiation: translate('paymentInitiationScreen.title'),
     paymentList: translate('paymentListScreen.title'),
     welcome: translate('homeScreen.title'),
@@ -128,7 +125,6 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     oauth: <IoniconIcon name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
     marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
     supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
-    prospect: <FontAwesome name='list-alt' size={22} color={color.palette.secondaryColor} />,
     bridge: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
   };
 

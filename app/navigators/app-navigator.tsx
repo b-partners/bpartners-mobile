@@ -63,7 +63,6 @@ export type NavigatorParamList = {
   oauth: { code: string; state: string };
   profile: undefined;
   legalFile: undefined;
-  prospect: undefined;
   invoices: undefined;
   invoiceForm: {
     invoiceID?: string;
@@ -82,6 +81,7 @@ export type NavigatorParamList = {
 };
 
 export type TabNavigatorParamList = {
+  prospect: undefined;
   forgotPassword: undefined;
   home: undefined;
   marketplace: undefined;
@@ -140,7 +140,6 @@ const AppStack = observer(function () {
           <Drawer.Screen name='home' component={AppTabStack} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
-          <Drawer.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
@@ -173,6 +172,7 @@ const AppTabStack = observer(function () {
         <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
         <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
         <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
+        <Tab.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />
         <Tab.Screen name='paymentList' component={PaymentListScreen} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
