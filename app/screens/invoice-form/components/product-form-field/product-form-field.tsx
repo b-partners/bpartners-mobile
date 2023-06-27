@@ -31,6 +31,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const [creationModal, setCreationModal] = useState(false);
   const [visible, setVisible] = useState(false);
   const [quantityValue, setQuantityValue] = useState(temp?.quantity?.toString());
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const { productStore } = useStores();
 
@@ -204,8 +205,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                             flexDirection: 'row',
                                           }}
                                           onPress={() => {
-                                            setQuantityValue('');
-                                            setCurrentProduct(product);
+                                            setQuantityValue('1');
+                                            setCurrentProduct({ ...product, quantity: 1 });
+                                            setTotalPrice(product.unitPrice * 1);
                                           }}
                                         >
                                           <>
@@ -306,6 +308,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
               onChangeText={quantity => {
                 setQuantityValue(quantity);
                 setCurrentProduct(product => ({ ...product, quantity: +quantity }));
+                setTotalPrice(currentProduct?.unitPriceWithVat * +quantity);
               }}
             />
             <TextField
@@ -338,11 +341,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
             />
           </View>
           <View>
-            <InvoiceFormField
-              labelTx='invoiceFormScreen.productForm.totalWithVat'
-              editable={false}
-              value={printCurrencyToMajors(currentProduct?.unitPriceWithVat * currentProduct?.quantity)}
-            />
+            <InvoiceFormField labelTx='invoiceFormScreen.productForm.totalWithVat' editable={false} value={printCurrencyToMajors(totalPrice)} />
           </View>
         </View>
       )}
