@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { Checkbox, List } from 'react-native-paper';
+import { List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
@@ -13,7 +13,6 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
-import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -22,12 +21,8 @@ import { showMessage } from '../../utils/snackbar';
 import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
-import { PaymentCreationModal } from './components/payment-regulation-form-field/payment-creation-modal';
-import { PaymentRegulationDraftField } from './components/payment-regulation-form-field/payment-regulation-draft-field';
-import { PaymentRegulationFormField } from './components/payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
-import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, dateConversion, invoicePageSize } from './components/utils';
 import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
@@ -41,17 +36,27 @@ type InvoiceFormProps = {
 
 const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
 
+const DATE_PICKER_LABEL_STYLE: TextStyle = { color: color.palette.greyDarker, fontFamily: 'Geometria-Bold' };
+
+const DATE_PICKER_CONTAINER_STYLE: ViewStyle = {
+  padding: spacing[4],
+  backgroundColor: color.transparent,
+  borderColor: '#E1E5EF',
+  borderWidth: 1,
+};
+
+const DATE_PICKER_TEXT_STYLE: TextStyle = {
+  color: color.palette.textClassicColor,
+  marginTop: spacing[2],
+  fontFamily: 'Geometria-Bold',
+};
+
 const INVOICE_LABEL_STYLE: TextStyle = {
   color: color.palette.greyDarker,
   fontFamily: 'Geometria-Bold',
   fontSize: 13,
   textTransform: 'uppercase',
 };
-
-export enum CheckboxEnum {
-  CHECKED = 'checked',
-  UNCHECKED = 'unchecked',
-}
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoice, status, navigation } = props;
@@ -62,45 +67,22 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [creationModal, setCreationModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
-  const [paymentCreation, setPaymentCreation] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    watch,
-  } = useForm({
-    mode: 'all',
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
-  const {
-    fields: productFields,
-    append: productAppend,
-    remove: productRemove,
-    update: productUpdate,
-  } = useFieldArray({
-    control,
-    name: 'products',
-    rules: {
-      required: translate('errors.required'),
-    },
-  });
-  const { fields: paymentFields, remove: paymentRemove, append: paymentAppend } = useFieldArray({ control, name: 'paymentRegulations' });
-  const hasError = errors.title || errors.ref || errors.products || errors.customer;
-
+  const { fields, append, remove, update, move } = useFieldArray({ control, name: 'products' });
+  const [title, setTitle] = useState(null);
+  const [comment, setComment] = useState(null);
+  const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
-  const [allowPaymentDelay, setAllowPaymentDelay] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
-  const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
-  const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
-  const [totalPercent, setTotalPercent] = useState(0);
-  const [savedInvoice, setSavedInvoice] = useState<Invoice>();
-  const [currentPayment, setCurrentPayment] = useState<PaymentRegulation>(null);
+  const [expanded, setExpanded] = useState(false);
+  const [quotationTitle, setQuotationTitle] = useState<String>('');
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -109,155 +91,93 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     });
   };
 
+  const toggleAccordion = () => {
+    setExpanded(!expanded);
+  };
+
   useEffect(() => {
-    paymentFields.length > 1 && setPayInInstalments(CheckboxEnum.CHECKED);
-    paymentFields.forEach(item => {
-      setTotalPercent(prevTotalPercent => prevTotalPercent + item.paymentRequest.percentValue);
-    });
-    const days = watch('delayInPaymentAllowed');
-    const percent = watch('delayPenaltyPercent');
-    if (days || percent) {
-      setAllowPaymentDelay(CheckboxEnum.CHECKED);
-    }
+    const removeField = async () => {
+      await remove(fields.length - 1);
+    };
+
+    removeField().then(error => __DEV__ && console.tron.log(error));
+    setRemoveProduct(false);
+  }, [isMoveCalled]);
+
+  useEffect(() => {
+    reset();
   }, []);
-
-  const togglePaymentDelay = () => {
-    if (allowPaymentDelay === CheckboxEnum.CHECKED) {
-      reset({
-        delayInPaymentAllowed: null,
-        delayPenaltyPercent: null,
-      });
-      setAllowPaymentDelay(CheckboxEnum.UNCHECKED);
-    } else {
-      setAllowPaymentDelay(CheckboxEnum.CHECKED);
-    }
-  };
-
-  const togglePaymentRegulation = () => {
-    if (payInInstalments === CheckboxEnum.CHECKED) {
-      paymentFields.length = 0;
-      setPayInInstalments(CheckboxEnum.UNCHECKED);
-    } else {
-      setPayInInstalments(CheckboxEnum.CHECKED);
-    }
-  };
 
   const onSubmit = async invoices => {
     try {
-      if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
-        const formattedDate = dateConversion(new Date());
-        const restToPay = {
-          maturityDate: formattedDate,
-          comment: null,
-          percent: 10000 - totalPercent,
-          amount: null,
-        };
-        await invoiceStore.saveInvoice({
-          ...invoices,
-          customer: selectedCustomer,
-          metadata: { ...invoices.metadata, submittedAt: new Date() },
-          status: invoiceType,
-          paymentRegulations: [...invoices.paymentRegulations, restToPay],
-          paymentType: 'IN_INSTALMENT',
-        });
-      } else if (payInInstalments === CheckboxEnum.CHECKED && totalPercent === 10000) {
-        await invoiceStore.saveInvoice({
-          ...invoices,
-          customer: selectedCustomer,
-          metadata: { ...invoices.metadata, submittedAt: new Date() },
-          status: invoiceType,
-          paymentType: 'IN_INSTALMENT',
-        });
-      } else {
-        await invoiceStore.saveInvoice({
-          ...invoices,
-          customer: selectedCustomer,
-          metadata: { ...invoices.metadata, submittedAt: new Date() },
-          status: invoiceType,
-        });
-      }
+      await invoiceStore.saveInvoice({
+        ...invoices,
+        customer: selectedCustomer,
+        comment: comment,
+        title: title,
+        metadata: { ...invoices.metadata, submittedAt: new Date() },
+        status: invoiceType,
+      });
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
-        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
         navigateToTab('quotations');
-        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
+        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
         navigateToTab('invoices');
-        await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
+        await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
       }
     } catch (e) {
       showMessage(e);
       throw e;
     } finally {
       reset();
+      await draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
+      await quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
 
   const handleInvoicePreviewPress = async invoices => {
     // TODO(UI): error handling
     setIsLoading(true);
-    try {
-      if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
-        const formattedDate = dateConversion(new Date());
-        const restToPay = {
-          maturityDate: formattedDate,
-          comment: null,
-          percent: 10000 - totalPercent,
-          amount: null,
-        };
-        setSavedInvoice(
-          await invoiceStore.saveInvoice({
-            ...invoices,
-            customer: selectedCustomer,
-            paymentType: 'IN_INSTALMENT',
-            metadata: { ...invoices.metadata, submittedAt: new Date() },
-            paymentRegulations: [...invoices.paymentRegulations, restToPay],
-          })
-        );
-      } else if (payInInstalments === CheckboxEnum.CHECKED && totalPercent === 10000) {
-        setSavedInvoice(
-          await invoiceStore.saveInvoice({
-            ...invoices,
-            customer: selectedCustomer,
-            paymentType: 'IN_INSTALMENT',
-            metadata: { ...invoices.metadata, submittedAt: new Date() },
-          })
-        );
-      } else {
-        setSavedInvoice(
-          await invoiceStore.saveInvoice({
-            ...invoices,
-            customer: selectedCustomer,
-            metadata: { ...invoices.metadata, submittedAt: new Date() },
-          })
-        );
-      }
-      setConfirmationModal(false);
+    if (quotationTitle) {
+      try {
+        const savedInvoice = await invoiceStore.saveInvoice({
+          ...invoices,
+          customer: selectedCustomer,
+          comment: comment,
+          title: title,
+          metadata: { ...invoices.metadata, submittedAt: new Date() },
+        });
+        setConfirmationModal(false);
 
-      navigate('invoicePreview', {
-        fileId: savedInvoice.fileId,
-        invoiceTitle: savedInvoice.title,
-        invoice: savedInvoice,
-        situation: true,
-      });
-      invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize }));
-      invoiceType === 'PROPOSAL' &&
-        (await quotationStore.getQuotations({
-          status: InvoiceStatus.PROPOSAL,
-          page: 1,
-          pageSize: invoicePageSize,
-        }));
-    } catch (e) {
-      __DEV__ && console.tron.error(e.message, e.stacktrace);
-      throw e;
-    } finally {
-      setIsLoading(false);
+        navigate('invoicePreview', {
+          fileId: savedInvoice.fileId,
+          invoiceTitle: savedInvoice.title,
+          invoice: savedInvoice,
+          situation: true,
+        });
+        invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }));
+        invoiceType === 'PROPOSAL' &&
+          (await quotationStore.getQuotations({
+            status: InvoiceStatus.PROPOSAL,
+            page: 1,
+            pageSize: 10,
+          }));
+      } catch (e) {
+        __DEV__ && console.tron.error(e.message, e.stacktrace);
+        throw e;
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
     }
   };
 
@@ -267,9 +187,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         <Controller
           name='title'
           control={control}
-          rules={{
-            required: translate('errors.required'),
-          }}
           render={({ field: { value, onBlur, onChange } }) => {
             return (
               <InvoiceFormField
@@ -277,9 +194,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.titlePlaceholder'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={newValue => {
+                  onChange();
+                  setTitle(newValue);
+                  setQuotationTitle(newValue);
+                }}
                 value={value}
-                error={!!errors.title}
               />
             );
           }}
@@ -289,9 +209,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         <Controller
           name='ref'
           control={control}
-          rules={{
-            required: translate('errors.required'),
-          }}
           render={({ field: { value, onBlur, onChange } }) => {
             return (
               <InvoiceFormField
@@ -301,7 +218,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                error={!!errors.ref}
               />
             );
           }}
@@ -345,7 +261,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      {/*<View style={ROW_STYLE}>
+      <View style={ROW_STYLE}>
         <Controller
           name='toPayAt'
           control={control}
@@ -364,69 +280,45 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             );
           }}
         />
-      </View>*/}
-      <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
-        <Checkbox.Item
-          status={allowPaymentDelay}
-          onPress={togglePaymentDelay}
-          color={palette.secondaryColor}
-          style={{ width: '10%' }}
-          mode={'android'}
-          label={''}
-        />
-        <Text
-          tx={'invoiceFormScreen.invoiceForm.delayPaymentLabel'}
-          style={{
-            borderRadius: 5,
-            fontFamily: 'Geometria',
-            fontSize: 13,
-            alignSelf: 'center',
-            color: palette.darkBlack,
-            width: '80%',
+      </View>
+      <View style={ROW_STYLE}>
+        <Controller
+          name='delayInPaymentAllowed'
+          control={control}
+          render={({ field: { value, onBlur, onChange } }) => {
+            let suffix: string;
+            value > 1 ? (suffix = 'Jours') : (suffix = 'Jour');
+            return (
+              <InvoiceFormField
+                labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
+                placeholderTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowedPlaceholder'
+                style={{ flex: 1 }}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value?.toString()}
+                suffix={suffix}
+              />
+            );
           }}
-          numberOfLines={2}
+        />
+        <Controller
+          name='delayPenaltyPercent'
+          control={control}
+          render={({ field: { value, onBlur, onChange } }) => {
+            return (
+              <InvoiceFormField
+                labelTx='invoiceFormScreen.invoiceForm.delayPenaltyPercent'
+                placeholderTx='invoiceFormScreen.invoiceForm.delayPenaltyPercentPlaceholder'
+                style={{ flex: 1 }}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value?.toString()}
+                suffix='%'
+              />
+            );
+          }}
         />
       </View>
-      {allowPaymentDelay === CheckboxEnum.CHECKED && (
-        <View style={ROW_STYLE}>
-          <Controller
-            name='delayInPaymentAllowed'
-            control={control}
-            render={({ field: { value, onBlur, onChange } }) => {
-              let suffix: string;
-              value > 1 ? (suffix = 'Jours') : (suffix = 'Jour');
-              return (
-                <InvoiceFormField
-                  labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
-                  placeholderTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowedPlaceholder'
-                  style={{ flex: 1 }}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value?.toString()}
-                  suffix={suffix}
-                />
-              );
-            }}
-          />
-          <Controller
-            name='delayPenaltyPercent'
-            control={control}
-            render={({ field: { value, onBlur, onChange } }) => {
-              return (
-                <InvoiceFormField
-                  labelTx='invoiceFormScreen.invoiceForm.delayPenaltyPercent'
-                  placeholderTx='invoiceFormScreen.invoiceForm.delayPenaltyPercentPlaceholder'
-                  style={{ flex: 1 }}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value?.toString()}
-                  suffix='%'
-                />
-              );
-            }}
-          />
-        </View>
-      )}
       <View style={ROW_STYLE}>
         <Controller
           name='comment'
@@ -438,20 +330,84 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.comment'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
+                onChangeText={newValue => {
+                  onChange();
+                  setComment(newValue);
+                }}
+                value={value?.toString()}
               />
             );
           }}
         />
       </View>
+      <List.Accordion
+        title='Produits'
+        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, marginVertical: spacing[5] }}
+        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase' }}
+        expanded={expanded}
+        onPress={toggleAccordion}
+      >
+        <View style={{ paddingHorizontal: spacing[4] }}>
+          {removeProduct ? (
+            <Loader size='large' containerStyle={LOADER_STYLE} />
+          ) : (
+            fields.map((item, i) => {
+              return (
+                <ProductFormField
+                  key={i}
+                  index={i}
+                  // @ts-ignore
+                  // @ts-ignore
+                  temp={item}
+                  items={products}
+                  onDeleteItem={async (__, index) => {
+                    setRemoveProduct(true);
+                    await move(index, fields.length - 1);
+                    setIsMoveCalled(!isMoveCalled);
+                  }}
+                  onValueChange={product => {
+                    update(i, product);
+                  }}
+                />
+              );
+            })
+          )}
+        </View>
+      </List.Accordion>
+      <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+        <Button
+          style={{
+            backgroundColor: palette.white,
+            borderColor: color.palette.secondaryColor,
+            borderWidth: 1,
+            borderRadius: 25,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            paddingHorizontal: spacing[6],
+            width: '100%',
+            marginBottom: 0,
+          }}
+          onPress={async () => {
+            const product = await createProductDefaultModel().create();
+            await append(product);
+            setExpanded(true);
+          }}
+        >
+          <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+          <Text
+            tx='invoiceFormScreen.productForm.addProduct'
+            style={{
+              color: color.palette.secondaryColor,
+              fontFamily: 'Geometria',
+              marginLeft: spacing[3],
+            }}
+          />
+        </Button>
+      </View>
       <View style={ROW_STYLE}>
         <Controller
           name='customer'
           control={control}
-          rules={{
-            required: translate('errors.required'),
-          }}
           render={({ field: { value, onChange } }) => {
             return (
               // @ts-ignore
@@ -475,10 +431,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 footer={<CustomerFormFieldFooter />}
                 selectContainerStyle={{
                   paddingHorizontal: spacing[3],
-                  marginBottom: spacing[6],
+                  marginVertical: spacing[6],
                   width: '100%',
                   borderWidth: 1,
-                  borderColor: errors.customer ? palette.pastelRed : '#E1E5EF',
+                  borderColor: '#E1E5EF',
                 }}
                 style={INVOICE_LABEL_STYLE}
               />
@@ -513,180 +469,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         />
       </Button>
       <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
-      <List.Accordion
-        title='Produits'
-        style={{ borderColor: errors.products ? palette.pastelRed : '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
-        titleStyle={{
-          fontFamily: 'Geometria-Bold',
-          fontSize: 12,
-          textTransform: 'uppercase',
-          color: errors.products ? palette.pastelRed : palette.lighterGrey,
-        }}
-      >
-        <View style={{ paddingHorizontal: spacing[4], marginTop: spacing[5] }}>
-          {removeProduct ? (
-            <Loader size='large' containerStyle={LOADER_STYLE} />
-          ) : (
-            productFields.map((item, i) => {
-              return (
-                <ProductFormField
-                  key={i}
-                  index={i}
-                  // @ts-ignore
-                  // @ts-ignore
-                  temp={item}
-                  items={products}
-                  onDeleteItem={async (__, index) => {
-                    setRemoveProduct(true);
-                    await productRemove(index);
-                    setRemoveProduct(false);
-                  }}
-                  onValueChange={product => {
-                    productUpdate(i, product);
-                  }}
-                />
-              );
-            })
-          )}
-        </View>
-        <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
-          <Button
-            style={{
-              backgroundColor: palette.white,
-              borderColor: color.palette.secondaryColor,
-              borderWidth: 1,
-              borderRadius: 25,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingHorizontal: spacing[6],
-              width: '100%',
-              marginBottom: spacing[5],
-            }}
-            onPress={async () => {
-              const product = await createProductDefaultModel().create();
-              await productAppend(product);
-            }}
-          >
-            <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
-            <Text
-              tx='invoiceFormScreen.productForm.addProduct'
-              style={{
-                color: color.palette.secondaryColor,
-                fontFamily: 'Geometria',
-                marginLeft: spacing[3],
-              }}
-            />
-          </Button>
-        </View>
-      </List.Accordion>
-      <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
-        <Checkbox.Item
-          status={payInInstalments}
-          onPress={togglePaymentRegulation}
-          color={palette.secondaryColor}
-          style={{ width: '10%' }}
-          mode={'android'}
-          label={''}
-        />
-        <Text
-          tx={'invoiceFormScreen.paymentRegulationForm.payIn'}
-          style={{
-            borderRadius: 5,
-            fontFamily: 'Geometria',
-            fontSize: 13,
-            alignSelf: 'center',
-            color: palette.darkBlack,
-            width: '80%',
-          }}
-          numberOfLines={2}
-        />
-      </View>
-      {payInInstalments === CheckboxEnum.CHECKED && (
-        <List.Accordion
-          title='Accompte'
-          style={{
-            borderColor: '#E1E5EF',
-            borderWidth: 1,
-            height: 70,
-            justifyContent: 'center',
-            backgroundColor: palette.white,
-          }}
-          titleStyle={{
-            fontFamily: 'Geometria-Bold',
-            fontSize: 12,
-            textTransform: 'uppercase',
-            color: palette.lightGrey,
-          }}
-        >
-          <View style={{ paddingHorizontal: spacing[6], marginTop: spacing[5] }}>
-            {removePaymentRegulation ? (
-              <Loader size='large' containerStyle={LOADER_STYLE} />
-            ) : (
-              paymentFields.map((item, i) => {
-                return (
-                  <>
-                    <PaymentRegulationFormField
-                      key={i}
-                      index={i}
-                      // @ts-ignore
-                      item={item}
-                      onDeleteItem={async (__, index, percent) => {
-                        setRemovePaymentRegulation(true);
-                        if (index === 0 && paymentFields.length === 1) {
-                          await paymentRemove(0);
-                          setPayInInstalments(CheckboxEnum.UNCHECKED);
-                          setTotalPercent(0);
-                        } else {
-                          setTotalPercent(prevTotalPercent => prevTotalPercent - percent);
-                          await paymentRemove(index);
-                        }
-                        setRemovePaymentRegulation(false);
-                      }}
-                    />
-                  </>
-                );
-              })
-            )}
-            {totalPercent > 0 && totalPercent < 10000 && <PaymentRegulationDraftField percent={totalPercent} />}
-          </View>
-          <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
-            <Button
-              style={{
-                backgroundColor: palette.white,
-                borderColor: color.palette.secondaryColor,
-                borderWidth: 1,
-                borderRadius: 25,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                paddingHorizontal: spacing[6],
-                width: '100%',
-                marginBottom: spacing[5],
-              }}
-              onPress={() => {
-                setCurrentPayment(null);
-                setPaymentCreation(true);
-              }}
-            >
-              <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
-              <Text
-                tx='invoiceFormScreen.paymentRegulationForm.add'
-                style={{
-                  color: color.palette.secondaryColor,
-                  fontFamily: 'Geometria',
-                  marginLeft: spacing[3],
-                }}
-              />
-            </Button>
-          </View>
-        </List.Accordion>
-      )}
       <View
         style={{
           ...ROW_STYLE,
           flexDirection: 'row',
           justifyContent: 'space-evenly',
           paddingHorizontal: spacing[5],
-          marginTop: spacing[4],
         }}
       >
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
@@ -696,59 +484,59 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         <TouchableOpacity onPress={handleSubmit(handleInvoicePreviewPress)}>
           <View
             style={{
-              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
+              borderColor: color.palette.secondaryColor,
               borderWidth: 2,
               borderRadius: 100,
               padding: spacing[3],
             }}
           >
-            <MaterialIcons name='preview' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
+            <MaterialIcons name='preview' size={25} color={color.palette.secondaryColor} />
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
-            setInvoiceType(InvoiceStatus.DRAFT);
-            setConfirmationModal(true);
+            if (quotationTitle) {
+              setInvoiceType(InvoiceStatus.DRAFT);
+              setConfirmationModal(true);
+            } else {
+              showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
+            }
           }}
         >
           <View
             style={{
-              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
+              borderColor: color.palette.secondaryColor,
               borderWidth: 2,
               borderRadius: 100,
               padding: spacing[3],
             }}
           >
-            <RNVIcon name='save' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
+            <RNVIcon name='save' size={25} color={color.palette.secondaryColor} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            status === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
-            setConfirmationModal(true);
+            if (quotationTitle) {
+              status === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
+              setConfirmationModal(true);
+            } else {
+              showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
+            }
           }}
         >
           <View
             style={{
-              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
+              borderColor: color.palette.secondaryColor,
               borderWidth: 2,
               borderRadius: 100,
               padding: spacing[3],
             }}
           >
-            <Octicons name='file-submodule' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
+            <Octicons name='file-submodule' size={25} color={color.palette.secondaryColor} />
           </View>
         </TouchableOpacity>
       </View>
-      <PaymentCreationModal
-        open={paymentCreation}
-        setOpen={setPaymentCreation}
-        append={paymentAppend}
-        totalPercent={totalPercent}
-        setTotalPercent={setTotalPercent}
-        item={currentPayment}
-      />
       <InvoiceCreationModal
         invoiceType={invoiceType}
         confirmationModal={confirmationModal}
