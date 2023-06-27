@@ -61,7 +61,15 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     navigation: { navigate },
   } = props;
   const currentTab = routeNames[index];
-  const { marketplaceStore } = useStores();
+  const { marketplaceStore, currentAccountHolder } = useStores();
+
+  const hasBusinessActivities = accountHolder =>
+    accountHolder != null &&
+    accountHolder.businessActivities != null &&
+    (accountHolder.businessActivities.primary != null || accountHolder.businessActivities.secondary != null);
+  const hasCarreleur = businessActivities =>
+    businessActivities != null && (businessActivities.primary === 'Carreleur' || businessActivities.secondary === 'Carreleur');
+  const shouldShowProspects = hasBusinessActivities(currentAccountHolder) && hasCarreleur(currentAccountHolder.businessActivities);
 
   const handleNavigationMarketplace = useCallback((routeName: string) => {
     navigate(routeName);
@@ -90,7 +98,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
     account: () => handleNavigation('home'),
-    activity: () => handleNavigationMarketplace('marketplace'),
+    activity: () => handleNavigationMarketplace(shouldShowProspects ? 'prospect' : 'marketplace'),
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => handleNavigation('supportContact'),
@@ -98,7 +106,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   const RouteName: IconProps = {
     account: 'home',
-    activity: 'marketplace',
+    activity: shouldShowProspects ? 'prospect' : 'marketplace',
     payment: 'paymentInitiation',
     facturation: 'paymentList',
     service: 'supportContact',
@@ -106,7 +114,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   const ROUTE: IconProps = {
     account: translate('bottomTab.account'),
-    activity: translate('bottomTab.activity'),
+    activity: shouldShowProspects ? translate('prospectScreen.title') : translate('bottomTab.activity'),
     payment: translate('bottomTab.payment'),
     facturation: translate('bottomTab.facturation'),
     service: translate('bottomTab.service'),

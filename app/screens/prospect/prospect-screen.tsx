@@ -10,13 +10,13 @@ import { NoDataProvided } from '../../components/no-data-provided/no-data-provid
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
-import { NavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { ProspectItem } from './components/prospect-item';
 
-export const ProspectScreen: FC<DrawerScreenProps<NavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
+export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
   const { authStore, prospectStore } = useStores();
   const { prospects, loadingProspect } = prospectStore;
 
