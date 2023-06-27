@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
@@ -80,6 +81,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [comment, setComment] = useState(null);
   const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [quotationTitle, setQuotationTitle] = useState<String>('');
 
   const navigateToTab = (tab: string) => {
@@ -87,6 +89,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       index: 0,
       routes: [{ name: 'paymentList', params: { initialRoute: tab } }],
     });
+  };
+
+  const toggleAccordion = () => {
+    setExpanded(!expanded);
   };
 
   useEffect(() => {
@@ -99,9 +105,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   }, [isMoveCalled]);
 
   useEffect(() => {
-    return () => {
-      reset();
-    };
+    reset();
   }, []);
 
   const onSubmit = async invoices => {
@@ -133,6 +137,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       showMessage(e);
       throw e;
     } finally {
+      reset();
       await draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
       await quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
@@ -314,7 +319,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      <View style={{ ...ROW_STYLE, marginBottom: spacing[5] }}>
+      <View style={ROW_STYLE}>
         <Controller
           name='comment'
           control={control}
@@ -335,7 +340,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      <>
+      <List.Accordion
+        title='Produits'
+        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, marginVertical: spacing[5] }}
+        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase' }}
+        expanded={expanded}
+        onPress={toggleAccordion}
+      >
         <View style={{ paddingHorizontal: spacing[4] }}>
           {removeProduct ? (
             <Loader size='large' containerStyle={LOADER_STYLE} />
@@ -362,36 +373,37 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             })
           )}
         </View>
-        <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
-          <Button
+      </List.Accordion>
+      <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+        <Button
+          style={{
+            backgroundColor: palette.white,
+            borderColor: color.palette.secondaryColor,
+            borderWidth: 1,
+            borderRadius: 25,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            paddingHorizontal: spacing[6],
+            width: '100%',
+            marginBottom: 0,
+          }}
+          onPress={async () => {
+            const product = await createProductDefaultModel().create();
+            await append(product);
+            setExpanded(true);
+          }}
+        >
+          <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+          <Text
+            tx='invoiceFormScreen.productForm.addProduct'
             style={{
-              backgroundColor: palette.white,
-              borderColor: color.palette.secondaryColor,
-              borderWidth: 1,
-              borderRadius: 25,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingHorizontal: spacing[6],
-              width: '100%',
-              marginBottom: 0,
+              color: color.palette.secondaryColor,
+              fontFamily: 'Geometria',
+              marginLeft: spacing[3],
             }}
-            onPress={async () => {
-              const product = await createProductDefaultModel().create();
-              await append(product);
-            }}
-          >
-            <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
-            <Text
-              tx='invoiceFormScreen.productForm.addProduct'
-              style={{
-                color: color.palette.secondaryColor,
-                fontFamily: 'Geometria',
-                marginLeft: spacing[3],
-              }}
-            />
-          </Button>
-        </View>
-      </>
+          />
+        </Button>
+      </View>
       <View style={ROW_STYLE}>
         <Controller
           name='customer'
