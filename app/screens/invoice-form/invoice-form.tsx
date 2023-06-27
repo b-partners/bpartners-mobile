@@ -81,7 +81,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [comment, setComment] = useState(null);
   const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
-  const [expanded, setExpanded] = useState(false);
   const [quotationTitle, setQuotationTitle] = useState<String>('');
 
   const navigateToTab = (tab: string) => {
@@ -89,10 +88,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       index: 0,
       routes: [{ name: 'paymentList', params: { initialRoute: tab } }],
     });
-  };
-
-  const toggleAccordion = () => {
-    setExpanded(!expanded);
   };
 
   useEffect(() => {
@@ -342,12 +337,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       </View>
       <List.Accordion
         title='Produits'
-        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, marginVertical: spacing[5] }}
-        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase' }}
-        expanded={expanded}
-        onPress={toggleAccordion}
+        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
+        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', color: palette.lightGrey }}
       >
-        <View style={{ paddingHorizontal: spacing[4] }}>
+        <View style={{ paddingHorizontal: spacing[4], marginTop: spacing[5] }}>
           {removeProduct ? (
             <Loader size='large' containerStyle={LOADER_STYLE} />
           ) : (
@@ -373,37 +366,36 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             })
           )}
         </View>
-      </List.Accordion>
-      <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
-        <Button
-          style={{
-            backgroundColor: palette.white,
-            borderColor: color.palette.secondaryColor,
-            borderWidth: 1,
-            borderRadius: 25,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            paddingHorizontal: spacing[6],
-            width: '100%',
-            marginBottom: 0,
-          }}
-          onPress={async () => {
-            const product = await createProductDefaultModel().create();
-            await append(product);
-            setExpanded(true);
-          }}
-        >
-          <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
-          <Text
-            tx='invoiceFormScreen.productForm.addProduct'
+        <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+          <Button
             style={{
-              color: color.palette.secondaryColor,
-              fontFamily: 'Geometria',
-              marginLeft: spacing[3],
+              backgroundColor: palette.white,
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 1,
+              borderRadius: 25,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              paddingHorizontal: spacing[6],
+              width: '100%',
+              marginBottom: spacing[5],
             }}
-          />
-        </Button>
-      </View>
+            onPress={async () => {
+              const product = await createProductDefaultModel().create();
+              await append(product);
+            }}
+          >
+            <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+            <Text
+              tx='invoiceFormScreen.productForm.addProduct'
+              style={{
+                color: color.palette.secondaryColor,
+                fontFamily: 'Geometria',
+                marginLeft: spacing[3],
+              }}
+            />
+          </Button>
+        </View>
+      </List.Accordion>
       <View style={ROW_STYLE}>
         <Controller
           name='customer'
@@ -431,7 +423,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 footer={<CustomerFormFieldFooter />}
                 selectContainerStyle={{
                   paddingHorizontal: spacing[3],
-                  marginVertical: spacing[6],
+                  marginBottom: spacing[6],
                   width: '100%',
                   borderWidth: 1,
                   borderColor: '#E1E5EF',
