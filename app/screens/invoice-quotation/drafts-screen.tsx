@@ -64,7 +64,8 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
       return;
     }
     try {
-      await invoiceStore.getInvoice(item.id);
+      const currentInvoice = await invoiceStore.getInvoice(item.id);
+      __DEV__ && console.tron.log(currentInvoice);
       invoiceStore.saveInvoiceInit();
       navigation.navigate('invoiceForm', { invoiceID: item.id, status: InvoiceStatus.DRAFT });
     } catch (e) {
