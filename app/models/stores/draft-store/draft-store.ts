@@ -3,13 +3,15 @@ import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-sta
 import { withEnvironment, withRootStore } from '../..';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
-import { Invoice, InvoiceModel } from '../../entities/invoice/invoice';
+import { InvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
+import { InvoiceStoreSnapshotOut } from '../invoice-store/invoice-store';
 
 export const DraftStoreModel = types
   .model('DraftStore')
   .props({
     drafts: types.optional(types.array(InvoiceModel), []),
+    allDrafts: types.optional(types.array(InvoiceModel), []),
     loadingDraft: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
@@ -19,8 +21,8 @@ export const DraftStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    getDraftsSuccess: (drafts: Invoice[]) => {
-      self.drafts.replace(drafts);
+    getDraftsSuccess: (drafts: InvoiceStoreSnapshotOut[]) => {
+      self.drafts.replace(drafts as any);
     },
   }))
   .actions(self => ({
@@ -36,7 +38,7 @@ export const DraftStoreModel = types
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        __DEV__ && console.tron.log(getInvoicesResult.invoices);
+        __DEV__ && console.tron.log(getInvoicesResult);
         self.getDraftsSuccess(getInvoicesResult.invoices);
       } catch (e) {
         self.getDraftsFail(e);
