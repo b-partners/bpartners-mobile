@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { SectionList, TouchableOpacity, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
@@ -32,24 +32,31 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, draftStore, quotationStore } = useStores();
-  const { drafts, loadingDraft, allDrafts } = draftStore;
+  const { drafts, loadingDraft } = draftStore;
   const [navigationState, setNavigationState] = useState(false);
-  const [page, setPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(Math.ceil(allDrafts.length / 10));
+  /*const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(Math.ceil(allDrafts.length / 10));*/
   const messageOption = { backgroundColor: palette.green };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const startItemIndex = (currentPage - 1) * itemsPerPage;
+  const endItemIndex = currentPage * itemsPerPage;
+  const displayedItems = drafts.slice(startItemIndex, endItemIndex);
+
   const handleRefresh = async () => {
-    await draftStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
+    await draftStore.getDrafts({ page: 1, pageSize: 500, status: InvoiceStatus.DRAFT });
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     setPage(1);
     setMaxPage(Math.ceil(allDrafts.length / 10));
   }, [allDrafts]);
 
   useEffect(() => {
     draftStore.getDrafts({ page: page, pageSize: 10, status: InvoiceStatus.DRAFT });
-  }, [page]);
+  }, [page]);*/
 
   const editInvoice = async (item: IInvoice) => {
     setNavigationState(true);
@@ -92,7 +99,6 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
       await draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
     }
   };
-  const sectionedQuotations = sectionInvoicesByMonth(drafts);
   const items: MenuItem[] = [
     { id: 'editInvoice', title: translate('invoiceScreen.menu.editDraft') },
     { id: 'markAsProposal', title: translate('invoiceScreen.menu.markAsProposal') },
@@ -110,7 +116,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionedQuotations]}
+                sections={[...sectionInvoicesByMonth(displayedItems)]}
                 renderItem={({ item }) => (
                   <Invoice
                     item={item}
@@ -137,7 +143,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
-            {page === 1 ? (
+            {currentPage === 1 ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
               </View>
@@ -145,16 +151,16 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                  setPage(page - 1);
+                  setCurrentPage(currentPage - 1);
                 }}
               >
                 <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
               </TouchableOpacity>
             )}
             <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-              <Text text={page.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
+              <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
             </View>
-            {page === maxPage ? (
+            {currentPage === drafts.length ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
               </View>
@@ -162,7 +168,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                  setPage(page + 1);
+                  setCurrentPage(currentPage + 1);
                 }}
               >
                 <EntypoIcon name='chevron-thin-right' size={25} color='#000' />

@@ -21,20 +21,6 @@ export const DraftStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    getAllDrafts: flow(function* (criteria: Criteria) {
-      detach(self.allDrafts);
-      const paymentApi = new PaymentApi(self.environment.api);
-      try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        __DEV__ && console.tron.log(getInvoicesResult);
-        self.allDrafts.replace(getInvoicesResult.invoices as any);
-      } catch (e) {
-        __DEV__ && console.tron.log(e);
-        self.catchOrThrow(e);
-      }
-    }),
-  }))
-  .actions(self => ({
     getDraftsSuccess: (drafts: InvoiceStoreSnapshotOut[]) => {
       self.drafts.replace(drafts as any);
     },
