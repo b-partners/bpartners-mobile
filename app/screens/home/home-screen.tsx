@@ -13,7 +13,6 @@ import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/components/utils';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './styles';
@@ -60,9 +59,9 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   }, []);
 
   useEffect(() => {
-    draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
-    quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
-    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
+    draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
+    quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
+    invoiceStore.getAllInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 500 });
   }, []);
 
   useEffect(() => {
