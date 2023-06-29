@@ -141,6 +141,7 @@ export interface InvoiceStoreSnapshotOut extends SnapshotOut<typeof InvoiceStore
 
 export interface InvoiceStoreSnapshotIn extends SnapshotIn<typeof InvoiceStoreModel> {}
 
+// @ts-ignore
 export const createInvoiceStoreDefaultModel = () =>
   types.optional(InvoiceStoreModel, {
     invoices: [],

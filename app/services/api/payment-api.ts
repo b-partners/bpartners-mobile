@@ -37,6 +37,7 @@ export class PaymentApi {
         phone: item.customer ? item.customer.phone : null,
         website: item.customer ? item.customer.website : null,
         zipCode: item.customer ? item.customer.zipCode : null,
+        comment: item.comment ? item.comment : null,
       },
     };
   }
