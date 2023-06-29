@@ -1,24 +1,24 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export const PaymentRequestModel = types.model('PaymentRequest').props({
-  id: types.maybe(types.maybeNull(types.string)),
-  paymentUrl: types.maybe(types.maybeNull(types.number)),
-  amount: types.maybe(types.maybeNull(types.number)),
-  percentValue: types.maybe(types.maybeNull(types.number)),
-  payerName: types.maybe(types.maybeNull(types.string)),
-  payerEmail: types.maybe(types.maybeNull(types.string)),
-  label: types.maybe(types.maybeNull(types.string)),
-  reference: types.maybe(types.maybeNull(types.string)),
-  initiateDatetime: types.maybe(types.maybeNull(types.string)),
-  paymentStatus: types.maybe(types.maybeNull(types.number)),
+  id: types.maybeNull(types.string),
+  paymentUrl: types.maybeNull(types.string),
+  amount: types.maybeNull(types.number),
+  percentValue: types.maybeNull(types.number),
+  payerName: types.maybeNull(types.string),
+  payerEmail: types.maybeNull(types.string),
+  label: types.maybeNull(types.string),
+  reference: types.maybeNull(types.string),
+  initiatedDatetime: types.maybeNull(types.string),
+  paymentStatus: types.maybeNull(types.string),
 });
 
 export const PaymentRegulationModel = types.model('PaymentRegulation').props({
-  amount: types.maybe(types.maybeNull(types.number)),
-  percent: types.maybe(types.maybeNull(types.number)),
-  comment: types.maybe(types.maybeNull(types.string)),
-  maturityDate: types.maybe(types.maybeNull(types.Date)),
-  paymentRequest: types.maybeNull(types.maybe(PaymentRequestModel)),
+  paymentRequest: types.maybe(PaymentRequestModel),
+  maturityDate: types.maybeNull(types.string),
+  /*amount: types.maybeNull(types.number),
+  percent: types.maybeNull(types.number),
+  comment: types.maybeNull(types.string),*/
 });
 
 export interface PaymentRegulation extends Instance<typeof PaymentRegulationModel> {}
