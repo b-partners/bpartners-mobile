@@ -1,8 +1,8 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export const GlobalDiscountModel = types.model('GlobalDiscount').props({
-  percentValue: types.maybe(types.maybeNull(types.number)),
-  amountValue: types.maybe(types.maybeNull(types.number)),
+  percentValue: types.maybeNull(types.number),
+  amountValue: types.maybeNull(types.number),
 });
 
 export interface GlobalDiscount extends Instance<typeof GlobalDiscountModel> {}
