@@ -3,7 +3,7 @@ import { currencyPipe } from './pipes';
 
 export const amountToMinors = (amount: number) => amount * 100;
 
-const amountToMajors = (amount: number) => amount / 100;
+export const amountToMajors = (amount: number) => amount / 100;
 
 export const printCurrencyToMajors = (amount: number) => currencyPipe(translate('currency')).format(amountToMajors(amount));
 
