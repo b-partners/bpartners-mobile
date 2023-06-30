@@ -315,6 +315,7 @@
       "saveDraftToQuotation": "Convert your draft into a quote",
       "saveQuotation": "Save the quote",
       "saveInvoice": "Save the invoice",
+      "toBePaid": "To be paid before:",
       "editableTextField": {
         "error": {
           "required": "This field is required",

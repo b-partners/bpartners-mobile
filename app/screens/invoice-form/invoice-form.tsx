@@ -13,6 +13,7 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
+import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -21,6 +22,7 @@ import { showMessage } from '../../utils/snackbar';
 import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
+import { PaymentRegulationFormField } from './components/payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
 import { InvoiceCreationModal } from './invoice-creation-modal';
@@ -77,6 +79,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   });
 
   const { fields, append, remove, update, move } = useFieldArray({ control, name: 'products' });
+  const {
+    fields: paymentFields,
+    append: paymentAppend,
+    remove: paymentRemove,
+    update: paymentUpdate,
+    move: paymentMove,
+  } = useFieldArray({ control, name: 'paymentRegulations' });
+
   const [title, setTitle] = useState(null);
   const [comment, setComment] = useState(null);
   const [isMoveCalled, setIsMoveCalled] = useState(false);
@@ -363,6 +373,50 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                   }}
                 />
               );
+            })
+          )}
+        </View>
+        <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+          <Button
+            style={{
+              backgroundColor: palette.white,
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 1,
+              borderRadius: 25,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              paddingHorizontal: spacing[6],
+              width: '100%',
+              marginBottom: spacing[5],
+            }}
+            onPress={async () => {
+              const product = await createProductDefaultModel().create();
+              await append(product);
+            }}
+          >
+            <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+            <Text
+              tx='invoiceFormScreen.productForm.addProduct'
+              style={{
+                color: color.palette.secondaryColor,
+                fontFamily: 'Geometria',
+                marginLeft: spacing[3],
+              }}
+            />
+          </Button>
+        </View>
+      </List.Accordion>
+      <List.Accordion
+        title='Accompte'
+        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
+        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', color: palette.lightGrey }}
+      >
+        <View style={{ paddingHorizontal: spacing[4], marginTop: spacing[5] }}>
+          {removeProduct ? (
+            <Loader size='large' containerStyle={LOADER_STYLE} />
+          ) : (
+            paymentFields.map((item, i) => {
+              return <PaymentRegulationFormField key={i} item={item} />;
             })
           )}
         </View>
