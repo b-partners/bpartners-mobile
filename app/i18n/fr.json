@@ -298,6 +298,7 @@
       "saveDraftToQuotation": "Convertir votre brouillon en devis",
       "saveQuotation": "Enregistrer en devis",
       "saveInvoice": "Enregistrer en facture",
+      "toBePaid": "À payer avant le:",
       "editableTextField": {
         "error": {
           "required": "Ce champ est requis",
