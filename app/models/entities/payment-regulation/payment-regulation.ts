@@ -16,9 +16,6 @@ export const PaymentRequestModel = types.model('PaymentRequest').props({
 export const PaymentRegulationModel = types.model('PaymentRegulation').props({
   paymentRequest: types.maybe(PaymentRequestModel),
   maturityDate: types.maybeNull(types.string),
-  /*amount: types.maybeNull(types.number),
-  percent: types.maybeNull(types.number),
-  comment: types.maybeNull(types.string),*/
 });
 
 export interface PaymentRegulation extends Instance<typeof PaymentRegulationModel> {}
