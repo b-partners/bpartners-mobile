@@ -297,6 +297,7 @@
       "sendingDate": "Issue date",
       "validityDate": "Expiration date",
       "toPayAt": "Payment date",
+      "delayPaymentLabel": "Add an authorized late payment period",
       "delayInPaymentAllowed": "Allowed payment delay",
       "delayInPaymentAllowedPlaceholder": "30",
       "delayPenaltyPercent": "Late payment penalty rate",
