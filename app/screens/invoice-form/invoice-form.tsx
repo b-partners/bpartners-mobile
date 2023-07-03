@@ -13,7 +13,6 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
-import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -81,10 +80,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { fields, append, remove, update, move } = useFieldArray({ control, name: 'products' });
   const {
     fields: paymentFields,
-    append: paymentAppend,
+    /*append: paymentAppend,
     remove: paymentRemove,
     update: paymentUpdate,
-    move: paymentMove,
+    move: paymentMove,*/
   } = useFieldArray({ control, name: 'paymentRegulations' });
 
   const [title, setTitle] = useState(null);
@@ -408,47 +407,48 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       </List.Accordion>
       <List.Accordion
         title='Accompte'
-        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
+        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center', backgroundColor: palette.white }}
         titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', color: palette.lightGrey }}
       >
-        <View style={{ paddingHorizontal: spacing[4], marginTop: spacing[5] }}>
+        <View style={{ paddingHorizontal: spacing[6], marginTop: spacing[5] }}>
           {removeProduct ? (
             <Loader size='large' containerStyle={LOADER_STYLE} />
           ) : (
             paymentFields.map((item, i) => {
+              // @ts-ignore
               return <PaymentRegulationFormField key={i} item={item} />;
             })
           )}
         </View>
-        <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+        {/*<View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
           <Button
             style={{
               backgroundColor: palette.white,
               borderColor: color.palette.secondaryColor,
               borderWidth: 1,
               borderRadius: 25,
-              flexDirection: 'row',
-              justifyContent: 'center',
+              flexDirection: "row",
+              justifyContent: "center",
               paddingHorizontal: spacing[6],
-              width: '100%',
-              marginBottom: spacing[5],
+              width: "100%",
+              marginBottom: spacing[5]
             }}
             onPress={async () => {
               const product = await createProductDefaultModel().create();
               await append(product);
             }}
           >
-            <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+            <RNVIcon name="plus" size={16} color={color.palette.secondaryColor} />
             <Text
-              tx='invoiceFormScreen.productForm.addProduct'
+              tx="invoiceFormScreen.productForm.addProduct"
               style={{
                 color: color.palette.secondaryColor,
-                fontFamily: 'Geometria',
-                marginLeft: spacing[3],
+                fontFamily: "Geometria",
+                marginLeft: spacing[3]
               }}
             />
           </Button>
-        </View>
+        </View>*/}
       </List.Accordion>
       <View style={ROW_STYLE}>
         <Controller

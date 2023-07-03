@@ -25,7 +25,8 @@
     "loading": "Loading in progress ...",
     "added": "Successfully added",
     "edit": "Edit",
-    "register": "REGISTER"
+    "register": "REGISTER",
+    "noComment": "No Comment"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
