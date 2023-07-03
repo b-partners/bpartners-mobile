@@ -106,6 +106,14 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
     { id: 'markAsProposal', title: translate('invoiceScreen.menu.markAsProposal') },
   ];
 
+  const handleScroll = event => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (offsetY <= 0) {
+      // If the offset is less than or equal to 0, we're at the top of the list
+      handleRefresh();
+    }
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
