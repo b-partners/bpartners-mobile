@@ -17,7 +17,6 @@ import { Product, createProductDefaultModel } from '../../models/entities/produc
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
-import { amountToMajors } from '../../utils/money';
 import { showMessage } from '../../utils/snackbar';
 import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
@@ -272,7 +271,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      <View style={ROW_STYLE}>
+      {/*<View style={ROW_STYLE}>
         <Controller
           name='toPayAt'
           control={control}
@@ -291,7 +290,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             );
           }}
         />
-      </View>
+      </View>*/}
       <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
         <Checkbox.Item
           status={allowPaymentDelay}
@@ -377,112 +376,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      <List.Accordion
-        title='Produits'
-        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
-        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', color: palette.lightGrey }}
-      >
-        <View style={{ paddingHorizontal: spacing[4], marginTop: spacing[5] }}>
-          {removeProduct ? (
-            <Loader size='large' containerStyle={LOADER_STYLE} />
-          ) : (
-            fields.map((item, i) => {
-              return (
-                <ProductFormField
-                  key={i}
-                  index={i}
-                  // @ts-ignore
-                  // @ts-ignore
-                  temp={item}
-                  items={products}
-                  onDeleteItem={async (__, index) => {
-                    setRemoveProduct(true);
-                    await move(index, fields.length - 1);
-                    setIsMoveCalled(!isMoveCalled);
-                  }}
-                  onValueChange={product => {
-                    update(i, product);
-                  }}
-                />
-              );
-            })
-          )}
-        </View>
-        <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
-          <Button
-            style={{
-              backgroundColor: palette.white,
-              borderColor: color.palette.secondaryColor,
-              borderWidth: 1,
-              borderRadius: 25,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingHorizontal: spacing[6],
-              width: '100%',
-              marginBottom: spacing[5],
-            }}
-            onPress={async () => {
-              const product = await createProductDefaultModel().create();
-              await append(product);
-            }}
-          >
-            <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
-            <Text
-              tx='invoiceFormScreen.productForm.addProduct'
-              style={{
-                color: color.palette.secondaryColor,
-                fontFamily: 'Geometria',
-                marginLeft: spacing[3],
-              }}
-            />
-          </Button>
-        </View>
-      </List.Accordion>
-      <List.Accordion
-        title='Accompte'
-        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center', backgroundColor: palette.white }}
-        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', color: palette.lightGrey }}
-      >
-        <View style={{ paddingHorizontal: spacing[6], marginTop: spacing[5] }}>
-          {removeProduct ? (
-            <Loader size='large' containerStyle={LOADER_STYLE} />
-          ) : (
-            paymentFields.map((item, i) => {
-              // @ts-ignore
-              return <PaymentRegulationFormField key={i} item={item} />;
-            })
-          )}
-        </View>
-        {/*<View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
-          <Button
-            style={{
-              backgroundColor: palette.white,
-              borderColor: color.palette.secondaryColor,
-              borderWidth: 1,
-              borderRadius: 25,
-              flexDirection: "row",
-              justifyContent: "center",
-              paddingHorizontal: spacing[6],
-              width: "100%",
-              marginBottom: spacing[5]
-            }}
-            onPress={async () => {
-              const product = await createProductDefaultModel().create();
-              await append(product);
-            }}
-          >
-            <RNVIcon name="plus" size={16} color={color.palette.secondaryColor} />
-            <Text
-              tx="invoiceFormScreen.productForm.addProduct"
-              style={{
-                color: color.palette.secondaryColor,
-                fontFamily: "Geometria",
-                marginLeft: spacing[3]
-              }}
-            />
-          </Button>
-        </View>*/}
-      </List.Accordion>
       <View style={ROW_STYLE}>
         <Controller
           name='customer'
@@ -548,12 +441,132 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         />
       </Button>
       <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
+      <List.Accordion
+        title='Produits'
+        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
+        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', color: palette.lightGrey }}
+      >
+        <View style={{ paddingHorizontal: spacing[4], marginTop: spacing[5] }}>
+          {removeProduct ? (
+            <Loader size='large' containerStyle={LOADER_STYLE} />
+          ) : (
+            fields.map((item, i) => {
+              return (
+                <ProductFormField
+                  key={i}
+                  index={i}
+                  // @ts-ignore
+                  // @ts-ignore
+                  temp={item}
+                  items={products}
+                  onDeleteItem={async (__, index) => {
+                    setRemoveProduct(true);
+                    await move(index, fields.length - 1);
+                    setIsMoveCalled(!isMoveCalled);
+                  }}
+                  onValueChange={product => {
+                    update(i, product);
+                  }}
+                />
+              );
+            })
+          )}
+        </View>
+        <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+          <Button
+            style={{
+              backgroundColor: palette.white,
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 1,
+              borderRadius: 25,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              paddingHorizontal: spacing[6],
+              width: '100%',
+              marginBottom: spacing[5],
+            }}
+            onPress={async () => {
+              const product = await createProductDefaultModel().create();
+              await append(product);
+            }}
+          >
+            <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+            <Text
+              tx='invoiceFormScreen.productForm.addProduct'
+              style={{
+                color: color.palette.secondaryColor,
+                fontFamily: 'Geometria',
+                marginLeft: spacing[3],
+              }}
+            />
+          </Button>
+        </View>
+      </List.Accordion>
+      {paymentFields.length > 1 && (
+        <List.Accordion
+          title='Accompte'
+          style={{
+            borderColor: '#E1E5EF',
+            borderWidth: 1,
+            height: 70,
+            justifyContent: 'center',
+            backgroundColor: palette.white,
+          }}
+          titleStyle={{
+            fontFamily: 'Geometria-Bold',
+            fontSize: 12,
+            textTransform: 'uppercase',
+            color: palette.lightGrey,
+          }}
+        >
+          <View style={{ paddingHorizontal: spacing[6], marginTop: spacing[5] }}>
+            {removeProduct ? (
+              <Loader size='large' containerStyle={LOADER_STYLE} />
+            ) : (
+              paymentFields.map((item, i) => {
+                // @ts-ignore
+                return <PaymentRegulationFormField key={i} item={item} />;
+              })
+            )}
+          </View>
+          {/*<View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+          <Button
+            style={{
+              backgroundColor: palette.white,
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 1,
+              borderRadius: 25,
+              flexDirection: "row",
+              justifyContent: "center",
+              paddingHorizontal: spacing[6],
+              width: "100%",
+              marginBottom: spacing[5]
+            }}
+            onPress={async () => {
+              const product = await createProductDefaultModel().create();
+              await append(product);
+            }}
+          >
+            <RNVIcon name="plus" size={16} color={color.palette.secondaryColor} />
+            <Text
+              tx="invoiceFormScreen.productForm.addProduct"
+              style={{
+                color: color.palette.secondaryColor,
+                fontFamily: "Geometria",
+                marginLeft: spacing[3]
+              }}
+            />
+          </Button>
+        </View>*/}
+        </List.Accordion>
+      )}
       <View
         style={{
           ...ROW_STYLE,
           flexDirection: 'row',
           justifyContent: 'space-evenly',
           paddingHorizontal: spacing[5],
+          marginTop: spacing[4],
         }}
       >
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
