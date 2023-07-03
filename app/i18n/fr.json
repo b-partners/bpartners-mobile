@@ -282,6 +282,7 @@
       "sendingDate": "Emission",
       "toPayAt": "Date de paiement",
       "validityDate": "Limite de validité",
+      "delayPaymentLabel": "Ajouter un délai de retard de paiement autorisé",
       "delayInPaymentAllowed": "Délai de retard de paiement autorisé",
       "delayInPaymentAllowedPlaceholder": "30",
       "delayPenaltyPercent": "Pourcentage de pénalité de retard",

@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { List } from 'react-native-paper';
+import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
@@ -17,6 +17,7 @@ import { Product, createProductDefaultModel } from '../../models/entities/produc
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { amountToMajors } from '../../utils/money';
 import { showMessage } from '../../utils/snackbar';
 import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
@@ -59,6 +60,11 @@ const INVOICE_LABEL_STYLE: TextStyle = {
   textTransform: 'uppercase',
 };
 
+export enum PaymentDelay {
+  CHECKED = 'checked',
+  UNCHECKED = 'unchecked',
+}
+
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoice, status, navigation } = props;
   const { invoiceStore, customerStore, draftStore, quotationStore } = useStores();
@@ -90,6 +96,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [comment, setComment] = useState(null);
   const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
+  const [allowPaymentDelay, setAllowPaymentDelay] = useState<PaymentDelay>(PaymentDelay.UNCHECKED);
   const [quotationTitle, setQuotationTitle] = useState<String>('');
 
   const navigateToTab = (tab: string) => {
@@ -285,44 +292,70 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      <View style={ROW_STYLE}>
-        <Controller
-          name='delayInPaymentAllowed'
-          control={control}
-          render={({ field: { value, onBlur, onChange } }) => {
-            let suffix: string;
-            value > 1 ? (suffix = 'Jours') : (suffix = 'Jour');
-            return (
-              <InvoiceFormField
-                labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
-                placeholderTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowedPlaceholder'
-                style={{ flex: 1 }}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value?.toString()}
-                suffix={suffix}
-              />
-            );
+      <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
+        <Checkbox.Item
+          status={allowPaymentDelay}
+          onPress={() => {
+            allowPaymentDelay === PaymentDelay.CHECKED ? setAllowPaymentDelay(PaymentDelay.UNCHECKED) : setAllowPaymentDelay(PaymentDelay.CHECKED);
           }}
+          color={palette.secondaryColor}
+          style={{ width: '10%' }}
+          mode={'android'}
+          label={''}
         />
-        <Controller
-          name='delayPenaltyPercent'
-          control={control}
-          render={({ field: { value, onBlur, onChange } }) => {
-            return (
-              <InvoiceFormField
-                labelTx='invoiceFormScreen.invoiceForm.delayPenaltyPercent'
-                placeholderTx='invoiceFormScreen.invoiceForm.delayPenaltyPercentPlaceholder'
-                style={{ flex: 1 }}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value?.toString()}
-                suffix='%'
-              />
-            );
+        <Text
+          tx={'invoiceFormScreen.invoiceForm.delayPaymentLabel'}
+          style={{
+            borderRadius: 5,
+            fontFamily: 'Geometria',
+            fontSize: 13,
+            alignSelf: 'center',
+            color: palette.darkBlack,
+            width: '80%',
           }}
+          numberOfLines={2}
         />
       </View>
+      {allowPaymentDelay === PaymentDelay.CHECKED && (
+        <View style={ROW_STYLE}>
+          <Controller
+            name='delayInPaymentAllowed'
+            control={control}
+            render={({ field: { value, onBlur, onChange } }) => {
+              let suffix: string;
+              value > 1 ? (suffix = 'Joursie') : (suffix = 'Jour');
+              return (
+                <InvoiceFormField
+                  labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
+                  placeholderTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowedPlaceholder'
+                  style={{ flex: 1 }}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value?.toString()}
+                  suffix={suffix}
+                />
+              );
+            }}
+          />
+          <Controller
+            name='delayPenaltyPercent'
+            control={control}
+            render={({ field: { value, onBlur, onChange } }) => {
+              return (
+                <InvoiceFormField
+                  labelTx='invoiceFormScreen.invoiceForm.delayPenaltyPercent'
+                  placeholderTx='invoiceFormScreen.invoiceForm.delayPenaltyPercentPlaceholder'
+                  style={{ flex: 1 }}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value?.toString()}
+                  suffix='%'
+                />
+              );
+            }}
+          />
+        </View>
+      )}
       <View style={ROW_STYLE}>
         <Controller
           name='comment'
