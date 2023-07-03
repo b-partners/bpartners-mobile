@@ -25,7 +25,8 @@
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
     "edit": "Modifier",
-    "register": "ENREGISTRER"
+    "register": "ENREGISTRER",
+    "noComment": "Aucun Commentaire"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
