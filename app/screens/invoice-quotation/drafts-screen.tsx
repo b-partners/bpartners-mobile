@@ -105,6 +105,14 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
     { id: 'markAsProposal', title: translate('invoiceScreen.menu.markAsProposal') },
   ];
 
+  const handleScroll = event => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (offsetY <= 0) {
+      // If the offset is less than or equal to 0, we're at the top of the list
+      handleRefresh();
+    }
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
@@ -136,6 +144,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
                 stickySectionHeadersEnabled={true}
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
                 renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
+                onScrollEndDrag={handleScroll}
               />
             </View>
           </Screen>
