@@ -182,6 +182,10 @@
   "profileScreen": {
     "label": "Profil",
     "title": "Profil",
+    "delete": "Delete my account",
+    "firstStep": "To permanently delete your account, please press the \"Confirm\" button.",
+    "secondStep": " This will automatically open an e-mail ready to be sent to our dedicated account deletion team.",
+    "deleteMessage": "Dear technical team,\n\nPlease delete my user account permanently. I understand that this will result in the deletion of all information associated with my account, including transactions and personal data.\n\nWe would be very grateful if you would consider this account deletion request and process it accordingly. Should you require any further information or have any additional questions, please do not hesitate to contact me directly.\n\nThank you very much for your attention and assistance.",
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",
