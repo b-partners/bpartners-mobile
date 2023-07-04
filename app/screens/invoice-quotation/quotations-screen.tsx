@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { SectionList, TouchableOpacity, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
@@ -18,6 +18,7 @@ import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
 import { showMessage } from '../../utils/snackbar';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import {
   BUTTON_INVOICE_STYLE,
@@ -35,25 +36,26 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore, quotationStore } = useStores();
-  const { loadingQuotation, quotations, allQuotations } = quotationStore;
+  const { loadingQuotation, quotations } = quotationStore;
   const [navigationState, setNavigationState] = useState(false);
-  const [page, setPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(Math.ceil(allQuotations.length / 10));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(Math.ceil(quotations.length / itemsPerPage));
   const messageOption = { backgroundColor: palette.green };
+  const startItemIndex = (currentPage - 1) * itemsPerPage;
+  const endItemIndex = currentPage * itemsPerPage;
+  const displayedItems = quotations.slice(startItemIndex, endItemIndex);
 
   const handleRefresh = async () => {
-    await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
-    __DEV__ && console.tron.log(quotations);
+    await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
+    setMaxPage(Math.ceil(quotations.length / itemsPerPage));
   };
 
-  useEffect(() => {
-    setPage(1);
-    setMaxPage(Math.ceil(allQuotations.length / 10));
-  }, [allQuotations]);
-
-  useEffect(() => {
-    quotationStore.getQuotations({ page: page, pageSize: 10, status: InvoiceStatus.PROPOSAL });
-  }, [page]);
+  const handleScroll = event => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (offsetY <= -5) {
+      handleRefresh();
+    }
+  };
 
   const markAsInvoice = async (item: IInvoice) => {
     if (item.status === InvoiceStatus.DRAFT || item.status === InvoiceStatus.CONFIRMED) {
@@ -71,13 +73,12 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
       await invoiceStore.saveInvoice(editedItem);
       await invoiceStore.getInvoices({ page: 1, pageSize: 10, status: InvoiceStatus.CONFIRMED });
       setNavigationState(false);
-      await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
+      await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsInvoice'), messageOption);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
     } finally {
       await invoiceStore.getAllInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 500 });
-      await quotationStore.getAllInvoices({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
   const previewQuotation = item => {
@@ -89,7 +90,6 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     });
   };
 
-  const sectionedQuotations = sectionInvoicesByMonth(quotations);
   const items: MenuItem[] = [
     { id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') },
     { id: 'senByEmail', title: translate('invoicePreviewScreen.send') },
@@ -104,7 +104,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionedQuotations]}
+                sections={[...sectionInvoicesByMonth(displayedItems)]}
                 renderItem={({ item }) => (
                   <Invoice
                     item={item}
@@ -124,6 +124,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
                 stickySectionHeadersEnabled={true}
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
                 renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
+                onScrollEndDrag={handleScroll}
               />
             </View>
           </Screen>
@@ -132,7 +133,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
-            {page === 1 ? (
+            {currentPage === 1 ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
               </View>
@@ -140,16 +141,16 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                  setPage(page - 1);
+                  setCurrentPage(currentPage - 1);
                 }}
               >
                 <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
               </TouchableOpacity>
             )}
             <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-              <Text text={page.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
+              <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
             </View>
-            {page === maxPage ? (
+            {currentPage === maxPage ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
               </View>
@@ -157,7 +158,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                  setPage(page + 1);
+                  setCurrentPage(currentPage + 1);
                 }}
               >
                 <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
