@@ -16,6 +16,7 @@ import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import {
   BUTTON_INVOICE_STYLE,
@@ -34,29 +35,18 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
   const { invoiceStore, draftStore, quotationStore } = useStores();
   const { drafts, loadingDraft } = draftStore;
   const [navigationState, setNavigationState] = useState(false);
-  /*const [page, setPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(Math.ceil(allDrafts.length / 10));*/
-  const messageOption = { backgroundColor: palette.green };
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
+  const [maxPage, setMaxPage] = useState(Math.ceil(drafts.length / itemsPerPage));
+  const messageOption = { backgroundColor: palette.green };
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = drafts.slice(startItemIndex, endItemIndex);
 
   const handleRefresh = async () => {
-    await draftStore.getDrafts({ page: 1, pageSize: 500, status: InvoiceStatus.DRAFT });
+    await draftStore.getDrafts({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.DRAFT });
+    setMaxPage(Math.ceil(drafts.length / itemsPerPage));
   };
-
-  /*useEffect(() => {
-    setPage(1);
-    setMaxPage(Math.ceil(allDrafts.length / 10));
-  }, [allDrafts]);
-
-  useEffect(() => {
-    draftStore.getDrafts({ page: page, pageSize: 10, status: InvoiceStatus.DRAFT });
-  }, [page]);*/
 
   const editInvoice = async (item: IInvoice) => {
     setNavigationState(true);
@@ -91,13 +81,12 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
       await invoiceStore.saveInvoice(editedItem);
       await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
-      await draftStore.getDrafts({ page: 1, pageSize: 10, status: InvoiceStatus.DRAFT });
+      await draftStore.getDrafts({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'), messageOption);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
     } finally {
       await quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
-      await draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
     }
   };
   const items: MenuItem[] = [
@@ -107,8 +96,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
 
   const handleScroll = event => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY <= 0) {
-      // If the offset is less than or equal to 0, we're at the top of the list
+    if (offsetY <= -5) {
       handleRefresh();
     }
   };
@@ -170,7 +158,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
             <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
               <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
             </View>
-            {currentPage === drafts.length ? (
+            {currentPage === maxPage ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
               </View>

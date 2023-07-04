@@ -4,3 +4,5 @@ export type ModalProps = {
   visibleModal: boolean;
   setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+export const invoicePageSize = 500;
