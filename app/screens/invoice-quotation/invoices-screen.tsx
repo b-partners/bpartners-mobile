@@ -32,13 +32,13 @@ import {
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-  const { invoiceStore, authStore, quotationStore } = useStores();
+  const { invoiceStore, authStore } = useStores();
   const { invoices, loadingInvoice, allInvoices } = invoiceStore;
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(allInvoices.length / 10));
 
   const handleRefresh = async () => {
-    await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.CONFIRMED });
+    await invoiceStore.getInvoices({ page: 1, pageSize: 10, status: InvoiceStatus.CONFIRMED });
   };
 
   useEffect(() => {
