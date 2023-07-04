@@ -16,7 +16,7 @@ import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/components/utils';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import {
   BUTTON_INVOICE_STYLE,
@@ -36,7 +36,6 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
   const { drafts, loadingDraft } = draftStore;
   const [navigationState, setNavigationState] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
   const [maxPage, setMaxPage] = useState(Math.ceil(drafts.length / itemsPerPage));
   const messageOption = { backgroundColor: palette.green };
   const startItemIndex = (currentPage - 1) * itemsPerPage;
@@ -46,6 +45,13 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
   const handleRefresh = async () => {
     await draftStore.getDrafts({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.DRAFT });
     setMaxPage(Math.ceil(drafts.length / itemsPerPage));
+  };
+
+  const handleScroll = event => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (offsetY <= -5) {
+      handleRefresh();
+    }
   };
 
   const editInvoice = async (item: IInvoice) => {
@@ -90,27 +96,18 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
       };
       navigateToTab(navigation, 'quotations');
       await invoiceStore.saveInvoice(editedItem);
-      await quotationStore.getQuotations({ page: 1, pageSize: 10, status: InvoiceStatus.PROPOSAL });
+      await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
       await draftStore.getDrafts({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.DRAFT });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'), messageOption);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
-    } finally {
-      await quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
   const items: MenuItem[] = [
     { id: 'editInvoice', title: translate('invoiceScreen.menu.editDraft') },
     { id: 'markAsProposal', title: translate('invoiceScreen.menu.markAsProposal') },
   ];
-
-  const handleScroll = event => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY <= -5) {
-      handleRefresh();
-    }
-  };
 
   return (
     <ErrorBoundary catchErrors='always'>
