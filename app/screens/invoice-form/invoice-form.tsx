@@ -133,11 +133,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
-        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
         navigateToTab('quotations');
-        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
@@ -149,7 +149,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       throw e;
     } finally {
       reset();
-      await quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
 
