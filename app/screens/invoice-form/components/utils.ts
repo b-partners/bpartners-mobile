@@ -6,3 +6,4 @@ export type ModalProps = {
 };
 
 export const invoicePageSize = 500;
+export const itemsPerPage = 10;
