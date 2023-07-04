@@ -1,18 +1,20 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Linking, TextStyle, View, ViewStyle } from 'react-native';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
 
-import { AutoImage, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
+import { AutoImage, Button, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { NavigatorParamList } from '../../navigators';
-import { color } from '../../theme';
+import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { printCurrency } from '../../utils/money';
 import { ErrorBoundary } from '../error/error-boundary';
+import { BUTTON_TEXT_STYLE } from '../invoice-quotation/styles';
+import { AccountDeletionModal } from './components/account-deletion-modal';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -33,6 +35,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const { authStore } = useStores();
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
   const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
+  const [confirmationModal, setConfirmationModal] = useState(false);
 
   let accountHolder: AccountHolder;
   useEffect(() => {
@@ -185,6 +188,22 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             text={accountHolder?.contactAddress?.postalCode ?? 'Aucune information'}
           />
           <LabelWithTextRow label='profileScreen.fields.accountHolder.siren' text={accountHolder?.siren ?? 'Aucune information'} />
+          <Button
+            tx='profileScreen.delete'
+            style={{
+              backgroundColor: color.primary,
+              marginVertical: spacing[5],
+              marginHorizontal: spacing[4],
+              borderRadius: 40,
+              paddingVertical: spacing[3],
+              paddingHorizontal: spacing[2],
+            }}
+            textStyle={BUTTON_TEXT_STYLE}
+            onPress={() => {
+              setConfirmationModal(true);
+            }}
+          />
+          <AccountDeletionModal confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} />
           <View
             style={{
               marginHorizontal: '5%',
