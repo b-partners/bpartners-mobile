@@ -1,10 +1,12 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { SectionList, View } from 'react-native';
+import { SectionList, TouchableOpacity, View } from 'react-native';
+import { Snackbar } from 'react-native-paper';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { ErrorBoundary } from '..';
-import { Loader, Screen, Separator, Text } from '../../components';
+import { Button, Loader, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -18,9 +20,17 @@ import { sendEmail } from '../../utils/core/invoicing-utils';
 import { showMessage } from '../../utils/snackbar';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
-import { InvoiceCreationButton } from './components/invoice-creation-button';
-import { InvoicePagination } from './components/invoice-pagination';
-import { CONTAINER, FOOTER_COMPONENT_STYLE, FULL, LOADER_STYLE, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from './styles';
+import {
+  BUTTON_INVOICE_STYLE,
+  BUTTON_TEXT_STYLE,
+  CONTAINER,
+  FOOTER_COMPONENT_STYLE,
+  FULL,
+  LOADER_STYLE,
+  SECTION_HEADER_TEXT_STYLE,
+  SECTION_LIST_CONTAINER_STYLE,
+  SEPARATOR_STYLE,
+} from './styles';
 import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
@@ -61,12 +71,14 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
       };
       navigateToTab(navigation, 'invoices');
       await invoiceStore.saveInvoice(editedItem);
-      await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
+      await invoiceStore.getInvoices({ page: 1, pageSize: 10, status: InvoiceStatus.CONFIRMED });
       setNavigationState(false);
       await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsInvoice'), messageOption);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
+    } finally {
+      await invoiceStore.getAllInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 500 });
     }
   };
   const previewQuotation = item => {
@@ -120,8 +132,67 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
-          <InvoicePagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />
+          <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
+            {currentPage === 1 ? (
+              <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => {
+                  setCurrentPage(currentPage - 1);
+                }}
+              >
+                <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
+              </TouchableOpacity>
+            )}
+            <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+              <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
+            </View>
+            {currentPage === maxPage ? (
+              <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => {
+                  setCurrentPage(currentPage + 1);
+                }}
+              >
+                <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
+              </TouchableOpacity>
+            )}
+          </View>
+          <View style={{ width: '75%', justifyContent: 'center' }}>
+            {navigationState ? (
+              <Snackbar
+                visible={navigationState}
+                elevation={5}
+                style={{
+                  backgroundColor: palette.yellow,
+                  marginVertical: spacing[5],
+                  marginHorizontal: spacing[4],
+                  borderRadius: 40,
+                  paddingHorizontal: spacing[2],
+                }}
+                onDismiss={() => setNavigationState(false)}
+              >
+                {translate('common.loading')}
+              </Snackbar>
+            ) : (
+              <Button
+                tx='quotationScreen.createQuotation'
+                style={BUTTON_INVOICE_STYLE}
+                textStyle={BUTTON_TEXT_STYLE}
+                onPress={() => {
+                  invoiceStore.saveInvoiceInit();
+                  navigation.navigate('invoiceForm');
+                }}
+              />
+            )}
+          </View>
         </View>
       </View>
     </ErrorBoundary>
