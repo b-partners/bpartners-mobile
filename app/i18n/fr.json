@@ -106,28 +106,6 @@
     "confirmPassword": "Confirmez le mot de passe",
     "firstConnexion": "Première connexion ?"
   },
-  "registrationScreen": {
-    "already": "Déjà un compte ?",
-    "connect": "Se connecter",
-    "name": "Nom",
-    "firstname": "Prénom",
-    "email": "Adresse mail",
-    "phone": "Numéro de téléphone",
-    "company": "Nom de la société",
-    "checkEmail": "Pour finaliser votre inscription, un mail vous a été envoyé au",
-    "confirm": "Confirmation"
-  },
-  "registrationScreen": {
-    "already": "Déjà un compte ?",
-    "connect": "Se connecter",
-    "name": "Nom",
-    "firstname": "Prénom",
-    "email": "Adresse mail",
-    "phone": "Numéro de téléphone",
-    "company": "Nom de la société",
-    "checkEmail": "Pour finaliser votre inscription, un mail vous a été envoyé au",
-    "confirm": "Confirmation"
-  },
   "paymentInitiationScreen": {
     "label": "Paiement",
     "title": "Collecter un paiement",

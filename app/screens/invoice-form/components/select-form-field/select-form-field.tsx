@@ -26,8 +26,10 @@ type SelectFormFieldProps = TextFieldProps & {
   customers: Customer[];
   selectedCustomer: Customer;
   setSelectedCustomer: React.Dispatch<React.SetStateAction<Customer>>;
+  error?: boolean;
 };
 
+const LABEL_STYLE_ERROR: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', color: palette.pastelRed };
 const LABEL_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase' };
 const INPUT_STYLE: TextStyle = { fontFamily: 'Geometria-Bold', fontSize: 15, textTransform: 'uppercase' };
 
@@ -43,6 +45,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
     inputStyle: inputStyleOverrides,
     modalTx,
     value,
+    error,
     ...textFieldProps
   } = props;
 
@@ -72,8 +75,8 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
             <TextField
               {...textFieldProps}
               editable={false}
-              value={`${selectedCustomer?.firstName} ${selectedCustomer?.lastName}`}
-              labelStyle={[LABEL_STYLE, labelStyleOverrides]}
+              value={selectedCustomer ? '' : `${selectedCustomer?.firstName} ${selectedCustomer?.lastName}`}
+              labelStyle={[error ? LABEL_STYLE_ERROR : LABEL_STYLE, labelStyleOverrides]}
               inputStyle={[INPUT_STYLE, inputStyleOverrides]}
             />
             <Icon icon='chevronDown' style={{ marginTop: 40 }} />
