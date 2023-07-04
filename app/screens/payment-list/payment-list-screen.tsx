@@ -7,6 +7,7 @@ import { TextStyle, ViewStyle } from 'react-native';
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
+import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 
 /*import { useStores } from '../../models';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';*/
@@ -34,10 +35,12 @@ type TabNameProps = {
 export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation, route }) {
   const initialRoute = route.params?.initialRoute;
   const Tab = createMaterialTopTabNavigator();
-  const { customerStore, productStore } = useStores();
+  const { invoiceStore, customerStore, productStore, quotationStore } = useStores();
   // const { invoiceStore } = useStores();
 
   useEffect(() => {
+    quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
     productStore.getProducts();
     customerStore.getCustomers();
   }, []);
