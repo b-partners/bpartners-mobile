@@ -1,9 +1,8 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { SectionList, TouchableOpacity, View } from 'react-native';
+import { SectionList, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Button, Loader, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
@@ -18,6 +17,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
+import { InvoicePagination } from './components/invoice-pagination';
 import {
   BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
@@ -148,39 +148,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
-          <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
-            {currentPage === 1 ? (
-              <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
-              </View>
-            ) : (
-              <TouchableOpacity
-                style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                onPress={() => {
-                  setCurrentPage(currentPage - 1);
-                }}
-              >
-                <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
-              </TouchableOpacity>
-            )}
-            <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-              <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
-            </View>
-            {currentPage === maxPage ? (
-              <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
-              </View>
-            ) : (
-              <TouchableOpacity
-                style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                onPress={() => {
-                  setCurrentPage(currentPage + 1);
-                }}
-              >
-                <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
-              </TouchableOpacity>
-            )}
-          </View>
+          <InvoicePagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
           <View style={{ width: '75%', justifyContent: 'center' }}>
             {navigationState ? (
               <Snackbar
