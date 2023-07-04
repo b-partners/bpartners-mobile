@@ -18,7 +18,6 @@
   "common": {
     "ok": "OK!",
     "submit": "Confirmer",
-    "create": "Créer",
     "or": "ou",
     "cancel": "Annuler",
     "back": "Précédent",
@@ -42,7 +41,6 @@
     "operation": "Échec de l'ajout",
     "credentials": "Veuillez vérifier vos identifiants!",
     "invalidPrice": "Prix invalide",
-    "invalidPercent": "Nombre invalide",
     "mandatoryTitle": "veuillez renseigner le titre du devis !",
     "minPassword": "Le mot de passe doit contenir au moins 8 caractères",
     "invalidPassword": "Le mot de passe doit au moins contenir une majuscule, un caractère spécial (., -, &, @ etc) et un chiffre",
@@ -107,24 +105,6 @@
     "newPassword": "Nouveau mot de passe",
     "confirmPassword": "Confirmez le mot de passe",
     "firstConnexion": "Première connexion ?"
-  },
-  "registrationScreen": {
-    "already": "Déjà un compte ?",
-    "connect": "Se connecter",
-    "name": "Nom",
-    "firstname": "Prénom",
-    "email": "Adresse mail",
-    "phone": "Numéro de téléphone",
-    "company": "Nom de la société"
-  },
-  "registrationScreen": {
-    "already": "Déjà un compte ?",
-    "connect": "Se connecter",
-    "name": "Nom",
-    "firstname": "Prénom",
-    "email": "Adresse mail",
-    "phone": "Numéro de téléphone",
-    "company": "Nom de la société"
   },
   "paymentInitiationScreen": {
     "label": "Paiement",
@@ -351,15 +331,6 @@
       "totalWithVat": "Total",
       "vat": "TVA",
       "delete": "Supprimer"
-    },
-    "paymentRegulationForm": {
-      "add": "Ajouter un Paiement",
-      "payIn": "Payer en plusieurs fois",
-      "percent": "Pourcentage",
-      "maturityDate": "Date limite de paiement",
-      "comment": "Commentaire",
-      "restToBePaid": "Reste à payer",
-      "invalidPercent": "Le pourcentage est supérieur à 100%"
     },
     "invoicePreview": "Aperçu du devis"
   },

@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { List } from 'react-native-paper';
+import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
@@ -21,8 +21,10 @@ import { showMessage } from '../../utils/snackbar';
 import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
+import { PaymentRegulationFormField } from './components/payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
+import { invoicePageSize } from './components/utils';
 import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
@@ -58,6 +60,11 @@ const INVOICE_LABEL_STYLE: TextStyle = {
   textTransform: 'uppercase',
 };
 
+export enum PaymentDelay {
+  CHECKED = 'checked',
+  UNCHECKED = 'unchecked',
+}
+
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoice, status, navigation } = props;
   const { invoiceStore, customerStore, draftStore, quotationStore } = useStores();
@@ -72,16 +79,35 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
-  const { control, handleSubmit, reset } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
-  const { fields, append, remove, update, move } = useFieldArray({ control, name: 'products' });
-  const [title, setTitle] = useState(null);
-  const [comment, setComment] = useState(null);
+  const { fields, append, remove, update, move } = useFieldArray({
+    control,
+    name: 'products',
+    rules: {
+      required: translate('errors.required'),
+    },
+  });
+  const {
+    fields: paymentFields,
+    /*append: paymentAppend,
+    remove: paymentRemove,
+    update: paymentUpdate,
+    move: paymentMove,*/
+  } = useFieldArray({ control, name: 'paymentRegulations' });
+  const hasError = errors.title || errors.ref || errors.products || errors.customer;
+
   const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
-  const [quotationTitle, setQuotationTitle] = useState<String>('');
+  const [allowPaymentDelay, setAllowPaymentDelay] = useState<PaymentDelay>(PaymentDelay.UNCHECKED);
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -108,71 +134,61 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       await invoiceStore.saveInvoice({
         ...invoices,
         customer: selectedCustomer,
-        comment: comment,
-        title: title,
         metadata: { ...invoices.metadata, submittedAt: new Date() },
         status: invoiceType,
       });
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
-        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
+        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
         navigateToTab('quotations');
-        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
         navigateToTab('invoices');
-        await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
+        await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
       }
     } catch (e) {
       showMessage(e);
       throw e;
     } finally {
       reset();
-      await draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
-      await quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
 
   const handleInvoicePreviewPress = async invoices => {
     // TODO(UI): error handling
     setIsLoading(true);
-    if (quotationTitle) {
-      try {
-        const savedInvoice = await invoiceStore.saveInvoice({
-          ...invoices,
-          customer: selectedCustomer,
-          comment: comment,
-          title: title,
-          metadata: { ...invoices.metadata, submittedAt: new Date() },
-        });
-        setConfirmationModal(false);
+    try {
+      const savedInvoice = await invoiceStore.saveInvoice({
+        ...invoices,
+        customer: selectedCustomer,
+        metadata: { ...invoices.metadata, submittedAt: new Date() },
+      });
+      setConfirmationModal(false);
 
-        navigate('invoicePreview', {
-          fileId: savedInvoice.fileId,
-          invoiceTitle: savedInvoice.title,
-          invoice: savedInvoice,
-          situation: true,
-        });
-        invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }));
-        invoiceType === 'PROPOSAL' &&
-          (await quotationStore.getQuotations({
-            status: InvoiceStatus.PROPOSAL,
-            page: 1,
-            pageSize: 10,
-          }));
-      } catch (e) {
-        __DEV__ && console.tron.error(e.message, e.stacktrace);
-        throw e;
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
+      navigate('invoicePreview', {
+        fileId: savedInvoice.fileId,
+        invoiceTitle: savedInvoice.title,
+        invoice: savedInvoice,
+        situation: true,
+      });
+      invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize }));
+      invoiceType === 'PROPOSAL' &&
+        (await quotationStore.getQuotations({
+          status: InvoiceStatus.PROPOSAL,
+          page: 1,
+          pageSize: invoicePageSize,
+        }));
+    } catch (e) {
+      __DEV__ && console.tron.error(e.message, e.stacktrace);
+      throw e;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -182,6 +198,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         <Controller
           name='title'
           control={control}
+          rules={{
+            required: translate('errors.required'),
+          }}
           render={({ field: { value, onBlur, onChange } }) => {
             return (
               <InvoiceFormField
@@ -189,12 +208,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.titlePlaceholder'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={newValue => {
-                  onChange();
-                  setTitle(newValue);
-                  setQuotationTitle(newValue);
-                }}
+                onChangeText={onChange}
                 value={value}
+                error={!!errors.title}
               />
             );
           }}
@@ -204,6 +220,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         <Controller
           name='ref'
           control={control}
+          rules={{
+            required: translate('errors.required'),
+          }}
           render={({ field: { value, onBlur, onChange } }) => {
             return (
               <InvoiceFormField
@@ -213,6 +232,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                error={!!errors.ref}
               />
             );
           }}
@@ -256,7 +276,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      <View style={ROW_STYLE}>
+      {/*<View style={ROW_STYLE}>
         <Controller
           name='toPayAt'
           control={control}
@@ -275,45 +295,71 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             );
           }}
         />
-      </View>
-      <View style={ROW_STYLE}>
-        <Controller
-          name='delayInPaymentAllowed'
-          control={control}
-          render={({ field: { value, onBlur, onChange } }) => {
-            let suffix: string;
-            value > 1 ? (suffix = 'Jours') : (suffix = 'Jour');
-            return (
-              <InvoiceFormField
-                labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
-                placeholderTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowedPlaceholder'
-                style={{ flex: 1 }}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value?.toString()}
-                suffix={suffix}
-              />
-            );
+      </View>*/}
+      <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
+        <Checkbox.Item
+          status={allowPaymentDelay}
+          onPress={() => {
+            allowPaymentDelay === PaymentDelay.CHECKED ? setAllowPaymentDelay(PaymentDelay.UNCHECKED) : setAllowPaymentDelay(PaymentDelay.CHECKED);
           }}
+          color={palette.secondaryColor}
+          style={{ width: '10%' }}
+          mode={'android'}
+          label={''}
         />
-        <Controller
-          name='delayPenaltyPercent'
-          control={control}
-          render={({ field: { value, onBlur, onChange } }) => {
-            return (
-              <InvoiceFormField
-                labelTx='invoiceFormScreen.invoiceForm.delayPenaltyPercent'
-                placeholderTx='invoiceFormScreen.invoiceForm.delayPenaltyPercentPlaceholder'
-                style={{ flex: 1 }}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value?.toString()}
-                suffix='%'
-              />
-            );
+        <Text
+          tx={'invoiceFormScreen.invoiceForm.delayPaymentLabel'}
+          style={{
+            borderRadius: 5,
+            fontFamily: 'Geometria',
+            fontSize: 13,
+            alignSelf: 'center',
+            color: palette.darkBlack,
+            width: '80%',
           }}
+          numberOfLines={2}
         />
       </View>
+      {allowPaymentDelay === PaymentDelay.CHECKED && (
+        <View style={ROW_STYLE}>
+          <Controller
+            name='delayInPaymentAllowed'
+            control={control}
+            render={({ field: { value, onBlur, onChange } }) => {
+              let suffix: string;
+              value > 1 ? (suffix = 'Joursie') : (suffix = 'Jour');
+              return (
+                <InvoiceFormField
+                  labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
+                  placeholderTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowedPlaceholder'
+                  style={{ flex: 1 }}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value?.toString()}
+                  suffix={suffix}
+                />
+              );
+            }}
+          />
+          <Controller
+            name='delayPenaltyPercent'
+            control={control}
+            render={({ field: { value, onBlur, onChange } }) => {
+              return (
+                <InvoiceFormField
+                  labelTx='invoiceFormScreen.invoiceForm.delayPenaltyPercent'
+                  placeholderTx='invoiceFormScreen.invoiceForm.delayPenaltyPercentPlaceholder'
+                  style={{ flex: 1 }}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value?.toString()}
+                  suffix='%'
+                />
+              );
+            }}
+          />
+        </View>
+      )}
       <View style={ROW_STYLE}>
         <Controller
           name='comment'
@@ -325,20 +371,90 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 placeholderTx='invoiceFormScreen.invoiceForm.comment'
                 style={{ flex: 1 }}
                 onBlur={onBlur}
-                onChangeText={newValue => {
-                  onChange();
-                  setComment(newValue);
-                }}
-                value={value?.toString()}
+                onChangeText={onChange}
+                value={value}
               />
             );
           }}
         />
       </View>
+      <View style={ROW_STYLE}>
+        <Controller
+          name='customer'
+          control={control}
+          rules={{
+            required: translate('errors.required'),
+          }}
+          render={({ field: { value, onChange } }) => {
+            return (
+              // @ts-ignore
+              <SelectFormField
+                customers={customers}
+                selectedCustomer={selectedCustomer}
+                setSelectedCustomer={setSelectedCustomer}
+                value={value}
+                onValueChange={newValue => {
+                  onChange();
+                  setSelectedCustomer(newValue);
+                }}
+                labelTx='invoiceScreen.labels.customerSection'
+                modalTx='invoiceFormScreen.customerSelectionForm.title'
+                placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
+                items={customers}
+                itemLabel='name'
+                itemValue='id'
+                itemSuffix={<Icon icon='edit' />}
+                itemSuffixAction={() => {}}
+                footer={<CustomerFormFieldFooter />}
+                selectContainerStyle={{
+                  paddingHorizontal: spacing[3],
+                  marginBottom: spacing[6],
+                  width: '100%',
+                  borderWidth: 1,
+                  borderColor: errors.customer ? palette.pastelRed : '#E1E5EF',
+                }}
+                style={INVOICE_LABEL_STYLE}
+              />
+            );
+          }}
+        />
+      </View>
+      <Button
+        onPress={() => {
+          customerStore.saveCustomerInit();
+          setCreationModal(true);
+        }}
+        style={{
+          flexDirection: 'row',
+          marginBottom: spacing[6],
+          backgroundColor: palette.white,
+          borderColor: color.palette.secondaryColor,
+          borderWidth: 1,
+          borderRadius: 25,
+          paddingVertical: spacing[2],
+          marginHorizontal: spacing[2],
+        }}
+      >
+        <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />
+        <Text
+          tx='invoiceFormScreen.customerSelectionForm.addClient'
+          style={{
+            color: color.palette.secondaryColor,
+            marginLeft: spacing[2],
+            fontFamily: 'Geometria',
+          }}
+        />
+      </Button>
+      <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       <List.Accordion
         title='Produits'
-        style={{ borderColor: '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
-        titleStyle={{ fontFamily: 'Geometria-Bold', fontSize: 12, textTransform: 'uppercase', color: palette.lightGrey }}
+        style={{ borderColor: errors.products ? palette.pastelRed : '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
+        titleStyle={{
+          fontFamily: 'Geometria-Bold',
+          fontSize: 12,
+          textTransform: 'uppercase',
+          color: errors.products ? palette.pastelRed : palette.lighterGrey,
+        }}
       >
         <View style={{ paddingHorizontal: spacing[4], marginTop: spacing[5] }}>
           {removeProduct ? (
@@ -396,77 +512,71 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           </Button>
         </View>
       </List.Accordion>
-      <View style={ROW_STYLE}>
-        <Controller
-          name='customer'
-          control={control}
-          render={({ field: { value, onChange } }) => {
-            return (
-              // @ts-ignore
-              <SelectFormField
-                customers={customers}
-                selectedCustomer={selectedCustomer}
-                setSelectedCustomer={setSelectedCustomer}
-                value={value}
-                onValueChange={newValue => {
-                  onChange();
-                  setSelectedCustomer(newValue);
-                }}
-                labelTx='invoiceScreen.labels.customerSection'
-                modalTx='invoiceFormScreen.customerSelectionForm.title'
-                placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
-                items={customers}
-                itemLabel='name'
-                itemValue='id'
-                itemSuffix={<Icon icon='edit' />}
-                itemSuffixAction={() => {}}
-                footer={<CustomerFormFieldFooter />}
-                selectContainerStyle={{
-                  paddingHorizontal: spacing[3],
-                  marginBottom: spacing[6],
-                  width: '100%',
-                  borderWidth: 1,
-                  borderColor: '#E1E5EF',
-                }}
-                style={INVOICE_LABEL_STYLE}
-              />
-            );
-          }}
-        />
-      </View>
-      <Button
-        onPress={() => {
-          customerStore.saveCustomerInit();
-          setCreationModal(true);
-        }}
-        style={{
-          flexDirection: 'row',
-          marginBottom: spacing[6],
-          backgroundColor: palette.white,
-          borderColor: color.palette.secondaryColor,
-          borderWidth: 1,
-          borderRadius: 25,
-          paddingVertical: spacing[2],
-          marginHorizontal: spacing[2],
-        }}
-      >
-        <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />
-        <Text
-          tx='invoiceFormScreen.customerSelectionForm.addClient'
+      {paymentFields.length > 1 && (
+        <List.Accordion
+          title='Accompte'
           style={{
-            color: color.palette.secondaryColor,
-            marginLeft: spacing[2],
-            fontFamily: 'Geometria',
+            borderColor: '#E1E5EF',
+            borderWidth: 1,
+            height: 70,
+            justifyContent: 'center',
+            backgroundColor: palette.white,
           }}
-        />
-      </Button>
-      <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
+          titleStyle={{
+            fontFamily: 'Geometria-Bold',
+            fontSize: 12,
+            textTransform: 'uppercase',
+            color: palette.lightGrey,
+          }}
+        >
+          <View style={{ paddingHorizontal: spacing[6], marginTop: spacing[5] }}>
+            {removeProduct ? (
+              <Loader size='large' containerStyle={LOADER_STYLE} />
+            ) : (
+              paymentFields.map((item, i) => {
+                // @ts-ignore
+                return <PaymentRegulationFormField key={i} item={item} />;
+              })
+            )}
+          </View>
+          {/*<View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+          <Button
+            style={{
+              backgroundColor: palette.white,
+              borderColor: color.palette.secondaryColor,
+              borderWidth: 1,
+              borderRadius: 25,
+              flexDirection: "row",
+              justifyContent: "center",
+              paddingHorizontal: spacing[6],
+              width: "100%",
+              marginBottom: spacing[5]
+            }}
+            onPress={async () => {
+              const product = await createProductDefaultModel().create();
+              await append(product);
+            }}
+          >
+            <RNVIcon name="plus" size={16} color={color.palette.secondaryColor} />
+            <Text
+              tx="invoiceFormScreen.productForm.addProduct"
+              style={{
+                color: color.palette.secondaryColor,
+                fontFamily: "Geometria",
+                marginLeft: spacing[3]
+              }}
+            />
+          </Button>
+        </View>*/}
+        </List.Accordion>
+      )}
       <View
         style={{
           ...ROW_STYLE,
           flexDirection: 'row',
           justifyContent: 'space-evenly',
           paddingHorizontal: spacing[5],
+          marginTop: spacing[4],
         }}
       >
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
@@ -476,56 +586,48 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         <TouchableOpacity onPress={handleSubmit(handleInvoicePreviewPress)}>
           <View
             style={{
-              borderColor: color.palette.secondaryColor,
+              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
               borderWidth: 2,
               borderRadius: 100,
               padding: spacing[3],
             }}
           >
-            <MaterialIcons name='preview' size={25} color={color.palette.secondaryColor} />
+            <MaterialIcons name='preview' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
-            if (quotationTitle) {
-              setInvoiceType(InvoiceStatus.DRAFT);
-              setConfirmationModal(true);
-            } else {
-              showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
-            }
+            setInvoiceType(InvoiceStatus.DRAFT);
+            setConfirmationModal(true);
           }}
         >
           <View
             style={{
-              borderColor: color.palette.secondaryColor,
+              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
               borderWidth: 2,
               borderRadius: 100,
               padding: spacing[3],
             }}
           >
-            <RNVIcon name='save' size={25} color={color.palette.secondaryColor} />
+            <RNVIcon name='save' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            if (quotationTitle) {
-              status === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
-              setConfirmationModal(true);
-            } else {
-              showMessage(translate('errors.mandatoryTitle'), { backgroundColor: palette.pastelRed });
-            }
+            status === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
+            setConfirmationModal(true);
           }}
         >
           <View
             style={{
-              borderColor: color.palette.secondaryColor,
+              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
               borderWidth: 2,
               borderRadius: 100,
               padding: spacing[3],
             }}
           >
-            <Octicons name='file-submodule' size={25} color={color.palette.secondaryColor} />
+            <Octicons name='file-submodule' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
           </View>
         </TouchableOpacity>
       </View>

@@ -18,7 +18,6 @@
   "common": {
     "ok": "OK!",
     "submit": "Confirm",
-    "create": "Create",
     "or": "or",
     "cancel": "Cancel",
     "back": "Back",
@@ -42,7 +41,6 @@
     "operation": "Failed to add",
     "credentials": "please check your credentials!",
     "invalidPrice": "Invalid price",
-    "invalidPercent": "invalid number",
     "mandatoryTitle": "please fill out the title of your quotation !",
     "minPassword": "Password must contain at least 8 characters",
     "invalidPassword": "The password must contain at least one capital letter, one special character (., -, &, @ etc) and one number",
@@ -82,24 +80,6 @@
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "firstConnexion": "First connexion ?"
-  },
-  "registrationScreen": {
-    "already": "Already have an account",
-    "connect": "Login",
-    "name": "Name",
-    "firstname": "Firstname",
-    "email": "E-mail Address",
-    "phone": "Phone Number",
-    "company": "Company Name"
-  },
-  "registrationScreen": {
-    "already": "Already have an account",
-    "connect": "Login",
-    "name": "Name",
-    "firstname": "Firstname",
-    "email": "E-mail Address",
-    "phone": "Phone Number",
-    "company": "Company Name"
   },
   "demoScreen": {
     "howTo": "HOW TO",
@@ -366,15 +346,6 @@
       "vat": "VAT",
       "totalWithVat": "Total",
       "delete": "Delete"
-    },
-    "paymentRegulationForm": {
-      "add": "Add a Payment",
-      "payIn": "Pay in instalments",
-      "percent": "Percentage",
-      "maturityDate": "Payment deadline",
-      "comment": "Commentary",
-      "restToBePaid": "Remainder to be paid",
-      "invalidPercent": "The percentage is greater than 100%."
     },
     "invoicePreview": "Invoice preview"
   },
