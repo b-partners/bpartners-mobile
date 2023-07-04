@@ -2,10 +2,9 @@ import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
-import { Snackbar } from 'react-native-paper';
 
 import { ErrorBoundary } from '..';
-import { Button, Loader, Screen, Separator, Text } from '../../components';
+import { Loader, Screen, Separator, Text } from '../../components';
 import { MenuItem } from '../../components/menu/menu';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -19,18 +18,9 @@ import { sendEmail } from '../../utils/core/invoicing-utils';
 import { showMessage } from '../../utils/snackbar';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
+import { InvoiceCreationButton } from './components/invoice-creation-button';
 import { InvoicePagination } from './components/invoice-pagination';
-import {
-  BUTTON_INVOICE_STYLE,
-  BUTTON_TEXT_STYLE,
-  CONTAINER,
-  FOOTER_COMPONENT_STYLE,
-  FULL,
-  LOADER_STYLE,
-  SECTION_HEADER_TEXT_STYLE,
-  SECTION_LIST_CONTAINER_STYLE,
-  SEPARATOR_STYLE,
-} from './styles';
+import { CONTAINER, FOOTER_COMPONENT_STYLE, FULL, LOADER_STYLE, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from './styles';
 import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
@@ -131,34 +121,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <InvoicePagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <View style={{ width: '75%', justifyContent: 'center' }}>
-            {navigationState ? (
-              <Snackbar
-                visible={navigationState}
-                elevation={5}
-                style={{
-                  backgroundColor: palette.yellow,
-                  marginVertical: spacing[5],
-                  marginHorizontal: spacing[4],
-                  borderRadius: 40,
-                  paddingHorizontal: spacing[2],
-                }}
-                onDismiss={() => setNavigationState(false)}
-              >
-                {translate('common.loading')}
-              </Snackbar>
-            ) : (
-              <Button
-                tx='quotationScreen.createQuotation'
-                style={BUTTON_INVOICE_STYLE}
-                textStyle={BUTTON_TEXT_STYLE}
-                onPress={() => {
-                  invoiceStore.saveInvoiceInit();
-                  navigation.navigate('invoiceForm');
-                }}
-              />
-            )}
-          </View>
+          <InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />
         </View>
       </View>
     </ErrorBoundary>
