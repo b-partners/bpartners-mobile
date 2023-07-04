@@ -24,6 +24,7 @@ import { CustomerFormFieldFooter } from './components/customer/customer-form-fie
 import { PaymentRegulationFormField } from './components/payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
+import { invoicePageSize } from './components/utils';
 import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
@@ -131,13 +132,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
         await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
         navigateToTab('quotations');
         await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
         navigateToTab('invoices');
@@ -148,7 +149,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       throw e;
     } finally {
       reset();
-      await draftStore.getAllDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 500 });
       await quotationStore.getAllQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 500 });
     }
   };
