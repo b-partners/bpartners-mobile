@@ -142,7 +142,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
         navigateToTab('invoices');
-        await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
+        await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
       }
     } catch (e) {
       showMessage(e);
@@ -172,12 +172,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           invoice: savedInvoice,
           situation: true,
         });
-        invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }));
+        invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize }));
         invoiceType === 'PROPOSAL' &&
           (await quotationStore.getQuotations({
             status: InvoiceStatus.PROPOSAL,
             page: 1,
-            pageSize: 10,
+            pageSize: invoicePageSize,
           }));
       } catch (e) {
         __DEV__ && console.tron.error(e.message, e.stacktrace);

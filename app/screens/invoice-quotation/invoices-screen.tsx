@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { SectionList, TouchableOpacity, View } from 'react-native';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
@@ -17,6 +17,7 @@ import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
 import { ErrorBoundary } from '../error/error-boundary';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import {
   BUTTON_INVOICE_STYLE,
@@ -33,24 +34,25 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
-  const { invoices, loadingInvoice, allInvoices } = invoiceStore;
-  const [page, setPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(Math.ceil(allInvoices.length / 10));
+  const { invoices, loadingInvoice } = invoiceStore;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(Math.ceil(invoices.length / itemsPerPage));
+  const startItemIndex = (currentPage - 1) * itemsPerPage;
+  const endItemIndex = currentPage * itemsPerPage;
+  const displayedItems = invoices.slice(startItemIndex, endItemIndex);
 
   const handleRefresh = async () => {
-    await invoiceStore.getInvoices({ page: 1, pageSize: 10, status: InvoiceStatus.CONFIRMED });
+    await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
+    setMaxPage(Math.ceil(invoices.length / itemsPerPage));
   };
 
-  useEffect(() => {
-    setPage(1);
-    setMaxPage(Math.ceil(allInvoices.length / 10));
-  }, [allInvoices]);
+  const handleScroll = event => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (offsetY <= -5) {
+      handleRefresh();
+    }
+  };
 
-  useEffect(() => {
-    invoiceStore.getInvoices({ page: page, pageSize: 10, status: InvoiceStatus.CONFIRMED });
-  }, [page]);
-
-  const sectionedQuotations = sectionInvoicesByMonth(invoices);
   const items: MenuItem[] = [
     { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
     { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
@@ -85,7 +87,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionedQuotations]}
+                sections={[...sectionInvoicesByMonth(displayedItems)]}
                 renderItem={({ item }) => (
                   <Invoice
                     item={item}
@@ -104,6 +106,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
                 stickySectionHeadersEnabled={true}
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
                 renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
+                onScrollEndDrag={handleScroll}
               />
             </View>
           </Screen>
@@ -120,7 +123,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               justifyContent: 'space-evenly',
             }}
           >
-            {page === 1 ? (
+            {currentPage === 1 ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
               </View>
@@ -128,16 +131,16 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                  setPage(page - 1);
+                  setCurrentPage(currentPage - 1);
                 }}
               >
                 <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
               </TouchableOpacity>
             )}
             <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-              <Text text={page.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
+              <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
             </View>
-            {page === maxPage ? (
+            {currentPage === maxPage ? (
               <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                 <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
               </View>
@@ -145,7 +148,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               <TouchableOpacity
                 style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
                 onPress={() => {
-                  setPage(page + 1);
+                  setCurrentPage(currentPage + 1);
                 }}
               >
                 <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
