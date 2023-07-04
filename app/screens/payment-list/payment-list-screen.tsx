@@ -35,11 +35,10 @@ type TabNameProps = {
 export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation, route }) {
   const initialRoute = route.params?.initialRoute;
   const Tab = createMaterialTopTabNavigator();
-  const { invoiceStore, customerStore, productStore, draftStore, quotationStore } = useStores();
+  const { invoiceStore, customerStore, productStore, quotationStore } = useStores();
   // const { invoiceStore } = useStores();
 
   useEffect(() => {
-    draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 });
     quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 });
     invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 });
     productStore.getProducts();
