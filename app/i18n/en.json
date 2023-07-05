@@ -347,6 +347,10 @@
       "totalWithVat": "Total",
       "delete": "Delete"
     },
+    "paymentRegulationForm": {
+      "add": "Add a Payment",
+      "payIn": "Pay in instalments"
+    },
     "invoicePreview": "Invoice preview"
   },
   "invoicePreviewScreen": {

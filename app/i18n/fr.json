@@ -332,6 +332,10 @@
       "vat": "TVA",
       "delete": "Supprimer"
     },
+    "paymentRegulationForm": {
+      "add": "Ajouter un Paiement",
+      "payIn": "Payer en plusieurs fois"
+    },
     "invoicePreview": "Aperçu du devis"
   },
   "invoicePreviewScreen": {

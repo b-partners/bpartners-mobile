@@ -60,7 +60,7 @@ const INVOICE_LABEL_STYLE: TextStyle = {
   textTransform: 'uppercase',
 };
 
-export enum PaymentDelay {
+export enum CheckboxEnum {
   CHECKED = 'checked',
   UNCHECKED = 'unchecked',
 }
@@ -84,6 +84,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm({
     mode: 'all',
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
@@ -107,7 +108,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
 
   const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
-  const [allowPaymentDelay, setAllowPaymentDelay] = useState<PaymentDelay>(PaymentDelay.UNCHECKED);
+  const [allowPaymentDelay, setAllowPaymentDelay] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
+  const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -127,7 +129,34 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
 
   useEffect(() => {
     reset();
+    paymentFields.length > 1 && setPayInInstalments(CheckboxEnum.CHECKED);
+    const days = watch('delayInPaymentAllowed');
+    const percent = watch('delayPenaltyPercent');
+    if (days || percent) {
+      setAllowPaymentDelay(CheckboxEnum.CHECKED);
+    }
   }, []);
+
+  const togglePaymentDelay = () => {
+    if (allowPaymentDelay === CheckboxEnum.CHECKED) {
+      reset({
+        delayInPaymentAllowed: null,
+        delayPenaltyPercent: null,
+      });
+      setAllowPaymentDelay(CheckboxEnum.UNCHECKED);
+    } else {
+      setAllowPaymentDelay(CheckboxEnum.CHECKED);
+    }
+  };
+
+  const togglePaymentRegulation = () => {
+    if (payInInstalments === CheckboxEnum.CHECKED) {
+      paymentFields.length = 0;
+      setPayInInstalments(CheckboxEnum.UNCHECKED);
+    } else {
+      setPayInInstalments(CheckboxEnum.CHECKED);
+    }
+  };
 
   const onSubmit = async invoices => {
     try {
@@ -299,9 +328,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
         <Checkbox.Item
           status={allowPaymentDelay}
-          onPress={() => {
-            allowPaymentDelay === PaymentDelay.CHECKED ? setAllowPaymentDelay(PaymentDelay.UNCHECKED) : setAllowPaymentDelay(PaymentDelay.CHECKED);
-          }}
+          onPress={togglePaymentDelay}
           color={palette.secondaryColor}
           style={{ width: '10%' }}
           mode={'android'}
@@ -320,14 +347,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           numberOfLines={2}
         />
       </View>
-      {allowPaymentDelay === PaymentDelay.CHECKED && (
+      {allowPaymentDelay === CheckboxEnum.CHECKED && (
         <View style={ROW_STYLE}>
           <Controller
             name='delayInPaymentAllowed'
             control={control}
             render={({ field: { value, onBlur, onChange } }) => {
               let suffix: string;
-              value > 1 ? (suffix = 'Joursie') : (suffix = 'Jour');
+              value > 1 ? (suffix = 'Jours') : (suffix = 'Jour');
               return (
                 <InvoiceFormField
                   labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
@@ -512,7 +539,29 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           </Button>
         </View>
       </List.Accordion>
-      {paymentFields.length > 1 && (
+      <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
+        <Checkbox.Item
+          status={payInInstalments}
+          onPress={togglePaymentRegulation}
+          color={palette.secondaryColor}
+          style={{ width: '10%' }}
+          mode={'android'}
+          label={''}
+        />
+        <Text
+          tx={'invoiceFormScreen.paymentRegulationForm.payIn'}
+          style={{
+            borderRadius: 5,
+            fontFamily: 'Geometria',
+            fontSize: 13,
+            alignSelf: 'center',
+            color: palette.darkBlack,
+            width: '80%',
+          }}
+          numberOfLines={2}
+        />
+      </View>
+      {payInInstalments === CheckboxEnum.CHECKED && (
         <List.Accordion
           title='Accompte'
           style={{
@@ -539,35 +588,35 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               })
             )}
           </View>
-          {/*<View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
-          <Button
-            style={{
-              backgroundColor: palette.white,
-              borderColor: color.palette.secondaryColor,
-              borderWidth: 1,
-              borderRadius: 25,
-              flexDirection: "row",
-              justifyContent: "center",
-              paddingHorizontal: spacing[6],
-              width: "100%",
-              marginBottom: spacing[5]
-            }}
-            onPress={async () => {
-              const product = await createProductDefaultModel().create();
-              await append(product);
-            }}
-          >
-            <RNVIcon name="plus" size={16} color={color.palette.secondaryColor} />
-            <Text
-              tx="invoiceFormScreen.productForm.addProduct"
+          <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+            <Button
               style={{
-                color: color.palette.secondaryColor,
-                fontFamily: "Geometria",
-                marginLeft: spacing[3]
+                backgroundColor: palette.white,
+                borderColor: color.palette.secondaryColor,
+                borderWidth: 1,
+                borderRadius: 25,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingHorizontal: spacing[6],
+                width: '100%',
+                marginBottom: spacing[5],
               }}
-            />
-          </Button>
-        </View>*/}
+              onPress={async () => {
+                const product = await createProductDefaultModel().create();
+                await append(product);
+              }}
+            >
+              <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
+              <Text
+                tx='invoiceFormScreen.paymentRegulationForm.add'
+                style={{
+                  color: color.palette.secondaryColor,
+                  fontFamily: 'Geometria',
+                  marginLeft: spacing[3],
+                }}
+              />
+            </Button>
+          </View>
         </List.Accordion>
       )}
       <View
