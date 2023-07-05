@@ -15,11 +15,13 @@ import { palette } from '../../../../theme/palette';
 import { amountToMajors } from '../../../../utils/money';
 
 type PaymentRegulationFormFieldProps = {
+  index: number;
   item: PaymentRegulation;
+  onDeleteItem: (paymentRegulations: PaymentRegulation, index: number) => void;
 };
 
 export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProps> = props => {
-  const { item } = props;
+  const { item, index, onDeleteItem } = props;
 
   return (
     <Observer>
@@ -49,9 +51,9 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
               top: -10,
               right: -15,
             }}
-            /*onPress={() => {
-              onDeleteItem(currentProduct, index);
-            }}*/
+            onPress={() => {
+              onDeleteItem(item, index);
+            }}
           >
             <Text
               tx='invoiceFormScreen.productForm.delete'

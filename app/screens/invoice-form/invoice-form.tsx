@@ -99,10 +99,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   });
   const {
     fields: paymentFields,
-    /*append: paymentAppend,
     remove: paymentRemove,
-    update: paymentUpdate,
-    move: paymentMove,*/
+    move: paymentMove,
+    /*append: paymentAppend,
+    update: paymentUpdate,*/
   } = useFieldArray({ control, name: 'paymentRegulations' });
   const hasError = errors.title || errors.ref || errors.products || errors.customer;
 
@@ -110,6 +110,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [removeProduct, setRemoveProduct] = useState(false);
   const [allowPaymentDelay, setAllowPaymentDelay] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
   const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
+  const [isPaymentMoveCalled, setIsPaymentMoveCalled] = useState(false);
+  const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -126,6 +128,15 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     removeField().then(error => __DEV__ && console.tron.log(error));
     setRemoveProduct(false);
   }, [isMoveCalled]);
+
+  useEffect(() => {
+    const removeField = async () => {
+      await paymentRemove(fields.length - 1);
+    };
+
+    removeField().then(error => __DEV__ && console.tron.log(error));
+    setRemovePaymentRegulation(false);
+  }, [isPaymentMoveCalled]);
 
   useEffect(() => {
     reset();
@@ -579,12 +590,22 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         >
           <View style={{ paddingHorizontal: spacing[6], marginTop: spacing[5] }}>
-            {removeProduct ? (
+            {removePaymentRegulation ? (
               <Loader size='large' containerStyle={LOADER_STYLE} />
             ) : (
               paymentFields.map((item, i) => {
-                // @ts-ignore
-                return <PaymentRegulationFormField key={i} item={item} />;
+                return (
+                  <PaymentRegulationFormField
+                    key={i}
+                    // @ts-ignore
+                    item={item}
+                    onDeleteItem={async (__, index) => {
+                      setRemovePaymentRegulation(true);
+                      await paymentMove(index, fields.length - 1);
+                      setIsPaymentMoveCalled(!isPaymentMoveCalled);
+                    }}
+                  />
+                );
               })
             )}
           </View>
