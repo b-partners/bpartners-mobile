@@ -13,6 +13,7 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
+import { createPaymentRegulationDefaultModel } from '../../models/entities/payment-regulation/payment-regulation';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -21,6 +22,7 @@ import { showMessage } from '../../utils/snackbar';
 import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
+import { PaymentCreationModal } from './components/payment-regulation-form-field/payment-creation-modal';
 import { PaymentRegulationFormField } from './components/payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
@@ -74,6 +76,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [creationModal, setCreationModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [paymentCreation, setPaymentCreation] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -101,8 +104,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     fields: paymentFields,
     remove: paymentRemove,
     move: paymentMove,
-    /*append: paymentAppend,
-    update: paymentUpdate,*/
+    append: paymentAppend,
+    // update: paymentUpdate,
   } = useFieldArray({ control, name: 'paymentRegulations' });
   const hasError = errors.title || errors.ref || errors.products || errors.customer;
 
@@ -622,9 +625,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 width: '100%',
                 marginBottom: spacing[5],
               }}
-              onPress={async () => {
-                const product = await createProductDefaultModel().create();
-                await append(product);
+              onPress={() => {
+                setPaymentCreation(true);
+                /*const payment = await createPaymentRegulationDefaultModel().create();
+                __DEV__ && console.tron.log(payment);
+                await paymentAppend(payment);*/
               }}
             >
               <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
@@ -701,6 +706,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           </View>
         </TouchableOpacity>
       </View>
+      <PaymentCreationModal open={paymentCreation} setOpen={setPaymentCreation} />
       <InvoiceCreationModal
         invoiceType={invoiceType}
         confirmationModal={confirmationModal}
