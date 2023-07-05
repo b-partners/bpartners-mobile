@@ -1,80 +1,44 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Modal, View } from 'react-native';
+import { Linking, Modal, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { Button, Text } from '../../../../components';
-import { DatePickerField } from '../../../../components/date-picker-field/date-picker-field';
-import InputField from '../../../../components/input-field/input-field';
 import { translate } from '../../../../i18n';
-import { PaymentRegulation } from '../../../../models/entities/payment-regulation/payment-regulation';
 import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import { amountToMinors } from '../../../../utils/money';
 import { showMessage } from '../../../../utils/snackbar';
-import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, dateConversion } from '../utils';
 
 type PaymentCreationModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  append: (data: any) => void;
-  totalPercent: number;
-  setTotalPercent: React.Dispatch<React.SetStateAction<number>>;
-  item: PaymentRegulation;
 };
 
 export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props => {
-  const { open, setOpen, append, totalPercent, setTotalPercent, item } = props;
+  const { open, setOpen } = props;
 
-  const {
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm({
-    mode: 'all',
-    defaultValues: {
-      percent: item && item.percent ? item.percent.toString() : item && !item.percent ? item.paymentRequest.percentValue.toString() : '',
-      comment: item ? item.comment : '',
-      maturityDate: item ? convertStringToDate(item.maturityDate) : new Date(),
-    },
-  });
+  const openMailApp = () => {
+    const recipient = 'contact@bpartners.app';
+    const subject = '[Suppresion de compte]';
+    const body = translate('profileScreen.deleteMessage');
 
-  const onClose = () => {
-    reset();
-    setOpen(false);
-  };
+    const url = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-  const onSubmit = async paymentRegulation => {
-    try {
-      const formattedDate = dateConversion(paymentRegulation.maturityDate);
-      const payment = {
-        maturityDate: formattedDate,
-        comment: paymentRegulation.comment,
-        percent: amountToMinors(paymentRegulation.percent),
-        amount: null,
-      };
-      await append(payment);
-      setTotalPercent(totalPercent + amountToMinors(paymentRegulation.percent));
-      onClose();
-    } catch {
-      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
-    }
-  };
-
-  const isNumber = value => {
-    return !isNaN(parseFloat(value)) && isFinite(value) && Number.isInteger(parseFloat(value));
-  };
-
-  const isValidPercent = value => {
-    return totalPercent + value * 100 <= 10000;
+    Linking.canOpenURL(url)
+      .then(supported => {
+        if (supported) {
+          Linking.openURL(url);
+        } else {
+          showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+        }
+      })
+      .catch(err => console.error("Erreur lors de l'ouverture de l'application de messagerie :", err));
   };
 
   return (
-    <Modal animationType='slide' transparent={true} visible={open} onRequestClose={onClose}>
+    <Modal animationType='slide' transparent={true} visible={open} onRequestClose={() => setOpen(false)}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ backgroundColor: palette.white, height: '45%', width: '90%', borderRadius: 15 }}>
+        <View style={{ backgroundColor: palette.white, height: '35%', width: '90%', borderRadius: 15 }}>
           <View
             style={{
               width: '100%',
@@ -90,7 +54,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
             }}
           >
             <Text
-              tx='invoiceFormScreen.paymentRegulationForm.add'
+              tx='profileScreen.delete'
               style={{
                 color: palette.secondaryColor,
                 fontFamily: 'Geometria',
@@ -98,7 +62,9 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
               }}
             />
             <Button
-              onPress={onClose}
+              onPress={() => {
+                setOpen(false);
+              }}
               style={{
                 backgroundColor: palette.white,
                 position: 'absolute',
@@ -110,128 +76,53 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
             </Button>
           </View>
           <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
-            <View style={{ width: '100%', height: '85%', justifyContent: 'center', marginVertical: '5%' }}>
-              <View style={{ marginBottom: 10, width: '70%', marginHorizontal: '15%' }}>
-                <Controller
-                  control={control}
-                  name='percent'
-                  rules={{
-                    required: translate('errors.required'),
-                    validate: {
-                      isNumber: value => isNumber(value) || translate('errors.invalidPercent'),
-                      isValidPercent: value => isValidPercent(value) || translate('invoiceFormScreen.paymentRegulationForm.invalidPercent'),
-                    },
-                  }}
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'invoiceFormScreen.paymentRegulationForm.percent'}
-                      error={!!errors.percent}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.percent?.message}
-                      backgroundColor={palette.lighterGrey}
-                      rightRender={true}
-                      rightText={'%'}
-                    />
-                  )}
-                />
-              </View>
-              <View style={{ marginBottom: 10, width: '70%', marginHorizontal: '15%', height: 65 }}>
-                <Controller
-                  control={control}
-                  name='maturityDate'
-                  rules={{
-                    required: translate('errors.required'),
-                  }}
-                  render={({ field: { onChange, value } }) => (
-                    <DatePickerField
-                      labelTx='invoiceFormScreen.paymentRegulationForm.maturityDate'
-                      isButtonPreset={false}
-                      labelStyle={DATE_PICKER_LABEL_STYLE}
-                      containerStyle={{
-                        padding: spacing[4],
-                        backgroundColor: palette.lighterGrey,
-                        borderColor: '#E1E5EF',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                      }}
-                      textStyle={DATE_PICKER_TEXT_STYLE}
-                      dateSeparator='/'
-                      value={value}
-                      onDateChange={onChange}
-                    />
-                  )}
-                />
-              </View>
-              <View style={{ marginBottom: 10, width: '70%', marginHorizontal: '15%' }}>
-                <Controller
-                  control={control}
-                  name='comment'
-                  defaultValue=''
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'invoiceFormScreen.paymentRegulationForm.comment'}
-                      error={!!errors.comment}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.comment?.message}
-                      backgroundColor={palette.lighterGrey}
-                    />
-                  )}
-                />
-              </View>
+            <View style={{ width: '100%', height: '90%', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+              <Text
+                tx='profileScreen.firstStep'
+                style={{
+                  color: palette.greyDarker,
+                  width: '94%',
+                  marginRight: spacing[2],
+                  fontFamily: 'Geometria',
+                }}
+                numberOfLines={3}
+              />
+              <Text
+                tx='profileScreen.secondStep'
+                style={{
+                  color: palette.greyDarker,
+                  width: '94%',
+                  marginRight: spacing[2],
+                  fontFamily: 'Geometria',
+                  marginTop: spacing[2],
+                }}
+                numberOfLines={5}
+              />
             </View>
             <View style={{ width: '100%', height: '10%', justifyContent: 'center' }}>
-              {errors.percent ? (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    backgroundColor: palette.solidGrey,
-                    borderRadius: 25,
-                    paddingVertical: spacing[2],
-                    marginHorizontal: spacing[6],
-                    height: 45,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <>
-                    <Text
-                      tx='common.create'
-                      style={{
-                        color: palette.lighterGrey,
-                        marginRight: spacing[2],
-                        fontFamily: 'Geometria',
-                      }}
-                    />
-                    <MaterialIcons name='payments' size={20} color={palette.lighterGrey} />
-                  </>
-                </View>
-              ) : (
-                <Button
-                  onPress={handleSubmit(onSubmit)}
-                  style={{
-                    flexDirection: 'row',
-                    backgroundColor: palette.secondaryColor,
-                    borderRadius: 25,
-                    paddingVertical: spacing[2],
-                    marginHorizontal: spacing[6],
-                    height: 45,
-                  }}
-                >
-                  <>
-                    <Text
-                      tx='common.create'
-                      style={{
-                        color: palette.white,
-                        marginRight: spacing[2],
-                        fontFamily: 'Geometria',
-                      }}
-                    />
-                    <MaterialIcons name='payments' size={20} color={palette.white} />
-                  </>
-                </Button>
-              )}
+              <Button
+                onPress={openMailApp}
+                style={{
+                  flexDirection: 'row',
+                  backgroundColor: palette.green,
+                  borderRadius: 25,
+                  paddingVertical: spacing[2],
+                  marginHorizontal: spacing[6],
+                  height: 45,
+                }}
+              >
+                <>
+                  <Text
+                    tx='common.submit'
+                    style={{
+                      color: palette.white,
+                      marginRight: spacing[2],
+                      fontFamily: 'Geometria',
+                    }}
+                  />
+                  <SimpleLineIcons name='check' size={20} color='white' />
+                </>
+              </Button>
             </View>
           </View>
         </View>

@@ -70,7 +70,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
             <View style={{ width: '20%', justifyContent: 'center', height: '100%', alignItems: 'center' }}>
               <View style={{ width: 60, backgroundColor: palette.secondaryColor, height: 60, justifyContent: 'center', borderRadius: 100 }}>
                 <Text
-                  text={`${amountToMajors(item.paymentRequest.percentValue)}%`}
+                  text={`${amountToMajors(item.paymentRequest ? item.paymentRequest.percentValue : item.percent)}%`}
                   style={{
                     backgroundColor: palette.secondaryColor,
                     borderRadius: 5,
