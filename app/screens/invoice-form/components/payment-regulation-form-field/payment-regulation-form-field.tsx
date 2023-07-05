@@ -3,6 +3,8 @@ import React from 'react';
 import { View } from 'react-native';
 
 import {
+  Button,
+  Icon,
   /*Button, Icon,*/
   Text,
 } from '../../../../components';
@@ -37,33 +39,32 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
             zIndex: 10,
             borderRadius: 10,
             marginBottom: spacing[6],
-            height: 150,
           }}
         >
-          {/*<Button
+          <Button
             style={{
-              flexDirection: "row",
+              flexDirection: 'row',
               backgroundColor: color.transparent,
-              position: "absolute",
+              position: 'absolute',
               top: -10,
-              right: -15
+              right: -15,
             }}
-             onPress={() => {
+            /*onPress={() => {
               onDeleteItem(currentProduct, index);
-            }}
+            }}*/
           >
             <Text
-              tx="invoiceFormScreen.productForm.delete"
+              tx='invoiceFormScreen.productForm.delete'
               style={{
                 color: color.palette.secondaryColor,
-                fontFamily: "Geometria",
+                fontFamily: 'Geometria',
                 fontSize: 13,
-                marginRight: spacing[1]
+                marginRight: spacing[1],
               }}
             />
-            <Icon icon="trash" />
-          </Button>*/}
-          <View style={{ flexDirection: 'row', width: '100%', height: 75, borderBottomWidth: 2, borderColor: palette.solidGrey }}>
+            <Icon icon='trash' />
+          </Button>
+          <View style={{ flexDirection: 'row', width: '100%', height: 75, borderBottomWidth: 2, borderColor: palette.solidGrey, marginTop: spacing[4] }}>
             <View style={{ width: '20%', justifyContent: 'center', height: '100%', alignItems: 'center' }}>
               <View style={{ width: 60, backgroundColor: palette.secondaryColor, height: 60, justifyContent: 'center', borderRadius: 100 }}>
                 <Text
