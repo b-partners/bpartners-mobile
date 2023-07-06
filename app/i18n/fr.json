@@ -339,7 +339,8 @@
       "payIn": "Payer en plusieurs fois",
       "percent": "Pourcentage",
       "maturityDate": "Date limite de paiement",
-      "comment": "Commentaire"
+      "comment": "Commentaire",
+      "restToBePaid": "Reste à payer"
     },
     "invoicePreview": "Aperçu du devis"
   },

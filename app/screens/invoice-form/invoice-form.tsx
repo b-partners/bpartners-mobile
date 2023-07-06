@@ -22,6 +22,7 @@ import { LOADER_STYLE } from '../invoice-quotation/styles';
 import { CustomerCreationModal } from './components/customer/customer-creation-modal';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { PaymentCreationModal } from './components/payment-regulation-form-field/payment-creation-modal';
+import { PaymentRegulationDraftField } from './components/payment-regulation-form-field/payment-regulation-draft-field';
 import { PaymentRegulationFormField } from './components/payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
@@ -99,6 +100,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
   const [isPaymentMoveCalled, setIsPaymentMoveCalled] = useState(false);
   const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
+  const [totalPercent, setTotalPercent] = useState(0);
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -122,12 +124,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     };
 
     removeField().then(error => __DEV__ && console.tron.log(error));
-    setRemovePaymentRegulation(false);
   }, [isPaymentMoveCalled]);
 
   useEffect(() => {
     reset();
     paymentFields.length > 1 && setPayInInstalments(CheckboxEnum.CHECKED);
+    paymentFields.forEach(item => {
+      setTotalPercent(prevTotalPercent => prevTotalPercent + item.paymentRequest.percentValue);
+    });
     const days = watch('delayInPaymentAllowed');
     const percent = watch('delayPenaltyPercent');
     if (days || percent) {
@@ -582,19 +586,32 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             ) : (
               paymentFields.map((item, i) => {
                 return (
-                  <PaymentRegulationFormField
-                    key={i}
-                    // @ts-ignore
-                    item={item}
-                    onDeleteItem={async (__, index) => {
-                      setRemovePaymentRegulation(true);
-                      await paymentMove(index, fields.length - 1);
-                      setIsPaymentMoveCalled(!isPaymentMoveCalled);
-                    }}
-                  />
+                  <>
+                    <PaymentRegulationFormField
+                      key={i}
+                      index={i}
+                      // @ts-ignore
+                      item={item}
+                      onDeleteItem={async (__, index) => {
+                        setRemovePaymentRegulation(true);
+                        const paymentPercent = paymentFields[index];
+                        __DEV__ && console.tron.log(index);
+                        if (index === 0 && paymentFields.length === 1) {
+                          await paymentRemove(0);
+                        } else {
+                          await paymentMove(index, paymentFields.length - 1);
+                          setIsPaymentMoveCalled(!isPaymentMoveCalled);
+                        }
+                        setTotalPercent(totalPercent - paymentPercent.percent);
+                        setRemovePaymentRegulation(false);
+                        __DEV__ && console.tron.log(paymentFields);
+                      }}
+                    />
+                  </>
                 );
               })
             )}
+            {totalPercent > 0 && totalPercent < 10000 && <PaymentRegulationDraftField percent={totalPercent} />}
           </View>
           <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
             <Button
@@ -687,7 +704,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           </View>
         </TouchableOpacity>
       </View>
-      <PaymentCreationModal open={paymentCreation} setOpen={setPaymentCreation} append={paymentAppend} />
+      <PaymentCreationModal
+        open={paymentCreation}
+        setOpen={setPaymentCreation}
+        append={paymentAppend}
+        totalPercent={totalPercent}
+        setTotalPercent={setTotalPercent}
+      />
       <InvoiceCreationModal
         invoiceType={invoiceType}
         confirmationModal={confirmationModal}
