@@ -13,7 +13,6 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
-import { createPaymentRegulationDefaultModel } from '../../models/entities/payment-regulation/payment-regulation';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -627,9 +626,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               }}
               onPress={() => {
                 setPaymentCreation(true);
-                /*const payment = await createPaymentRegulationDefaultModel().create();
-                __DEV__ && console.tron.log(payment);
-                await paymentAppend(payment);*/
               }}
             >
               <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
@@ -706,7 +702,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           </View>
         </TouchableOpacity>
       </View>
-      <PaymentCreationModal open={paymentCreation} setOpen={setPaymentCreation} />
+      <PaymentCreationModal open={paymentCreation} setOpen={setPaymentCreation} append={paymentAppend} />
       <InvoiceCreationModal
         invoiceType={invoiceType}
         confirmationModal={confirmationModal}
