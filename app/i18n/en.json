@@ -354,7 +354,8 @@
       "payIn": "Pay in instalments",
       "percent": "Percentage",
       "maturityDate": "Payment deadline",
-      "comment": "Commentary"
+      "comment": "Commentary",
+      "restToBePaid": "Remainder to be paid"
     },
     "invoicePreview": "Invoice preview"
   },

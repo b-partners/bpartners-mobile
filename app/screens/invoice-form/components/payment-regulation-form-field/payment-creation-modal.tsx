@@ -18,10 +18,12 @@ type PaymentCreationModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   append: (data: any) => void;
+  totalPercent: number;
+  setTotalPercent: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props => {
-  const { open, setOpen, append } = props;
+  const { open, setOpen, append, totalPercent, setTotalPercent } = props;
 
   const {
     handleSubmit,
@@ -52,6 +54,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
         amount: null,
       };
       await append(payment);
+      setTotalPercent(totalPercent + amountToMinors(paymentRegulation.percent));
       onClose();
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
