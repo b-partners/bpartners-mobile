@@ -15,9 +15,11 @@ interface InputFieldProps {
   errorMessage: string;
   width?: number;
   backgroundColor: string;
+  rightRender?: boolean;
+  rightText?: string;
 }
 
-export const InputField = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor }: InputFieldProps) => {
+export const InputField = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor, rightRender, rightText }: InputFieldProps) => {
   return (
     <View>
       <TextInput
@@ -27,6 +29,18 @@ export const InputField = ({ labelTx, error, value, onChange, errorMessage, widt
         selectionColor={palette.secondaryColor}
         value={value}
         onChangeText={onChange}
+        right={
+          rightRender && (
+            <TextInput.Affix
+              text={rightText}
+              textStyle={{
+                fontSize: 16,
+                color: palette.secondaryColor,
+                fontFamily: 'Geometria-Bold',
+              }}
+            />
+          )
+        }
         style={{
           backgroundColor: error ? palette.pastelRed : backgroundColor,
           borderRadius: 5,
