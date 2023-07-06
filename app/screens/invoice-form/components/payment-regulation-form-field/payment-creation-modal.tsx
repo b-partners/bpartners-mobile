@@ -105,6 +105,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.percent?.message}
+                      backgroundColor={palette.lighterGrey}
                     />
                   )}
                 />
@@ -124,6 +125,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.maturityDate?.message}
+                      backgroundColor={palette.lighterGrey}
                     />
                   )}
                 />
@@ -143,6 +145,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.comment?.message}
+                      backgroundColor={palette.lighterGrey}
                     />
                   )}
                 />
