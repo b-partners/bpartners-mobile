@@ -23,13 +23,12 @@ export const InputField = ({ labelTx, error, value, onChange, errorMessage, widt
       <TextInput
         autoCapitalize='none'
         label={translate(labelTx)}
-        error={error}
         textColor={palette.secondaryColor}
         selectionColor={palette.secondaryColor}
         value={value}
         onChangeText={onChange}
         style={{
-          backgroundColor: backgroundColor,
+          backgroundColor: error ? palette.pastelRed : backgroundColor,
           borderRadius: 5,
           width: width,
         }}
