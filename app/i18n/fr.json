@@ -334,7 +334,10 @@
     },
     "paymentRegulationForm": {
       "add": "Ajouter un Paiement",
-      "payIn": "Payer en plusieurs fois"
+      "payIn": "Payer en plusieurs fois",
+      "percent": "Pourcentage",
+      "maturityDate": "Date limite de paiement",
+      "comment": "Commentaire"
     },
     "invoicePreview": "Aperçu du devis"
   },

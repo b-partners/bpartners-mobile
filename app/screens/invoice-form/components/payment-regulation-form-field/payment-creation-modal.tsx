@@ -1,10 +1,13 @@
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Linking, Modal, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { Button, Text } from '../../../../components';
+import InputField from '../../../../components/input-field/input-field';
 import { translate } from '../../../../i18n';
+import { CreateUser } from '../../../../models/entities/user/user';
 import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { showMessage } from '../../../../utils/snackbar';
@@ -35,10 +38,20 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
       .catch(err => console.error("Erreur lors de l'ouverture de l'application de messagerie :", err));
   };
 
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
+    defaultValues: { percent: '', comment: '', maturityDate: '' },
+  });
+
   return (
     <Modal animationType='slide' transparent={true} visible={open} onRequestClose={() => setOpen(false)}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ backgroundColor: palette.white, height: '35%', width: '90%', borderRadius: 15 }}>
+        <View style={{ backgroundColor: palette.white, height: '45%', width: '90%', borderRadius: 15 }}>
           <View
             style={{
               width: '100%',
@@ -54,7 +67,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
             }}
           >
             <Text
-              tx='profileScreen.delete'
+              tx='invoiceFormScreen.paymentRegulationForm.add'
               style={{
                 color: palette.secondaryColor,
                 fontFamily: 'Geometria',
@@ -76,28 +89,64 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
             </Button>
           </View>
           <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
-            <View style={{ width: '100%', height: '90%', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-              <Text
-                tx='profileScreen.firstStep'
-                style={{
-                  color: palette.greyDarker,
-                  width: '94%',
-                  marginRight: spacing[2],
-                  fontFamily: 'Geometria',
-                }}
-                numberOfLines={3}
-              />
-              <Text
-                tx='profileScreen.secondStep'
-                style={{
-                  color: palette.greyDarker,
-                  width: '94%',
-                  marginRight: spacing[2],
-                  fontFamily: 'Geometria',
-                  marginTop: spacing[2],
-                }}
-                numberOfLines={5}
-              />
+            <View style={{ width: '95%', height: '90%', justifyContent: 'center', alignContent: 'center' }}>
+              <View style={{ marginBottom: 10, width: '100%' }}>
+                <Controller
+                  control={control}
+                  name='percent'
+                  rules={{
+                    required: translate('errors.required'),
+                  }}
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField
+                      labelTx={'invoiceFormScreen.paymentRegulationForm.percent'}
+                      error={!!errors.percent}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.percent?.message}
+                    />
+                  )}
+                />
+              </View>
+              <View style={{ marginBottom: 10, width: '100%' }}>
+                <Controller
+                  control={control}
+                  name='maturityDate'
+                  rules={{
+                    required: translate('errors.required'),
+                  }}
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField
+                      labelTx={'invoiceFormScreen.paymentRegulationForm.maturityDate'}
+                      error={!!errors.maturityDate}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.maturityDate?.message}
+                    />
+                  )}
+                />
+              </View>
+              <View style={{ marginBottom: 10, width: '100%' }}>
+                <Controller
+                  control={control}
+                  name='comment'
+                  rules={{
+                    required: translate('errors.required'),
+                  }}
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField
+                      labelTx={'invoiceFormScreen.paymentRegulationForm.comment'}
+                      error={!!errors.comment}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.comment?.message}
+                    />
+                  )}
+                />
+              </View>
             </View>
             <View style={{ width: '100%', height: '10%', justifyContent: 'center' }}>
               <Button
