@@ -349,7 +349,10 @@
     },
     "paymentRegulationForm": {
       "add": "Add a Payment",
-      "payIn": "Pay in instalments"
+      "payIn": "Pay in instalments",
+      "percent": "Percentage",
+      "maturityDate": "Payment deadline",
+      "comment": "Commentary"
     },
     "invoicePreview": "Invoice preview"
   },
