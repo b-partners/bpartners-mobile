@@ -25,7 +25,7 @@ import { PaymentCreationModal } from './components/payment-regulation-form-field
 import { PaymentRegulationFormField } from './components/payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
-import { invoicePageSize } from './components/utils';
+import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, invoicePageSize } from './components/utils';
 import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
@@ -38,21 +38,6 @@ type InvoiceFormProps = {
 };
 
 const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
-
-const DATE_PICKER_LABEL_STYLE: TextStyle = { color: color.palette.greyDarker, fontFamily: 'Geometria-Bold' };
-
-const DATE_PICKER_CONTAINER_STYLE: ViewStyle = {
-  padding: spacing[4],
-  backgroundColor: color.transparent,
-  borderColor: '#E1E5EF',
-  borderWidth: 1,
-};
-
-const DATE_PICKER_TEXT_STYLE: TextStyle = {
-  color: color.palette.textClassicColor,
-  marginTop: spacing[2],
-  fontFamily: 'Geometria-Bold',
-};
 
 const INVOICE_LABEL_STYLE: TextStyle = {
   color: color.palette.greyDarker,
