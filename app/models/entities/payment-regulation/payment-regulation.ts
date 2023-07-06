@@ -27,21 +27,3 @@ export interface PaymentRequest extends Instance<typeof PaymentRequestModel> {}
 export interface PaymentRegulationSnapshotOut extends SnapshotOut<typeof PaymentRegulationModel> {}
 
 export interface PaymentRegulationSnapshotIn extends SnapshotIn<typeof PaymentRegulationModel> {}
-
-/*const createPaymentRequestDefaultModel = () =>
-  types.optional(PaymentRequestModel, {
-    amount: null,
-});*/
-
-const today = new Date();
-const year = today.getFullYear();
-const month = ('0' + (today.getMonth() + 1)).slice(-2);
-const day = ('0' + today.getDate()).slice(-2);
-const formattedDate = year + '-' + month + '-' + day;
-export const createPaymentRegulationDefaultModel = () =>
-  types.optional(PaymentRegulationModel, {
-    maturityDate: formattedDate,
-    comment: null,
-    percent: 3000,
-    amount: null,
-  });
