@@ -109,6 +109,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.phoneNumber?.message}
+                      backgroundColor={palette.white}
                     />
                   )}
                 />
