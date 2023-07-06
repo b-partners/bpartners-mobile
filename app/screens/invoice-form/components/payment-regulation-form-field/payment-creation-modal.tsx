@@ -1,13 +1,12 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Linking, Modal, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { Button, Text } from '../../../../components';
 import InputField from '../../../../components/input-field/input-field';
 import { translate } from '../../../../i18n';
-import { CreateUser } from '../../../../models/entities/user/user';
 import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { showMessage } from '../../../../utils/snackbar';
@@ -15,10 +14,11 @@ import { showMessage } from '../../../../utils/snackbar';
 type PaymentCreationModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  append: (data: any) => void;
 };
 
 export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props => {
-  const { open, setOpen } = props;
+  const { open, setOpen, append } = props;
 
   const openMailApp = () => {
     const recipient = 'contact@bpartners.app';
@@ -48,8 +48,24 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
     defaultValues: { percent: '', comment: '', maturityDate: '' },
   });
 
+  const onClose = () => {
+    reset();
+    setOpen(false);
+  };
+
+  const onSubmit = async paymentRegulation => {
+    const payment = {
+      maturityDate: paymentRegulation.maturityDate,
+      comment: paymentRegulation.comment,
+      percent: paymentRegulation.percent,
+      amount: null,
+    };
+    __DEV__ && console.tron.log(payment);
+    await append(payment);
+  };
+
   return (
-    <Modal animationType='slide' transparent={true} visible={open} onRequestClose={() => setOpen(false)}>
+    <Modal animationType='slide' transparent={true} visible={open} onRequestClose={onClose}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'center', alignItems: 'center' }}>
         <View style={{ backgroundColor: palette.white, height: '45%', width: '90%', borderRadius: 15 }}>
           <View
@@ -75,9 +91,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
               }}
             />
             <Button
-              onPress={() => {
-                setOpen(false);
-              }}
+              onPress={onClose}
               style={{
                 backgroundColor: palette.white,
                 position: 'absolute',
@@ -89,8 +103,8 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
             </Button>
           </View>
           <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
-            <View style={{ width: '95%', height: '90%', justifyContent: 'center', alignContent: 'center' }}>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+            <View style={{ width: '100%', height: '85%', justifyContent: 'center', marginVertical: '5%' }}>
+              <View style={{ marginBottom: 10, width: '70%', marginHorizontal: '15%' }}>
                 <Controller
                   control={control}
                   name='percent'
@@ -110,7 +124,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 10, width: '70%', marginHorizontal: '15%' }}>
                 <Controller
                   control={control}
                   name='maturityDate'
@@ -130,13 +144,10 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 10, width: '70%', marginHorizontal: '15%' }}>
                 <Controller
                   control={control}
                   name='comment'
-                  rules={{
-                    required: translate('errors.required'),
-                  }}
                   defaultValue=''
                   render={({ field: { onChange, value } }) => (
                     <InputField
@@ -156,7 +167,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                 onPress={openMailApp}
                 style={{
                   flexDirection: 'row',
-                  backgroundColor: palette.green,
+                  backgroundColor: palette.secondaryColor,
                   borderRadius: 25,
                   paddingVertical: spacing[2],
                   marginHorizontal: spacing[6],
@@ -165,14 +176,14 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
               >
                 <>
                   <Text
-                    tx='common.submit'
+                    tx='common.create'
                     style={{
                       color: palette.white,
                       marginRight: spacing[2],
                       fontFamily: 'Geometria',
                     }}
                   />
-                  <SimpleLineIcons name='check' size={20} color='white' />
+                  <MaterialIcons name='payments' size={20} color='white' />
                 </>
               </Button>
             </View>
