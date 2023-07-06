@@ -14,9 +14,10 @@ interface InputFieldProps {
   onChange: ((text: string) => void) & Function;
   errorMessage: string;
   width?: number;
+  backgroundColor: string;
 }
 
-export const InputField = ({ labelTx, error, value, onChange, errorMessage, width }: InputFieldProps) => {
+export const InputField = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor }: InputFieldProps) => {
   return (
     <View>
       <TextInput
@@ -28,7 +29,7 @@ export const InputField = ({ labelTx, error, value, onChange, errorMessage, widt
         value={value}
         onChangeText={onChange}
         style={{
-          backgroundColor: 'white',
+          backgroundColor: backgroundColor,
           borderRadius: 5,
           width: width,
         }}

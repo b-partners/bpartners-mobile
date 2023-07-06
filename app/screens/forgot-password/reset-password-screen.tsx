@@ -84,6 +84,7 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
                     value={value}
                     onChange={onChange}
                     errorMessage={errors.confirmationCode?.message}
+                    backgroundColor={palette.white}
                   />
                 )}
               />
