@@ -78,27 +78,24 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
-  const { fields, append, remove, update, move } = useFieldArray({
+  const {
+    fields: productFields,
+    append: productAppend,
+    remove: productRemove,
+    update: productUpdate,
+  } = useFieldArray({
     control,
     name: 'products',
     rules: {
       required: translate('errors.required'),
     },
   });
-  const {
-    fields: paymentFields,
-    remove: paymentRemove,
-    move: paymentMove,
-    append: paymentAppend,
-    // update: paymentUpdate,
-  } = useFieldArray({ control, name: 'paymentRegulations' });
+  const { fields: paymentFields, remove: paymentRemove, append: paymentAppend } = useFieldArray({ control, name: 'paymentRegulations' });
   const hasError = errors.title || errors.ref || errors.products || errors.customer;
 
-  const [isMoveCalled, setIsMoveCalled] = useState(false);
   const [removeProduct, setRemoveProduct] = useState(false);
   const [allowPaymentDelay, setAllowPaymentDelay] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
   const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
-  const [isPaymentMoveCalled, setIsPaymentMoveCalled] = useState(false);
   const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
   const [totalPercent, setTotalPercent] = useState(0);
 
@@ -110,24 +107,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   };
 
   useEffect(() => {
-    const removeField = async () => {
-      await remove(fields.length - 1);
-    };
-
-    removeField().then(error => __DEV__ && console.tron.log(error));
-    setRemoveProduct(false);
-  }, [isMoveCalled]);
-
-  useEffect(() => {
-    const removeField = async () => {
-      await paymentRemove(fields.length - 1);
-    };
-
-    removeField().then(error => __DEV__ && console.tron.log(error));
-  }, [isPaymentMoveCalled]);
-
-  useEffect(() => {
-    reset();
     paymentFields.length > 1 && setPayInInstalments(CheckboxEnum.CHECKED);
     paymentFields.forEach(item => {
       setTotalPercent(prevTotalPercent => prevTotalPercent + item.paymentRequest.percentValue);
@@ -489,7 +468,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           {removeProduct ? (
             <Loader size='large' containerStyle={LOADER_STYLE} />
           ) : (
-            fields.map((item, i) => {
+            productFields.map((item, i) => {
               return (
                 <ProductFormField
                   key={i}
@@ -500,11 +479,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                   items={products}
                   onDeleteItem={async (__, index) => {
                     setRemoveProduct(true);
-                    await move(index, fields.length - 1);
-                    setIsMoveCalled(!isMoveCalled);
+                    await productRemove(index);
+                    setRemoveProduct(false);
                   }}
                   onValueChange={product => {
-                    update(i, product);
+                    productUpdate(i, product);
                   }}
                 />
               );
@@ -526,7 +505,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             }}
             onPress={async () => {
               const product = await createProductDefaultModel().create();
-              await append(product);
+              await productAppend(product);
             }}
           >
             <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
@@ -592,26 +571,24 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                       index={i}
                       // @ts-ignore
                       item={item}
-                      onDeleteItem={async (__, index) => {
+                      onDeleteItem={async (__, index, percent) => {
                         setRemovePaymentRegulation(true);
-                        const paymentPercent = paymentFields[index];
-                        __DEV__ && console.tron.log(index);
                         if (index === 0 && paymentFields.length === 1) {
                           await paymentRemove(0);
+                          setPayInInstalments(CheckboxEnum.UNCHECKED);
+                          setTotalPercent(0);
                         } else {
-                          await paymentMove(index, paymentFields.length - 1);
-                          setIsPaymentMoveCalled(!isPaymentMoveCalled);
+                          setTotalPercent(prevTotalPercent => prevTotalPercent - percent);
+                          await paymentRemove(index);
                         }
-                        setTotalPercent(totalPercent - paymentPercent.percent);
                         setRemovePaymentRegulation(false);
-                        __DEV__ && console.tron.log(paymentFields);
                       }}
                     />
                   </>
                 );
               })
             )}
-            {totalPercent > 0 && totalPercent < 10000 && <PaymentRegulationDraftField percent={totalPercent} />}
+            <PaymentRegulationDraftField percent={totalPercent} />
           </View>
           <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
             <Button
