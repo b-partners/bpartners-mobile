@@ -630,6 +630,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                       index={i}
                       // @ts-ignore
                       item={item}
+                      setCurrentPayment={setCurrentPayment}
+                      paymentRemove={paymentRemove}
+                      setTotalPercent={setTotalPercent}
+                      setPaymentCreation={setPaymentCreation}
                       onDeleteItem={async (__, index, percent) => {
                         setRemovePaymentRegulation(true);
                         if (index === 0 && paymentFields.length === 1) {

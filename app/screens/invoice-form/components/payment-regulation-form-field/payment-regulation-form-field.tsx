@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { Observer } from 'mobx-react-lite';
 import React from 'react';
 import { View } from 'react-native';
@@ -18,10 +19,14 @@ type PaymentRegulationFormFieldProps = {
   index: number;
   item: PaymentRegulation;
   onDeleteItem: (paymentRegulations: PaymentRegulation, index: number, percent: number) => void;
+  setCurrentPayment: React.Dispatch<React.SetStateAction<PaymentRegulation>>;
+  paymentRemove: (index: number) => void;
+  setTotalPercent: React.Dispatch<React.SetStateAction<number>>;
+  setPaymentCreation: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProps> = props => {
-  const { item, index, onDeleteItem } = props;
+  const { item, index, onDeleteItem, setCurrentPayment, paymentRemove, setTotalPercent, setPaymentCreation } = props;
 
   return (
     <Observer>
@@ -83,7 +88,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
                 />
               </View>
             </View>
-            <View style={{ width: '80%', backgroundColor: palette.white, height: 60, justifyContent: 'center', paddingTop: spacing[3] }}>
+            <View style={{ width: '60%', backgroundColor: palette.white, height: 60, justifyContent: 'center', paddingTop: spacing[3] }}>
               <Text
                 text={`${translate('invoiceFormScreen.invoiceForm.toBePaid')} ${item.maturityDate}`}
                 style={{
@@ -96,10 +101,23 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
                 }}
               />
             </View>
+            <View style={{ width: '20%', justifyContent: 'center', height: '100%', alignItems: 'center' }}>
+              <MaterialIcons
+                name='edit'
+                size={30}
+                color={palette.secondaryColor}
+                onPress={async () => {
+                  setCurrentPayment(item);
+                  setTotalPercent(prevTotalPercent => prevTotalPercent - item.percent);
+                  await paymentRemove(index);
+                  setPaymentCreation(true);
+                }}
+              />
+            </View>
           </View>
           <View style={{ width: '100%', height: 75, justifyContent: 'center' }}>
             <Text
-              tx={'common.noComment'}
+              text={item.comment ?? translate('common.noComment')}
               style={{
                 borderRadius: 5,
                 fontFamily: 'Geometria-Bold',
