@@ -65,6 +65,10 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
     return !isNaN(parseFloat(value)) && isFinite(value) && Number.isInteger(parseFloat(value));
   };
 
+  const isValidPercent = value => {
+    return totalPercent + value * 100 <= 10000;
+  };
+
   return (
     <Modal animationType='slide' transparent={true} visible={open} onRequestClose={onClose}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'center', alignItems: 'center' }}>
@@ -113,6 +117,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                     required: translate('errors.required'),
                     validate: {
                       isNumber: value => isNumber(value) || translate('errors.invalidPercent'),
+                      isValidPercent: value => isValidPercent(value) || translate('invoiceFormScreen.paymentRegulationForm.invalidPercent'),
                     },
                   }}
                   render={({ field: { onChange, value } }) => (
