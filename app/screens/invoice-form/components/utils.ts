@@ -34,3 +34,8 @@ export const dateConversion = (dateToBeConvert: Date) => {
   const formattedDate = `${year}-${month}-${day}`;
   return formattedDate;
 };
+
+export const convertStringToDate = (dateString: string) => {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
