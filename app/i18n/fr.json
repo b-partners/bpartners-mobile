@@ -340,7 +340,8 @@
       "percent": "Pourcentage",
       "maturityDate": "Date limite de paiement",
       "comment": "Commentaire",
-      "restToBePaid": "Reste à payer"
+      "restToBePaid": "Reste à payer",
+      "invalidPercent": "Le pourcentage est supérieur à 100%"
     },
     "invoicePreview": "Aperçu du devis"
   },

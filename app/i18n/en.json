@@ -355,7 +355,8 @@
       "percent": "Percentage",
       "maturityDate": "Payment deadline",
       "comment": "Commentary",
-      "restToBePaid": "Remainder to be paid"
+      "restToBePaid": "Remainder to be paid",
+      "invalidPercent": "The percentage is greater than 100%."
     },
     "invoicePreview": "Invoice preview"
   },

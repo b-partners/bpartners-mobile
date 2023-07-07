@@ -17,7 +17,7 @@ import { amountToMajors } from '../../../../utils/money';
 type PaymentRegulationFormFieldProps = {
   index: number;
   item: PaymentRegulation;
-  onDeleteItem: (paymentRegulations: PaymentRegulation, index: number) => void;
+  onDeleteItem: (paymentRegulations: PaymentRegulation, index: number, percent: number) => void;
 };
 
 export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProps> = props => {
@@ -52,7 +52,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
               right: -15,
             }}
             onPress={() => {
-              onDeleteItem(item, index);
+              onDeleteItem(item, index, item.percent);
             }}
           >
             <Text
