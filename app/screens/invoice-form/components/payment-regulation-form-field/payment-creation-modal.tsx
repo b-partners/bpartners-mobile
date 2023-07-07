@@ -12,7 +12,7 @@ import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { amountToMinors } from '../../../../utils/money';
 import { showMessage } from '../../../../utils/snackbar';
-import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../utils';
+import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, dateConversion } from '../utils';
 
 type PaymentCreationModalProps = {
   open: boolean;
@@ -42,11 +42,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
 
   const onSubmit = async paymentRegulation => {
     try {
-      const year = paymentRegulation.maturityDate.getFullYear().toString().padStart(4, '0');
-      const month = (paymentRegulation.maturityDate.getMonth() + 1).toString().padStart(2, '0');
-      const day = paymentRegulation.maturityDate.getDate().toString().padStart(2, '0');
-
-      const formattedDate = `${year}-${month}-${day}`;
+      const formattedDate = dateConversion(paymentRegulation.maturityDate);
       const payment = {
         maturityDate: formattedDate,
         comment: paymentRegulation.comment,
