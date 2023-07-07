@@ -26,7 +26,7 @@ import { PaymentRegulationDraftField } from './components/payment-regulation-for
 import { PaymentRegulationFormField } from './components/payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from './components/product-form-field/product-form-field';
 import { SelectFormField } from './components/select-form-field/select-form-field';
-import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, invoicePageSize } from './components/utils';
+import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, dateConversion, invoicePageSize } from './components/utils';
 import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
@@ -98,6 +98,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
   const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
   const [totalPercent, setTotalPercent] = useState(0);
+  const [savedInvoice, setSavedInvoice] = useState<Invoice>();
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -141,12 +142,38 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
 
   const onSubmit = async invoices => {
     try {
-      await invoiceStore.saveInvoice({
-        ...invoices,
-        customer: selectedCustomer,
-        metadata: { ...invoices.metadata, submittedAt: new Date() },
-        status: invoiceType,
-      });
+      if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
+        const formattedDate = dateConversion(new Date());
+        const restToPay = {
+          maturityDate: formattedDate,
+          comment: null,
+          percent: 10000 - totalPercent,
+          amount: null,
+        };
+        await invoiceStore.saveInvoice({
+          ...invoices,
+          customer: selectedCustomer,
+          metadata: { ...invoices.metadata, submittedAt: new Date() },
+          status: invoiceType,
+          paymentRegulations: [...invoices.paymentRegulations, restToPay],
+          paymentType: 'IN_INSTALMENT',
+        });
+      } else if (payInInstalments === CheckboxEnum.CHECKED && totalPercent === 10000) {
+        await invoiceStore.saveInvoice({
+          ...invoices,
+          customer: selectedCustomer,
+          metadata: { ...invoices.metadata, submittedAt: new Date() },
+          status: invoiceType,
+          paymentType: 'IN_INSTALMENT',
+        });
+      } else {
+        await invoiceStore.saveInvoice({
+          ...invoices,
+          customer: selectedCustomer,
+          metadata: { ...invoices.metadata, submittedAt: new Date() },
+          status: invoiceType,
+        });
+      }
       setConfirmationModal(false);
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
@@ -174,11 +201,41 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     // TODO(UI): error handling
     setIsLoading(true);
     try {
-      const savedInvoice = await invoiceStore.saveInvoice({
-        ...invoices,
-        customer: selectedCustomer,
-        metadata: { ...invoices.metadata, submittedAt: new Date() },
-      });
+      if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
+        const formattedDate = dateConversion(new Date());
+        const restToPay = {
+          maturityDate: formattedDate,
+          comment: null,
+          percent: 10000 - totalPercent,
+          amount: null,
+        };
+        setSavedInvoice(
+          await invoiceStore.saveInvoice({
+            ...invoices,
+            customer: selectedCustomer,
+            paymentType: 'IN_INSTALMENT',
+            metadata: { ...invoices.metadata, submittedAt: new Date() },
+            paymentRegulations: [...invoices.paymentRegulations, restToPay],
+          })
+        );
+      } else if (payInInstalments === CheckboxEnum.CHECKED && totalPercent === 10000) {
+        setSavedInvoice(
+          await invoiceStore.saveInvoice({
+            ...invoices,
+            customer: selectedCustomer,
+            paymentType: 'IN_INSTALMENT',
+            metadata: { ...invoices.metadata, submittedAt: new Date() },
+          })
+        );
+      } else {
+        setSavedInvoice(
+          await invoiceStore.saveInvoice({
+            ...invoices,
+            customer: selectedCustomer,
+            metadata: { ...invoices.metadata, submittedAt: new Date() },
+          })
+        );
+      }
       setConfirmationModal(false);
 
       navigate('invoicePreview', {
