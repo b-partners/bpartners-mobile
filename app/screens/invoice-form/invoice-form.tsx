@@ -13,6 +13,7 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
+import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
@@ -99,6 +100,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
   const [totalPercent, setTotalPercent] = useState(0);
   const [savedInvoice, setSavedInvoice] = useState<Invoice>();
+  const [currentPayment, setCurrentPayment] = useState<PaymentRegulation>(null);
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -645,7 +647,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 );
               })
             )}
-            <PaymentRegulationDraftField percent={totalPercent} />
+            {totalPercent > 0 && totalPercent < 10000 && <PaymentRegulationDraftField percent={totalPercent} />}
           </View>
           <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
             <Button
@@ -661,6 +663,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 marginBottom: spacing[5],
               }}
               onPress={() => {
+                setCurrentPayment(null);
                 setPaymentCreation(true);
               }}
             >
@@ -744,6 +747,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         append={paymentAppend}
         totalPercent={totalPercent}
         setTotalPercent={setTotalPercent}
+        item={currentPayment}
       />
       <InvoiceCreationModal
         invoiceType={invoiceType}

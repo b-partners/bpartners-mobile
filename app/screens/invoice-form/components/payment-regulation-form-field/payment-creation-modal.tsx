@@ -8,11 +8,12 @@ import { Button, Text } from '../../../../components';
 import { DatePickerField } from '../../../../components/date-picker-field/date-picker-field';
 import InputField from '../../../../components/input-field/input-field';
 import { translate } from '../../../../i18n';
+import { PaymentRegulation } from '../../../../models/entities/payment-regulation/payment-regulation';
 import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { amountToMinors } from '../../../../utils/money';
 import { showMessage } from '../../../../utils/snackbar';
-import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, dateConversion } from '../utils';
+import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, dateConversion } from '../utils';
 
 type PaymentCreationModalProps = {
   open: boolean;
@@ -20,10 +21,11 @@ type PaymentCreationModalProps = {
   append: (data: any) => void;
   totalPercent: number;
   setTotalPercent: React.Dispatch<React.SetStateAction<number>>;
+  item: PaymentRegulation;
 };
 
 export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props => {
-  const { open, setOpen, append, totalPercent, setTotalPercent } = props;
+  const { open, setOpen, append, totalPercent, setTotalPercent, item } = props;
 
   const {
     handleSubmit,
@@ -32,7 +34,11 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
     formState: { errors },
   } = useForm({
     mode: 'all',
-    defaultValues: { percent: '', comment: '', maturityDate: new Date() },
+    defaultValues: {
+      percent: item && item.percent ? item.percent.toString() : item && !item.percent ? item.paymentRequest.percentValue.toString() : '',
+      comment: item ? item.comment : '',
+      maturityDate: item ? convertStringToDate(item.maturityDate) : new Date(),
+    },
   });
 
   const onClose = () => {
