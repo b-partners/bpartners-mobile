@@ -11,7 +11,6 @@ export const QuotationStoreModel = types
   .model('QuotationStore')
   .props({
     quotations: types.optional(types.array(InvoiceModel), []),
-    allQuotations: types.optional(types.array(InvoiceModel), []),
     loadingQuotation: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
@@ -19,20 +18,6 @@ export const QuotationStoreModel = types
   .extend(withCredentials)
   .actions(self => ({
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
-  }))
-  .actions(self => ({
-    getAllQuotations: flow(function* (criteria: Criteria) {
-      detach(self.allQuotations);
-      const paymentApi = new PaymentApi(self.environment.api);
-      try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        __DEV__ && console.tron.log(getInvoicesResult);
-        self.allQuotations.replace(getInvoicesResult.invoices as any);
-      } catch (e) {
-        __DEV__ && console.tron.log(e);
-        self.catchOrThrow(e);
-      }
-    }),
   }))
   .actions(self => ({
     getQuotationsSuccess: (quotations: InvoiceStoreSnapshotOut[]) => {

@@ -11,7 +11,6 @@ export const InvoiceStoreModel = types
   .model('InvoiceStore')
   .props({
     invoices: types.optional(types.array(InvoiceModel), []),
-    allInvoices: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
@@ -22,19 +21,6 @@ export const InvoiceStoreModel = types
   .extend(withCredentials)
   .actions(self => ({
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
-  }))
-  .actions(self => ({
-    getAllInvoices: flow(function* (criteria: Criteria) {
-      detach(self.allInvoices);
-      const paymentApi = new PaymentApi(self.environment.api);
-      try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        __DEV__ && console.tron.log(getInvoicesResult);
-        self.allInvoices.replace(getInvoicesResult.invoices as any);
-      } catch (e) {
-        __DEV__ && console.tron.log(e);
-      }
-    }),
   }))
   .actions(self => ({
     getInvoicesSuccess: (invoices: InvoiceStoreSnapshotOut[]) => {
@@ -141,10 +127,11 @@ export interface InvoiceStoreSnapshotOut extends SnapshotOut<typeof InvoiceStore
 
 export interface InvoiceStoreSnapshotIn extends SnapshotIn<typeof InvoiceStoreModel> {}
 
+// @ts-ignore
 export const createInvoiceStoreDefaultModel = () =>
   types.optional(InvoiceStoreModel, {
     invoices: [],
-    invoice: {},
+    invoice: null,
     products: [],
     customers: [],
   });

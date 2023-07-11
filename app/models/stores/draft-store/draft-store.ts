@@ -3,15 +3,13 @@ import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-sta
 import { withEnvironment, withRootStore } from '../..';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
-import { InvoiceModel } from '../../entities/invoice/invoice';
+import { Invoice, InvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
-import { InvoiceStoreSnapshotOut } from '../invoice-store/invoice-store';
 
 export const DraftStoreModel = types
   .model('DraftStore')
   .props({
     drafts: types.optional(types.array(InvoiceModel), []),
-    allDrafts: types.optional(types.array(InvoiceModel), []),
     loadingDraft: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
@@ -21,22 +19,8 @@ export const DraftStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    getAllDrafts: flow(function* (criteria: Criteria) {
-      detach(self.allDrafts);
-      const paymentApi = new PaymentApi(self.environment.api);
-      try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        __DEV__ && console.tron.log(getInvoicesResult);
-        self.allDrafts.replace(getInvoicesResult.invoices as any);
-      } catch (e) {
-        __DEV__ && console.tron.log(e);
-        self.catchOrThrow(e);
-      }
-    }),
-  }))
-  .actions(self => ({
-    getDraftsSuccess: (drafts: InvoiceStoreSnapshotOut[]) => {
-      self.drafts.replace(drafts as any);
+    getDraftsSuccess: (drafts: Invoice[]) => {
+      self.drafts.replace(drafts);
     },
   }))
   .actions(self => ({
@@ -52,7 +36,7 @@ export const DraftStoreModel = types
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
-        __DEV__ && console.tron.log(getInvoicesResult);
+        __DEV__ && console.tron.log(getInvoicesResult.invoices);
         self.getDraftsSuccess(getInvoicesResult.invoices);
       } catch (e) {
         self.getDraftsFail(e);

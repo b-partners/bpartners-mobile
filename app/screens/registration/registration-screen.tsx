@@ -97,6 +97,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.lastName?.message}
+                      backgroundColor={palette.white}
                     />
                   )}
                 />
@@ -115,6 +116,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.firstName?.message}
+                      backgroundColor={palette.white}
                     />
                   )}
                 />
@@ -137,6 +139,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.email?.message}
+                      backgroundColor={palette.white}
                     />
                   )}
                 />
@@ -155,6 +158,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.phoneNumber?.message}
+                      backgroundColor={palette.white}
                     />
                   )}
                 />
@@ -174,6 +178,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.companyName?.message}
+                      backgroundColor={palette.white}
                     />
                   )}
                 />

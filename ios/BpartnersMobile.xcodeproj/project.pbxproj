@@ -78,7 +78,7 @@
 		00E356EE1AD99517003FC87E /* BpartnersMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BpartnersMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BpartnersMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BpartnersMobileTests.m; sourceTree = "<group>"; };
-		08D14B262A45B16B00A94140 /* BpartnersMobileRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BpartnersMobileRelease.entitlements; path = BpartnersMobile/BpartnersMobileRelease.entitlements; sourceTree = "<group>"; };
+		08B094052A446310002A5C5D /* BpartnersMobileRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BpartnersMobileRelease.entitlements; path = BpartnersMobile/BpartnersMobileRelease.entitlements; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* bpartners.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bpartners.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BpartnersMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = BpartnersMobile/AppDelegate.mm; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 		13B07FAE1A68108700A75B9A /* BpartnersMobile */ = {
 			isa = PBXGroup;
 			children = (
-				08D14B262A45B16B00A94140 /* BpartnersMobileRelease.entitlements */,
+				08B094052A446310002A5C5D /* BpartnersMobileRelease.entitlements */,
 				6041007329519F57001EF30E /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -656,6 +656,7 @@
 				DEVELOPMENT_TEAM = YQQ9V72F23;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BpartnersMobile/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -687,6 +688,7 @@
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = YQQ9V72F23;
 				INFOPLIST_FILE = BpartnersMobile/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

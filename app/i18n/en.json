@@ -18,6 +18,7 @@
   "common": {
     "ok": "OK!",
     "submit": "Confirm",
+    "create": "Create",
     "or": "or",
     "cancel": "Cancel",
     "back": "Back",
@@ -25,7 +26,8 @@
     "loading": "Loading in progress ...",
     "added": "Successfully added",
     "edit": "Edit",
-    "register": "REGISTER"
+    "register": "REGISTER",
+    "noComment": "No Comment"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -40,6 +42,7 @@
     "operation": "Failed to add",
     "credentials": "please check your credentials!",
     "invalidPrice": "Invalid price",
+    "invalidPercent": "invalid number",
     "mandatoryTitle": "please fill out the title of your quotation !",
     "minPassword": "Password must contain at least 8 characters",
     "invalidPassword": "The password must contain at least one capital letter, one special character (., -, &, @ etc) and one number",
@@ -79,19 +82,6 @@
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "firstConnexion": "First connexion ?"
-  },
-  "registrationScreen": {
-    "already": "Already have an account",
-    "connect": "Login",
-    "lastname": "Name",
-    "firstname": "Firstname",
-    "email": "E-mail Address",
-    "phone": "Phone Number",
-    "company": "Company Name",
-    "checkEmail": "To finalize your registration, an e-mail has been sent to you at",
-    "confirm": "Confirmation",
-    "newPassword": "New Password",
-    "confirmPassword": "Confirm password"
   },
   "demoScreen": {
     "howTo": "HOW TO",
@@ -170,6 +160,10 @@
   "profileScreen": {
     "label": "Profil",
     "title": "Profil",
+    "delete": "Delete my account",
+    "firstStep": "To permanently delete your account, please press the \"Confirm\" button.",
+    "secondStep": " This will automatically open an e-mail ready to be sent to our dedicated account deletion team.",
+    "deleteMessage": "Dear technical team,\n\nPlease delete my user account permanently. I understand that this will result in the deletion of all information associated with my account, including transactions and personal data.\n\nWe would be very grateful if you would consider this account deletion request and process it accordingly. Should you require any further information or have any additional questions, please do not hesitate to contact me directly.\n\nThank you very much for your attention and assistance.",
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",
@@ -287,6 +281,7 @@
       "sendingDate": "Issue date",
       "validityDate": "Expiration date",
       "toPayAt": "Payment date",
+      "delayPaymentLabel": "Add an authorized late payment period",
       "delayInPaymentAllowed": "Allowed payment delay",
       "delayInPaymentAllowedPlaceholder": "30",
       "delayPenaltyPercent": "Late payment penalty rate",
@@ -304,6 +299,7 @@
       "saveDraftToQuotation": "Convert your draft into a quote",
       "saveQuotation": "Save the quote",
       "saveInvoice": "Save the invoice",
+      "toBePaid": "To be paid before:",
       "editableTextField": {
         "error": {
           "required": "This field is required",
@@ -352,6 +348,15 @@
       "vat": "VAT",
       "totalWithVat": "Total",
       "delete": "Delete"
+    },
+    "paymentRegulationForm": {
+      "add": "Add a Payment",
+      "payIn": "Pay in instalments",
+      "percent": "Percentage",
+      "maturityDate": "Payment deadline",
+      "comment": "Commentary",
+      "restToBePaid": "Remainder to be paid",
+      "invalidPercent": "The percentage is greater than 100%."
     },
     "invoicePreview": "Invoice preview"
   },

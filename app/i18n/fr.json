@@ -18,6 +18,7 @@
   "common": {
     "ok": "OK!",
     "submit": "Confirmer",
+    "create": "Créer",
     "or": "ou",
     "cancel": "Annuler",
     "back": "Précédent",
@@ -25,7 +26,8 @@
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
     "edit": "Modifier",
-    "register": "ENREGISTRER"
+    "register": "ENREGISTRER",
+    "noComment": "Aucun Commentaire"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -40,6 +42,7 @@
     "operation": "Échec de l'ajout",
     "credentials": "Veuillez vérifier vos identifiants!",
     "invalidPrice": "Prix invalide",
+    "invalidPercent": "Nombre invalide",
     "mandatoryTitle": "veuillez renseigner le titre du devis !",
     "minPassword": "Le mot de passe doit contenir au moins 8 caractères",
     "invalidPassword": "Le mot de passe doit au moins contenir une majuscule, un caractère spécial (., -, &, @ etc) et un chiffre",
@@ -105,17 +108,6 @@
     "confirmPassword": "Confirmez le mot de passe",
     "firstConnexion": "Première connexion ?"
   },
-  "registrationScreen": {
-    "already": "Déjà un compte ?",
-    "connect": "Se connecter",
-    "name": "Nom",
-    "firstname": "Prénom",
-    "email": "Adresse mail",
-    "phone": "Numéro de téléphone",
-    "company": "Nom de la société",
-    "checkEmail": "Pour finaliser votre inscription, un mail vous a été envoyé au",
-    "confirm": "Confirmation"
-  },
   "paymentInitiationScreen": {
     "label": "Paiement",
     "title": "Collecter un paiement",
@@ -152,6 +144,10 @@
   "profileScreen": {
     "label": "Profile",
     "title": "Profil",
+    "delete": "Supprimer mon compte",
+    "firstStep": "Pour supprimer définitivement votre compte, veuillez appuyer sur le bouton \"Confirmer\".",
+    "secondStep": "Cela ouvrira un e-mail prêt à être envoyé à notre équipe dédiée à la suppression des comptes.",
+    "deleteMessage": "Chère équipe technique;\n\nJe vous prie de bien vouloir supprimer définitivement mon compte d'utilisateur. Je comprends que cela entraînera la suppression de toutes les informations associées à mon compte, y compris les transactions et les données personnelles.\n\nNous vous serions reconnaissants de bien vouloir examiner cette demande de suppression de compte et de la traiter en conséquence. Si vous avez besoin de plus amples informations ou si vous avez des questions supplémentaires, n'hésitez pas à me contacter directement.\n\nJe vous remercie de votre attention et de votre assistance.",
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Sélectionner un fichier",
@@ -270,6 +266,7 @@
       "sendingDate": "Emission",
       "toPayAt": "Date de paiement",
       "validityDate": "Limite de validité",
+      "delayPaymentLabel": "Ajouter un délai de retard de paiement autorisé",
       "delayInPaymentAllowed": "Délai de retard de paiement autorisé",
       "delayInPaymentAllowedPlaceholder": "30",
       "delayPenaltyPercent": "Pourcentage de pénalité de retard",
@@ -287,6 +284,7 @@
       "saveDraftToQuotation": "Convertir votre brouillon en devis",
       "saveQuotation": "Enregistrer en devis",
       "saveInvoice": "Enregistrer en facture",
+      "toBePaid": "À payer avant le:",
       "editableTextField": {
         "error": {
           "required": "Ce champ est requis",
@@ -335,6 +333,15 @@
       "totalWithVat": "Total",
       "vat": "TVA",
       "delete": "Supprimer"
+    },
+    "paymentRegulationForm": {
+      "add": "Ajouter un Paiement",
+      "payIn": "Payer en plusieurs fois",
+      "percent": "Pourcentage",
+      "maturityDate": "Date limite de paiement",
+      "comment": "Commentaire",
+      "restToBePaid": "Reste à payer",
+      "invalidPercent": "Le pourcentage est supérieur à 100%"
     },
     "invoicePreview": "Aperçu du devis"
   },

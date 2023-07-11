@@ -14,21 +14,35 @@ interface InputFieldProps {
   onChange: ((text: string) => void) & Function;
   errorMessage: string;
   width?: number;
+  backgroundColor: string;
+  rightRender?: boolean;
+  rightText?: string;
 }
 
-export const InputField = ({ labelTx, error, value, onChange, errorMessage, width }: InputFieldProps) => {
+export const InputField = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor, rightRender, rightText }: InputFieldProps) => {
   return (
     <View>
       <TextInput
         autoCapitalize='none'
         label={translate(labelTx)}
-        error={error}
         textColor={palette.secondaryColor}
         selectionColor={palette.secondaryColor}
         value={value}
         onChangeText={onChange}
+        right={
+          rightRender && (
+            <TextInput.Affix
+              text={rightText}
+              textStyle={{
+                fontSize: 16,
+                color: palette.secondaryColor,
+                fontFamily: 'Geometria-Bold',
+              }}
+            />
+          )
+        }
         style={{
-          backgroundColor: 'white',
+          backgroundColor: error ? palette.pastelRed : backgroundColor,
           borderRadius: 5,
           width: width,
         }}
