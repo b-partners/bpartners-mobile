@@ -101,6 +101,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [totalPercent, setTotalPercent] = useState(0);
   const [savedInvoice, setSavedInvoice] = useState<Invoice>();
   const [currentPayment, setCurrentPayment] = useState<PaymentRegulation>(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(null);
 
   const navigateToTab = (tab: string) => {
     navigation.reset({
@@ -120,6 +121,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       setAllowPaymentDelay(CheckboxEnum.CHECKED);
     }
   }, []);
+
+  useEffect(() => {
+    if (currentPayment !== null) {
+      setPaymentCreation(true);
+    }
+  }, [currentPayment]);
 
   const togglePaymentDelay = () => {
     if (allowPaymentDelay === CheckboxEnum.CHECKED) {
@@ -630,10 +637,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                       index={i}
                       // @ts-ignore
                       item={item}
+                      setCurrentIndex={setCurrentIndex}
                       setCurrentPayment={setCurrentPayment}
                       paymentRemove={paymentRemove}
                       setTotalPercent={setTotalPercent}
-                      setPaymentCreation={setPaymentCreation}
                       onDeleteItem={async (__, index, percent) => {
                         setRemovePaymentRegulation(true);
                         if (index === 0 && paymentFields.length === 1) {
@@ -651,7 +658,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 );
               })
             )}
-            <PaymentRegulationDraftField percent={totalPercent} />
+            {totalPercent > 0 && totalPercent < 10000 && <PaymentRegulationDraftField percent={totalPercent} />}
           </View>
           <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
             <Button
@@ -745,14 +752,18 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           </View>
         </TouchableOpacity>
       </View>
-      <PaymentCreationModal
-        open={paymentCreation}
-        setOpen={setPaymentCreation}
-        append={paymentAppend}
-        totalPercent={totalPercent}
-        setTotalPercent={setTotalPercent}
-        item={currentPayment}
-      />
+      {paymentCreation && (
+        <PaymentCreationModal
+          open={paymentCreation}
+          setOpen={setPaymentCreation}
+          append={paymentAppend}
+          totalPercent={totalPercent}
+          setTotalPercent={setTotalPercent}
+          item={currentPayment}
+          paymentRemove={paymentRemove}
+          index={currentIndex}
+        />
+      )}
       <InvoiceCreationModal
         invoiceType={invoiceType}
         confirmationModal={confirmationModal}

@@ -14,6 +14,7 @@ import { PaymentRegulation } from '../../../../models/entities/payment-regulatio
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { amountToMajors } from '../../../../utils/money';
+import { createOrUpdatePayment } from '../utils';
 
 type PaymentRegulationFormFieldProps = {
   index: number;
@@ -22,11 +23,11 @@ type PaymentRegulationFormFieldProps = {
   setCurrentPayment: React.Dispatch<React.SetStateAction<PaymentRegulation>>;
   paymentRemove: (index: number) => void;
   setTotalPercent: React.Dispatch<React.SetStateAction<number>>;
-  setPaymentCreation: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProps> = props => {
-  const { item, index, onDeleteItem, setCurrentPayment, paymentRemove, setTotalPercent, setPaymentCreation } = props;
+  const { item, index, onDeleteItem, setCurrentPayment, setTotalPercent, setCurrentIndex } = props;
 
   return (
     <Observer>
@@ -107,10 +108,9 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
                 size={30}
                 color={palette.secondaryColor}
                 onPress={async () => {
+                  setTotalPercent(prevState => prevState - createOrUpdatePayment(item));
+                  setCurrentIndex(index);
                   setCurrentPayment(item);
-                  setTotalPercent(prevTotalPercent => prevTotalPercent - item.percent);
-                  await paymentRemove(index);
-                  setPaymentCreation(true);
                 }}
               />
             </View>

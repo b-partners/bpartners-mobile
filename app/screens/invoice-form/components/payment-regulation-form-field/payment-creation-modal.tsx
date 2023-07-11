@@ -1,5 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Modal, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
@@ -11,9 +11,9 @@ import { translate } from '../../../../i18n';
 import { PaymentRegulation } from '../../../../models/entities/payment-regulation/payment-regulation';
 import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import { amountToMinors } from '../../../../utils/money';
+import { amountToMajors, amountToMinors } from '../../../../utils/money';
 import { showMessage } from '../../../../utils/snackbar';
-import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, dateConversion } from '../utils';
+import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, createOrUpdatePayment, dateConversion } from '../utils';
 
 type PaymentCreationModalProps = {
   open: boolean;
@@ -22,11 +22,13 @@ type PaymentCreationModalProps = {
   totalPercent: number;
   setTotalPercent: React.Dispatch<React.SetStateAction<number>>;
   item: PaymentRegulation;
+  paymentRemove: (index: number) => void;
+  index: number;
 };
 
 export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props => {
-  const { open, setOpen, append, totalPercent, setTotalPercent, item } = props;
-
+  const { open, setOpen, append, totalPercent, setTotalPercent, item, paymentRemove, index } = props;
+  const [newPayment, setNewPayment] = useState<any>();
   const {
     handleSubmit,
     control,
@@ -35,7 +37,12 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
   } = useForm({
     mode: 'all',
     defaultValues: {
-      percent: item && item.percent ? item.percent.toString() : item && !item.percent ? item.paymentRequest.percentValue.toString() : '',
+      percent:
+        item && item.percent
+          ? amountToMajors(item.percent).toString()
+          : item && !item.percent
+          ? amountToMajors(item.paymentRequest.percentValue).toString()
+          : '',
       comment: item ? item.comment : '',
       maturityDate: item ? convertStringToDate(item.maturityDate) : new Date(),
     },
@@ -43,20 +50,35 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
 
   const onClose = () => {
     reset();
+    if (item) {
+      setTotalPercent(prevState => prevState + createOrUpdatePayment(item));
+    }
     setOpen(false);
   };
 
   const onSubmit = async paymentRegulation => {
     try {
       const formattedDate = dateConversion(paymentRegulation.maturityDate);
-      const payment = {
-        maturityDate: formattedDate,
-        comment: paymentRegulation.comment,
-        percent: amountToMinors(paymentRegulation.percent),
-        amount: null,
-      };
-      await append(payment);
-      setTotalPercent(totalPercent + amountToMinors(paymentRegulation.percent));
+      if (item) {
+        await paymentRemove(index);
+        setNewPayment({
+          maturityDate: formattedDate,
+          comment: paymentRegulation.comment,
+          amount: null,
+          paymentRequest: {
+            percent: amountToMinors(paymentRegulation.percent),
+          },
+        });
+      } else {
+        setNewPayment({
+          maturityDate: formattedDate,
+          comment: paymentRegulation.comment,
+          percent: amountToMinors(paymentRegulation.percent),
+          amount: null,
+        });
+      }
+      await append(newPayment);
+      setTotalPercent(totalPercent + amountToMinors(createOrUpdatePayment(paymentRegulation.percent)));
       onClose();
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
