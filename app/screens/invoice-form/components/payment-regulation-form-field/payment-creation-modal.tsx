@@ -13,7 +13,7 @@ import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { amountToMajors, amountToMinors } from '../../../../utils/money';
 import { showMessage } from '../../../../utils/snackbar';
-import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, createOrUpdatePayment, dateConversion } from '../utils';
+import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, dateConversion } from '../utils';
 
 type PaymentCreationModalProps = {
   open: boolean;
@@ -37,12 +37,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
   } = useForm({
     mode: 'all',
     defaultValues: {
-      percent:
-        item && item.percent
-          ? amountToMajors(item.percent).toString()
-          : item && !item.percent
-          ? amountToMajors(item.paymentRequest.percentValue).toString()
-          : '',
+      percent: item && item.percent ? amountToMajors(item.percent).toString() : '',
       comment: item ? item.comment : '',
       maturityDate: item ? convertStringToDate(item.maturityDate) : new Date(),
     },
@@ -51,7 +46,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
   const onClose = () => {
     reset();
     if (item) {
-      setTotalPercent(prevState => prevState + createOrUpdatePayment(item));
+      setTotalPercent(prevState => prevState + item.percent);
       setCurrentPayment(null);
     }
     setOpen(false);
@@ -63,27 +58,16 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
       const formattedDate = dateConversion(paymentRegulation.maturityDate);
       if (item) {
         await paymentRemove(index);
-        newPayment = {
-          maturityDate: formattedDate,
-          comment: paymentRegulation.comment,
-          amount: null,
-          paymentRequest: {
-            percentValue: amountToMinors(paymentRegulation.percent),
-          },
-        };
-      } else {
-        newPayment = {
-          maturityDate: formattedDate,
-          comment: paymentRegulation.comment,
-          percent: amountToMinors(paymentRegulation.percent),
-          amount: null,
-        };
+        setTotalPercent(prevState => prevState - item.percent);
       }
+      newPayment = {
+        maturityDate: formattedDate,
+        comment: paymentRegulation.comment,
+        amount: null,
+        percent: amountToMinors(paymentRegulation.percent),
+      };
       await append(newPayment);
-      if (item) {
-        setTotalPercent(prevState => prevState - createOrUpdatePayment(item));
-      }
-      setTotalPercent(prevState => prevState + amountToMinors(createOrUpdatePayment(paymentRegulation)));
+      setTotalPercent(prevState => prevState + amountToMinors(paymentRegulation.percent));
       onClose();
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });

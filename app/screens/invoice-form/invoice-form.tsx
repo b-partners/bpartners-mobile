@@ -74,6 +74,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     reset,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     mode: 'all',
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
@@ -99,7 +100,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
   const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
   const [totalPercent, setTotalPercent] = useState(0);
-  const [savedInvoice, setSavedInvoice] = useState<Invoice>();
   const [currentPayment, setCurrentPayment] = useState<PaymentRegulation>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(null);
 
@@ -111,10 +111,21 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   };
 
   useEffect(() => {
-    paymentFields.length > 1 && setPayInInstalments(CheckboxEnum.CHECKED);
-    paymentFields.forEach(item => {
-      setTotalPercent(prevTotalPercent => prevTotalPercent + item.paymentRequest.percentValue);
-    });
+    if (paymentFields.length > 1) {
+      setPayInInstalments(CheckboxEnum.CHECKED);
+      let temp = [];
+      paymentFields.forEach(item => {
+        setTotalPercent(prevTotalPercent => prevTotalPercent + item.paymentRequest.percentValue);
+        const newItem = {
+          maturityDate: item.maturityDate,
+          percent: item.paymentRequest.percentValue,
+          comment: item.comment,
+          amount: item.amount,
+        };
+        temp.push(newItem);
+      });
+      setValue('paymentRegulations', temp as any);
+    }
     const days = watch('delayInPaymentAllowed');
     const percent = watch('delayPenaltyPercent');
     if (days || percent) {
@@ -212,44 +223,42 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const handleInvoicePreviewPress = async invoices => {
     // TODO(UI): error handling
     setIsLoading(true);
+    let savedInvoice;
     try {
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
-        const formattedDate = dateConversion(new Date());
+        const latestPayment = paymentFields[paymentFields.length - 1];
+        const dateObj = new Date(latestPayment.maturityDate);
+        dateObj.setMonth(dateObj.getMonth() + 1);
+        const formattedDate = dateConversion(dateObj);
         const restToPay = {
           maturityDate: formattedDate,
           comment: null,
           percent: 10000 - totalPercent,
           amount: null,
         };
-        setSavedInvoice(
-          await invoiceStore.saveInvoice({
-            ...invoices,
-            customer: selectedCustomer,
-            paymentType: 'IN_INSTALMENT',
-            metadata: { ...invoices.metadata, submittedAt: new Date() },
-            paymentRegulations: [...invoices.paymentRegulations, restToPay],
-          })
-        );
+        savedInvoice = await invoiceStore.saveInvoice({
+          ...invoices,
+          customer: selectedCustomer,
+          paymentType: 'IN_INSTALMENT',
+          metadata: { ...invoices.metadata, submittedAt: new Date() },
+          paymentRegulations: [...invoices.paymentRegulations, restToPay],
+        });
       } else if (payInInstalments === CheckboxEnum.CHECKED && totalPercent === 10000) {
-        setSavedInvoice(
-          await invoiceStore.saveInvoice({
-            ...invoices,
-            customer: selectedCustomer,
-            paymentType: 'IN_INSTALMENT',
-            metadata: { ...invoices.metadata, submittedAt: new Date() },
-          })
-        );
+        savedInvoice = await invoiceStore.saveInvoice({
+          ...invoices,
+          customer: selectedCustomer,
+          paymentType: 'IN_INSTALMENT',
+          metadata: { ...invoices.metadata, submittedAt: new Date() },
+        });
       } else {
-        setSavedInvoice(
-          await invoiceStore.saveInvoice({
-            ...invoices,
-            customer: selectedCustomer,
-            metadata: { ...invoices.metadata, submittedAt: new Date() },
-          })
-        );
+        savedInvoice = await invoiceStore.saveInvoice({
+          ...invoices,
+          customer: selectedCustomer,
+          metadata: { ...invoices.metadata, submittedAt: new Date() },
+        });
       }
       setConfirmationModal(false);
-
+      __DEV__ && console.tron.log(savedInvoice);
       navigate('invoicePreview', {
         fileId: savedInvoice.fileId,
         invoiceTitle: savedInvoice.title,
@@ -653,6 +662,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                         } else {
                           setTotalPercent(prevTotalPercent => prevTotalPercent - percent);
                           await paymentRemove(index);
+                          __DEV__ && console.tron.log(index);
+                          __DEV__ && console.tron.log(paymentFields[index]);
                         }
                         setRemovePaymentRegulation(false);
                       }}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { PaymentRegulation } from '../../../models/entities/payment-regulation/payment-regulation';
 import { color, spacing } from '../../../theme';
 
 export type ModalProps = {
@@ -39,12 +38,4 @@ export const dateConversion = (dateToBeConvert: Date) => {
 export const convertStringToDate = (dateString: string) => {
   const [year, month, day] = dateString.split('-').map(Number);
   return new Date(year, month - 1, day);
-};
-
-export const createOrUpdatePayment = (item: PaymentRegulation) => {
-  if (item.percent) {
-    return item.percent;
-  } else {
-    return item.paymentRequest?.percentValue;
-  }
 };

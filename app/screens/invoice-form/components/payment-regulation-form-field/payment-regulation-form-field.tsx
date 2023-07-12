@@ -14,7 +14,6 @@ import { PaymentRegulation } from '../../../../models/entities/payment-regulatio
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { amountToMajors } from '../../../../utils/money';
-import { createOrUpdatePayment } from '../utils';
 
 type PaymentRegulationFormFieldProps = {
   index: number;
@@ -28,7 +27,7 @@ type PaymentRegulationFormFieldProps = {
 
 export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProps> = props => {
   const { item, index, onDeleteItem, setCurrentPayment, setTotalPercent, setCurrentIndex } = props;
-
+  __DEV__ && console.tron.log(item);
   return (
     <Observer>
       {() => (
@@ -58,7 +57,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
               right: -15,
             }}
             onPress={() => {
-              onDeleteItem(item, index, createOrUpdatePayment(item));
+              onDeleteItem(item, index, item.percent);
             }}
           >
             <Text
@@ -76,7 +75,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
             <View style={{ width: '20%', justifyContent: 'center', height: '100%', alignItems: 'center' }}>
               <View style={{ width: 60, backgroundColor: palette.secondaryColor, height: 60, justifyContent: 'center', borderRadius: 100 }}>
                 <Text
-                  text={`${amountToMajors(item.paymentRequest ? item.paymentRequest.percentValue : item.percent)}%`}
+                  text={`${amountToMajors(item.percent)}%`}
                   style={{
                     backgroundColor: palette.secondaryColor,
                     borderRadius: 5,
@@ -108,7 +107,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
                 size={30}
                 color={palette.secondaryColor}
                 onPress={async () => {
-                  setTotalPercent(prevState => prevState - createOrUpdatePayment(item));
+                  setTotalPercent(prevState => prevState - item.percent);
                   setCurrentIndex(index);
                   setCurrentPayment(item);
                 }}
