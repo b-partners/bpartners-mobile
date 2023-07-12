@@ -117,7 +117,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
           </View>
           <View style={{ width: '100%', height: 75, justifyContent: 'center' }}>
             <Text
-              text={item.comment ?? translate('common.noComment')}
+              text={item.comment === '' || item.comment === null ? translate('common.noComment') : item.comment}
               style={{
                 borderRadius: 5,
                 fontFamily: 'Geometria-Bold',

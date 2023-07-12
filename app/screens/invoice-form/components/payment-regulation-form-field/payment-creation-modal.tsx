@@ -248,7 +248,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                 >
                   <>
                     <Text
-                      tx='common.create'
+                      tx='common.submit'
                       style={{
                         color: palette.white,
                         marginRight: spacing[2],
