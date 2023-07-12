@@ -762,6 +762,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           item={currentPayment}
           paymentRemove={paymentRemove}
           index={currentIndex}
+          setCurrentPayment={setCurrentPayment}
         />
       )}
       <InvoiceCreationModal

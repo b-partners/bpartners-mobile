@@ -1,5 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Modal, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
@@ -24,11 +24,11 @@ type PaymentCreationModalProps = {
   item: PaymentRegulation;
   paymentRemove: (index: number) => void;
   index: number;
+  setCurrentPayment: React.Dispatch<React.SetStateAction<PaymentRegulation>>;
 };
 
 export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props => {
-  const { open, setOpen, append, totalPercent, setTotalPercent, item, paymentRemove, index } = props;
-  const [newPayment, setNewPayment] = useState<any>();
+  const { open, setOpen, append, totalPercent, setTotalPercent, item, paymentRemove, index, setCurrentPayment } = props;
   const {
     handleSubmit,
     control,
@@ -52,33 +52,38 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
     reset();
     if (item) {
       setTotalPercent(prevState => prevState + createOrUpdatePayment(item));
+      setCurrentPayment(null);
     }
     setOpen(false);
   };
 
   const onSubmit = async paymentRegulation => {
+    let newPayment;
     try {
       const formattedDate = dateConversion(paymentRegulation.maturityDate);
       if (item) {
         await paymentRemove(index);
-        setNewPayment({
+        newPayment = {
           maturityDate: formattedDate,
           comment: paymentRegulation.comment,
           amount: null,
           paymentRequest: {
-            percent: amountToMinors(paymentRegulation.percent),
+            percentValue: amountToMinors(paymentRegulation.percent),
           },
-        });
+        };
       } else {
-        setNewPayment({
+        newPayment = {
           maturityDate: formattedDate,
           comment: paymentRegulation.comment,
           percent: amountToMinors(paymentRegulation.percent),
           amount: null,
-        });
+        };
       }
       await append(newPayment);
-      setTotalPercent(totalPercent + amountToMinors(createOrUpdatePayment(paymentRegulation.percent)));
+      if (item) {
+        setTotalPercent(prevState => prevState - createOrUpdatePayment(item));
+      }
+      setTotalPercent(prevState => prevState + amountToMinors(createOrUpdatePayment(paymentRegulation)));
       onClose();
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });

@@ -45,6 +45,6 @@ export const createOrUpdatePayment = (item: PaymentRegulation) => {
   if (item.percent) {
     return item.percent;
   } else {
-    return item.paymentRequest.percentValue;
+    return item.paymentRequest?.percentValue;
   }
 };
