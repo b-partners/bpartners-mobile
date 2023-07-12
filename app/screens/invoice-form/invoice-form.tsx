@@ -152,7 +152,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const onSubmit = async invoices => {
     try {
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
-        const formattedDate = dateConversion(new Date());
+        const latestPayment = paymentFields[paymentFields.length - 1];
+        const dateObj = new Date(latestPayment.maturityDate);
+        dateObj.setMonth(dateObj.getMonth() + 1);
+        const formattedDate = dateConversion(dateObj);
         const restToPay = {
           maturityDate: formattedDate,
           comment: null,
