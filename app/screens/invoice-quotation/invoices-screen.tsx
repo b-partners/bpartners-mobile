@@ -34,16 +34,18 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
-  const { invoices, loadingInvoice } = invoiceStore;
+  const { invoices, loadingInvoice, paidInvoices } = invoiceStore;
+  const combinedInvoices = invoices.concat(paidInvoices);
   const [currentPage, setCurrentPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(Math.ceil(invoices.length / itemsPerPage));
+  const [maxPage, setMaxPage] = useState(Math.ceil(combinedInvoices.length / itemsPerPage));
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
-  const displayedItems = invoices.slice(startItemIndex, endItemIndex);
+  const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
 
   const handleRefresh = async () => {
     await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
-    setMaxPage(Math.ceil(invoices.length / itemsPerPage));
+    await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, page: 1, pageSize: invoicePageSize });
+    setMaxPage(Math.ceil(combinedInvoices.length / itemsPerPage));
   };
 
   const handleScroll = event => {
