@@ -8,6 +8,7 @@ import { MenuItem } from '../../components/menu/menu';
 // import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
+import { Customer } from '../../models/entities/customer/customer';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { navigate } from '../../navigators';
 import { TabNavigatorParamList } from '../../navigators';
@@ -19,6 +20,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoicePagination } from './components/invoice-pagination';
+import { SendingConfirmationModal } from './components/sending-confirmation-modal';
 import {
   BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
@@ -41,6 +43,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
+  const [openModal, setOpenModal] = useState(false);
+  const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
+  const { currentAccountHolder, currentUser } = authStore;
 
   const handleRefresh = async () => {
     await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
@@ -56,6 +61,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   };
 
   const items: MenuItem[] = [
+    { id: 'markAsPaid', title: translate('invoiceScreen.menu.markAsPaid') },
     { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
     { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
   ];
@@ -69,8 +75,29 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     });
   };
 
-  const sendInvoice = (item: IInvoice) => {
-    sendEmail(authStore, item);
+  const sendInvoice = async (item: IInvoice) => {
+    await sendEmail(authStore, item);
+  };
+
+  const markAsPaid = async (item: IInvoice) => {
+    setCurrentCustomer(item.customer);
+    const editPayment = [];
+    item.paymentRegulations.forEach(paymentItem => {
+      const newItem = {
+        maturityDate: paymentItem.maturityDate,
+        percent: paymentItem.paymentRequest.percentValue,
+        comment: paymentItem.comment,
+        amount: paymentItem.amount,
+      };
+      editPayment.push(newItem);
+    });
+    const editedItem = {
+      ...item,
+      status: InvoiceStatus.PAID,
+      paymentRegulations: editPayment,
+    };
+    await invoiceStore.saveInvoice(editedItem);
+    await handleRefresh();
   };
 
   return (
@@ -94,10 +121,18 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
                   <Invoice
                     item={item}
                     menuItems={items}
-                    menuAction={{
-                      downloadInvoice: () => downloadInvoice(item),
-                      sendInvoice: () => sendInvoice(item),
-                    }}
+                    menuAction={
+                      item.status === InvoiceStatus.CONFIRMED
+                        ? {
+                            markAsPaid: () => markAsPaid(item),
+                            downloadInvoice: () => downloadInvoice(item),
+                            sendInvoice: () => sendInvoice(item),
+                          }
+                        : {
+                            downloadInvoice: () => downloadInvoice(item),
+                            sendInvoice: () => sendInvoice(item),
+                          }
+                    }
                   />
                 )}
                 keyExtractor={item => item.id}
@@ -128,6 +163,13 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             />
           </View>
         </View>
+        <SendingConfirmationModal
+          confirmationModal={openModal}
+          setConfirmationModal={setOpenModal}
+          customer={currentCustomer}
+          accountHolder={currentAccountHolder}
+          user={currentUser}
+        />
       </View>
     </ErrorBoundary>
   );

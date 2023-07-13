@@ -242,6 +242,7 @@
     "menu": {
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
+      "markAsPaid": "Marquer comme payée",
       "downloadInvoice": "Télécharger la facture ",
       "editDraft": "Modifier le brouillon"
     },
