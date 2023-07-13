@@ -27,18 +27,23 @@ export const SendingConfirmationModal: React.FC<InvoiceCreationModalProps> = pro
   const openMailApp = () => {
     const recipient = customer.email;
     const subject = `${accountHolder.name} - Donnez nous votre avis`;
-    const body = `<p>Cher(e) ${customer?.firstName} ${customer?.lastName},<br/><br/>
+    const formattedLink = `<a href="${accountHolder.feedback.feedbackLink}">Feedback</a>`;
+    const body = `Cher(e) ${customer?.firstName} ${customer?.lastName},
+  
 Nous espérons que vous allez bien. Nous vous remercions encore une fois d'avoir choisi ${accountHolder.name}.
-Nous espérons que vous avez été satisfait de notre travail et que nous avons répondu à vos attentes.<br/>
-Nous aimerions vous demander si vous seriez prêt(e) à laisser un avis  à propos de votre expérience avec notre entreprise.
+Nous espérons que vous avez été satisfait de notre travail et que nous avons répondu à vos attentes.
+  
+Nous aimerions vous demander si vous seriez prêt(e) à laisser un avis à propos de votre expérience avec notre entreprise.
 Nous attachons une grande importance aux avis de nos clients car ils nous aident à améliorer nos services et à offrir une meilleure expérience à l'avenir. 
 Si vous avez 1 minute à nous accorder, voici le lien direct vers notre page de recueil d’avis où vous pouvez laisser un avis : 
-<a href="${accountHolder.feedback.feedbackLink}">${accountHolder.feedback.feedbackLink}</a>.<br/><br/>
+${formattedLink}
+  
 Nous vous remercions par avance pour votre temps et votre avis. 
-N'hésitez pas à nous contacter si vous avez des questions ou des préoccupations.<br/><br/>
-Cordialement,<br/>
-${accountHolder.name}<br/>
-${user.phone}</p>`;
+N'hésitez pas à nous contacter si vous avez des questions ou des préoccupations.
+  
+Cordialement,
+${accountHolder.name}
+${user.phone}`;
 
     const url = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 

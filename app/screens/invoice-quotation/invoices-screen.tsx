@@ -67,6 +67,11 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
   ];
 
+  const simpleItems: MenuItem[] = [
+    { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
+    { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
+  ];
+
   const downloadInvoice = (item: IInvoice) => {
     navigate('invoicePreview', {
       fileId: item.fileId,
@@ -120,24 +125,28 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
                 sections={[...sectionInvoicesByMonth(displayedItems)]}
-                renderItem={({ item }) => (
-                  <Invoice
-                    item={item}
-                    menuItems={items}
-                    menuAction={
-                      item.status === InvoiceStatus.CONFIRMED
-                        ? {
-                            markAsPaid: () => markAsPaid(item),
-                            downloadInvoice: () => downloadInvoice(item),
-                            sendInvoice: () => sendInvoice(item),
-                          }
-                        : {
-                            downloadInvoice: () => downloadInvoice(item),
-                            sendInvoice: () => sendInvoice(item),
-                          }
-                    }
-                  />
-                )}
+                renderItem={({ item }) =>
+                  item.status === InvoiceStatus.CONFIRMED ? (
+                    <Invoice
+                      item={item}
+                      menuItems={items}
+                      menuAction={{
+                        markAsPaid: () => markAsPaid(item),
+                        downloadInvoice: () => downloadInvoice(item),
+                        sendInvoice: () => sendInvoice(item),
+                      }}
+                    />
+                  ) : (
+                    <Invoice
+                      item={item}
+                      menuItems={simpleItems}
+                      menuAction={{
+                        downloadInvoice: () => downloadInvoice(item),
+                        sendInvoice: () => sendInvoice(item),
+                      }}
+                    />
+                  )
+                }
                 keyExtractor={item => item.id}
                 renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
                 refreshing={loadingInvoice}
