@@ -11,7 +11,7 @@ import { translate } from '../../../../i18n';
 import { PaymentRegulation } from '../../../../models/entities/payment-regulation/payment-regulation';
 import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import { amountToMinors } from '../../../../utils/money';
+import { amountToMajors, amountToMinors } from '../../../../utils/money';
 import { showMessage } from '../../../../utils/snackbar';
 import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, dateConversion } from '../utils';
 
@@ -22,11 +22,13 @@ type PaymentCreationModalProps = {
   totalPercent: number;
   setTotalPercent: React.Dispatch<React.SetStateAction<number>>;
   item: PaymentRegulation;
+  paymentRemove: (index: number) => void;
+  index: number;
+  setCurrentPayment: React.Dispatch<React.SetStateAction<PaymentRegulation>>;
 };
 
 export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props => {
-  const { open, setOpen, append, totalPercent, setTotalPercent, item } = props;
-
+  const { open, setOpen, append, totalPercent, setTotalPercent, item, paymentRemove, index, setCurrentPayment } = props;
   const {
     handleSubmit,
     control,
@@ -35,7 +37,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
   } = useForm({
     mode: 'all',
     defaultValues: {
-      percent: item && item.percent ? item.percent.toString() : item && !item.percent ? item.paymentRequest.percentValue.toString() : '',
+      percent: item && item.percent ? amountToMajors(item.percent).toString() : '',
       comment: item ? item.comment : '',
       maturityDate: item ? convertStringToDate(item.maturityDate) : new Date(),
     },
@@ -43,20 +45,29 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
 
   const onClose = () => {
     reset();
+    if (item) {
+      setTotalPercent(prevState => prevState + item.percent);
+      setCurrentPayment(null);
+    }
     setOpen(false);
   };
 
   const onSubmit = async paymentRegulation => {
+    let newPayment;
     try {
       const formattedDate = dateConversion(paymentRegulation.maturityDate);
-      const payment = {
+      if (item) {
+        await paymentRemove(index);
+        setTotalPercent(prevState => prevState - item.percent);
+      }
+      newPayment = {
         maturityDate: formattedDate,
         comment: paymentRegulation.comment,
-        percent: amountToMinors(paymentRegulation.percent),
         amount: null,
+        percent: amountToMinors(paymentRegulation.percent),
       };
-      await append(payment);
-      setTotalPercent(totalPercent + amountToMinors(paymentRegulation.percent));
+      await append(newPayment);
+      setTotalPercent(prevState => prevState + amountToMinors(paymentRegulation.percent));
       onClose();
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
@@ -221,7 +232,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                 >
                   <>
                     <Text
-                      tx='common.create'
+                      tx='common.submit'
                       style={{
                         color: palette.white,
                         marginRight: spacing[2],

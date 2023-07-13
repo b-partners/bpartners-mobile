@@ -341,6 +341,7 @@
       "maturityDate": "Date limite de paiement",
       "comment": "Commentaire",
       "restToBePaid": "Reste à payer",
+      "restText": "Le reste à payer un mois après le dernier paiement, change en fonction des acomptes que vous créerez",
       "invalidPercent": "Le pourcentage est supérieur à 100%"
     },
     "invoicePreview": "Aperçu du devis"

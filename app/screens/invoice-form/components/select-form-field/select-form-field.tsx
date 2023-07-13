@@ -75,7 +75,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
             <TextField
               {...textFieldProps}
               editable={false}
-              value={selectedCustomer ? '' : `${selectedCustomer?.firstName} ${selectedCustomer?.lastName}`}
+              value={selectedCustomer ? `${selectedCustomer?.firstName} ${selectedCustomer?.lastName}` : ''}
               labelStyle={[error ? LABEL_STYLE_ERROR : LABEL_STYLE, labelStyleOverrides]}
               inputStyle={[INPUT_STYLE, inputStyleOverrides]}
             />

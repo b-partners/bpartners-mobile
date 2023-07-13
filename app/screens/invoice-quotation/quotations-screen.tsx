@@ -53,11 +53,22 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     }
     try {
       setNavigationState(true);
+      const editPayment = [];
+      item.paymentRegulations.forEach(paymentItem => {
+        const newItem = {
+          maturityDate: paymentItem.maturityDate,
+          percent: paymentItem.paymentRequest.percentValue,
+          comment: paymentItem.comment,
+          amount: paymentItem.amount,
+        };
+        editPayment.push(newItem);
+      });
       const editedItem = {
         ...item,
         ref: item.ref.replace('-TMP', ''),
         title: item.title?.replace('-TMP', ''),
         status: InvoiceStatus.CONFIRMED,
+        paymentRegulations: editPayment,
       };
       navigateToTab(navigation, 'invoices');
       await invoiceStore.saveInvoice(editedItem);
@@ -121,7 +132,12 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <InvoicePagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />
+          <InvoiceCreationButton
+            navigation={navigation}
+            navigationState={navigationState}
+            setNavigationState={setNavigationState}
+            invoiceStatus={InvoiceStatus.PROPOSAL}
+          />
         </View>
       </View>
     </ErrorBoundary>

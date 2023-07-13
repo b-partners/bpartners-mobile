@@ -42,7 +42,6 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
     if (currentAccountHolder) {
       accountHolder = currentAccountHolder;
     } else {
-      // @ts-ignore
       accountHolder = {
         name: '',
         siren: '',
@@ -61,6 +60,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           socialCapital: 0,
         },
         revenueTargets: {
+          // @ts-ignore
           year: 0,
           amountTarget: null,
           amountAttempted: null,
