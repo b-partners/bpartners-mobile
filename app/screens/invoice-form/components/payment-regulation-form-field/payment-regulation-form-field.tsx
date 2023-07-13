@@ -27,7 +27,7 @@ type PaymentRegulationFormFieldProps = {
 
 export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProps> = props => {
   const { item, index, onDeleteItem, setCurrentPayment, setTotalPercent, setCurrentIndex } = props;
-  __DEV__ && console.tron.log(item);
+
   return (
     <Observer>
       {() => (

@@ -141,10 +141,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
 
   const togglePaymentDelay = () => {
     if (allowPaymentDelay === CheckboxEnum.CHECKED) {
-      reset({
-        delayInPaymentAllowed: null,
-        delayPenaltyPercent: null,
-      });
+      setValue('delayInPaymentAllowed', null);
+      setValue('delayPenaltyPercent', null);
       setAllowPaymentDelay(CheckboxEnum.UNCHECKED);
     } else {
       setAllowPaymentDelay(CheckboxEnum.CHECKED);
@@ -239,6 +237,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         savedInvoice = await invoiceStore.saveInvoice({
           ...invoices,
           customer: selectedCustomer,
+          status: invoiceType,
           paymentType: 'IN_INSTALMENT',
           metadata: { ...invoices.metadata, submittedAt: new Date() },
           paymentRegulations: [...invoices.paymentRegulations, restToPay],
@@ -249,12 +248,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           customer: selectedCustomer,
           paymentType: 'IN_INSTALMENT',
           metadata: { ...invoices.metadata, submittedAt: new Date() },
+          status: invoiceType,
         });
       } else {
         savedInvoice = await invoiceStore.saveInvoice({
           ...invoices,
           customer: selectedCustomer,
           metadata: { ...invoices.metadata, submittedAt: new Date() },
+          status: invoiceType,
         });
       }
       setConfirmationModal(false);
@@ -469,7 +470,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           name='customer'
           control={control}
           rules={{
-            required: translate('errors.required'),
+            validate: {
+              isRequired: () => selectedCustomer !== null,
+            },
           }}
           render={({ field: { value, onChange } }) => {
             return (
