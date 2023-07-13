@@ -68,11 +68,22 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
     }
     try {
       setNavigationState(true);
+      const editPayment = [];
+      item.paymentRegulations.forEach(paymentItem => {
+        const newItem = {
+          maturityDate: paymentItem.maturityDate,
+          percent: paymentItem.paymentRequest.percentValue,
+          comment: paymentItem.comment,
+          amount: paymentItem.amount,
+        };
+        editPayment.push(newItem);
+      });
       const editedItem = {
         ...item,
         ref: item.ref.replace('-TMP', ''),
         title: item.title?.replace('-TMP', ''),
         status: InvoiceStatus.PROPOSAL,
+        paymentRegulations: editPayment,
       };
       navigateToTab(navigation, 'quotations');
       await invoiceStore.saveInvoice(editedItem);
