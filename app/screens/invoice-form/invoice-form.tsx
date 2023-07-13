@@ -35,7 +35,7 @@ type InvoiceFormProps = {
   invoice?: Invoice;
   products: Product[];
   onSaveInvoice: (invoice: Invoice) => Promise<void>;
-  status?: InvoiceStatus;
+  initialStatus?: InvoiceStatus;
   navigation: StackNavigationProp<TabNavigatorParamList, 'invoiceForm', undefined>;
 };
 
@@ -54,7 +54,7 @@ export enum CheckboxEnum {
 }
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { products, invoice, status, navigation } = props;
+  const { products, invoice, initialStatus, navigation } = props;
   const { invoiceStore, customerStore, draftStore, quotationStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
@@ -753,7 +753,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            status === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
+            initialStatus === InvoiceStatus.CONFIRMED ? setInvoiceType(InvoiceStatus.CONFIRMED) : setInvoiceType(InvoiceStatus.PROPOSAL);
             setConfirmationModal(true);
           }}
         >
@@ -788,7 +788,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         setConfirmationModal={setConfirmationModal}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
-        status={status}
+        status={initialStatus}
       />
     </View>
   );

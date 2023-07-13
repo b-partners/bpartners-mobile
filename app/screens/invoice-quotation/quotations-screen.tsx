@@ -132,7 +132,12 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
           <InvoicePagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />
+          <InvoiceCreationButton
+            navigation={navigation}
+            navigationState={navigationState}
+            setNavigationState={setNavigationState}
+            invoiceStatus={InvoiceStatus.PROPOSAL}
+          />
         </View>
       </View>
     </ErrorBoundary>

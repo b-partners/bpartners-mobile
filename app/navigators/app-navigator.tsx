@@ -93,7 +93,7 @@ export type TabNavigatorParamList = {
   invoices: undefined;
   invoiceForm: {
     invoiceID?: string;
-    status?: InvoiceStatus;
+    initialStatus?: InvoiceStatus;
   };
   invoicePreview: {
     fileId: string;
