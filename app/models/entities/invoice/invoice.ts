@@ -8,6 +8,7 @@ import { PaymentRegulationModel } from '../payment-regulation/payment-regulation
 import { ProductModel } from '../product/product';
 
 export enum InvoiceStatus {
+  PAID = 'PAID',
   CONFIRMED = 'CONFIRMED',
   DRAFT = 'DRAFT',
   PROPOSAL = 'PROPOSAL',
