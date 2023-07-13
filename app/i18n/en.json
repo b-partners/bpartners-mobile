@@ -356,6 +356,7 @@
       "maturityDate": "Payment deadline",
       "comment": "Commentary",
       "restToBePaid": "Remainder to be paid",
+      "restText": "The amount remaining to be paid one month after the last payment changes according to the instalments you create.",
       "invalidPercent": "The percentage is greater than 100%."
     },
     "invoicePreview": "Invoice preview"

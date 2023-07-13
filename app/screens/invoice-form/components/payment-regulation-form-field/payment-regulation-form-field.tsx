@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { Observer } from 'mobx-react-lite';
 import React from 'react';
 import { View } from 'react-native';
@@ -18,10 +19,14 @@ type PaymentRegulationFormFieldProps = {
   index: number;
   item: PaymentRegulation;
   onDeleteItem: (paymentRegulations: PaymentRegulation, index: number, percent: number) => void;
+  setCurrentPayment: React.Dispatch<React.SetStateAction<PaymentRegulation>>;
+  paymentRemove: (index: number) => void;
+  setTotalPercent: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProps> = props => {
-  const { item, index, onDeleteItem } = props;
+  const { item, index, onDeleteItem, setCurrentPayment, setTotalPercent, setCurrentIndex } = props;
 
   return (
     <Observer>
@@ -52,7 +57,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
               right: -15,
             }}
             onPress={() => {
-              onDeleteItem(item, index, item.percent ?? item.paymentRequest.percentValue);
+              onDeleteItem(item, index, item.percent);
             }}
           >
             <Text
@@ -70,7 +75,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
             <View style={{ width: '20%', justifyContent: 'center', height: '100%', alignItems: 'center' }}>
               <View style={{ width: 60, backgroundColor: palette.secondaryColor, height: 60, justifyContent: 'center', borderRadius: 100 }}>
                 <Text
-                  text={`${amountToMajors(item.paymentRequest ? item.paymentRequest.percentValue : item.percent)}%`}
+                  text={`${amountToMajors(item.percent)}%`}
                   style={{
                     backgroundColor: palette.secondaryColor,
                     borderRadius: 5,
@@ -83,7 +88,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
                 />
               </View>
             </View>
-            <View style={{ width: '80%', backgroundColor: palette.white, height: 60, justifyContent: 'center', paddingTop: spacing[3] }}>
+            <View style={{ width: '60%', backgroundColor: palette.white, height: 60, justifyContent: 'center', paddingTop: spacing[3] }}>
               <Text
                 text={`${translate('invoiceFormScreen.invoiceForm.toBePaid')} ${item.maturityDate}`}
                 style={{
@@ -96,10 +101,22 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
                 }}
               />
             </View>
+            <View style={{ width: '20%', justifyContent: 'center', height: '100%', alignItems: 'center' }}>
+              <MaterialIcons
+                name='edit'
+                size={30}
+                color={palette.secondaryColor}
+                onPress={async () => {
+                  setTotalPercent(prevState => prevState - item.percent);
+                  setCurrentIndex(index);
+                  setCurrentPayment(item);
+                }}
+              />
+            </View>
           </View>
           <View style={{ width: '100%', height: 75, justifyContent: 'center' }}>
             <Text
-              tx={'common.noComment'}
+              text={item.comment === '' || item.comment === null ? translate('common.noComment') : item.comment}
               style={{
                 borderRadius: 5,
                 fontFamily: 'Geometria-Bold',
