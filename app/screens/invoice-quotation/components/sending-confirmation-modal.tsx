@@ -18,10 +18,11 @@ type InvoiceCreationModalProps = {
   customer: Customer;
   accountHolder: AccountHolder;
   user: User;
+  setSendingRequest: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const SendingConfirmationModal: React.FC<InvoiceCreationModalProps> = props => {
-  const { confirmationModal, setConfirmationModal, customer, accountHolder, user } = props;
+  const { confirmationModal, setConfirmationModal, customer, accountHolder, user, setSendingRequest } = props;
 
   const openMailApp = () => {
     const recipient = customer.email;
@@ -50,12 +51,13 @@ ${user.phone}</p>`;
         }
       })
       .catch(err => console.error("Erreur lors de l'ouverture de l'application de messagerie :", err));
+    setSendingRequest(false);
   };
 
   return (
     <Modal animationType='slide' transparent={true} visible={confirmationModal} onRequestClose={() => setConfirmationModal(false)}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ backgroundColor: palette.white, height: '35%', width: '90%', borderRadius: 15 }}>
+        <View style={{ backgroundColor: palette.white, height: '25%', width: '90%', borderRadius: 15 }}>
           <View
             style={{
               width: '100%',
@@ -71,7 +73,7 @@ ${user.phone}</p>`;
             }}
           >
             <Text
-              tx='profileScreen.delete'
+              tx='invoiceScreen.labels.requestTitle'
               style={{
                 color: palette.secondaryColor,
                 fontFamily: 'Geometria',
@@ -93,27 +95,23 @@ ${user.phone}</p>`;
             </Button>
           </View>
           <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
-            <View style={{ width: '100%', height: '90%', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+            <View style={{ width: '100%', height: '70%', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
               <Text
-                tx='profileScreen.firstStep'
+                tx='invoiceScreen.labels.sendRequest'
                 style={{
                   color: palette.greyDarker,
-                  width: '94%',
                   marginRight: spacing[2],
                   fontFamily: 'Geometria',
+                  marginBottom: spacing[1],
                 }}
-                numberOfLines={3}
               />
               <Text
-                tx='profileScreen.secondStep'
+                text={`${customer?.firstName} ${customer?.lastName}`}
                 style={{
                   color: palette.greyDarker,
-                  width: '94%',
                   marginRight: spacing[2],
                   fontFamily: 'Geometria',
-                  marginTop: spacing[2],
                 }}
-                numberOfLines={5}
               />
             </View>
             <View style={{ width: '100%', height: '10%', justifyContent: 'center' }}>

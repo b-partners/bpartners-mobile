@@ -44,6 +44,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
   const [openModal, setOpenModal] = useState(false);
+  const [sendingRequest, setSendingRequest] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
   const { currentAccountHolder, currentUser } = authStore;
 
@@ -81,6 +82,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
 
   const markAsPaid = async (item: IInvoice) => {
     setCurrentCustomer(item.customer);
+    setSendingRequest(true);
     const editPayment = [];
     item.paymentRegulations.forEach(paymentItem => {
       const newItem = {
@@ -97,6 +99,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       paymentRegulations: editPayment,
     };
     await invoiceStore.saveInvoice(editedItem);
+    setOpenModal(true);
     await handleRefresh();
   };
 
@@ -163,13 +166,16 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             />
           </View>
         </View>
-        <SendingConfirmationModal
-          confirmationModal={openModal}
-          setConfirmationModal={setOpenModal}
-          customer={currentCustomer}
-          accountHolder={currentAccountHolder}
-          user={currentUser}
-        />
+        {sendingRequest && (
+          <SendingConfirmationModal
+            confirmationModal={openModal}
+            setConfirmationModal={setOpenModal}
+            customer={currentCustomer}
+            accountHolder={currentAccountHolder}
+            user={currentUser}
+            setSendingRequest={setSendingRequest}
+          />
+        )}
       </View>
     </ErrorBoundary>
   );
