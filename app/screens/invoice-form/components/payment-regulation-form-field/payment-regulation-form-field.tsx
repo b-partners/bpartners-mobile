@@ -57,7 +57,7 @@ export const PaymentRegulationFormField: React.FC<PaymentRegulationFormFieldProp
               right: -15,
             }}
             onPress={() => {
-              onDeleteItem(item, index, item.percent ?? item.paymentRequest.percentValue);
+              onDeleteItem(item, index, item.percent);
             }}
           >
             <Text
