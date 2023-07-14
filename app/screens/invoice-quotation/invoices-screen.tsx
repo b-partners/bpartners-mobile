@@ -8,6 +8,7 @@ import { MenuItem } from '../../components/menu/menu';
 // import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
+import { Customer } from '../../models/entities/customer/customer';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { navigate } from '../../navigators';
 import { TabNavigatorParamList } from '../../navigators';
@@ -15,10 +16,12 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
+import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoicePagination } from './components/invoice-pagination';
+import { SendingConfirmationModal } from './components/sending-confirmation-modal';
 import {
   BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
@@ -34,16 +37,22 @@ import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
-  const { invoices, loadingInvoice } = invoiceStore;
+  const { invoices, loadingInvoice, paidInvoices } = invoiceStore;
+  const combinedInvoices = invoices.concat(paidInvoices);
   const [currentPage, setCurrentPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(Math.ceil(invoices.length / itemsPerPage));
+  const [maxPage, setMaxPage] = useState(Math.ceil(combinedInvoices.length / itemsPerPage));
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
-  const displayedItems = invoices.slice(startItemIndex, endItemIndex);
+  const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
+  const [openModal, setOpenModal] = useState(false);
+  const [sendingRequest, setSendingRequest] = useState(false);
+  const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
+  const { currentAccountHolder, currentUser } = authStore;
 
   const handleRefresh = async () => {
     await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
-    setMaxPage(Math.ceil(invoices.length / itemsPerPage));
+    await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, page: 1, pageSize: invoicePageSize });
+    setMaxPage(Math.ceil(combinedInvoices.length / itemsPerPage));
   };
 
   const handleScroll = event => {
@@ -54,6 +63,12 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   };
 
   const items: MenuItem[] = [
+    { id: 'markAsPaid', title: translate('invoiceScreen.menu.markAsPaid') },
+    { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
+    { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
+  ];
+
+  const simpleItems: MenuItem[] = [
     { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
     { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
   ];
@@ -67,8 +82,35 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     });
   };
 
-  const sendInvoice = (item: IInvoice) => {
-    sendEmail(authStore, item);
+  const sendInvoice = async (item: IInvoice) => {
+    await sendEmail(authStore, item);
+  };
+
+  const markAsPaid = async (item: IInvoice) => {
+    setCurrentCustomer(item.customer);
+    setSendingRequest(true);
+    const editPayment = [];
+    item.paymentRegulations.forEach(paymentItem => {
+      const newItem = {
+        maturityDate: paymentItem.maturityDate,
+        percent: paymentItem.paymentRequest.percentValue,
+        comment: paymentItem.comment,
+        amount: paymentItem.amount,
+      };
+      editPayment.push(newItem);
+    });
+    const editedItem = {
+      ...item,
+      status: InvoiceStatus.PAID,
+      paymentRegulations: editPayment,
+    };
+    try {
+      await invoiceStore.saveInvoice(editedItem);
+      setOpenModal(true);
+    } catch {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    }
+    // await handleRefresh();
   };
 
   return (
@@ -88,16 +130,28 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
                 sections={[...sectionInvoicesByMonth(displayedItems)]}
-                renderItem={({ item }) => (
-                  <Invoice
-                    item={item}
-                    menuItems={items}
-                    menuAction={{
-                      downloadInvoice: () => downloadInvoice(item),
-                      sendInvoice: () => sendInvoice(item),
-                    }}
-                  />
-                )}
+                renderItem={({ item }) =>
+                  item.status === InvoiceStatus.CONFIRMED ? (
+                    <Invoice
+                      item={item}
+                      menuItems={items}
+                      menuAction={{
+                        markAsPaid: () => markAsPaid(item),
+                        downloadInvoice: () => downloadInvoice(item),
+                        sendInvoice: () => sendInvoice(item),
+                      }}
+                    />
+                  ) : (
+                    <Invoice
+                      item={item}
+                      menuItems={simpleItems}
+                      menuAction={{
+                        downloadInvoice: () => downloadInvoice(item),
+                        sendInvoice: () => sendInvoice(item),
+                      }}
+                    />
+                  )
+                }
                 keyExtractor={item => item.id}
                 renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
                 refreshing={loadingInvoice}
@@ -126,6 +180,16 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             />
           </View>
         </View>
+        {sendingRequest && (
+          <SendingConfirmationModal
+            confirmationModal={openModal}
+            setConfirmationModal={setOpenModal}
+            customer={currentCustomer}
+            accountHolder={currentAccountHolder}
+            user={currentUser}
+            setSendingRequest={setSendingRequest}
+          />
+        )}
       </View>
     </ErrorBoundary>
   );

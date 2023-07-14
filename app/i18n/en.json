@@ -238,7 +238,9 @@
       "toPayAt": "To pay at",
       "invoiceForm": "Create invoice",
       "invoicePreview": "Invoice Preview",
-      "comment": "Comment"
+      "comment": "Comment",
+      "requestTitle": "Request for an advice",
+      "sendRequest": "Send a request for advice to"
     },
     "status": {
       "PAID": "Paid",
@@ -257,6 +259,7 @@
     "menu": {
       "markAsInvoice": "Mark as invoice",
       "markAsProposal": "Mark as proposal",
+      "markAsPaid": "Mark as paid",
       "downloadInvoice": "Download",
       "editDraft": "Edit"
     },

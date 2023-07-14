@@ -11,6 +11,7 @@ export const InvoiceStoreModel = types
   .model('InvoiceStore')
   .props({
     invoices: types.optional(types.array(InvoiceModel), []),
+    paidInvoices: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
@@ -43,6 +44,32 @@ export const InvoiceStoreModel = types
         self.getInvoicesSuccess(getInvoicesResult.invoices);
       } catch (e) {
         self.getInvoicesFail(e);
+      } finally {
+        self.loadingInvoice = false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    getPaidInvoicesSuccess: (invoices: InvoiceStoreSnapshotOut[]) => {
+      self.paidInvoices.replace(invoices as any);
+    },
+  }))
+  .actions(self => ({
+    getPaidInvoicesFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getPaidInvoices: flow(function* (criteria: Criteria) {
+      detach(self.paidInvoices);
+      self.loadingInvoice = true;
+      const paymentApi = new PaymentApi(self.environment.api);
+      try {
+        const getPaidInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
+        self.getPaidInvoicesSuccess(getPaidInvoicesResult.invoices);
+      } catch (e) {
+        self.getPaidInvoicesFail(e);
       } finally {
         self.loadingInvoice = false;
       }
