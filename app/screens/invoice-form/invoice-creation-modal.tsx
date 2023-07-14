@@ -22,7 +22,7 @@ export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props =
   const getTx = () => {
     if (invoiceType === InvoiceStatus.DRAFT) {
       return 'invoiceFormScreen.invoiceForm.saveDraft';
-    } else if (invoiceType === InvoiceStatus.PROPOSAL && status === undefined) {
+    } else if (invoiceType === InvoiceStatus.PROPOSAL && status === InvoiceStatus.PROPOSAL) {
       return 'invoiceFormScreen.invoiceForm.saveQuotation';
     } else if (invoiceType === InvoiceStatus.PROPOSAL && status === InvoiceStatus.DRAFT) {
       return 'invoiceFormScreen.invoiceForm.saveDraftToQuotation';

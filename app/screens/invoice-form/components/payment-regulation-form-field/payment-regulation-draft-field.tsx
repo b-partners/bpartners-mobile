@@ -34,7 +34,7 @@ export const PaymentRegulationDraftField: React.FC<PaymentRegulationDraftFieldPr
             marginBottom: spacing[6],
           }}
         >
-          <View style={{ flexDirection: 'row', width: '100%', height: 75, borderBottomWidth: 2, borderColor: palette.solidGrey, marginTop: spacing[4] }}>
+          <View style={{ flexDirection: 'row', width: '100%', height: 75, borderBottomWidth: 2, borderColor: palette.solidGrey, marginTop: spacing[1] }}>
             <View style={{ width: '20%', justifyContent: 'center', height: '100%', alignItems: 'center' }}>
               <View style={{ width: 60, backgroundColor: palette.secondaryColor, height: 60, justifyContent: 'center', borderRadius: 100 }}>
                 <Text
@@ -51,7 +51,7 @@ export const PaymentRegulationDraftField: React.FC<PaymentRegulationDraftFieldPr
                 />
               </View>
             </View>
-            <View style={{ width: '80%', backgroundColor: palette.white, height: 60, justifyContent: 'center', paddingTop: spacing[3] }}>
+            <View style={{ width: '70%', backgroundColor: palette.white, height: 60, justifyContent: 'center', paddingTop: spacing[3] }}>
               <Text
                 tx={'invoiceFormScreen.paymentRegulationForm.restToBePaid'}
                 style={{
@@ -65,16 +65,16 @@ export const PaymentRegulationDraftField: React.FC<PaymentRegulationDraftFieldPr
               />
             </View>
           </View>
-          <View style={{ width: '100%', height: 75, justifyContent: 'center' }}>
+          <View style={{ width: '100%', height: 100, justifyContent: 'center', paddingVertical: spacing[2] }}>
             <Text
-              tx={'common.noComment'}
+              tx={'invoiceFormScreen.paymentRegulationForm.restText'}
               style={{
                 borderRadius: 5,
                 fontFamily: 'Geometria-Bold',
-                fontSize: 14,
-                textTransform: 'uppercase',
+                fontSize: 16,
                 alignSelf: 'center',
                 color: palette.greyDarker,
+                width: '80%',
               }}
             />
           </View>

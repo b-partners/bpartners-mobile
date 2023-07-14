@@ -54,7 +54,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
       const currentInvoice = await invoiceStore.getInvoice(item.id);
       __DEV__ && console.tron.log(currentInvoice);
       invoiceStore.saveInvoiceInit();
-      navigation.navigate('invoiceForm', { invoiceID: item.id, status: InvoiceStatus.DRAFT });
+      navigation.navigate('invoiceForm', { invoiceID: item.id, initialStatus: InvoiceStatus.DRAFT });
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to edit invoice, ${e}`);
     } finally {
@@ -68,11 +68,22 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
     }
     try {
       setNavigationState(true);
+      const editPayment = [];
+      item.paymentRegulations.forEach(paymentItem => {
+        const newItem = {
+          maturityDate: paymentItem.maturityDate,
+          percent: paymentItem.paymentRequest.percentValue,
+          comment: paymentItem.comment,
+          amount: paymentItem.amount,
+        };
+        editPayment.push(newItem);
+      });
       const editedItem = {
         ...item,
         ref: item.ref.replace('-TMP', ''),
         title: item.title?.replace('-TMP', ''),
         status: InvoiceStatus.PROPOSAL,
+        paymentRegulations: editPayment,
       };
       navigateToTab(navigation, 'quotations');
       await invoiceStore.saveInvoice(editedItem);
