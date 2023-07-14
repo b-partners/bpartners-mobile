@@ -1,5 +1,6 @@
 import React from 'react';
-import { Linking, Modal, View } from 'react-native';
+import { Modal, View } from 'react-native';
+import Mailer from 'react-native-mail';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -27,35 +28,31 @@ export const SendingConfirmationModal: React.FC<InvoiceCreationModalProps> = pro
   const openMailApp = () => {
     const recipient = customer.email;
     const subject = `${accountHolder.name} - Donnez nous votre avis`;
-    const formattedLink = `<a href="${accountHolder.feedback.feedbackLink}">Feedback</a>`;
-    const body = `Cher(e) ${customer?.firstName} ${customer?.lastName},
-  
+    const message = `<p>Cher(e) ${customer?.firstName} ${customer?.lastName},<br/><br/>
 Nous espérons que vous allez bien. Nous vous remercions encore une fois d'avoir choisi ${accountHolder.name}.
-Nous espérons que vous avez été satisfait de notre travail et que nous avons répondu à vos attentes.
-  
-Nous aimerions vous demander si vous seriez prêt(e) à laisser un avis à propos de votre expérience avec notre entreprise.
+Nous espérons que vous avez été satisfait de notre travail et que nous avons répondu à vos attentes.<br/>
+Nous aimerions vous demander si vous seriez prêt(e) à laisser un avis  à propos de votre expérience avec notre entreprise.
 Nous attachons une grande importance aux avis de nos clients car ils nous aident à améliorer nos services et à offrir une meilleure expérience à l'avenir. 
 Si vous avez 1 minute à nous accorder, voici le lien direct vers notre page de recueil d’avis où vous pouvez laisser un avis : 
-${formattedLink}
-  
+<a href="${accountHolder.feedback.feedbackLink}">${accountHolder.feedback.feedbackLink}</a>.<br/><br/>
 Nous vous remercions par avance pour votre temps et votre avis. 
-N'hésitez pas à nous contacter si vous avez des questions ou des préoccupations.
-  
-Cordialement,
-${accountHolder.name}
-${user.phone}`;
+N'hésitez pas à nous contacter si vous avez des questions ou des préoccupations.<br/><br/>
+Cordialement,<br/>
+${accountHolder.name}<br/>
+${user.phone}</p>`;
 
-    const url = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const email = {
+      subject: subject,
+      body: message,
+      isHTML: true,
+      recipients: [recipient],
+    };
 
-    Linking.canOpenURL(url)
-      .then(supported => {
-        if (supported) {
-          Linking.openURL(url);
-        } else {
-          showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
-        }
-      })
-      .catch(err => console.error("Erreur lors de l'ouverture de l'application de messagerie :", err));
+    Mailer.mail(email, error => {
+      if (error) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      }
+    });
     setSendingRequest(false);
   };
 

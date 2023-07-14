@@ -16,6 +16,7 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
+import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
@@ -103,9 +104,13 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       status: InvoiceStatus.PAID,
       paymentRegulations: editPayment,
     };
-    await invoiceStore.saveInvoice(editedItem);
-    setOpenModal(true);
-    await handleRefresh();
+    try {
+      await invoiceStore.saveInvoice(editedItem);
+      setOpenModal(true);
+    } catch {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    }
+    // await handleRefresh();
   };
 
   return (
