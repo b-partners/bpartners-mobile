@@ -2,9 +2,9 @@ import React from 'react';
 import { Dimensions } from 'react-native';
 
 import { ErrorBoundary } from '../../screens/error/error-boundary';
-import KeyboardAvoidingWrapper from '../../screens/welcome/keyboardAvoidingWrapper';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
+import KeyboardAvoidingWrapper from '../keyboard-avoiding-wrapper/keyboard-avoiding-wrapper';
 import { Screen } from '../screen/screen';
 
 export const BgLayout: React.FC = ({ children }) => {

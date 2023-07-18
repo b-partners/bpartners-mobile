@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Text } from '../../components';
@@ -18,6 +18,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
+import { UnderlineText } from '../welcome/components/underline-text';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -65,7 +66,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
     <BgLayout>
       <View style={{ paddingHorizontal: spacing[8], height: 750 }}>
         <AutoImage
-          source={require('../welcome/welcome.logo.png')}
+          source={require('../welcome/images/welcome.logo.png')}
           resizeMode='contain'
           resizeMethod='auto'
           style={{ width: '100%', marginTop: spacing[8], height: 150 }}
@@ -223,21 +224,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               )}
             </Button>
           )}
-          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: spacing[2] }}>
-            <Text
-              tx='registrationScreen.already'
-              style={{
-                fontFamily: 'Geometria',
-                marginRight: spacing[1],
-                textShadowColor: palette.greyDarker,
-                textShadowOffset: { width: 1, height: 1 },
-                textShadowRadius: 2,
-              }}
-            />
-            <TouchableOpacity onPress={() => navigation.navigate('welcome')}>
-              <Text tx='registrationScreen.connect' style={{ fontFamily: 'Geometria-Bold', textDecorationLine: 'underline' }} />
-            </TouchableOpacity>
-          </View>
+          <UnderlineText navigation={navigation} screen={'welcome'} description={'registrationScreen.already'} text={'registrationScreen.connect'} />
         </View>
       </View>
       <CheckEmailModal isOpen={isOpen} setOpen={setOpen} email={email} title={'registrationScreen.confirm'} text={translate('registrationScreen.checkEmail')} />

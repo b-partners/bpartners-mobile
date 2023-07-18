@@ -18,7 +18,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
-import { IdentityState } from '../welcome/welcome-screen';
+import { IdentityState } from '../welcome/utils/utils';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -75,7 +75,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
     <BgLayout>
       <View style={{ paddingHorizontal: spacing[7], height: '100%', width: '100%' }}>
         <AutoImage
-          source={require('../welcome/welcome.logo.png')}
+          source={require('../welcome/images/welcome.logo.png')}
           resizeMode='contain'
           resizeMethod='auto'
           style={{ width: '100%', marginTop: spacing[8], height: 250 }}
