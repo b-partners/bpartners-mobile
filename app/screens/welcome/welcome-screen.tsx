@@ -21,7 +21,7 @@ import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from './components/underline-text';
 import { normalText, styles, underlinedText } from './utils/style';
-import { IdentityState, LoginFormSchema, UserCredentials } from './utils/utils';
+import { Error, IdentityState, Log, LoginFormSchema, UserCredentials } from './utils/utils';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -39,9 +39,14 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const textStyle = isHovered ? underlinedText : normalText;
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const toggleMouseEnter = () => {
+    setIsHovered(!isHovered);
   };
 
   useEffect(() => {
@@ -55,13 +60,13 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           });
         }
       } catch (error) {
-        __DEV__ && console.tron.error("Keychain couldn't be accessed!", error);
+        Error("Keychain couldn't be accessed!", error);
       }
     })();
   }, []);
 
   async function signIn(username: string, password: string) {
-    __DEV__ && console.tron.log(username, password);
+    Log(username, password);
     try {
       setLoading(true);
       const inputUsername = username ?? userDetails.email;
@@ -93,17 +98,11 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     }
   }
 
-  const toggleMouseEnter = () => {
-    setIsHovered(!isHovered);
-  };
-
-  const textStyle = isHovered ? underlinedText : normalText;
-
   return (
     <BgLayout>
       <View style={styles.container}>
         <AutoImage source={require('./images/welcome.logo.png')} resizeMode='contain' resizeMethod='auto' style={styles.logo} />
-        <Formik initialValues={userDetails} validationSchema={LoginFormSchema} onSubmit={values => __DEV__ && console.tron.log(values)}>
+        <Formik initialValues={userDetails} validationSchema={LoginFormSchema} onSubmit={values => Log(values)}>
           {({ handleChange, handleBlur, values, errors, touched }) => (
             <View style={styles.form}>
               <View style={styles.field}>
