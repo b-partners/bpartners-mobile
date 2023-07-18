@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Text } from '../../components';
@@ -15,10 +15,10 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { CreateUser } from '../../models/entities/user/user';
 import { NavigatorParamList } from '../../navigators';
-import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from '../welcome/components/underline-text';
+import { styles } from './utils/style';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -64,14 +64,9 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
 
   return (
     <BgLayout>
-      <View style={{ paddingHorizontal: spacing[8], height: 750 }}>
-        <AutoImage
-          source={require('../welcome/images/welcome.logo.png')}
-          resizeMode='contain'
-          resizeMethod='auto'
-          style={{ width: '100%', marginTop: spacing[8], height: 150 }}
-        />
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <AutoImage source={require('../welcome/images/welcome.logo.png')} resizeMode='contain' style={styles.logo} />
+        <View style={styles.form}>
           <View style={styles.field}>
             <Controller
               control={control}
@@ -174,51 +169,17 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
             />
           </View>
           {errors.companyName || errors.phoneNumber || errors.email || errors.lastName || errors.firstName ? (
-            <View
-              style={{
-                borderRadius: 50,
-                paddingVertical: spacing[3],
-                backgroundColor: palette.solidGrey,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: spacing[4],
-              }}
-            >
-              <Text
-                tx='welcomeScreen.signup'
-                style={{
-                  color: color.palette.secondaryColor,
-                  fontFamily: 'Geometria-Bold',
-                  marginRight: spacing[2],
-                }}
-              />
+            <View style={styles.placeholder}>
+              <Text tx='welcomeScreen.signup' style={styles.textPlaceholder} />
               <Icon icon='user' />
             </View>
           ) : (
-            <Button
-              style={{
-                borderRadius: 50,
-                paddingVertical: spacing[3],
-                backgroundColor: '#fff',
-                display: 'flex',
-                flexDirection: 'row',
-                marginTop: spacing[4],
-              }}
-              onPress={handleSubmit(onSubmit)}
-            >
+            <Button style={styles.button} onPress={handleSubmit(onSubmit)}>
               {loading ? (
                 <Loader size={25} />
               ) : (
                 <>
-                  <Text
-                    tx='welcomeScreen.signup'
-                    style={{
-                      color: color.palette.secondaryColor,
-                      fontFamily: 'Geometria-Bold',
-                      marginRight: spacing[2],
-                    }}
-                  />
+                  <Text tx='welcomeScreen.signup' style={styles.textButton} />
                   <Icon icon='user' />
                 </>
               )}
@@ -230,47 +191,4 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
       <CheckEmailModal isOpen={isOpen} setOpen={setOpen} email={email} title={'registrationScreen.confirm'} text={translate('registrationScreen.checkEmail')} />
     </BgLayout>
   );
-});
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: '5%',
-    padding: 15,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  field: {
-    marginBottom: 10,
-  },
-  label: {
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    color: palette.secondaryColor,
-  },
-  error: {
-    color: 'red',
-    marginTop: 5,
-  },
-  danger: {
-    color: 'red',
-  },
-  signup: {
-    textAlign: 'center',
-    color: palette.lightGrey,
-    fontSize: 20,
-    fontWeight: '700',
-  },
 });

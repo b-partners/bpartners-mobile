@@ -158,7 +158,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                   <Loader size={25} />
                 ) : (
                   <>
-                    <Text tx='welcomeScreen.login' style={styles.placeholder} />
+                    <Text tx='welcomeScreen.login' style={styles.textButton} />
                     <Icon icon='user' />
                   </>
                 )}
