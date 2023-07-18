@@ -65,7 +65,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
   return (
     <BgLayout>
       <View style={styles.container}>
-        <AutoImage source={require('../welcome/images/welcome.logo.png')} resizeMode='contain' style={styles.logo} />
+        <AutoImage source={require('../welcome/images/welcome.logo.png')} resizeMode='contain' resizeMethod='auto' style={styles.logo} />
         <View style={styles.form}>
           <View style={styles.field}>
             <Controller
