@@ -37,13 +37,9 @@ export class TransactionApi {
       if (problem) throw new Error(problem.kind);
     }
 
-    const { year: transactionSummaryYear, summary } = response.data;
+    const transactionSummary = response.data;
 
-    return {
-      kind: 'ok',
-      year: transactionSummaryYear,
-      summary: summary.map(item => ({ ...item, updatedAt: item.updatedAt && new Date(item.updatedAt) })),
-    };
+    return { kind: 'ok', transactionSummary };
   }
 
   async getTransactionCategories(

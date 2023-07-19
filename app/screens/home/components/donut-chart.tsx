@@ -6,6 +6,7 @@ import Snackbar from 'react-native-snackbar';
 import { Text } from '../../../components';
 // import { Icon, Text } from '../../../components';
 import { TxKeyPath, translate } from '../../../i18n';
+import { RevenueTarget } from '../../../models/entities/revenue-target/revenue-target';
 import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -43,6 +44,7 @@ const FILTERED_KEYS = ['id', 'month', 'updatedAt'];
 type DonutChartProps = {
   summary: ITransactionSummary;
   balance: number;
+  target: RevenueTarget;
 };
 
 const TITLE_CONTAINER_STYLE: ViewStyle = {
@@ -61,7 +63,7 @@ const SUMMARY_TITLE_STYLE: TextStyle = {
 };
 
 export const DonutChart: React.FC<DonutChartProps> = props => {
-  const { summary, balance } = props;
+  const { summary, balance, target } = props;
 
   const showSnackbar = () => {
     Snackbar.show({
@@ -76,6 +78,12 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
         onPress: () => Snackbar.dismiss(),
       },
     });
+  };
+
+  const revenueTarget = {
+    0: target.amountAttempted,
+    1: 0,
+    2: balance,
   };
 
   return (
@@ -93,7 +101,7 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
                 <View style={LABEL_CONTAINER_STYLE} key={item}>
                   <View style={LABEL_COLOR_STYLE(COLORS[i])} />
                   <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
-                    {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(item === 'cashFlow' ? balance : summary[item])}
+                    {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(revenueTarget[i])}
                   </Text>
                 </View>
               );

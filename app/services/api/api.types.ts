@@ -8,6 +8,7 @@ import { Marketplace } from '../../models/entities/marketplace/marketplace';
 import { Product } from '../../models/entities/product/product';
 import { Prospect } from '../../models/entities/prospect/prospect';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
+import { TransactionSummary } from '../../models/entities/transaction-summary/transaction-summary';
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
 import { GeneralApiProblem } from './api-problem';
@@ -31,7 +32,7 @@ export type GetTransactionsResult = { kind: 'ok'; transactions: Transaction[] } 
 
 export type GetTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 
-export type GetTransactionsSummaryResult = { kind: 'ok'; year: number; summary: TransactionCategory[] } | GeneralApiProblem;
+export type GetTransactionsSummaryResult = { kind: 'ok'; transactionSummary: TransactionSummary } | GeneralApiProblem;
 
 export type UpdateTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 

@@ -64,7 +64,7 @@ export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({
   return (
     <>
       <View>
-        {summary && <DonutChart summary={summary} balance={balance} />}
+        {summary && <DonutChart summary={summary} balance={balance} target={target} />}
         <GoalProgressBar target={target} />
         {/*<Button
           onPress={() => showSnackbar()}
