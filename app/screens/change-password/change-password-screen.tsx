@@ -18,7 +18,7 @@ import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { IdentityState } from '../welcome/utils/utils';
-import { styles } from './utils/style';
+import { styles } from './utils/styles';
 import { passwordPattern } from './utils/utils';
 
 WebBrowser.maybeCompleteAuthSession();

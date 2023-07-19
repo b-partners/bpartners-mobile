@@ -18,7 +18,7 @@ import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from '../welcome/components/underline-text';
-import { styles } from './utils/style';
+import { styles } from './utils/styles';
 
 WebBrowser.maybeCompleteAuthSession();
 
