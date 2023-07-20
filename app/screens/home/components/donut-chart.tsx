@@ -3,6 +3,7 @@ import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
 
 import { Icon, Text } from '../../../components';
+import { Menu, MenuItem } from '../../../components/menu/menu';
 import { TxKeyPath, translate } from '../../../i18n';
 import { RevenueTarget } from '../../../models/entities/revenue-target/revenue-target';
 import { TransactionSummary as ITransactionSummary, Summary } from '../../../models/entities/transaction-summary/transaction-summary';
@@ -68,29 +69,54 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
     cashFlow: yearSummary.annualCashFlow,
   });
 
-  const toggleSummary = () => {
-    if (isMonthSummary) {
-      setSummary({
-        income: yearSummary.annualIncome,
-        outcome: yearSummary.annualOutcome,
-        cashFlow: yearSummary.annualCashFlow,
-      });
-      setIsMonthSummary(false);
-    } else {
-      setSummary({
-        income: monthSummary.income,
-        outcome: monthSummary.outcome,
-        cashFlow: monthSummary.cashFlow,
-      });
-      setIsMonthSummary(true);
-    }
+  const monthlyView = () => {
+    setSummary({
+      income: monthSummary.income,
+      outcome: monthSummary.outcome,
+      cashFlow: monthSummary.cashFlow,
+    });
+    setIsMonthSummary(true);
   };
+
+  const annualView = () => {
+    setSummary({
+      income: yearSummary.annualIncome,
+      outcome: yearSummary.annualOutcome,
+      cashFlow: yearSummary.annualCashFlow,
+    });
+    setIsMonthSummary(false);
+  };
+
+  const items: MenuItem[] = [
+    { id: 'month', title: translate('homeScreen.summary.monthMenu') },
+    { id: 'year', title: translate('homeScreen.summary.yearMenu') },
+  ];
 
   return (
     <View>
       <View style={TITLE_CONTAINER_STYLE}>
-        <Text tx='homeScreen.summary.title' style={SUMMARY_TITLE_STYLE} />
-        <TouchableOpacity onPress={toggleSummary}>{<Icon icon='settings' />}</TouchableOpacity>
+        <View style={{ flexDirection: 'row' }}>
+          <Text tx='homeScreen.summary.title' style={SUMMARY_TITLE_STYLE} />
+          <Text
+            tx={isMonthSummary ? 'homeScreen.summary.monthly' : 'homeScreen.summary.annual'}
+            style={{
+              color: color.palette.secondaryColor,
+              fontFamily: 'Geometria-Heavy',
+              marginLeft: spacing[4],
+            }}
+          />
+        </View>
+        <TouchableOpacity>
+          <Menu
+            items={items}
+            actions={{
+              month: () => monthlyView(),
+              year: () => annualView(),
+            }}
+          >
+            <Icon icon='settings' />
+          </Menu>
+        </TouchableOpacity>
       </View>
       <View style={CHART_CONTAINER}>
         <View style={{ width: '30%', justifyContent: 'center' }}>

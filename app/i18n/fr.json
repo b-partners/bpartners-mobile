@@ -204,7 +204,11 @@
       "outcome": "Décaissement",
       "cashFlow": "Trésorerie",
       "boostMyResult": "Booster mes résultats",
-      "lastTransactions": "Dernières Transactions"
+      "lastTransactions": "Dernières Transactions",
+      "monthMenu": "Vue mensuelle",
+      "yearMenu": "Vue annuelle",
+      "monthly": "(ce mois)",
+      "annual": "(cette année)"
     }
   },
   "invoiceScreen": {

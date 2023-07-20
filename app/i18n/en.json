@@ -220,7 +220,11 @@
       "outcome": "Disbursement",
       "cashFlow": "Cash Flow",
       "boostMyResult": "Boost my result",
-      "lastTransactions": "Last Transcations"
+      "lastTransactions": "Last Transcations",
+      "monthMenu": "Monthly view",
+      "yearMenu": "Annual view",
+      "monthly": "(this month)",
+      "annual": "(this year)"
     }
   },
   "invoiceScreen": {
