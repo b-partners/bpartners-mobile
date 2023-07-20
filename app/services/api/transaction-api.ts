@@ -39,7 +39,15 @@ export class TransactionApi {
 
     const transactionSummary = response.data;
 
-    return { kind: 'ok', transactionSummary };
+    transactionSummary.summary.forEach(item => {
+      item.updatedAt = item.updatedAt ? new Date(item.updatedAt) : null;
+    });
+    transactionSummary.updatedAt = new Date(transactionSummary.updatedAt);
+
+    return {
+      kind: 'ok',
+      transactionSummary: transactionSummary,
+    };
   }
 
   async getTransactionCategories(

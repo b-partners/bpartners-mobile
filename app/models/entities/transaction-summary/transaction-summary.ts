@@ -6,7 +6,7 @@ export const SummaryModel = types.model('Summary').props({
   income: types.maybeNull(types.number),
   outcome: types.maybeNull(types.number),
   cashFlow: types.maybeNull(types.number),
-  updatedAt: types.maybeNull(types.string),
+  updatedAt: types.maybeNull(types.Date),
 });
 
 export const TransactionSummaryModel = types.model('TransactionSummary').props({
@@ -15,10 +15,11 @@ export const TransactionSummaryModel = types.model('TransactionSummary').props({
   annualOutcome: types.maybeNull(types.number),
   annualCashFlow: types.maybeNull(types.number),
   summary: types.maybeNull(types.array(SummaryModel)),
-  updatedAt: types.maybeNull(types.string),
+  updatedAt: types.maybeNull(types.Date),
 });
 
 export interface TransactionSummary extends Instance<typeof TransactionSummaryModel> {}
+export interface Summary extends Instance<typeof SummaryModel> {}
 
 export interface TransactionSummarySnapshotOut extends SnapshotOut<typeof TransactionSummaryModel> {}
 

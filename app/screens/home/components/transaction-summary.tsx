@@ -7,7 +7,7 @@ import { View } from 'react-native';
 // import { Button } from '../../../components';
 import { AccountHolder as IAccountHolder } from '../../../models/entities/account-holder/account-holder';
 import { RevenueTarget } from '../../../models/entities/revenue-target/revenue-target';
-import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
+import { TransactionSummary as ITransactionSummary, Summary } from '../../../models/entities/transaction-summary/transaction-summary';
 
 /*import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';*/
@@ -15,7 +15,8 @@ import { DonutChart } from './donut-chart';
 import { GoalProgressBar } from './goal-progress-bar';
 
 interface TransactionSummaryProps {
-  summary: ITransactionSummary;
+  currentMonthSummary: Summary;
+  currentYearSummary: ITransactionSummary;
   accountHolder: IAccountHolder;
   balance: number;
 }
@@ -33,20 +34,21 @@ interface TransactionSummaryProps {
   fontFamily: 'Geometria-Bold',
 };*/
 
-export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({ summary: summary, accountHolder: accountHolder, balance: balance }) => {
-  let target: RevenueTarget;
-  if (accountHolder && accountHolder.revenueTargets) {
-    target = accountHolder.revenueTargets[0];
-  } else {
-    target = {
-      year: new Date().getFullYear(),
-      amountTarget: 0,
-      amountAttempted: 0,
-      amountAttemptedPercent: 0,
-      updatedAt: '',
-    };
-  }
-  /* const showSnackbar = () => {
+export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(
+  ({ currentMonthSummary: currentMonthSummary, accountHolder: accountHolder, balance: balance, currentYearSummary: currentYearSummary }) => {
+    let target: RevenueTarget;
+    if (accountHolder && accountHolder.revenueTargets) {
+      target = accountHolder.revenueTargets[0];
+    } else {
+      target = {
+        year: new Date().getFullYear(),
+        amountTarget: 0,
+        amountAttempted: 0,
+        amountAttemptedPercent: 0,
+        updatedAt: '',
+      };
+    }
+    /* const showSnackbar = () => {
     Snackbar.show({
       text: 'Cette fonctionnalité est encore en construction',
       duration: Snackbar.LENGTH_LONG,
@@ -61,18 +63,21 @@ export const TransactionSummary: React.FC<TransactionSummaryProps> = observer(({
     });
   };*/
 
-  return (
-    <>
-      <View>
-        {summary && <DonutChart summary={summary} balance={balance} target={target} />}
-        <GoalProgressBar target={target} />
-        {/*<Button
+    return (
+      <>
+        <View>
+          {(currentMonthSummary || currentYearSummary) && (
+            <DonutChart monthSummary={currentMonthSummary} yearSummary={currentYearSummary} balance={balance} target={target} />
+          )}
+          <GoalProgressBar target={target} />
+          {/*<Button
           onPress={() => showSnackbar()}
           tx='homeScreen.summary.boostMyResult'
           style={BOOST_MY_RESULT_BUTTON_STYLE}
           textStyle={BOOST_MY_RESULT_BUTTON_TEXT_STYLE}
         />*/}
-      </View>
-    </>
-  );
-});
+        </View>
+      </>
+    );
+  }
+);

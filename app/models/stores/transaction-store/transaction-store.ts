@@ -125,10 +125,10 @@ export const TransactionStoreModel = types
     get currentBalance() {
       return self.transactions.reduce((a, c) => a + c.amount, 0);
     },
-    /*get currentMonthSummary() {
+    get currentMonthSummary() {
       const date = new Date();
-      return self.transactionsSummary.find(item => item.summary.map(summary => summary.month === date.getMonth()));
-    },*/
+      return self.transactionsSummary?.summary.filter(summary => summary.month === date.getMonth());
+    },
     get latestTransactions() {
       return self.transactions.filter((_, i) => i < 3);
     },

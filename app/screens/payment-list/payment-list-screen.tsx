@@ -7,20 +7,16 @@ import { TextStyle, ViewStyle } from 'react-native';
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-
-/*import { useStores } from '../../models';
-import { InvoiceStatus } from '../../models/entities/invoice/invoice';*/
+import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList } from '../../navigators';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { DraftsScreen } from '../invoice-quotation/drafts-screen';
 import { InvoicesScreen } from '../invoice-quotation/invoices-screen';
 import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
-
-/*import { useStores } from '../../models';
- */
 
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
 const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW };
@@ -34,12 +30,22 @@ type TabNameProps = {
 export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function PaymentListScreen({ navigation, route }) {
   const initialRoute = route.params?.initialRoute;
   const Tab = createMaterialTopTabNavigator();
-  const { customerStore, productStore } = useStores();
-  // const { invoiceStore } = useStores();
+  const { customerStore, productStore, draftStore, quotationStore, invoiceStore } = useStores();
 
   useEffect(() => {
-    productStore.getProducts();
-    customerStore.getCustomers();
+    (async () => {
+      await productStore.getProducts();
+      await customerStore.getCustomers();
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
+      await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
+      await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
+      await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, page: 1, pageSize: invoicePageSize });
+    })();
   }, []);
 
   const TabName: TabNameProps = {

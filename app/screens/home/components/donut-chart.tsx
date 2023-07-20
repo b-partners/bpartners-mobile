@@ -7,7 +7,7 @@ import { Text } from '../../../components';
 // import { Icon, Text } from '../../../components';
 import { TxKeyPath, translate } from '../../../i18n';
 import { RevenueTarget } from '../../../models/entities/revenue-target/revenue-target';
-import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
+import { TransactionSummary as ITransactionSummary, Summary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrency } from '../../../utils/money';
@@ -39,10 +39,11 @@ const COLORS = [
   palette.deepPurple,
 ];
 
-const FILTERED_KEYS = ['id', 'month', 'updatedAt'];
+// const FILTERED_KEYS = ['id', 'month', 'updatedAt'];
 
 type DonutChartProps = {
-  summary: ITransactionSummary;
+  monthSummary: Summary;
+  yearSummary: ITransactionSummary;
   balance: number;
   target: RevenueTarget;
 };
@@ -63,7 +64,7 @@ const SUMMARY_TITLE_STYLE: TextStyle = {
 };
 
 export const DonutChart: React.FC<DonutChartProps> = props => {
-  const { summary, balance, target } = props;
+  const { yearSummary /*monthSummary, balance, target */ } = props;
 
   const showSnackbar = () => {
     Snackbar.show({
@@ -80,10 +81,10 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
     });
   };
 
-  const revenueTarget = {
-    0: target.amountAttempted,
-    1: 0,
-    2: balance,
+  const summary = {
+    income: yearSummary.annualIncome,
+    outcome: yearSummary.annualOutcome,
+    cashFlow: yearSummary.annualCashFlow,
   };
 
   return (
@@ -94,38 +95,58 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
       </View>
       <View style={CHART_CONTAINER}>
         <View style={{ width: '30%', justifyContent: 'center' }}>
-          {Object.keys(summary)
+          {/*Object.keys(monthSummary)
             .filter(key => !FILTERED_KEYS.includes(key))
             .map((item, i) => {
               return (
                 <View style={LABEL_CONTAINER_STYLE} key={item}>
                   <View style={LABEL_COLOR_STYLE(COLORS[i])} />
                   <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
-                    {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(revenueTarget[i])}
+                    {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(Targets[i])}
                   </Text>
                 </View>
               );
-            })}
+            })*/}
+          <View style={LABEL_CONTAINER_STYLE}>
+            <View style={LABEL_COLOR_STYLE(palette.midnightGreen)} />
+            <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
+              {translate(`homeScreen.summary.income` as TxKeyPath)}: {printCurrency(yearSummary.annualIncome)}
+            </Text>
+          </View>
+          <View style={LABEL_CONTAINER_STYLE}>
+            <View style={LABEL_COLOR_STYLE(palette.secondaryColor)} />
+            <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
+              {translate(`homeScreen.summary.outcome` as TxKeyPath)}: {printCurrency(yearSummary.annualOutcome)}
+            </Text>
+          </View>
+          <View style={LABEL_CONTAINER_STYLE}>
+            <View style={LABEL_COLOR_STYLE(palette.green)} />
+            <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
+              {translate(`homeScreen.summary.cashFlow` as TxKeyPath)}: {printCurrency(yearSummary.annualCashFlow)}
+            </Text>
+          </View>
         </View>
         <View style={{ width: '70%', height: '100%', justifyContent: 'flex-start', alignItems: 'center' }}>
           <View style={{ height: 120, width: 240 }}>
-            <PieChart
-              donut
-              semiCircle
-              radius={120}
-              showText
-              innerRadius={65}
-              data={[
-                ...Object.keys(summary)
-                  .filter(key => !FILTERED_KEYS.includes(key))
-                  .map((key, i) => {
-                    return {
-                      value: summary[key],
-                      color: COLORS[i],
-                    };
-                  }),
-              ]}
-            />
+            {
+              <PieChart
+                donut
+                semiCircle
+                radius={120}
+                showText
+                innerRadius={65}
+                data={[
+                  ...Object.keys(summary)
+                    // .filter(key => !FILTERED_KEYS.includes(key))
+                    .map((key, i) => {
+                      return {
+                        value: summary[key],
+                        color: COLORS[i],
+                      };
+                    }),
+                ]}
+              />
+            }
           </View>
         </View>
       </View>
