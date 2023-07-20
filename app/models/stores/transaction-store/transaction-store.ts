@@ -127,7 +127,7 @@ export const TransactionStoreModel = types
     },
     get currentMonthSummary() {
       const date = new Date();
-      return self.transactionsSummary?.summary.filter(summary => summary.month === date.getMonth());
+      return self.transactionsSummary?.summary.find(summary => summary.month === date.getMonth());
     },
     get latestTransactions() {
       return self.transactions.filter((_, i) => i < 3);
