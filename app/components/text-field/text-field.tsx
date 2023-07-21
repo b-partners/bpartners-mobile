@@ -108,6 +108,7 @@ export function TextField(props: TextFieldProps) {
         </View>
       )}
       <TextInput
+        autoCapitalize='none'
         placeholder={actualPlaceholder}
         placeholderTextColor={color.palette.lighterGrey}
         underlineColorAndroid={color.transparent}

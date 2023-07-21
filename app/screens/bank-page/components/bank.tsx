@@ -12,7 +12,7 @@ import { Text } from '../../../components';
 import { Account } from '../../../models/entities/account/account';
 //import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { Logo } from '../../home/home-screen';
+import { Logo } from '../../home/components/logo';
 import { AccountInfosModal } from './account-infos-modal';
 
 type BankInfosProps = {
@@ -39,16 +39,25 @@ export const Bank: React.FC<BankInfosProps> = props => {
         >
           <View style={{ width: '100%', height: 70, marginTop: 20, flexDirection: 'row' }}>
             <View style={{ width: '70%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 32, fontFamily: 'Geometria', color: palette.black }}>{currentAccount.bank.name}</Text>
+              <Text
+                style={{
+                  fontSize: 32,
+                  fontFamily: 'Geometria',
+                  color: palette.black,
+                  width: '100%',
+                }}
+              >
+                {currentAccount?.bank?.name}
+              </Text>
             </View>
             <View style={{ width: '30%', height: '100%', justifyContent: 'center', alignItems: 'flex-end' }}>
-              <Logo uri={currentAccount.bank.logoUrl} logoStyle={{ width: 140, height: 70 }} />
+              <Logo uri={currentAccount?.bank?.logoUrl} logoStyle={{ width: 140, height: 70 }} />
             </View>
           </View>
           <View style={{ width: '100%', flex: 1, marginTop: 20, flexDirection: 'column', marginBottom: 10 }}>
-            <LabelWithTextColumn label='bankScreen.accountName' text={currentAccount.name} />
-            <LabelWithTextColumn label='bankScreen.bic' text={currentAccount.bic} />
-            <LabelWithTextColumn label='bankScreen.iban' text={currentAccount.iban} />
+            <LabelWithTextColumn label='bankScreen.accountName' text={currentAccount?.name} />
+            <LabelWithTextColumn label='bankScreen.bic' text={currentAccount?.bic} />
+            <LabelWithTextColumn label='bankScreen.iban' text={currentAccount?.iban} />
           </View>
         </View>
         {/*<TouchableOpacity

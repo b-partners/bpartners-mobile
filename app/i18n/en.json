@@ -203,7 +203,7 @@
     "title": "Home",
     "labels": {
       "collectPayment": "Collect a payment",
-      "balance": "Balance as of",
+      "balance": "collection account balance",
       "activity": "Activity",
       "quotationAndInvoice": "Quotation / Invoice",
       "payment": "Payment",
@@ -216,11 +216,15 @@
     "summary": {
       "title": "Stats",
       "goals": "Goal",
-      "income": "Incomes",
-      "outcome": "Outcomes",
+      "income": "Collection",
+      "outcome": "Disbursement",
       "cashFlow": "Cash Flow",
       "boostMyResult": "Boost my result",
-      "lastTransactions": "Last Transcations"
+      "lastTransactions": "Last Transcations",
+      "monthMenu": "Monthly view",
+      "yearMenu": "Annual view",
+      "monthly": "(this month)",
+      "annual": "(this year)"
     }
   },
   "invoiceScreen": {

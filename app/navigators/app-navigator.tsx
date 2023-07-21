@@ -73,7 +73,7 @@ export type NavigatorParamList = {
     invoiceTitle: string;
     invoice: Invoice;
   };
-  bridge: undefined;
+  bank: undefined;
   changePassword: {
     userName: string;
     password: string;
@@ -143,7 +143,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
-          <Drawer.Screen name='bridge' component={BankScreen} />
+          <Drawer.Screen name='bank' component={BankScreen} />
         </>
       ) : (
         <>
