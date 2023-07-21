@@ -20,7 +20,7 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from './components/underline-text';
-import { normalText, styles, underlinedText } from './utils/style';
+import { normalText, styles, underlinedText } from './utils/styles';
 import { Error, IdentityState, Log, LoginFormSchema, UserCredentials } from './utils/utils';
 
 WebBrowser.maybeCompleteAuthSession();

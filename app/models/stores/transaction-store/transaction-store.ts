@@ -13,7 +13,7 @@ export const TransactionStoreModel = types
   .props({
     transactions: types.optional(types.array(TransactionModel), []),
     transactionCategories: types.optional(types.array(TransactionCategoryModel), []),
-    transactionsSummary: types.optional(types.array(TransactionSummaryModel), []),
+    transactionsSummary: types.maybeNull(TransactionSummaryModel),
     loadingTransactions: types.optional(types.boolean, false),
     loadingTransactionCategories: types.optional(types.boolean, false),
     loadingTransactionsSummary: types.optional(types.boolean, false),
@@ -25,8 +25,8 @@ export const TransactionStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    getTransactionsSummarySuccess: (transactionSummaries: TransactionSummary[]) => {
-      self.transactionsSummary.replace(transactionSummaries);
+    getTransactionsSummarySuccess: (transactionSummaries: TransactionSummary) => {
+      self.transactionsSummary = transactionSummaries;
     },
   }))
   .actions(self => ({
@@ -41,7 +41,7 @@ export const TransactionStoreModel = types
       self.loadingTransactionsSummary = true;
       try {
         const getTransactionsSummaryResult = yield transactionApi.getTransactionsSummary(self.currentAccount.id, year);
-        self.getTransactionsSummarySuccess(getTransactionsSummaryResult.summary);
+        self.getTransactionsSummarySuccess(getTransactionsSummaryResult.transactionSummary);
       } catch (e) {
         self.getTransactionsSummaryFail(e);
       } finally {
@@ -127,7 +127,7 @@ export const TransactionStoreModel = types
     },
     get currentMonthSummary() {
       const date = new Date();
-      return self.transactionsSummary.find(item => item.month === date.getMonth());
+      return self.transactionsSummary?.summary.find(summary => summary.month === date.getMonth());
     },
     get latestTransactions() {
       return self.transactions.filter((_, i) => i < 3);
