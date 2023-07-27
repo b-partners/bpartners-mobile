@@ -423,6 +423,14 @@
     "messagePartThree": "you can also call us on :",
     "mail": "contact@bpartners.app"
   },
+  "bankScreen": {
+    "accountName": "Account Name",
+    "bic": "BIC",
+    "iban": "IBAN",
+    "logout": "Disconnect my Bank",
+    "noBank": "No associated bank",
+    "associate": "Associate a bank"
+  },
   "forgotPasswordScreen": {
     "title": "Forgot your password ?",
     "sentTitle": "Code sent",
@@ -434,13 +442,8 @@
     "newPassword": "New password",
     "confirm": "Confirm password"
   },
-  "bankScreen": {
-    "accountName": "Account Name",
-    "bic": "BIC",
-    "iban": "IBAN",
-    "logout": "Disconnect my Bank",
-    "noBank": "No associated bank",
-    "associate": "Associate a bank"
+  "partnersScreen": {
+    "title": "Partners"
   },
   "bottomTab": {
     "account": "Accounts",

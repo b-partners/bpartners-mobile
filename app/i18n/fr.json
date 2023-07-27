@@ -423,6 +423,9 @@
     "newPassword": "Nouveau mot de passe",
     "confirm": "Confirmez le mot de passe"
   },
+  "partnersScreen": {
+    "title": "Partenaires"
+  },
   "bottomTab": {
     "account": "Comptes",
     "activity": "Activité",
