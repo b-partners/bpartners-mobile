@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clipboard, Linking, Modal, View } from 'react-native';
+import { Clipboard, Linking, Modal, Platform, View } from 'react-native';
 import RNAntDesign from 'react-native-vector-icons/AntDesign';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import RNFontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -145,7 +145,13 @@ export const ShareModal: React.FC<ShareModalProps> = props => {
                 testID='submit'
                 tx='paymentInitiationScreen.fields.submit'
                 onPress={async () => {
-                  await Linking.openURL(`sms:?body=${paymentUrl}`);
+                  if (Platform.OS === 'android') {
+                    const shareUrl = `sms:?body=${encodeURIComponent(paymentUrl)}`;
+                    await Linking.openURL(shareUrl);
+                  } else if (Platform.OS === 'ios') {
+                    const shareUrl = `sms:&body=${encodeURIComponent(paymentUrl)}`;
+                    await Linking.openURL(shareUrl);
+                  }
                 }}
                 style={{
                   display: 'flex',
