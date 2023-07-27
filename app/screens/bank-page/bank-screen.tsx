@@ -1,9 +1,9 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 
-import { GradientBackground, Header, Screen } from '../../components';
+import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
@@ -11,9 +11,6 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { Bank } from './components/bank';
 import { NoBank } from './components/no-bank';
 
-const FULL: ViewStyle = {
-  flex: 1,
-};
 const CONTAINER: ViewStyle = {
   backgroundColor: palette.white,
   height: '100%',
@@ -34,15 +31,10 @@ export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bank'>> = obs
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View style={FULL}>
-        <GradientBackground colors={['#422443', '#281b34']} />
-        {
-          <Screen style={CONTAINER} preset='auto'>
-            <Header headerTx='logoutScreen.swan' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
-            {currentAccount.bank ? <Bank currentAccount={currentAccount} /> : <NoBank />}
-          </Screen>
-        }
-      </View>
+      <Header headerTx='logoutScreen.swan' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
+      <Screen style={CONTAINER} preset='auto'>
+        {currentAccount.bank ? <Bank currentAccount={currentAccount} /> : <NoBank />}
+      </Screen>
     </ErrorBoundary>
   );
 });
