@@ -30,4 +30,6 @@ export const palette = {
   lightYellow: '#F5DF4D',
   yellow: '#E7B10A',
   solidGrey: '#0000000d',
+  blueDarker: '#3A5085',
+  yellowDarker: '#F2C30C',
 };

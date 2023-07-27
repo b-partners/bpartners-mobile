@@ -424,7 +424,20 @@
     "confirm": "Confirmez le mot de passe"
   },
   "partnersScreen": {
-    "title": "Partenaires"
+    "title": "Nos Partenaires",
+    "bank": {
+      "labelOne": "Besoin d'un",
+      "labelTwo": "compte bancaire ?",
+      "text": "Découvrez la BRED, la banque 100% conseil.",
+      "button": "Je découvre la BRED"
+    },
+    "insurance": {
+      "labelOne": "Besoin d'une assurance adaptée",
+      "labelTwo": "À votre activité professionnelle ?",
+      "textOne": "Découvrez l'assurance",
+      "textTwo": "multirisque pro!",
+      "button": "Je découvre la BRED"
+    }
   },
   "bottomTab": {
     "account": "Comptes",

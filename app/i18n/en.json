@@ -443,7 +443,15 @@
     "confirm": "Confirm password"
   },
   "partnersScreen": {
-    "title": "Partners"
+    "title": "Our Partners",
+    "bank": {
+      "labelOne": "Need a",
+      "labelTwo": "bank account ?"
+    },
+    "insurance": {
+      "labelOne": "Need insurance tailored",
+      "labelTwo": "To your business activity ?"
+    }
   },
   "bottomTab": {
     "account": "Accounts",
