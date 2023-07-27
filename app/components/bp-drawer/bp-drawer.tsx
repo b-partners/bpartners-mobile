@@ -96,6 +96,7 @@ type RouteNameProps = {
   marketplace: string | React.ReactElement;
   supportContact: string | React.ReactElement;
   bank: string | React.ReactElement;
+  partners: string | React.ReactElement;
 };
 
 export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
@@ -113,6 +114,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     marketplace: translate('marketPlaceScreen.title'),
     supportContact: translate('supportContactScreen.title'),
     bank: translate('logoutScreen.swan'),
+    partners: translate('logoutScreen.swan'),
   };
 
   const IconRoute: RouteNameProps = {
@@ -126,6 +128,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
     supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
     bank: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
+    partners: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
   };
 
   return (
@@ -141,7 +144,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
-          {props.state.routes.slice(0, 8).map((route: any) => {
+          {props.state.routes.map((route: any) => {
             const routeTitle = TitleRoute[route.name];
             if (routeTitle === undefined) {
               return null;
