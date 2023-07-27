@@ -428,7 +428,8 @@
     "bank": {
       "labelOne": "Besoin d'un",
       "labelTwo": "compte bancaire ?",
-      "text": "Découvrez la BRED, la banque 100% conseil.",
+      "textOne": "Découvrez la BRED, la banque",
+      "textTwo": "100% conseil.",
       "button": "Je découvre la BRED"
     },
     "insurance": {
@@ -436,7 +437,7 @@
       "labelTwo": "À votre activité professionnelle ?",
       "textOne": "Découvrez l'assurance",
       "textTwo": "multirisque pro!",
-      "button": "Je découvre la BRED"
+      "button": "Je fais une simulation"
     }
   },
   "bottomTab": {

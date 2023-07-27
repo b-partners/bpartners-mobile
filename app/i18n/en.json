@@ -446,11 +446,17 @@
     "title": "Our Partners",
     "bank": {
       "labelOne": "Need a",
-      "labelTwo": "bank account ?"
+      "labelTwo": "bank account ?",
+      "textOne": "Discover BRED, the 100% ",
+      "textTwo": "advisory bank.",
+      "button": "Discover BRED"
     },
     "insurance": {
       "labelOne": "Need insurance tailored",
-      "labelTwo": "To your business activity ?"
+      "labelTwo": "To your business activity ?",
+      "textOne": "Discover multi-risk",
+      "textTwo": "pro insurance!",
+      "button": "I make simulation"
     }
   },
   "bottomTab": {
