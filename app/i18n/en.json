@@ -373,12 +373,14 @@
     "delete": "Delete",
     "edit": "Edit",
     "send": "Send this quotation",
-    "invoice": "invoice",
+    "quotation": "Quotation",
+    "invoice": "Invoice",
     "sendInvoice": "Send this invoice",
     "savedFile": "File saved under",
     "previewQuotation": "Preview quotation",
     "email": {
-      "body": "Ci-joint la facture"
+      "quotation": "Enclosed the quotation",
+      "invoice": "Enclosed invoice"
     },
     "action": {
       "downloadedSuccessFully": "File downloaded",
@@ -423,6 +425,14 @@
     "messagePartThree": "you can also call us on :",
     "mail": "contact@bpartners.app"
   },
+  "bankScreen": {
+    "accountName": "Account Name",
+    "bic": "BIC",
+    "iban": "IBAN",
+    "logout": "Disconnect my Bank",
+    "noBank": "No associated bank",
+    "associate": "Associate a bank"
+  },
   "forgotPasswordScreen": {
     "title": "Forgot your password ?",
     "sentTitle": "Code sent",
@@ -434,13 +444,22 @@
     "newPassword": "New password",
     "confirm": "Confirm password"
   },
-  "bankScreen": {
-    "accountName": "Account Name",
-    "bic": "BIC",
-    "iban": "IBAN",
-    "logout": "Disconnect my Bank",
-    "noBank": "No associated bank",
-    "associate": "Associate a bank"
+  "partnersScreen": {
+    "title": "Our Partners",
+    "bank": {
+      "labelOne": "Need a",
+      "labelTwo": "bank account ?",
+      "textOne": "Discover BRED, the 100% ",
+      "textTwo": "advisory bank.",
+      "button": "Discover BRED"
+    },
+    "insurance": {
+      "labelOne": "Need insurance tailored",
+      "labelTwo": "To your business activity ?",
+      "textOne": "Discover multi-risk",
+      "textTwo": "pro insurance!",
+      "button": "I make simulation"
+    }
   },
   "bottomTab": {
     "account": "Accounts",

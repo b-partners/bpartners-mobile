@@ -15,7 +15,7 @@ function formatMailBody(bodyMessage: string) {
 }
 
 // Used to send an invoice attachment
-export async function sendEmail(authStore: AuthStore, invoice: Invoice) {
+export async function sendEmail(authStore: AuthStore, invoice: Invoice, isInvoice?: boolean) {
   const { accessToken, currentAccount } = authStore;
   const { fileId, customer, title } = invoice;
   const fileName = `temp.pdf`;
@@ -35,10 +35,10 @@ export async function sendEmail(authStore: AuthStore, invoice: Invoice) {
     sendError({ message: 'Error occured while downloading file: ' + fileUri, exception: e }, {});
   }
 
-  const bodyMessage = `${translate('invoicePreviewScreen.email.body')}`;
+  const bodyMessage = `${translate(isInvoice ? 'invoicePreviewScreen.email.invoice' : 'invoicePreviewScreen.email.quotation')}`;
   const body = formatMailBody(bodyMessage);
   const emailToSend = {
-    subject: `${translate('invoicePreviewScreen.invoice')} ${title}`,
+    subject: `${translate(isInvoice ? 'invoicePreviewScreen.invoice' : 'invoicePreviewScreen.quotation')} ${title}`,
     recipients: [customer.email],
     // TODO add current account holder email
     ccRecipients: [],

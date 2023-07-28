@@ -2,10 +2,11 @@ import { Auth } from '@aws-amplify/auth';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
 import React from 'react';
-import { ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -14,89 +15,24 @@ import OcticonsIcon from 'react-native-vector-icons/Octicons';
 import awsExports from '../../../src/aws-exports';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { color, spacing } from '../../theme';
-import { palette } from '../../theme/palette';
+import { color } from '../../theme';
 import { AutoImage } from '../auto-image/auto-image';
 import { BPDrawerHeader } from './bp-drawer-header';
+import {
+  CENTER_CONTAINER_STYLE,
+  DRAWER_SCROLLVIEW_STYLE,
+  ICON_CONTAINER_STYLE,
+  LOGOUT_CONTAINER_STYLE,
+  NAVIGATION_CONTAINER_STYLE,
+  NAVIGATION_STYLE,
+  POWER_CONTAINER_STYLE,
+  SCROLLVIEW_CONTAINER_STYLE,
+  TEXT_CONTAINER_STYLE,
+  TEXT_STYLE,
+} from './utils/styles';
+import { RouteNameProps } from './utils/utils';
 
 Amplify.configure(awsExports);
-const LOGOUT_CONTAINER_STYLE: ViewStyle = {
-  position: 'absolute',
-  backgroundColor: palette.white,
-  width: '90%',
-  height: 40,
-  marginTop: 10,
-  bottom: '3%',
-  alignSelf: 'center',
-  borderRadius: 40,
-  justifyContent: 'center',
-  flexDirection: 'row',
-  borderWidth: 1,
-  borderColor: palette.secondaryColor,
-};
-
-const NAVIGATION_STYLE: ViewStyle = {
-  backgroundColor: palette.white,
-  height: 50,
-  borderBottomWidth: 0.5,
-  borderColor: palette.lighterGrey,
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-around',
-};
-
-const TEXT_STYLE: TextStyle = {
-  color: palette.black,
-  fontSize: 16,
-  fontFamily: 'Geometria-Bold',
-};
-
-const TEXT_CONTAINER_STYLE: ViewStyle = {
-  flex: 20,
-  height: 40,
-  justifyContent: 'center',
-};
-
-const ICON_CONTAINER_STYLE: ViewStyle = {
-  flexGrow: 1,
-  flexShrink: 0,
-  height: 40,
-  justifyContent: 'center',
-};
-
-const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
-  position: 'relative',
-  width: '100%',
-  backgroundColor: palette.white,
-  paddingTop: spacing[6],
-  paddingHorizontal: spacing[4],
-};
-
-const SCROLLVIEW_CONTAINER_STYLE: ViewStyle = {
-  width: '100%',
-  height: '60%',
-  zIndex: 2,
-  position: 'absolute',
-  top: '25%',
-};
-
-const DRAWER_SCROLLVIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: '100%' };
-const POWER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center', marginRight: 8 };
-const CENTER_CONTAINER_STYLE: ViewStyle = { justifyContent: 'center' };
-
-type RouteNameProps = {
-  home: string | React.ReactElement;
-  profile: string | React.ReactElement;
-  transactionList: string | React.ReactElement;
-  paymentInitiation: string | React.ReactElement;
-  paymentList: string | React.ReactElement;
-  welcome: string | React.ReactElement;
-  oauth: string | React.ReactElement;
-  marketplace: string | React.ReactElement;
-  supportContact: string | React.ReactElement;
-  bank: string | React.ReactElement;
-};
 
 export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
@@ -113,6 +49,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     marketplace: translate('marketPlaceScreen.title'),
     supportContact: translate('supportContactScreen.title'),
     bank: translate('logoutScreen.swan'),
+    partners: translate('partnersScreen.title'),
   };
 
   const IconRoute: RouteNameProps = {
@@ -126,6 +63,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
     supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
     bank: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
+    partners: <FontAwesomeIcon name='handshake-o' size={22} color={color.palette.secondaryColor} />,
   };
 
   return (
@@ -141,7 +79,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
-          {props.state.routes.slice(0, 8).map((route: any) => {
+          {props.state.routes.map((route: any) => {
             const routeTitle = TitleRoute[route.name];
             if (routeTitle === undefined) {
               return null;
