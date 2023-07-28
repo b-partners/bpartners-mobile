@@ -358,10 +358,15 @@
     "delete": "Supprimer",
     "edit": "Modifier",
     "send": "Envoyer le devis",
-    "invoice": "facture",
+    "quotation": "Devis",
+    "invoice": "Facture",
     "sendInvoice": "Envoyer la facture",
     "savedFile": "Fichier enregistrer sous",
     "previewQuotation": "Aperçu du devis",
+    "email": {
+      "quotation": "Ci-joint le devis",
+      "invoice": "Ci-joint la facture"
+    },
     "action": {
       "downloadedSuccessFully": "Fichier téléchargé",
       "sendMeACopy": "M'ajouter en copie de cet e-mail",
@@ -422,6 +427,23 @@
     "code": "Code de confirmation",
     "newPassword": "Nouveau mot de passe",
     "confirm": "Confirmez le mot de passe"
+  },
+  "partnersScreen": {
+    "title": "Nos Partenaires",
+    "bank": {
+      "labelOne": "Besoin d'un",
+      "labelTwo": "compte bancaire ?",
+      "textOne": "Découvrez la BRED, la banque",
+      "textTwo": "100% conseil.",
+      "button": "Je découvre la BRED"
+    },
+    "insurance": {
+      "labelOne": "Besoin d'une assurance adaptée",
+      "labelTwo": "À votre activité professionnelle ?",
+      "textOne": "Découvrez l'assurance",
+      "textTwo": "multirisque pro!",
+      "button": "Je fais une simulation"
+    }
   },
   "bottomTab": {
     "account": "Comptes",
