@@ -95,7 +95,7 @@ type RouteNameProps = {
   oauth: string | React.ReactElement;
   marketplace: string | React.ReactElement;
   supportContact: string | React.ReactElement;
-  bridge: string | React.ReactElement;
+  bank: string | React.ReactElement;
 };
 
 export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
@@ -112,7 +112,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     oauth: translate('signInScreen.title'),
     marketplace: translate('marketPlaceScreen.title'),
     supportContact: translate('supportContactScreen.title'),
-    bridge: translate('logoutScreen.swan'),
+    bank: translate('logoutScreen.swan'),
   };
 
   const IconRoute: RouteNameProps = {
@@ -125,7 +125,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     oauth: <IoniconIcon name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
     marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
     supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
-    bridge: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
+    bank: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
   };
 
   return (

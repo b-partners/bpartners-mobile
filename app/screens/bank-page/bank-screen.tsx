@@ -28,7 +28,7 @@ const HEADER_TITLE: TextStyle = {
   textAlign: 'center',
 };
 
-export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>> = observer(({ navigation }) => {
+export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bank'>> = observer(({ navigation }) => {
   const { authStore } = useStores();
   const { currentAccount } = authStore;
 
@@ -36,10 +36,12 @@ export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bridge'>> = o
     <ErrorBoundary catchErrors='always'>
       <View style={FULL}>
         <GradientBackground colors={['#422443', '#281b34']} />
-        <Screen style={CONTAINER} preset='auto'>
-          <Header headerTx='logoutScreen.swan' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
-          {currentAccount.bank ? <Bank currentAccount={currentAccount} /> : <NoBank />}
-        </Screen>
+        {
+          <Screen style={CONTAINER} preset='auto'>
+            <Header headerTx='logoutScreen.swan' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
+            {currentAccount.bank ? <Bank currentAccount={currentAccount} /> : <NoBank />}
+          </Screen>
+        }
       </View>
     </ErrorBoundary>
   );

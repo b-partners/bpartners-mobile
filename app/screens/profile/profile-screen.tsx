@@ -36,14 +36,13 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
   const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [accountHolder, setAccountHolder] = useState<AccountHolder>();
 
-  let accountHolder: AccountHolder;
   useEffect(() => {
     if (currentAccountHolder) {
-      accountHolder = currentAccountHolder;
+      setAccountHolder(currentAccountHolder);
     } else {
-      // @ts-ignore
-      accountHolder = {
+      setAccountHolder({
         name: '',
         siren: '',
         officialActivityName: '',
@@ -58,20 +57,23 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           secondary: '',
         },
         companyInfo: {
-          socialCapital: 0,
+          socialCapital: null,
         },
         revenueTargets: {
+          // @ts-ignore
           year: 0,
           amountTarget: null,
           amountAttempted: null,
           amountAttemptedPercent: null,
           updatedAt: null,
         },
-      };
+      });
     }
   }, []);
 
   const country = accountHolder?.contactAddress?.country;
+  const socialCapital = accountHolder?.companyInfo?.socialCapital;
+  const amountTarget = accountHolder?.revenueTargets[0]?.amountTarget;
 
   // TODO: change filename
   return (
@@ -167,11 +169,11 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.companyInfo.socialCapital'
-            text={printCurrency(accountHolder?.companyInfo?.socialCapital)}
+            text={isNaN(socialCapital) ? 'Aucune information' : printCurrency(socialCapital)}
           />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.revenueTargets.amountTarget'
-            text={printCurrency(accountHolder?.revenueTargets[0]?.amountTarget)}
+            text={isNaN(amountTarget) ? 'Aucune information' : printCurrency(amountTarget)}
           />
           <LabelWithTextRow
             label='profileScreen.fields.accountHolder.contactAddress.country'

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { PieChart } from 'react-native-gifted-charts';
-import Snackbar from 'react-native-snackbar';
 
-import { Text } from '../../../components';
-// import { Icon, Text } from '../../../components';
+import { Icon, Text } from '../../../components';
+import { Menu, MenuItem } from '../../../components/menu/menu';
 import { TxKeyPath, translate } from '../../../i18n';
-import { TransactionSummary as ITransactionSummary } from '../../../models/entities/transaction-summary/transaction-summary';
+import { RevenueTarget } from '../../../models/entities/revenue-target/revenue-target';
+import { TransactionSummary as ITransactionSummary, Summary } from '../../../models/entities/transaction-summary/transaction-summary';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrency } from '../../../utils/money';
@@ -38,11 +38,11 @@ const COLORS = [
   palette.deepPurple,
 ];
 
-const FILTERED_KEYS = ['id', 'month', 'updatedAt'];
-
 type DonutChartProps = {
-  summary: ITransactionSummary;
+  monthSummary: Summary;
+  yearSummary: ITransactionSummary;
   balance: number;
+  target: RevenueTarget;
 };
 
 const TITLE_CONTAINER_STYLE: ViewStyle = {
@@ -61,63 +61,95 @@ const SUMMARY_TITLE_STYLE: TextStyle = {
 };
 
 export const DonutChart: React.FC<DonutChartProps> = props => {
-  const { summary, balance } = props;
+  const { yearSummary, monthSummary /*, balance, target */ } = props;
+  const [isMonthSummary, setIsMonthSummary] = useState(false);
+  const [summary, setSummary] = useState({
+    income: yearSummary.annualIncome,
+    outcome: yearSummary.annualOutcome,
+    cashFlow: yearSummary.annualCashFlow,
+  });
 
-  const showSnackbar = () => {
-    Snackbar.show({
-      text: 'Cette fonctionnalité est encore en construction',
-      duration: Snackbar.LENGTH_LONG,
-      numberOfLines: 3,
-      textColor: 'white',
-      backgroundColor: palette.secondaryColor,
-      action: {
-        text: 'X',
-        textColor: 'white',
-        onPress: () => Snackbar.dismiss(),
-      },
+  const monthlyView = () => {
+    setSummary({
+      income: monthSummary.income,
+      outcome: monthSummary.outcome,
+      cashFlow: monthSummary.cashFlow,
     });
+    setIsMonthSummary(true);
   };
+
+  const annualView = () => {
+    setSummary({
+      income: yearSummary.annualIncome,
+      outcome: yearSummary.annualOutcome,
+      cashFlow: yearSummary.annualCashFlow,
+    });
+    setIsMonthSummary(false);
+  };
+
+  const items: MenuItem[] = [
+    { id: 'month', title: translate('homeScreen.summary.monthMenu') },
+    { id: 'year', title: translate('homeScreen.summary.yearMenu') },
+  ];
 
   return (
     <View>
       <View style={TITLE_CONTAINER_STYLE}>
-        <Text tx='homeScreen.summary.title' style={SUMMARY_TITLE_STYLE} />
-        <TouchableOpacity onPress={() => showSnackbar()}>{/*<Icon icon='settings' />*/}</TouchableOpacity>
+        <View style={{ flexDirection: 'row' }}>
+          <Text tx='homeScreen.summary.title' style={SUMMARY_TITLE_STYLE} />
+          <Text
+            tx={isMonthSummary ? 'homeScreen.summary.monthly' : 'homeScreen.summary.annual'}
+            style={{
+              color: color.palette.secondaryColor,
+              fontFamily: 'Geometria-Heavy',
+              marginLeft: spacing[4],
+            }}
+          />
+        </View>
+        <TouchableOpacity>
+          <Menu
+            items={items}
+            actions={{
+              month: () => monthlyView(),
+              year: () => annualView(),
+            }}
+          >
+            <Icon icon='settings' />
+          </Menu>
+        </TouchableOpacity>
       </View>
       <View style={CHART_CONTAINER}>
         <View style={{ width: '30%', justifyContent: 'center' }}>
-          {Object.keys(summary)
-            .filter(key => !FILTERED_KEYS.includes(key))
-            .map((item, i) => {
-              return (
-                <View style={LABEL_CONTAINER_STYLE} key={item}>
-                  <View style={LABEL_COLOR_STYLE(COLORS[i])} />
-                  <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
-                    {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(item === 'cashFlow' ? balance : summary[item])}
-                  </Text>
-                </View>
-              );
-            })}
+          {Object.keys(summary).map((item, i) => {
+            return (
+              <View style={LABEL_CONTAINER_STYLE} key={item}>
+                <View style={LABEL_COLOR_STYLE(COLORS[i])} />
+                <Text style={{ color: '#989FB3', fontFamily: 'Geometria' }}>
+                  {translate(`homeScreen.summary.${item}` as TxKeyPath)}: {printCurrency(summary[item])}
+                </Text>
+              </View>
+            );
+          })}
         </View>
         <View style={{ width: '70%', height: '100%', justifyContent: 'flex-start', alignItems: 'center' }}>
           <View style={{ height: 120, width: 240 }}>
-            <PieChart
-              donut
-              semiCircle
-              radius={120}
-              showText
-              innerRadius={65}
-              data={[
-                ...Object.keys(summary)
-                  .filter(key => !FILTERED_KEYS.includes(key))
-                  .map((key, i) => {
+            {
+              <PieChart
+                donut
+                semiCircle
+                radius={120}
+                showText
+                innerRadius={65}
+                data={[
+                  ...Object.keys(summary).map((key, i) => {
                     return {
                       value: summary[key],
                       color: COLORS[i],
                     };
                   }),
-              ]}
-            />
+                ]}
+              />
+            }
           </View>
         </View>
       </View>

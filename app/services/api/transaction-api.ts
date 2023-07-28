@@ -37,12 +37,16 @@ export class TransactionApi {
       if (problem) throw new Error(problem.kind);
     }
 
-    const { year: transactionSummaryYear, summary } = response.data;
+    const transactionSummary = response.data;
+
+    transactionSummary.summary.forEach(item => {
+      item.updatedAt = item.updatedAt ? new Date(item.updatedAt) : null;
+    });
+    transactionSummary.updatedAt = new Date(transactionSummary.updatedAt);
 
     return {
       kind: 'ok',
-      year: transactionSummaryYear,
-      summary: summary.map(item => ({ ...item, updatedAt: item.updatedAt && new Date(item.updatedAt) })),
+      transactionSummary: transactionSummary,
     };
   }
 

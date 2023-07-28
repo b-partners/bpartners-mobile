@@ -6,6 +6,7 @@ import { Snackbar } from 'react-native-paper';
 import { Button } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
+import { InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { TabNavigatorParamList } from '../../../navigators';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -15,9 +16,10 @@ type InvoiceCreationProps = {
   navigation: MaterialTopTabNavigationProp<TabNavigatorParamList, 'invoices', undefined>;
   navigationState: boolean;
   setNavigationState: React.Dispatch<React.SetStateAction<boolean>>;
+  invoiceStatus?: string;
 };
 export const InvoiceCreationButton: React.FC<InvoiceCreationProps> = props => {
-  const { navigationState, setNavigationState, navigation } = props;
+  const { navigationState, setNavigationState, navigation, invoiceStatus } = props;
   const { invoiceStore } = useStores();
 
   return (
@@ -44,7 +46,11 @@ export const InvoiceCreationButton: React.FC<InvoiceCreationProps> = props => {
           textStyle={BUTTON_TEXT_STYLE}
           onPress={() => {
             invoiceStore.saveInvoiceInit();
-            navigation.navigate('invoiceForm');
+            invoiceStatus === InvoiceStatus.PROPOSAL
+              ? navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.PROPOSAL })
+              : invoiceStatus === InvoiceStatus.CONFIRMED
+              ? navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED })
+              : navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.DRAFT });
           }}
         />
       )}

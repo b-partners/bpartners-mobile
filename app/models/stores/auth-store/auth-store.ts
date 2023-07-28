@@ -144,13 +144,13 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    getAccountSuccess: (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
+    getAccountSuccess: async (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
       self.currentAccount = { ...currentAccount };
       self.currentAccountHolder = { ...currentAccountHolder };
 
-      save('currentUser', currentUser);
-      save('currentAccount', currentAccount);
-      save('currentAccountHolder', currentAccountHolder);
+      await save('currentUser', currentUser);
+      await save('currentAccount', currentAccount);
+      await save('currentAccountHolder', currentAccountHolder);
     },
   }))
   .actions(self => ({

@@ -187,7 +187,7 @@
     "title": "Accueil",
     "labels": {
       "collectPayment": "Collecter un paiement",
-      "balance": "Solde au",
+      "balance": "solde du compte d’encaissement",
       "activity": "Activité",
       "quotationAndInvoice": "Devis / Facture",
       "payment": "Virement",
@@ -200,11 +200,15 @@
     "summary": {
       "title": "Mes chiffres",
       "goals": "Objectif",
-      "income": "Recettes",
-      "outcome": "Dépenses",
+      "income": "Encaissement",
+      "outcome": "Décaissement",
       "cashFlow": "Trésorerie",
       "boostMyResult": "Booster mes résultats",
-      "lastTransactions": "Dernières Transactions"
+      "lastTransactions": "Dernières Transactions",
+      "monthMenu": "Vue mensuelle",
+      "yearMenu": "Vue annuelle",
+      "monthly": "(ce mois)",
+      "annual": "(cette année)"
     }
   },
   "invoiceScreen": {
@@ -223,7 +227,9 @@
       "toPayAt": "Limite de paiement",
       "invoiceForm": "Créer un devis",
       "invoicePreview": "Aperçu du devis",
-      "comment": "Commentaire"
+      "comment": "Commentaire",
+      "requestTitle": "Demande d'avis",
+      "sendRequest": "Envoyer une demande d'avis à"
     },
     "status": {
       "PAID": "Payée",
@@ -242,6 +248,7 @@
     "menu": {
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
+      "markAsPaid": "Marquer comme payée",
       "downloadInvoice": "Télécharger la facture ",
       "editDraft": "Modifier le brouillon"
     },
@@ -341,6 +348,7 @@
       "maturityDate": "Date limite de paiement",
       "comment": "Commentaire",
       "restToBePaid": "Reste à payer",
+      "restText": "Le reste à payer un mois après le dernier paiement, change en fonction des acomptes que vous créerez",
       "invalidPercent": "Le pourcentage est supérieur à 100%"
     },
     "invoicePreview": "Aperçu du devis"
