@@ -373,12 +373,14 @@
     "delete": "Delete",
     "edit": "Edit",
     "send": "Send this quotation",
-    "invoice": "invoice",
+    "quotation": "Quotation",
+    "invoice": "Invoice",
     "sendInvoice": "Send this invoice",
     "savedFile": "File saved under",
     "previewQuotation": "Preview quotation",
     "email": {
-      "body": "Ci-joint la facture"
+      "quotation": "Enclosed the quotation",
+      "invoice": "Enclosed invoice"
     },
     "action": {
       "downloadedSuccessFully": "File downloaded",

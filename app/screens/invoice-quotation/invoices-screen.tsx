@@ -83,7 +83,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   };
 
   const sendInvoice = async (item: IInvoice) => {
-    await sendEmail(authStore, item);
+    await sendEmail(authStore, item, true);
   };
 
   const markAsPaid = async (item: IInvoice) => {

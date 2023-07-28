@@ -358,10 +358,15 @@
     "delete": "Supprimer",
     "edit": "Modifier",
     "send": "Envoyer le devis",
-    "invoice": "facture",
+    "quotation": "Devis",
+    "invoice": "Facture",
     "sendInvoice": "Envoyer la facture",
     "savedFile": "Fichier enregistrer sous",
     "previewQuotation": "Aperçu du devis",
+    "email": {
+      "quotation": "Ci-joint le devis",
+      "invoice": "Ci-joint la facture"
+    },
     "action": {
       "downloadedSuccessFully": "Fichier téléchargé",
       "sendMeACopy": "M'ajouter en copie de cet e-mail",
