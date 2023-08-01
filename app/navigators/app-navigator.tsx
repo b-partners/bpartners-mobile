@@ -19,26 +19,27 @@ import { useStores } from '../models';
 import { Invoice, InvoiceStatus } from '../models/entities/invoice/invoice';
 import {
   BankScreen,
+  ChangePasswordScreen,
+  CodeExchangeScreen,
   ErrorBoundary,
+  ForgotPasswordScreen,
   HomeScreen,
+  InvoiceFormScreen,
+  InvoicePreviewScreen,
+  InvoicesScreen,
   LegalFileScreen,
+  MarketPlaceScreen,
+  PartnersScreen,
   PaymentInitiationScreen,
+  PaymentListScreen,
   ProfileScreen,
+  ProspectScreen,
+  RegistrationScreen,
+  ResetPasswordScreen,
+  SupportContactScreen,
   TransactionListScreen,
   WelcomeScreen,
 } from '../screens';
-import { ChangePasswordScreen } from '../screens/change-password/change-password-screen';
-import { CodeExchangeScreen } from '../screens/code-exchange/code-exchange-screen';
-import { ForgotPasswordScreen } from '../screens/forgot-password/forgot-password-screen';
-import { ResetPasswordScreen } from '../screens/forgot-password/reset-password-screen';
-import { InvoiceFormScreen } from '../screens/invoice-form/invoice-form-screen';
-import { InvoicePreviewScreen } from '../screens/invoice-preview/invoice-preview-screen';
-import { InvoicesScreen } from '../screens/invoice-quotation/invoices-screen';
-import { MarketPlaceScreen } from '../screens/marketplace/marketplace-screen';
-import { PaymentListScreen } from '../screens/payment-list/payment-list-screen';
-import { ProspectScreen } from '../screens/prospect/prospect-screen';
-import { RegistrationScreen } from '../screens/registration/registration-screen';
-import { SupportContactScreen } from '../screens/support-contact/support-contact-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
 /**
@@ -74,6 +75,7 @@ export type NavigatorParamList = {
     invoice: Invoice;
   };
   bank: undefined;
+  partners: undefined;
   changePassword: {
     userName: string;
     password: string;
@@ -119,6 +121,8 @@ const AppStack = observer(function () {
   const hasUser = currentUser && !!currentUser?.id;
   const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
   const isAuthenticated = !!accessToken && hasAccount && hasUser;
+  const shouldApproveLegalFiles = (accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles);
+  const isAvalaible = isAuthenticated && hasApprovedLegalFiles;
 
   return (
     <Drawer.Navigator
@@ -131,11 +135,11 @@ const AppStack = observer(function () {
       initialRouteName={accessToken ? 'home' : 'welcome'}
       drawerContent={props => <BPDrawer {...props} />}
     >
-      {(accessToken && hasUser && !hasApprovedLegalFiles) || (isAuthenticated && !hasApprovedLegalFiles) ? (
+      {shouldApproveLegalFiles ? (
         <>
           <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
-      ) : isAuthenticated && hasApprovedLegalFiles ? (
+      ) : isAvalaible ? (
         <>
           <Drawer.Screen name='home' component={AppTabStack} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
@@ -144,6 +148,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='bank' component={BankScreen} />
+          <Drawer.Screen name='partners' component={PartnersScreen} />
         </>
       ) : (
         <>
