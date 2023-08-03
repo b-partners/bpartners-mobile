@@ -105,6 +105,8 @@ export const Transaction = (
               backgroundColor: color.palette.white,
               borderRadius: 25,
               paddingHorizontal: spacing[4],
+              borderWidth: 2,
+              borderColor: 'red',
             }}
             selectedItemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
             itemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria' }}
