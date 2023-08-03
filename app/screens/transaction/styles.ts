@@ -2,6 +2,7 @@ import { TextStyle, ViewStyle } from 'react-native';
 
 import { TransactionType } from '../../models/entities/transaction-category/transaction-category';
 import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 
 export const TRANSACTION_AMOUNT = (transactionType: TransactionType): TextStyle => ({
   fontSize: 19,
@@ -16,6 +17,8 @@ export const LIST_CONTAINER: ViewStyle = {
   flexDirection: 'column',
   paddingVertical: spacing[2],
   marginTop: spacing[2],
+  borderBottomWidth: 1,
+  borderColor: palette.lighterGrey,
 };
 export const TRANSACTION_LEFT_SIDE: ViewStyle = {
   flex: 2,
