@@ -1,8 +1,8 @@
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { TransactionType } from '../../models/entities/transaction-category/transaction-category';
-import { color, spacing } from '../../theme';
-import { palette } from '../../theme/palette';
+import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
+import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 
 export const TRANSACTION_AMOUNT = (transactionType: TransactionType): TextStyle => ({
   fontSize: 19,
