@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import React, { PropsWithoutRef, useState } from 'react';
+import React, { PropsWithoutRef } from 'react';
 import { Platform, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
@@ -9,9 +9,9 @@ import { useStores } from '../../../models';
 import { TransactionCategory, TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { ICON_CONTAINER_STYLE, ICON_STYLE, LIST_CONTAINER, TRANSACTION_ACTIONS, TRANSACTION_BOTTOM_SIDE } from '../utils/styles';
-import { TransactionModal } from './transaction-modal';
 
 const TRANSACTION_CATEGORY_LABEL_CONTAINER: ViewStyle = {
   display: 'flex',
@@ -28,14 +28,19 @@ const TRANSACTION_CATEGORY_LABEL_LEFT_ITEM: ViewStyle = { flex: 10 };
 const TRANSACTION_CATEGORY_LABEL_RIGHT_ITEM: TextStyle = { color: color.palette.white, flex: 1 };
 
 export const Transaction = (
-  props: PropsWithoutRef<{ item: ITransaction; transactionCategories: TransactionCategory[]; showTransactionCategory?: boolean }>
+  props: PropsWithoutRef<{
+    item: ITransaction;
+    transactionCategories: TransactionCategory[];
+    showTransactionCategory?: boolean;
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setCurrentTransaction: React.Dispatch<React.SetStateAction<ITransaction>>;
+  }>
 ) => {
   const { transactionStore } = useStores();
 
-  const { item, transactionCategories } = props;
+  const { item, transactionCategories, setShowModal, setCurrentTransaction } = props;
 
   const filteredTransactionCategories = cloneDeep(transactionCategories).filter(category => category.transactionType === item.type);
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <View style={LIST_CONTAINER}>
@@ -105,7 +110,7 @@ export const Transaction = (
               borderRadius: 25,
               paddingHorizontal: spacing[4],
               borderWidth: 2,
-              borderColor: 'red',
+              borderColor: palette.solidGrey,
             }}
             selectedItemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
             itemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria' }}
@@ -131,12 +136,16 @@ export const Transaction = (
           <TouchableOpacity style={ICON_CONTAINER_STYLE}>
             {/*<Icon icon={item.category && item.category.id ? 'check' : 'unchecked'} style={ICON_STYLE} />*/}
           </TouchableOpacity>
-          <TouchableOpacity style={ICON_CONTAINER_STYLE} onPress={() => setShowModal(true)}>
+          <TouchableOpacity
+            style={ICON_CONTAINER_STYLE}
+            onPress={() => {
+              setCurrentTransaction(item), setShowModal(true);
+            }}
+          >
             {<Icon icon='settings' style={ICON_STYLE} />}
           </TouchableOpacity>
         </View>
       </View>
-      <TransactionModal showModal={showModal} setShowModal={setShowModal} />
     </View>
   );
 };
