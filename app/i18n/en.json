@@ -100,7 +100,7 @@
     "title": "Transactions",
     "balance": "Balance",
     "reference": "Reference",
-    "associate": "Associate a quote",
+    "associate": "Associate a document",
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",

@@ -2,14 +2,29 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 import { TransactionCategoryModel } from '../transaction-category/transaction-category';
 
+export enum TransactionStatus {
+  PENDING = 'PENDING',
+  UPCOMING = 'UPCOMING',
+  BOOKED = 'BOOKED',
+  REJECTED = 'REJECTED',
+  UNKNOWN = 'UNKNOWN',
+}
+
+export const TransactionInvoiceModel = types.model('TransactionInvoice').props({
+  invoiceId: types.maybeNull(types.string),
+  fileId: types.maybeNull(types.string),
+});
+
 export const TransactionModel = types.model('Transaction').props({
-  id: types.maybe(types.maybeNull(types.string)),
-  label: types.maybe(types.maybeNull(types.string)),
-  reference: types.maybe(types.maybeNull(types.string)),
-  amount: types.maybe(types.maybeNull(types.number)),
-  category: types.maybe(types.maybeNull(TransactionCategoryModel)),
-  type: types.maybe(types.maybeNull(types.string)),
-  paymentDatetime: types.maybe(types.maybeNull(types.string)),
+  id: types.maybeNull(types.string),
+  amount: types.maybeNull(types.number),
+  label: types.maybeNull(types.string),
+  reference: types.maybeNull(types.string),
+  paymentDatetime: types.maybeNull(types.string),
+  category: types.maybeNull(TransactionCategoryModel),
+  type: types.maybeNull(types.string),
+  status: types.maybeNull(types.enumeration(Object.values(TransactionStatus))),
+  invoice: types.maybeNull(TransactionInvoiceModel),
 });
 
 export interface Transaction extends Instance<typeof TransactionModel> {}
@@ -25,4 +40,7 @@ export const createTransactionDefaultModel = () =>
     amount: null,
     paymentDatetime: null,
     category: null,
+    type: null,
+    status: TransactionStatus.UNKNOWN,
+    invoice: null,
   });
