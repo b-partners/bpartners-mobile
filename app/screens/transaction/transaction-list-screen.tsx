@@ -30,7 +30,7 @@ const FLAT_LIST: ViewStyle = {
 
 export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
   const { transactionStore, authStore, invoiceStore } = useStores();
-  const { invoice, loading } = invoiceStore;
+  const { invoice, loading, invoices } = invoiceStore;
 
   const { availableBalance } = authStore.currentAccount;
 
@@ -74,7 +74,14 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           )}
         </Screen>
         {currentTransaction && (
-          <TransactionModal showModal={showModal} setShowModal={setShowModal} currentTransaction={currentTransaction} invoice={invoice} loading={loading} />
+          <TransactionModal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            currentTransaction={currentTransaction}
+            invoice={invoice}
+            loading={loading}
+            invoices={invoices}
+          />
         )}
       </View>
     </ErrorBoundary>
