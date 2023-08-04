@@ -141,11 +141,12 @@ export const Transaction = (
           <TouchableOpacity
             style={ICON_CONTAINER_STYLE}
             onPress={async () => {
+              invoiceStore.resetInvoice();
+              setCurrentTransaction(item);
+              setShowModal(true);
               if (item.invoice) {
                 await handleAsyncRequest<Invoice>(() => invoiceStore.getInvoice(item.invoice.invoiceId));
               }
-              setCurrentTransaction(item);
-              setShowModal(true);
             }}
           >
             {<Icon icon='settings' style={ICON_STYLE} />}
