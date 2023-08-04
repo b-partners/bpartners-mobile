@@ -27,7 +27,8 @@
     "added": "Ajouté avec succès",
     "edit": "Modifier",
     "register": "ENREGISTRER",
-    "noComment": "Aucun Commentaire"
+    "noComment": "Aucun Commentaire",
+    "noInformation": "Aucune information"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -54,6 +55,7 @@
   "transactionListScreen": {
     "title": "Transactions",
     "balance": "Balance",
+    "reference": "Référence",
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",

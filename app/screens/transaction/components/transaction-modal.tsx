@@ -3,6 +3,7 @@ import { Modal, TouchableOpacity, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 import { AutoImage, Text } from '../../../components';
+import { translate } from '../../../i18n';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
@@ -100,6 +101,39 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
                 />
               </View>
             </View>
+          </View>
+        </View>
+        <View style={{ width: '100%', height: 200, marginTop: spacing[4] }}>
+          <View
+            style={{
+              height: 60,
+              marginHorizontal: '5%',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Text
+              tx={'transactionListScreen.reference'}
+              style={{
+                fontSize: 11,
+                color: palette.lightGrey,
+                fontFamily: 'Geometria-Bold',
+                width: '100%',
+                textTransform: 'uppercase',
+                marginVertical: 5,
+              }}
+            />
+            <Text
+              text={currentTransaction.reference ?? translate('common.noInformation')}
+              style={{
+                width: '100%',
+                fontSize: 15,
+                color: palette.darkBlack,
+                fontFamily: 'Geometria',
+                marginVertical: 5,
+              }}
+            />
           </View>
         </View>
       </View>
