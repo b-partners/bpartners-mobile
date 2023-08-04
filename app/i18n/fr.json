@@ -56,6 +56,7 @@
     "title": "Transactions",
     "balance": "Balance",
     "reference": "Référence",
+    "associate": "Associer un devis",
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",
