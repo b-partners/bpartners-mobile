@@ -15,6 +15,7 @@ export const InvoiceStoreModel = types
     invoice: types.optional(InvoiceModel, {}),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
+    loading: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
   })
   .extend(withRootStore)
@@ -88,6 +89,8 @@ export const InvoiceStoreModel = types
   }))
   .actions(self => ({
     getInvoice: flow(function* (invoiceId: string) {
+      detach(self.invoice);
+      self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
@@ -95,6 +98,8 @@ export const InvoiceStoreModel = types
         return getInvoiceResult.invoice;
       } catch (e) {
         self.getInvoiceFail(e);
+      } finally {
+        self.loading = false;
       }
     }),
   }))

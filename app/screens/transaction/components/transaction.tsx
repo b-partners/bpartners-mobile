@@ -6,10 +6,12 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { Dropdown, Icon, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
+import { Invoice } from '../../../models/entities/invoice/invoice';
 import { TransactionCategory, TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { handleAsyncRequest } from '../../../utils/asyncRequest';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { ICON_CONTAINER_STYLE, ICON_STYLE, LIST_CONTAINER, TRANSACTION_ACTIONS, TRANSACTION_BOTTOM_SIDE } from '../utils/styles';
 
@@ -36,7 +38,7 @@ export const Transaction = (
     setCurrentTransaction: React.Dispatch<React.SetStateAction<ITransaction>>;
   }>
 ) => {
-  const { transactionStore } = useStores();
+  const { transactionStore, invoiceStore } = useStores();
 
   const { item, transactionCategories, setShowModal, setCurrentTransaction } = props;
 
@@ -138,8 +140,12 @@ export const Transaction = (
           </TouchableOpacity>
           <TouchableOpacity
             style={ICON_CONTAINER_STYLE}
-            onPress={() => {
-              setCurrentTransaction(item), setShowModal(true);
+            onPress={async () => {
+              if (item.invoice) {
+                await handleAsyncRequest<Invoice>(() => invoiceStore.getInvoice(item.invoice.invoiceId));
+              }
+              setCurrentTransaction(item);
+              setShowModal(true);
             }}
           >
             {<Icon icon='settings' style={ICON_STYLE} />}
