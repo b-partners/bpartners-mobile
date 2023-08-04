@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
@@ -14,6 +14,7 @@ import { Transaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
+import { InvoiceSelectionModal } from './invoice-selection-modal';
 import { TransactionField } from './transaction-field';
 
 type PaymentModalProps = {
@@ -22,10 +23,11 @@ type PaymentModalProps = {
   currentTransaction: Transaction;
   invoice: Invoice;
   loading: boolean;
+  invoices: Invoice[];
 };
 
 export const TransactionModal: React.FC<PaymentModalProps> = props => {
-  const { currentTransaction, showModal, setShowModal, invoice, loading } = props;
+  const { currentTransaction, showModal, setShowModal, invoice, loading, invoices } = props;
 
   const closeModal = () => {
     setShowModal(false);
@@ -33,6 +35,7 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
   const dateStr = currentTransaction.paymentDatetime;
   const dateObj = new Date(dateStr);
   const dateFormat = dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+  const [isVisible, setVisible] = useState(false);
 
   return (
     <Modal animationType='slide' transparent={true} visible={showModal} onRequestClose={closeModal} style={{ height: '100%', width: '100%' }}>
@@ -144,7 +147,7 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
             />
           </View>
           <View style={{ height: 100, width: '90%', alignSelf: 'center', marginTop: spacing[4] }}>
-            <TouchableOpacity style={NAVIGATION_STYLE}>
+            <TouchableOpacity style={NAVIGATION_STYLE} onPress={() => setVisible(true)}>
               <View style={ICON_CONTAINER_STYLE}>
                 <SimpleLineIcons name='paper-clip' size={18} color={palette.secondaryColor} />
               </View>
@@ -176,6 +179,7 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
           </View>
         </View>
       </View>
+      <InvoiceSelectionModal showModal={isVisible} setShowModal={setVisible} invoices={invoices} />
     </Modal>
   );
 };
