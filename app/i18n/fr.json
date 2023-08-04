@@ -56,7 +56,10 @@
     "title": "Transactions",
     "balance": "Balance",
     "reference": "Référence",
+    "titleLabel": "Titre",
+    "total": "total",
     "associate": "Associer un document",
+    "associatedLabel": "Document associé",
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",
