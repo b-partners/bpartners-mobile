@@ -1,8 +1,11 @@
 import React from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { AutoImage, Text } from '../../../components';
+import { ICON_CONTAINER_STYLE, NAVIGATION_STYLE, TEXT_CONTAINER_STYLE, TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction } from '../../../models/entities/transaction/transaction';
@@ -103,7 +106,7 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
             </View>
           </View>
         </View>
-        <View style={{ width: '100%', height: 200, marginTop: spacing[4] }}>
+        <View style={{ width: '100%', height: 200, marginTop: spacing[4], flexDirection: 'column' }}>
           <View
             style={{
               height: 60,
@@ -134,6 +137,19 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
                 marginVertical: 5,
               }}
             />
+          </View>
+          <View style={{ height: 100, width: '90%', alignSelf: 'center', marginTop: spacing[4] }}>
+            <TouchableOpacity style={NAVIGATION_STYLE}>
+              <View style={ICON_CONTAINER_STYLE}>
+                <SimpleLineIcons name='paper-clip' size={18} color={palette.secondaryColor} />
+              </View>
+              <View style={TEXT_CONTAINER_STYLE}>
+                <Text tx={'transactionListScreen.associate'} style={TEXT_STYLE} />
+              </View>
+              <View style={ICON_CONTAINER_STYLE}>
+                <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
