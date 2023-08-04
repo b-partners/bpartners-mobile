@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, TouchableOpacity, View } from 'react-native';
-// import { ProgressBar } from 'react-native-paper';
+import { ProgressBar } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -155,22 +155,24 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
                 <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
               </View>
             </TouchableOpacity>
-            {/*<ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />*/}
-            <View style={{ width: '100%', flexDirection: 'column', marginVertical: spacing[6] }}>
-              <Text
-                tx={'transactionListScreen.associatedLabel'}
-                style={{
-                  color: palette.lightGrey,
-                  fontFamily: 'Geometria-Bold',
-                  fontSize: 18,
-                  marginLeft: spacing[4],
-                  marginBottom: spacing[2],
-                }}
-              />
-              <TransactionField label='transactionListScreen.reference' text={invoice.ref} />
-              <TransactionField label='transactionListScreen.titleLabel' text={invoice.title} />
-              <TransactionField label='transactionListScreen.total' text={printCurrencyToMajors(invoice.totalPriceWithVat)} />
-            </View>
+            {loading && <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />}
+            {invoice.title && (
+              <View style={{ width: '100%', flexDirection: 'column', marginVertical: spacing[6] }}>
+                <Text
+                  tx={'transactionListScreen.associatedLabel'}
+                  style={{
+                    color: palette.lightGrey,
+                    fontFamily: 'Geometria-Bold',
+                    fontSize: 18,
+                    marginLeft: spacing[4],
+                    marginBottom: spacing[2],
+                  }}
+                />
+                <TransactionField label='transactionListScreen.reference' text={invoice.ref} />
+                <TransactionField label='transactionListScreen.titleLabel' text={invoice.title} />
+                <TransactionField label='transactionListScreen.total' text={printCurrencyToMajors(invoice.totalPriceWithVat)} />
+              </View>
+            )}
           </View>
         </View>
       </View>

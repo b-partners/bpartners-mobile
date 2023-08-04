@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid';
 import { withEnvironment, withRootStore } from '../..';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
-import { Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
+import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
 
 export const InvoiceStoreModel = types
@@ -150,6 +150,9 @@ export const InvoiceStoreModel = types
         customer: {},
         status: InvoiceStatus.DRAFT,
       });
+    },
+    resetInvoice: () => {
+      self.invoice = EMPTY_INVOICE;
     },
   }));
 
