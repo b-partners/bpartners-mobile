@@ -8,12 +8,14 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { AutoImage, Text } from '../../../components';
 import { ICON_CONTAINER_STYLE, NAVIGATION_STYLE, TEXT_CONTAINER_STYLE, TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
-import { Invoice } from '../../../models/entities/invoice/invoice';
+import { useStores } from '../../../models';
+import { Invoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { Transaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
+import { invoicePageSize } from '../../invoice-form/components/utils';
 import { InvoiceSelectionModal } from './invoice-selection-modal';
 import { TransactionField } from './transaction-field';
 
@@ -23,11 +25,12 @@ type PaymentModalProps = {
   currentTransaction: Transaction;
   invoice: Invoice;
   loading: boolean;
+  loadingInvoice: boolean;
   invoices: Invoice[];
 };
 
 export const TransactionModal: React.FC<PaymentModalProps> = props => {
-  const { currentTransaction, showModal, setShowModal, invoice, loading, invoices } = props;
+  const { currentTransaction, showModal, setShowModal, invoice, loading, invoices, loadingInvoice } = props;
 
   const closeModal = () => {
     setShowModal(false);
@@ -36,6 +39,13 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
   const dateObj = new Date(dateStr);
   const dateFormat = dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
   const [isVisible, setVisible] = useState(false);
+  const { invoiceStore } = useStores();
+
+  const openInvoiceSelection = async () => {
+    setVisible(true);
+    await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
+    await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, page: 1, pageSize: invoicePageSize });
+  };
 
   return (
     <Modal animationType='slide' transparent={true} visible={showModal} onRequestClose={closeModal} style={{ height: '100%', width: '100%' }}>
@@ -147,7 +157,7 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
             />
           </View>
           <View style={{ height: 100, width: '90%', alignSelf: 'center', marginTop: spacing[4] }}>
-            <TouchableOpacity style={NAVIGATION_STYLE} onPress={() => setVisible(true)}>
+            <TouchableOpacity style={NAVIGATION_STYLE} onPress={openInvoiceSelection}>
               <View style={ICON_CONTAINER_STYLE}>
                 <SimpleLineIcons name='paper-clip' size={18} color={palette.secondaryColor} />
               </View>
@@ -179,7 +189,7 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
           </View>
         </View>
       </View>
-      <InvoiceSelectionModal showModal={isVisible} setShowModal={setVisible} invoices={invoices} />
+      <InvoiceSelectionModal showModal={isVisible} setShowModal={setVisible} invoices={invoices} loading={loadingInvoice} />
     </Modal>
   );
 };

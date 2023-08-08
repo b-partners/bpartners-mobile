@@ -28,7 +28,7 @@ const FLAT_LIST: ViewStyle = {
 
 export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
   const { transactionStore, authStore, invoiceStore } = useStores();
-  const { invoice, loading, invoices, paidInvoices } = invoiceStore;
+  const { invoice, loading, invoices, paidInvoices, loadingInvoice } = invoiceStore;
   const combinedInvoices = invoices.concat(paidInvoices);
 
   const { availableBalance } = authStore.currentAccount;
@@ -79,6 +79,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
             currentTransaction={currentTransaction}
             invoice={invoice}
             loading={loading}
+            loadingInvoice={loadingInvoice}
             invoices={combinedInvoices}
           />
         )}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
@@ -14,10 +15,11 @@ type InvoiceSelectionModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   invoices: Invoice[];
+  loading: boolean;
 };
 
 export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props => {
-  const { showModal, setShowModal, invoices } = props;
+  const { showModal, setShowModal, invoices, loading } = props;
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -63,16 +65,22 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
               <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
             </TouchableOpacity>
           </View>
-          <View style={{ paddingVertical: spacing[2], height: '80%' }}>
-            <FlatList
-              data={displayedInvoices}
-              keyExtractor={item => item.id}
-              renderItem={({ item: current }) => {
-                return <InvoiceRow invoice={current} isSelected={current.id === selectedInvoice?.id} onSelect={() => setSelectedInvoice(current)} />;
-              }}
-              ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
-            />
-          </View>
+          {loading ? (
+            <View style={{ height: '80%', paddingTop: spacing[4] }}>
+              <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />
+            </View>
+          ) : (
+            <View style={{ paddingVertical: spacing[2], height: '80%' }}>
+              <FlatList
+                data={displayedInvoices}
+                keyExtractor={item => item.id}
+                renderItem={({ item: current }) => {
+                  return <InvoiceRow invoice={current} isSelected={current.id === selectedInvoice?.id} onSelect={() => setSelectedInvoice(current)} />;
+                }}
+                ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
+              />
+            </View>
+          )}
           <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
             <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
               {currentPage === 1 ? (
