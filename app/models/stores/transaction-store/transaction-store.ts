@@ -118,6 +118,16 @@ export const TransactionStoreModel = types
       yield self.getTransactions();
     }),
   }))
+  .actions(self => ({
+    associateTransaction: flow(function* (transactionId: string, invoiceId: string) {
+      const transactionApi = new TransactionApi(self.environment.api);
+      try {
+        yield transactionApi.associateTransaction(self.currentAccount.id, transactionId, invoiceId);
+      } catch (e) {
+        self.updateTransactionCategoryFail(e);
+      }
+    }),
+  }))
   .views(self => ({
     get categories() {
       return self.transactions.map(transaction => transaction.category);

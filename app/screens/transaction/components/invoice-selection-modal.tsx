@@ -4,23 +4,31 @@ import { ProgressBar } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-import { Button, Separator, Text } from '../../../components';
+import { Button, Loader, Separator, Text } from '../../../components';
+import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
+import { Transaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { showMessage } from '../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoice-quotation/styles';
+import { Error } from '../../welcome/utils/utils';
 import { InvoiceRow } from './invoice-row';
 
 type InvoiceSelectionModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setTransactionModal: React.Dispatch<React.SetStateAction<boolean>>;
   invoices: Invoice[];
   loading: boolean;
+  transaction: Transaction;
 };
 
 export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props => {
-  const { showModal, setShowModal, invoices, loading } = props;
+  const { showModal, setShowModal, invoices, loading, transaction, setTransactionModal } = props;
 
+  const { transactionStore } = useStores();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -29,7 +37,21 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
   const displayedInvoices = invoices.slice(startItemIndex, endItemIndex);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>();
   const maxPage = Math.ceil(invoices.length / itemsPerPage);
-
+  const [loadingCreation, setLoadingCreation] = useState(false);
+  const associate = async () => {
+    setLoadingCreation(true);
+    try {
+      await transactionStore.associateTransaction(transaction.id, selectedInvoice.id);
+      setShowModal(false);
+      setTransactionModal(false);
+      await transactionStore.getTransactions();
+    } catch (error) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      Error(translate('errors.somethingWentWrong'), error);
+    } finally {
+      setLoadingCreation(false);
+    }
+  };
   return (
     <Modal visible={showModal} animationType='fade' transparent={true} onRequestClose={() => setShowModal(false)}>
       <View
@@ -116,12 +138,26 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
               )}
             </View>
             <View style={{ width: '75%', justifyContent: 'center' }}>
-              <Button
-                tx='invoiceFormScreen.customerSelectionForm.validate'
-                style={BUTTON_INVOICE_STYLE}
-                textStyle={BUTTON_TEXT_STYLE}
-                onPress={() => setShowModal(false)}
-              />
+              {loadingCreation ? (
+                <Loader size={'large'} animating={true} />
+              ) : selectedInvoice ? (
+                <Button tx='invoiceFormScreen.customerSelectionForm.validate' style={BUTTON_INVOICE_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={associate} />
+              ) : (
+                <View
+                  style={{
+                    backgroundColor: palette.solidGrey,
+                    marginVertical: spacing[1],
+                    marginHorizontal: spacing[1],
+                    borderRadius: 40,
+                    paddingVertical: spacing[3],
+                    paddingHorizontal: spacing[2],
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text tx={'invoiceFormScreen.customerSelectionForm.validate'} style={{ fontSize: 14, color: palette.greyDarker }} />
+                </View>
+              )}
             </View>
           </View>
         </View>

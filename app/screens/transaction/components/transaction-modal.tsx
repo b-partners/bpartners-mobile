@@ -189,7 +189,14 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
           </View>
         </View>
       </View>
-      <InvoiceSelectionModal showModal={isVisible} setShowModal={setVisible} invoices={invoices} loading={loadingInvoice} />
+      <InvoiceSelectionModal
+        showModal={isVisible}
+        setShowModal={setVisible}
+        setTransactionModal={setShowModal}
+        invoices={invoices}
+        loading={loadingInvoice}
+        transaction={currentTransaction}
+      />
     </Modal>
   );
 };
