@@ -8,7 +8,7 @@ import { Invoice } from '../../../models/entities/invoice/invoice';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoice-quotation/styles';
-import InvoiceRow from './invoice-row';
+import { InvoiceRow } from './invoice-row';
 
 type InvoiceSelectionModalProps = {
   showModal: boolean;
@@ -52,7 +52,7 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
             <Text
-              tx={'transactionListScreen.title'}
+              tx={'paymentListScreen.tabs.invoices'}
               style={{
                 color: color.palette.lightGrey,
                 fontFamily: 'Geometria',

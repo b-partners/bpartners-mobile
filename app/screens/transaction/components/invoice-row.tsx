@@ -6,37 +6,40 @@ import { Text } from '../../../components';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { printCurrencyToMajors } from '../../../utils/money';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
 
-type TCustomerRow = {
+type InvoiceRowProps = {
   invoice: Invoice;
   onSelect: (invoice: Invoice) => void;
   isSelected?: boolean;
 };
 const CUSTOMER_NAME: TextStyle = {
-  color: palette.textClassicColor,
-  fontWeight: 'bold',
-  fontSize: 18,
-};
-const CUSTOMER_ROW_CONTAINER: ViewStyle = {
-  flex: 1,
-  flexDirection: 'row',
+  color: palette.lightGrey,
+  fontSize: 15,
+  marginLeft: spacing[2],
+  width: '100%',
 };
 
 const EDIT_BUTTON_STYLE: ViewStyle = { flex: 1, justifyContent: 'center', alignItems: 'flex-end' };
-const CustomerRow: FC<TCustomerRow> = props => {
+export const InvoiceRow: FC<InvoiceRowProps> = props => {
   const { invoice, onSelect, isSelected } = props;
   return (
-    <View style={{ ...CUSTOMER_ROW_CONTAINER, paddingVertical: spacing[2] }}>
-      <TouchableOpacity style={CUSTOMER_ROW_CONTAINER} onPress={() => onSelect(invoice)}>
+    <View style={{ width: '100%', flexDirection: 'row', paddingVertical: spacing[2] }}>
+      <TouchableOpacity style={{ width: '100%', flexDirection: 'row' }} onPress={() => onSelect(invoice)}>
         <>
-          <RadioButton isActive={isSelected} />
-          <Text text={invoice.title} style={{ ...CUSTOMER_NAME, marginLeft: spacing[2] }} numberOfLines={2} />
+          <View style={{ width: '10%', justifyContent: 'center', alignItems: 'center' }}>
+            <RadioButton isActive={isSelected} />
+          </View>
+          <View style={{ width: '65%', height: '100%' }}>
+            <Text text={invoice.title ?? '-'} style={CUSTOMER_NAME} numberOfLines={2} />
+          </View>
+          <View style={{ width: '25%', justifyContent: 'center', alignItems: 'flex-end', paddingRight: spacing[2] }}>
+            <Text text={printCurrencyToMajors(invoice.totalPriceWithVat)} style={{ color: palette.lightGrey, fontSize: 15, marginLeft: spacing[2] }} />
+          </View>
         </>
       </TouchableOpacity>
       <TouchableOpacity style={EDIT_BUTTON_STYLE}>{/*<Icon name={'pencil'} color={palette.greyDarker} size={20} />*/}</TouchableOpacity>
     </View>
   );
 };
-
-export default CustomerRow;
