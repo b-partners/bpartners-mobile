@@ -1,18 +1,8 @@
-import { TextStyle, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 
-import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
-export const TRANSACTION_AMOUNT = (transactionType: TransactionType): TextStyle => ({
-  fontSize: 19,
-  fontWeight: 'bold',
-  color: transactionType === TransactionType.INCOME ? color.palette.green : color.palette.angry,
-  textAlign: 'right',
-});
-export const LIST_TEXT: TextStyle = {
-  fontWeight: 'bold',
-};
 export const LIST_CONTAINER: ViewStyle = {
   flexDirection: 'column',
   paddingVertical: spacing[2],
@@ -20,26 +10,166 @@ export const LIST_CONTAINER: ViewStyle = {
   borderBottomWidth: 1,
   borderColor: palette.lighterGrey,
 };
-export const TRANSACTION_LEFT_SIDE: ViewStyle = {
-  flex: 2,
-};
-export const TRANSACTION_RIGHT_SIDE: ViewStyle = {
-  flex: 1,
-  marginLeft: 'auto',
-};
 export const TRANSACTION_ACTIONS: ViewStyle = {
   display: 'flex',
   flexDirection: 'row',
   padding: spacing[0],
   position: 'relative',
 };
-export const DROPDOWN_PICKER_STYLE: ViewStyle = { flex: 1 };
 export const ICON_STYLE = { flex: 1, marginHorizontal: spacing[1] };
-export const TRANSACTION_DETAILS_STYLE: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  paddingHorizontal: spacing[2],
-};
 
 export const ICON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };
 export const TRANSACTION_BOTTOM_SIDE: ViewStyle = { flex: 1, display: 'flex', width: '100%' };
+
+export const transactionModalStyles = StyleSheet.create({
+  modal: {
+    height: '100%',
+    width: '100%',
+  },
+  container: {
+    backgroundColor: palette.white,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: '100%',
+    height: '85%',
+    position: 'absolute',
+    bottom: 0,
+  },
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  iconContainer: {
+    width: '100%',
+    height: 40,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  icon: {
+    width: 50,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerLabelContainer: {
+    width: '100%',
+    height: '40%',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  headerLabel: {
+    color: color.palette.textClassicColor,
+    fontFamily: 'Geometria-Bold',
+    fontSize: 20,
+    textTransform: 'uppercase',
+    marginLeft: spacing[4],
+  },
+  headerDateContainer: {
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  headerDate: {
+    color: color.palette.lightGrey,
+    fontFamily: 'Geometria',
+    fontSize: 15,
+    marginLeft: spacing[4],
+  },
+  headerOutcomeContainer: {
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  headerOutcome: {
+    color: color.palette.textClassicColor,
+    fontFamily: 'Geometria-Bold',
+    fontSize: 30,
+    marginRight: spacing[4],
+  },
+  header: {
+    width: '100%',
+    height: 200,
+  },
+  headerRowContainer: {
+    width: '100%',
+    height: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  body: {
+    width: '100%',
+    height: 200,
+    marginTop: spacing[4],
+    flexDirection: 'column',
+  },
+  referenceContainer: {
+    height: 60,
+    marginHorizontal: '5%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  referenceLabel: {
+    fontSize: 11,
+    color: palette.lightGrey,
+    fontFamily: 'Geometria-Bold',
+    width: '100%',
+    textTransform: 'uppercase',
+    marginVertical: 5,
+  },
+  reference: {
+    width: '100%',
+    fontSize: 15,
+    color: palette.darkBlack,
+    fontFamily: 'Geometria',
+    marginVertical: 5,
+  },
+  associatedLabel: {
+    color: palette.lightGrey,
+    fontFamily: 'Geometria-Bold',
+    fontSize: 18,
+    marginLeft: spacing[4],
+    marginBottom: spacing[2],
+  },
+  navigation: {
+    backgroundColor: palette.white,
+    height: 50,
+    borderBottomWidth: 0.5,
+    borderColor: palette.lighterGrey,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  fieldContainer: {
+    width: '100%',
+    flexDirection: 'column',
+    marginVertical: spacing[6],
+  },
+  transactionIcon: {
+    flexGrow: 1,
+    flexShrink: 0,
+    height: 40,
+    justifyContent: 'center',
+  },
+  textContainer: {
+    flex: 20,
+    height: 40,
+    justifyContent: 'center',
+  },
+  text: {
+    color: palette.black,
+    fontSize: 16,
+    fontFamily: 'Geometria-Bold',
+  },
+  associatedContainer: {
+    height: 100,
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: spacing[4],
+  },
+});

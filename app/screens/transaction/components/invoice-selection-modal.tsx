@@ -8,22 +8,13 @@ import { Button, Loader, Separator, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
-import { Transaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoice-quotation/styles';
 import { Error } from '../../welcome/utils/utils';
+import { InvoiceSelectionModalProps } from '../utils/utils';
 import { InvoiceRow } from './invoice-row';
-
-type InvoiceSelectionModalProps = {
-  showModal: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setTransactionModal: React.Dispatch<React.SetStateAction<boolean>>;
-  invoices: Invoice[];
-  loading: boolean;
-  transaction: Transaction;
-};
 
 export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props => {
   const { showModal, setShowModal, invoices, loading, transaction, setTransactionModal } = props;

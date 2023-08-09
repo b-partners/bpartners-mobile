@@ -6,28 +6,18 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { AutoImage, Text } from '../../../components';
-import { ICON_CONTAINER_STYLE, NAVIGATION_STYLE, TEXT_CONTAINER_STYLE, TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { Invoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
+import { InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
-import { Transaction } from '../../../models/entities/transaction/transaction';
-import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
+import { showMessage } from '../../../utils/snackbar';
 import { invoicePageSize } from '../../invoice-form/components/utils';
+import { transactionModalStyles as styles } from '../utils/styles';
+import { PaymentModalProps } from '../utils/utils';
 import { InvoiceSelectionModal } from './invoice-selection-modal';
 import { TransactionField } from './transaction-field';
-
-type PaymentModalProps = {
-  showModal: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  currentTransaction: Transaction;
-  invoice: Invoice;
-  loading: boolean;
-  loadingInvoice: boolean;
-  invoices: Invoice[];
-};
 
 export const TransactionModal: React.FC<PaymentModalProps> = props => {
   const { currentTransaction, showModal, setShowModal, invoice, loading, invoices, loadingInvoice } = props;
@@ -42,145 +32,65 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
   const { invoiceStore } = useStores();
 
   const openInvoiceSelection = async () => {
-    setVisible(true);
-    await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
-    await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, page: 1, pageSize: invoicePageSize });
+    try {
+      setVisible(true);
+      await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
+      await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, page: 1, pageSize: invoicePageSize });
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      setVisible(false);
+    }
   };
 
   return (
-    <Modal animationType='slide' transparent={true} visible={showModal} onRequestClose={closeModal} style={{ height: '100%', width: '100%' }}>
-      <View
-        style={{
-          backgroundColor: palette.white,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          width: '100%',
-          height: '85%',
-          position: 'absolute',
-          bottom: 0,
-        }}
-        testID='payment-url-modal-container'
-      >
+    <Modal animationType='slide' transparent={true} visible={showModal} onRequestClose={closeModal} style={styles.modal}>
+      <View style={styles.container} testID='payment-url-modal-container'>
         <View style={{ width: '100%', flexDirection: 'column' }}>
-          <AutoImage
-            source={require('../utils/transaction.png')}
-            style={{ width: '100%', height: '100%', position: 'absolute' }}
-            resizeMethod='auto'
-            resizeMode='stretch'
-          />
-          <View
-            style={{
-              width: '100%',
-              height: 40,
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-            }}
-          >
-            <TouchableOpacity style={{ width: 50, height: 30, justifyContent: 'center', alignItems: 'center' }} onPress={() => setShowModal(false)}>
+          <AutoImage source={require('../utils/transaction.png')} style={styles.imageBackground} resizeMethod='auto' resizeMode='stretch' />
+          <View style={styles.iconContainer}>
+            <TouchableOpacity style={styles.icon} onPress={() => setShowModal(false)}>
               <CloseIcon name='close' size={30} color={palette.black} />
             </TouchableOpacity>
           </View>
-          <View style={{ width: '100%', height: 200 }}>
-            <View style={{ width: '100%', height: '40%', justifyContent: 'center', alignItems: 'flex-start' }}>
-              <Text
-                text={currentTransaction.label}
-                numberOfLines={3}
-                style={{
-                  color: color.palette.textClassicColor,
-                  fontFamily: 'Geometria-Bold',
-                  fontSize: 20,
-                  textTransform: 'uppercase',
-                  marginLeft: spacing[4],
-                }}
-              />
+          <View style={styles.header}>
+            <View style={styles.headerLabelContainer}>
+              <Text text={currentTransaction.label} numberOfLines={3} style={styles.headerLabel} />
             </View>
-            <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-              <View style={{ width: '50%', justifyContent: 'center', alignItems: 'flex-start' }}>
-                <Text
-                  text={`Le ${dateFormat}`}
-                  numberOfLines={1}
-                  style={{
-                    color: color.palette.lightGrey,
-                    fontFamily: 'Geometria',
-                    fontSize: 15,
-                    marginLeft: spacing[4],
-                  }}
-                />
+            <View style={styles.headerRowContainer}>
+              <View style={styles.headerDateContainer}>
+                <Text text={`Le ${dateFormat}`} numberOfLines={1} style={styles.headerDate} />
               </View>
-              <View style={{ width: '50%', justifyContent: 'center', alignItems: 'flex-end' }}>
+              <View style={styles.headerOutcomeContainer}>
                 <Text
                   text={`${currentTransaction.type === TransactionType.OUTCOME ? '-' : '+'}${printCurrencyToMajors(currentTransaction.amount)}`}
                   numberOfLines={1}
-                  style={{
-                    color: color.palette.textClassicColor,
-                    fontFamily: 'Geometria-Bold',
-                    fontSize: 30,
-                    marginRight: spacing[4],
-                  }}
+                  style={styles.headerOutcome}
                 />
               </View>
             </View>
           </View>
         </View>
-        <View style={{ width: '100%', height: 200, marginTop: spacing[4], flexDirection: 'column' }}>
-          <View
-            style={{
-              height: 60,
-              marginHorizontal: '5%',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              tx={'transactionListScreen.reference'}
-              style={{
-                fontSize: 11,
-                color: palette.lightGrey,
-                fontFamily: 'Geometria-Bold',
-                width: '100%',
-                textTransform: 'uppercase',
-                marginVertical: 5,
-              }}
-            />
-            <Text
-              text={currentTransaction.reference ?? translate('common.noInformation')}
-              style={{
-                width: '100%',
-                fontSize: 15,
-                color: palette.darkBlack,
-                fontFamily: 'Geometria',
-                marginVertical: 5,
-              }}
-            />
+        <View style={styles.body}>
+          <View style={styles.referenceContainer}>
+            <Text tx={'transactionListScreen.reference'} style={styles.referenceLabel} />
+            <Text text={currentTransaction.reference ?? translate('common.noInformation')} style={styles.reference} />
           </View>
-          <View style={{ height: 100, width: '90%', alignSelf: 'center', marginTop: spacing[4] }}>
-            <TouchableOpacity style={NAVIGATION_STYLE} onPress={openInvoiceSelection}>
-              <View style={ICON_CONTAINER_STYLE}>
+          <View style={styles.associatedContainer}>
+            <TouchableOpacity style={styles.navigation} onPress={openInvoiceSelection}>
+              <View style={styles.transactionIcon}>
                 <SimpleLineIcons name='paper-clip' size={18} color={palette.secondaryColor} />
               </View>
-              <View style={TEXT_CONTAINER_STYLE}>
-                <Text tx={'transactionListScreen.associate'} style={TEXT_STYLE} />
+              <View style={styles.textContainer}>
+                <Text tx={'transactionListScreen.associate'} style={styles.text} />
               </View>
-              <View style={ICON_CONTAINER_STYLE}>
+              <View style={styles.transactionIcon}>
                 <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
               </View>
             </TouchableOpacity>
             {loading && <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />}
             {invoice.title && (
-              <View style={{ width: '100%', flexDirection: 'column', marginVertical: spacing[6] }}>
-                <Text
-                  tx={'transactionListScreen.associatedLabel'}
-                  style={{
-                    color: palette.lightGrey,
-                    fontFamily: 'Geometria-Bold',
-                    fontSize: 18,
-                    marginLeft: spacing[4],
-                    marginBottom: spacing[2],
-                  }}
-                />
+              <View style={styles.fieldContainer}>
+                <Text tx={'transactionListScreen.associatedLabel'} style={styles.associatedLabel} />
                 <TransactionField label='transactionListScreen.reference' text={invoice.ref} />
                 <TransactionField label='transactionListScreen.titleLabel' text={invoice.title} />
                 <TransactionField label='transactionListScreen.total' text={printCurrencyToMajors(invoice.totalPriceWithVat)} />

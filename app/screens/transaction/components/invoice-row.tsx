@@ -1,19 +1,13 @@
-// import { Octicons as Icon } from '@expo/vector-icons';
 import React, { FC } from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { TextStyle, TouchableOpacity, View } from 'react-native';
 
 import { Text } from '../../../components';
-import { Invoice } from '../../../models/entities/invoice/invoice';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
+import { InvoiceRowProps } from '../utils/utils';
 
-type InvoiceRowProps = {
-  invoice: Invoice;
-  onSelect: (invoice: Invoice) => void;
-  isSelected?: boolean;
-};
 const CUSTOMER_NAME: TextStyle = {
   color: palette.lightGrey,
   fontSize: 15,
@@ -21,7 +15,6 @@ const CUSTOMER_NAME: TextStyle = {
   width: '100%',
 };
 
-const EDIT_BUTTON_STYLE: ViewStyle = { flex: 1, justifyContent: 'center', alignItems: 'flex-end' };
 export const InvoiceRow: FC<InvoiceRowProps> = props => {
   const { invoice, onSelect, isSelected } = props;
   return (
@@ -39,7 +32,6 @@ export const InvoiceRow: FC<InvoiceRowProps> = props => {
           </View>
         </>
       </TouchableOpacity>
-      <TouchableOpacity style={EDIT_BUTTON_STYLE}>{/*<Icon name={'pencil'} color={palette.greyDarker} size={20} />*/}</TouchableOpacity>
     </View>
   );
 };
