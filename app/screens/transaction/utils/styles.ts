@@ -10,17 +10,67 @@ export const LIST_CONTAINER: ViewStyle = {
   borderBottomWidth: 1,
   borderColor: palette.lighterGrey,
 };
-export const TRANSACTION_ACTIONS: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  padding: spacing[0],
-  position: 'relative',
-};
+
 export const ICON_STYLE = { flex: 1, marginHorizontal: spacing[1] };
 
 export const ICON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };
 export const TRANSACTION_BOTTOM_SIDE: ViewStyle = { flex: 1, display: 'flex', width: '100%' };
 
+export const transactionStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    paddingVertical: spacing[2],
+    marginTop: spacing[2],
+    borderBottomWidth: 1,
+    borderColor: palette.lighterGrey,
+  },
+  dropdown: {
+    height: 40,
+    backgroundColor: color.palette.white,
+    borderRadius: 25,
+    paddingHorizontal: spacing[4],
+    shadowColor: palette.lightGrey,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  dropdownChildren: {
+    height: 40,
+    backgroundColor: palette.white,
+    borderRadius: 25,
+    paddingHorizontal: spacing[4],
+    shadowColor: palette.lightGrey,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  checkmark: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 30,
+    height: '100%',
+    justifyContent: 'center',
+  },
+  close: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 30,
+    height: '100%',
+    justifyContent: 'center',
+  },
+});
 export const transactionModalStyles = StyleSheet.create({
   modal: {
     height: '100%',

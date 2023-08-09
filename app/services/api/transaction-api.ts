@@ -87,7 +87,7 @@ export class TransactionApi {
     return { kind: 'ok', transactionCategories };
   }
 
-  async updateTransactionCategories(
+  async updateTransactionCategory(
     accountId: string,
     transactionId: string,
     transactionCategory: TransactionCategory
