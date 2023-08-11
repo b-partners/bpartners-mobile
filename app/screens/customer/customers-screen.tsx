@@ -1,21 +1,21 @@
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { SectionList, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
-import { BpPagination, Loader, Screen, Separator, Text } from '../../components';
+import { BpPagination, Header, Loader, Screen, Separator } from '../../components';
 import { useStores } from '../../models';
 import { Customer as ICustomer } from '../../models/entities/customer/customer';
-import { TabNavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { ErrorBoundary } from '../error/error-boundary';
 import { itemsPerPage } from '../invoice-form/components/utils';
-import { FOOTER_COMPONENT_STYLE, FULL, LOADER_STYLE, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
+import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Customer } from './components/customer';
 
-export const CustomersScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(() => {
+export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { customerStore } = useStores();
   const { customers, loadingCustomer } = customerStore;
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,6 +38,7 @@ export const CustomersScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList
 
   return (
     <ErrorBoundary catchErrors='always'>
+      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='CustomersScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         {!loadingCustomer ? (
           <Screen
@@ -46,18 +47,15 @@ export const CustomersScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList
             backgroundColor={palette.white}
           >
             <View>
-              <SectionList<ICustomer>
+              <FlatList<ICustomer>
+                data={displayedItems}
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...displayedItems]}
                 renderItem={({ item }) => <Customer item={item} />}
                 keyExtractor={item => item.id}
-                renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
                 refreshing={loadingCustomer}
                 onRefresh={handleRefresh}
                 progressViewOffset={100}
-                stickySectionHeadersEnabled={true}
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
-                renderSectionFooter={() => <View style={FOOTER_COMPONENT_STYLE} />}
                 onScrollEndDrag={handleScroll}
               />
             </View>
