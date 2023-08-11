@@ -35,7 +35,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
   useEffect(() => {
     (async () => {
       await productStore.getProducts();
-      await customerStore.getCustomers();
+      await customerStore.getCustomers({ page: 1, pageSize: invoicePageSize });
     })();
   }, []);
 
