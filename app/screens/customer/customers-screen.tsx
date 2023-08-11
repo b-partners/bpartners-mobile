@@ -150,6 +150,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
             <Text tx={'common.create'} style={{ fontSize: 14 }} />
           </IButton>
           <IButton
+            disabled={loadingCustomer}
             compact={true}
             buttonColor={palette.secondaryColor}
             textColor={palette.white}

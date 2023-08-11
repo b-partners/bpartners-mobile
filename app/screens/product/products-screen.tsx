@@ -63,17 +63,17 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
   };
 
   const convertToCSV = data => {
-    const dataWithoutId = data.map(item => {
+    const dataWithoutIdQuantityCreatedAt = data.map(item => {
       return Object.keys(item)
-        .filter(key => key !== 'id')
+        .filter(key => key !== 'id' && key !== 'quantity' && key !== 'createdAt')
         .reduce((obj, key) => {
           obj[key] = item[key];
           return obj;
         }, {});
     });
 
-    const csvHeader = Object.keys(dataWithoutId[0]).join(',') + '\n';
-    const csvRows = dataWithoutId.map(item => Object.values(item).join(',')).join('\n');
+    const csvHeader = Object.keys(dataWithoutIdQuantityCreatedAt[0]).join(',') + '\n';
+    const csvRows = dataWithoutIdQuantityCreatedAt.map(item => Object.values(item).join(',')).join('\n');
 
     return csvHeader + csvRows;
   };
@@ -92,8 +92,8 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header headerTx='customerScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
-      <View testID='CustomersScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+      <Header headerTx='productScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
+      <View testID='ProductsScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         {!loadingProduct ? (
           <Screen
             style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[3] }}
@@ -149,6 +149,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             <Text tx={'common.create'} style={{ fontSize: 14 }} />
           </IButton>
           <IButton
+            disabled={loadingProduct}
             compact={true}
             buttonColor={palette.secondaryColor}
             textColor={palette.white}

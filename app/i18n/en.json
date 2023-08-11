@@ -483,5 +483,9 @@
   "customerScreen": {
     "title": "My customers",
     "export": "Export"
+  },
+  "productScreen": {
+    "title": "My products",
+    "export": "Exporter"
   }
 }
