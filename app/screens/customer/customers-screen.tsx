@@ -13,22 +13,25 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { itemsPerPage } from '../invoice-form/components/utils';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Customer } from './components/customer';
+import { CustomerCreationModal } from './components/customer-creation-modal';
 
 export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { customerStore } = useStores();
   const { customers, loadingCustomer } = customerStore;
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const [maxPage, setMaxPage] = useState(Math.ceil(customers.length / itemsPerPage));
+  const [creationModal, setCreationModal] = useState(false);
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = customers.slice(startItemIndex, endItemIndex);
 
   const handleRefresh = async () => {
-    await customerStore.getCustomers();
+    await customerStore.getCustomers({ page: 1, pageSize: invoicePageSize });
     setMaxPage(Math.ceil(customers.length / itemsPerPage));
   };
 
@@ -96,6 +99,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               alignContent: 'center',
               marginLeft: spacing[6],
             }}
+            onPress={() => setCreationModal(true)}
           >
             <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
             <Text tx={'common.create'} style={{ fontSize: 14 }} />
@@ -119,6 +123,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
             <Text tx={'customerScreen.export'} style={{ fontSize: 14 }} />
           </IButton>
         </View>
+        <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       </View>
     </ErrorBoundary>
   );
