@@ -20,6 +20,7 @@ import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } fro
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Log } from '../welcome/utils/utils';
 import { Product } from './components/product';
+import { ProductCreationModal } from './components/product-creation-modal';
 
 export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { productStore } = useStores();
@@ -170,7 +171,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             <Text tx={'customerScreen.export'} style={{ fontSize: 14 }} />
           </IButton>
         </View>
-        <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
+        <ProductCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       </View>
     </ErrorBoundary>
   );

@@ -12,9 +12,9 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { printCurrencyToMajors, printVat } from '../../../../utils/money';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/styles';
+import { ProductCreationModal } from '../../../product/components/product-creation-modal';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
-import { ProductCreationModal } from './product-creation-modal';
 
 type ProductFormFieldProps = {
   index: number;
