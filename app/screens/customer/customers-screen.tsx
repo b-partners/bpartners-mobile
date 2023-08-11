@@ -2,6 +2,7 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Platform, View } from 'react-native';
+import RNFS from 'react-native-fs';
 import { Button as IButton } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -17,6 +18,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { Log } from '../welcome/utils/utils';
 import { Customer } from './components/customer';
 import { CustomerCreationModal } from './components/customer-creation-modal';
 
@@ -60,6 +62,34 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   const getThreshold = () => {
     return Platform.OS === 'ios' ? -10 : 0;
   };
+
+  const convertToCSV = data => {
+    const dataWithoutId = data.map(item => {
+      return Object.keys(item)
+        .filter(key => key !== 'id')
+        .reduce((obj, key) => {
+          obj[key] = item[key];
+          return obj;
+        }, {});
+    });
+
+    const csvHeader = Object.keys(dataWithoutId[0]).join(',') + '\n';
+    const csvRows = dataWithoutId.map(item => Object.values(item).join(',')).join('\n');
+
+    return csvHeader + csvRows;
+  };
+
+  async function saveCSVToFile(csvString) {
+    const filePath = RNFS.DocumentDirectoryPath + `/customer.csv`;
+
+    try {
+      await RNFS.writeFile(filePath, csvString, 'utf8');
+      showMessage(`${translate('common.saved')} ${filePath}`, { backgroundColor: palette.green });
+      Log(filePath);
+    } catch (error) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    }
+  }
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -132,6 +162,10 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               alignItems: 'center',
               alignContent: 'center',
               marginLeft: spacing[4],
+            }}
+            onPress={() => {
+              const csvString = convertToCSV(customers);
+              saveCSVToFile(csvString);
             }}
           >
             <MaterialCommunityIcons name='download' size={22} color={palette.white} />
