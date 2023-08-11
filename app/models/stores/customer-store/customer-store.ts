@@ -12,6 +12,7 @@ export const CustomerStoreModel = types
     customers: types.optional(types.array(CustomerModel), []),
     checkCustomer: types.maybeNull(types.boolean),
     loadingCustomerCreation: types.optional(types.boolean, false),
+    loadingCustomer: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -32,12 +33,15 @@ export const CustomerStoreModel = types
   }))
   .actions(self => ({
     getCustomers: flow(function* () {
+      self.loadingCustomer = true;
       const customerApi = new CustomerApi(self.environment.api);
       try {
         const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id);
         self.getCustomersSuccess(getCustomersResult.customers);
       } catch (e) {
         self.getCustomersFail(e);
+      } finally {
+        self.loadingCustomer = false;
       }
     }),
   }))
