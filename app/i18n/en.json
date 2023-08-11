@@ -478,5 +478,9 @@
     "transfer": "Transfer",
     "card": "Cards",
     "help": "Help"
+  },
+  "customerScreen": {
+    "title": "My customers",
+    "export": "Export"
   }
 }

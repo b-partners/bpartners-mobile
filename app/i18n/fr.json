@@ -462,5 +462,9 @@
     "transfer": "Virement",
     "card": "Cartes",
     "help": "Aide"
+  },
+  "customerScreen": {
+    "title": "Mes clients",
+    "export": "Exporter"
   }
 }

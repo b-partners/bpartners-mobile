@@ -1,9 +1,12 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, Platform, View } from 'react-native';
+import { Button as IButton } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BpPagination, Header, Loader, Screen, Separator } from '../../components';
+import { Text } from '../../components';
 import { useStores } from '../../models';
 import { Customer as ICustomer } from '../../models/entities/customer/customer';
 import { NavigatorParamList } from '../../navigators';
@@ -31,14 +34,18 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
 
   const handleScroll = event => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY <= -5) {
+    if (offsetY <= getThreshold()) {
       handleRefresh();
     }
   };
 
+  const getThreshold = () => {
+    return Platform.OS === 'ios' ? -10 : 0;
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
+      <Header headerTx='customerScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='CustomersScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         {!loadingCustomer ? (
           <Screen
@@ -63,8 +70,54 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: spacing[2],
+            height: 80,
+            width: '100%',
+            marginBottom: spacing[4],
+            alignItems: 'center',
+            paddingLeft: spacing[4],
+          }}
+        >
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+          <IButton
+            compact={true}
+            buttonColor={palette.secondaryColor}
+            textColor={palette.white}
+            style={{
+              width: 100,
+              height: 40,
+              borderRadius: 5,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignContent: 'center',
+              marginLeft: spacing[6],
+            }}
+          >
+            <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
+            <Text tx={'common.create'} style={{ fontSize: 14 }} />
+          </IButton>
+          <IButton
+            compact={true}
+            buttonColor={palette.secondaryColor}
+            textColor={palette.white}
+            style={{
+              width: 100,
+              height: 40,
+              borderRadius: 5,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignContent: 'center',
+              marginLeft: spacing[4],
+            }}
+          >
+            <MaterialCommunityIcons name='download' size={22} color={palette.white} />
+            <Text tx={'customerScreen.export'} style={{ fontSize: 14 }} />
+          </IButton>
         </View>
       </View>
     </ErrorBoundary>
