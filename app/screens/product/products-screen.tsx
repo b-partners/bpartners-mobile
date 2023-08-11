@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Customer as ICustomer } from '../../models/entities/customer/customer';
+import { Product as IProduct } from '../../models/entities/product/product';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -19,8 +19,7 @@ import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils'
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Log } from '../welcome/utils/utils';
-import { Customer } from './components/customer';
-import { CustomerCreationModal } from './components/customer-creation-modal';
+import { Product } from './components/product';
 
 export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { productStore } = useStores();
@@ -101,10 +100,10 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             backgroundColor={palette.white}
           >
             <View>
-              <FlatList<ICustomer>
+              <FlatList<IProduct>
                 data={displayedItems}
                 style={SECTION_LIST_CONTAINER_STYLE}
-                renderItem={({ item }) => <Customer item={item} />}
+                renderItem={({ item }) => <Product item={item} />}
                 keyExtractor={item => item.id}
                 refreshing={loadingProduct}
                 onRefresh={handleRefresh}
