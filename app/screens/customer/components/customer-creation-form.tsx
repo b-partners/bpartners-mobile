@@ -5,14 +5,14 @@ import { View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
 
-import { Button, Loader, Text } from '../../../../components';
-import FormField from '../../../../components/forms/form-field';
-import { translate } from '../../../../i18n';
-import { useStores } from '../../../../models';
-import { color, spacing } from '../../../../theme';
-import { palette } from '../../../../theme/palette';
-import emptyToNull from '../../../../utils/empty-to-null';
-import { INVALID_FORM_FIELD } from '../../styles';
+import { Button, Loader, Text } from '../../../components';
+import FormField from '../../../components/forms/form-field';
+import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
+import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
+import emptyToNull from '../../../utils/empty-to-null';
+import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
 
 export const CustomerCreationForm: FC<
   PropsWithoutRef<{
@@ -61,7 +61,7 @@ export const CustomerCreationForm: FC<
       >
         {({ values, errors }) => {
           return (
-            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '100%' }}>
+            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '95%' }}>
               <View style={{ height: '80%' }}>
                 <FormField
                   testID='customerFirstName'
@@ -116,6 +116,7 @@ export const CustomerCreationForm: FC<
                       height: 45,
                       borderRadius: 25,
                       flexDirection: 'row',
+                      marginBottom: spacing[6],
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
@@ -133,6 +134,7 @@ export const CustomerCreationForm: FC<
                       height: 45,
                       borderRadius: 25,
                       flexDirection: 'row',
+                      marginBottom: spacing[6],
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
@@ -149,6 +151,7 @@ export const CustomerCreationForm: FC<
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      marginBottom: spacing[6],
                     }}
                   >
                     <Text style={{ fontSize: 14, fontFamily: 'Geometria-Bold' }} tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.add' />
@@ -182,7 +185,7 @@ export const CustomerCreationForm: FC<
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
                       borderRadius: 25,
-                      marginBottom: spacing[5],
+                      marginBottom: spacing[6],
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
