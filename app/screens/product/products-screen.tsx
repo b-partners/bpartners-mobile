@@ -15,23 +15,22 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/components/utils';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Log } from '../welcome/utils/utils';
 import { Customer } from './components/customer';
 import { CustomerCreationModal } from './components/customer-creation-modal';
 
-export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
-  const { customerStore } = useStores();
-  const { customers, loadingCustomer } = customerStore;
+export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
+  const { productStore } = useStores();
+  const { products, loadingProduct } = productStore;
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const [maxPage, setMaxPage] = useState(Math.ceil(customers.length / itemsPerPage));
+  const [maxPage, setMaxPage] = useState(Math.ceil(products.length / itemsPerPage));
   const [creationModal, setCreationModal] = useState(false);
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
-  const displayedItems = customers.slice(startItemIndex, endItemIndex);
+  const displayedItems = products.slice(startItemIndex, endItemIndex);
 
   useEffect(() => {
     (async () => {
@@ -44,8 +43,8 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   }, []);
 
   const handleRefresh = async () => {
-    await customerStore.getCustomers({ page: 1, pageSize: invoicePageSize });
-    setMaxPage(Math.ceil(customers.length / itemsPerPage));
+    await productStore.getProducts({ page: 1, pageSize: invoicePageSize });
+    setMaxPage(Math.ceil(products.length / itemsPerPage));
   };
 
   const handleScroll = async event => {
@@ -80,7 +79,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   };
 
   async function saveCSVToFile(csvString) {
-    const filePath = RNFS.DocumentDirectoryPath + `/customers.csv`;
+    const filePath = RNFS.DocumentDirectoryPath + `/products.csv`;
 
     try {
       await RNFS.writeFile(filePath, csvString, 'utf8');
@@ -95,7 +94,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='customerScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='CustomersScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        {!loadingCustomer ? (
+        {!loadingProduct ? (
           <Screen
             style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[3] }}
             preset='scroll'
@@ -107,7 +106,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
                 style={SECTION_LIST_CONTAINER_STYLE}
                 renderItem={({ item }) => <Customer item={item} />}
                 keyExtractor={item => item.id}
-                refreshing={loadingCustomer}
+                refreshing={loadingProduct}
                 onRefresh={handleRefresh}
                 progressViewOffset={100}
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_STYLE} />}
@@ -164,7 +163,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               marginLeft: spacing[4],
             }}
             onPress={() => {
-              const csvString = convertToCSV(customers);
+              const csvString = convertToCSV(products);
               saveCSVToFile(csvString);
             }}
           >
