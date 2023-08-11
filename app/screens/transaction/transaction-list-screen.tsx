@@ -10,7 +10,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { LOADER_STYLE } from '../invoice-quotation/styles';
+import { LOADER_STYLE } from '../invoices/styles';
 import { Transaction } from './components/transaction';
 import { TransactionModal } from './components/transaction-modal';
 

@@ -31,3 +31,4 @@ export * from './wallpaper/wallpaper';
 export { Separator } from './separator/Separator';
 export { BPDrawer } from './bp-drawer/bp-drawer';
 export { BpTabNavigation } from './bp-tab-navigation/bp-tab-navigation';
+export { BpPagination } from './bp-pagination/bp-pagination';

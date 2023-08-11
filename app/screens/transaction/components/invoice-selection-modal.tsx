@@ -11,7 +11,7 @@ import { Invoice } from '../../../models/entities/invoice/invoice';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
-import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoice-quotation/styles';
+import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoices/styles';
 import { Error } from '../../welcome/utils/utils';
 import { InvoiceSelectionModalProps } from '../utils/utils';
 import { InvoiceRow } from './invoice-row';
