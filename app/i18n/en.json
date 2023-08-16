@@ -25,6 +25,7 @@
     "noDataProvided": "No records to display",
     "loading": "Loading in progress ...",
     "added": "Successfully added",
+    "saved": "Saved at:",
     "edit": "Edit",
     "register": "REGISTER",
     "noComment": "No Comment",
@@ -478,5 +479,13 @@
     "transfer": "Transfer",
     "card": "Cards",
     "help": "Help"
+  },
+  "customerScreen": {
+    "title": "My customers",
+    "export": "Export"
+  },
+  "productScreen": {
+    "title": "My products",
+    "export": "Exporter"
   }
 }

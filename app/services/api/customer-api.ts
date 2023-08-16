@@ -1,5 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
+import { Criteria } from '../../models/entities/criteria/criteria';
 import { Customer } from '../../models/entities/customer/customer';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
@@ -12,10 +13,10 @@ export class CustomerApi {
     this.api = api;
   }
 
-  async getCustomers(account: string): Promise<GetCustomersResult> {
+  async getCustomers(account: string, criteria: Criteria): Promise<GetCustomersResult> {
     // make the api call
     __DEV__ && console.tron.log(`Fetching account's customer`);
-    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/customers`);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/customers`, criteria);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

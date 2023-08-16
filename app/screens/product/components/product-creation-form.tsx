@@ -5,15 +5,15 @@ import { View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
 
-import { Button, Loader, Text } from '../../../../components';
-import FormField from '../../../../components/forms/form-field';
-import { translate } from '../../../../i18n';
-import { useStores } from '../../../../models';
-import { color, spacing } from '../../../../theme';
-import { palette } from '../../../../theme/palette';
-import { commaToDot, commaValidation } from '../../../../utils/comma-to-dot';
-import { vatToMinors } from '../../../../utils/money';
-import { INVALID_FORM_FIELD } from '../../styles';
+import { Button, Loader, Text } from '../../../components';
+import FormField from '../../../components/forms/form-field';
+import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
+import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
+import { commaToDot, commaValidation } from '../../../utils/comma-to-dot';
+import { vatToMinors } from '../../../utils/money';
+import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
 
 export const ProductCreationForm: FC<
   PropsWithoutRef<{

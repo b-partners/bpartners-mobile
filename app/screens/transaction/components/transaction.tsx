@@ -1,9 +1,10 @@
 import { cloneDeep } from 'lodash';
-import React, { PropsWithoutRef } from 'react';
-import { Platform, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, { PropsWithoutRef, useState } from 'react';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Dropdown, Icon, Text } from '../../../components';
+import { Dropdown, Icon, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
@@ -13,21 +14,8 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { handleAsyncRequest } from '../../../utils/asyncRequest';
 import { printCurrencyToMajors } from '../../../utils/money';
-import { ICON_CONTAINER_STYLE, ICON_STYLE, LIST_CONTAINER, TRANSACTION_ACTIONS, TRANSACTION_BOTTOM_SIDE } from '../utils/styles';
-
-const TRANSACTION_CATEGORY_LABEL_CONTAINER: ViewStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  width: '100%',
-  borderRadius: 25,
-  backgroundColor: color.palette.white,
-  padding: spacing[3],
-};
-
-const TRANSACTION_CATEGORY_LABEL_LEFT_ITEM: ViewStyle = { flex: 10 };
-
-const TRANSACTION_CATEGORY_LABEL_RIGHT_ITEM: TextStyle = { color: color.palette.white, flex: 1 };
+import { showMessage } from '../../../utils/snackbar';
+import { ICON_CONTAINER_STYLE, ICON_STYLE, TRANSACTION_BOTTOM_SIDE, transactionStyles as styles } from '../utils/styles';
 
 export const Transaction = (
   props: PropsWithoutRef<{
@@ -39,13 +27,30 @@ export const Transaction = (
   }>
 ) => {
   const { transactionStore, invoiceStore } = useStores();
-
   const { item, transactionCategories, setShowModal, setCurrentTransaction } = props;
-
+  const [isModifying, setIsModifying] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectedTransactionCategory, setSelectedTransactionCategory] = useState<TransactionCategory | null>(item.category);
   const filteredTransactionCategories = cloneDeep(transactionCategories).filter(category => category.transactionType === item.type);
+  const onChange = (category: TransactionCategory) => {
+    setIsModifying(true);
+    setSelectedTransactionCategory(category);
+  };
+
+  const updateTransaction = async () => {
+    try {
+      setLoading(true);
+      await transactionStore.updateTransactionCategory(item.id, selectedTransactionCategory);
+      setLoading(false);
+      setIsModifying(false);
+      await transactionStore.getTransactions();
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    }
+  };
 
   return (
-    <View style={LIST_CONTAINER}>
+    <View style={styles.container}>
       <View>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
           <View style={{ display: 'flex', flexDirection: 'column', flex: 4 }}>
@@ -97,47 +102,55 @@ export const Transaction = (
         </View>
       </View>
       <View style={TRANSACTION_BOTTOM_SIDE}>
-        <View style={TRANSACTION_ACTIONS}>
+        <View style={{ display: 'flex', flexDirection: 'row', padding: spacing[0] }}>
           <Dropdown<TransactionCategory>
             items={filteredTransactionCategories}
             labelField='description'
             valueField='id'
             onChangeText={() => {}}
-            onChange={category => transactionStore.updateTransactionCategory(item.id, category)}
+            onChange={category => onChange(category)}
             placeholder={translate('transactionListScreen.transactionCategoryPlaceholder')}
-            value={item.category}
+            value={selectedTransactionCategory}
             dropdownContainerStyle={{ padding: 0 }}
-            style={{
-              backgroundColor: color.palette.white,
-              borderRadius: 25,
-              paddingHorizontal: spacing[4],
-              borderWidth: 2,
-              borderColor: palette.solidGrey,
-            }}
-            selectedItemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
+            style={styles.dropdown}
+            selectedItemTextStyle={{ color: palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
             itemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria' }}
             placeholderTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
           >
-            <View testID='transaction-category-container' style={TRANSACTION_CATEGORY_LABEL_CONTAINER}>
-              {item.category && item.category.description.length > 0 && (
-                <View style={TRANSACTION_CATEGORY_LABEL_LEFT_ITEM}>
-                  <Text
-                    text={item.category.description}
-                    testID='transaction-category'
-                    numberOfLines={2}
-                    style={{
-                      color: color.palette.textClassicColor,
-                      fontFamily: 'Geometria',
-                    }}
-                  />
-                </View>
-              )}
-              <AntDesignIcon name='edit' size={15} style={TRANSACTION_CATEGORY_LABEL_RIGHT_ITEM} />
+            <View testID='transaction-category-container' style={styles.dropdownChildren}>
+              <Text
+                text={
+                  selectedTransactionCategory && selectedTransactionCategory.description
+                    ? selectedTransactionCategory.description
+                    : translate('transactionListScreen.transactionCategoryPlaceholder')
+                }
+                testID='transaction-category'
+                numberOfLines={2}
+                style={{
+                  color: selectedTransactionCategory && selectedTransactionCategory.description ? palette.textClassicColor : palette.lightGrey,
+                  fontFamily: selectedTransactionCategory && selectedTransactionCategory.description ? 'Geometria-Bold' : 'Geometria',
+                  fontSize: selectedTransactionCategory && selectedTransactionCategory.description ? 16 : 15,
+                }}
+              />
+              <Ionicons name='chevron-down-sharp' size={17} style={{ color: palette.lightGrey }} />
             </View>
           </Dropdown>
-          <TouchableOpacity style={ICON_CONTAINER_STYLE}>
-            {/*<Icon icon={item.category && item.category.id ? 'check' : 'unchecked'} style={ICON_STYLE} />*/}
-          </TouchableOpacity>
+          {isModifying && (
+            <>
+              <TouchableOpacity onPress={updateTransaction} style={styles.checkmark}>
+                {loading ? <Loader animating={true} /> : <Ionicons name='checkmark' size={25} style={{ color: palette.green }} />}
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedTransactionCategory(item.category);
+                  setIsModifying(false);
+                }}
+                style={styles.close}
+              >
+                <AntDesignIcon name='close' size={25} style={{ color: palette.pastelRed }} />
+              </TouchableOpacity>
+            </>
+          )}
           <TouchableOpacity
             style={ICON_CONTAINER_STYLE}
             onPress={async () => {
