@@ -2,16 +2,17 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Linking, View } from 'react-native';
 import { Card, Paragraph, Title } from 'react-native-paper';
-import LocationIcon from 'react-native-vector-icons/Entypo';
-import PhoneIcon from 'react-native-vector-icons/FontAwesome';
-import EmailIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AddressIcon from 'react-native-vector-icons/MaterialIcons';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Text } from '../../../components';
 import { Menu as CMenu, MenuItem } from '../../../components/menu/menu';
+import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Prospect } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
+import { datePipe } from '../../../utils/pipes';
 import { showMessage } from '../../../utils/snackbar';
 
 type ProspectItemProps = {
@@ -23,9 +24,12 @@ type ProspectItemProps = {
 };
 
 const IconGroup = {
-  email: <EmailIcon name='email' size={18} color={color.palette.secondaryColor} />,
-  phone: <PhoneIcon name='mobile-phone' size={24} color={color.palette.secondaryColor} />,
-  address: <AddressIcon name='my-location' size={18} color={color.palette.secondaryColor} />,
+  email: <MaterialCommunity name='email' size={18} color={color.palette.secondaryColor} />,
+  phone: <MaterialCommunity name='phone' size={18} color={color.palette.secondaryColor} />,
+  address: <EntypoIcon name='home' size={18} color={color.palette.secondaryColor} />,
+  town: <MaterialCommunityIcons name='city' size={18} color={color.palette.secondaryColor} />,
+  rating: <EntypoIcon name='star' size={18} color={color.palette.secondaryColor} />,
+  date: <Octicons name='clock' size={18} color={color.palette.secondaryColor} />,
 };
 
 const Location = ({ prospect }) => {
@@ -38,7 +42,7 @@ const Location = ({ prospect }) => {
 
   return (
     <Text style={{ color: 'blue' }} onPress={() => Linking.openURL(geoJsonUrl(prospect.location))}>
-      <LocationIcon name='location' size={22} color={color.palette.secondaryColor} />,
+      <EntypoIcon name='location' size={22} color={color.palette.secondaryColor} />,
     </Text>
   );
 };
@@ -82,18 +86,30 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
       <Card style={{ width: '100%', backgroundColor: 'white' }}>
         <Card.Content style={{ display: 'flex', flexDirection: 'row' }}>
           <View style={{ width: '80%' }}>
-            <Title style={{ fontSize: 16 }}>{prospect.name ? prospect.name : 'Non renseigné'}</Title>
+            <Title style={{ fontSize: 16 }}>{prospect.name ? prospect.name : translate('common.noData')}</Title>
             <Paragraph>
               {IconGroup.email}
-              {prospect.email ? <>{prospect.email}</> : 'Non renseigné'}
+              {prospect.email ? <>{prospect.email}</> : translate('common.noData')}
             </Paragraph>
             <Paragraph>
               {IconGroup.phone}
-              {prospect.phone ? <> {prospect.phone} </> : 'Non renseigné'}
+              {prospect.phone ? <> {prospect.phone} </> : translate('common.noData')}
             </Paragraph>
             <Paragraph>
               {IconGroup.address}
-              {prospect.address ? <>{prospect.address}</> : 'Non renseigné'}
+              {prospect.address ? <>{prospect.address}</> : translate('common.noData')}
+            </Paragraph>
+            <Paragraph>
+              {IconGroup.town}
+              {prospect.townCode ? <>{prospect.townCode}</> : translate('common.noData')}
+            </Paragraph>
+            <Paragraph>
+              {IconGroup.rating}
+              {prospect.rating ? <>{prospect.rating.value.toFixed()}</> : translate('common.noData')}
+            </Paragraph>
+            <Paragraph>
+              {IconGroup.date}
+              {prospect.rating ? <>{datePipe(prospect.rating.lastEvaluation).split(' ')[0]}</> : translate('common.noData')}
             </Paragraph>
           </View>
           <View style={{ paddingTop: 9 }}>{prospect.location && <Location prospect={prospect} />}</View>

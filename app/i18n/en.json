@@ -29,7 +29,8 @@
     "edit": "Edit",
     "register": "REGISTER",
     "noComment": "No Comment",
-    "noInformation": "No information available"
+    "noInformation": "No information available",
+    "noData": "Unknown"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
