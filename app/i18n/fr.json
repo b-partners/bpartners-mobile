@@ -25,9 +25,11 @@
     "noDataProvided": "Aucun enregistrement à afficher",
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
+    "saved": "Sauvegardé dans:",
     "edit": "Modifier",
     "register": "ENREGISTRER",
-    "noComment": "Aucun Commentaire"
+    "noComment": "Aucun Commentaire",
+    "noInformation": "Aucune information"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -54,6 +56,11 @@
   "transactionListScreen": {
     "title": "Transactions",
     "balance": "Balance",
+    "reference": "Référence",
+    "titleLabel": "Titre",
+    "total": "total",
+    "associate": "Associer un document",
+    "associatedLabel": "Document associé",
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",
@@ -456,5 +463,13 @@
     "transfer": "Virement",
     "card": "Cartes",
     "help": "Aide"
+  },
+  "customerScreen": {
+    "title": "Mes clients",
+    "export": "Exporter"
+  },
+  "productScreen": {
+    "title": "Mes produits",
+    "export": "Exporter"
   }
 }

@@ -4,6 +4,8 @@ export type RouteNameProps = {
   home: string | React.ReactElement;
   profile: string | React.ReactElement;
   transactionList: string | React.ReactElement;
+  customer: string | React.ReactElement;
+  product: string | React.ReactElement;
   paymentInitiation: string | React.ReactElement;
   paymentList: string | React.ReactElement;
   welcome: string | React.ReactElement;

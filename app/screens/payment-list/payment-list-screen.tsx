@@ -13,9 +13,9 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
-import { DraftsScreen } from '../invoice-quotation/drafts-screen';
-import { InvoicesScreen } from '../invoice-quotation/invoices-screen';
-import { QuotationsScreen } from '../invoice-quotation/quotations-screen';
+import { DraftsScreen } from '../invoices/drafts-screen';
+import { InvoicesScreen } from '../invoices/invoices-screen';
+import { QuotationsScreen } from '../invoices/quotations-screen';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
@@ -34,8 +34,8 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
 
   useEffect(() => {
     (async () => {
-      await productStore.getProducts();
-      await customerStore.getCustomers();
+      await productStore.getProducts({ page: 1, pageSize: invoicePageSize });
+      await customerStore.getCustomers({ page: 1, pageSize: invoicePageSize });
     })();
   }, []);
 

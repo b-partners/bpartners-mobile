@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { ProductApi } from '../../../services/api/product-api';
+import { Criteria } from '../../entities/criteria/criteria';
 import { Product, ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -12,6 +13,7 @@ export const ProductStoreModel = types
     products: types.optional(types.array(ProductModel), []),
     checkProduct: types.maybeNull(types.boolean),
     loadingProductCreation: types.optional(types.boolean, false),
+    loadingProduct: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -31,13 +33,16 @@ export const ProductStoreModel = types
     },
   }))
   .actions(self => ({
-    getProducts: flow(function* (description: string) {
+    getProducts: flow(function* (criteria: Criteria) {
       const productApi = new ProductApi(self.environment.api);
+      self.loadingProduct = true;
       try {
-        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, description);
+        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, criteria);
         self.getProductsSuccess(getProductsResult.products);
       } catch (e) {
         self.getProductsFail(e);
+      } finally {
+        self.loadingProduct = false;
       }
     }),
   }))
