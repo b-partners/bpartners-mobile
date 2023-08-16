@@ -111,11 +111,21 @@ export const TransactionStoreModel = types
     updateTransactionCategory: flow(function* (transactionId: string, transactionCategory: TransactionCategory) {
       const transactionApi = new TransactionApi(self.environment.api);
       try {
-        yield transactionApi.updateTransactionCategories(self.currentAccount.id, transactionId, transactionCategory);
+        yield transactionApi.updateTransactionCategory(self.currentAccount.id, transactionId, transactionCategory);
       } catch (e) {
         self.updateTransactionCategoryFail(e);
       }
       yield self.getTransactions();
+    }),
+  }))
+  .actions(self => ({
+    associateTransaction: flow(function* (transactionId: string, invoiceId: string) {
+      const transactionApi = new TransactionApi(self.environment.api);
+      try {
+        yield transactionApi.associateTransaction(self.currentAccount.id, transactionId, invoiceId);
+      } catch (e) {
+        self.updateTransactionCategoryFail(e);
+      }
     }),
   }))
   .views(self => ({

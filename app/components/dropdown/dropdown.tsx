@@ -4,6 +4,7 @@ import { Dropdown as DropdownPicker } from 'react-native-element-dropdown';
 
 import { translate } from '../../i18n';
 import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 
 interface DropdownProps<T> extends PropsWithChildren<any> {
@@ -24,9 +25,8 @@ interface DropdownProps<T> extends PropsWithChildren<any> {
 }
 
 const DROPDOWN_CONTAINER_STYLE: ViewStyle = { flex: 1, paddingVertical: spacing[2], paddingHorizontal: spacing[1] };
-const STYLE: ViewStyle = { flex: 1 };
 const ITEM_TEXT_STYLE: TextStyle = { color: color.palette.black };
-const PLACEHOLDER_TEXT_STYLE: TextStyle = { color: color.palette.white };
+const PLACEHOLDER_TEXT_STYLE: TextStyle = { color: palette.lightGrey, fontFamily: 'Geometria', fontSize: 15 };
 const SELECTED_TEXT_STYLE: TextStyle = { color: color.palette.white };
 
 export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
@@ -58,7 +58,7 @@ export const Dropdown = <T extends object>(props: DropdownProps<T>) => {
       {edit && (
         <View>
           <DropdownPicker
-            style={[STYLE, styleOverrides]}
+            style={styleOverrides}
             itemTextStyle={[ITEM_TEXT_STYLE, itemTextStylesOverrides]}
             data={items}
             value={value}

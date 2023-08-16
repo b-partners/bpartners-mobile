@@ -9,7 +9,7 @@ import { TxKeyPath } from '../../../../i18n';
 import { Customer } from '../../../../models/entities/customer/customer';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoice-quotation/styles';
+import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/styles';
 import CustomerRow from './customer-row';
 
 type SelectFormFieldProps = TextFieldProps & {
@@ -60,6 +60,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedCustomers = customers.slice(startItemIndex, endItemIndex);
+  const maxPage = Math.ceil(customers.length / itemsPerPage);
 
   useEffect(() => {
     if (value && value !== selectedCustomer) {
@@ -148,7 +149,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                     <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                       <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
                     </View>
-                    {currentPage === customers.length ? (
+                    {currentPage === maxPage ? (
                       <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
                         <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
                       </View>

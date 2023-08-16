@@ -1,18 +1,18 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { FlatList, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import { Icon, Screen, Separator } from '../../components';
-import { HeaderWithBalance } from '../../components/header-with-balance/header-with-balance';
-import { Loader } from '../../components/loader/loader';
+import { HeaderWithBalance, Icon, Loader, Screen, Separator } from '../../components';
 import { useStores } from '../../models';
+import { Transaction as ITransaction } from '../../models/entities/transaction/transaction';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { LOADER_STYLE } from '../invoice-quotation/styles';
+import { LOADER_STYLE } from '../invoices/styles';
 import { Transaction } from './components/transaction';
+import { TransactionModal } from './components/transaction-modal';
 
 const FULL: ViewStyle = {
   flex: 1,
@@ -27,11 +27,15 @@ const FLAT_LIST: ViewStyle = {
 };
 
 export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
-  const { transactionStore, authStore } = useStores();
+  const { transactionStore, authStore, invoiceStore } = useStores();
+  const { invoice, loading, invoices, paidInvoices, loadingInvoice } = invoiceStore;
+  const combinedInvoices = invoices.concat(paidInvoices);
 
   const { availableBalance } = authStore.currentAccount;
 
   const { transactions, transactionCategories, loadingTransactionCategories } = transactionStore;
+  const [showModal, setShowModal] = useState(false);
+  const [currentTransaction, setCurrentTransaction] = useState<ITransaction>(null);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -51,7 +55,16 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
               contentContainerStyle={FLAT_LIST}
               data={[...transactions]}
               renderItem={({ item }) => {
-                return <Transaction key={item.id} item={item} transactionCategories={transactionCategories} showTransactionCategory={true} />;
+                return (
+                  <Transaction
+                    key={item.id}
+                    item={item}
+                    transactionCategories={transactionCategories}
+                    showTransactionCategory={true}
+                    setShowModal={setShowModal}
+                    setCurrentTransaction={setCurrentTransaction}
+                  />
+                );
               }}
               ItemSeparatorComponent={() => <Separator />}
             />
@@ -59,6 +72,17 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
             <Loader size='large' containerStyle={LOADER_STYLE} />
           )}
         </Screen>
+        {currentTransaction && (
+          <TransactionModal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            currentTransaction={currentTransaction}
+            invoice={invoice}
+            loading={loading}
+            loadingInvoice={loadingInvoice}
+            invoices={combinedInvoices}
+          />
+        )}
       </View>
     </ErrorBoundary>
   );
