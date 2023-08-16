@@ -4,7 +4,7 @@ import { Linking, View } from 'react-native';
 import { Card, Paragraph, Title } from 'react-native-paper';
 import LocationIcon from 'react-native-vector-icons/Entypo';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
-import EmailIcon from 'react-native-vector-icons/Fontisto';
+import EmailIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddressIcon from 'react-native-vector-icons/MaterialIcons';
 
 import { Text } from '../../../components';
