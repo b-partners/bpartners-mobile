@@ -3,7 +3,13 @@ import { ApiResponse } from 'apisauce';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetTransactionCategoriesResult, GetTransactionsResult, GetTransactionsSummaryResult } from './api.types';
+import {
+  AssociateTransactionResult,
+  GetTransactionCategoriesResult,
+  GetTransactionsResult,
+  GetTransactionsSummaryResult,
+  UpdateTransactionCategoriesResult,
+} from './api.types';
 
 export class TransactionApi {
   private api: Api;
@@ -81,11 +87,11 @@ export class TransactionApi {
     return { kind: 'ok', transactionCategories };
   }
 
-  async updateTransactionCategories(
+  async updateTransactionCategory(
     accountId: string,
     transactionId: string,
     transactionCategory: TransactionCategory
-  ): Promise<GetTransactionCategoriesResult> {
+  ): Promise<UpdateTransactionCategoriesResult> {
     // make the api call
     const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/transactions/${transactionId}/transactionCategories`, [
       transactionCategory,
@@ -97,5 +103,17 @@ export class TransactionApi {
     }
     const transactionCategories = response.data;
     return { kind: 'ok', transactionCategories };
+  }
+
+  async associateTransaction(accountId: string, transactionId: string, invoiceId: string): Promise<AssociateTransactionResult> {
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.put(`accounts/${accountId}/transactions/${transactionId}/invoices/${invoiceId}`);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const transaction = response.data;
+    return { kind: 'ok', transaction };
   }
 }

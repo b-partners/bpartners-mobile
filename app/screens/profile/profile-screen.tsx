@@ -13,7 +13,7 @@ import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { printCurrency } from '../../utils/money';
 import { ErrorBoundary } from '../error/error-boundary';
-import { BUTTON_TEXT_STYLE } from '../invoice-quotation/styles';
+import { BUTTON_TEXT_STYLE } from '../invoices/styles';
 import { AccountDeletionModal } from './components/account-deletion-modal';
 
 const FULL: ViewStyle = {

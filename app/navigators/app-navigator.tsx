@@ -40,6 +40,8 @@ import {
   TransactionListScreen,
   WelcomeScreen,
 } from '../screens';
+import { CustomersScreen } from '../screens/customer/customers-screen';
+import { ProductScreen } from '../screens/product/products-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
 /**
@@ -61,6 +63,8 @@ export type NavigatorParamList = {
   resetPassword: { email: string };
   home: undefined;
   transactionList: undefined;
+  customer: undefined;
+  product: undefined;
   oauth: { code: string; state: string };
   profile: undefined;
   legalFile: undefined;
@@ -144,6 +148,8 @@ const AppStack = observer(function () {
           <Drawer.Screen name='home' component={AppTabStack} />
           <Drawer.Screen name='profile' component={ProfileScreen} options={{ title: translate('profileScreen.title') }} />
           <Drawer.Screen name='transactionList' component={TransactionListScreen} options={{ title: translate('transactionListScreen.title') }} />
+          <Drawer.Screen name='customer' component={CustomersScreen} />
+          <Drawer.Screen name='product' component={ProductScreen} />
           <Drawer.Screen name='invoices' component={InvoicesScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />

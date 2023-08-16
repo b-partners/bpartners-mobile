@@ -35,6 +35,7 @@ export type GetTransactionCategoriesResult = { kind: 'ok'; transactionCategories
 export type GetTransactionsSummaryResult = { kind: 'ok'; transactionSummary: TransactionSummary } | GeneralApiProblem;
 
 export type UpdateTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
+export type AssociateTransactionResult = { kind: 'ok'; transaction: Transaction } | GeneralApiProblem;
 
 export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
 

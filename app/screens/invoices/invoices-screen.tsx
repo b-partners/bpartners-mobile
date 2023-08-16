@@ -3,15 +3,13 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { Button, Loader, Screen, Separator, Text } from '../../components';
-import { MenuItem } from '../../components/menu/menu';
+import { BpPagination, Button, Loader, MenuItem, Screen, Separator, Text } from '../../components';
 // import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { navigate } from '../../navigators';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
@@ -20,7 +18,6 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
-import { InvoicePagination } from './components/invoice-pagination';
 import { SendingConfirmationModal } from './components/sending-confirmation-modal';
 import {
   BUTTON_INVOICE_STYLE,
@@ -168,7 +165,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
-          <InvoicePagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+          <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
           <View style={{ width: '75%', justifyContent: 'center' }}>
             <Button
               tx='quotationScreen.createInvoice'

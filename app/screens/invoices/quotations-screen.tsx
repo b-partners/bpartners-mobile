@@ -4,13 +4,11 @@ import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
 import { ErrorBoundary } from '..';
-import { Loader, Screen, Separator, Text } from '../../components';
-import { MenuItem } from '../../components/menu/menu';
+import { BpPagination, Loader, MenuItem, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { navigate } from '../../navigators';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
@@ -19,7 +17,6 @@ import { showMessage } from '../../utils/snackbar';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
-import { InvoicePagination } from './components/invoice-pagination';
 import { CONTAINER, FOOTER_COMPONENT_STYLE, FULL, LOADER_STYLE, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from './styles';
 import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
@@ -131,7 +128,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
         <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
-          <InvoicePagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+          <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
           <InvoiceCreationButton
             navigation={navigation}
             navigationState={navigationState}

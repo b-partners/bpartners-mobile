@@ -25,6 +25,7 @@
     "noDataProvided": "Aucun enregistrement à afficher",
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
+    "saved": "Sauvegardé dans:",
     "edit": "Modifier",
     "register": "ENREGISTRER",
     "noComment": "Aucun Commentaire",
@@ -462,5 +463,13 @@
     "transfer": "Virement",
     "card": "Cartes",
     "help": "Aide"
+  },
+  "customerScreen": {
+    "title": "Mes clients",
+    "export": "Exporter"
+  },
+  "productScreen": {
+    "title": "Mes produits",
+    "export": "Exporter"
   }
 }
