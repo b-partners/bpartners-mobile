@@ -68,7 +68,11 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     accountHolder.businessActivities != null &&
     (accountHolder.businessActivities.primary != null || accountHolder.businessActivities.secondary != null);
   const hasCarreleur = businessActivities =>
-    businessActivities != null && (businessActivities.primary === 'Carreleur' || businessActivities.secondary === 'Carreleur');
+    businessActivities != null &&
+    (businessActivities.primary === 'Carreleur' ||
+      businessActivities.primary === 'Antinuisibles 3D' ||
+      businessActivities.secondary === 'Carreleur' ||
+      businessActivities.secondary === 'Antinuisibles 3D');
   const shouldShowProspects = hasBusinessActivities(currentAccountHolder) && hasCarreleur(currentAccountHolder.businessActivities);
 
   const handleNavigationMarketplace = useCallback((routeName: string) => {

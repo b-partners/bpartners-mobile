@@ -11,10 +11,10 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
 import { TabNavigatorParamList } from '../../navigators';
-import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { ProspectItem } from './components/prospect-item';
+import { prospectStyles as styles } from './utils/styles';
 
 export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
   const { authStore, prospectStore } = useStores();
@@ -49,54 +49,33 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='marketplaceScreen' style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <Screen preset='scroll' backgroundColor={palette.white} style={{ height: '100%' }}>
+      <View testID='marketplaceScreen' style={styles.bodyContainer}>
+        <Screen preset='scroll' backgroundColor={palette.white} style={styles.full}>
           <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
-          <View
-            style={{
-              width: '100%',
-              height: '10%',
-              marginVertical: spacing[1],
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-around',
-            }}
-          >
+          <View style={styles.menuContainer}>
             <Menu.Item
               onPress={() => handleClickMenu('TO_CONTACT')}
               title='À Contacter'
-              titleStyle={{ color: color.palette.secondaryColor }}
+              titleStyle={{ color: palette.secondaryColor }}
               style={{ ...getActiveClassName('TO_CONTACT'), width: '28%' }}
             />
             <Menu.Item
               onPress={() => handleClickMenu('CONTACTED')}
               title='Contacté'
-              titleStyle={{ color: color.palette.secondaryColor }}
+              titleStyle={{ color: palette.secondaryColor }}
               style={{ ...getActiveClassName('CONTACTED'), width: '28%' }}
             />
             <Menu.Item
               onPress={() => handleClickMenu('CONVERTED')}
               title='Converti'
-              titleStyle={{ color: color.palette.secondaryColor }}
+              titleStyle={{ color: palette.secondaryColor }}
               style={{ ...getActiveClassName('CONVERTED'), width: '28%' }}
             />
           </View>
-          <ScrollView
-            style={{
-              width: '95%',
-              height: '74%',
-              borderWidth: 2,
-              borderColor: '#F9F9FB',
-              backgroundColor: '#F9F9FB',
-              borderRadius: 10,
-              alignSelf: 'center',
-            }}
-            contentContainerStyle={{ alignItems: 'center' }}
-          >
+          <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
             {loadingProspect ? (
-              <View style={{ width: '100%', height: 200 }}>
-                <Loader size='large' style={{ width: '100%', height: '100%' }} />
+              <View style={styles.loader}>
+                <Loader size='large' style={styles.full} />
               </View>
             ) : filteredProspect.length > 0 ? (
               filteredProspect.map((item: Prospect, index: number) => {
