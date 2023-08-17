@@ -75,6 +75,7 @@ export const transactionModalStyles = StyleSheet.create({
   modal: {
     height: '100%',
     width: '100%',
+    backgroundColor: 'rgba(10, 16, 69, 0.5)',
   },
   container: {
     backgroundColor: palette.white,

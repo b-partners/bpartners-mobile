@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Platform, View } from 'react-native';
 import RNFS from 'react-native-fs';
-import { Button as IButton } from 'react-native-paper';
+import { Button as IButton, Searchbar } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../components';
@@ -32,6 +32,8 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = customers.slice(startItemIndex, endItemIndex);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const onChangeSearch = query => setSearchQuery(query);
 
   useEffect(() => {
     (async () => {
@@ -60,7 +62,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   };
 
   const getThreshold = () => {
-    return Platform.OS === 'ios' ? -10 : 0;
+    return Platform.OS === 'ios' ? -15 : 0;
   };
 
   const convertToCSV = data => {
@@ -95,9 +97,28 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='customerScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='CustomersScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+        <Searchbar
+          placeholder={translate('common.search')}
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+          style={{
+            backgroundColor: palette.solidGrey,
+            height: 40,
+            borderRadius: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: spacing[4],
+            width: '90%',
+            marginHorizontal: '5%',
+          }}
+          iconColor={palette.lightGrey}
+          clearIcon='close-circle'
+          inputStyle={{ color: palette.black, alignSelf: 'center' }}
+          placeholderTextColor={palette.lightGrey}
+        />
         {!loadingCustomer ? (
           <Screen
-            style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[3] }}
+            style={{ backgroundColor: palette.white, flexDirection: 'column', paddingBottom: spacing[3] }}
             preset='scroll'
             backgroundColor={palette.white}
           >
