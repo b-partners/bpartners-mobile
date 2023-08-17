@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
+import { ProgressBar, Searchbar } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-import { Button, Loader, Separator, Text } from '../../../components';
+import { BpPagination, Button, Loader, Separator, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
@@ -12,7 +11,7 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoices/styles';
-import { Error } from '../../welcome/utils/utils';
+import { Error, Log } from '../../welcome/utils/utils';
 import { InvoiceSelectionModalProps } from '../utils/utils';
 import { InvoiceRow } from './invoice-row';
 
@@ -29,6 +28,8 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>();
   const maxPage = Math.ceil(invoices.length / itemsPerPage);
   const [loadingCreation, setLoadingCreation] = useState(false);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const onChangeSearch = query => setSearchQuery(query);
   const associate = async () => {
     setLoadingCreation(true);
     try {
@@ -78,12 +79,23 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
               <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
             </TouchableOpacity>
           </View>
+          <Searchbar
+            placeholder={translate('common.search')}
+            onChangeText={onChangeSearch}
+            value={searchQuery}
+            onIconPress={() => Log('Hello')}
+            style={{ backgroundColor: palette.solidGrey, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
+            iconColor={palette.lightGrey}
+            clearIcon='close-circle'
+            inputStyle={{ color: palette.black, alignSelf: 'center' }}
+            placeholderTextColor={palette.lightGrey}
+          />
           {loading ? (
             <View style={{ height: '80%', paddingTop: spacing[4] }}>
               <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />
             </View>
           ) : (
-            <View style={{ paddingVertical: spacing[2], height: '80%' }}>
+            <View style={{ paddingVertical: spacing[2], height: '75%' }}>
               <FlatList
                 data={displayedInvoices}
                 keyExtractor={item => item.id}
@@ -94,40 +106,8 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
               />
             </View>
           )}
-          <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
-            <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
-              {currentPage === 1 ? (
-                <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                  <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
-                </View>
-              ) : (
-                <TouchableOpacity
-                  style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                  onPress={() => {
-                    setCurrentPage(currentPage - 1);
-                  }}
-                >
-                  <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
-                </TouchableOpacity>
-              )}
-              <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
-              </View>
-              {currentPage === maxPage ? (
-                <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                  <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
-                </View>
-              ) : (
-                <TouchableOpacity
-                  style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                  onPress={() => {
-                    setCurrentPage(currentPage + 1);
-                  }}
-                >
-                  <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
-                </TouchableOpacity>
-              )}
-            </View>
+          <View style={{ flexDirection: 'row', marginTop: spacing[1], height: 50 }}>
+            <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
             <View style={{ width: '75%', justifyContent: 'center' }}>
               {loadingCreation ? (
                 <Loader size={'large'} animating={true} />

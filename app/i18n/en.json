@@ -30,7 +30,8 @@
     "register": "REGISTER",
     "noComment": "No Comment",
     "noInformation": "No information available",
-    "noData": "Unknown"
+    "noData": "Unknown",
+    "search": "Search"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",

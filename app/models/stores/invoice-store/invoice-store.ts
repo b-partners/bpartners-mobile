@@ -166,7 +166,6 @@ export interface InvoiceStoreSnapshotIn extends SnapshotIn<typeof InvoiceStoreMo
 export const createInvoiceStoreDefaultModel = () =>
   types.optional(InvoiceStoreModel, {
     invoices: [],
+    paidInvoices: [],
     invoice: null,
-    products: [],
-    customers: [],
   });

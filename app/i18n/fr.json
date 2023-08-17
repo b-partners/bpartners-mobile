@@ -30,7 +30,8 @@
     "register": "ENREGISTRER",
     "noComment": "Aucun Commentaire",
     "noInformation": "Aucune information",
-    "noData": "Non renseigné"
+    "noData": "Non renseigné",
+    "search": "Rechercher"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
