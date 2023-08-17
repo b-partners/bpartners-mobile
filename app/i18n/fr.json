@@ -29,7 +29,8 @@
     "edit": "Modifier",
     "register": "ENREGISTRER",
     "noComment": "Aucun Commentaire",
-    "noInformation": "Aucune information"
+    "noInformation": "Aucune information",
+    "noData": "Non renseigné"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",

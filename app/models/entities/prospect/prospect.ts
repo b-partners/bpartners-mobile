@@ -12,6 +12,30 @@ export const LocationModel = types.model('Location').props({
   latitude: types.maybeNull(types.number),
 });
 
+export const RatingModel = types.model('Rating').props({
+  value: types.maybeNull(types.number),
+  lastEvaluation: types.maybeNull(types.string),
+});
+
+export const GeoJsonModel = types.model('GeoJson').props({
+  type: types.maybeNull(types.string),
+  longitude: types.maybeNull(types.number),
+  latitude: types.maybeNull(types.number),
+});
+
+export const ImageModel = types.model('Image').props({
+  id: types.maybeNull(types.string),
+  uploadedAt: types.maybeNull(types.string),
+  uploadedByAccountId: types.maybeNull(types.string),
+  sizeInKB: types.maybeNull(types.number),
+  sha256: types.maybeNull(types.string),
+});
+
+export const AreaModel = types.model('Area').props({
+  geojson: types.maybeNull(GeoJsonModel),
+  image: types.maybeNull(ImageModel),
+});
+
 export const ProspectModel = types.model('Account').props({
   id: types.maybeNull(types.string),
   name: types.maybeNull(types.string),
@@ -20,6 +44,8 @@ export const ProspectModel = types.model('Account').props({
   address: types.maybeNull(types.string),
   status: types.maybeNull(types.enumeration(Object.values(ProspectStatus))),
   townCode: types.maybeNull(types.number),
+  rating: types.maybeNull(RatingModel),
+  area: types.maybeNull(AreaModel),
   location: types.maybeNull(LocationModel),
 });
 
