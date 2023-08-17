@@ -11,14 +11,14 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoices/styles';
-import { Error, Log } from '../../welcome/utils/utils';
+import { Error } from '../../welcome/utils/utils';
 import { InvoiceSelectionModalProps } from '../utils/utils';
 import { InvoiceRow } from './invoice-row';
 
 export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props => {
   const { showModal, setShowModal, invoices, loading, transaction, setTransactionModal } = props;
 
-  const { transactionStore } = useStores();
+  const { transactionStore, invoiceStore } = useStores();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -83,7 +83,7 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
             placeholder={translate('common.search')}
             onChangeText={onChangeSearch}
             value={searchQuery}
-            onIconPress={() => Log('Hello')}
+            onIconPress={() => invoiceStore.searchInvoice(searchQuery)}
             style={{ backgroundColor: palette.solidGrey, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
             iconColor={palette.lightGrey}
             clearIcon='close-circle'
@@ -91,7 +91,7 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
             placeholderTextColor={palette.lightGrey}
           />
           {loading ? (
-            <View style={{ height: '80%', paddingTop: spacing[4] }}>
+            <View style={{ height: '75%', paddingTop: spacing[4] }}>
               <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />
             </View>
           ) : (

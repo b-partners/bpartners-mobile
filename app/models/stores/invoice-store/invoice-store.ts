@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-sta
 import uuid from 'react-native-uuid';
 
 import { withEnvironment, withRootStore } from '../..';
+import { Log } from '../../../screens/welcome/utils/utils';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
 import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
@@ -12,10 +13,12 @@ export const InvoiceStoreModel = types
   .props({
     invoices: types.optional(types.array(InvoiceModel), []),
     paidInvoices: types.optional(types.array(InvoiceModel), []),
+    searchInvoices: types.optional(types.array(InvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
     loading: types.optional(types.boolean, false),
+    loadingSearch: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
   })
   .extend(withRootStore)
@@ -134,6 +137,20 @@ export const InvoiceStoreModel = types
         self.saveInvoiceFail(e);
       } finally {
         self.loadingCreation = false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    searchInvoice: flow(function* (query: string) {
+      detach(self.searchInvoices);
+      self.loadingSearch = true;
+      try {
+        Log(self.paidInvoices.map(invoice => (invoice.title = query)));
+      } catch (e) {
+        __DEV__ && console.tron.log(e);
+        self.catchOrThrow(e);
+      } finally {
+        self.loadingSearch = false;
       }
     }),
   }))
