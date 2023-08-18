@@ -15,6 +15,7 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Log } from '../welcome/utils/utils';
@@ -45,7 +46,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   }, []);
 
   const handleRefresh = async () => {
-    await customerStore.getCustomers();
+    await customerStore.getCustomers({ page: 1, pageSize: invoicePageSize });
     setMaxPage(Math.ceil(customers.length / itemsPerPage));
   };
 
@@ -82,7 +83,8 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
 
   const searchCustomer = async () => {
     Log(searchQuery);
-    await customerStore.getCustomers({ filters: searchQuery.split(' ') });
+    await customerStore.getCustomers({ filters: searchQuery.replaceAll(' ', '%2C'), page: 1, pageSize: invoicePageSize });
+    setMaxPage(Math.ceil(customers.length / itemsPerPage));
   };
 
   async function saveCSVToFile(csvString) {
@@ -118,6 +120,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
           iconColor={palette.lightGrey}
           onIconPress={searchCustomer}
           clearIcon='close-circle'
+          onClearIconPress={handleRefresh}
           inputStyle={{ color: palette.black, alignSelf: 'center' }}
           placeholderTextColor={palette.lightGrey}
         />

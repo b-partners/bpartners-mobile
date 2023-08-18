@@ -37,7 +37,7 @@ export const CustomerStoreModel = types
       self.loadingCustomer = true;
       const customerApi = new CustomerApi(self.environment.api);
       try {
-        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, filter);
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, filter as any);
         self.getCustomersSuccess(getCustomersResult.customers);
       } catch (e) {
         self.getCustomersFail(e);
