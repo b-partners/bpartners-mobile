@@ -2,10 +2,9 @@ import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-sta
 import uuid from 'react-native-uuid';
 
 import { withEnvironment, withRootStore } from '../..';
-import { Log } from '../../../screens/welcome/utils/utils';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
-import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
+import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, SearchInvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
 
 export const InvoiceStoreModel = types
@@ -13,12 +12,11 @@ export const InvoiceStoreModel = types
   .props({
     invoices: types.optional(types.array(InvoiceModel), []),
     paidInvoices: types.optional(types.array(InvoiceModel), []),
-    searchInvoices: types.optional(types.array(InvoiceModel), []),
+    searchInvoices: types.optional(types.array(SearchInvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
     loading: types.optional(types.boolean, false),
-    loadingSearch: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
   })
   .extend(withRootStore)
@@ -143,14 +141,22 @@ export const InvoiceStoreModel = types
   .actions(self => ({
     searchInvoice: flow(function* (query: string) {
       detach(self.searchInvoices);
-      self.loadingSearch = true;
       try {
-        Log(self.paidInvoices.map(invoice => (invoice.title = query)));
+        const lowerQuery = query.toLowerCase();
+        const filteredInvoices = [
+          ...self.invoices.filter(invoice => invoice.title && invoice.title.toLowerCase().includes(lowerQuery)),
+          ...self.paidInvoices.filter(invoice => invoice.title && invoice.title.toLowerCase().includes(lowerQuery)),
+        ];
+        self.searchInvoices.replace(
+          filteredInvoices.map(invoice => ({
+            id: invoice.id,
+            title: invoice.title,
+            totalPriceWithVat: invoice.totalPriceWithVat,
+          }))
+        );
       } catch (e) {
-        __DEV__ && console.tron.log(e);
+        __DEV__ && console.tron.log('This is the error :' + e);
         self.catchOrThrow(e);
-      } finally {
-        self.loadingSearch = false;
       }
     }),
   }))

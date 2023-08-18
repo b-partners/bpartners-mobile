@@ -15,7 +15,6 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Log } from '../welcome/utils/utils';
@@ -46,7 +45,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   }, []);
 
   const handleRefresh = async () => {
-    await customerStore.getCustomers({ page: 1, pageSize: invoicePageSize });
+    await customerStore.getCustomers();
     setMaxPage(Math.ceil(customers.length / itemsPerPage));
   };
 
@@ -81,6 +80,11 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     return csvHeader + csvRows;
   };
 
+  const searchCustomer = async () => {
+    Log(searchQuery);
+    await customerStore.getCustomers({ filters: searchQuery.split(' ') });
+  };
+
   async function saveCSVToFile(csvString) {
     const filePath = RNFS.DocumentDirectoryPath + `/customers.csv`;
 
@@ -112,6 +116,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
             marginHorizontal: '5%',
           }}
           iconColor={palette.lightGrey}
+          onIconPress={searchCustomer}
           clearIcon='close-circle'
           inputStyle={{ color: palette.black, alignSelf: 'center' }}
           placeholderTextColor={palette.lightGrey}

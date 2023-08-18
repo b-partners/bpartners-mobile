@@ -6,12 +6,11 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 import { BpPagination, Button, Loader, Separator, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { Invoice } from '../../../models/entities/invoice/invoice';
+import { Invoice, SearchInvoice } from '../../../models/entities/invoice/invoice';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoices/styles';
-import { Error } from '../../welcome/utils/utils';
 import { InvoiceSelectionModalProps } from '../utils/utils';
 import { InvoiceRow } from './invoice-row';
 
@@ -19,17 +18,24 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
   const { showModal, setShowModal, invoices, loading, transaction, setTransactionModal } = props;
 
   const { transactionStore, invoiceStore } = useStores();
+  const { searchInvoices } = invoiceStore;
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedInvoices = invoices.slice(startItemIndex, endItemIndex);
-  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>();
   const maxPage = Math.ceil(invoices.length / itemsPerPage);
+  const filteredInvoices = searchInvoices.slice(startItemIndex, endItemIndex);
+  const filteredPage = Math.ceil(searchInvoices.length / itemsPerPage);
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | SearchInvoice | null>();
   const [loadingCreation, setLoadingCreation] = useState(false);
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+
   const onChangeSearch = query => setSearchQuery(query);
+
   const associate = async () => {
     setLoadingCreation(true);
     try {
@@ -39,7 +45,6 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
       await transactionStore.getTransactions();
     } catch (error) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
-      Error(translate('errors.somethingWentWrong'), error);
     } finally {
       setLoadingCreation(false);
     }
@@ -83,21 +88,31 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
             placeholder={translate('common.search')}
             onChangeText={onChangeSearch}
             value={searchQuery}
-            onIconPress={() => invoiceStore.searchInvoice(searchQuery)}
+            onIconPress={async () => {
+              setLoadingSearch(true);
+              await invoiceStore.searchInvoice(searchQuery);
+              setIsSearching(true);
+              setTimeout(() => {
+                setLoadingSearch(false);
+              }, 500);
+            }}
+            onClearIconPress={() => {
+              setIsSearching(false);
+            }}
             style={{ backgroundColor: palette.solidGrey, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
             iconColor={palette.lightGrey}
             clearIcon='close-circle'
             inputStyle={{ color: palette.black, alignSelf: 'center' }}
             placeholderTextColor={palette.lightGrey}
           />
-          {loading ? (
+          {loading || loadingSearch ? (
             <View style={{ height: '75%', paddingTop: spacing[4] }}>
               <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />
             </View>
           ) : (
             <View style={{ paddingVertical: spacing[2], height: '75%' }}>
               <FlatList
-                data={displayedInvoices}
+                data={isSearching ? filteredInvoices : displayedInvoices}
                 keyExtractor={item => item.id}
                 renderItem={({ item: current }) => {
                   return <InvoiceRow invoice={current} isSelected={current.id === selectedInvoice?.id} onSelect={() => setSelectedInvoice(current)} />;
@@ -107,7 +122,7 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
             </View>
           )}
           <View style={{ flexDirection: 'row', marginTop: spacing[1], height: 50 }}>
-            <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+            <BpPagination maxPage={isSearching ? filteredPage : maxPage} page={currentPage} setPage={setCurrentPage} />
             <View style={{ width: '75%', justifyContent: 'center' }}>
               {loadingCreation ? (
                 <Loader size={'large'} animating={true} />

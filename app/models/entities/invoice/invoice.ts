@@ -14,6 +14,12 @@ export enum InvoiceStatus {
   PROPOSAL = 'PROPOSAL',
 }
 
+export const SearchInvoiceModel = types.model('SearchInvoice').props({
+  id: types.maybeNull(types.string),
+  title: types.maybeNull(types.string),
+  totalPriceWithVat: types.maybeNull(types.number),
+});
+
 export const InvoiceModel = types.model('Invoice').props({
   id: types.maybeNull(types.string),
   paymentUrl: types.maybeNull(types.string),
@@ -42,6 +48,7 @@ export const InvoiceModel = types.model('Invoice').props({
 });
 
 export interface Invoice extends Instance<typeof InvoiceModel> {}
+export interface SearchInvoice extends Instance<typeof SearchInvoiceModel> {}
 
 export interface InvoiceSnapshotOut extends SnapshotOut<typeof InvoiceModel> {}
 
