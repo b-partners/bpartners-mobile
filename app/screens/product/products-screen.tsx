@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { FlatList, Platform, View } from 'react-native';
 import RNFS from 'react-native-fs';
-import { Button as IButton, Searchbar } from 'react-native-paper';
+import { Button as IButton, Searchbar, TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../components';
@@ -96,25 +96,61 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='productScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='ProductsScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <Searchbar
-          placeholder={translate('common.search')}
-          onChangeText={onChangeSearch}
-          value={searchQuery}
-          style={{
-            backgroundColor: palette.solidGrey,
-            height: 40,
-            borderRadius: 10,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: spacing[4],
-            width: '90%',
-            marginHorizontal: '5%',
-          }}
-          iconColor={palette.lightGrey}
-          clearIcon='close-circle'
-          inputStyle={{ color: palette.black, alignSelf: 'center' }}
-          placeholderTextColor={palette.lightGrey}
-        />
+        <View style={{ flexDirection: 'row', width: '100%', height: 50, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
+          <Searchbar
+            placeholder={translate('common.search')}
+            onChangeText={onChangeSearch}
+            value={searchQuery}
+            style={{
+              backgroundColor: palette.solidGrey,
+              height: 40,
+              borderRadius: 10,
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '60%',
+              marginHorizontal: '5%',
+            }}
+            iconColor={palette.lightGrey}
+            clearIcon='close-circle'
+            inputStyle={{ color: palette.black, alignSelf: 'center' }}
+            placeholderTextColor={palette.lightGrey}
+          />
+          <View style={{ height: 40, width: '30%' }}>
+            <TextInput
+              autoCapitalize='none'
+              textColor={palette.secondaryColor}
+              selectionColor={palette.secondaryColor}
+              keyboardType='numeric'
+              left={<TextInput.Icon icon='minus' size={15} />}
+              right={<TextInput.Icon icon='plus' size={15} />}
+              value={''}
+              // onChangeText={onChange}
+              /*right={
+                rightRender && (
+                  <TextInput.Affix
+                    text={rightText}
+                    textStyle={{
+                      fontSize: 16,
+                      color: palette.secondaryColor,
+                      fontFamily: 'Geometria-Bold',
+                    }}
+                  />
+                )
+              }*/
+              style={{
+                backgroundColor: palette.greyDarker,
+                borderRadius: 5,
+                width: '100%',
+                height: 38,
+              }}
+              theme={{
+                colors: {
+                  primary: palette.secondaryColor,
+                },
+              }}
+            />
+          </View>
+        </View>
         {!loadingProduct ? (
           <Screen
             style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[3] }}

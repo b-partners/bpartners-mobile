@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
 import { ProgressBar, Searchbar } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
@@ -49,6 +49,31 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
       setLoadingCreation(false);
     }
   };
+
+  const searchInvoice = async () => {
+    setLoadingSearch(true);
+    await invoiceStore.searchInvoice(searchQuery);
+    setIsSearching(true);
+    setTimeout(() => {
+      setLoadingSearch(false);
+    }, 500);
+  };
+
+  const debounceTimeoutRef = useRef(null);
+  const handleInputChange = query => {
+    onChangeSearch(query);
+
+    if (query) {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+
+      debounceTimeoutRef.current = setTimeout(async () => {
+        await searchInvoice();
+      }, 1000);
+    }
+  };
+
   return (
     <Modal visible={showModal} animationType='fade' transparent={true} onRequestClose={() => setShowModal(false)}>
       <View
@@ -86,16 +111,8 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
           </View>
           <Searchbar
             placeholder={translate('common.search')}
-            onChangeText={onChangeSearch}
+            onChangeText={handleInputChange}
             value={searchQuery}
-            onIconPress={async () => {
-              setLoadingSearch(true);
-              await invoiceStore.searchInvoice(searchQuery);
-              setIsSearching(true);
-              setTimeout(() => {
-                setLoadingSearch(false);
-              }, 500);
-            }}
             onClearIconPress={() => {
               setIsSearching(false);
             }}

@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { FlatList, Platform, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import { Button as IButton, Searchbar } from 'react-native-paper';
@@ -84,7 +84,6 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   const searchCustomer = async () => {
     Log(searchQuery);
     await customerStore.getCustomers({ filters: searchQuery.replaceAll(' ', '%2C'), page: 1, pageSize: invoicePageSize });
-    setMaxPage(Math.ceil(customers.length / itemsPerPage));
   };
 
   async function saveCSVToFile(csvString) {
@@ -99,13 +98,29 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     }
   }
 
+  const debounceTimeoutRef = useRef(null);
+
+  const handleInputChange = query => {
+    onChangeSearch(query);
+    if (query) {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+
+      debounceTimeoutRef.current = setTimeout(async () => {
+        await searchCustomer();
+        setMaxPage(Math.ceil(customers.length / itemsPerPage));
+      }, 1000);
+    }
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='customerScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='CustomersScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         <Searchbar
           placeholder={translate('common.search')}
-          onChangeText={onChangeSearch}
+          onChangeText={handleInputChange}
           value={searchQuery}
           style={{
             backgroundColor: palette.solidGrey,
@@ -118,7 +133,6 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
             marginHorizontal: '5%',
           }}
           iconColor={palette.lightGrey}
-          onIconPress={searchCustomer}
           clearIcon='close-circle'
           onClearIconPress={handleRefresh}
           inputStyle={{ color: palette.black, alignSelf: 'center' }}
