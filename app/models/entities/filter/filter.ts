@@ -10,6 +10,7 @@ export const FilterModel = types.model('Filter').props({
 export const ProductFilterModel = types.model('ProductFilter').props({
   descriptionFilter: types.maybeNull(types.string),
   priceFilter: types.maybeNull(types.number),
+  criteria: types.maybeNull(CriteriaModel),
 });
 
 export interface Filter extends Instance<typeof FilterModel> {}

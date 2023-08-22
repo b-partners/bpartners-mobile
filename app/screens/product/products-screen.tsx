@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { FlatList, Platform, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import { Button as IButton, Searchbar, TextInput } from 'react-native-paper';
@@ -92,14 +92,35 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
     }
   }
 
+  const searchProduct = async () => {
+    Log(searchQuery);
+    await productStore.getProducts({ descriptionFilter: searchQuery, page: 1, pageSize: invoicePageSize });
+  };
+
+  const debounceTimeoutRef = useRef(null);
+
+  const handleInputChange = query => {
+    onChangeSearch(query);
+    if (query) {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+
+      debounceTimeoutRef.current = setTimeout(async () => {
+        await searchProduct();
+        setMaxPage(Math.ceil(products.length / itemsPerPage));
+      }, 1000);
+    }
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='productScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='ProductsScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <View style={{ flexDirection: 'row', width: '100%', height: 50, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', width: '100%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
           <Searchbar
             placeholder={translate('common.search')}
-            onChangeText={onChangeSearch}
+            onChangeText={handleInputChange}
             value={searchQuery}
             style={{
               backgroundColor: palette.solidGrey,
@@ -114,6 +135,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             clearIcon='close-circle'
             inputStyle={{ color: palette.black, alignSelf: 'center' }}
             placeholderTextColor={palette.lightGrey}
+            onClearIconPress={handleRefresh}
           />
           <View style={{ height: 40, width: '30%' }}>
             <TextInput
