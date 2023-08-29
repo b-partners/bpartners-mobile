@@ -1,6 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { FlatList, Platform, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import { Button as IButton, Searchbar, TextInput } from 'react-native-paper';
@@ -13,6 +14,8 @@ import { Product as IProduct } from '../../models/entities/product/product';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { commaToDot } from '../../utils/comma-to-dot';
+import { vatToMinors } from '../../utils/money';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
@@ -31,8 +34,14 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = products.slice(startItemIndex, endItemIndex);
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const onChangeSearch = query => setSearchQuery(query);
+  const [searchDescription, setSearchDescription] = useState<string>(null);
+  const onChangeSearch = query => setSearchDescription(query);
+  const updateMaxPage = () => setMaxPage(Math.ceil(products.length / itemsPerPage));
+
+  const { control, watch } = useForm({
+    mode: 'all',
+    defaultValues: { price: null },
+  });
 
   useEffect(() => {
     (async () => {
@@ -46,7 +55,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
 
   const handleRefresh = async () => {
     await productStore.getProducts({ page: 1, pageSize: invoicePageSize });
-    setMaxPage(Math.ceil(products.length / itemsPerPage));
+    updateMaxPage();
   };
 
   const handleScroll = async event => {
@@ -93,35 +102,75 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
   }
 
   const searchProduct = async () => {
-    Log(searchQuery);
-    await productStore.getProducts({ descriptionFilter: searchQuery, page: 1, pageSize: invoicePageSize });
+    const searchPrice = watch('price');
+    searchPrice
+      ? await productStore.getProducts({
+          descriptionFilter: searchDescription,
+          priceFilter: vatToMinors(commaToDot(searchPrice.toString())),
+          page: 1,
+          pageSize: invoicePageSize,
+        })
+      : await productStore.getProducts({ descriptionFilter: searchDescription, page: 1, pageSize: invoicePageSize });
   };
 
-  const debounceTimeoutRef = useRef(null);
+  const handleSearchPrice = async price => {
+    searchDescription
+      ? await productStore.getProducts({
+          descriptionFilter: searchDescription,
+          priceFilter: vatToMinors(commaToDot(price)),
+          page: 1,
+          pageSize: invoicePageSize,
+        })
+      : await productStore.getProducts({ priceFilter: vatToMinors(commaToDot(price)), page: 1, pageSize: invoicePageSize });
+  };
+
+  const descriptionTimeout = useRef(null);
+  const priceTimeout = useRef(null);
 
   const handleInputChange = query => {
     onChangeSearch(query);
     if (query) {
-      if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current);
+      if (descriptionTimeout.current) {
+        clearTimeout(descriptionTimeout.current);
       }
 
-      debounceTimeoutRef.current = setTimeout(async () => {
+      descriptionTimeout.current = setTimeout(async () => {
         await searchProduct();
-        setMaxPage(Math.ceil(products.length / itemsPerPage));
+        updateMaxPage();
       }, 1000);
     }
   };
+
+  useEffect(() => {
+    const searchPrice = watch('price');
+    if (priceTimeout.current) {
+      clearTimeout(priceTimeout.current);
+    }
+
+    priceTimeout.current = setTimeout(async () => {
+      if (searchPrice) {
+        await handleSearchPrice(searchPrice);
+        updateMaxPage();
+      } else {
+        if (searchDescription) {
+          await productStore.getProducts({ descriptionFilter: searchDescription, page: 1, pageSize: invoicePageSize });
+          updateMaxPage();
+        } else {
+          await handleRefresh();
+        }
+      }
+    }, 1000);
+  }, [watch('price')]);
 
   return (
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='productScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='ProductsScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <View style={{ flexDirection: 'row', width: '100%', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', width: '100%', height: 60, justifyContent: 'center', alignItems: 'center' }}>
           <Searchbar
             placeholder={translate('common.search')}
             onChangeText={handleInputChange}
-            value={searchQuery}
+            value={searchDescription}
             style={{
               backgroundColor: palette.solidGrey,
               height: 40,
@@ -135,41 +184,44 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             clearIcon='close-circle'
             inputStyle={{ color: palette.black, alignSelf: 'center' }}
             placeholderTextColor={palette.lightGrey}
-            onClearIconPress={handleRefresh}
+            onClearIconPress={async () => {
+              const searchPrice = watch('price');
+              if (searchPrice) {
+                await productStore.getProducts({ priceFilter: vatToMinors(commaToDot(searchPrice)), page: 1, pageSize: invoicePageSize });
+                updateMaxPage();
+              } else {
+                await handleRefresh();
+              }
+            }}
           />
-          <View style={{ height: 40, width: '30%' }}>
-            <TextInput
-              autoCapitalize='none'
-              textColor={palette.secondaryColor}
-              selectionColor={palette.secondaryColor}
-              keyboardType='numeric'
-              left={<TextInput.Icon icon='minus' size={15} />}
-              right={<TextInput.Icon icon='plus' size={15} />}
-              value={''}
-              // onChangeText={onChange}
-              /*right={
-                rightRender && (
-                  <TextInput.Affix
-                    text={rightText}
-                    textStyle={{
-                      fontSize: 16,
-                      color: palette.secondaryColor,
-                      fontFamily: 'Geometria-Bold',
-                    }}
-                  />
-                )
-              }*/
-              style={{
-                backgroundColor: palette.greyDarker,
-                borderRadius: 5,
-                width: '100%',
-                height: 38,
-              }}
-              theme={{
-                colors: {
-                  primary: palette.secondaryColor,
-                },
-              }}
+          <View style={{ height: 45, width: '24%', marginHorizontal: '3%' }}>
+            <Controller
+              control={control}
+              name='price'
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  placeholder={translate('productScreen.price')}
+                  placeholderTextColor={palette.secondaryColor}
+                  autoCapitalize='none'
+                  textColor={palette.secondaryColor}
+                  selectionColor={palette.black}
+                  value={value}
+                  onChangeText={onChange}
+                  style={{
+                    backgroundColor: palette.white,
+                    borderRadius: 5,
+                    width: '100%',
+                    height: 45,
+                    borderColor: palette.solidGrey,
+                    borderWidth: 2,
+                  }}
+                  theme={{
+                    colors: {
+                      primary: palette.secondaryColor,
+                    },
+                  }}
+                />
+              )}
             />
           </View>
         </View>

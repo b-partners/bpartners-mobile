@@ -488,6 +488,7 @@
   },
   "productScreen": {
     "title": "My products",
-    "export": "Exporter"
+    "export": "Exporter",
+    "price": "Price"
   }
 }
