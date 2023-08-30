@@ -4,23 +4,24 @@ import CloseIcon from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-import { Button, Dropdown, Text } from '../../../components';
+import { Button, Dropdown, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { PaymentMethod, PaymentMethodModel } from '../../../models/entities/invoice/invoice';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { transactionStyles as styles } from '../../transaction/utils/styles';
+import { LOADER_STYLE } from '../styles';
 import { paymentMethods } from '../utils/utils';
 
 interface InputFieldProps {
+  isLoading: boolean;
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentMethod: React.Dispatch<React.SetStateAction<PaymentMethod>>;
-  markAsPaid: () => void;
+  markAsPaid: (method: PaymentMethod) => void;
 }
 
 export const PaymentMethodSelectionModal = (props: InputFieldProps) => {
-  const { isOpen, setOpen, setCurrentMethod, markAsPaid } = props;
+  const { isOpen, setOpen, markAsPaid, isLoading } = props;
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodModel>(paymentMethods[0]);
 
   return (
@@ -42,7 +43,7 @@ export const PaymentMethodSelectionModal = (props: InputFieldProps) => {
             }}
           >
             <Text
-              tx='invoiceScreen.labels.requestTitle'
+              tx='invoiceScreen.labels.paymentMethod'
               style={{
                 color: palette.secondaryColor,
                 fontFamily: 'Geometria',
@@ -67,7 +68,7 @@ export const PaymentMethodSelectionModal = (props: InputFieldProps) => {
             <Dropdown<PaymentMethodModel>
               items={paymentMethods}
               labelField='label'
-              valueField='description'
+              valueField='value'
               onChangeText={() => {}}
               onChange={method => setSelectedMethod(method)}
               placeholder={translate('transactionListScreen.transactionCategoryPlaceholder')}
@@ -106,8 +107,7 @@ export const PaymentMethodSelectionModal = (props: InputFieldProps) => {
             </Dropdown>
             <Button
               onPress={() => {
-                setCurrentMethod(selectedMethod.value);
-                markAsPaid();
+                markAsPaid(selectedMethod.value);
               }}
               style={{
                 position: 'absolute',
@@ -121,17 +121,21 @@ export const PaymentMethodSelectionModal = (props: InputFieldProps) => {
                 width: '80%',
               }}
             >
-              <>
-                <Text
-                  tx='common.submit'
-                  style={{
-                    color: palette.white,
-                    marginRight: spacing[2],
-                    fontFamily: 'Geometria',
-                  }}
-                />
-                <SimpleLineIcons name='check' size={20} color='white' />
-              </>
+              {isLoading ? (
+                <Loader size={10} containerStyle={LOADER_STYLE} color={palette.white} />
+              ) : (
+                <>
+                  <Text
+                    tx='common.submit'
+                    style={{
+                      color: palette.white,
+                      marginRight: spacing[2],
+                      fontFamily: 'Geometria',
+                    }}
+                  />
+                  <SimpleLineIcons name='check' size={20} color='white' />
+                </>
+              )}
             </Button>
           </View>
         </View>

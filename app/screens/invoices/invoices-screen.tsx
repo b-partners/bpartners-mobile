@@ -45,9 +45,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const [openModal, setOpenModal] = useState(false);
   const [openPaymentMethodModal, setOpenPaymentMethodModal] = useState(false);
   const [sendingRequest, setSendingRequest] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
   const [currentInvoice, setCurrentInvoice] = useState<IInvoice | null>(null);
-  const [currentMethod, setCurrentMethod] = useState<PaymentMethod | null>(null);
   const { currentAccountHolder, currentUser } = authStore;
 
   const handleRefresh = async () => {
@@ -92,7 +92,8 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     setOpenPaymentMethodModal(true);
   };
 
-  const markAsPaid = async () => {
+  const markAsPaid = async (method: PaymentMethod) => {
+    setIsLoading(true);
     setCurrentCustomer(currentInvoice.customer);
     setSendingRequest(true);
     const editPayment = [];
@@ -109,15 +110,17 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       ...currentInvoice,
       status: InvoiceStatus.PAID,
       paymentRegulations: editPayment,
-      paymentMethod: currentMethod,
+      paymentMethod: method,
     };
     try {
       await invoiceStore.saveInvoice(editedItem);
+      setIsLoading(false);
+      setOpenPaymentMethodModal(false);
       setOpenModal(true);
+      await handleRefresh();
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
-    await handleRefresh();
   };
 
   return (
@@ -186,12 +189,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               }}
             />
           </View>
-          <PaymentMethodSelectionModal
-            isOpen={openPaymentMethodModal}
-            setOpen={setOpenPaymentMethodModal}
-            setCurrentMethod={setCurrentMethod}
-            markAsPaid={markAsPaid}
-          />
+          <PaymentMethodSelectionModal isOpen={openPaymentMethodModal} setOpen={setOpenPaymentMethodModal} markAsPaid={markAsPaid} isLoading={isLoading} />
         </View>
         {sendingRequest && (
           <SendingConfirmationModal

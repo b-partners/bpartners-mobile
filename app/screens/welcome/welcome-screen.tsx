@@ -73,22 +73,23 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       const user = await Auth.signIn(inputUsername, inputPassword);
       if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
         navigation.navigate('changePassword', { userName: inputUsername, password: inputPassword });
-      }
-      const session = await Auth.currentSession();
-
-      const newIdentity: IdentityState = {
-        accessToken: session.getIdToken().getJwtToken(),
-        refreshToken: user.signInUserSession.refreshToken.token,
-      };
-      await Keychain.setGenericPassword(inputUsername, inputPassword);
-      await authStore.whoami(newIdentity.accessToken);
-      await legalFilesStore.getLegalFiles();
-      const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
-      if (!hasApprovedLegalFiles) {
-        navigation.navigate('legalFile');
       } else {
-        await authStore.getAccounts();
-        navigation.navigate('oauth');
+        const session = await Auth.currentSession();
+
+        const newIdentity: IdentityState = {
+          accessToken: session.getIdToken().getJwtToken(),
+          refreshToken: user.signInUserSession.refreshToken.token,
+        };
+        await Keychain.setGenericPassword(inputUsername, inputPassword);
+        await authStore.whoami(newIdentity.accessToken);
+        await legalFilesStore.getLegalFiles();
+        const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
+        if (!hasApprovedLegalFiles) {
+          navigation.navigate('legalFile');
+        } else {
+          await authStore.getAccounts();
+          navigation.navigate('oauth');
+        }
       }
     } catch (error) {
       showMessage(translate('errors.credentials'), errorMessageStyles);

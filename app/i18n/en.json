@@ -257,7 +257,8 @@
       "unknown": "Unspecified",
       "cash": "Cash",
       "bankTransfer": "Bank transfer",
-      "cheque": "Cheque"
+      "cheque": "Cheque",
+      "paymentMethod": "Method of payment"
     },
     "status": {
       "PAID": "Paid",

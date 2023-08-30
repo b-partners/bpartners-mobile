@@ -242,7 +242,8 @@
       "unknown": "Non spécifiée",
       "cash": "Espèces",
       "bankTransfer": "Virement bancaire",
-      "cheque": "Chèque"
+      "cheque": "Chèque",
+      "paymentMethod": "Mode de paiement"
     },
     "status": {
       "PAID": "Payée",
