@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
+import { FlatList, Modal, Platform, TouchableOpacity, View } from 'react-native';
 import { ProgressBar, Searchbar } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 import { BpPagination, Button, Loader, Separator, Text } from '../../../components';
+import KeyboardAvoidingWrapper from '../../../components/keyboard-avoiding-wrapper/keyboard-avoiding-wrapper';
+import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice, SearchInvoice } from '../../../models/entities/invoice/invoice';
@@ -33,6 +35,7 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [loadingSearch, setLoadingSearch] = useState(false);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
 
   const onChangeSearch = query => setSearchQuery(query);
 
@@ -75,96 +78,105 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
   };
 
   return (
-    <Modal visible={showModal} animationType='fade' transparent={true} onRequestClose={() => setShowModal(false)}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          backgroundColor: 'rgba(10, 16, 69, 0.5)',
-          alignItems: 'center',
-          width: '100%',
-          height: '100%',
-        }}
-      >
-        <View
-          style={[
-            {
-              padding: spacing[4],
-              backgroundColor: palette.white,
+    <KeyboardAvoidingWrapper>
+      <Modal visible={showModal} animationType='fade' transparent={true} onRequestClose={() => setShowModal(false)}>
+        <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              backgroundColor: 'rgba(10, 16, 69, 0.5)',
+              alignItems: 'center',
               width: '100%',
-              height: '60%',
-            },
-          ]}
-        >
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
-            <Text
-              tx={'paymentListScreen.tabs.invoices'}
-              style={{
-                color: color.palette.lightGrey,
-                fontFamily: 'Geometria',
-                fontSize: 15,
-              }}
-            />
-            <TouchableOpacity onPress={() => setShowModal(false)}>
-              <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
-            </TouchableOpacity>
-          </View>
-          <Searchbar
-            placeholder={translate('common.search')}
-            onChangeText={handleInputChange}
-            value={searchQuery}
-            onClearIconPress={() => {
-              setIsSearching(false);
+              height: '100%',
             }}
-            style={{ backgroundColor: palette.solidGrey, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
-            iconColor={palette.lightGrey}
-            clearIcon='close-circle'
-            inputStyle={{ color: palette.black, alignSelf: 'center' }}
-            placeholderTextColor={palette.lightGrey}
-          />
-          {loading || loadingSearch ? (
-            <View style={{ height: '75%', paddingTop: spacing[4] }}>
-              <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />
-            </View>
-          ) : (
-            <View style={{ paddingVertical: spacing[2], height: '75%' }}>
-              <FlatList
-                data={isSearching ? filteredInvoices : displayedInvoices}
-                keyExtractor={item => item.id}
-                renderItem={({ item: current }) => {
-                  return <InvoiceRow invoice={current} isSelected={current.id === selectedInvoice?.id} onSelect={() => setSelectedInvoice(current)} />;
-                }}
-                ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
-              />
-            </View>
-          )}
-          <View style={{ flexDirection: 'row', marginTop: spacing[1], height: 50 }}>
-            <BpPagination maxPage={isSearching ? filteredPage : maxPage} page={currentPage} setPage={setCurrentPage} />
-            <View style={{ width: '75%', justifyContent: 'center' }}>
-              {loadingCreation ? (
-                <Loader size={'large'} animating={true} />
-              ) : selectedInvoice ? (
-                <Button tx='invoiceFormScreen.customerSelectionForm.validate' style={BUTTON_INVOICE_STYLE} textStyle={BUTTON_TEXT_STYLE} onPress={associate} />
-              ) : (
-                <View
+          >
+            <View
+              style={[
+                {
+                  padding: spacing[4],
+                  backgroundColor: palette.white,
+                  width: '100%',
+                },
+                keyboardOpen && Platform.OS === 'android' ? { height: '90%' } : { height: '60%' },
+              ]}
+            >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
+                <Text
+                  tx={'paymentListScreen.tabs.invoices'}
                   style={{
-                    backgroundColor: palette.solidGrey,
-                    marginVertical: spacing[1],
-                    marginHorizontal: spacing[1],
-                    borderRadius: 40,
-                    paddingVertical: spacing[3],
-                    paddingHorizontal: spacing[2],
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    color: color.palette.lightGrey,
+                    fontFamily: 'Geometria',
+                    fontSize: 15,
                   }}
-                >
-                  <Text tx={'invoiceFormScreen.customerSelectionForm.validate'} style={{ fontSize: 14, color: palette.greyDarker }} />
+                />
+                <TouchableOpacity onPress={() => setShowModal(false)}>
+                  <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
+                </TouchableOpacity>
+              </View>
+              <Searchbar
+                placeholder={translate('common.search')}
+                onChangeText={handleInputChange}
+                value={searchQuery}
+                onClearIconPress={() => {
+                  setIsSearching(false);
+                }}
+                style={{ backgroundColor: palette.solidGrey, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
+                iconColor={palette.lightGrey}
+                clearIcon='close-circle'
+                inputStyle={{ color: palette.black, alignSelf: 'center' }}
+                placeholderTextColor={palette.lightGrey}
+              />
+              {loading || loadingSearch ? (
+                <View style={{ height: '75%', paddingTop: spacing[4] }}>
+                  <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />
+                </View>
+              ) : (
+                <View style={{ paddingVertical: spacing[2], height: '75%' }}>
+                  <FlatList
+                    data={isSearching ? filteredInvoices : displayedInvoices}
+                    keyExtractor={item => item.id}
+                    renderItem={({ item: current }) => {
+                      return <InvoiceRow invoice={current} isSelected={current.id === selectedInvoice?.id} onSelect={() => setSelectedInvoice(current)} />;
+                    }}
+                    ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
+                  />
                 </View>
               )}
+              <View style={{ flexDirection: 'row', marginTop: spacing[1], height: 50 }}>
+                <BpPagination maxPage={isSearching ? filteredPage : maxPage} page={currentPage} setPage={setCurrentPage} />
+                <View style={{ width: '75%', justifyContent: 'center' }}>
+                  {loadingCreation ? (
+                    <Loader size={'large'} animating={true} />
+                  ) : selectedInvoice ? (
+                    <Button
+                      tx='invoiceFormScreen.customerSelectionForm.validate'
+                      style={BUTTON_INVOICE_STYLE}
+                      textStyle={BUTTON_TEXT_STYLE}
+                      onPress={associate}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        backgroundColor: palette.solidGrey,
+                        marginVertical: spacing[1],
+                        marginHorizontal: spacing[1],
+                        borderRadius: 40,
+                        paddingVertical: spacing[3],
+                        paddingHorizontal: spacing[2],
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text tx={'invoiceFormScreen.customerSelectionForm.validate'} style={{ fontSize: 14, color: palette.greyDarker }} />
+                    </View>
+                  )}
+                </View>
+              </View>
             </View>
           </View>
-        </View>
-      </View>
-    </Modal>
+        </KeyboardLayout>
+      </Modal>
+    </KeyboardAvoidingWrapper>
   );
 };
