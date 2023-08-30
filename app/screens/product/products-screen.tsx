@@ -2,7 +2,7 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FlatList, Platform, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import { Button as IButton, Searchbar, TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -200,6 +200,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
               name='price'
               render={({ field: { onChange, value } }) => (
                 <TextInput
+                  keyboardType={'numeric'}
                   placeholder={translate('productScreen.price')}
                   placeholderTextColor={palette.secondaryColor}
                   autoCapitalize='none'
@@ -248,61 +249,63 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: spacing[2],
-            height: 80,
-            width: '100%',
-            marginBottom: spacing[4],
-            alignItems: 'center',
-            paddingLeft: spacing[4],
-          }}
-        >
-          <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <IButton
-            compact={true}
-            buttonColor={palette.secondaryColor}
-            textColor={palette.white}
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <View
             style={{
-              width: 100,
-              height: 40,
-              borderRadius: 5,
               flexDirection: 'row',
-              justifyContent: 'center',
+              marginTop: spacing[2],
+              height: 80,
+              width: '100%',
+              marginBottom: spacing[4],
               alignItems: 'center',
-              alignContent: 'center',
-              marginLeft: spacing[6],
-            }}
-            onPress={() => setCreationModal(true)}
-          >
-            <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
-            <Text tx={'common.create'} style={{ fontSize: 14 }} />
-          </IButton>
-          <IButton
-            disabled={loadingProduct}
-            compact={true}
-            buttonColor={palette.secondaryColor}
-            textColor={palette.white}
-            style={{
-              width: 100,
-              height: 40,
-              borderRadius: 5,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignContent: 'center',
-              marginLeft: spacing[4],
-            }}
-            onPress={() => {
-              const csvString = convertToCSV(products);
-              saveCSVToFile(csvString);
+              paddingLeft: spacing[4],
             }}
           >
-            <MaterialCommunityIcons name='download' size={22} color={palette.white} />
-            <Text tx={'customerScreen.export'} style={{ fontSize: 14 }} />
-          </IButton>
-        </View>
+            <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+            <IButton
+              compact={true}
+              buttonColor={palette.secondaryColor}
+              textColor={palette.white}
+              style={{
+                width: 100,
+                height: 40,
+                borderRadius: 5,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center',
+                marginLeft: spacing[6],
+              }}
+              onPress={() => setCreationModal(true)}
+            >
+              <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
+              <Text tx={'common.create'} style={{ fontSize: 14 }} />
+            </IButton>
+            <IButton
+              disabled={loadingProduct}
+              compact={true}
+              buttonColor={palette.secondaryColor}
+              textColor={palette.white}
+              style={{
+                width: 100,
+                height: 40,
+                borderRadius: 5,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center',
+                marginLeft: spacing[4],
+              }}
+              onPress={() => {
+                const csvString = convertToCSV(products);
+                saveCSVToFile(csvString);
+              }}
+            >
+              <MaterialCommunityIcons name='download' size={22} color={palette.white} />
+              <Text tx={'customerScreen.export'} style={{ fontSize: 14 }} />
+            </IButton>
+          </View>
+        </KeyboardAvoidingView>
         <ProductCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       </View>
     </ErrorBoundary>

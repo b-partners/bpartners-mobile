@@ -69,7 +69,7 @@ export const PaymentMethodSelectionModal = (props: InputFieldProps) => {
               style={styles.button}
             >
               {isLoading ? (
-                <Loader size={10} containerStyle={LOADER_STYLE} color={palette.white} />
+                <Loader size={20} containerStyle={LOADER_STYLE} color={palette.white} />
               ) : (
                 <>
                   <Text tx='common.submit' style={styles.buttonText} />
