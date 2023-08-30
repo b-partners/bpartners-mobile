@@ -10,7 +10,6 @@ import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList, navigate } from '../../navigators';
-import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
@@ -20,18 +19,19 @@ import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils'
 import { Invoice } from './components/invoice';
 import { PaymentMethodSelectionModal } from './components/payment-method-selection';
 import { SendingConfirmationModal } from './components/sending-confirmation-modal';
+import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
+  BUTTON_CONTAINER_STYLE,
   BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
-  CONTAINER,
+  CONTAINER_STYLE,
   FOOTER_COMPONENT_STYLE,
-  FULL,
   LOADER_STYLE,
+  SCREEN_STYLE,
   SECTION_HEADER_TEXT_STYLE,
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
-} from './styles';
-import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
+} from './utils/styles';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
@@ -125,17 +125,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View
-        testID='PaymentInitiationScreen'
-        style={{
-          ...FULL,
-          backgroundColor: color.palette.white,
-          borderColor: color.transparent,
-          borderWidth: 0,
-        }}
-      >
+      <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
         {!loadingInvoice ? (
-          <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
@@ -177,7 +169,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
+        <View style={BUTTON_CONTAINER_STYLE}>
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
           <View style={{ width: '75%', justifyContent: 'center' }}>
             <Button

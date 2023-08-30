@@ -1,72 +1,40 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { TextStyle, TouchableOpacity, View } from 'react-native';
 
 import { Text } from '../../../components';
-import { BulletSeparator } from '../../../components/bullet-separator/bullet-separator';
-import { Menu, MenuAction, MenuItem } from '../../../components/menu/menu';
-import { Invoice as IInvoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
-import { spacing } from '../../../theme';
+import { BulletSeparator, Menu } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { datePipe } from '../../../utils/pipes';
 import {
-  BODY_TEXT_CONTAINER,
   BODY_TEXT_STYLE,
   BULLET_SEPARATOR_CONTAINER_STYLE,
   BULLET_SEPARATOR_STYLE,
-  CENTERED_ROW,
   DATE_CONTAINER,
   DATE_TEXT_STYLE,
   HEADER_TEXT_STYLE,
-  ROW_STYLE,
   STATUS_CONTAINER,
   STATUS_TEXT,
-} from '../styles';
-
-type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction };
-
-const INVOICE_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
-const INVOICE_STYLE: ViewStyle = { paddingBottom: spacing[2], paddingTop: spacing[0], flex: 1 };
-const BOTTOM_MARGIN_STYLE: ViewStyle = { marginBottom: spacing[2] };
-const MENU_CONTAINER_STYLE: ViewStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginLeft: spacing[3],
-};
-const TOTAL_PRICE_WITH_THAT_STYLE: TextStyle = {
-  fontWeight: 'normal',
-};
+  invoiceStyles as styles,
+} from '../utils/styles';
+import { InvoiceProps, getStatusTextColor } from '../utils/utils';
 
 export const Invoice: React.FC<InvoiceProps> = props => {
   const { item, menuItems, menuAction } = props;
 
-  // return the correct color depending on the invoice status
-  const getStatusTextColor = (status: InvoiceStatus) => {
-    switch (status) {
-      case InvoiceStatus.PROPOSAL:
-      case InvoiceStatus.CONFIRMED:
-        return palette.orange;
-      case InvoiceStatus.DRAFT:
-        return palette.greyDarker;
-      default:
-        return palette.green;
-    }
-  };
-
   const textColor: TextStyle = { color: getStatusTextColor(item.status) };
 
   return (
-    <View style={INVOICE_CONTAINER_STYLE}>
-      <TouchableOpacity style={INVOICE_STYLE}>
-        <View style={{ ...ROW_STYLE, ...BOTTOM_MARGIN_STYLE }}>
+    <View style={styles.viewContainer}>
+      <TouchableOpacity style={styles.container}>
+        <View style={styles.header}>
           <Text text={props.item.customer.firstName} style={HEADER_TEXT_STYLE} />
-          <Text text={printCurrencyToMajors(item.totalPriceWithVat)} style={{ ...HEADER_TEXT_STYLE, ...TOTAL_PRICE_WITH_THAT_STYLE }} />
+          <Text text={printCurrencyToMajors(item.totalPriceWithVat)} style={styles.totalPrice} />
         </View>
 
-        <View style={{ ...ROW_STYLE, ...{ flex: 1 } }}>
-          <View style={{ ...ROW_STYLE, ...CENTERED_ROW, ...{ flex: 1, flexWrap: 'wrap' }, ...BODY_TEXT_CONTAINER }}>
+        <View style={styles.body}>
+          <View style={styles.refContainer}>
             <Text text={`#${props.item.ref}`} style={BODY_TEXT_STYLE} />
             <View style={DATE_CONTAINER}>
               <BulletSeparator style={BULLET_SEPARATOR_STYLE} containerStyle={BULLET_SEPARATOR_CONTAINER_STYLE} />
@@ -78,7 +46,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
           </View>
         </View>
       </TouchableOpacity>
-      <View style={MENU_CONTAINER_STYLE}>
+      <View style={styles.menuContainer}>
         <Menu items={menuItems} actions={menuAction}>
           <MaterialCommunityIcons name='dots-vertical' size={22} color={palette.lightGrey} />
         </Menu>

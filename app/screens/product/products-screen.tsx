@@ -19,7 +19,7 @@ import { vatToMinors } from '../../utils/money';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
-import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
+import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Log } from '../welcome/utils/utils';
 import { Product } from './components/product';
