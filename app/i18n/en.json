@@ -50,7 +50,8 @@
     "mandatoryTitle": "please fill out the title of your quotation !",
     "minPassword": "Password must contain at least 8 characters",
     "invalidPassword": "The password must contain at least one capital letter, one special character (., -, &, @ etc) and one number",
-    "invalidConfirmPassword": "The passwords don't match !"
+    "invalidConfirmPassword": "The passwords don't match !",
+    "changePassword": "New password"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"

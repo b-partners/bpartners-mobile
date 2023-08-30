@@ -34,6 +34,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   const { authStore, legalFilesStore } = useStores();
   const errorMessageStyles = { backgroundColor: palette.pastelRed };
+  const warningMessageStyles = { backgroundColor: palette.yellow };
   const [userDetails, setUserDetails] = useState<UserCredentials>({ email: null, password: null });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
@@ -72,6 +73,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       const inputPassword = password ?? userDetails.password;
       const user = await Auth.signIn(inputUsername, inputPassword);
       if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+        showMessage(translate('errors.changePassword'), warningMessageStyles);
         navigation.navigate('changePassword', { userName: inputUsername, password: inputPassword });
       } else {
         const session = await Auth.currentSession();
