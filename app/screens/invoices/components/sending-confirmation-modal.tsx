@@ -9,9 +9,17 @@ import { translate } from '../../../i18n';
 import { AccountHolder } from '../../../models/entities/account-holder/account-holder';
 import { Customer } from '../../../models/entities/customer/customer';
 import { User } from '../../../models/entities/user/user';
-import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
+import {
+  MODAL_CONTAINER_STYLE,
+  MODAL_HEADER_BUTTON_STYLE,
+  MODAL_HEADER_BUTTON_TEXT_STYLE,
+  MODAL_HEADER_STYLE,
+  MODAL_HEADER_TEXT_STYLE,
+  MODAL_STYLE,
+  sendingConfirmationModalStyles as styles,
+} from '../utils/styles';
 
 type InvoiceCreationModalProps = {
   confirmationModal: boolean;
@@ -58,86 +66,30 @@ ${user?.phone}</p>`;
 
   return (
     <Modal animationType='slide' transparent={true} visible={confirmationModal} onRequestClose={() => setConfirmationModal(false)}>
-      <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ backgroundColor: palette.white, height: '25%', width: '90%', borderRadius: 15 }}>
-          <View
-            style={{
-              width: '100%',
-              borderBottomWidth: 1,
-              borderBottomColor: palette.secondaryColor,
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: spacing[2],
-              position: 'relative',
-              height: 50,
-            }}
-          >
-            <Text
-              tx='invoiceScreen.labels.requestTitle'
-              style={{
-                color: palette.secondaryColor,
-                fontFamily: 'Geometria',
-                fontSize: 18,
-              }}
-            />
+      <View style={MODAL_STYLE}>
+        <View style={MODAL_CONTAINER_STYLE}>
+          <View style={MODAL_HEADER_STYLE}>
+            <Text tx='invoiceScreen.labels.requestTitle' style={MODAL_HEADER_TEXT_STYLE} />
             <Button
               onPress={() => {
                 setConfirmationModal(false);
               }}
-              style={{
-                backgroundColor: palette.white,
-                position: 'absolute',
-                right: 26,
-              }}
-              textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
+              style={MODAL_HEADER_BUTTON_STYLE}
+              textStyle={MODAL_HEADER_BUTTON_TEXT_STYLE}
             >
               <CloseIcon name='close' size={25} color={palette.secondaryColor} />
             </Button>
           </View>
-          <View style={{ width: '100%', height: '75%', flexDirection: 'column' }}>
-            <View style={{ width: '100%', height: '70%', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-              <Text
-                tx='invoiceScreen.labels.sendRequest'
-                style={{
-                  color: palette.greyDarker,
-                  marginRight: spacing[2],
-                  fontFamily: 'Geometria',
-                  marginBottom: spacing[1],
-                }}
-              />
-              <Text
-                text={`${customer?.firstName} ${customer?.lastName}`}
-                style={{
-                  color: palette.greyDarker,
-                  marginRight: spacing[2],
-                  fontFamily: 'Geometria',
-                }}
-              />
+          <View style={styles.body}>
+            <View style={styles.labelContainer}>
+              <Text tx='invoiceScreen.labels.sendRequest' style={styles.label} />
+              <Text text={`${customer?.firstName} ${customer?.lastName}`} style={styles.customer} />
             </View>
-            <View style={{ width: '100%', height: '10%', justifyContent: 'center' }}>
-              <Button
-                onPress={openMailApp}
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: palette.green,
-                  borderRadius: 25,
-                  paddingVertical: spacing[2],
-                  marginHorizontal: spacing[6],
-                  height: 45,
-                }}
-              >
+            <View style={styles.buttonContainer}>
+              <Button onPress={openMailApp} style={styles.button}>
                 <>
-                  <Text
-                    tx='common.submit'
-                    style={{
-                      color: palette.white,
-                      marginRight: spacing[2],
-                      fontFamily: 'Geometria',
-                    }}
-                  />
-                  <SimpleLineIcons name='check' size={20} color='white' />
+                  <Text tx='common.submit' style={styles.buttonText} />
+                  <SimpleLineIcons name='check' size={20} color={palette.white} />
                 </>
               </Button>
             </View>

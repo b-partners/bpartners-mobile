@@ -8,7 +8,6 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList } from '../../navigators';
-import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { showMessage } from '../../utils/snackbar';
@@ -16,9 +15,18 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
-import { FOOTER_COMPONENT_STYLE, FULL, LOADER_STYLE, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from './styles';
 import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
+import {
+  BUTTON_CONTAINER_STYLE,
+  CONTAINER_STYLE,
+  FOOTER_COMPONENT_STYLE,
+  LOADER_STYLE,
+  SCREEN_STYLE,
+  SECTION_HEADER_TEXT_STYLE,
+  SECTION_LIST_CONTAINER_STYLE,
+  SEPARATOR_STYLE,
+} from './utils/styles';
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, draftStore, quotationStore } = useStores();
@@ -100,13 +108,9 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+      <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
         {!loadingDraft ? (
-          <Screen
-            style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[3] }}
-            preset='scroll'
-            backgroundColor={palette.white}
-          >
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
@@ -136,7 +140,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
+        <View style={BUTTON_CONTAINER_STYLE}>
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
           <InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />
         </View>

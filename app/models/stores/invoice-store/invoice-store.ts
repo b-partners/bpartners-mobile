@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid';
 import { withEnvironment, withRootStore } from '../..';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
-import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus } from '../../entities/invoice/invoice';
+import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, SearchInvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
 
 export const InvoiceStoreModel = types
@@ -12,6 +12,7 @@ export const InvoiceStoreModel = types
   .props({
     invoices: types.optional(types.array(InvoiceModel), []),
     paidInvoices: types.optional(types.array(InvoiceModel), []),
+    searchInvoices: types.optional(types.array(SearchInvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
@@ -138,6 +139,28 @@ export const InvoiceStoreModel = types
     }),
   }))
   .actions(self => ({
+    searchInvoice: flow(function* (query: string) {
+      detach(self.searchInvoices);
+      try {
+        const lowerQuery = query.toLowerCase();
+        const filteredInvoices = [
+          ...self.invoices.filter(invoice => invoice.title && invoice.title.toLowerCase().includes(lowerQuery)),
+          ...self.paidInvoices.filter(invoice => invoice.title && invoice.title.toLowerCase().includes(lowerQuery)),
+        ];
+        self.searchInvoices.replace(
+          filteredInvoices.map(invoice => ({
+            id: invoice.id,
+            title: invoice.title,
+            totalPriceWithVat: invoice.totalPriceWithVat,
+          }))
+        );
+      } catch (e) {
+        __DEV__ && console.tron.log('This is the error :' + e);
+        self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
     createInvoice: () => {
       detach(self.invoice);
       self.invoice = InvoiceModel.create({
@@ -166,7 +189,6 @@ export interface InvoiceStoreSnapshotIn extends SnapshotIn<typeof InvoiceStoreMo
 export const createInvoiceStoreDefaultModel = () =>
   types.optional(InvoiceStoreModel, {
     invoices: [],
+    paidInvoices: [],
     invoice: null,
-    products: [],
-    customers: [],
   });

@@ -5,7 +5,7 @@ import { BulletSeparator, Text } from '../../../components';
 import { Customer as ICustomer } from '../../../models/entities/customer/customer';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { BODY_TEXT_STYLE, DATE_CONTAINER, DATE_TEXT_STYLE } from '../../invoices/styles';
+import { BODY_TEXT_STYLE, DATE_CONTAINER, DATE_TEXT_STYLE } from '../../invoices/utils/styles';
 import { customerStyles as styles } from '../utils/styles';
 
 type CustomerProps = { item: ICustomer };

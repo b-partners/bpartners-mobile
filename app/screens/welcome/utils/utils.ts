@@ -13,8 +13,8 @@ export interface UserCredentials {
 }
 
 export const LoginFormSchema = yup.object().shape({
-  email: yup.string().email(translate('errors.invalidEmail')).required(translate('errors.required')),
-  password: yup.string().required(translate('errors.required')),
+  email: yup.string().email(translate('errors.invalidEmail')).required(translate('errors.required')).nullable(),
+  password: yup.string().required(translate('errors.required')).nullable(),
 });
 
 export const Log = (...args) => {

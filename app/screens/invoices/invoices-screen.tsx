@@ -8,9 +8,8 @@ import { BpPagination, Button, Loader, MenuItem, Screen, Separator, Text } from 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
-import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList, navigate } from '../../navigators';
-import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
@@ -18,19 +17,21 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
+import { PaymentMethodSelectionModal } from './components/payment-method-selection';
 import { SendingConfirmationModal } from './components/sending-confirmation-modal';
+import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
+  BUTTON_CONTAINER_STYLE,
   BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
-  CONTAINER,
+  CONTAINER_STYLE,
   FOOTER_COMPONENT_STYLE,
-  FULL,
   LOADER_STYLE,
+  SCREEN_STYLE,
   SECTION_HEADER_TEXT_STYLE,
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
-} from './styles';
-import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
+} from './utils/styles';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
@@ -42,8 +43,11 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
   const [openModal, setOpenModal] = useState(false);
+  const [openPaymentMethodModal, setOpenPaymentMethodModal] = useState(false);
   const [sendingRequest, setSendingRequest] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
+  const [currentInvoice, setCurrentInvoice] = useState<IInvoice | null>(null);
   const { currentAccountHolder, currentUser } = authStore;
 
   const handleRefresh = async () => {
@@ -83,11 +87,17 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     await sendEmail(authStore, item, true);
   };
 
-  const markAsPaid = async (item: IInvoice) => {
-    setCurrentCustomer(item.customer);
+  const openMethodSelection = (item: IInvoice) => {
+    setCurrentInvoice(item);
+    setOpenPaymentMethodModal(true);
+  };
+
+  const markAsPaid = async (method: PaymentMethod) => {
+    setIsLoading(true);
+    setCurrentCustomer(currentInvoice.customer);
     setSendingRequest(true);
     const editPayment = [];
-    item.paymentRegulations.forEach(paymentItem => {
+    currentInvoice.paymentRegulations.forEach(paymentItem => {
       const newItem = {
         maturityDate: paymentItem.maturityDate,
         percent: paymentItem.paymentRequest.percentValue,
@@ -97,32 +107,27 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       editPayment.push(newItem);
     });
     const editedItem = {
-      ...item,
+      ...currentInvoice,
       status: InvoiceStatus.PAID,
       paymentRegulations: editPayment,
+      paymentMethod: method,
     };
     try {
       await invoiceStore.saveInvoice(editedItem);
+      setIsLoading(false);
+      setOpenPaymentMethodModal(false);
       setOpenModal(true);
+      await handleRefresh();
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
-    await handleRefresh();
   };
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View
-        testID='PaymentInitiationScreen'
-        style={{
-          ...FULL,
-          backgroundColor: color.palette.white,
-          borderColor: color.transparent,
-          borderWidth: 0,
-        }}
-      >
+      <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
         {!loadingInvoice ? (
-          <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
@@ -133,7 +138,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
                       item={item}
                       menuItems={items}
                       menuAction={{
-                        markAsPaid: () => markAsPaid(item),
+                        markAsPaid: () => openMethodSelection(item),
                         downloadInvoice: () => downloadInvoice(item),
                         sendInvoice: () => sendInvoice(item),
                       }}
@@ -164,7 +169,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
+        <View style={BUTTON_CONTAINER_STYLE}>
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
           <View style={{ width: '75%', justifyContent: 'center' }}>
             <Button
@@ -176,6 +181,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               }}
             />
           </View>
+          <PaymentMethodSelectionModal isOpen={openPaymentMethodModal} setOpen={setOpenPaymentMethodModal} markAsPaid={markAsPaid} isLoading={isLoading} />
         </View>
         {sendingRequest && (
           <SendingConfirmationModal
