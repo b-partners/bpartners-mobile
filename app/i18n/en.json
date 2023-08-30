@@ -253,7 +253,11 @@
       "invoicePreview": "Invoice Preview",
       "comment": "Comment",
       "requestTitle": "Request for an advice",
-      "sendRequest": "Send a request for advice to"
+      "sendRequest": "Send a request for advice to",
+      "unknown": "Unspecified",
+      "cash": "Cash",
+      "bankTransfer": "Bank transfer",
+      "cheque": "Cheque"
     },
     "status": {
       "PAID": "Paid",

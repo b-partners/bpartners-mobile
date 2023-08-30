@@ -28,6 +28,11 @@ export const SearchInvoiceModel = types.model('SearchInvoice').props({
   totalPriceWithVat: types.maybeNull(types.number),
 });
 
+export const PaymentMethodModel = types.model('PaymentMethodModel').props({
+  label: types.maybeNull(types.string),
+  value: types.maybeNull(types.enumeration(Object.values(PaymentMethod))),
+});
+
 export const InvoiceModel = types.model('Invoice').props({
   id: types.maybeNull(types.string),
   paymentUrl: types.maybeNull(types.string),
@@ -58,6 +63,7 @@ export const InvoiceModel = types.model('Invoice').props({
 
 export interface Invoice extends Instance<typeof InvoiceModel> {}
 export interface SearchInvoice extends Instance<typeof SearchInvoiceModel> {}
+export interface PaymentMethodModel extends Instance<typeof PaymentMethodModel> {}
 
 export interface InvoiceSnapshotOut extends SnapshotOut<typeof InvoiceModel> {}
 

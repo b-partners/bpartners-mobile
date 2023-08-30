@@ -238,7 +238,11 @@
       "invoicePreview": "Aperçu du devis",
       "comment": "Commentaire",
       "requestTitle": "Demande d'avis",
-      "sendRequest": "Envoyer une demande d'avis à"
+      "sendRequest": "Envoyer une demande d'avis à",
+      "unknown": "Non spécifiée",
+      "cash": "Espèces",
+      "bankTransfer": "Virement bancaire",
+      "cheque": "Chèque"
     },
     "status": {
       "PAID": "Payée",

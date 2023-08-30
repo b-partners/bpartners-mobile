@@ -8,7 +8,7 @@ import { BpPagination, Button, Loader, MenuItem, Screen, Separator, Text } from 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
-import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList, navigate } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -18,6 +18,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
+import { PaymentMethodSelectionModal } from './components/payment-method-selection';
 import { SendingConfirmationModal } from './components/sending-confirmation-modal';
 import {
   BUTTON_INVOICE_STYLE,
@@ -42,8 +43,11 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
   const [openModal, setOpenModal] = useState(false);
+  const [openPaymentMethodModal, setOpenPaymentMethodModal] = useState(false);
   const [sendingRequest, setSendingRequest] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
+  const [currentInvoice, setCurrentInvoice] = useState<IInvoice | null>(null);
+  const [currentMethod, setCurrentMethod] = useState<PaymentMethod | null>(null);
   const { currentAccountHolder, currentUser } = authStore;
 
   const handleRefresh = async () => {
@@ -83,11 +87,16 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     await sendEmail(authStore, item, true);
   };
 
-  const markAsPaid = async (item: IInvoice) => {
-    setCurrentCustomer(item.customer);
+  const openMethodSelection = (item: IInvoice) => {
+    setCurrentInvoice(item);
+    setOpenPaymentMethodModal(true);
+  };
+
+  const markAsPaid = async () => {
+    setCurrentCustomer(currentInvoice.customer);
     setSendingRequest(true);
     const editPayment = [];
-    item.paymentRegulations.forEach(paymentItem => {
+    currentInvoice.paymentRegulations.forEach(paymentItem => {
       const newItem = {
         maturityDate: paymentItem.maturityDate,
         percent: paymentItem.paymentRequest.percentValue,
@@ -97,9 +106,10 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       editPayment.push(newItem);
     });
     const editedItem = {
-      ...item,
+      ...currentInvoice,
       status: InvoiceStatus.PAID,
       paymentRegulations: editPayment,
+      paymentMethod: currentMethod,
     };
     try {
       await invoiceStore.saveInvoice(editedItem);
@@ -133,7 +143,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
                       item={item}
                       menuItems={items}
                       menuAction={{
-                        markAsPaid: () => markAsPaid(item),
+                        markAsPaid: () => openMethodSelection(item),
                         downloadInvoice: () => downloadInvoice(item),
                         sendInvoice: () => sendInvoice(item),
                       }}
@@ -176,6 +186,12 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               }}
             />
           </View>
+          <PaymentMethodSelectionModal
+            isOpen={openPaymentMethodModal}
+            setOpen={setOpenPaymentMethodModal}
+            setCurrentMethod={setCurrentMethod}
+            markAsPaid={markAsPaid}
+          />
         </View>
         {sendingRequest && (
           <SendingConfirmationModal
