@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
 
@@ -61,8 +61,8 @@ export const CustomerCreationForm: FC<
       >
         {({ values, errors }) => {
           return (
-            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '95%' }}>
-              <View style={{ height: '80%' }}>
+            <ScrollView style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '100%' }}>
+              <View style={{ height: '90%' }}>
                 <FormField
                   testID='customerFirstName'
                   name='customerFirstName'
@@ -193,7 +193,7 @@ export const CustomerCreationForm: FC<
                   </Button>
                 )}
               </View>
-            </View>
+            </ScrollView>
           );
         }}
       </Formik>
