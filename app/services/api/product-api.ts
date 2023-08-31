@@ -1,6 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
-import { Criteria } from '../../models/entities/criteria/criteria';
+import { ProductFilter } from '../../models/entities/filter/filter';
 import { Product } from '../../models/entities/product/product';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
@@ -13,10 +13,10 @@ export class ProductApi {
     this.api = api;
   }
 
-  async getProducts(account: string, criteria: Criteria): Promise<GetProductsResult> {
+  async getProducts(account: string, productFilter: ProductFilter): Promise<GetProductsResult> {
     // make the api call
     __DEV__ && console.tron.log(`Fetching account's products`);
-    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/products`, criteria);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/products`, productFilter);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

@@ -9,7 +9,7 @@ import { TxKeyPath } from '../../../../i18n';
 import { Customer } from '../../../../models/entities/customer/customer';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/styles';
+import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils/styles';
 import CustomerRow from './customer-row';
 
 type SelectFormFieldProps = TextFieldProps & {

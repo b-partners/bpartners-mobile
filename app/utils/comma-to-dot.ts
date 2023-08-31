@@ -10,7 +10,5 @@ export const commaToDot = (numberString: string): number | undefined => {
 export const commaValidation = (unitPrice: string): boolean => {
   const numberWithPoint = unitPrice.replace(',', '.');
   const regex = /^\d+(\.\d+)?$/;
-  const isValid = regex.test(numberWithPoint);
-
-  return isValid;
+  return regex.test(numberWithPoint);
 };

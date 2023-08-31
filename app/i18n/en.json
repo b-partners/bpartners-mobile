@@ -29,7 +29,9 @@
     "edit": "Edit",
     "register": "REGISTER",
     "noComment": "No Comment",
-    "noInformation": "No information available"
+    "noInformation": "No information available",
+    "noData": "Unknown",
+    "search": "Search"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -48,7 +50,8 @@
     "mandatoryTitle": "please fill out the title of your quotation !",
     "minPassword": "Password must contain at least 8 characters",
     "invalidPassword": "The password must contain at least one capital letter, one special character (., -, &, @ etc) and one number",
-    "invalidConfirmPassword": "The passwords don't match !"
+    "invalidConfirmPassword": "The passwords don't match !",
+    "changePassword": "New password"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -251,7 +254,12 @@
       "invoicePreview": "Invoice Preview",
       "comment": "Comment",
       "requestTitle": "Request for an advice",
-      "sendRequest": "Send a request for advice to"
+      "sendRequest": "Send a request for advice to",
+      "unknown": "Unspecified",
+      "cash": "Cash",
+      "bankTransfer": "Bank transfer",
+      "cheque": "Cheque",
+      "paymentMethod": "Method of payment"
     },
     "status": {
       "PAID": "Paid",
@@ -486,6 +494,7 @@
   },
   "productScreen": {
     "title": "My products",
-    "export": "Exporter"
+    "export": "Exporter",
+    "price": "Price"
   }
 }

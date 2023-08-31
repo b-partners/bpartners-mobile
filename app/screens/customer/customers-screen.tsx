@@ -1,9 +1,9 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
-import { FlatList, Platform, View } from 'react-native';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
 import RNFS from 'react-native-fs';
-import { Button as IButton } from 'react-native-paper';
+import { Button as IButton, Searchbar } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../components';
@@ -16,7 +16,7 @@ import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
-import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/styles';
+import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
 import { Log } from '../welcome/utils/utils';
 import { Customer } from './components/customer';
@@ -32,6 +32,8 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = customers.slice(startItemIndex, endItemIndex);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const onChangeSearch = query => setSearchQuery(query);
 
   useEffect(() => {
     (async () => {
@@ -60,7 +62,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   };
 
   const getThreshold = () => {
-    return Platform.OS === 'ios' ? -10 : 0;
+    return Platform.OS === 'ios' ? -15 : 0;
   };
 
   const convertToCSV = data => {
@@ -79,6 +81,12 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     return csvHeader + csvRows;
   };
 
+  const searchCustomer = async () => {
+    Platform.OS === 'ios'
+      ? await customerStore.getCustomers({ filters: searchQuery.replaceAll(' ', '%2C'), page: 1, pageSize: invoicePageSize })
+      : await customerStore.getCustomers({ filters: searchQuery, page: 1, pageSize: invoicePageSize });
+  };
+
   async function saveCSVToFile(csvString) {
     const filePath = RNFS.DocumentDirectoryPath + `/customers.csv`;
 
@@ -91,13 +99,49 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     }
   }
 
+  const debounceTimeoutRef = useRef(null);
+
+  const handleInputChange = query => {
+    onChangeSearch(query);
+    if (query) {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+
+      debounceTimeoutRef.current = setTimeout(async () => {
+        await searchCustomer();
+        setMaxPage(Math.ceil(customers.length / itemsPerPage));
+      }, 1000);
+    }
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='customerScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='CustomersScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+        <Searchbar
+          placeholder={translate('common.search')}
+          onChangeText={handleInputChange}
+          value={searchQuery}
+          style={{
+            backgroundColor: palette.solidGrey,
+            height: 40,
+            borderRadius: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: spacing[4],
+            width: '90%',
+            marginHorizontal: '5%',
+          }}
+          iconColor={palette.lightGrey}
+          clearIcon='close-circle'
+          onClearIconPress={handleRefresh}
+          inputStyle={{ color: palette.black, alignSelf: 'center' }}
+          placeholderTextColor={palette.lightGrey}
+        />
         {!loadingCustomer ? (
           <Screen
-            style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[3] }}
+            style={{ backgroundColor: palette.white, flexDirection: 'column', paddingBottom: spacing[3] }}
             preset='scroll'
             backgroundColor={palette.white}
           >
@@ -118,61 +162,63 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: spacing[2],
-            height: 80,
-            width: '100%',
-            marginBottom: spacing[4],
-            alignItems: 'center',
-            paddingLeft: spacing[4],
-          }}
-        >
-          <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <IButton
-            compact={true}
-            buttonColor={palette.secondaryColor}
-            textColor={palette.white}
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <View
             style={{
-              width: 100,
-              height: 40,
-              borderRadius: 5,
               flexDirection: 'row',
-              justifyContent: 'center',
+              marginTop: spacing[2],
+              height: 80,
+              width: '100%',
+              marginBottom: spacing[4],
               alignItems: 'center',
-              alignContent: 'center',
-              marginLeft: spacing[6],
-            }}
-            onPress={() => setCreationModal(true)}
-          >
-            <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
-            <Text tx={'common.create'} style={{ fontSize: 14 }} />
-          </IButton>
-          <IButton
-            disabled={loadingCustomer}
-            compact={true}
-            buttonColor={palette.secondaryColor}
-            textColor={palette.white}
-            style={{
-              width: 100,
-              height: 40,
-              borderRadius: 5,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignContent: 'center',
-              marginLeft: spacing[4],
-            }}
-            onPress={() => {
-              const csvString = convertToCSV(customers);
-              saveCSVToFile(csvString);
+              paddingLeft: spacing[4],
             }}
           >
-            <MaterialCommunityIcons name='download' size={22} color={palette.white} />
-            <Text tx={'customerScreen.export'} style={{ fontSize: 14 }} />
-          </IButton>
-        </View>
+            <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+            <IButton
+              compact={true}
+              buttonColor={palette.secondaryColor}
+              textColor={palette.white}
+              style={{
+                width: 100,
+                height: 40,
+                borderRadius: 5,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center',
+                marginLeft: spacing[6],
+              }}
+              onPress={() => setCreationModal(true)}
+            >
+              <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
+              <Text tx={'common.create'} style={{ fontSize: 14 }} />
+            </IButton>
+            <IButton
+              disabled={loadingCustomer}
+              compact={true}
+              buttonColor={palette.secondaryColor}
+              textColor={palette.white}
+              style={{
+                width: 100,
+                height: 40,
+                borderRadius: 5,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center',
+                marginLeft: spacing[4],
+              }}
+              onPress={() => {
+                const csvString = convertToCSV(customers);
+                saveCSVToFile(csvString);
+              }}
+            >
+              <MaterialCommunityIcons name='download' size={22} color={palette.white} />
+              <Text tx={'customerScreen.export'} style={{ fontSize: 14 }} />
+            </IButton>
+          </View>
+        </KeyboardAvoidingView>
         <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       </View>
     </ErrorBoundary>

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Invoice } from '../../../models/entities/invoice/invoice';
+import { Invoice, SearchInvoice } from '../../../models/entities/invoice/invoice';
 import { Transaction } from '../../../models/entities/transaction/transaction';
 
 export type InvoiceRowProps = {
-  invoice: Invoice;
-  onSelect: (invoice: Invoice) => void;
+  invoice: Invoice | SearchInvoice;
+  onSelect: (invoice: Invoice | SearchInvoice) => void;
   isSelected?: boolean;
 };
 

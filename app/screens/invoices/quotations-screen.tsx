@@ -9,7 +9,7 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList, navigate } from '../../navigators';
-import { color, spacing } from '../../theme';
+import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
@@ -17,9 +17,18 @@ import { showMessage } from '../../utils/snackbar';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
-import { CONTAINER, FOOTER_COMPONENT_STYLE, FULL, LOADER_STYLE, SECTION_HEADER_TEXT_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from './styles';
 import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
+import {
+  BUTTON_CONTAINER_STYLE,
+  FOOTER_COMPONENT_STYLE,
+  FULL,
+  LOADER_STYLE,
+  SCREEN_STYLE,
+  SECTION_HEADER_TEXT_STYLE,
+  SECTION_LIST_CONTAINER_STYLE,
+  SEPARATOR_STYLE,
+} from './utils/styles';
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore, quotationStore } = useStores();
@@ -96,7 +105,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         {!loadingQuotation ? (
-          <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
@@ -127,7 +136,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
         ) : (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         )}
-        <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
+        <View style={BUTTON_CONTAINER_STYLE}>
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
           <InvoiceCreationButton
             navigation={navigation}
