@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { BpPagination, Button, Loader, MenuItem, Screen, Separator, Text } from '../../components';
+import { BpPagination, Button, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 // import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -126,7 +126,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
-        {!loadingInvoice ? (
+        {loadingInvoice ? (
+          <Loader size='large' containerStyle={LOADER_STYLE} />
+        ) : displayedItems.length > 0 ? (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
@@ -167,7 +169,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             </View>
           </Screen>
         ) : (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
+            <NoDataProvided />
+          </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
