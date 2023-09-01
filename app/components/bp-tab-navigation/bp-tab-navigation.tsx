@@ -1,59 +1,14 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React, { useCallback } from 'react';
-import { ImageStyle, View, ViewStyle } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View } from 'react-native';
 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
-import { BottomTab } from './bottom-tab';
-import { BOTTOM_TAB_ROUTES } from './constants';
-
-const TAB_VIEW_STYLE: ViewStyle = {
-  position: 'relative',
-  height: 110,
-  width: '100%',
-  flexDirection: 'row',
-  backgroundColor: palette.white,
-};
-
-const WAVE_STYLE: ImageStyle = {
-  width: '100%',
-  height: '95%',
-  position: 'absolute',
-  bottom: 0,
-};
-
-const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
-  zIndex: 10000000,
-  width: '20%',
-  height: '100%',
-  position: 'relative',
-};
-
-const TAB_STYLE: ImageStyle = {
-  marginHorizontal: '1%',
-  width: '100%',
-  height: 10,
-  position: 'absolute',
-  bottom: 0,
-};
-
-type IconProps = {
-  account: string;
-  activity: string;
-  payment: string;
-  facturation: string;
-  service: string;
-};
-
-type IconRouteProps = {
-  account: () => void;
-  activity: () => void;
-  payment: () => void;
-  facturation: () => void;
-  service: () => void;
-};
+import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
+import { BottomTab } from './components/bottom-tab';
+import { tabNavigationStyles as styles } from './utils/styles';
+import { BOTTOM_TAB_ROUTES, IconProps, IconRouteProps, hasBusinessActivities, hasCarreleur } from './utils/utils';
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   const {
@@ -62,17 +17,8 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   } = props;
   const currentTab = routeNames[index];
   const { marketplaceStore, currentAccountHolder } = useStores();
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
 
-  const hasBusinessActivities = accountHolder =>
-    accountHolder != null &&
-    accountHolder.businessActivities != null &&
-    (accountHolder.businessActivities.primary != null || accountHolder.businessActivities.secondary != null);
-  const hasCarreleur = businessActivities =>
-    businessActivities != null &&
-    (businessActivities.primary === 'Carreleur' ||
-      businessActivities.primary === 'Antinuisibles 3D' ||
-      businessActivities.secondary === 'Carreleur' ||
-      businessActivities.secondary === 'Antinuisibles 3D');
   const shouldShowProspects = hasBusinessActivities(currentAccountHolder) && hasCarreleur(currentAccountHolder.businessActivities);
 
   const handleNavigationMarketplace = useCallback((routeName: string) => {
@@ -125,34 +71,28 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   };
 
   return (
-    <>
-      <View style={TAB_VIEW_STYLE} {...props} testID='bottom-tab'>
-        <AutoImage source={require('./icons/tab-navigation.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
+    <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
+      <View style={{ ...styles.container, height: keyboardOpen ? 0 : 110 }} {...props} testID='bottom-tab'>
+        <AutoImage source={require('./icons/tab-navigation.png')} style={styles.background} resizeMethod='auto' resizeMode='stretch' />
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
           return (
-            <View key={`bottom-navigation-item-${i}`} style={NAVIGATION_CONTAINER_STYLE}>
+            <View key={`bottom-navigation-item-${i}`} style={styles.tabContainer}>
               <BottomTab
                 onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
                 testID={`${RouteName[bottomTavNavItem]}Tab`}
                 source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
-                tabStyle={{
-                  width: '100%',
-                  height: 50,
-                  marginTop: 18,
-                  alignItems: 'center',
-                }}
-                // tabStyle={{ width: '100%', height: 50, marginTop: 18, alignItems: 'center', display: bottomTavNavItem === 'service' ? 'none' : 'flex' }}
+                tabStyle={styles.tab}
                 imageStyle={{ width: 65, height: 55 }}
                 text={ROUTE[bottomTavNavItem]}
                 bottomNavItem={bottomTavNavItem}
               />
               {currentTab === RouteName[bottomTavNavItem] && (
-                <AutoImage source={require('./icons/tab.png')} style={TAB_STYLE} resizeMethod='auto' resizeMode='stretch' />
+                <AutoImage source={require('./icons/tab.png')} style={styles.icon} resizeMethod='auto' resizeMode='stretch' />
               )}
             </View>
           );
         })}
       </View>
-    </>
+    </KeyboardLayout>
   );
 };

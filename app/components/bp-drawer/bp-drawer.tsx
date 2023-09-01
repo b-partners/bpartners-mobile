@@ -39,7 +39,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
   const { currentUser, currentAccount, accessToken } = authStore;
 
-  const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
+  const uri = createFileUrl(currentUser?.logoFileId, currentAccount?.id, accessToken, 'LOGO');
 
   const TitleRoute: RouteNameProps = {
     home: translate('homeScreen.title'),

@@ -18,7 +18,7 @@ import { profileStyles as styles } from './utils/styles';
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({ navigation }) {
   const { authStore } = useStores();
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
-  const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
+  const uri = createFileUrl(currentUser?.logoFileId, currentAccount?.id, accessToken, 'LOGO');
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [accountHolder, setAccountHolder] = useState<AccountHolder>();
 
