@@ -30,9 +30,18 @@ export const profileStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  logoPlaceholder: {
+    height: 90,
+    width: 90,
+    marginHorizontal: '7%',
+    borderRadius: 100,
+    backgroundColor: palette.lighterGrey,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   logo: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
   },
   nameContainer: {
     height: 130,

@@ -66,9 +66,18 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
         <Screen style={styles.screen} preset='scroll'>
           <Header headerTx='profileScreen.title' titleStyle={styles.headerTitle} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           <View style={styles.viewContainer}>
-            <View style={styles.logoContainer}>
-              <AutoImage source={{ uri }} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
-            </View>
+            {currentUser.logoFileId ? (
+              <View style={styles.logoContainer}>
+                <AutoImage source={{ uri }} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
+              </View>
+            ) : (
+              <AutoImage
+                source={require('../../components/bp-drawer/utils/profile-placeholder.png')}
+                resizeMode='stretch'
+                resizeMethod='auto'
+                style={styles.logoPlaceholder}
+              />
+            )}
             <View style={styles.nameContainer}>
               <Text text={currentUser.firstName.toString()} style={{ ...styles.name, color: palette.black }} />
               <Text text={currentUser.lastName.toString()} style={{ ...styles.name, color: palette.lightGrey }} />
