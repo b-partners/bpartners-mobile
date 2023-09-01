@@ -4,9 +4,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Menu } from 'react-native-paper';
 
-import { Header, Loader, Screen } from '../../components';
-import { MenuItem } from '../../components/menu/menu';
-import { NoDataProvided } from '../../components/no-data-provided/no-data-provided';
+import { Header, Loader, MenuItem, NoDataProvided, Screen } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';

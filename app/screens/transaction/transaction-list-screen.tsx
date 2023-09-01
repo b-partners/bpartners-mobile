@@ -3,14 +3,14 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { FlatList, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import { HeaderWithBalance, Icon, Loader, Screen, Separator } from '../../components';
+import { HeaderWithBalance, Icon, Loader, NoDataProvided, Screen, Separator } from '../../components';
 import { useStores } from '../../models';
 import { Transaction as ITransaction } from '../../models/entities/transaction/transaction';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { LOADER_STYLE } from '../invoices/utils/styles';
+import { LOADER_STYLE, SCREEN_STYLE } from '../invoices/utils/styles';
 import { Transaction } from './components/transaction';
 import { TransactionModal } from './components/transaction-modal';
 
@@ -49,7 +49,9 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           }
         />
         <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-          {!loadingTransactionCategories ? (
+          {loadingTransactionCategories ? (
+            <Loader size='large' containerStyle={LOADER_STYLE} />
+          ) : transactions.length > 0 ? (
             <FlatList
               testID='listContainer'
               contentContainerStyle={FLAT_LIST}
@@ -69,7 +71,9 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
               ItemSeparatorComponent={() => <Separator />}
             />
           ) : (
-            <Loader size='large' containerStyle={LOADER_STYLE} />
+            <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
+              <NoDataProvided />
+            </Screen>
           )}
         </Screen>
         {currentTransaction && (
