@@ -10,6 +10,7 @@ import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
+import { navigate } from '../../../navigators';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
@@ -89,12 +90,23 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
             </TouchableOpacity>
             {loading && <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />}
             {invoice.title && (
-              <View style={styles.fieldContainer}>
+              <TouchableOpacity
+                style={styles.fieldContainer}
+                onPress={() => {
+                  navigate('invoicePreview', {
+                    fileId: invoice.fileId,
+                    invoiceTitle: invoice.title,
+                    invoice: invoice,
+                    situation: false,
+                  });
+                  closeModal();
+                }}
+              >
                 <Text tx={'transactionListScreen.associatedLabel'} style={styles.associatedLabel} />
                 <TransactionField label='transactionListScreen.reference' text={invoice.ref} />
                 <TransactionField label='transactionListScreen.titleLabel' text={invoice.title} />
                 <TransactionField label='transactionListScreen.total' text={printCurrencyToMajors(invoice.totalPriceWithVat)} />
-              </View>
+              </TouchableOpacity>
             )}
           </View>
         </View>
