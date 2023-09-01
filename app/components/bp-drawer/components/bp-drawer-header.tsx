@@ -5,12 +5,19 @@ import { Platform, Text, TouchableOpacity, View } from 'react-native';
 // import { Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { color, spacing } from '../../theme';
-import { AutoImage } from '../auto-image/auto-image';
-import { Icon } from '../icon/icon';
+import { User } from '../../../models/entities/user/user';
+import { color, spacing } from '../../../theme';
+import { AutoImage } from '../../auto-image/auto-image';
+import { Icon } from '../../icon/icon';
 
-export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; onChangeText: (value: string) => void; navigation: DrawerNavigationHelpers }) {
-  const { currentUser, navigation } = props;
+export function BPDrawerHeader(props: {
+  onPress: () => void;
+  currentUser: User;
+  uri: string;
+  onChangeText: (value: string) => void;
+  navigation: DrawerNavigationHelpers;
+}) {
+  const { currentUser, navigation, uri } = props;
 
   const { top } = useSafeAreaInsets();
 
@@ -38,8 +45,13 @@ export function BPDrawerHeader(props: { onPress: () => void; currentUser: any; o
         </TouchableOpacity>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View>
-            <TouchableOpacity style={{ position: 'absolute', bottom: -10, left: 21, zIndex: 1 }}>{/*<Icon icon='edit' />*/}</TouchableOpacity>
-            <AutoImage source={require('./profile-placeholder.png')} resizeMode='stretch' resizeMethod='auto' />
+            {/*<TouchableOpacity style={{
+              position: "absolute",
+              bottom: -10,
+              left: 21,
+              zIndex: 1
+            }}>{<Icon icon='edit' />}</TouchableOpacity>*/}
+            <AutoImage source={currentUser.logoFileId ? { uri } : require('../utils/profile-placeholder.png')} resizeMode='stretch' resizeMethod='auto' />
           </View>
           <View
             style={{
