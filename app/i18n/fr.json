@@ -31,7 +31,8 @@
     "noComment": "Aucun Commentaire",
     "noInformation": "Aucune information",
     "noData": "Non renseigné",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "open": "Ouvrir"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
