@@ -2,9 +2,10 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Linking, Platform, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import { Button as IButton, Searchbar, TextInput } from 'react-native-paper';
+import Snackbar from 'react-native-snackbar';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../components';
@@ -21,7 +22,6 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
-import { Log } from '../welcome/utils/utils';
 import { Product } from './components/product';
 import { ProductCreationModal } from './components/product-creation-modal';
 
@@ -94,8 +94,20 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
 
     try {
       await RNFS.writeFile(filePath, csvString, 'utf8');
-      showMessage(`${translate('common.saved')} ${filePath}`, { backgroundColor: palette.green });
-      Log(filePath);
+      Snackbar.show({
+        text: `${translate('common.saved')} ${filePath}`,
+        duration: 5000,
+        backgroundColor: palette.green,
+        action: {
+          text: translate('common.open'),
+          textColor: palette.white,
+          onPress: () => {
+            Linking.openURL(`file://${filePath}`).catch(err => {
+              showMessage(err.toString(), { backgroundColor: palette.pastelRed });
+            });
+          },
+        },
+      });
     } catch (error) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
