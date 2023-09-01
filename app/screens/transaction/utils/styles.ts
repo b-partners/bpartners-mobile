@@ -11,9 +11,14 @@ export const LIST_CONTAINER: ViewStyle = {
   borderColor: palette.lighterGrey,
 };
 
-export const ICON_STYLE = { flex: 1, marginHorizontal: spacing[1] };
-
-export const ICON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };
+export const ICON_CONTAINER_STYLE: ViewStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 40,
+  height: '100%',
+};
 export const TRANSACTION_BOTTOM_SIDE: ViewStyle = { flex: 1, display: 'flex', width: '100%' };
 
 export const transactionStyles = StyleSheet.create({
@@ -36,6 +41,7 @@ export const transactionStyles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    elevation: 5,
   },
   dropdownChildren: {
     height: 40,
@@ -200,6 +206,19 @@ export const transactionModalStyles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     marginVertical: spacing[6],
+    borderWidth: 1,
+    borderColor: palette.lightGrey,
+    paddingVertical: 30,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
+    shadowOpacity: 1,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    elevation: 5,
   },
   transactionIcon: {
     flexGrow: 1,

@@ -16,8 +16,9 @@ import awsExports from '../../../src/aws-exports';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { color } from '../../theme';
+import { createFileUrl } from '../../utils/file-utils';
 import { AutoImage } from '../auto-image/auto-image';
-import { BPDrawerHeader } from './bp-drawer-header';
+import { BPDrawerHeader } from './components/bp-drawer-header';
 import {
   CENTER_CONTAINER_STYLE,
   DRAWER_SCROLLVIEW_STYLE,
@@ -36,7 +37,9 @@ Amplify.configure(awsExports);
 
 export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
-  const { currentUser } = authStore;
+  const { currentUser, currentAccount, accessToken } = authStore;
+
+  const uri = createFileUrl(currentUser?.logoFileId, currentAccount?.id, accessToken, 'LOGO');
 
   const TitleRoute: RouteNameProps = {
     home: translate('homeScreen.title'),
@@ -72,12 +75,18 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
-      <AutoImage source={require('./drawer-header-background.png')} resizeMode='stretch' resizeMethod='auto' style={{ position: 'absolute', zIndex: 1 }} />
+      <AutoImage
+        source={require('./utils/drawer-header-background.png')}
+        resizeMode='stretch'
+        resizeMethod='auto'
+        style={{ position: 'absolute', zIndex: 1 }}
+      />
       <BPDrawerHeader
         onPress={() => {
           props.navigation.closeDrawer();
         }}
         currentUser={currentUser}
+        uri={uri}
         onChangeText={() => {}}
         navigation={props.navigation}
       />

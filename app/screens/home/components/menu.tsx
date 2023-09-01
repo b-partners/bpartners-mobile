@@ -5,15 +5,16 @@ import React, { FC } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
 import { Icon } from '../../../components';
-import { BULLET_STYLE } from '../utils/styles';
+
+// import { BULLET_STYLE } from '../utils/styles';
 
 export const Menu: FC<{ navigation: DrawerNavigationProp<any> }> = observer(({ navigation }) => {
   return (
     <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} testID='menuContainer'>
       <View>
-        <View style={BULLET_STYLE}>
-          <Icon icon='redBullet' />
-        </View>
+        {/*<View style={BULLET_STYLE}>
+          <Icon icon="redBullet" />
+        </View>*/}
         <Icon icon='whiteMenu' />
       </View>
     </TouchableOpacity>

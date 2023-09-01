@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { BpPagination, Loader, MenuItem, Screen, Separator, Text } from '../../components';
+import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
@@ -109,7 +109,9 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
-        {!loadingDraft ? (
+        {loadingDraft ? (
+          <Loader size='large' containerStyle={LOADER_STYLE} />
+        ) : displayedItems.length > 0 ? (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
@@ -138,7 +140,9 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
             </View>
           </Screen>
         ) : (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
+            <NoDataProvided />
+          </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />

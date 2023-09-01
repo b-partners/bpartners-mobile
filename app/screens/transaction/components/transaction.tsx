@@ -3,8 +3,9 @@ import React, { PropsWithoutRef, useState } from 'react';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { Dropdown, Icon, Loader, Text } from '../../../components';
+import { Dropdown, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
@@ -15,7 +16,7 @@ import { palette } from '../../../theme/palette';
 import { handleAsyncRequest } from '../../../utils/asyncRequest';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
-import { ICON_CONTAINER_STYLE, ICON_STYLE, TRANSACTION_BOTTOM_SIDE, transactionStyles as styles } from '../utils/styles';
+import { ICON_CONTAINER_STYLE, TRANSACTION_BOTTOM_SIDE, transactionStyles as styles } from '../utils/styles';
 
 export const Transaction = (
   props: PropsWithoutRef<{
@@ -55,7 +56,7 @@ export const Transaction = (
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
           <View style={{ display: 'flex', flexDirection: 'column', flex: 4 }}>
             <Text
-              text={`${item.reference} - ${item.label}`}
+              text={`${item.label}`}
               style={{
                 color: color.palette.textClassicColor,
                 fontFamily: 'Geometria-Bold',
@@ -162,7 +163,7 @@ export const Transaction = (
               }
             }}
           >
-            {<Icon icon='settings' style={ICON_STYLE} />}
+            <MaterialIcons name='add-a-photo' size={25} style={{ color: palette.lightGrey }} />
           </TouchableOpacity>
         </View>
       </View>
