@@ -51,7 +51,7 @@ export function BPDrawerHeader(props: {
               left: 21,
               zIndex: 1
             }}>{<Icon icon='edit' />}</TouchableOpacity>*/}
-            <AutoImage source={currentUser.logoFileId ? { uri } : require('../utils/profile-placeholder.png')} resizeMode='stretch' resizeMethod='auto' />
+            <AutoImage source={currentUser?.logoFileId ? { uri } : require('../utils/profile-placeholder.png')} resizeMode='stretch' resizeMethod='auto' />
           </View>
           <View
             style={{
