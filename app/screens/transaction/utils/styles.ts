@@ -11,9 +11,14 @@ export const LIST_CONTAINER: ViewStyle = {
   borderColor: palette.lighterGrey,
 };
 
-export const ICON_STYLE = { flex: 1, marginHorizontal: spacing[1] };
-
-export const ICON_CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center' };
+export const ICON_CONTAINER_STYLE: ViewStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 40,
+  height: '100%',
+};
 export const TRANSACTION_BOTTOM_SIDE: ViewStyle = { flex: 1, display: 'flex', width: '100%' };
 
 export const transactionStyles = StyleSheet.create({
