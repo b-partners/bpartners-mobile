@@ -55,7 +55,7 @@ export const Transaction = (
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
           <View style={{ display: 'flex', flexDirection: 'column', flex: 4 }}>
             <Text
-              text={`${item.reference} - ${item.label}`}
+              text={`${item.label}`}
               style={{
                 color: color.palette.textClassicColor,
                 fontFamily: 'Geometria-Bold',
