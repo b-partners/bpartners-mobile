@@ -230,7 +230,10 @@
       "label": "Boost your referencing"
     },
     "activity": {
-      "title": "Activity"
+      "title": "Activity",
+      "primary": "Main activity: ",
+      "secondary": "Secondary activity: ",
+      "register": "Register"
     },
     "companyInfo": {
       "title": "Company",
