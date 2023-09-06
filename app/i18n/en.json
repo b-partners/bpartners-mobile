@@ -215,6 +215,28 @@
       }
     }
   },
+  "profileEditionScreen" : {
+    "title": "Edit my account",
+    "globalInfo": {
+      "title": "General",
+      "label": "General Information"
+    },
+    "revenueTargets": {
+      "title": "Target",
+      "label": "Annual cash receipts to be realized"
+    },
+    "feedback": {
+      "title": "Referencing",
+      "label": "Boost your referencing"
+    },
+    "activity": {
+      "title": "Activity"
+    },
+    "companyInfo": {
+      "title": "Company",
+      "label": "Company details"
+    }
+  },
   "homeScreen": {
     "title": "Home",
     "labels": {

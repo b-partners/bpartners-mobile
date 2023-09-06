@@ -199,6 +199,28 @@
       }
     }
   },
+  "profileEditionScreen" : {
+    "title": "Édition de mon compte",
+    "globalInfo": {
+      "title": "Général",
+      "label": "Information Générale"
+    },
+    "revenueTargets": {
+      "title": "Objectif",
+      "label": "Encaissement annuelle à réaliser"
+    },
+    "feedback": {
+      "title": "Référencement",
+      "label": "Boostez votre référencement"
+    },
+    "activity": {
+      "title": "Activité"
+    },
+    "companyInfo": {
+      "title": "Société",
+      "label": "Informations sur la société"
+    }
+  },
   "homeScreen": {
     "title": "Accueil",
     "labels": {
