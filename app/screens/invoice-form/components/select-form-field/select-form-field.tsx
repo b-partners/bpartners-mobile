@@ -2,9 +2,8 @@ import { Observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle, useWindowDimensions } from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 
-import { Button, Icon, Separator, Text, TextField, TextFieldProps } from '../../../../components';
+import { BpPagination, Button, Icon, Separator, Text, TextField, TextFieldProps } from '../../../../components';
 import { TxKeyPath } from '../../../../i18n';
 import { Customer } from '../../../../models/entities/customer/customer';
 import { color, spacing } from '../../../../theme';
@@ -131,39 +130,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                   />
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
-                  <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
-                    {currentPage === 1 ? (
-                      <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                        <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
-                      </View>
-                    ) : (
-                      <TouchableOpacity
-                        style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                        onPress={() => {
-                          setCurrentPage(currentPage - 1);
-                        }}
-                      >
-                        <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
-                      </TouchableOpacity>
-                    )}
-                    <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                      <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
-                    </View>
-                    {currentPage === maxPage ? (
-                      <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                        <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
-                      </View>
-                    ) : (
-                      <TouchableOpacity
-                        style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
-                        onPress={() => {
-                          setCurrentPage(currentPage + 1);
-                        }}
-                      >
-                        <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
-                      </TouchableOpacity>
-                    )}
-                  </View>
+                  <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
                   <View style={{ width: '75%', justifyContent: 'center' }}>
                     <Button
                       tx='invoiceFormScreen.customerSelectionForm.validate'

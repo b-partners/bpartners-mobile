@@ -1,13 +1,15 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { Linking, View } from 'react-native';
+import { Linking, TouchableOpacity, View } from 'react-native';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { AutoImage, Button, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { NavigatorParamList } from '../../navigators';
+import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { printCurrency } from '../../utils/money';
@@ -79,11 +81,18 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               />
             )}
             <View style={styles.nameContainer}>
-              <Text text={currentUser.firstName.toString()} style={{ ...styles.name, color: palette.black }} />
-              <Text text={currentUser.lastName.toString()} style={{ ...styles.name, color: palette.lightGrey }} />
-              <View style={styles.phoneContainer}>
-                <PhoneIcon name='mobile-phone' size={24} color={palette.secondaryColor} />
-                <Text text={currentUser.phone} style={styles.phone} />
+              <View>
+                <Text text={currentUser.firstName.toString()} style={{ ...styles.name, color: palette.black }} />
+                <Text text={currentUser.lastName.toString()} style={{ ...styles.name, color: palette.lightGrey }} />
+                <View style={styles.phoneContainer}>
+                  <PhoneIcon name='mobile-phone' size={24} color={palette.secondaryColor} />
+                  <Text text={currentUser.phone} style={styles.phone} />
+                </View>
+              </View>
+              <View style={styles.editionContainer}>
+                <TouchableOpacity style={styles.editionIconContainer} onPress={() => navigation.navigate('profileEdition')}>
+                  <MaterialCommunityIcons name='pencil' size={22} color={color.palette.secondaryColor} />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
