@@ -11,6 +11,9 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { ActivityForm } from './screen/activity-form';
+import { CompanyInfoForm } from './screen/company-info-form';
+import { FeedbackForm } from './screen/feedback-form';
 import { GlobalInfoForm } from './screen/global-info-form';
 import { RevenueTargetsForm } from './screen/revenue-targets-form';
 
@@ -19,6 +22,9 @@ const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW 
 
 type TabNameProps = {
   globalInfo: string;
+  feedback: string;
+  activity: string;
+  companyInfo: string;
   revenueTargets: string;
 };
 
@@ -26,13 +32,16 @@ export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'p
   const Tab = createMaterialTopTabNavigator();
 
   const TabName: TabNameProps = {
-    globalInfo: translate('paymentListScreen.tabs.drafts'),
-    revenueTargets: translate('paymentListScreen.tabs.quotations'),
+    globalInfo: translate('profileEditionScreen.globalInfo.title'),
+    feedback: translate('profileEditionScreen.feedback.title'),
+    activity: translate('profileEditionScreen.activity.title'),
+    companyInfo: translate('profileEditionScreen.companyInfo.title'),
+    revenueTargets: translate('profileEditionScreen.revenueTargets.title'),
   };
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
+      <Header headerTx='profileEditionScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <Screen>
         <Tab.Navigator
           initialRouteName={'globalInfo'}
@@ -64,6 +73,36 @@ export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'p
             name={'globalInfo'}
             component={GlobalInfoForm}
             navigationKey='globalInfo'
+            listeners={{
+              tabPress: () => {
+                // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+              },
+            }}
+          />
+          <Tab.Screen
+            name={'feedback'}
+            component={FeedbackForm}
+            navigationKey='feedback'
+            listeners={{
+              tabPress: () => {
+                // invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+              },
+            }}
+          />
+          <Tab.Screen
+            name={'activity'}
+            component={ActivityForm}
+            navigationKey='activity'
+            listeners={{
+              tabPress: () => {
+                // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+              },
+            }}
+          />
+          <Tab.Screen
+            name={'companyInfo'}
+            component={CompanyInfoForm}
+            navigationKey='companyInfo'
             listeners={{
               tabPress: () => {
                 // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
