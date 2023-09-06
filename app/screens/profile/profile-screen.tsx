@@ -9,7 +9,6 @@ import { AutoImage, Button, GradientBackground, Header, LabelWithTextRow, Screen
 import { useStores } from '../../models';
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { NavigatorParamList } from '../../navigators';
-import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { printCurrency } from '../../utils/money';
@@ -91,7 +90,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               </View>
               <View style={styles.editionContainer}>
                 <TouchableOpacity style={styles.editionIconContainer} onPress={() => navigation.navigate('profileEdition')}>
-                  <MaterialCommunityIcons name='pencil' size={22} color={color.palette.secondaryColor} />
+                  <MaterialCommunityIcons name='pencil' size={22} color={palette.lightGrey} />
                 </TouchableOpacity>
               </View>
             </View>

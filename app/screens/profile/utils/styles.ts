@@ -40,7 +40,7 @@ export const profileStyles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40,
-    backgroundColor: palette.purpleCake,
+    backgroundColor: palette.solidGrey,
     justifyContent: 'center',
     alignItems: 'center',
   },

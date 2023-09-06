@@ -2,15 +2,14 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { TextStyle, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
-import { Header, Screen, Text } from '../../components';
-import { translate } from '../../i18n';
+import { Header, Screen } from '../../components';
 import { TabNavigatorParamList } from '../../navigators';
-import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { TabBar } from './components/tab-bar';
 import { ActivityForm } from './screen/activity-form';
 import { CompanyInfoForm } from './screen/company-info-form';
 import { FeedbackForm } from './screen/feedback-form';
@@ -20,24 +19,8 @@ import { RevenueTargetsForm } from './screen/revenue-targets-form';
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
 const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW };
 
-type TabNameProps = {
-  globalInfo: string;
-  feedback: string;
-  activity: string;
-  companyInfo: string;
-  revenueTargets: string;
-};
-
 export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function ProfileEditionScreen({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
-
-  const TabName: TabNameProps = {
-    globalInfo: translate('profileEditionScreen.globalInfo.title'),
-    feedback: translate('profileEditionScreen.feedback.title'),
-    activity: translate('profileEditionScreen.activity.title'),
-    companyInfo: translate('profileEditionScreen.companyInfo.title'),
-    revenueTargets: translate('profileEditionScreen.revenueTargets.title'),
-  };
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -46,7 +29,8 @@ export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'p
         <Tab.Navigator
           initialRouteName={'globalInfo'}
           style={TAB_BAR_STYLE}
-          screenOptions={({ route: tabRoute }) => ({
+          tabBar={props => <TabBar {...props} />}
+          /*screenOptions={({ route: tabRoute }) => ({
             tabBarIndicatorStyle: { backgroundColor: color.primary },
             tabBarActiveTintColor: color.primary,
             tabBarLabel: ({ focused }) => {
@@ -61,7 +45,7 @@ export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'p
                 </>
               );
             },
-          })}
+          })}*/
           // @ts-ignore
           tabBarOptions={{
             style: {
