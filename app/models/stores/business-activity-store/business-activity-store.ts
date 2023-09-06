@@ -2,7 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree'
 
 import { withEnvironment, withRootStore } from '../..';
 import { BusinessActivityApi } from '../../../services/api/business-activity-api';
-import { BusinessActivityItemModel } from '../../entities/business-activity/business-activity';
+import { BusinessActivityItem, BusinessActivityItemModel } from '../../entities/business-activity/business-activity';
 import { PageCriteria } from '../../entities/criteria/criteria';
 
 export const BusinessActivityStoreModel = types
@@ -16,14 +16,24 @@ export const BusinessActivityStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
+    getBusinessActivitiesSuccess: (businessActivities: BusinessActivityItem[]) => {
+      self.businessActivities.replace(businessActivities as any);
+    },
+  }))
+  .actions(self => ({
+    getBusinessActivitiesFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
     getBusinessActivities: flow(function* (criteria: PageCriteria) {
       const businessActivityApi = new BusinessActivityApi(self.environment.api);
       try {
         const getBusinessActivitiesResult = yield businessActivityApi.getBusinessActivities(criteria);
-        self.businessActivities.replace(getBusinessActivitiesResult.businessActivities);
+        self.getBusinessActivitiesSuccess(getBusinessActivitiesResult);
       } catch (e) {
-        __DEV__ && console.tron.log(e);
-        self.catchOrThrow(e);
+        self.getBusinessActivitiesFail(e);
       }
     }),
   }));
