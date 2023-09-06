@@ -30,22 +30,6 @@ export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'p
           initialRouteName={'globalInfo'}
           style={TAB_BAR_STYLE}
           tabBar={props => <TabBar {...props} />}
-          /*screenOptions={({ route: tabRoute }) => ({
-            tabBarIndicatorStyle: { backgroundColor: color.primary },
-            tabBarActiveTintColor: color.primary,
-            tabBarLabel: ({ focused }) => {
-              const activeLabelStyle: TextStyle = { width: 75, color: color.primary, fontWeight: '900' };
-
-              let labelStyle: TextStyle = { color: palette.textClassicColor };
-              labelStyle = focused ? { ...labelStyle, ...activeLabelStyle } : { ...labelStyle };
-
-              return (
-                <>
-                  <Text text={TabName[tabRoute.name]} style={labelStyle} />
-                </>
-              );
-            },
-          })}*/
           // @ts-ignore
           tabBarOptions={{
             style: {

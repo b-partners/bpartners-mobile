@@ -214,7 +214,10 @@
       "label": "Boostez votre référencement"
     },
     "activity": {
-      "title": "Activité"
+      "title": "Activité",
+      "primary": "Activité principale: ",
+      "secondary": "Activité secondaire: ",
+      "register": "Enregistrer"
     },
     "companyInfo": {
       "title": "Société",

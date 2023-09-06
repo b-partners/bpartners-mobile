@@ -5,7 +5,6 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';
-import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
 type TabNameProps = {
@@ -62,7 +61,7 @@ export const TabBar: React.FC<MaterialTopTabBarProps> = props => {
         </View>
       )}
       <View style={{ height: 40, width: '60%', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: color.primary, fontWeight: '900', fontFamily: 'Geometria-Bold', fontSize: 18 }} text={TabName[currentRoute.name]} />
+        <Text style={{ color: palette.secondaryColor, fontWeight: '900', fontFamily: 'Geometria-Bold', fontSize: 18 }} text={TabName[currentRoute.name]} />
       </View>
       {currentIndex < 4 ? (
         <TouchableOpacity style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} onPress={navigateToNext}>
