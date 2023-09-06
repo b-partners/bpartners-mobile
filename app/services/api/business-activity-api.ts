@@ -13,7 +13,7 @@ export class BusinessActivityApi {
   }
 
   async getBusinessActivities(criteria: PageCriteria): Promise<GetBusinessActivitiesResult> {
-    const response: ApiResponse<GetBusinessActivitiesResult> = await this.api.apisauce.post(`businessActivities`, criteria);
+    const response: ApiResponse<GetBusinessActivitiesResult> = await this.api.apisauce.get(`businessActivities`, criteria);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

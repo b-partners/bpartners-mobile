@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
@@ -14,8 +14,10 @@ import { ErrorBoundary } from '../../error/error-boundary';
 import { BUTTON_TEXT_STYLE, SHADOW_STYLE } from '../../invoices/utils/styles';
 
 export const ActivityForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function InvoicesScreen({ navigation }) {
-  const { authStore } = useStores();
+  const { authStore, businessActivityStore } = useStores();
+  const { businessActivities } = businessActivityStore;
   const { currentAccountHolder } = authStore;
+
   const {
     handleSubmit,
     control,
@@ -25,6 +27,7 @@ export const ActivityForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
     mode: 'all',
     defaultValues: { primary: currentAccountHolder.businessActivities.primary, secondary: currentAccountHolder.businessActivities.secondary },
   });
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View style={{ flex: 1, backgroundColor: palette.white }}>

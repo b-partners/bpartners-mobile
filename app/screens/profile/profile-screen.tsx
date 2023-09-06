@@ -13,15 +13,22 @@ import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { printCurrency } from '../../utils/money';
 import { ErrorBoundary } from '../error/error-boundary';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { AccountDeletionModal } from './components/account-deletion-modal';
 import { profileStyles as styles } from './utils/styles';
 
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({ navigation }) {
-  const { authStore } = useStores();
+  const { authStore, businessActivityStore } = useStores();
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
   const uri = createFileUrl(currentUser?.logoFileId, currentAccount?.id, accessToken, 'LOGO');
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [accountHolder, setAccountHolder] = useState<AccountHolder>();
+
+  useEffect(() => {
+    (async () => {
+      await businessActivityStore.getBusinessActivities({ page: 1, pageSize: invoicePageSize });
+    })();
+  }, []);
 
   useEffect(() => {
     if (currentAccountHolder) {
