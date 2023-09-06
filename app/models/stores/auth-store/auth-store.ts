@@ -17,16 +17,16 @@ import { User, UserModel } from '../../entities/user/user';
 export const AuthStoreModel = types
   .model('SignIn')
   .props({
-    redirectionUrl: types.maybe(types.maybeNull(types.string)),
-    successUrl: types.maybe(types.maybeNull(types.string)),
-    failureUrl: types.maybe(types.maybeNull(types.string)),
-    refreshToken: types.maybe(types.maybeNull(types.string)),
-    accessToken: types.maybe(types.maybeNull(types.string)),
-    currentUser: types.maybe(types.maybe(UserModel)),
-    currentAccount: types.maybe(types.maybeNull(AccountModel)),
-    currentAccountHolder: types.maybe(types.maybeNull(AccountHolderModel)),
+    redirectionUrl: types.maybeNull(types.string),
+    successUrl: types.maybeNull(types.string),
+    failureUrl: types.maybeNull(types.string),
+    refreshToken: types.maybeNull(types.string),
+    accessToken: types.maybeNull(types.string),
+    currentUser: types.maybeNull(UserModel),
+    currentAccount: types.maybeNull(AccountModel),
+    currentAccountHolder: types.maybeNull(AccountHolderModel),
     loadingUpdateInfos: types.optional(types.boolean, false),
-    userAuth: types.maybe(types.maybeNull(AuthUserModel)),
+    userAuth: types.maybeNull(AuthUserModel),
   })
   .extend(withEnvironment)
   .extend(withRootStore)
