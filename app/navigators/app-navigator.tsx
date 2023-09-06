@@ -42,6 +42,7 @@ import {
 } from '../screens';
 import { CustomersScreen } from '../screens/customer/customers-screen';
 import { ProductScreen } from '../screens/product/products-screen';
+import { ProfileEditionScreen } from '../screens/profile-edition/profile-edition-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
 /**
@@ -84,6 +85,7 @@ export type NavigatorParamList = {
     userName: string;
     password: string;
   };
+  profileEdition: undefined;
 };
 
 export type TabNavigatorParamList = {
@@ -155,6 +157,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='bank' component={BankScreen} />
           <Drawer.Screen name='partners' component={PartnersScreen} />
+          <Drawer.Screen name='profileEdition' component={ProfileEditionScreen} />
         </>
       ) : (
         <>
