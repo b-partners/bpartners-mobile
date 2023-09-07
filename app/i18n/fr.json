@@ -203,7 +203,6 @@
   "profileEditionScreen" : {
     "title": "Édition de mon compte",
     "globalInfo": {
-      "title": "Général",
       "label": "Information Générale",
       "name": "Raison sociale: ",
       "siren": "Siren: ",
@@ -221,8 +220,8 @@
       "label": "Encaissement annuelle à réaliser"
     },
     "feedback": {
-      "title": "Référencement",
-      "label": "Boostez votre référencement"
+      "label": "Boostez votre référencement",
+      "feedbackLink": "Lien pour le feedback"
     },
     "activity": {
       "title": "Activité",

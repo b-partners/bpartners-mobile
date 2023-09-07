@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { ViewStyle } from 'react-native';
 
-import { Header, Screen } from '../../components';
+import { Header } from '../../components';
 import { TabNavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -36,56 +36,11 @@ export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'p
           },
         }}
       >
-        <Tab.Screen
-          name={'globalInfo'}
-          component={GlobalInfoForm}
-          navigationKey='globalInfo'
-          listeners={{
-            tabPress: () => {
-              // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-            },
-          }}
-        />
-        <Tab.Screen
-          name={'feedback'}
-          component={FeedbackForm}
-          navigationKey='feedback'
-          listeners={{
-            tabPress: () => {
-              // invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
-            },
-          }}
-        />
-        <Tab.Screen
-          name={'activity'}
-          component={ActivityForm}
-          navigationKey='activity'
-          listeners={{
-            tabPress: () => {
-              // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-            },
-          }}
-        />
-        <Tab.Screen
-          name={'companyInfo'}
-          component={CompanyInfoForm}
-          navigationKey='companyInfo'
-          listeners={{
-            tabPress: () => {
-              // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-            },
-          }}
-        />
-        <Tab.Screen
-          name={'revenueTargets'}
-          component={RevenueTargetsForm}
-          navigationKey='revenueTargets'
-          listeners={{
-            tabPress: () => {
-              // invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
-            },
-          }}
-        />
+        <Tab.Screen name={'globalInfo'} component={GlobalInfoForm} navigationKey='globalInfo' />
+        <Tab.Screen name={'feedback'} component={FeedbackForm} navigationKey='feedback' />
+        <Tab.Screen name={'activity'} component={ActivityForm} navigationKey='activity' />
+        <Tab.Screen name={'companyInfo'} component={CompanyInfoForm} navigationKey='companyInfo' />
+        <Tab.Screen name={'revenueTargets'} component={RevenueTargetsForm} navigationKey='revenueTargets' />
       </Tab.Navigator>
     </ErrorBoundary>
   );

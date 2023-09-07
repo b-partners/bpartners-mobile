@@ -22,8 +22,8 @@ export const TabBar: React.FC<MaterialTopTabBarProps> = props => {
   const [currentRoute, setCurrentRoute] = useState(state.routes[currentIndex]);
 
   const TabName: TabNameProps = {
-    globalInfo: translate('profileEditionScreen.globalInfo.title'),
-    feedback: translate('profileEditionScreen.feedback.title'),
+    globalInfo: translate('profileEditionScreen.globalInfo.label'),
+    feedback: translate('profileEditionScreen.feedback.label'),
     activity: translate('profileEditionScreen.activity.title'),
     companyInfo: translate('profileEditionScreen.companyInfo.title'),
     revenueTargets: translate('profileEditionScreen.revenueTargets.title'),
