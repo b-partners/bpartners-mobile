@@ -38,7 +38,7 @@ export const RevenueTargetsForm: FC<MaterialTopTabScreenProps<NavigatorParamList
   const onSubmit = async targets => {
     setLoading(true);
     try {
-      await authStore.updateFeedback([{ year: new Date().getFullYear(), amountTarget: amountToMinors(parseInt(targets.revenueTargets)) }]);
+      await authStore.updateRevenueTargets([{ year: new Date().getFullYear(), amountTarget: amountToMinors(parseInt(targets.revenueTargets)) }]);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       throw e;

@@ -74,4 +74,18 @@ export class AccountApi {
     const accountHolder = response.data;
     return { kind: 'ok', accountHolder };
   }
+
+  async updateRevenueTargets(userId: string, accountId: string, ahId: string, revenueTargets): Promise<UpdateAccountHodlerInfo> {
+    const response: ApiResponse<any> = await this.api.apisauce.put(
+      `users/${userId}/accounts/${accountId}/accountHolders/${ahId}/revenueTargets`,
+      revenueTargets
+    );
+    __DEV__ && console.tron.log(response);
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const accountHolder = response.data;
+    return { kind: 'ok', accountHolder };
+  }
 }

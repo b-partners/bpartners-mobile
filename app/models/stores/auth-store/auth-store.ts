@@ -263,6 +263,24 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
+    updateRevenueTargets: flow(function* (revenueTargets) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateRevenueTargets(
+          self.currentUser.id,
+          self.currentAccount.id,
+          self.currentAccountHolder.id,
+          revenueTargets
+        );
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateAccountHolderInfosFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
     setUserAuthUserName: (userName: string) => {
       self.userAuth.userName = userName;
     },
