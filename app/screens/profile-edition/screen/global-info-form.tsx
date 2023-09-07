@@ -1,25 +1,26 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 
-import { Button, InputField } from '../../../components';
+import { Button, InputField, Loader } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
+import { GlobalInfo } from '../../../models/entities/global-info/global-info';
 import { NavigatorParamList } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { commaValidation } from '../../../utils/comma-to-dot';
-import { amountToMajors } from '../../../utils/money';
+import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
-import { BUTTON_TEXT_STYLE, SHADOW_STYLE } from '../../invoices/utils/styles';
-import { Log } from '../../welcome/utils/utils';
+import { SHADOW_STYLE } from '../../invoices/utils/styles';
 
 export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function InvoicesScreen() {
   const { authStore } = useStores();
   const { currentAccountHolder } = authStore;
+  const [loading, setLoading] = useState(false);
 
   const {
     handleSubmit,
@@ -29,27 +30,53 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
   } = useForm({
     mode: 'all',
     defaultValues: {
-      name: currentAccountHolder.name,
-      siren: currentAccountHolder.siren,
-      officialActivityName: currentAccountHolder.officialActivityName,
-      initialCashFlow: amountToMajors(currentAccountHolder.initialCashflow).toString(),
-      address: currentAccountHolder.contactAddress.address,
-      city: currentAccountHolder.contactAddress.city,
-      country: currentAccountHolder.contactAddress.country,
-      postalCode: currentAccountHolder.contactAddress.postalCode,
+      name: currentAccountHolder?.name,
+      siren: currentAccountHolder?.siren,
+      officialActivityName: currentAccountHolder?.officialActivityName,
+      initialCashFlow: amountToMajors(currentAccountHolder?.initialCashflow).toString(),
+      address: currentAccountHolder?.contactAddress.address,
+      city: currentAccountHolder?.contactAddress.city,
+      country: currentAccountHolder?.contactAddress.country,
+      postalCode: currentAccountHolder?.contactAddress.postalCode,
     },
   });
+
+  const hasErrors =
+    errors.name ||
+    errors.siren ||
+    errors.officialActivityName ||
+    errors.initialCashFlow ||
+    errors.address ||
+    errors.city ||
+    errors.country ||
+    errors.postalCode;
 
   useEffect(() => {
     reset();
   }, []);
 
   const onSubmit = async globalInfos => {
+    setLoading(true);
+    const newInfos: GlobalInfo = {
+      name: globalInfos.name,
+      siren: globalInfos.siren,
+      officialActivityName: globalInfos.officialActivityName,
+      initialCashFlow: amountToMinors(parseInt(globalInfos.initialCashFlow, 10)),
+      contactAddress: {
+        address: globalInfos.address,
+        city: globalInfos.city,
+        country: globalInfos.country,
+        postalCode: globalInfos.postalCode,
+        prospectingPerimeter: currentAccountHolder.contactAddress.prospectingPerimeter,
+      },
+    };
     try {
-      Log(globalInfos);
+      await authStore.updateGlobalInfos(newInfos);
     } catch (e) {
-      showMessage(e);
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       throw e;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -152,7 +179,7 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
                     error={!!errors.initialCashFlow}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.initialCashFlow?.message as string}
+                    errorMessage={errors.initialCashFlow?.message}
                     backgroundColor={palette.white}
                   />
                 )}
@@ -238,22 +265,57 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
                 )}
               />
             </View>
-            <Button
-              tx='profileEditionScreen.activity.register'
-              style={{
-                ...SHADOW_STYLE,
-                backgroundColor: color.primary,
-                marginVertical: spacing[1],
-                marginHorizontal: spacing[1],
-                borderRadius: 40,
-                paddingVertical: spacing[3],
-                paddingHorizontal: spacing[2],
-                width: '90%',
-                marginTop: spacing[4],
-              }}
-              textStyle={BUTTON_TEXT_STYLE}
-              onPress={handleSubmit(onSubmit)}
-            />
+            {loading ? (
+              <Button
+                style={{
+                  ...SHADOW_STYLE,
+                  backgroundColor: color.primary,
+                  marginVertical: spacing[1],
+                  marginHorizontal: spacing[1],
+                  borderRadius: 40,
+                  paddingVertical: spacing[3],
+                  paddingHorizontal: spacing[2],
+                  width: '90%',
+                  marginTop: spacing[4],
+                }}
+                textStyle={{ fontSize: 16, fontFamily: 'Geometria-Bold' }}
+              >
+                <Loader />
+              </Button>
+            ) : hasErrors ? (
+              <Button
+                tx='profileEditionScreen.activity.register'
+                style={{
+                  ...SHADOW_STYLE,
+                  backgroundColor: palette.solidGrey,
+                  marginVertical: spacing[1],
+                  marginHorizontal: spacing[1],
+                  borderRadius: 40,
+                  paddingVertical: spacing[3],
+                  paddingHorizontal: spacing[2],
+                  width: '90%',
+                  marginTop: spacing[4],
+                }}
+                textStyle={{ fontSize: 16, fontFamily: 'Geometria-Bold' }}
+              />
+            ) : (
+              <Button
+                tx='profileEditionScreen.activity.register'
+                style={{
+                  ...SHADOW_STYLE,
+                  backgroundColor: palette.secondaryColor,
+                  marginVertical: spacing[1],
+                  marginHorizontal: spacing[1],
+                  borderRadius: 40,
+                  paddingVertical: spacing[3],
+                  paddingHorizontal: spacing[2],
+                  width: '90%',
+                  marginTop: spacing[4],
+                }}
+                textStyle={{ fontSize: 16, fontFamily: 'Geometria-Bold' }}
+                onPress={handleSubmit(onSubmit)}
+              />
+            )}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

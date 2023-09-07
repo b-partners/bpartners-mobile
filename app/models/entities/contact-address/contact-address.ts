@@ -1,10 +1,11 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export const ContactAddressModel = types.model('ContactAddress').props({
-  address: types.maybe(types.maybeNull(types.string)),
-  city: types.maybe(types.maybeNull(types.string)),
-  country: types.maybe(types.maybeNull(types.string)),
-  postalCode: types.maybe(types.maybeNull(types.string)),
+  address: types.maybeNull(types.string),
+  city: types.maybeNull(types.string),
+  country: types.maybeNull(types.string),
+  postalCode: types.maybeNull(types.string),
+  prospectingPerimeter: types.maybeNull(types.number),
 });
 
 export interface ContactAddress extends Instance<typeof ContactAddressModel> {}
@@ -19,4 +20,5 @@ export const createContactAddressDefaultModel = () =>
     city: null,
     country: null,
     postalCode: null,
+    prospectingPerimeter: null,
   });
