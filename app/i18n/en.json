@@ -233,7 +233,8 @@
     },
     "revenueTargets": {
       "title": "Target",
-      "label": "Annual cash receipts to be realized"
+      "label": "Annual cash receipts to be realized",
+      "target": "This year's target"
     },
     "feedback": {
       "title": "Referencing",
