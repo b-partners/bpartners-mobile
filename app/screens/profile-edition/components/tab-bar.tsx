@@ -23,7 +23,7 @@ export const TabBar: React.FC<MaterialTopTabBarProps> = props => {
 
   const TabName: TabNameProps = {
     globalInfo: translate('profileEditionScreen.globalInfo.label'),
-    feedback: translate('profileEditionScreen.feedback.label'),
+    feedback: translate('profileEditionScreen.feedback.title'),
     activity: translate('profileEditionScreen.activity.title'),
     companyInfo: translate('profileEditionScreen.companyInfo.title'),
     revenueTargets: translate('profileEditionScreen.revenueTargets.title'),

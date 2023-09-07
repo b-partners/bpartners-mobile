@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 
-import { Button, InputField, Loader } from '../../../components';
+import { Button, InputField, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Feedback } from '../../../models/entities/feedback/feedback';
@@ -40,7 +40,7 @@ export const FeedbackForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
       feedbackLink: feedback.feedbackLink,
     };
     try {
-      await authStore.updateGlobalInfos(newInfos);
+      await authStore.updateFeedback(newInfos);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       throw e;
@@ -53,9 +53,12 @@ export const FeedbackForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView style={{ width: '100%', height: '100%', marginBottom: spacing[8], backgroundColor: palette.white }}>
+          <View style={{ width: '100%', marginTop: '5%', flexDirection: 'column', alignItems: 'center' }}>
+            <Text tx={'profileEditionScreen.feedback.label'} style={{ color: palette.lightGrey }} />
+          </View>
           <View
             style={{
-              marginTop: '10%',
+              marginTop: '5%',
               width: '90%',
               padding: 15,
               borderRadius: 10,

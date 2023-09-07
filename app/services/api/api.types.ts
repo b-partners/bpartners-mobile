@@ -90,4 +90,4 @@ export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | Gene
 
 export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;
 
-export type UpdateGlobalInfo = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
+export type UpdateAccountHodlerInfo = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
