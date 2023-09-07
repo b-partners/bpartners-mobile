@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { GestureResponderEvent, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 import { TxKeyPath, translate } from '../../i18n';
@@ -7,7 +7,7 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import ErrorMessage from '../forms/error-message';
 
-interface InputFieldProps {
+interface InputFieldDropdownProps {
   labelTx: TxKeyPath;
   error: boolean;
   value: string;
@@ -15,11 +15,10 @@ interface InputFieldProps {
   errorMessage: string;
   width?: number;
   backgroundColor: string;
-  rightRender?: boolean;
-  rightText?: string;
+  onPress: (event: GestureResponderEvent) => void;
 }
 
-export const InputFieldDropdown = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor, rightRender, rightText }: InputFieldProps) => {
+export const InputFieldDropdown = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor, onPress }: InputFieldDropdownProps) => {
   return (
     <View>
       <TextInput
@@ -29,7 +28,7 @@ export const InputFieldDropdown = ({ labelTx, error, value, onChange, errorMessa
         selectionColor={palette.secondaryColor}
         value={value}
         onChangeText={onChange}
-        right={<TextInput.Icon icon='down' />}
+        right={<TextInput.Icon icon='menu-down' onPress={onPress} />}
         style={{
           backgroundColor: error ? palette.pastelRed : backgroundColor,
           borderRadius: 5,
