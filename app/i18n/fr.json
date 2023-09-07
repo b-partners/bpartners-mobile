@@ -231,8 +231,7 @@
       "register": "Enregistrer"
     },
     "companyInfo": {
-      "title": "Société",
-      "label": "Informations sur la société"
+      "title": "Informations sur la société",
     }
   },
   "homeScreen": {
