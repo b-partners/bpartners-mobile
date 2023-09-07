@@ -53,23 +53,23 @@ export const TabBar: React.FC<MaterialTopTabBarProps> = props => {
   return (
     <View style={{ width: '100%', height: 70, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: spacing[4] }}>
       {currentIndex > 0 ? (
-        <TouchableOpacity style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} onPress={navigateToPrevious}>
+        <TouchableOpacity style={{ height: 40, width: '19%', justifyContent: 'center', alignItems: 'center' }} onPress={navigateToPrevious}>
           <EntypoIcon name='chevron-thin-left' size={20} color={palette.lightGrey} />
         </TouchableOpacity>
       ) : (
-        <View style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ height: 40, width: '19%', justifyContent: 'center', alignItems: 'center' }}>
           <EntypoIcon name='chevron-thin-left' size={20} color={palette.white} />
         </View>
       )}
-      <View style={{ height: 40, width: '60%', justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ height: 40, width: '62%', justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ color: palette.secondaryColor, fontWeight: '900', fontFamily: 'Geometria-Bold', fontSize: 18 }} text={TabName[currentRoute.name]} />
       </View>
       {currentIndex < 4 ? (
-        <TouchableOpacity style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} onPress={navigateToNext}>
+        <TouchableOpacity style={{ height: 40, width: '19%', justifyContent: 'center', alignItems: 'center' }} onPress={navigateToNext}>
           <EntypoIcon name='chevron-thin-right' size={20} color={palette.lightGrey} />
         </TouchableOpacity>
       ) : (
-        <View style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ height: 40, width: '19%', justifyContent: 'center', alignItems: 'center' }}>
           <EntypoIcon name='chevron-thin-right' size={20} color={palette.white} />
         </View>
       )}
