@@ -203,7 +203,17 @@
     "title": "Édition de mon compte",
     "globalInfo": {
       "title": "Général",
-      "label": "Information Générale"
+      "label": "Information Générale",
+      "name": "Raison sociale: ",
+      "siren": "Siren: ",
+      "officialActivityName": "Activité officielle: ",
+      "initialCashFlow": "Trésorerie initial",
+      "contactAddress": {
+        "address": "Adresse: ",
+        "city": "Ville: ",
+        "country": "Pays: ",
+        "postalCode": "Code postal: "
+      }
     },
     "revenueTargets": {
       "title": "Objectif",

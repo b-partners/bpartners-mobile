@@ -25,70 +25,68 @@ export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'p
   return (
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='profileEditionScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
-      <Screen>
-        <Tab.Navigator
-          initialRouteName={'globalInfo'}
-          style={TAB_BAR_STYLE}
-          tabBar={props => <TabBar {...props} />}
-          // @ts-ignore
-          tabBarOptions={{
-            style: {
-              backgroundColor: palette.white,
+      <Tab.Navigator
+        initialRouteName={'globalInfo'}
+        style={TAB_BAR_STYLE}
+        tabBar={props => <TabBar {...props} />}
+        // @ts-ignore
+        tabBarOptions={{
+          style: {
+            backgroundColor: palette.white,
+          },
+        }}
+      >
+        <Tab.Screen
+          name={'globalInfo'}
+          component={GlobalInfoForm}
+          navigationKey='globalInfo'
+          listeners={{
+            tabPress: () => {
+              // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
             },
           }}
-        >
-          <Tab.Screen
-            name={'globalInfo'}
-            component={GlobalInfoForm}
-            navigationKey='globalInfo'
-            listeners={{
-              tabPress: () => {
-                // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-              },
-            }}
-          />
-          <Tab.Screen
-            name={'feedback'}
-            component={FeedbackForm}
-            navigationKey='feedback'
-            listeners={{
-              tabPress: () => {
-                // invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
-              },
-            }}
-          />
-          <Tab.Screen
-            name={'activity'}
-            component={ActivityForm}
-            navigationKey='activity'
-            listeners={{
-              tabPress: () => {
-                // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-              },
-            }}
-          />
-          <Tab.Screen
-            name={'companyInfo'}
-            component={CompanyInfoForm}
-            navigationKey='companyInfo'
-            listeners={{
-              tabPress: () => {
-                // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
-              },
-            }}
-          />
-          <Tab.Screen
-            name={'revenueTargets'}
-            component={RevenueTargetsForm}
-            navigationKey='revenueTargets'
-            listeners={{
-              tabPress: () => {
-                // invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
-              },
-            }}
-          />
-        </Tab.Navigator>
-      </Screen>
+        />
+        <Tab.Screen
+          name={'feedback'}
+          component={FeedbackForm}
+          navigationKey='feedback'
+          listeners={{
+            tabPress: () => {
+              // invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+            },
+          }}
+        />
+        <Tab.Screen
+          name={'activity'}
+          component={ActivityForm}
+          navigationKey='activity'
+          listeners={{
+            tabPress: () => {
+              // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+            },
+          }}
+        />
+        <Tab.Screen
+          name={'companyInfo'}
+          component={CompanyInfoForm}
+          navigationKey='companyInfo'
+          listeners={{
+            tabPress: () => {
+              // invoiceStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 30 });
+            },
+          }}
+        />
+        <Tab.Screen
+          name={'revenueTargets'}
+          component={RevenueTargetsForm}
+          navigationKey='revenueTargets'
+          listeners={{
+            tabPress: () => {
+              // invoiceStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 30 });
+            },
+          }}
+        />
+      </Tab.Navigator>
     </ErrorBoundary>
   );
 });
