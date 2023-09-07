@@ -179,7 +179,7 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
                     error={!!errors.initialCashFlow}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.initialCashFlow?.message}
+                    errorMessage={translate('errors.invalidPercent')}
                     backgroundColor={palette.white}
                   />
                 )}

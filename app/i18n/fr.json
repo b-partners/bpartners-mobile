@@ -232,6 +232,11 @@
     },
     "companyInfo": {
       "title": "Informations sur la société",
+      "socialCapital": "Capital Social (€)",
+      "phone": "Téléphone",
+      "email": "Email",
+      "townCode": "Code de la commune de prospection",
+      "tvaNumber": "Numéro de TVA"
     }
   },
   "homeScreen": {

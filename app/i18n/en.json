@@ -247,8 +247,12 @@
       "register": "Register"
     },
     "companyInfo": {
-      "title": "Company",
-      "label": "Company details"
+      "title": "Company details",
+      "socialCapital": "Share capital (€)",
+      "phone": "Phone",
+      "email": "Email",
+      "townCode": "Survey commune code",
+      "tvaNumber": "VAT Number"
     }
   },
   "homeScreen": {

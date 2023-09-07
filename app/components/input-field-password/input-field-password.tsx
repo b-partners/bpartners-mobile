@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-import { TxKeyPath, translate } from '../../i18n';
+import { TxKeyPath } from '../../i18n';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import ErrorMessage from '../forms/error-message';
+import { Text } from '../text/text';
 
 interface InputFieldProps {
   labelTx: TxKeyPath;
@@ -28,7 +29,7 @@ export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessa
       <TextInput
         autoCapitalize='none'
         secureTextEntry={showPassword}
-        label={translate(labelTx)}
+        label={<Text tx={labelTx} style={{ color: palette.greyDarker, width: '100%', fontSize: 16 }}></Text>}
         error={error}
         textColor={palette.secondaryColor}
         selectionColor={palette.secondaryColor}

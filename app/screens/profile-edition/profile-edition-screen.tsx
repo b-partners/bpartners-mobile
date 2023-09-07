@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import { ViewStyle } from 'react-native';
 
 import { Header } from '../../components';
-import { TabNavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
@@ -19,12 +19,18 @@ import { RevenueTargetsForm } from './screen/revenue-targets-form';
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
 const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW };
 
-export const ProfileEditionScreen: FC<StackScreenProps<TabNavigatorParamList, 'paymentList'>> = observer(function ProfileEditionScreen({ navigation }) {
+export const ProfileEditionScreen: FC<StackScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function ProfileEditionScreen({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header headerTx='profileEditionScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
+      <Header
+        headerTx='profileEditionScreen.title'
+        onLeftPress={() => navigation.navigate('profile')}
+        leftIcon='back'
+        style={HEADER}
+        titleStyle={HEADER_TITLE}
+      />
       <Tab.Navigator
         initialRouteName={'globalInfo'}
         style={TAB_BAR_STYLE}
