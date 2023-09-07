@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 
@@ -10,12 +10,17 @@ import { useStores } from '../../../models';
 import { NavigatorParamList } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { commaValidation } from '../../../utils/comma-to-dot';
+import { amountToMajors } from '../../../utils/money';
+import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { BUTTON_TEXT_STYLE, SHADOW_STYLE } from '../../invoices/utils/styles';
+import { Log } from '../../welcome/utils/utils';
 
-export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function InvoicesScreen({ navigation }) {
+export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function InvoicesScreen() {
   const { authStore } = useStores();
   const { currentAccountHolder } = authStore;
+
   const {
     handleSubmit,
     control,
@@ -27,13 +32,27 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
       name: currentAccountHolder.name,
       siren: currentAccountHolder.siren,
       officialActivityName: currentAccountHolder.officialActivityName,
-      initialCashFlow: currentAccountHolder.initialCashflow,
+      initialCashFlow: amountToMajors(currentAccountHolder.initialCashflow).toString(),
       address: currentAccountHolder.contactAddress.address,
       city: currentAccountHolder.contactAddress.city,
       country: currentAccountHolder.contactAddress.country,
       postalCode: currentAccountHolder.contactAddress.postalCode,
     },
   });
+
+  useEffect(() => {
+    reset();
+  }, []);
+
+  const onSubmit = async globalInfos => {
+    try {
+      Log(globalInfos);
+    } catch (e) {
+      showMessage(e);
+      throw e;
+    }
+  };
+
   return (
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -124,6 +143,7 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
                 name='initialCashFlow'
                 rules={{
                   required: translate('errors.required'),
+                  validate: commaValidation,
                 }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
@@ -232,6 +252,7 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
                 marginTop: spacing[4],
               }}
               textStyle={BUTTON_TEXT_STYLE}
+              onPress={handleSubmit(onSubmit)}
             />
           </View>
         </ScrollView>
