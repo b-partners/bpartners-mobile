@@ -17,7 +17,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 
-export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function InvoicesScreen() {
+export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function GlobalInfoForm() {
   const { authStore } = useStores();
   const { currentAccountHolder } = authStore;
   const [loading, setLoading] = useState(false);

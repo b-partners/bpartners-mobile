@@ -219,7 +219,6 @@
   "profileEditionScreen" : {
     "title": "Edit my account",
     "globalInfo": {
-      "title": "General",
       "label": "General Information",
       "name": "Company Name: ",
       "siren": "Siren: ",
@@ -237,8 +236,8 @@
       "label": "Annual cash receipts to be realized"
     },
     "feedback": {
-      "title": "Referencing",
-      "label": "Boost your referencing"
+      "label": "Boost your referencing",
+      "feedbackLink": "Feedback link"
     },
     "activity": {
       "title": "Activity",
