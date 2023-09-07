@@ -89,3 +89,5 @@ export type UpdateProspectResult = { kind: 'ok'; prospect: Prospect } | GeneralA
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
 
 export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;
+
+export type UpdateGlobalInfo = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;

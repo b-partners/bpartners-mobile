@@ -11,6 +11,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
+import { GlobalInfo } from '../../entities/global-info/global-info';
 import { AuthUserModel } from '../../entities/user/AuthUser';
 import { User, UserModel } from '../../entities/user/user';
 
@@ -196,6 +197,35 @@ export const AuthStoreModel = types
         self.updateAccountInfosFail(e);
       } finally {
         self.loadingUpdateInfos = false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateGlobalInfosSuccess: (accountHolder: AccountHolder) => {
+      self.currentAccountHolder = accountHolder;
+    },
+  }))
+  .actions(self => ({
+    updateGlobalInfosFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    updateGlobalInfos: flow(function* (globalInfos: GlobalInfo) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateGlobalInfo(
+          self.currentUser.id,
+          self.currentAccount.id,
+          self.currentAccountHolder.id,
+          globalInfos
+        );
+        self.updateGlobalInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateGlobalInfosFail(e);
       }
     }),
   }))
