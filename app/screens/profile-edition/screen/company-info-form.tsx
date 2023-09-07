@@ -11,7 +11,6 @@ import { CompanyInfo } from '../../../models/entities/company-info/company-info'
 import { NavigatorParamList } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { commaValidation } from '../../../utils/comma-to-dot';
 import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
@@ -155,7 +154,6 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
                 name='townCode'
                 rules={{
                   required: translate('errors.required'),
-                  validate: commaValidation,
                 }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (

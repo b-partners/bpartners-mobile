@@ -217,7 +217,8 @@
     },
     "revenueTargets": {
       "title": "Objectif",
-      "label": "Encaissement annuelle à réaliser"
+      "label": "Encaissement annuelle à réaliser",
+      "target": "Objectif de cette année"
     },
     "feedback": {
       "title": "Référencement",
