@@ -4,12 +4,12 @@ import { LocationModel } from '../location/location';
 
 export const CompanyInfoModel = types.model('CompanyInfo').props({
   phone: types.maybeNull(types.string),
-  townCode: types.maybeNull(types.string),
+  townCode: types.maybeNull(types.number),
   isSubjectToVat: types.maybeNull(types.boolean),
   socialCapital: types.maybeNull(types.number),
   location: types.maybeNull(LocationModel),
   email: types.maybeNull(types.string),
-  tvaNumber: types.maybeNull(types.number),
+  tvaNumber: types.maybeNull(types.string),
 });
 
 export interface CompanyInfo extends Instance<typeof CompanyInfoModel> {}

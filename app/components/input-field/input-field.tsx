@@ -2,10 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-import { TxKeyPath, translate } from '../../i18n';
+import { TxKeyPath } from '../../i18n';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import ErrorMessage from '../forms/error-message';
+import { Text } from '../text/text';
 
 interface InputFieldProps {
   labelTx: TxKeyPath;
@@ -24,7 +25,7 @@ export const InputField = ({ labelTx, error, value, onChange, errorMessage, widt
     <View>
       <TextInput
         autoCapitalize='none'
-        label={translate(labelTx)}
+        label={<Text tx={labelTx} style={{ color: palette.greyDarker, width: '100%', fontSize: 16 }}></Text>}
         textColor={palette.secondaryColor}
         selectionColor={palette.secondaryColor}
         value={value}

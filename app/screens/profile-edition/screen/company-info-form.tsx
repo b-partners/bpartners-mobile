@@ -7,7 +7,6 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { Button, InputField, Loader } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { GlobalInfo } from '../../../models/entities/global-info/global-info';
 import { NavigatorParamList } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -17,7 +16,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 
-export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function InvoicesScreen({ navigation }) {
+export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function CompanyInfo() {
   const { authStore } = useStores();
   const { currentAccountHolder } = authStore;
   const [loading, setLoading] = useState(false);
@@ -30,11 +29,11 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
   } = useForm({
     mode: 'all',
     defaultValues: {
-      socialCapital: currentAccountHolder?.officialActivityName,
-      phone: currentAccountHolder?.name,
-      email: amountToMajors(currentAccountHolder?.initialCashflow).toString(),
-      townCode: currentAccountHolder?.siren,
-      tvaNumber: currentAccountHolder?.contactAddress.address,
+      socialCapital: amountToMajors(currentAccountHolder?.companyInfo.socialCapital).toString(),
+      phone: currentAccountHolder?.companyInfo.phone,
+      email: currentAccountHolder?.companyInfo.email,
+      townCode: currentAccountHolder?.companyInfo.townCode.toString(),
+      tvaNumber: currentAccountHolder?.companyInfo.tvaNumber,
     },
   });
 
@@ -44,20 +43,14 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
     reset();
   }, []);
 
-  const onSubmit = async globalInfos => {
+  const onSubmit = async companyInfos => {
     setLoading(true);
-    const newInfos: GlobalInfo = {
-      name: globalInfos.name,
-      siren: globalInfos.siren,
-      officialActivityName: globalInfos.officialActivityName,
-      initialCashFlow: amountToMinors(parseInt(globalInfos.initialCashFlow, 10)),
-      contactAddress: {
-        address: globalInfos.address,
-        city: globalInfos.city,
-        country: globalInfos.country,
-        postalCode: globalInfos.postalCode,
-        prospectingPerimeter: currentAccountHolder.contactAddress.prospectingPerimeter,
-      },
+    const newInfos = {
+      socialCapital: amountToMinors(companyInfos.socialCapital),
+      phone: companyInfos.phone,
+      email: companyInfos.email,
+      townCode: parseInt(companyInfos.townCode, 10),
+      tvaNumber: companyInfos.tvaNumber,
     };
     try {
       await authStore.updateGlobalInfos(newInfos);
@@ -96,18 +89,18 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
             <View style={{ marginBottom: 20, width: '80%' }}>
               <Controller
                 control={control}
-                name='name'
+                name='socialCapital'
                 rules={{
                   required: translate('errors.required'),
                 }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
-                    labelTx={'profileEditionScreen.globalInfo.name'}
-                    error={!!errors.name}
+                    labelTx={'profileEditionScreen.companyInfo.socialCapital'}
+                    error={!!errors.socialCapital}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.name?.message as string}
+                    errorMessage={errors.socialCapital?.message as string}
                     backgroundColor={palette.white}
                   />
                 )}
@@ -116,18 +109,18 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
             <View style={{ marginBottom: 10, width: '80%' }}>
               <Controller
                 control={control}
-                name='siren'
+                name='phone'
                 rules={{
                   required: translate('errors.required'),
                 }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
-                    labelTx={'profileEditionScreen.globalInfo.siren'}
-                    error={!!errors.siren}
+                    labelTx={'profileEditionScreen.companyInfo.phone'}
+                    error={!!errors.phone}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.siren?.message as string}
+                    errorMessage={errors.phone?.message as string}
                     backgroundColor={palette.white}
                   />
                 )}
@@ -136,18 +129,18 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
             <View style={{ marginBottom: 20, width: '80%' }}>
               <Controller
                 control={control}
-                name='officialActivityName'
+                name='email'
                 rules={{
                   required: translate('errors.required'),
                 }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
-                    labelTx={'profileEditionScreen.globalInfo.officialActivityName'}
-                    error={!!errors.officialActivityName}
+                    labelTx={'profileEditionScreen.companyInfo.email'}
+                    error={!!errors.email}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.officialActivityName?.message as string}
+                    errorMessage={errors.email?.message as string}
                     backgroundColor={palette.white}
                   />
                 )}
@@ -156,7 +149,7 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
             <View style={{ marginBottom: 10, width: '80%' }}>
               <Controller
                 control={control}
-                name='initialCashFlow'
+                name='townCode'
                 rules={{
                   required: translate('errors.required'),
                   validate: commaValidation,
@@ -164,11 +157,11 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
-                    labelTx={'profileEditionScreen.globalInfo.initialCashFlow'}
-                    error={!!errors.initialCashFlow}
+                    labelTx={'profileEditionScreen.companyInfo.townCode'}
+                    error={!!errors.townCode}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.initialCashFlow?.message}
+                    errorMessage={errors.townCode?.message as string}
                     backgroundColor={palette.white}
                   />
                 )}
@@ -177,78 +170,18 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
             <View style={{ marginBottom: 20, width: '80%' }}>
               <Controller
                 control={control}
-                name='address'
+                name='tvaNumber'
                 rules={{
                   required: translate('errors.required'),
                 }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
-                    labelTx={'profileEditionScreen.globalInfo.contactAddress.address'}
-                    error={!!errors.address}
+                    labelTx={'profileEditionScreen.companyInfo.tvaNumber'}
+                    error={!!errors.tvaNumber}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.address?.message as string}
-                    backgroundColor={palette.white}
-                  />
-                )}
-              />
-            </View>
-            <View style={{ marginBottom: 10, width: '80%' }}>
-              <Controller
-                control={control}
-                name='city'
-                rules={{
-                  required: translate('errors.required'),
-                }}
-                defaultValue=''
-                render={({ field: { onChange, value } }) => (
-                  <InputField
-                    labelTx={'profileEditionScreen.globalInfo.contactAddress.city'}
-                    error={!!errors.city}
-                    value={value}
-                    onChange={onChange}
-                    errorMessage={errors.city?.message as string}
-                    backgroundColor={palette.white}
-                  />
-                )}
-              />
-            </View>
-            <View style={{ marginBottom: 20, width: '80%' }}>
-              <Controller
-                control={control}
-                name='country'
-                rules={{
-                  required: translate('errors.required'),
-                }}
-                defaultValue=''
-                render={({ field: { onChange, value } }) => (
-                  <InputField
-                    labelTx={'profileEditionScreen.globalInfo.contactAddress.country'}
-                    error={!!errors.country}
-                    value={value}
-                    onChange={onChange}
-                    errorMessage={errors.country?.message as string}
-                    backgroundColor={palette.white}
-                  />
-                )}
-              />
-            </View>
-            <View style={{ marginBottom: 10, width: '80%' }}>
-              <Controller
-                control={control}
-                name='postalCode'
-                rules={{
-                  required: translate('errors.required'),
-                }}
-                defaultValue=''
-                render={({ field: { onChange, value } }) => (
-                  <InputField
-                    labelTx={'profileEditionScreen.globalInfo.contactAddress.postalCode'}
-                    error={!!errors.postalCode}
-                    value={value}
-                    onChange={onChange}
-                    errorMessage={errors.postalCode?.message as string}
+                    errorMessage={errors.tvaNumber?.message as string}
                     backgroundColor={palette.white}
                   />
                 )}
