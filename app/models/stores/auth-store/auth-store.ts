@@ -11,6 +11,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
+import { Feedback } from '../../entities/feedback/feedback';
 import { GlobalInfo } from '../../entities/global-info/global-info';
 import { AuthUserModel } from '../../entities/user/AuthUser';
 import { User, UserModel } from '../../entities/user/user';
@@ -201,12 +202,12 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    updateGlobalInfosSuccess: (accountHolder: AccountHolder) => {
+    updateAccountHolderInfosSuccess: (accountHolder: AccountHolder) => {
       self.currentAccountHolder = accountHolder;
     },
   }))
   .actions(self => ({
-    updateGlobalInfosFail: error => {
+    updateAccountHolderInfosFail: error => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -222,10 +223,23 @@ export const AuthStoreModel = types
           self.currentAccountHolder.id,
           globalInfos
         );
-        self.updateGlobalInfosSuccess(updateAccountHolderResult.accountHolder);
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
         showMessage(translate('common.registered'), successMessageOption);
       } catch (e) {
-        self.updateGlobalInfosFail(e);
+        self.updateAccountHolderInfosFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateFeedback: flow(function* (feedback: Feedback) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateFeedbackLink(self.currentUser.id, self.currentAccountHolder.id, feedback);
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateAccountHolderInfosFail(e);
       }
     }),
   }))

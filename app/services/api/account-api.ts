@@ -1,9 +1,10 @@
 import { ApiResponse } from 'apisauce';
 
+import { Feedback } from '../../models/entities/feedback/feedback';
 import { GlobalInfo } from '../../models/entities/global-info/global-info';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetAccountHolderResult, GetUserAccount, UpdateGlobalInfo } from './api.types';
+import { GetAccountHolderResult, GetUserAccount, UpdateAccountHodlerInfo } from './api.types';
 
 export class AccountApi {
   private api: Api;
@@ -40,8 +41,19 @@ export class AccountApi {
     return { kind: 'ok', accountHolder };
   }
 
-  async updateGlobalInfo(userId: string, accountId: string, ahId: string, globalInfo: GlobalInfo): Promise<UpdateGlobalInfo> {
+  async updateGlobalInfo(userId: string, accountId: string, ahId: string, globalInfo: GlobalInfo): Promise<UpdateAccountHodlerInfo> {
     const response: ApiResponse<any> = await this.api.apisauce.put(`users/${userId}/accounts/${accountId}/accountHolders/${ahId}/globalInfo`, globalInfo);
+    __DEV__ && console.tron.log(response);
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const accountHolder = response.data;
+    return { kind: 'ok', accountHolder };
+  }
+
+  async updateFeedbackLink(userId: string, ahId: string, feedback: Feedback): Promise<UpdateAccountHodlerInfo> {
+    const response: ApiResponse<any> = await this.api.apisauce.put(`users/${userId}/accountHolders/${ahId}/feedback/configuration`, feedback);
     __DEV__ && console.tron.log(response);
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

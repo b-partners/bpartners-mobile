@@ -236,7 +236,8 @@
       "label": "Annual cash receipts to be realized"
     },
     "feedback": {
-      "label": "Boost your referencing",
+      "title": "Referencing",
+      "label": "Boost your referencing. Link to your review page (google business, trust pilot)",
       "feedbackLink": "Feedback link"
     },
     "activity": {

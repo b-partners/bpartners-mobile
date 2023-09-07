@@ -220,7 +220,8 @@
       "label": "Encaissement annuelle à réaliser"
     },
     "feedback": {
-      "label": "Boostez votre référencement",
+      "title": "Référencement",
+      "label": "Boostez votre référencement. Renseignez le lien vers votre page avis (google business, trust pilote)",
       "feedbackLink": "Lien pour le feedback"
     },
     "activity": {
