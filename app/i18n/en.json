@@ -219,7 +219,17 @@
     "title": "Edit my account",
     "globalInfo": {
       "title": "General",
-      "label": "General Information"
+      "label": "General Information",
+      "name": "Company Name: ",
+      "siren": "Siren: ",
+      "officialActivityName": "Official activity: ",
+      "initialCashFlow": "Initial cash flow",
+      "contactAddress": {
+        "address": "Address: ",
+        "city": "City: ",
+        "country": "Country: ",
+        "postalCode": "Postal code: "
+      }
     },
     "revenueTargets": {
       "title": "Target",

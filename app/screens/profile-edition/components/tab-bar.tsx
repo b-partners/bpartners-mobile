@@ -5,6 +5,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';
+import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
 type TabNameProps = {
@@ -50,7 +51,7 @@ export const TabBar: React.FC<MaterialTopTabBarProps> = props => {
   }, [currentRoute, navigation]);
 
   return (
-    <View style={{ width: '100%', height: 70, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ width: '100%', height: 70, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: spacing[4] }}>
       {currentIndex > 0 ? (
         <TouchableOpacity style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} onPress={navigateToPrevious}>
           <EntypoIcon name='chevron-thin-left' size={20} color={palette.lightGrey} />
