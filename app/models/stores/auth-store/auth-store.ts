@@ -11,6 +11,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
+import { CompanyInfo } from '../../entities/company-info/company-info';
 import { Feedback } from '../../entities/feedback/feedback';
 import { GlobalInfo } from '../../entities/global-info/global-info';
 import { AuthUserModel } from '../../entities/user/AuthUser';
@@ -236,6 +237,24 @@ export const AuthStoreModel = types
       const successMessageOption = { backgroundColor: palette.green };
       try {
         const updateAccountHolderResult = yield accountApi.updateFeedbackLink(self.currentUser.id, self.currentAccountHolder.id, feedback);
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateAccountHolderInfosFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateCompanyInfos: flow(function* (companyInfos: CompanyInfo) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateCompanyInfo(
+          self.currentUser.id,
+          self.currentAccount.id,
+          self.currentAccountHolder.id,
+          companyInfos
+        );
         self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
         showMessage(translate('common.registered'), successMessageOption);
       } catch (e) {

@@ -7,6 +7,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { Button, InputField, Loader } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
+import { CompanyInfo } from '../../../models/entities/company-info/company-info';
 import { NavigatorParamList } from '../../../navigators';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -16,7 +17,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 
-export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function CompanyInfo() {
+export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function CompanyInfoForm() {
   const { authStore } = useStores();
   const { currentAccountHolder } = authStore;
   const [loading, setLoading] = useState(false);
@@ -45,15 +46,17 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
 
   const onSubmit = async companyInfos => {
     setLoading(true);
-    const newInfos = {
+    const newInfos: CompanyInfo = {
       socialCapital: amountToMinors(companyInfos.socialCapital),
       phone: companyInfos.phone,
       email: companyInfos.email,
       townCode: parseInt(companyInfos.townCode, 10),
       tvaNumber: companyInfos.tvaNumber,
+      isSubjectToVat: currentAccountHolder.companyInfo.isSubjectToVat,
+      location: currentAccountHolder.companyInfo.location,
     };
     try {
-      await authStore.updateGlobalInfos(newInfos);
+      await authStore.updateCompanyInfos(newInfos);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       throw e;

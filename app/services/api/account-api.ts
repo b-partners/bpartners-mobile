@@ -1,5 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
+import { CompanyInfo } from '../../models/entities/company-info/company-info';
 import { Feedback } from '../../models/entities/feedback/feedback';
 import { GlobalInfo } from '../../models/entities/global-info/global-info';
 import { Api } from './api';
@@ -54,6 +55,17 @@ export class AccountApi {
 
   async updateFeedbackLink(userId: string, ahId: string, feedback: Feedback): Promise<UpdateAccountHodlerInfo> {
     const response: ApiResponse<any> = await this.api.apisauce.put(`users/${userId}/accountHolders/${ahId}/feedback/configuration`, feedback);
+    __DEV__ && console.tron.log(response);
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const accountHolder = response.data;
+    return { kind: 'ok', accountHolder };
+  }
+
+  async updateCompanyInfo(userId: string, accountId: string, ahId: string, companyInfo: CompanyInfo): Promise<UpdateAccountHodlerInfo> {
+    const response: ApiResponse<any> = await this.api.apisauce.put(`users/${userId}/accounts/${accountId}/accountHolders/${ahId}/companyInfo`, companyInfo);
     __DEV__ && console.tron.log(response);
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
