@@ -13,10 +13,11 @@ export type BusinessActivityModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   businessActivities: BusinessActivityItem[];
+  onChange: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const BusinessActivityModal: React.FC<BusinessActivityModalProps> = props => {
-  const { showModal, setShowModal, businessActivities } = props;
+  const { showModal, setShowModal, businessActivities, onChange } = props;
 
   const [keyboardOpen, setKeyboardOpen] = useState(false);
 
@@ -44,27 +45,25 @@ export const BusinessActivityModal: React.FC<BusinessActivityModalProps> = props
                 keyboardOpen && Platform.OS === 'android' ? { height: '90%' } : { height: '60%' },
               ]}
             >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
-                <Text
-                  tx={'paymentListScreen.tabs.invoices'}
-                  style={{
-                    color: color.palette.lightGrey,
-                    fontFamily: 'Geometria',
-                    fontSize: 15,
-                  }}
-                />
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
                 <TouchableOpacity onPress={() => setShowModal(false)}>
                   <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
                 </TouchableOpacity>
               </View>
-              <View style={{ paddingVertical: spacing[2], height: '75%' }}>
+              <View style={{ paddingVertical: spacing[2], height: '90%' }}>
                 <FlatList
                   data={businessActivities}
                   keyExtractor={item => item.id}
                   renderItem={({ item }) => {
                     return (
-                      <View style={{ width: '100%', flexDirection: 'row', paddingVertical: spacing[2] }}>
-                        <TouchableOpacity style={{ width: '100%', flexDirection: 'row' }}>
+                      <View style={{ width: '100%', flexDirection: 'row', paddingVertical: spacing[2], height: 40 }}>
+                        <TouchableOpacity
+                          style={{ width: '100%', flexDirection: 'row' }}
+                          onPress={() => {
+                            onChange(item.name);
+                            setShowModal(false);
+                          }}
+                        >
                           <>
                             <View style={{ width: '65%', height: '100%' }}>
                               <Text
