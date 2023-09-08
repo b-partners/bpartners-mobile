@@ -1,13 +1,15 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useRef, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { FlatList, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
 import { Searchbar } from 'react-native-paper';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { BpPagination, HeaderWithBalance, Icon, Loader, NoDataProvided, Screen, Separator } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Transaction as ITransaction } from '../../models/entities/transaction/transaction';
+import { Transaction as ITransaction, TransactionStatus } from '../../models/entities/transaction/transaction';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -42,7 +44,13 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
   const [maxPage, setMaxPage] = useState(Math.ceil(transactions.length / itemsPerPage));
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
-  const displayedItems = transactions.slice(startItemIndex, endItemIndex);
+  const [currentStatus, setCurrentStatus] = useState(null);
+  const [filteredTransactions, setFilteredTransactions] = useState(transactions.filter(item => item.status === currentStatus));
+  const displayedItems = currentStatus ? filteredTransactions.slice(startItemIndex, endItemIndex) : transactions.slice(startItemIndex, endItemIndex);
+
+  useEffect(() => {
+    setFilteredTransactions(transactions.filter(item => item.status === currentStatus));
+  }, [currentStatus]);
 
   const onChangeSearch = query => setSearchQuery(query);
   const debounceTimeoutRef = useRef(null);
@@ -69,6 +77,13 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
       }, 1000);
     }
   };
+
+  const status = [
+    { label: translate('transactionListScreen.status.pending'), value: TransactionStatus.PENDING },
+    { label: translate('transactionListScreen.status.booked'), value: TransactionStatus.BOOKED },
+    { label: translate('transactionListScreen.status.rejected'), value: TransactionStatus.REJECTED },
+    { label: translate('transactionListScreen.status.upcoming'), value: TransactionStatus.UPCOMING },
+  ];
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -142,6 +157,27 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
             }}
           >
             <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={status}
+              maxHeight={300}
+              labelField='label'
+              valueField='value'
+              placeholder={'Status'}
+              value={currentStatus}
+              onChange={item => {
+                setCurrentStatus(item.value);
+              }}
+              renderLeftIcon={() => (
+                <TouchableOpacity onPress={() => setCurrentStatus(null)}>
+                  <AntDesignIcon style={styles.icon} color={palette.black} name='closecircleo' size={20} />
+                </TouchableOpacity>
+              )}
+            />
           </View>
         </KeyboardAvoidingView>
         {currentTransaction && (
@@ -158,4 +194,33 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
       </View>
     </ErrorBoundary>
   );
+});
+
+const styles = StyleSheet.create({
+  dropdown: {
+    margin: 16,
+    height: 50,
+    width: 150,
+    backgroundColor: palette.solidGrey,
+    borderRadius: 5,
+  },
+  icon: {
+    marginHorizontal: 5,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: palette.greyDarker,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: palette.greyDarker,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
 });
