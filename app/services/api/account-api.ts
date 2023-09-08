@@ -1,5 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
+import { BusinessActivity } from '../../models/entities/business-activity/business-activity';
 import { CompanyInfo } from '../../models/entities/company-info/company-info';
 import { Feedback } from '../../models/entities/feedback/feedback';
 import { GlobalInfo } from '../../models/entities/global-info/global-info';
@@ -80,6 +81,17 @@ export class AccountApi {
       `users/${userId}/accounts/${accountId}/accountHolders/${ahId}/revenueTargets`,
       revenueTargets
     );
+    __DEV__ && console.tron.log(response);
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const accountHolder = response.data;
+    return { kind: 'ok', accountHolder };
+  }
+
+  async updateBusinessActivities(userId: string, accountId: string, ahId: string, activity: BusinessActivity): Promise<UpdateAccountHodlerInfo> {
+    const response: ApiResponse<any> = await this.api.apisauce.put(`users/${userId}/accounts/${accountId}/accountHolders/${ahId}/businessActivities`, activity);
     __DEV__ && console.tron.log(response);
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
