@@ -51,13 +51,21 @@ export function BPDrawerHeader(props: {
               left: 21,
               zIndex: 1
             }}>{<Icon icon='edit' />}</TouchableOpacity>*/}
-            <AutoImage source={currentUser?.logoFileId ? { uri } : require('../utils/profile-placeholder.png')} resizeMode='stretch' resizeMethod='auto' />
+            <AutoImage
+              source={currentUser?.logoFileId ? { uri } : require('../utils/profile-placeholder.png')}
+              resizeMode='stretch'
+              resizeMethod='auto'
+              style={{
+                width: 100,
+                height: 100,
+              }}
+            />
           </View>
           <View
             style={{
               display: 'flex',
               flexDirection: 'row',
-              marginTop: Platform.select({ android: spacing[7] - 10, ios: spacing[6] }),
+              marginTop: Platform.select({ android: spacing[4], ios: spacing[2] }),
             }}
           >
             <Text
