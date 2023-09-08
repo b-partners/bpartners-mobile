@@ -12,6 +12,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { LOADER_STYLE, SCREEN_STYLE } from '../invoices/utils/styles';
 import { Transaction } from './components/transaction';
 import { TransactionModal } from './components/transaction-modal';
@@ -44,24 +45,24 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
   const debounceTimeoutRef = useRef(null);
 
   const handleRefresh = async () => {
-    await transactionStore.getTransactions();
+    await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
   };
 
   const searchTransaction = async () => {
-    await transactionStore.getTransactions();
+    await transactionStore.getTransactions({ label: searchQuery, page: 1, pageSize: invoicePageSize });
   };
 
   const handleInputChange = query => {
     onChangeSearch(query);
-    /*if (query) {
+    if (query) {
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current);
       }
 
       debounceTimeoutRef.current = setTimeout(async () => {
-        await searchProspect();
+        await searchTransaction();
       }, 1000);
-    }*/
+    }
   };
 
   return (
