@@ -65,7 +65,7 @@ export const ActivityForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
       secondary: activity.secondary,
     };
     try {
-      await authStore.updateFeedback(newInfos);
+      await authStore.updateBusinessActivities(newInfos);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       throw e;
