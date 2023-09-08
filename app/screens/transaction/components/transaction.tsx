@@ -95,7 +95,7 @@ export const Transaction = (
           </View>
           <Text
             style={{
-              color: item.type === TransactionType.OUTCOME ? color.palette.textClassicColor : color.palette.green,
+              color: item.type === TransactionType.OUTCOME ? palette.pastelRed : color.palette.green,
             }}
             text={`${item.type === TransactionType.OUTCOME ? '-' : '+'}${printCurrencyToMajors(item.amount)}`}
           />
