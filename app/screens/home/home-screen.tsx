@@ -11,6 +11,7 @@ import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { Logo } from './components/logo';
 import { Menu } from './components/menu';
@@ -28,7 +29,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   useEffect(() => {
     (async () => {
       const date = new Date();
-      await transactionStore.getTransactions();
+      await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
       await transactionStore.getTransactionsSummary(date.getFullYear());
       await transactionStore.getTransactionCategories();
     })();
