@@ -1,7 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { ProspectApi } from '../../../services/api/prospect-api';
-import { Prospect, ProspectModel, ProspectSnapshotOut } from '../../entities/prospect/prospect';
+import { Prospect, ProspectModel } from '../../entities/prospect/prospect';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -19,13 +19,13 @@ export const ProspectStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    getProspectsSuccess: (prospectSnapshotOuts: ProspectSnapshotOut[]) => {
-      self.prospects.replace(prospectSnapshotOuts);
+    getProspectsSuccess: (prospectSnapshotOuts: Prospect[]) => {
+      self.prospects.replace(prospectSnapshotOuts as any);
     },
   }))
   .actions(self => ({
     getProspectsFail: error => {
-      __DEV__ && console.tron.log(error);
+      __DEV__ && console.tron.log(error.message);
       self.catchOrThrow(error);
     },
   }))

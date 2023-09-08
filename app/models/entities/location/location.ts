@@ -1,9 +1,9 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export const LocationModel = types.model('Location').props({
-  latitude: types.maybeNull(types.string),
+  latitude: types.maybeNull(types.number),
   type: types.maybeNull(types.string),
-  longitude: types.maybeNull(types.string),
+  longitude: types.maybeNull(types.number),
 });
 
 export interface Location extends Instance<typeof LocationModel> {}

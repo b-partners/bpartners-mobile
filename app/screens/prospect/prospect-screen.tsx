@@ -42,7 +42,9 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
   ];
 
   useEffect(() => {
-    prospectStore.getProspects();
+    (async () => {
+      await prospectStore.getProspects();
+    })();
   }, []);
 
   return (
