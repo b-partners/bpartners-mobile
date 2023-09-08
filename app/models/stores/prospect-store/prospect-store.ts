@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { ProspectApi } from '../../../services/api/prospect-api';
+import { ProspectFilter } from '../../entities/filter/filter';
 import { Prospect, ProspectModel } from '../../entities/prospect/prospect';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -30,11 +31,11 @@ export const ProspectStoreModel = types
     },
   }))
   .actions(self => ({
-    getProspects: flow(function* () {
+    getProspects: flow(function* (filter: ProspectFilter) {
       self.loadingProspect = true;
       const prospectApi = new ProspectApi(self.environment.api);
       try {
-        const getProspectsResult = yield prospectApi.getProspects(self.currentAccountHolder.id);
+        const getProspectsResult = yield prospectApi.getProspects(self.currentAccountHolder.id, filter);
         self.getProspectsSuccess(getProspectsResult.prospects);
       } catch (e) {
         self.getProspectsFail(e);
