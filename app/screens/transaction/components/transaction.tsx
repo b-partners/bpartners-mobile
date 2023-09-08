@@ -6,11 +6,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { Dropdown, Loader, Text } from '../../../components';
+import { RouteNameProps } from '../../../components/bp-drawer/utils/utils';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { TransactionCategory, TransactionType } from '../../../models/entities/transaction-category/transaction-category';
-import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
+import { Transaction as ITransaction, TransactionStatus } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { handleAsyncRequest } from '../../../utils/asyncRequest';
@@ -50,6 +51,22 @@ export const Transaction = (
     }
   };
 
+  const TransactionStatusLabel: TransactionStatus = {
+    PENDING: translate('transactionListScreen.status.pending'),
+    UPCOMING: translate('transactionListScreen.status.upcoming'),
+    BOOKED: translate('transactionListScreen.status.booked'),
+    REJECTED: translate('transactionListScreen.status.rejected'),
+    UNKNOWN: translate('transactionListScreen.status.unknown'),
+  };
+
+  const TransactionStatusColor: TransactionStatus = {
+    PENDING: palette.orange,
+    UPCOMING: palette.orange,
+    BOOKED: palette.green,
+    REJECTED: palette.pastelRed,
+    UNKNOWN: palette.greyDarker,
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -71,6 +88,19 @@ export const Transaction = (
                 marginTop: spacing[2],
               }}
             >
+              <Text
+                text={TransactionStatusLabel[item.status]}
+                style={{ color: TransactionStatusColor[item.status], fontSize: 13, fontFamily: 'Geometria-LightItalic' }}
+              />
+              <Text
+                text={'\u2B24'}
+                style={{
+                  fontSize: Platform.select({ android: 7, ios: 5 }),
+                  marginHorizontal: spacing[2],
+                  color: '#989FB3',
+                  fontFamily: 'Geometria-LightItalic',
+                }}
+              />
               <Text
                 text={new Date(item.paymentDatetime).toLocaleDateString()}
                 style={{ color: '#989FB3', fontSize: 13, fontFamily: 'Geometria-LightItalic' }}
