@@ -110,6 +110,13 @@
     "total": "total",
     "associate": "Associate an invoice",
     "associatedLabel": "Related document",
+    "status": {
+      "pending": "Pending",
+      "upcoming": "Upcoming",
+      "booked": "Booked",
+      "rejected": "Rejected",
+      "unknown": "Unknown"
+    },
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",

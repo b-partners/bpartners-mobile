@@ -66,6 +66,13 @@
     "total": "total",
     "associate": "Associer une facture",
     "associatedLabel": "Document associé",
+    "status": {
+      "pending": "En attente",
+      "upcoming": "En traitement",
+      "booked": "Acceptée",
+      "rejected": "Rejetée",
+      "unknown": "Inconnue"
+    },
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",
