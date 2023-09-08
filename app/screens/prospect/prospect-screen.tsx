@@ -4,7 +4,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Menu, Searchbar } from 'react-native-paper';
 
-import { Header, Loader, MenuItem, NoDataProvided, Screen } from '../../components';
+import { Header, Loader, MenuItem, NoDataProvided } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
@@ -55,19 +55,23 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
     })();
   }, []);
   const onChangeSearch = query => setSearchQuery(query);
-  // const debounceTimeoutRef = useRef(null);
+  const debounceTimeoutRef = useRef(null);
+
+  const searchProspect = async () => {
+    await prospectStore.getProspects({ name: searchQuery });
+  };
 
   const handleInputChange = query => {
     onChangeSearch(query);
-    /*if (query) {
+    if (query) {
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current);
       }
 
       debounceTimeoutRef.current = setTimeout(async () => {
-        // await searchCustomer();
+        await searchProspect();
       }, 1000);
-    }*/
+    }
   };
 
   return (
