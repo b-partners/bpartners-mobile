@@ -13,7 +13,7 @@ import React from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
 
 import { BPDrawer, BpTabNavigation, Text } from '../components';
-import { useError } from '../hook';
+// import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { Invoice, InvoiceStatus } from '../models/entities/invoice/invoice';
@@ -201,16 +201,16 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore, bankInfo, currentUser } = useStores();
-  const { setError } = useError();
+  const { bankInfo, currentUser } = useStores();
+  // const { setError } = useError();
 
-  const handleError = async (asyncFunc: () => any) => {
+  /*const handleError = async (asyncFunc: () => any) => {
     try {
       await asyncFunc();
     } catch (e) {
       setError(e);
     }
-  };
+  };*/
 
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
@@ -218,7 +218,7 @@ export function AppNavigator(props: NavigationProps) {
       case 'bridge':
         bankInfo.fetchBankInfo(currentUser.id);
         break;
-      case 'transactionList':
+      /*case 'transactionList':
         await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
         break;
       /*case 'paymentList':

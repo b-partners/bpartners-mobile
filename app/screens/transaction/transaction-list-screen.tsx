@@ -1,10 +1,10 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useRef, useState } from 'react';
-import { FlatList, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
-import { HeaderWithBalance, Icon, Loader, NoDataProvided, Screen, Separator } from '../../components';
+import { BpPagination, HeaderWithBalance, Icon, Loader, NoDataProvided, Screen, Separator } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Transaction as ITransaction } from '../../models/entities/transaction/transaction';
@@ -19,9 +19,6 @@ import { TransactionModal } from './components/transaction-modal';
 
 const FULL: ViewStyle = {
   flex: 1,
-};
-const CONTAINER: ViewStyle = {
-  backgroundColor: palette.white,
 };
 const FLAT_LIST: ViewStyle = {
   paddingHorizontal: spacing[4],
@@ -40,12 +37,19 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
   const [showModal, setShowModal] = useState(false);
   const [currentTransaction, setCurrentTransaction] = useState<ITransaction>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+  const [maxPage, setMaxPage] = useState(Math.ceil(transactions.length / itemsPerPage));
+  const startItemIndex = (currentPage - 1) * itemsPerPage;
+  const endItemIndex = currentPage * itemsPerPage;
+  const displayedItems = transactions.slice(startItemIndex, endItemIndex);
 
   const onChangeSearch = query => setSearchQuery(query);
   const debounceTimeoutRef = useRef(null);
 
   const handleRefresh = async () => {
     await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
+    setMaxPage(Math.ceil(transactions.length / itemsPerPage));
   };
 
   const searchTransaction = async () => {
@@ -61,6 +65,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
 
       debounceTimeoutRef.current = setTimeout(async () => {
         await searchTransaction();
+        setMaxPage(Math.ceil(transactions.length / itemsPerPage));
       }, 1000);
     }
   };
@@ -96,14 +101,14 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           inputStyle={{ color: palette.black, alignSelf: 'center' }}
           placeholderTextColor={palette.lightGrey}
         />
-        <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-          {loadingTransactionCategories || loadingTransactions ? (
-            <Loader size='large' containerStyle={LOADER_STYLE} />
-          ) : transactions.length > 0 ? (
+        {loadingTransactionCategories || loadingTransactions ? (
+          <Loader size='large' containerStyle={LOADER_STYLE} />
+        ) : transactions.length > 0 ? (
+          <ScrollView style={{ backgroundColor: palette.white, flexDirection: 'column', marginTop: spacing[2] }}>
             <FlatList
               testID='listContainer'
               contentContainerStyle={FLAT_LIST}
-              data={[...transactions]}
+              data={displayedItems}
               renderItem={({ item }) => {
                 return (
                   <Transaction
@@ -118,12 +123,27 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
               }}
               ItemSeparatorComponent={() => <Separator />}
             />
-          ) : (
-            <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
-              <NoDataProvided />
-            </Screen>
-          )}
-        </Screen>
+          </ScrollView>
+        ) : (
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
+            <NoDataProvided />
+          </Screen>
+        )}
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: spacing[1],
+              height: 80,
+              width: '100%',
+              marginBottom: spacing[4],
+              alignItems: 'center',
+              paddingLeft: spacing[4],
+            }}
+          >
+            <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+          </View>
+        </KeyboardAvoidingView>
         {currentTransaction && (
           <TransactionModal
             showModal={showModal}
