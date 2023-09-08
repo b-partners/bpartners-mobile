@@ -6,18 +6,18 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { Dropdown, Loader, Text } from '../../../components';
-import { RouteNameProps } from '../../../components/bp-drawer/utils/utils';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
 import { TransactionCategory, TransactionType } from '../../../models/entities/transaction-category/transaction-category';
-import { Transaction as ITransaction, TransactionStatus } from '../../../models/entities/transaction/transaction';
+import { Transaction as ITransaction } from '../../../models/entities/transaction/transaction';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { handleAsyncRequest } from '../../../utils/asyncRequest';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import { ICON_CONTAINER_STYLE, TRANSACTION_BOTTOM_SIDE, transactionStyles as styles } from '../utils/styles';
+import { TransactionStatusColor, TransactionStatusLabel } from '../utils/utils';
 
 export const Transaction = (
   props: PropsWithoutRef<{
@@ -49,22 +49,6 @@ export const Transaction = (
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
-  };
-
-  const TransactionStatusLabel: TransactionStatus = {
-    PENDING: translate('transactionListScreen.status.pending'),
-    UPCOMING: translate('transactionListScreen.status.upcoming'),
-    BOOKED: translate('transactionListScreen.status.booked'),
-    REJECTED: translate('transactionListScreen.status.rejected'),
-    UNKNOWN: translate('transactionListScreen.status.unknown'),
-  };
-
-  const TransactionStatusColor: TransactionStatus = {
-    PENDING: palette.orange,
-    UPCOMING: palette.orange,
-    BOOKED: palette.green,
-    REJECTED: palette.pastelRed,
-    UNKNOWN: palette.greyDarker,
   };
 
   return (
