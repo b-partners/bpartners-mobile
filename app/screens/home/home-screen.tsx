@@ -37,12 +37,12 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='homeScreen' style={FULL}>
-        <Screen preset='auto' backgroundColor={palette.white}>
-          <HeaderWithBalance
-            balance={availableBalance}
-            left={<Logo uri={uri} logoStyle={{ width: 50, height: 50 }} />}
-            right={<Menu navigation={navigation} />}
-          />
+        <HeaderWithBalance
+          balance={availableBalance}
+          left={<Logo uri={uri} logoStyle={{ width: 50, height: 50 }} />}
+          right={<Menu navigation={navigation} />}
+        />
+        <Screen preset='scroll' backgroundColor={palette.white}>
           <View style={{ padding: spacing[3] }}>
             <TransactionSummary
               currentMonthSummary={currentMonthSummary}

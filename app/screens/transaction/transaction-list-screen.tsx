@@ -1,9 +1,11 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { FlatList, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 
 import { HeaderWithBalance, Icon, Loader, NoDataProvided, Screen, Separator } from '../../components';
+import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Transaction as ITransaction } from '../../models/entities/transaction/transaction';
 import { NavigatorParamList } from '../../navigators';
@@ -33,23 +35,68 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
 
   const { availableBalance } = authStore.currentAccount;
 
-  const { transactions, transactionCategories, loadingTransactionCategories } = transactionStore;
+  const { transactions, transactionCategories, loadingTransactionCategories, loadingTransactions } = transactionStore;
   const [showModal, setShowModal] = useState(false);
   const [currentTransaction, setCurrentTransaction] = useState<ITransaction>(null);
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const onChangeSearch = query => setSearchQuery(query);
+  const debounceTimeoutRef = useRef(null);
+
+  const handleRefresh = async () => {
+    await transactionStore.getTransactions();
+  };
+
+  const searchTransaction = async () => {
+    await transactionStore.getTransactions();
+  };
+
+  const handleInputChange = query => {
+    onChangeSearch(query);
+    /*if (query) {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+
+      debounceTimeoutRef.current = setTimeout(async () => {
+        await searchProspect();
+      }, 1000);
+    }*/
+  };
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='TransactionListScreen' style={FULL}>
-        <HeaderWithBalance
-          balance={availableBalance}
-          left={
-            <TouchableOpacity onPress={() => navigation.navigate('home')}>
-              <Icon icon='back' />
-            </TouchableOpacity>
-          }
+      <HeaderWithBalance
+        balance={availableBalance}
+        left={
+          <TouchableOpacity onPress={() => navigation.navigate('home')}>
+            <Icon icon='back' />
+          </TouchableOpacity>
+        }
+      />
+      <View testID='TransactionListScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+        <Searchbar
+          placeholder={translate('common.search')}
+          onChangeText={handleInputChange}
+          value={searchQuery}
+          style={{
+            backgroundColor: palette.solidGrey,
+            height: 40,
+            borderRadius: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: spacing[4],
+            width: '90%',
+            marginHorizontal: '5%',
+          }}
+          iconColor={palette.lightGrey}
+          clearIcon='close-circle'
+          onClearIconPress={handleRefresh}
+          inputStyle={{ color: palette.black, alignSelf: 'center' }}
+          placeholderTextColor={palette.lightGrey}
         />
         <Screen style={CONTAINER} preset='fixed' backgroundColor={color.transparent}>
-          {loadingTransactionCategories ? (
+          {loadingTransactionCategories || loadingTransactions ? (
             <Loader size='large' containerStyle={LOADER_STYLE} />
           ) : transactions.length > 0 ? (
             <FlatList
