@@ -46,6 +46,7 @@ export const InputField = ({ labelTx, error, value, onChange, errorMessage, widt
           backgroundColor: error ? palette.pastelRed : backgroundColor,
           borderRadius: 5,
           width: width,
+          elevation: 10,
         }}
         theme={{
           colors: {

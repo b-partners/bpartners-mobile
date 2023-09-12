@@ -33,6 +33,7 @@ export const InputFieldDropdown = ({ labelTx, error, value, onChange, errorMessa
           backgroundColor: error ? palette.pastelRed : backgroundColor,
           borderRadius: 5,
           width: width,
+          elevation: 10,
         }}
         theme={{
           colors: {
