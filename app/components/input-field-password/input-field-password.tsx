@@ -46,6 +46,7 @@ export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessa
           backgroundColor: 'white',
           borderRadius: 5,
           width: width,
+          elevation: 10,
         }}
         theme={{
           colors: {
