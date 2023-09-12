@@ -223,7 +223,7 @@
       }
     }
   },
-  "profileEditionScreen" : {
+  "profileEditionScreen": {
     "title": "Edit my account",
     "globalInfo": {
       "label": "General Information",

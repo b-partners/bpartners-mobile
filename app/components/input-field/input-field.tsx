@@ -25,7 +25,7 @@ export const InputField = ({ labelTx, error, value, onChange, errorMessage, widt
     <View>
       <TextInput
         autoCapitalize='none'
-        label={<Text tx={labelTx} style={{ color: palette.greyDarker, width: '100%', fontSize: 16 }}></Text>}
+        label={<Text tx={labelTx} style={{ color: palette.greyDarker, width: '100%', fontSize: 16 }} />}
         textColor={palette.secondaryColor}
         selectionColor={palette.secondaryColor}
         value={value}

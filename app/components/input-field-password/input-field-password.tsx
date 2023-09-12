@@ -29,7 +29,7 @@ export const InputFieldPassword = ({ labelTx, error, value, onChange, errorMessa
       <TextInput
         autoCapitalize='none'
         secureTextEntry={showPassword}
-        label={<Text tx={labelTx} style={{ color: palette.greyDarker, width: '100%', fontSize: 16 }}></Text>}
+        label={<Text tx={labelTx} style={{ color: palette.greyDarker, width: '100%', fontSize: 16 }} />}
         error={error}
         textColor={palette.secondaryColor}
         selectionColor={palette.secondaryColor}
