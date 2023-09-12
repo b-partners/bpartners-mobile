@@ -7,9 +7,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
-import { AutoImage, Button, Icon, Loader, Text } from '../../components';
-import { BgLayout } from '../../components/bg-layout/background-layout';
-import { CheckEmailModal } from '../../components/check-email/check-email-modal';
+import { AutoImage, Button, CheckEmailModal, Icon, Loader, Text } from '../../components';
+import { BgLayout } from '../../components';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';

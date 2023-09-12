@@ -77,7 +77,7 @@ export const BusinessActivityModal: React.FC<BusinessActivityModalProps> = props
                                 numberOfLines={2}
                               />
                             </View>
-                            <View style={{ width: '25%', justifyContent: 'center', alignItems: 'flex-end', paddingRight: spacing[2] }}></View>
+                            <View style={{ width: '25%', justifyContent: 'center', alignItems: 'flex-end', paddingRight: spacing[2] }} />
                           </>
                         </TouchableOpacity>
                       </View>

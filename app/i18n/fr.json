@@ -207,7 +207,7 @@
       }
     }
   },
-  "profileEditionScreen" : {
+  "profileEditionScreen": {
     "title": "Édition de mon compte",
     "globalInfo": {
       "label": "Information Générale",
