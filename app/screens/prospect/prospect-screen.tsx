@@ -101,19 +101,19 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
         <View style={styles.menuContainer}>
           <Menu.Item
             onPress={() => handleClickMenu('TO_CONTACT')}
-            title='À Contacter'
+            title={translate('prospectScreen.tab.toContact')}
             titleStyle={{ color: palette.secondaryColor }}
             style={{ ...getActiveClassName('TO_CONTACT'), width: '28%' }}
           />
           <Menu.Item
             onPress={() => handleClickMenu('CONTACTED')}
-            title='Contacté'
+            title={translate('prospectScreen.tab.contacted')}
             titleStyle={{ color: palette.secondaryColor }}
             style={{ ...getActiveClassName('CONTACTED'), width: '28%' }}
           />
           <Menu.Item
             onPress={() => handleClickMenu('CONVERTED')}
-            title='Converti'
+            title={translate('prospectScreen.tab.converted')}
             titleStyle={{ color: palette.secondaryColor }}
             style={{ ...getActiveClassName('CONVERTED'), width: '28%' }}
           />
