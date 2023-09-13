@@ -47,7 +47,7 @@ export const BusinessActivityModal: React.FC<BusinessActivityModalProps> = props
             >
               <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
                 <TouchableOpacity onPress={() => setShowModal(false)}>
-                  <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
+                  <RNVIcon name='close' color={color.palette.lightGrey} size={20} />
                 </TouchableOpacity>
               </View>
               <View style={{ paddingVertical: spacing[2], height: '90%' }}>
