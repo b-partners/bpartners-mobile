@@ -113,7 +113,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
         </Card.Content>
       </Card>
       <Portal>
-        <ProcessModal showModal={showModal} setShowModal={setShowModal} />
+        <ProcessModal showModal={showModal} setShowModal={setShowModal} prospect={prospect} />
       </Portal>
     </View>
   );

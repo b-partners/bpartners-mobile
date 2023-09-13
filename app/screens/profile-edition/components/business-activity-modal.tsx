@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, Modal, Platform, TouchableOpacity, View } from 'react-native';
-import RNVIcon from 'react-native-vector-icons/AntDesign';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { Separator, Text } from '../../../components';
 import KeyboardAvoidingWrapper from '../../../components/keyboard-avoiding-wrapper/keyboard-avoiding-wrapper';
@@ -47,7 +47,7 @@ export const BusinessActivityModal: React.FC<BusinessActivityModalProps> = props
             >
               <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
                 <TouchableOpacity onPress={() => setShowModal(false)}>
-                  <RNVIcon name='close' color={color.palette.lightGrey} size={20} />
+                  <AntDesignIcon name='close' color={color.palette.lightGrey} size={20} />
                 </TouchableOpacity>
               </View>
               <View style={{ paddingVertical: spacing[2], height: '90%' }}>
