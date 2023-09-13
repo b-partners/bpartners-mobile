@@ -11,4 +11,9 @@ export type ProspectItemProps = {
   key: number;
 };
 
+export type ProcessModalProps = {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 export const geojsonBaseurl = 'http://geojson.io';

@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Card, Paragraph, Title } from 'react-native-paper';
+import { Card, Paragraph, Portal, Title } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -18,6 +18,7 @@ import { showMessage } from '../../../utils/snackbar';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
 import { Location } from './location';
+import { ProcessModal } from './process-modal';
 
 const IconGroup = {
   email: <MaterialCommunity name='email' size={18} color={color.palette.secondaryColor} />,
@@ -32,6 +33,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
   const { prospectStore } = useStores();
   const { menuItem, prospect, ahId, setCurrentStatus, key } = props;
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const updateProspectStatus = async status => {
     setIsUpdating(true);
@@ -100,7 +102,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
                 items={menuItem}
                 actions={{
                   toContact: () => updateProspectStatus(ProspectStatus.TO_CONTACT),
-                  contacted: () => updateProspectStatus(ProspectStatus.CONTACTED),
+                  contacted: () => setShowModal(true),
                   converted: () => updateProspectStatus(ProspectStatus.CONVERTED),
                 }}
               >
@@ -110,6 +112,9 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
           </View>
         </Card.Content>
       </Card>
+      <Portal>
+        <ProcessModal showModal={showModal} setShowModal={setShowModal} />
+      </Portal>
     </View>
   );
 };
