@@ -198,7 +198,10 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
                 alignContent: 'center',
                 marginLeft: spacing[6],
               }}
-              onPress={() => setCreationModal(true)}
+              onPress={() => {
+                customerStore.saveCustomerInit();
+                setCreationModal(true);
+              }}
             >
               <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
               <Text tx={'common.create'} style={{ fontSize: 14 }} />
