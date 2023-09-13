@@ -2,7 +2,7 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Menu, Searchbar } from 'react-native-paper';
+import { Menu, Provider, Searchbar } from 'react-native-paper';
 
 import { Header, Loader, MenuItem, NoDataProvided } from '../../components';
 import { translate } from '../../i18n';
@@ -75,54 +75,56 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
   };
 
   return (
-    <ErrorBoundary catchErrors='always'>
-      <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
-      <View testID='ProspectScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <Searchbar
-          placeholder={translate('common.search')}
-          onChangeText={handleInputChange}
-          value={searchQuery}
-          style={styles.searchbar}
-          iconColor={palette.lightGrey}
-          clearIcon='close-circle'
-          onClearIconPress={handleRefresh}
-          inputStyle={{ color: palette.black, alignSelf: 'center' }}
-          placeholderTextColor={palette.lightGrey}
-        />
-        <View style={styles.menuContainer}>
-          <Menu.Item
-            onPress={() => handleClickMenu('TO_CONTACT')}
-            title={translate('prospectScreen.tab.toContact')}
-            titleStyle={{ color: palette.secondaryColor }}
-            style={{ ...getActiveClassName('TO_CONTACT'), width: '28%' }}
+    <Provider>
+      <ErrorBoundary catchErrors='always'>
+        <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <View testID='ProspectScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+          <Searchbar
+            placeholder={translate('common.search')}
+            onChangeText={handleInputChange}
+            value={searchQuery}
+            style={styles.searchbar}
+            iconColor={palette.lightGrey}
+            clearIcon='close-circle'
+            onClearIconPress={handleRefresh}
+            inputStyle={{ color: palette.black, alignSelf: 'center' }}
+            placeholderTextColor={palette.lightGrey}
           />
-          <Menu.Item
-            onPress={() => handleClickMenu('CONTACTED')}
-            title={translate('prospectScreen.tab.contacted')}
-            titleStyle={{ color: palette.secondaryColor }}
-            style={{ ...getActiveClassName('CONTACTED'), width: '28%' }}
-          />
-          <Menu.Item
-            onPress={() => handleClickMenu('CONVERTED')}
-            title={translate('prospectScreen.tab.converted')}
-            titleStyle={{ color: palette.secondaryColor }}
-            style={{ ...getActiveClassName('CONVERTED'), width: '28%' }}
-          />
+          <View style={styles.menuContainer}>
+            <Menu.Item
+              onPress={() => handleClickMenu('TO_CONTACT')}
+              title={translate('prospectScreen.tab.toContact')}
+              titleStyle={{ color: palette.secondaryColor }}
+              style={{ ...getActiveClassName('TO_CONTACT'), width: '28%' }}
+            />
+            <Menu.Item
+              onPress={() => handleClickMenu('CONTACTED')}
+              title={translate('prospectScreen.tab.contacted')}
+              titleStyle={{ color: palette.secondaryColor }}
+              style={{ ...getActiveClassName('CONTACTED'), width: '28%' }}
+            />
+            <Menu.Item
+              onPress={() => handleClickMenu('CONVERTED')}
+              title={translate('prospectScreen.tab.converted')}
+              titleStyle={{ color: palette.secondaryColor }}
+              style={{ ...getActiveClassName('CONVERTED'), width: '28%' }}
+            />
+          </View>
+          <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
+            {loadingProspect ? (
+              <View style={styles.loader}>
+                <Loader size='large' style={styles.full} />
+              </View>
+            ) : filteredProspect.length > 0 ? (
+              filteredProspect.map((item: Prospect, index: number) => {
+                return <ProspectItem menuItem={items} prospect={item} ahId={currentAccountHolderId} setCurrentStatus={setCurrentStatus} key={index} />;
+              })
+            ) : (
+              <NoDataProvided />
+            )}
+          </ScrollView>
         </View>
-        <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
-          {loadingProspect ? (
-            <View style={styles.loader}>
-              <Loader size='large' style={styles.full} />
-            </View>
-          ) : filteredProspect.length > 0 ? (
-            filteredProspect.map((item: Prospect, index: number) => {
-              return <ProspectItem menuItem={items} prospect={item} ahId={currentAccountHolderId} setCurrentStatus={setCurrentStatus} key={index} />;
-            })
-          ) : (
-            <NoDataProvided />
-          )}
-        </ScrollView>
-      </View>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </Provider>
   );
 });
