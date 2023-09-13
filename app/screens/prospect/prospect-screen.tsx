@@ -9,7 +9,7 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
 import { TabNavigatorParamList } from '../../navigators';
-import { color, spacing } from '../../theme';
+import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
@@ -82,16 +82,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
           placeholder={translate('common.search')}
           onChangeText={handleInputChange}
           value={searchQuery}
-          style={{
-            backgroundColor: palette.solidGrey,
-            height: 40,
-            borderRadius: 10,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: spacing[4],
-            width: '90%',
-            marginHorizontal: '5%',
-          }}
+          style={styles.searchbar}
           iconColor={palette.lightGrey}
           clearIcon='close-circle'
           onClearIconPress={handleRefresh}
