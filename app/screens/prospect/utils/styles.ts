@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 
 export const prospectStyles = StyleSheet.create({
   full: {
@@ -15,6 +16,16 @@ export const prospectStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+  },
+  searchbar: {
+    backgroundColor: palette.solidGrey,
+    height: 40,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing[4],
+    width: '90%',
+    marginHorizontal: '5%',
   },
   container: {
     width: '95%',
