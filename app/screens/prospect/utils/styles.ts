@@ -3,11 +3,6 @@ import { StyleSheet } from 'react-native';
 import { spacing } from '../../../theme';
 
 export const prospectStyles = StyleSheet.create({
-  bodyContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
   full: {
     width: '100%',
     height: '100%',
@@ -23,12 +18,13 @@ export const prospectStyles = StyleSheet.create({
   },
   container: {
     width: '95%',
-    height: '74%',
+    height: '70%',
     borderWidth: 2,
     borderColor: '#F9F9FB',
     backgroundColor: '#F9F9FB',
     borderRadius: 10,
     alignSelf: 'center',
+    marginTop: spacing[4],
   },
   loader: {
     width: '100%',

@@ -13,7 +13,7 @@ import React from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
 
 import { BPDrawer, BpTabNavigation, Text } from '../components';
-import { useError } from '../hook';
+// import { useError } from '../hook';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import { Invoice, InvoiceStatus } from '../models/entities/invoice/invoice';
@@ -42,6 +42,7 @@ import {
 } from '../screens';
 import { CustomersScreen } from '../screens/customer/customers-screen';
 import { ProductScreen } from '../screens/product/products-screen';
+import { ProfileEditionScreen } from '../screens/profile-edition/profile-edition-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 
 /**
@@ -84,6 +85,7 @@ export type NavigatorParamList = {
     userName: string;
     password: string;
   };
+  profileEdition: undefined;
 };
 
 export type TabNavigatorParamList = {
@@ -155,6 +157,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='bank' component={BankScreen} />
           <Drawer.Screen name='partners' component={PartnersScreen} />
+          <Drawer.Screen name='profileEdition' component={ProfileEditionScreen} />
         </>
       ) : (
         <>
@@ -198,16 +201,16 @@ type NavigationProps = Partial<React.ComponentProps<typeof NavigationContainer>>
 export function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
-  const { transactionStore, bankInfo, currentUser } = useStores();
-  const { setError } = useError();
+  const { bankInfo, currentUser } = useStores();
+  // const { setError } = useError();
 
-  const handleError = async (asyncFunc: () => any) => {
+  /*const handleError = async (asyncFunc: () => any) => {
     try {
       await asyncFunc();
     } catch (e) {
       setError(e);
     }
-  };
+  };*/
 
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
@@ -215,7 +218,7 @@ export function AppNavigator(props: NavigationProps) {
       case 'bridge':
         bankInfo.fetchBankInfo(currentUser.id);
         break;
-      case 'transactionList':
+      /*case 'transactionList':
         await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
         break;
       /*case 'paymentList':

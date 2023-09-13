@@ -25,6 +25,7 @@
     "noDataProvided": "No records to display",
     "loading": "Loading in progress ...",
     "added": "Successfully added",
+    "registered": "Registered",
     "saved": "Saved at:",
     "edit": "Edit",
     "register": "REGISTER",
@@ -109,6 +110,13 @@
     "total": "total",
     "associate": "Associate an invoice",
     "associatedLabel": "Related document",
+    "status": {
+      "pending": "Pending",
+      "upcoming": "Upcoming",
+      "booked": "Booked",
+      "rejected": "Rejected",
+      "unknown": "Unknown"
+    },
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",
@@ -213,6 +221,46 @@
           "amountTarget": "Annual revenue to be realized: "
         }
       }
+    }
+  },
+  "profileEditionScreen": {
+    "title": "Edit my account",
+    "globalInfo": {
+      "label": "General Information",
+      "name": "Company Name: ",
+      "siren": "Siren: ",
+      "officialActivityName": "Official activity: ",
+      "initialCashFlow": "Initial cash flow",
+      "contactAddress": {
+        "address": "Address: ",
+        "city": "City: ",
+        "country": "Country: ",
+        "postalCode": "Postal code: "
+      }
+    },
+    "revenueTargets": {
+      "title": "Target",
+      "label": "Annual cash receipts to be realized",
+      "target": "This year's target"
+    },
+    "feedback": {
+      "title": "Referencing",
+      "label": "Boost your referencing. Link to your review page (google business, trust pilot)",
+      "feedbackLink": "Feedback link"
+    },
+    "activity": {
+      "title": "Activity",
+      "primary": "Main activity: ",
+      "secondary": "Secondary activity: ",
+      "register": "Register"
+    },
+    "companyInfo": {
+      "title": "Company details",
+      "socialCapital": "Share capital (€)",
+      "phone": "Phone",
+      "email": "Email",
+      "townCode": "Survey commune code",
+      "tvaNumber": "VAT Number"
     }
   },
   "homeScreen": {

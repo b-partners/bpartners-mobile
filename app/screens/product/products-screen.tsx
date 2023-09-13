@@ -16,6 +16,7 @@ import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { commaToDot } from '../../utils/comma-to-dot';
+import { getThreshold } from '../../utils/get-threshold';
 import { vatToMinors } from '../../utils/money';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -67,10 +68,6 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     }
-  };
-
-  const getThreshold = () => {
-    return Platform.OS === 'ios' ? -15 : 0;
   };
 
   const convertToCSV = data => {

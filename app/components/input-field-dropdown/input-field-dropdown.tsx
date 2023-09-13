@@ -1,14 +1,13 @@
 import React from 'react';
-import { View } from 'react-native';
+import { GestureResponderEvent, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-import { TxKeyPath } from '../../i18n';
+import { TxKeyPath, translate } from '../../i18n';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import ErrorMessage from '../forms/error-message';
-import { Text } from '../text/text';
 
-interface InputFieldProps {
+interface InputFieldDropdownProps {
   labelTx: TxKeyPath;
   error: boolean;
   value: string;
@@ -16,32 +15,20 @@ interface InputFieldProps {
   errorMessage: string;
   width?: number;
   backgroundColor: string;
-  rightRender?: boolean;
-  rightText?: string;
+  onPress: (event: GestureResponderEvent) => void;
 }
 
-export const InputField = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor, rightRender, rightText }: InputFieldProps) => {
+export const InputFieldDropdown = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor, onPress }: InputFieldDropdownProps) => {
   return (
     <View>
       <TextInput
         autoCapitalize='none'
-        label={<Text tx={labelTx} style={{ color: palette.greyDarker, width: '100%', fontSize: 16 }} />}
+        label={translate(labelTx)}
         textColor={palette.secondaryColor}
         selectionColor={palette.secondaryColor}
         value={value}
         onChangeText={onChange}
-        right={
-          rightRender && (
-            <TextInput.Affix
-              text={rightText}
-              textStyle={{
-                fontSize: 16,
-                color: palette.secondaryColor,
-                fontFamily: 'Geometria-Bold',
-              }}
-            />
-          )
-        }
+        right={<TextInput.Icon icon='menu-down' onPress={onPress} />}
         style={{
           backgroundColor: error ? palette.pastelRed : backgroundColor,
           borderRadius: 5,
@@ -58,5 +45,3 @@ export const InputField = ({ labelTx, error, value, onChange, errorMessage, widt
     </View>
   );
 };
-
-export default InputField;

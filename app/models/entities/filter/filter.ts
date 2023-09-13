@@ -13,9 +13,22 @@ export const ProductFilterModel = types.model('ProductFilter').props({
   criteria: types.maybeNull(CriteriaModel),
 });
 
+export const TransactionFilterModel = types.model('TransactionFilter').props({
+  label: types.maybeNull(types.string),
+  page: types.maybe(types.maybeNull(types.number)),
+  pageSize: types.maybe(types.maybeNull(types.number)),
+});
+
+export const ProspectFilterModel = types.model('ProspectFilter').props({
+  name: types.maybeNull(types.string),
+});
+
 export interface Filter extends Instance<typeof FilterModel> {}
 
 export interface ProductFilter extends Instance<typeof ProductFilterModel> {}
+
+export interface ProspectFilter extends Instance<typeof ProspectFilterModel> {}
+export interface TransactionFilter extends Instance<typeof TransactionFilterModel> {}
 
 export interface FilterSnapshotOut extends SnapshotOut<typeof FilterModel> {}
 

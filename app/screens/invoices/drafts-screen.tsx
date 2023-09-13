@@ -10,6 +10,7 @@ import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoic
 import { TabNavigatorParamList } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
@@ -44,10 +45,14 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
     setMaxPage(Math.ceil(drafts.length / itemsPerPage));
   };
 
-  const handleScroll = event => {
+  const handleScroll = async event => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY <= -5) {
-      handleRefresh();
+    if (offsetY <= getThreshold()) {
+      try {
+        await handleRefresh();
+      } catch (error) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      }
     }
   };
 

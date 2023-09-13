@@ -14,6 +14,7 @@ import { Customer as ICustomer } from '../../models/entities/customer/customer';
 import { NavigatorParamList } from '../../navigators';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
@@ -59,10 +60,6 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     }
-  };
-
-  const getThreshold = () => {
-    return Platform.OS === 'ios' ? -15 : 0;
   };
 
   const convertToCSV = data => {
@@ -201,7 +198,10 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
                 alignContent: 'center',
                 marginLeft: spacing[6],
               }}
-              onPress={() => setCreationModal(true)}
+              onPress={() => {
+                customerStore.saveCustomerInit();
+                setCreationModal(true);
+              }}
             >
               <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
               <Text tx={'common.create'} style={{ fontSize: 14 }} />

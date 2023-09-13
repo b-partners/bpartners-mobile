@@ -61,6 +61,9 @@ export const CustomerStoreModel = types
   .actions(self => ({
     saveCustomerSuccess: () => {
       self.checkCustomer = true;
+      setTimeout(() => {
+        self.saveCustomerInit();
+      }, 3000);
     },
   }))
   .actions(self => ({

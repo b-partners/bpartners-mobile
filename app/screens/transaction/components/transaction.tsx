@@ -16,7 +16,9 @@ import { palette } from '../../../theme/palette';
 import { handleAsyncRequest } from '../../../utils/asyncRequest';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
+import { invoicePageSize } from '../../invoice-form/components/utils';
 import { ICON_CONTAINER_STYLE, TRANSACTION_BOTTOM_SIDE, transactionStyles as styles } from '../utils/styles';
+import { TransactionStatusColor, TransactionStatusLabel } from '../utils/utils';
 
 export const Transaction = (
   props: PropsWithoutRef<{
@@ -44,7 +46,7 @@ export const Transaction = (
       await transactionStore.updateTransactionCategory(item.id, selectedTransactionCategory);
       setLoading(false);
       setIsModifying(false);
-      await transactionStore.getTransactions();
+      await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
@@ -72,6 +74,19 @@ export const Transaction = (
               }}
             >
               <Text
+                text={TransactionStatusLabel[item.status]}
+                style={{ color: TransactionStatusColor[item.status], fontSize: 13, fontFamily: 'Geometria-LightItalic' }}
+              />
+              <Text
+                text={'\u2B24'}
+                style={{
+                  fontSize: Platform.select({ android: 7, ios: 5 }),
+                  marginHorizontal: spacing[2],
+                  color: '#989FB3',
+                  fontFamily: 'Geometria-LightItalic',
+                }}
+              />
+              <Text
                 text={new Date(item.paymentDatetime).toLocaleDateString()}
                 style={{ color: '#989FB3', fontSize: 13, fontFamily: 'Geometria-LightItalic' }}
               />
@@ -95,7 +110,7 @@ export const Transaction = (
           </View>
           <Text
             style={{
-              color: item.type === TransactionType.OUTCOME ? color.palette.textClassicColor : color.palette.green,
+              color: item.type === TransactionType.OUTCOME ? palette.pastelRed : color.palette.green,
             }}
             text={`${item.type === TransactionType.OUTCOME ? '-' : '+'}${printCurrencyToMajors(item.amount)}`}
           />

@@ -13,6 +13,7 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
+import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
@@ -46,10 +47,14 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     setMaxPage(Math.ceil(quotations.length / itemsPerPage));
   };
 
-  const handleScroll = event => {
+  const handleScroll = async event => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY <= -5) {
-      handleRefresh();
+    if (offsetY <= getThreshold()) {
+      try {
+        await handleRefresh();
+      } catch (error) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      }
     }
   };
 

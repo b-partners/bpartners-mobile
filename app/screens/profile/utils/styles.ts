@@ -30,6 +30,20 @@ export const profileStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  editionContainer: {
+    width: '20%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  editionIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    backgroundColor: palette.solidGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   logoPlaceholder: {
     height: 90,
     width: 90,
@@ -48,6 +62,7 @@ export const profileStyles = StyleSheet.create({
     width: '60%',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   name: {
     fontSize: 16,

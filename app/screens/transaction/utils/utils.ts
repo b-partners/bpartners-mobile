@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { translate } from '../../../i18n';
 import { Invoice, SearchInvoice } from '../../../models/entities/invoice/invoice';
 import { Transaction } from '../../../models/entities/transaction/transaction';
+import { palette } from '../../../theme/palette';
 
 export type InvoiceRowProps = {
   invoice: Invoice | SearchInvoice;
@@ -26,4 +28,20 @@ export type PaymentModalProps = {
   loading: boolean;
   loadingInvoice: boolean;
   invoices: Invoice[];
+};
+
+export const TransactionStatusLabel = {
+  PENDING: translate('transactionListScreen.status.pending'),
+  UPCOMING: translate('transactionListScreen.status.upcoming'),
+  BOOKED: translate('transactionListScreen.status.booked'),
+  REJECTED: translate('transactionListScreen.status.rejected'),
+  UNKNOWN: translate('transactionListScreen.status.unknown'),
+};
+
+export const TransactionStatusColor = {
+  PENDING: palette.orange,
+  UPCOMING: palette.orange,
+  BOOKED: palette.green,
+  REJECTED: palette.pastelRed,
+  UNKNOWN: palette.greyDarker,
 };

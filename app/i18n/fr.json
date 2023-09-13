@@ -25,6 +25,7 @@
     "noDataProvided": "Aucun enregistrement à afficher",
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
+    "registered": "Enregistré",
     "saved": "Sauvegardé dans:",
     "edit": "Modifier",
     "register": "ENREGISTRER",
@@ -65,6 +66,13 @@
     "total": "total",
     "associate": "Associer une facture",
     "associatedLabel": "Document associé",
+    "status": {
+      "pending": "En attente",
+      "upcoming": "En traitement",
+      "booked": "Acceptée",
+      "rejected": "Rejetée",
+      "unknown": "Inconnue"
+    },
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",
@@ -78,7 +86,7 @@
   "prospectScreen": {
     "title": "Prospects",
     "tab": {
-      "toContact": "À Contacter",
+      "toContact": "À contacter",
       "contacted": "Contacté",
       "converted": "Converti"
     }
@@ -197,6 +205,46 @@
           "amountTarget": "Recette annuelle à réaliser: "
         }
       }
+    }
+  },
+  "profileEditionScreen": {
+    "title": "Édition de mon compte",
+    "globalInfo": {
+      "label": "Information Générale",
+      "name": "Raison sociale: ",
+      "siren": "Siren: ",
+      "officialActivityName": "Activité officielle: ",
+      "initialCashFlow": "Trésorerie initial",
+      "contactAddress": {
+        "address": "Adresse: ",
+        "city": "Ville: ",
+        "country": "Pays: ",
+        "postalCode": "Code postal: "
+      }
+    },
+    "revenueTargets": {
+      "title": "Objectif",
+      "label": "Encaissement annuelle à réaliser",
+      "target": "Objectif de cette année"
+    },
+    "feedback": {
+      "title": "Référencement",
+      "label": "Boostez votre référencement. Renseignez le lien vers votre page avis (google business, trust pilote)",
+      "feedbackLink": "Lien pour le feedback"
+    },
+    "activity": {
+      "title": "Activité",
+      "primary": "Activité principale: ",
+      "secondary": "Activité secondaire: ",
+      "register": "Enregistrer"
+    },
+    "companyInfo": {
+      "title": "Informations sur la société",
+      "socialCapital": "Capital Social (€)",
+      "phone": "Téléphone",
+      "email": "Email",
+      "townCode": "Code de la commune de prospection",
+      "tvaNumber": "Numéro de TVA"
     }
   },
   "homeScreen": {

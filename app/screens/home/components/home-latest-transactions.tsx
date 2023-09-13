@@ -49,6 +49,7 @@ function LatestTransaction(props: { item: ITransaction }) {
         paddingRight: spacing[6] + 9,
         borderBottomWidth: 1,
         borderBottomColor: '#E1E5EF',
+        marginLeft: spacing[6],
       }}
     >
       <TouchableOpacity>
@@ -118,7 +119,7 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
           <TouchableOpacity onPress={() => showSnackbar()}>{/*<Icon icon='settings' />*/}</TouchableOpacity>
         </View>
       </View>
-      <View style={{ paddingLeft: spacing[6] }}>
+      <View>
         {!loading ? props.transactions.map(item => <LatestTransaction key={item.id} item={item} />) : <Loader size='large' containerStyle={LOADER_STYLE} />}
       </View>
       <View style={{ paddingHorizontal: spacing[4], paddingTop: spacing[6] }}>
