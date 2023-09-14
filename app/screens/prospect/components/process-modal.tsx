@@ -5,7 +5,7 @@ import { Modal } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, InputField, Text } from '../../../components';
-import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -18,9 +18,11 @@ import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/style
 import { ProcessModalProps, ProspectEnum } from '../utils/utils';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
-  const { showModal, setShowModal, prospect } = props;
+  const { prospectStore } = useStores();
+  const { showModal, setShowModal, prospect, setCurrentStatus } = props;
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
   const [current, setCurrent] = React.useState<ProspectEnum | null>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const closeModal = () => {
     setCurrent(null);
@@ -57,12 +59,28 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     Log('This is amount :' + amount);
   };
 
-  const onSubmit = async processInfos => {
+  const onSubmit = async prospectInfos => {
+    setIsLoading(true);
+    // remove location to respect attributes to send to the backend
+    const prospectToBeEdited = {
+      ...prospect,
+    };
+    delete prospectToBeEdited.location;
+    // make the api call
     try {
-      Log(processInfos);
+      await prospectStore.updateProspects(prospectToBeEdited.id, [
+        {
+          ...prospectToBeEdited,
+          status: status,
+        },
+      ]);
     } catch (e) {
-      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      showMessage(e);
       throw e;
+    } finally {
+      await prospectStore.getProspects();
+      setCurrentStatus(status);
+      setIsLoading(false);
     }
   };
 
