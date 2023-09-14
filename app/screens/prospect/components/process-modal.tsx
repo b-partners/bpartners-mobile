@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
@@ -31,6 +31,10 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     setCurrentPage(1);
     setShowModal(false);
   };
+
+  useEffect(() => {
+    Log(prospect);
+  }, []);
 
   const {
     handleSubmit,
