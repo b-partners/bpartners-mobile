@@ -20,6 +20,7 @@
     "submit": "Confirmer",
     "create": "Créer",
     "or": "ou",
+    "next": "Suivant",
     "cancel": "Annuler",
     "back": "Précédent",
     "noDataProvided": "Aucun enregistrement à afficher",
@@ -89,6 +90,14 @@
       "toContact": "À contacter",
       "contacted": "Contacté",
       "converted": "Converti"
+    },
+    "process": {
+      "email": "Email",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "name": "Nom du prospect",
+      "comment": "Commentaire",
+      "reserve": "Réserver"
     }
   },
   "onboardingScreen": {
