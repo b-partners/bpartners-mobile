@@ -45,6 +45,8 @@ export const ProspectModel = types.model('Account').props({
   location: types.maybeNull(LocationModel),
   comment: types.maybeNull(types.string),
   invoiceID: types.maybeNull(types.string),
+  contractAmount: types.maybeNull(types.number),
+  prospectFeedback: types.maybeNull(types.string),
 });
 
 export interface Prospect extends Instance<typeof ProspectModel> {}

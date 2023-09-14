@@ -6,7 +6,6 @@ import { Prospect } from '../../../models/entities/prospect/prospect';
 export type ProspectItemProps = {
   menuItem: MenuItem[];
   prospect: Prospect;
-  ahId: string;
   setCurrentStatus: React.Dispatch<React.SetStateAction<string>>;
   key: number;
 };
@@ -14,6 +13,7 @@ export type ProspectItemProps = {
 export type ProcessModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentStatus: React.Dispatch<React.SetStateAction<string>>;
   prospect: Prospect;
 };
 

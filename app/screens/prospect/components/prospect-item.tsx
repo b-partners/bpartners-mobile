@@ -6,15 +6,12 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Loader } from '../../../components';
 import { Menu as CMenu } from '../../../components/menu/menu';
 import { translate } from '../../../i18n';
-import { useStores } from '../../../models';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
-import { showMessage } from '../../../utils/snackbar';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
 import { Location } from './location';
@@ -30,35 +27,8 @@ const IconGroup = {
 };
 
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
-  const { prospectStore } = useStores();
-  const { menuItem, prospect, ahId, setCurrentStatus, key } = props;
-  const [isUpdating, setIsUpdating] = useState(false);
+  const { menuItem, prospect, setCurrentStatus, key } = props;
   const [showModal, setShowModal] = useState(false);
-
-  const updateProspectStatus = async status => {
-    setIsUpdating(true);
-    // remove location to respect attributes to send to the backend
-    const prospectToBeEdited = {
-      ...prospect,
-    };
-    delete prospectToBeEdited.location;
-    // make the api call
-    try {
-      await prospectStore.updateProspects(ahId, prospectToBeEdited.id, [
-        {
-          ...prospectToBeEdited,
-          status: status,
-        },
-      ]);
-    } catch (e) {
-      showMessage(e);
-      throw e;
-    } finally {
-      await prospectStore.getProspects();
-      setCurrentStatus(status);
-      setIsUpdating(false);
-    }
-  };
 
   return (
     <View key={key} style={styles.container}>
@@ -95,32 +65,28 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
           </View>
           <View style={styles.location}>{prospect.location && <Location prospect={prospect} />}</View>
           <View style={styles.menuContainer}>
-            {isUpdating ? (
-              <Loader animating={true} />
-            ) : (
-              <CMenu
-                items={menuItem}
-                actions={{
-                  toContact: () => {
-                    prospect.status !== ProspectStatus.TO_CONTACT && setShowModal(true);
-                  },
-                  contacted: () => {
-                    prospect.status !== ProspectStatus.CONTACTED && setShowModal(true);
-                  },
-                  converted: () => {
-                    prospect.status !== ProspectStatus.CONVERTED && setShowModal(true);
-                  },
-                }}
-              >
-                <MaterialCommunityIcons name='dots-vertical' size={21} color={palette.secondaryColor} />
-              </CMenu>
-            )}
+            <CMenu
+              items={menuItem}
+              actions={{
+                toContact: () => {
+                  prospect.status !== ProspectStatus.TO_CONTACT && setShowModal(true);
+                },
+                contacted: () => {
+                  prospect.status !== ProspectStatus.CONTACTED && setShowModal(true);
+                },
+                converted: () => {
+                  prospect.status !== ProspectStatus.CONVERTED && setShowModal(true);
+                },
+              }}
+            >
+              <MaterialCommunityIcons name='dots-vertical' size={21} color={palette.secondaryColor} />
+            </CMenu>
           </View>
         </Card.Content>
       </Card>
       {showModal && (
         <Portal>
-          <ProcessModal showModal={showModal} setShowModal={setShowModal} prospect={prospect} />
+          <ProcessModal showModal={showModal} setShowModal={setShowModal} prospect={prospect} setCurrentStatus={setCurrentStatus} />
         </Portal>
       )}
     </View>
