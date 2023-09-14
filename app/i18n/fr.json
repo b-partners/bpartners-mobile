@@ -97,6 +97,11 @@
       "address": "Adresse",
       "name": "Nom du prospect",
       "comment": "Commentaire",
+      "amountLabel": "Valeur potentielle du contrat en € (Optionel)",
+      "amount": "Montant",
+      "notInterested": "Pas intéressé",
+      "interested": "Intéressé",
+      "quotationSent": "Devis envoyé",
       "reserve": "Réserver"
     }
   },

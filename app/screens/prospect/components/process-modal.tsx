@@ -8,21 +8,30 @@ import { Button, InputField, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { commaValidation } from '../../../utils/comma-to-dot';
+import { showMessage } from '../../../utils/snackbar';
+import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
-import { ProcessModalProps } from '../utils/utils';
+import { Log } from '../../welcome/utils/utils';
+import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
+import { ProcessModalProps, ProspectEnum } from '../utils/utils';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const { showModal, setShowModal, prospect } = props;
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
+  const [current, setCurrent] = React.useState<ProspectEnum | null>();
 
   const closeModal = () => {
+    setCurrent(null);
+    setCurrentPage(1);
     setShowModal(false);
   };
 
   const {
     handleSubmit,
     control,
-    reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({
     mode: 'all',
@@ -32,8 +41,25 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       address: prospect.address,
       name: prospect.name,
       comment: prospect.comment,
+      amount: '',
     },
   });
+
+  const handleAmountRender = () => {
+    setCurrentPage(2);
+    setValue('amount', '');
+    const amount = watch('amount');
+    Log('This is amount :' + amount);
+  };
+
+  const onSubmit = async processInfos => {
+    try {
+      Log(processInfos);
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      throw e;
+    }
+  };
 
   return (
     <Modal
@@ -67,7 +93,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             <Text text={'Prospect : '} style={{ fontSize: 15, color: palette.secondaryColor }} />
             <Text text={prospect?.name} style={{ fontSize: 15, color: palette.secondaryColor }} />
           </View>
-          <TouchableOpacity onPress={() => setShowModal(false)} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity onPress={closeModal} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <AntDesignIcon name='close' color={color.palette.lightGrey} size={20} />
           </TouchableOpacity>
         </View>
@@ -77,9 +103,6 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               <Controller
                 control={control}
                 name='email'
-                rules={{
-                  required: translate('errors.required'),
-                }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
@@ -97,9 +120,6 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               <Controller
                 control={control}
                 name='phone'
-                rules={{
-                  required: translate('errors.required'),
-                }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
@@ -117,9 +137,6 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               <Controller
                 control={control}
                 name='address'
-                rules={{
-                  required: translate('errors.required'),
-                }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
@@ -137,9 +154,6 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               <Controller
                 control={control}
                 name='name'
-                rules={{
-                  required: translate('errors.required'),
-                }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
@@ -173,25 +187,41 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           </View>
         ) : (
           <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
+            <View style={{ width: '100%', marginVertical: spacing[2], flexDirection: 'column', alignItems: 'center' }}>
+              <Text tx={'prospectScreen.process.amountLabel'} style={{ color: palette.lightGrey }} />
+            </View>
             <View style={{ marginBottom: 10, width: '100%' }}>
               <Controller
                 control={control}
-                name='email'
+                name='amount'
                 rules={{
-                  required: translate('errors.required'),
+                  validate: commaValidation,
                 }}
-                defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
-                    labelTx={'prospectScreen.process.email'}
-                    error={!!errors.email}
+                    labelTx={'prospectScreen.process.amount'}
+                    error={!!errors.amount}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.email?.message}
+                    errorMessage={errors.amount?.message}
                     backgroundColor={palette.solidGrey}
                   />
                 )}
               />
+            </View>
+            <View style={{ flex: 1, paddingTop: spacing[4] }}>
+              <TouchableOpacity style={current === ProspectEnum.INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.INTERESTED)}>
+                <RadioButton isActive={current === ProspectEnum.INTERESTED} />
+                <Text tx={'prospectScreen.process.interested'} style={current === ProspectEnum.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+              </TouchableOpacity>
+              <TouchableOpacity style={current === ProspectEnum.NOT_INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.NOT_INTERESTED)}>
+                <RadioButton isActive={current === ProspectEnum.NOT_INTERESTED} />
+                <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectEnum.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+              </TouchableOpacity>
+              <TouchableOpacity style={current === ProspectEnum.QUOTATION_SENT ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.QUOTATION_SENT)}>
+                <RadioButton isActive={current === ProspectEnum.QUOTATION_SENT} />
+                <Text tx={'prospectScreen.process.quotationSent'} style={current === ProspectEnum.QUOTATION_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+              </TouchableOpacity>
             </View>
           </View>
         )}
@@ -235,9 +265,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               width: 100,
               height: 40,
             }}
-            onPress={() => {
-              currentPage === 1 && setCurrentPage(2);
-            }}
+            onPress={currentPage !== 1 ? handleSubmit(onSubmit) : handleAmountRender}
             textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
           />
         </View>
