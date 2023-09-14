@@ -101,9 +101,9 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
               <CMenu
                 items={menuItem}
                 actions={{
-                  toContact: () => updateProspectStatus(ProspectStatus.TO_CONTACT),
+                  toContact: () => setShowModal(true),
                   contacted: () => setShowModal(true),
-                  converted: () => updateProspectStatus(ProspectStatus.CONVERTED),
+                  converted: () => setShowModal(true),
                 }}
               >
                 <MaterialCommunityIcons name='dots-vertical' size={21} color={palette.secondaryColor} />
@@ -112,9 +112,11 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
           </View>
         </Card.Content>
       </Card>
-      <Portal>
-        <ProcessModal showModal={showModal} setShowModal={setShowModal} prospect={prospect} />
-      </Portal>
+      {showModal && (
+        <Portal>
+          <ProcessModal showModal={showModal} setShowModal={setShowModal} prospect={prospect} />
+        </Portal>
+      )}
     </View>
   );
 };
