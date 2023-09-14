@@ -56,10 +56,10 @@ export const ProspectStoreModel = types
     },
   }))
   .actions(self => ({
-    updateProspects: flow(function* (ahId, prospect: Prospect) {
+    updateProspects: flow(function* (ahId: string, id: string, prospect: Prospect) {
       const prospectApi = new ProspectApi(self.environment.api);
       try {
-        const UpdateProspectResult = yield prospectApi.updateProspects(ahId, prospect);
+        const UpdateProspectResult = yield prospectApi.updateProspects(ahId, id, prospect);
         self.saveProspectSuccess(UpdateProspectResult.prospect);
       } catch (e) {
         self.saveProspectFail(e);

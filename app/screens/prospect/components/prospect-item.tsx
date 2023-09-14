@@ -44,7 +44,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
     delete prospectToBeEdited.location;
     // make the api call
     try {
-      await prospectStore.updateProspects(ahId, [
+      await prospectStore.updateProspects(ahId, prospectToBeEdited.id, [
         {
           ...prospectToBeEdited,
           status: status,
@@ -101,9 +101,15 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
               <CMenu
                 items={menuItem}
                 actions={{
-                  toContact: () => setShowModal(true),
-                  contacted: () => setShowModal(true),
-                  converted: () => setShowModal(true),
+                  toContact: () => {
+                    prospect.status !== ProspectStatus.TO_CONTACT && setShowModal(true);
+                  },
+                  contacted: () => {
+                    prospect.status !== ProspectStatus.CONTACTED && setShowModal(true);
+                  },
+                  converted: () => {
+                    prospect.status !== ProspectStatus.CONVERTED && setShowModal(true);
+                  },
                 }}
               >
                 <MaterialCommunityIcons name='dots-vertical' size={21} color={palette.secondaryColor} />
