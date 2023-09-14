@@ -34,9 +34,9 @@ export class ProspectApi {
     const prospects = response.data;
     return { kind: 'ok', prospects };
   }
-  async updateProspects(ahId: string, payload: Prospect): Promise<UpdateProspectResult> {
+  async updateProspects(ahId: string, id: string, payload: Prospect): Promise<UpdateProspectResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.api.apisauce.put(`accountHolders/${ahId}/prospects`, payload);
+    const response: ApiResponse<any> = await this.api.apisauce.put(`accountHolders/${ahId}/prospects/${id}`, payload);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
