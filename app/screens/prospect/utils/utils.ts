@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { MenuItem } from '../../../components';
-import { Prospect } from '../../../models/entities/prospect/prospect';
+import { Prospect, ProspectStatus } from '../../../models/entities/prospect/prospect';
 
 export type ProspectItemProps = {
   menuItem: MenuItem[];
@@ -15,14 +15,15 @@ export type ProcessModalProps = {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentStatus: React.Dispatch<React.SetStateAction<string>>;
   prospect: Prospect;
+  status: ProspectStatus;
 };
 
-export enum ProspectEnum {
+export enum ProspectFeedback {
   NOT_INTERESTED = 'NOT_INTERESTED',
   INTERESTED = 'INTERESTED',
-  QUOTATION_SENT = 'QUOTATION_SENT',
-  ACCEPTED_QUOTATION = 'ACCEPTED_QUOTATION',
-  REFUSED_QUOTATION = 'REFUSED_QUOTATION',
+  PROPOSAL_SENT = 'PROPOSAL_SENT',
+  PROPOSAL_ACCEPTED = 'PROPOSAL_ACCEPTED',
+  PROPOSAL_DECLINED = 'PROPOSAL_DECLINED',
   INVOICE_SENT = 'INVOICE_SENT',
 }
 

@@ -15,13 +15,13 @@ import RadioButton from '../../invoice-form/components/select-form-field/radio-b
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 import { Log } from '../../welcome/utils/utils';
 import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
-import { ProcessModalProps, ProspectEnum } from '../utils/utils';
+import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const { prospectStore } = useStores();
-  const { showModal, setShowModal, prospect, setCurrentStatus } = props;
+  const { showModal, setShowModal, prospect, setCurrentStatus, status } = props;
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
-  const [current, setCurrent] = React.useState<ProspectEnum | null>();
+  const [current, setCurrent] = React.useState<ProspectFeedback | null>();
   const [isLoading, setIsLoading] = useState(false);
 
   const closeModal = () => {
@@ -60,27 +60,29 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
   };
 
   const onSubmit = async prospectInfos => {
-    setIsLoading(true);
-    // remove location to respect attributes to send to the backend
+    // setIsLoading(true);
+    const editedStatus = current === ProspectFeedback.NOT_INTERESTED || current === ProspectFeedback.PROPOSAL_DECLINED ? ProspectStatus.TO_CONTACT : status;
     const prospectToBeEdited = {
       ...prospect,
+      name: prospectInfos.name,
+      email: prospectInfos.email,
+      phone: prospectInfos.phone,
+      address: prospectInfos.address,
+      comment: prospectInfos.comment,
+      contractAmount: prospectInfos.amount,
+      status: editedStatus,
     };
     delete prospectToBeEdited.location;
-    // make the api call
     try {
-      await prospectStore.updateProspects(prospectToBeEdited.id, [
-        {
-          ...prospectToBeEdited,
-          status: status,
-        },
-      ]);
+      // await prospectStore.updateProspects(prospectToBeEdited.id, prospectToBeEdited);
+      Log(prospectToBeEdited);
     } catch (e) {
       showMessage(e);
       throw e;
     } finally {
-      await prospectStore.getProspects();
-      setCurrentStatus(status);
-      setIsLoading(false);
+      /*await prospectStore.getProspects();
+      setCurrentStatus(editedStatus);
+      setIsLoading(false);*/
     }
   };
 
@@ -234,38 +236,47 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             </View>
             {prospect.status === ProspectStatus.TO_CONTACT ? (
               <View style={{ flex: 1, paddingTop: spacing[4] }}>
-                <TouchableOpacity style={current === ProspectEnum.INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.INTERESTED)}>
-                  <RadioButton isActive={current === ProspectEnum.INTERESTED} />
-                  <Text tx={'prospectScreen.process.interested'} style={current === ProspectEnum.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                <TouchableOpacity style={current === ProspectFeedback.INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectFeedback.INTERESTED)}>
+                  <RadioButton isActive={current === ProspectFeedback.INTERESTED} />
+                  <Text tx={'prospectScreen.process.interested'} style={current === ProspectFeedback.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
                 </TouchableOpacity>
-                <TouchableOpacity style={current === ProspectEnum.NOT_INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.NOT_INTERESTED)}>
-                  <RadioButton isActive={current === ProspectEnum.NOT_INTERESTED} />
-                  <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectEnum.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                <TouchableOpacity
+                  style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED : UNCHECKED}
+                  onPress={() => setCurrent(ProspectFeedback.NOT_INTERESTED)}
+                >
+                  <RadioButton isActive={current === ProspectFeedback.NOT_INTERESTED} />
+                  <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
                 </TouchableOpacity>
-                <TouchableOpacity style={current === ProspectEnum.QUOTATION_SENT ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.QUOTATION_SENT)}>
-                  <RadioButton isActive={current === ProspectEnum.QUOTATION_SENT} />
-                  <Text tx={'prospectScreen.process.quotationSent'} style={current === ProspectEnum.QUOTATION_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                <TouchableOpacity
+                  style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED : UNCHECKED}
+                  onPress={() => setCurrent(ProspectFeedback.PROPOSAL_SENT)}
+                >
+                  <RadioButton isActive={current === ProspectFeedback.PROPOSAL_SENT} />
+                  <Text tx={'prospectScreen.process.proposalSent'} style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
                 </TouchableOpacity>
               </View>
             ) : (
               <View style={{ flex: 1, paddingTop: spacing[4] }}>
                 <TouchableOpacity
-                  style={current === ProspectEnum.ACCEPTED_QUOTATION ? CHECKED : UNCHECKED}
-                  onPress={() => setCurrent(ProspectEnum.ACCEPTED_QUOTATION)}
+                  style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED : UNCHECKED}
+                  onPress={() => setCurrent(ProspectFeedback.PROPOSAL_ACCEPTED)}
                 >
-                  <RadioButton isActive={current === ProspectEnum.ACCEPTED_QUOTATION} />
-                  <Text tx={'prospectScreen.process.acceptedQuotation'} style={current === ProspectEnum.ACCEPTED_QUOTATION ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                  <RadioButton isActive={current === ProspectFeedback.PROPOSAL_ACCEPTED} />
+                  <Text tx={'prospectScreen.process.proposalAccepted'} style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={current === ProspectEnum.REFUSED_QUOTATION ? CHECKED : UNCHECKED}
-                  onPress={() => setCurrent(ProspectEnum.REFUSED_QUOTATION)}
+                  style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED : UNCHECKED}
+                  onPress={() => setCurrent(ProspectFeedback.PROPOSAL_DECLINED)}
                 >
-                  <RadioButton isActive={current === ProspectEnum.REFUSED_QUOTATION} />
-                  <Text tx={'prospectScreen.process.refusedQuotation'} style={current === ProspectEnum.REFUSED_QUOTATION ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                  <RadioButton isActive={current === ProspectFeedback.PROPOSAL_DECLINED} />
+                  <Text tx={'prospectScreen.process.proposalDeclined'} style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED_TEXT : UNCHECKED_TEXT} />
                 </TouchableOpacity>
-                <TouchableOpacity style={current === ProspectEnum.INVOICE_SENT ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.INVOICE_SENT)}>
-                  <RadioButton isActive={current === ProspectEnum.INVOICE_SENT} />
-                  <Text tx={'prospectScreen.process.invoiceSent'} style={current === ProspectEnum.INVOICE_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                <TouchableOpacity
+                  style={current === ProspectFeedback.INVOICE_SENT ? CHECKED : UNCHECKED}
+                  onPress={() => setCurrent(ProspectFeedback.INVOICE_SENT)}
+                >
+                  <RadioButton isActive={current === ProspectFeedback.INVOICE_SENT} />
+                  <Text tx={'prospectScreen.process.invoiceSent'} style={current === ProspectFeedback.INVOICE_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
                 </TouchableOpacity>
               </View>
             )}
