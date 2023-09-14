@@ -102,6 +102,9 @@
       "notInterested": "Pas intéressé",
       "interested": "Intéressé",
       "quotationSent": "Devis envoyé",
+      "acceptedQuotation" : "Devis accepté",
+      "refusedQuotation" : "Devis refusé",
+      "invoiceSent" : "Facture envoyée",
       "reserve": "Réserver"
     }
   },

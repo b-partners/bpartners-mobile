@@ -6,6 +6,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, InputField, Text } from '../../../components';
 import { translate } from '../../../i18n';
+import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { commaValidation } from '../../../utils/comma-to-dot';
@@ -213,20 +214,43 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                 )}
               />
             </View>
-            <View style={{ flex: 1, paddingTop: spacing[4] }}>
-              <TouchableOpacity style={current === ProspectEnum.INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.INTERESTED)}>
-                <RadioButton isActive={current === ProspectEnum.INTERESTED} />
-                <Text tx={'prospectScreen.process.interested'} style={current === ProspectEnum.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
-              </TouchableOpacity>
-              <TouchableOpacity style={current === ProspectEnum.NOT_INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.NOT_INTERESTED)}>
-                <RadioButton isActive={current === ProspectEnum.NOT_INTERESTED} />
-                <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectEnum.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
-              </TouchableOpacity>
-              <TouchableOpacity style={current === ProspectEnum.QUOTATION_SENT ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.QUOTATION_SENT)}>
-                <RadioButton isActive={current === ProspectEnum.QUOTATION_SENT} />
-                <Text tx={'prospectScreen.process.quotationSent'} style={current === ProspectEnum.QUOTATION_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
-              </TouchableOpacity>
-            </View>
+            {prospect.status === ProspectStatus.TO_CONTACT ? (
+              <View style={{ flex: 1, paddingTop: spacing[4] }}>
+                <TouchableOpacity style={current === ProspectEnum.INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.INTERESTED)}>
+                  <RadioButton isActive={current === ProspectEnum.INTERESTED} />
+                  <Text tx={'prospectScreen.process.interested'} style={current === ProspectEnum.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                </TouchableOpacity>
+                <TouchableOpacity style={current === ProspectEnum.NOT_INTERESTED ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.NOT_INTERESTED)}>
+                  <RadioButton isActive={current === ProspectEnum.NOT_INTERESTED} />
+                  <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectEnum.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                </TouchableOpacity>
+                <TouchableOpacity style={current === ProspectEnum.QUOTATION_SENT ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.QUOTATION_SENT)}>
+                  <RadioButton isActive={current === ProspectEnum.QUOTATION_SENT} />
+                  <Text tx={'prospectScreen.process.quotationSent'} style={current === ProspectEnum.QUOTATION_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{ flex: 1, paddingTop: spacing[4] }}>
+                <TouchableOpacity
+                  style={current === ProspectEnum.ACCEPTED_QUOTATION ? CHECKED : UNCHECKED}
+                  onPress={() => setCurrent(ProspectEnum.ACCEPTED_QUOTATION)}
+                >
+                  <RadioButton isActive={current === ProspectEnum.ACCEPTED_QUOTATION} />
+                  <Text tx={'prospectScreen.process.acceptedQuotation'} style={current === ProspectEnum.ACCEPTED_QUOTATION ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={current === ProspectEnum.REFUSED_QUOTATION ? CHECKED : UNCHECKED}
+                  onPress={() => setCurrent(ProspectEnum.REFUSED_QUOTATION)}
+                >
+                  <RadioButton isActive={current === ProspectEnum.REFUSED_QUOTATION} />
+                  <Text tx={'prospectScreen.process.refusedQuotation'} style={current === ProspectEnum.REFUSED_QUOTATION ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                </TouchableOpacity>
+                <TouchableOpacity style={current === ProspectEnum.INVOICE_SENT ? CHECKED : UNCHECKED} onPress={() => setCurrent(ProspectEnum.INVOICE_SENT)}>
+                  <RadioButton isActive={current === ProspectEnum.INVOICE_SENT} />
+                  <Text tx={'prospectScreen.process.invoiceSent'} style={current === ProspectEnum.INVOICE_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         )}
         <View
