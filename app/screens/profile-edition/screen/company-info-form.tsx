@@ -102,7 +102,7 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
                     error={!!errors.socialCapital}
                     value={value}
                     onChange={onChange}
-                    errorMessage={errors.socialCapital?.message as string}
+                    errorMessage={errors.socialCapital?.message}
                     backgroundColor={palette.white}
                   />
                 )}
