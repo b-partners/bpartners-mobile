@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Card, Paragraph, Portal, Title } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
@@ -29,6 +29,11 @@ const IconGroup = {
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
   const { menuItem, prospect, setCurrentStatus, key } = props;
   const [showModal, setShowModal] = useState(false);
+  const [status, setStatus] = useState<ProspectStatus | null>(null);
+
+  useEffect(() => {
+    status != null && setShowModal(true);
+  }, [status]);
 
   return (
     <View key={key} style={styles.container}>
@@ -69,13 +74,13 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
               items={menuItem}
               actions={{
                 toContact: () => {
-                  prospect.status !== ProspectStatus.TO_CONTACT && setShowModal(true);
+                  prospect.status !== ProspectStatus.TO_CONTACT && setStatus(ProspectStatus.TO_CONTACT);
                 },
                 contacted: () => {
-                  prospect.status !== ProspectStatus.CONTACTED && setShowModal(true);
+                  prospect.status !== ProspectStatus.CONTACTED && setStatus(ProspectStatus.CONTACTED);
                 },
                 converted: () => {
-                  prospect.status !== ProspectStatus.CONVERTED && setShowModal(true);
+                  prospect.status !== ProspectStatus.CONVERTED && setStatus(ProspectStatus.CONVERTED);
                 },
               }}
             >
@@ -86,7 +91,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
       </Card>
       {showModal && (
         <Portal>
-          <ProcessModal showModal={showModal} setShowModal={setShowModal} prospect={prospect} setCurrentStatus={setCurrentStatus} />
+          <ProcessModal showModal={showModal} setShowModal={setShowModal} prospect={prospect} setCurrentStatus={setCurrentStatus} status={status} />
         </Portal>
       )}
     </View>

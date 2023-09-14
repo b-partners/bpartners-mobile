@@ -18,13 +18,11 @@ import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
 
 export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
-  const { authStore, prospectStore } = useStores();
+  const { prospectStore } = useStores();
   const { prospects, loadingProspect } = prospectStore;
 
   const [currentStatus, setCurrentStatus] = useState<string>('TO_CONTACT');
   const [searchQuery, setSearchQuery] = React.useState('');
-
-  const currentAccountHolderId: string = authStore.currentAccountHolder?.id;
 
   const getActiveClassName = useCallback(
     (activeStatus): object => {
@@ -117,7 +115,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
               </View>
             ) : filteredProspect.length > 0 ? (
               filteredProspect.map((item: Prospect, index: number) => {
-                return <ProspectItem menuItem={items} prospect={item} ahId={currentAccountHolderId} setCurrentStatus={setCurrentStatus} key={index} />;
+                return <ProspectItem menuItem={items} prospect={item} setCurrentStatus={setCurrentStatus} key={index} />;
               })
             ) : (
               <NoDataProvided />

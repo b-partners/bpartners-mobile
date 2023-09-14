@@ -101,9 +101,9 @@
       "amount": "Montant",
       "notInterested": "Pas intéressé",
       "interested": "Intéressé",
-      "quotationSent": "Devis envoyé",
-      "acceptedQuotation" : "Devis accepté",
-      "refusedQuotation" : "Devis refusé",
+      "proposalSent": "Devis envoyé",
+      "proposalAccepted" : "Devis accepté",
+      "proposalDeclined" : "Devis refusé",
       "invoiceSent" : "Facture envoyée",
       "reserve": "Réserver"
     }
