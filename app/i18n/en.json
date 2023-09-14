@@ -147,6 +147,9 @@
       "notInterested": "Not interested",
       "interested": "Interested",
       "quotationSent": "Quotation sent",
+      "acceptedQuotation" : "Quotation accepted",
+      "refusedQuotation" : "Quotation refused",
+      "invoiceSent" : "Invoice sent",
       "reserve": "Reserve"
     }
   },
