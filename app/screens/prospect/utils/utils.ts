@@ -17,4 +17,10 @@ export type ProcessModalProps = {
   prospect: Prospect;
 };
 
+export enum ProspectEnum {
+  NOT_INTERESTED = 'NOT_INTERESTED',
+  INTERESTED = 'INTERESTED',
+  QUOTATION_SENT = 'QUOTATION_SENT',
+}
+
 export const geojsonBaseurl = 'http://geojson.io';

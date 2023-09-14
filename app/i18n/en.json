@@ -141,6 +141,12 @@
       "address": "Address",
       "name": "Prospect name",
       "comment": "Comment",
+      "optional": "Optional",
+      "amountLabel": "Potential contract value in € (Optional)",
+      "amount": "Amount",
+      "notInterested": "Not interested",
+      "interested": "Interested",
+      "quotationSent": "Quotation sent",
       "reserve": "Reserve"
     }
   },

@@ -1,7 +1,31 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+
+export const CHECKED: ViewStyle = {
+  width: '100%',
+  height: 30,
+  backgroundColor: palette.solidGrey,
+  borderRadius: 20,
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginVertical: spacing[1],
+};
+
+export const UNCHECKED: ViewStyle = {
+  width: '100%',
+  height: 30,
+  backgroundColor: palette.white,
+  borderRadius: 20,
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingLeft: spacing[1],
+  marginVertical: spacing[1],
+};
+
+export const CHECKED_TEXT: TextStyle = { color: palette.secondaryColor };
+export const UNCHECKED_TEXT: TextStyle = { color: palette.lightGrey, marginLeft: spacing[1] };
 
 export const prospectStyles = StyleSheet.create({
   full: {
