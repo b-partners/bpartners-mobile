@@ -91,7 +91,14 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
       </Card>
       {showModal && (
         <Portal>
-          <ProcessModal showModal={showModal} setShowModal={setShowModal} prospect={prospect} setCurrentStatus={setCurrentStatus} status={status} />
+          <ProcessModal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            prospect={prospect}
+            setCurrentStatus={setCurrentStatus}
+            status={status}
+            setStatus={setStatus}
+          />
         </Portal>
       )}
     </View>

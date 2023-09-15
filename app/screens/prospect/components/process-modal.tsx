@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
@@ -10,36 +10,31 @@ import { useStores } from '../../../models';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { commaValidation } from '../../../utils/comma-to-dot';
+import { amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
-import { Log } from '../../welcome/utils/utils';
 import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
 import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const { prospectStore } = useStores();
-  const { showModal, setShowModal, prospect, setCurrentStatus, status } = props;
+  const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus } = props;
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
-  const [current, setCurrent] = React.useState<ProspectFeedback | null>();
+  const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [amount, setAmount] = useState('');
   const closeModal = () => {
+    setStatus(null);
     setCurrent(null);
     setCurrentPage(1);
     setShowModal(false);
   };
 
-  useEffect(() => {
-    Log(prospect);
-  }, []);
-
   const {
     handleSubmit,
     control,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm({
     mode: 'all',
@@ -49,15 +44,11 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       address: prospect.address,
       name: prospect.name,
       comment: prospect.comment,
-      amount: '',
     },
   });
 
   const handleAmountRender = () => {
     setCurrentPage(2);
-    setValue('amount', '');
-    const amount = watch('amount');
-    Log('This is amount :' + amount);
   };
 
   const onSubmit = async prospectInfos => {
@@ -70,20 +61,27 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       phone: prospectInfos.phone,
       address: prospectInfos.address,
       comment: prospectInfos.comment,
-      contractAmount: prospectInfos.amount,
+      contractAmount: amountToMinors(parseInt(amount, 10)),
       status: editedStatus,
     };
     delete prospectToBeEdited.location;
     try {
       await prospectStore.updateProspects(prospectToBeEdited.id, prospectToBeEdited);
-      Log(prospectToBeEdited);
     } catch (e) {
       showMessage(e);
       throw e;
     } finally {
+      closeModal();
       await prospectStore.getProspects();
       setCurrentStatus(editedStatus);
       setIsLoading(false);
+    }
+  };
+
+  const handleAmountChange = value => {
+    const regex = /^\d*$/;
+    if (regex.test(value)) {
+      setAmount(value);
     }
   };
 
@@ -219,22 +217,14 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                 <Text tx={'prospectScreen.process.amountLabel'} style={{ color: palette.lightGrey }} />
               </View>
               <View style={{ marginBottom: 10, width: '100%' }}>
-                <Controller
-                  control={control}
-                  name='amount'
-                  rules={{
-                    validate: commaValidation,
-                  }}
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'prospectScreen.process.amount'}
-                      error={!!errors.amount}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.amount?.message}
-                      backgroundColor={palette.solidGrey}
-                    />
-                  )}
+                <InputField
+                  keyboardType={'numeric'}
+                  labelTx={'prospectScreen.process.amount'}
+                  error={null}
+                  value={amount}
+                  onChange={value => handleAmountChange(value)}
+                  errorMessage={''}
+                  backgroundColor={palette.solidGrey}
                 />
               </View>
               {prospect.status === ProspectStatus.TO_CONTACT ? (
@@ -326,6 +316,21 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             {isLoading ? (
               <View style={{ paddingVertical: spacing[3], paddingHorizontal: spacing[2], width: 100, height: 40 }}>
                 <Loader size={20} color={palette.secondaryColor} />
+              </View>
+            ) : current === null && currentPage === 2 ? (
+              <View
+                style={{
+                  backgroundColor: palette.solidGrey,
+                  borderRadius: 10,
+                  paddingVertical: spacing[3],
+                  paddingHorizontal: spacing[2],
+                  width: 100,
+                  height: 40,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text tx={'prospectScreen.process.reserve'} style={{ color: palette.lighterGrey }} />
               </View>
             ) : (
               <Button

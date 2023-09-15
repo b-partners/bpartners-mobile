@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { KeyboardTypeOptions, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 import { TxKeyPath } from '../../i18n';
@@ -18,12 +18,25 @@ interface InputFieldProps {
   backgroundColor: string;
   rightRender?: boolean;
   rightText?: string;
+  keyboardType?: KeyboardTypeOptions;
 }
 
-export const InputField = ({ labelTx, error, value, onChange, errorMessage, width, backgroundColor, rightRender, rightText }: InputFieldProps) => {
+export const InputField = ({
+  labelTx,
+  error,
+  value,
+  onChange,
+  errorMessage,
+  width,
+  backgroundColor,
+  rightRender,
+  rightText,
+  keyboardType,
+}: InputFieldProps) => {
   return (
     <View>
       <TextInput
+        keyboardType={keyboardType ?? 'default'}
         autoCapitalize='none'
         label={<Text tx={labelTx} style={{ color: palette.greyDarker, width: '100%', fontSize: 16 }} />}
         textColor={palette.secondaryColor}
