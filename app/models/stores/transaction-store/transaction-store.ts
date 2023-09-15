@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { TransactionApi } from '../../../services/api/transaction-api';
+import { TransactionFilter } from '../../entities/filter/filter';
 import { TransactionCategory, TransactionCategoryModel, TransactionCategorySnapshotOut } from '../../entities/transaction-category/transaction-category';
 import { TransactionSummary, TransactionSummaryModel } from '../../entities/transaction-summary/transaction-summary';
 import { TransactionModel, TransactionSnapshotOut } from '../../entities/transaction/transaction';
@@ -87,12 +88,12 @@ export const TransactionStoreModel = types
     },
   }))
   .actions(self => ({
-    getTransactions: flow(function* () {
+    getTransactions: flow(function* (filter: TransactionFilter) {
       self.transactions.replace([]);
       self.loadingTransactions = true;
       const transactionApi = new TransactionApi(self.environment.api);
       try {
-        const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id);
+        const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id, filter);
         self.getTransactionsSuccess(getTransactionsResult.transactions);
       } catch (e) {
         self.getTransactionsFail(e);
@@ -115,7 +116,6 @@ export const TransactionStoreModel = types
       } catch (e) {
         self.updateTransactionCategoryFail(e);
       }
-      yield self.getTransactions();
     }),
   }))
   .actions(self => ({

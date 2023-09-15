@@ -3,8 +3,9 @@ import React, { PropsWithoutRef, useState } from 'react';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { Dropdown, Icon, Loader, Text } from '../../../components';
+import { Dropdown, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
@@ -15,7 +16,9 @@ import { palette } from '../../../theme/palette';
 import { handleAsyncRequest } from '../../../utils/asyncRequest';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
-import { ICON_CONTAINER_STYLE, ICON_STYLE, TRANSACTION_BOTTOM_SIDE, transactionStyles as styles } from '../utils/styles';
+import { invoicePageSize } from '../../invoice-form/components/utils';
+import { ICON_CONTAINER_STYLE, TRANSACTION_BOTTOM_SIDE, transactionStyles as styles } from '../utils/styles';
+import { TransactionStatusColor, TransactionStatusLabel } from '../utils/utils';
 
 export const Transaction = (
   props: PropsWithoutRef<{
@@ -43,7 +46,7 @@ export const Transaction = (
       await transactionStore.updateTransactionCategory(item.id, selectedTransactionCategory);
       setLoading(false);
       setIsModifying(false);
-      await transactionStore.getTransactions();
+      await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
@@ -55,7 +58,7 @@ export const Transaction = (
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
           <View style={{ display: 'flex', flexDirection: 'column', flex: 4 }}>
             <Text
-              text={`${item.reference} - ${item.label}`}
+              text={`${item.label}`}
               style={{
                 color: color.palette.textClassicColor,
                 fontFamily: 'Geometria-Bold',
@@ -70,6 +73,19 @@ export const Transaction = (
                 marginTop: spacing[2],
               }}
             >
+              <Text
+                text={TransactionStatusLabel[item.status]}
+                style={{ color: TransactionStatusColor[item.status], fontSize: 13, fontFamily: 'Geometria-LightItalic' }}
+              />
+              <Text
+                text={'\u2B24'}
+                style={{
+                  fontSize: Platform.select({ android: 7, ios: 5 }),
+                  marginHorizontal: spacing[2],
+                  color: '#989FB3',
+                  fontFamily: 'Geometria-LightItalic',
+                }}
+              />
               <Text
                 text={new Date(item.paymentDatetime).toLocaleDateString()}
                 style={{ color: '#989FB3', fontSize: 13, fontFamily: 'Geometria-LightItalic' }}
@@ -94,7 +110,7 @@ export const Transaction = (
           </View>
           <Text
             style={{
-              color: item.type === TransactionType.OUTCOME ? color.palette.textClassicColor : color.palette.green,
+              color: item.type === TransactionType.OUTCOME ? palette.pastelRed : color.palette.green,
             }}
             text={`${item.type === TransactionType.OUTCOME ? '-' : '+'}${printCurrencyToMajors(item.amount)}`}
           />
@@ -162,7 +178,7 @@ export const Transaction = (
               }
             }}
           >
-            {<Icon icon='settings' style={ICON_STYLE} />}
+            <MaterialIcons name='add-a-photo' size={25} style={{ color: palette.lightGrey }} />
           </TouchableOpacity>
         </View>
       </View>

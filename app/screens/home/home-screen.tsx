@@ -11,6 +11,7 @@ import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { ErrorBoundary } from '../error/error-boundary';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { Logo } from './components/logo';
 import { Menu } from './components/menu';
@@ -28,21 +29,21 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   useEffect(() => {
     (async () => {
       const date = new Date();
-      await transactionStore.getTransactions();
-      await transactionStore.getTransactionsSummary(date.getFullYear());
       await transactionStore.getTransactionCategories();
+      await transactionStore.getTransactionsSummary(date.getFullYear());
+      await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
     })();
   }, []);
 
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='homeScreen' style={FULL}>
-        <Screen preset='auto' backgroundColor={palette.white}>
-          <HeaderWithBalance
-            balance={availableBalance}
-            left={<Logo uri={uri} logoStyle={{ width: 50, height: 50 }} />}
-            right={<Menu navigation={navigation} />}
-          />
+        <HeaderWithBalance
+          balance={availableBalance}
+          left={<Logo uri={uri} logoStyle={{ width: 50, height: 50 }} />}
+          right={<Menu navigation={navigation} />}
+        />
+        <Screen preset='scroll' backgroundColor={palette.white}>
           <View style={{ padding: spacing[3] }}>
             <TransactionSummary
               currentMonthSummary={currentMonthSummary}

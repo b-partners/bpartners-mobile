@@ -1,5 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
+import { TransactionFilter } from '../../models/entities/filter/filter';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
@@ -18,9 +19,9 @@ export class TransactionApi {
     this.api = api;
   }
 
-  async getTransactions(accountId: string): Promise<GetTransactionsResult> {
+  async getTransactions(accountId: string, filter: TransactionFilter): Promise<GetTransactionsResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactions`);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/transactions`, filter);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

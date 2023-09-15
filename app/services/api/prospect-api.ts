@@ -1,5 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
+import { ProspectFilter } from '../../models/entities/filter/filter';
 import { Prospect } from '../../models/entities/prospect/prospect';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
@@ -18,10 +19,10 @@ export class ProspectApi {
   //   }
   // }
 
-  async getProspects(ahId: string): Promise<GetProspectResult> {
+  async getProspects(ahId: string, filter: ProspectFilter): Promise<GetProspectResult> {
     // make the api call
     __DEV__ && console.tron.log(`Fetching prospect`);
-    const response: ApiResponse<any> = await this.api.apisauce.get(`/accountHolders/${ahId}/prospects`);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`/accountHolders/${ahId}/prospects`, filter);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
@@ -33,9 +34,9 @@ export class ProspectApi {
     const prospects = response.data;
     return { kind: 'ok', prospects };
   }
-  async updateProspects(ahId: string, payload: Prospect): Promise<UpdateProspectResult> {
+  async updateProspects(ahId: string, id: string, payload: Prospect): Promise<UpdateProspectResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.api.apisauce.put(`accountHolders/${ahId}/prospects`, payload);
+    const response: ApiResponse<any> = await this.api.apisauce.put(`accountHolders/${ahId}/prospects/${id}`, payload);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

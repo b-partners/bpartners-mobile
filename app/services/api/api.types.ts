@@ -1,5 +1,6 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
+import { BusinessActivityItem } from '../../models/entities/business-activity/business-activity';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
 import { Invoice } from '../../models/entities/invoice/invoice';
@@ -38,6 +39,7 @@ export type UpdateTransactionCategoriesResult = { kind: 'ok'; transactionCategor
 export type AssociateTransactionResult = { kind: 'ok'; transaction: Transaction } | GeneralApiProblem;
 
 export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
+export type GetBusinessActivitiesResult = { kind: 'ok'; businessActivities: BusinessActivityItem[] } | GeneralApiProblem;
 
 export type SignInResult = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
 
@@ -87,3 +89,5 @@ export type UpdateProspectResult = { kind: 'ok'; prospect: Prospect } | GeneralA
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
 
 export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;
+
+export type UpdateAccountHodlerInfo = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;

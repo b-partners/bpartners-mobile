@@ -1,42 +1,34 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { Linking, TextStyle, View, ViewStyle } from 'react-native';
+import { Linking, TouchableOpacity, View } from 'react-native';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { AutoImage, Button, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { NavigatorParamList } from '../../navigators';
-import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { printCurrency } from '../../utils/money';
 import { ErrorBoundary } from '../error/error-boundary';
-import { BUTTON_TEXT_STYLE } from '../invoices/utils/styles';
+import { invoicePageSize } from '../invoice-form/components/utils';
 import { AccountDeletionModal } from './components/account-deletion-modal';
-
-const FULL: ViewStyle = {
-  flex: 1,
-};
-const CONTAINER: ViewStyle = {
-  backgroundColor: palette.white,
-};
-const HEADER: TextStyle = {};
-const HEADER_TITLE: TextStyle = {
-  fontSize: 12,
-  fontWeight: 'bold',
-  letterSpacing: 1.5,
-  lineHeight: 15,
-  textAlign: 'center',
-};
+import { profileStyles as styles } from './utils/styles';
 
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({ navigation }) {
-  const { authStore } = useStores();
+  const { authStore, businessActivityStore } = useStores();
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
-  const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
+  const uri = createFileUrl(currentUser?.logoFileId, currentAccount?.id, accessToken, 'LOGO');
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [accountHolder, setAccountHolder] = useState<AccountHolder>();
+
+  useEffect(() => {
+    (async () => {
+      await businessActivityStore.getBusinessActivities({ page: 1, pageSize: invoicePageSize });
+    })();
+  }, []);
 
   useEffect(() => {
     if (currentAccountHolder) {
@@ -75,82 +67,38 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const socialCapital = accountHolder?.companyInfo?.socialCapital;
   const amountTarget = accountHolder?.revenueTargets[0]?.amountTarget;
 
-  // TODO: change filename
   return (
     <ErrorBoundary catchErrors='always'>
-      <View style={FULL}>
+      <View style={styles.container}>
         <GradientBackground colors={['#422443', '#281b34']} />
-        <Screen style={CONTAINER} preset='auto'>
-          <Header headerTx='profileScreen.title' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            <View
-              style={{
-                height: 100,
-                width: 100,
-                marginHorizontal: '5%',
-                borderRadius: 100,
-                backgroundColor: palette.lighterGrey,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
+        <Screen style={styles.screen} preset='scroll'>
+          <Header headerTx='profileScreen.title' titleStyle={styles.headerTitle} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
+          <View style={styles.viewContainer}>
+            {currentUser.logoFileId ? (
+              <View style={styles.logoContainer}>
+                <AutoImage source={{ uri }} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
+              </View>
+            ) : (
               <AutoImage
-                source={{ uri }}
-                style={{
-                  width: 40,
-                  height: 40,
-                }}
-                resizeMethod='resize'
+                source={require('../../components/bp-drawer/utils/profile-placeholder.png')}
                 resizeMode='stretch'
+                resizeMethod='auto'
+                style={styles.logoPlaceholder}
               />
-            </View>
-            <View
-              style={{
-                height: 130,
-                width: '60%',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Text
-                text={currentUser.firstName.toString()}
-                style={{
-                  fontSize: 16,
-                  color: palette.black,
-                  fontFamily: 'Geometria',
-                }}
-              />
-              <Text
-                text={currentUser.lastName.toString()}
-                style={{
-                  fontSize: 16,
-                  color: palette.lightGrey,
-                  fontFamily: 'Geometria',
-                }}
-              />
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginTop: 15,
-                }}
-              >
-                <PhoneIcon name='mobile-phone' size={24} color={color.palette.secondaryColor} />
-                <Text
-                  text={currentUser.phone}
-                  style={{
-                    fontSize: 14,
-                    color: palette.black,
-                    fontFamily: 'Geometria',
-                    marginLeft: 8,
-                  }}
-                />
+            )}
+            <View style={styles.nameContainer}>
+              <View>
+                <Text text={currentUser.firstName.toString()} style={{ ...styles.name, color: palette.black }} />
+                <Text text={currentUser.lastName.toString()} style={{ ...styles.name, color: palette.lightGrey }} />
+                <View style={styles.phoneContainer}>
+                  <PhoneIcon name='mobile-phone' size={24} color={palette.secondaryColor} />
+                  <Text text={currentUser.phone} style={styles.phone} />
+                </View>
+              </View>
+              <View style={styles.editionContainer}>
+                <TouchableOpacity style={styles.editionIconContainer} onPress={() => navigation.navigate('profileEdition')}>
+                  <MaterialCommunityIcons name='pencil' size={22} color={palette.lightGrey} />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -192,78 +140,25 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           <LabelWithTextRow label='profileScreen.fields.accountHolder.siren' text={accountHolder?.siren ?? 'Aucune information'} />
           <Button
             tx='profileScreen.delete'
-            style={{
-              backgroundColor: color.primary,
-              marginVertical: spacing[5],
-              marginHorizontal: spacing[4],
-              borderRadius: 40,
-              paddingVertical: spacing[3],
-              paddingHorizontal: spacing[2],
-            }}
-            textStyle={BUTTON_TEXT_STYLE}
+            style={styles.button}
+            textStyle={styles.buttonText}
             onPress={() => {
               setConfirmationModal(true);
             }}
           />
           <AccountDeletionModal confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} />
-          <View
-            style={{
-              marginHorizontal: '5%',
-              marginVertical: 22,
-            }}
-          >
-            <Text
-              text="L'Essentiel"
-              style={{
-                fontSize: 15,
-                color: palette.darkBlack,
-                fontFamily: 'Geometria',
-              }}
-            />
-            <Text
-              text="Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant"
-              style={{
-                fontSize: 15,
-                fontWeight: '100',
-                color: palette.lighterBlack,
-                fontFamily: 'Geometria',
-                marginTop: 11,
-              }}
-            />
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: '100',
-                color: palette.lighterBlack,
-                fontFamily: 'Geometria',
-                marginTop: 11,
-              }}
-            >
-              Pour modifier vos informations de profil; rendez-vous sur la version web de BPartners à l’adresse:
-            </Text>
+          <View style={styles.footer}>
+            <Text tx={'profileScreen.footer.essential'} style={styles.footerTitle} />
+            <Text tx={'profileScreen.footer.service'} style={{ ...styles.footerText, color: palette.lighterBlack }} />
+            <Text tx={'profileScreen.footer.modifyInformations'} style={{ ...styles.footerText, color: palette.lighterBlack }} />
 
-            <Text style={{ flexDirection: 'row', flexWrap: 'wrap', marginVertical: '5%' }}>
+            <Text style={styles.linkContainer}>
               <Text
                 onPress={() => Linking.openURL('https://www.bpartners.app/home')}
                 text='BPartners, l’assistant intelligent des artisans et indépendants'
-                style={{
-                  fontSize: 15,
-                  fontWeight: '100',
-                  color: 'blue',
-                  fontFamily: 'Geometria',
-                  marginTop: 11,
-                }}
+                style={{ ...styles.footerTitle, color: 'blue' }}
               />
-              <Text
-                text=', section mon compte'
-                style={{
-                  fontSize: 15,
-                  fontWeight: '100',
-                  color: palette.lighterBlack,
-                  fontFamily: 'Geometria',
-                  marginTop: 11,
-                }}
-              />
+              <Text text=', section mon compte' style={{ ...styles.footerText, color: palette.lighterBlack }} />
             </Text>
           </View>
         </Screen>

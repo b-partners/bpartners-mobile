@@ -20,18 +20,21 @@
     "submit": "Confirm",
     "create": "Create",
     "or": "or",
+    "next": "Next",
     "cancel": "Cancel",
     "back": "Back",
     "noDataProvided": "No records to display",
     "loading": "Loading in progress ...",
     "added": "Successfully added",
+    "registered": "Registered",
     "saved": "Saved at:",
     "edit": "Edit",
     "register": "REGISTER",
     "noComment": "No Comment",
     "noInformation": "No information available",
     "noData": "Unknown",
-    "search": "Search"
+    "search": "Search",
+    "open": "Open"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -106,8 +109,15 @@
     "reference": "Reference",
     "titleLabel": "Title",
     "total": "total",
-    "associate": "Associate a document",
+    "associate": "Associate an invoice",
     "associatedLabel": "Related document",
+    "status": {
+      "pending": "Pending",
+      "upcoming": "Upcoming",
+      "booked": "Booked",
+      "rejected": "Rejected",
+      "unknown": "Unknown"
+    },
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",
@@ -124,6 +134,23 @@
       "toContact": "To contact",
       "contacted": "Contacted",
       "converted": "Converted"
+    },
+    "process": {
+      "email": "Email",
+      "phone": "Phone number",
+      "address": "Address",
+      "name": "Prospect name",
+      "comment": "Comment",
+      "optional": "Optional",
+      "amountLabel": "Potential contract value in € (Optional)",
+      "amount": "Amount",
+      "notInterested": "Not interested",
+      "interested": "Interested",
+      "proposalSent": "Quotation sent",
+      "proposalAccepted": "Quotation accepted",
+      "proposalDeclined": "Quotation refused",
+      "invoiceSent": "Invoice sent",
+      "reserve": "Reserve"
     }
   },
   "onboardingScreen": {
@@ -174,6 +201,11 @@
     "firstStep": "To permanently delete your account, please press the \"Confirm\" button.",
     "secondStep": " This will automatically open an e-mail ready to be sent to our dedicated account deletion team.",
     "deleteMessage": "Dear technical team,\n\nPlease delete my user account permanently. I understand that this will result in the deletion of all information associated with my account, including transactions and personal data.\n\nWe would be very grateful if you would consider this account deletion request and process it accordingly. Should you require any further information or have any additional questions, please do not hesitate to contact me directly.\n\nThank you very much for your attention and assistance.",
+    "footer": {
+      "essential": "The Essential",
+      "service": "All the essential services to manage your business as a craftsman or freelancer",
+      "modifyInformations": "To modify your profile information, go to the web version of BPartners at the following address:"
+    },
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",
@@ -207,6 +239,46 @@
           "amountTarget": "Annual revenue to be realized: "
         }
       }
+    }
+  },
+  "profileEditionScreen": {
+    "title": "Edit my account",
+    "globalInfo": {
+      "label": "General Information",
+      "name": "Company Name: ",
+      "siren": "Siren: ",
+      "officialActivityName": "Official activity: ",
+      "initialCashFlow": "Initial cash flow",
+      "contactAddress": {
+        "address": "Address: ",
+        "city": "City: ",
+        "country": "Country: ",
+        "postalCode": "Postal code: "
+      }
+    },
+    "revenueTargets": {
+      "title": "Target",
+      "label": "Annual cash receipts to be realized",
+      "target": "This year's target"
+    },
+    "feedback": {
+      "title": "Referencing",
+      "label": "Boost your referencing. Link to your review page (google business, trust pilot)",
+      "feedbackLink": "Feedback link"
+    },
+    "activity": {
+      "title": "Activity",
+      "primary": "Main activity: ",
+      "secondary": "Secondary activity: ",
+      "register": "Register"
+    },
+    "companyInfo": {
+      "title": "Company details",
+      "socialCapital": "Share capital (€)",
+      "phone": "Phone",
+      "email": "Email",
+      "townCode": "Survey commune code",
+      "tvaNumber": "VAT Number"
     }
   },
   "homeScreen": {

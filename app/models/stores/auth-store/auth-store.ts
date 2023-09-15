@@ -11,22 +11,26 @@ import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
+import { BusinessActivity } from '../../entities/business-activity/business-activity';
+import { CompanyInfo } from '../../entities/company-info/company-info';
+import { Feedback } from '../../entities/feedback/feedback';
+import { GlobalInfo } from '../../entities/global-info/global-info';
 import { AuthUserModel } from '../../entities/user/AuthUser';
 import { User, UserModel } from '../../entities/user/user';
 
 export const AuthStoreModel = types
   .model('SignIn')
   .props({
-    redirectionUrl: types.maybe(types.maybeNull(types.string)),
-    successUrl: types.maybe(types.maybeNull(types.string)),
-    failureUrl: types.maybe(types.maybeNull(types.string)),
-    refreshToken: types.maybe(types.maybeNull(types.string)),
-    accessToken: types.maybe(types.maybeNull(types.string)),
-    currentUser: types.maybe(types.maybe(UserModel)),
-    currentAccount: types.maybe(types.maybeNull(AccountModel)),
-    currentAccountHolder: types.maybe(types.maybeNull(AccountHolderModel)),
+    redirectionUrl: types.maybeNull(types.string),
+    successUrl: types.maybeNull(types.string),
+    failureUrl: types.maybeNull(types.string),
+    refreshToken: types.maybeNull(types.string),
+    accessToken: types.maybeNull(types.string),
+    currentUser: types.maybeNull(UserModel),
+    currentAccount: types.maybeNull(AccountModel),
+    currentAccountHolder: types.maybeNull(AccountHolderModel),
     loadingUpdateInfos: types.optional(types.boolean, false),
-    userAuth: types.maybe(types.maybeNull(AuthUserModel)),
+    userAuth: types.maybeNull(AuthUserModel),
   })
   .extend(withEnvironment)
   .extend(withRootStore)
@@ -196,6 +200,102 @@ export const AuthStoreModel = types
         self.updateAccountInfosFail(e);
       } finally {
         self.loadingUpdateInfos = false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateAccountHolderInfosSuccess: (accountHolder: AccountHolder) => {
+      self.currentAccountHolder = accountHolder;
+    },
+  }))
+  .actions(self => ({
+    updateAccountHolderInfosFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    updateGlobalInfos: flow(function* (globalInfos: GlobalInfo) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateGlobalInfo(
+          self.currentUser.id,
+          self.currentAccount.id,
+          self.currentAccountHolder.id,
+          globalInfos
+        );
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateAccountHolderInfosFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateFeedback: flow(function* (feedback: Feedback) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateFeedbackLink(self.currentUser.id, self.currentAccountHolder.id, feedback);
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateAccountHolderInfosFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateCompanyInfos: flow(function* (companyInfos: CompanyInfo) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateCompanyInfo(
+          self.currentUser.id,
+          self.currentAccount.id,
+          self.currentAccountHolder.id,
+          companyInfos
+        );
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateAccountHolderInfosFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateRevenueTargets: flow(function* (revenueTargets) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateRevenueTargets(
+          self.currentUser.id,
+          self.currentAccount.id,
+          self.currentAccountHolder.id,
+          revenueTargets
+        );
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateAccountHolderInfosFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateBusinessActivities: flow(function* (activity: BusinessActivity) {
+      const accountApi = new AccountApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const updateAccountHolderResult = yield accountApi.updateBusinessActivities(
+          self.currentUser.id,
+          self.currentAccount.id,
+          self.currentAccountHolder.id,
+          activity
+        );
+        self.updateAccountHolderInfosSuccess(updateAccountHolderResult.accountHolder);
+        showMessage(translate('common.registered'), successMessageOption);
+      } catch (e) {
+        self.updateAccountHolderInfosFail(e);
       }
     }),
   }))

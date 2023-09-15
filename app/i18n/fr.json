@@ -20,18 +20,21 @@
     "submit": "Confirmer",
     "create": "Créer",
     "or": "ou",
+    "next": "Suivant",
     "cancel": "Annuler",
     "back": "Précédent",
     "noDataProvided": "Aucun enregistrement à afficher",
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
+    "registered": "Enregistré",
     "saved": "Sauvegardé dans:",
     "edit": "Modifier",
     "register": "ENREGISTRER",
     "noComment": "Aucun Commentaire",
     "noInformation": "Aucune information",
     "noData": "Non renseigné",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "open": "Ouvrir"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -62,8 +65,15 @@
     "reference": "Référence",
     "titleLabel": "Titre",
     "total": "total",
-    "associate": "Associer un document",
+    "associate": "Associer une facture",
     "associatedLabel": "Document associé",
+    "status": {
+      "pending": "En attente",
+      "upcoming": "En traitement",
+      "booked": "Acceptée",
+      "rejected": "Rejetée",
+      "unknown": "Inconnue"
+    },
     "userDefinedCategoryForm": {
       "labels": {
         "type": "Type",
@@ -77,9 +87,25 @@
   "prospectScreen": {
     "title": "Prospects",
     "tab": {
-      "toContact": "À Contacter",
+      "toContact": "À contacter",
       "contacted": "Contacté",
       "converted": "Converti"
+    },
+    "process": {
+      "email": "Email",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "name": "Nom du prospect",
+      "comment": "Commentaire",
+      "amountLabel": "Valeur potentielle du contrat en € (Optionel)",
+      "amount": "Montant",
+      "notInterested": "Pas intéressé",
+      "interested": "Intéressé",
+      "proposalSent": "Devis envoyé",
+      "proposalAccepted": "Devis accepté",
+      "proposalDeclined": "Devis refusé",
+      "invoiceSent": "Facture envoyée",
+      "reserve": "Réserver"
     }
   },
   "onboardingScreen": {
@@ -158,6 +184,11 @@
     "firstStep": "Pour supprimer définitivement votre compte, veuillez appuyer sur le bouton \"Confirmer\".",
     "secondStep": "Cela ouvrira un e-mail prêt à être envoyé à notre équipe dédiée à la suppression des comptes.",
     "deleteMessage": "Chère équipe technique;\n\nJe vous prie de bien vouloir supprimer définitivement mon compte d'utilisateur. Je comprends que cela entraînera la suppression de toutes les informations associées à mon compte, y compris les transactions et les données personnelles.\n\nNous vous serions reconnaissants de bien vouloir examiner cette demande de suppression de compte et de la traiter en conséquence. Si vous avez besoin de plus amples informations ou si vous avez des questions supplémentaires, n'hésitez pas à me contacter directement.\n\nJe vous remercie de votre attention et de votre assistance.",
+    "footer": {
+      "essential": "L'Essentiel",
+      "service": "Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant",
+      "modifyInformations": "Pour modifier vos informations de profil; rendez-vous sur la version web de BPartners à l’adresse:"
+    },
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Sélectionner un fichier",
@@ -191,6 +222,46 @@
           "amountTarget": "Recette annuelle à réaliser: "
         }
       }
+    }
+  },
+  "profileEditionScreen": {
+    "title": "Édition de mon compte",
+    "globalInfo": {
+      "label": "Information Générale",
+      "name": "Raison sociale: ",
+      "siren": "Siren: ",
+      "officialActivityName": "Activité officielle: ",
+      "initialCashFlow": "Trésorerie initial",
+      "contactAddress": {
+        "address": "Adresse: ",
+        "city": "Ville: ",
+        "country": "Pays: ",
+        "postalCode": "Code postal: "
+      }
+    },
+    "revenueTargets": {
+      "title": "Objectif",
+      "label": "Encaissement annuelle à réaliser",
+      "target": "Objectif de cette année"
+    },
+    "feedback": {
+      "title": "Référencement",
+      "label": "Boostez votre référencement. Renseignez le lien vers votre page avis (google business, trust pilote)",
+      "feedbackLink": "Lien pour le feedback"
+    },
+    "activity": {
+      "title": "Activité",
+      "primary": "Activité principale: ",
+      "secondary": "Activité secondaire: ",
+      "register": "Enregistrer"
+    },
+    "companyInfo": {
+      "title": "Informations sur la société",
+      "socialCapital": "Capital Social (€)",
+      "phone": "Téléphone",
+      "email": "Email",
+      "townCode": "Code de la commune de prospection",
+      "tvaNumber": "Numéro de TVA"
     }
   },
   "homeScreen": {

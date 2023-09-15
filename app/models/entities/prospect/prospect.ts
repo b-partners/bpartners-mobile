@@ -1,16 +1,12 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
+import { LocationModel } from '../location/location';
+
 export enum ProspectStatus {
   TO_CONTACT = 'TO_CONTACT',
   CONTACTED = 'CONTACTED',
   CONVERTED = 'CONVERTED',
 }
-
-export const LocationModel = types.model('Location').props({
-  type: types.maybeNull(types.string),
-  longitude: types.maybeNull(types.number),
-  latitude: types.maybeNull(types.number),
-});
 
 export const RatingModel = types.model('Rating').props({
   value: types.maybeNull(types.number),
@@ -47,6 +43,10 @@ export const ProspectModel = types.model('Account').props({
   rating: types.maybeNull(RatingModel),
   area: types.maybeNull(AreaModel),
   location: types.maybeNull(LocationModel),
+  comment: types.maybeNull(types.string),
+  invoiceID: types.maybeNull(types.string),
+  contractAmount: types.maybeNull(types.number),
+  prospectFeedback: types.maybeNull(types.string),
 });
 
 export interface Prospect extends Instance<typeof ProspectModel> {}

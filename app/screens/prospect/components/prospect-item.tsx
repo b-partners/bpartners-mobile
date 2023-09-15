@@ -1,23 +1,21 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Card, Paragraph, Title } from 'react-native-paper';
+import { Card, Paragraph, Portal, Title } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Loader } from '../../../components';
 import { Menu as CMenu } from '../../../components/menu/menu';
 import { translate } from '../../../i18n';
-import { useStores } from '../../../models';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
-import { showMessage } from '../../../utils/snackbar';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
 import { Location } from './location';
+import { ProcessModal } from './process-modal';
 
 const IconGroup = {
   email: <MaterialCommunity name='email' size={18} color={color.palette.secondaryColor} />,
@@ -29,34 +27,13 @@ const IconGroup = {
 };
 
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
-  const { prospectStore } = useStores();
-  const { menuItem, prospect, ahId, setCurrentStatus, key } = props;
-  const [isUpdating, setIsUpdating] = useState(false);
+  const { menuItem, prospect, setCurrentStatus, key } = props;
+  const [showModal, setShowModal] = useState(false);
+  const [status, setStatus] = useState<ProspectStatus | null>(null);
 
-  const updateProspectStatus = async status => {
-    setIsUpdating(true);
-    // remove location to respect attributes to send to the backend
-    const prospectToBeEdited = {
-      ...prospect,
-    };
-    delete prospectToBeEdited.location;
-    // make the api call
-    try {
-      await prospectStore.updateProspects(ahId, [
-        {
-          ...prospectToBeEdited,
-          status: status,
-        },
-      ]);
-    } catch (e) {
-      showMessage(e);
-      throw e;
-    } finally {
-      await prospectStore.getProspects();
-      setCurrentStatus(status);
-      setIsUpdating(false);
-    }
-  };
+  useEffect(() => {
+    status != null && setShowModal(true);
+  }, [status]);
 
   return (
     <View key={key} style={styles.container}>
@@ -93,23 +70,37 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
           </View>
           <View style={styles.location}>{prospect.location && <Location prospect={prospect} />}</View>
           <View style={styles.menuContainer}>
-            {isUpdating ? (
-              <Loader animating={true} />
-            ) : (
-              <CMenu
-                items={menuItem}
-                actions={{
-                  toContact: () => updateProspectStatus(ProspectStatus.TO_CONTACT),
-                  contacted: () => updateProspectStatus(ProspectStatus.CONTACTED),
-                  converted: () => updateProspectStatus(ProspectStatus.CONVERTED),
-                }}
-              >
-                <MaterialCommunityIcons name='dots-vertical' size={21} color={palette.secondaryColor} />
-              </CMenu>
-            )}
+            <CMenu
+              items={menuItem}
+              actions={{
+                toContact: () => {
+                  prospect.status !== ProspectStatus.TO_CONTACT && setStatus(ProspectStatus.TO_CONTACT);
+                },
+                contacted: () => {
+                  prospect.status !== ProspectStatus.CONTACTED && setStatus(ProspectStatus.CONTACTED);
+                },
+                converted: () => {
+                  prospect.status !== ProspectStatus.CONVERTED && setStatus(ProspectStatus.CONVERTED);
+                },
+              }}
+            >
+              <MaterialCommunityIcons name='dots-vertical' size={21} color={palette.secondaryColor} />
+            </CMenu>
           </View>
         </Card.Content>
       </Card>
+      {showModal && (
+        <Portal>
+          <ProcessModal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            prospect={prospect}
+            setCurrentStatus={setCurrentStatus}
+            status={status}
+            setStatus={setStatus}
+          />
+        </Portal>
+      )}
     </View>
   );
 };

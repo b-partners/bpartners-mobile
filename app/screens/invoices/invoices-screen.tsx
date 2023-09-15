@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { BpPagination, Button, Loader, MenuItem, Screen, Separator, Text } from '../../components';
+import { BpPagination, Button, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 // import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -13,6 +13,7 @@ import { TabNavigatorParamList, navigate } from '../../navigators';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
+import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
@@ -56,10 +57,14 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     setMaxPage(Math.ceil(combinedInvoices.length / itemsPerPage));
   };
 
-  const handleScroll = event => {
+  const handleScroll = async event => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY <= -5) {
-      handleRefresh();
+    if (offsetY <= getThreshold()) {
+      try {
+        await handleRefresh();
+      } catch (error) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      }
     }
   };
 
@@ -126,7 +131,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
-        {!loadingInvoice ? (
+        {loadingInvoice ? (
+          <Loader size='large' containerStyle={LOADER_STYLE} />
+        ) : displayedItems.length > 0 ? (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
@@ -167,7 +174,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             </View>
           </Screen>
         ) : (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
+            <NoDataProvided />
+          </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />

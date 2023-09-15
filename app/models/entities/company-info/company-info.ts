@@ -1,7 +1,15 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
+import { LocationModel } from '../location/location';
+
 export const CompanyInfoModel = types.model('CompanyInfo').props({
-  socialCapital: types.maybe(types.maybeNull(types.number)),
+  phone: types.maybeNull(types.string),
+  townCode: types.maybeNull(types.number),
+  isSubjectToVat: types.maybeNull(types.boolean),
+  socialCapital: types.maybeNull(types.number),
+  location: types.maybeNull(LocationModel),
+  email: types.maybeNull(types.string),
+  tvaNumber: types.maybeNull(types.string),
 });
 
 export interface CompanyInfo extends Instance<typeof CompanyInfoModel> {}

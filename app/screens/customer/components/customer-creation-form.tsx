@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
 
@@ -17,6 +17,7 @@ import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
 export const CustomerCreationForm: FC<
   PropsWithoutRef<{
     setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
+    isKeyboardOpen: boolean;
   }>
 > = observer(props => {
   const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
@@ -44,10 +45,11 @@ export const CustomerCreationForm: FC<
   const { customerStore } = useStores();
   const { checkCustomer, loadingCustomerCreation } = customerStore;
 
-  const { setVisibleModal } = props;
+  const { setVisibleModal, isKeyboardOpen } = props;
 
   return (
-    <View testID='paymentInitiationScreen' style={{ height: '100%', width: '100%' }}>
+    <View testID='customerCreationForm' style={{ height: '100%', width: '100%' }}>
+      {isKeyboardOpen && <View style={{ width: '100%', height: 50, backgroundColor: palette.secondaryColor }} />}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -61,8 +63,8 @@ export const CustomerCreationForm: FC<
       >
         {({ values, errors }) => {
           return (
-            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '95%' }}>
-              <View style={{ height: '80%' }}>
+            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '100%' }}>
+              <ScrollView style={{ height: 10 }}>
                 <FormField
                   testID='customerFirstName'
                   name='customerFirstName'
@@ -105,8 +107,8 @@ export const CustomerCreationForm: FC<
                   labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.comment'
                   value={values.customerComment}
                 />
-              </View>
-              <View>
+              </ScrollView>
+              <View style={{ height: '30%' }}>
                 {checkCustomer === true ? (
                   <Button
                     testID='submit'

@@ -206,6 +206,7 @@ export const paymentMethodSelectionStyles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    elevation: 5,
   },
   dropdownContainer: {
     padding: 0,

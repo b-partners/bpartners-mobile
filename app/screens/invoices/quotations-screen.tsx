@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
 import { ErrorBoundary } from '..';
-import { BpPagination, Loader, MenuItem, Screen, Separator, Text } from '../../components';
+import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
@@ -13,6 +13,7 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
+import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
@@ -46,10 +47,14 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     setMaxPage(Math.ceil(quotations.length / itemsPerPage));
   };
 
-  const handleScroll = event => {
+  const handleScroll = async event => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY <= -5) {
-      handleRefresh();
+    if (offsetY <= getThreshold()) {
+      try {
+        await handleRefresh();
+      } catch (error) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      }
     }
   };
 
@@ -104,7 +109,9 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        {!loadingQuotation ? (
+        {loadingQuotation ? (
+          <Loader size='large' containerStyle={LOADER_STYLE} />
+        ) : displayedItems.length > 0 ? (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
@@ -134,7 +141,9 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
             </View>
           </Screen>
         ) : (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
+            <NoDataProvided />
+          </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>
           <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
