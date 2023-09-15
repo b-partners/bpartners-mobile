@@ -10,7 +10,7 @@ import { useStores } from '../../../models';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { amountToMinors } from '../../../utils/money';
+import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
@@ -24,7 +24,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(amountToMajors(prospect.contractAmount).toString());
   const closeModal = () => {
     setStatus(null);
     setCurrent(null);
@@ -71,10 +71,10 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       showMessage(e);
       throw e;
     } finally {
+      setIsLoading(false);
       closeModal();
       await prospectStore.getProspects();
       setCurrentStatus(editedStatus);
-      setIsLoading(false);
     }
   };
 

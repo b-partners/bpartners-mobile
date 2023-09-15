@@ -102,9 +102,9 @@
       "notInterested": "Pas intéressé",
       "interested": "Intéressé",
       "proposalSent": "Devis envoyé",
-      "proposalAccepted" : "Devis accepté",
-      "proposalDeclined" : "Devis refusé",
-      "invoiceSent" : "Facture envoyée",
+      "proposalAccepted": "Devis accepté",
+      "proposalDeclined": "Devis refusé",
+      "invoiceSent": "Facture envoyée",
       "reserve": "Réserver"
     }
   },
