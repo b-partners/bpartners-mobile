@@ -4,7 +4,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, InputField, Text } from '../../../components';
+import { Button, InputField, Loader, Text } from '../../../components';
 import { useStores } from '../../../models';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
@@ -60,7 +60,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
   };
 
   const onSubmit = async prospectInfos => {
-    // setIsLoading(true);
+    setIsLoading(true);
     const editedStatus = current === ProspectFeedback.NOT_INTERESTED || current === ProspectFeedback.PROPOSAL_DECLINED ? ProspectStatus.TO_CONTACT : status;
     const prospectToBeEdited = {
       ...prospect,
@@ -74,15 +74,15 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     };
     delete prospectToBeEdited.location;
     try {
-      // await prospectStore.updateProspects(prospectToBeEdited.id, prospectToBeEdited);
+      await prospectStore.updateProspects(prospectToBeEdited.id, prospectToBeEdited);
       Log(prospectToBeEdited);
     } catch (e) {
       showMessage(e);
       throw e;
     } finally {
-      /*await prospectStore.getProspects();
+      await prospectStore.getProspects();
       setCurrentStatus(editedStatus);
-      setIsLoading(false);*/
+      setIsLoading(false);
     }
   };
 
@@ -311,20 +311,26 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             }}
             textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
           />
-          <Button
-            tx={currentPage === 1 ? 'common.next' : 'prospectScreen.process.reserve'}
-            style={{
-              ...SHADOW_STYLE,
-              backgroundColor: palette.secondaryColor,
-              borderRadius: 10,
-              paddingVertical: spacing[3],
-              paddingHorizontal: spacing[2],
-              width: 100,
-              height: 40,
-            }}
-            onPress={currentPage !== 1 ? handleSubmit(onSubmit) : handleAmountRender}
-            textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
-          />
+          {isLoading ? (
+            <View style={{ paddingVertical: spacing[3], paddingHorizontal: spacing[2], width: 100, height: 40 }}>
+              <Loader size={20} color={palette.secondaryColor} />
+            </View>
+          ) : (
+            <Button
+              tx={currentPage === 1 ? 'common.next' : 'prospectScreen.process.reserve'}
+              style={{
+                ...SHADOW_STYLE,
+                backgroundColor: palette.secondaryColor,
+                borderRadius: 10,
+                paddingVertical: spacing[3],
+                paddingHorizontal: spacing[2],
+                width: 100,
+                height: 40,
+              }}
+              onPress={currentPage !== 1 ? handleSubmit(onSubmit) : handleAmountRender}
+              textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
+            />
+          )}
         </View>
       </View>
     </Modal>
