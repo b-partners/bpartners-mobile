@@ -16,6 +16,7 @@ export type ProcessModalProps = {
   setCurrentStatus: React.Dispatch<React.SetStateAction<string>>;
   prospect: Prospect;
   status: ProspectStatus;
+  setStatus: React.Dispatch<React.SetStateAction<ProspectStatus | null>>;
 };
 
 export enum ProspectFeedback {
