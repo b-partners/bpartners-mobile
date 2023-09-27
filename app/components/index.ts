@@ -2,7 +2,6 @@ export * from './auto-image/auto-image';
 export * from './autocompletion-form-field/autocompletion-form-field';
 export * from './bullet-item/bullet-item';
 export * from './button/button';
-export * from './bg-layout/background-layout';
 export * from './bullet-separator/bullet-separator';
 export * from './checkbox/checkbox';
 export * from './check-email/check-email-modal';

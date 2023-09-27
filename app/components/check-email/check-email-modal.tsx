@@ -5,7 +5,8 @@ import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 import { TxKeyPath } from '../../i18n';
 import { palette } from '../../theme/palette';
-import { Button, Text } from '../index';
+import { Button } from '../button/button';
+import { Text } from '../text/text';
 
 interface InputFieldProps {
   isOpen: boolean;

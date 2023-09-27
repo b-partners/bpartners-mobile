@@ -8,9 +8,9 @@ import { View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, CheckEmailModal, Icon, Loader, Text } from '../../components';
-import { BgLayout } from '../../components';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
+import { BgLayout } from '../../layouts';
 import { useStores } from '../../models';
 import { CreateUser } from '../../models/entities/user/user';
 import { NavigatorParamList } from '../../navigators/utils/navigation-list';
