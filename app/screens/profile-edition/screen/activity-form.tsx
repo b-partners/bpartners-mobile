@@ -10,7 +10,7 @@ import { InputFieldDropdown } from '../../../components/input-field-dropdown/inp
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { BusinessActivity } from '../../../models/entities/business-activity/business-activity';
-import { NavigatorParamList } from '../../../navigators';
+import { NavigatorParamList } from '../../../navigators/utils/navigation-list';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';

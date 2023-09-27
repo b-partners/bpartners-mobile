@@ -12,7 +12,7 @@ import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../com
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Product as IProduct } from '../../models/entities/product/product';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/navigation-list';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { commaToDot } from '../../utils/comma-to-dot';

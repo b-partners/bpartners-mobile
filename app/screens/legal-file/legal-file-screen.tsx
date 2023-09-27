@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
-import { ErrorBoundary } from '..';
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/navigation-list';
+import { ErrorBoundary } from '../error/error-boundary';
 import { LegalFileView } from './component/legal-file-view';
 
 const FULL: ViewStyle = { flex: 1 };

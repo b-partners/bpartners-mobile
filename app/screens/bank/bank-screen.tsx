@@ -5,7 +5,7 @@ import { TextStyle, ViewStyle } from 'react-native';
 
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/navigation-list';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Bank } from './components/bank';

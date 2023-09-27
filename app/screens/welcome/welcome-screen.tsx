@@ -14,7 +14,7 @@ import { AutoImage, BgLayout, Button, Icon, Loader, Text } from '../../component
 import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/navigation-list';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';

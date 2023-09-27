@@ -1,7 +1,6 @@
 import React from 'react';
 import { Clipboard, Linking, Modal, Platform, View } from 'react-native';
 import RNAntDesign from 'react-native-vector-icons/AntDesign';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
 import RNFontAwesome from 'react-native-vector-icons/FontAwesome';
 import CopyContentIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -70,7 +69,7 @@ export const ShareModal: React.FC<ShareModalProps> = props => {
               }}
               textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
             >
-              <CloseIcon name='close' size={25} color={palette.black} />
+              <RNAntDesign name='close' size={25} color={palette.black} />
             </Button>
           </View>
           <View

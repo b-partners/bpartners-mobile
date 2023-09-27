@@ -7,7 +7,7 @@ import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/navigation-list';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { getThreshold } from '../../utils/get-threshold';

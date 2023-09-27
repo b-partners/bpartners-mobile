@@ -13,7 +13,7 @@ import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { CreateUser } from '../../models/entities/user/user';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/navigation-list';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from '../welcome/components/underline-text';

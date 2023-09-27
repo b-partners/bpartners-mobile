@@ -8,7 +8,7 @@ import { Button, InputField, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Feedback } from '../../../models/entities/feedback/feedback';
-import { NavigatorParamList } from '../../../navigators';
+import { NavigatorParamList } from '../../../navigators/utils/navigation-list';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';

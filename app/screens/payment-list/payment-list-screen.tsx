@@ -8,7 +8,7 @@ import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/navigation-list';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';

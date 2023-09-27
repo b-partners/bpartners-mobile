@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { Dimensions, SafeAreaView, View } from 'react-native';
 
 import { AutoImage, Loader, Screen } from '../../components';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/navigation-list';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';

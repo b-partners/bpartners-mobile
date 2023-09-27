@@ -8,7 +8,7 @@ import { Button, InputField, Loader } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { CompanyInfo } from '../../../models/entities/company-info/company-info';
-import { NavigatorParamList } from '../../../navigators';
+import { NavigatorParamList } from '../../../navigators/utils/navigation-list';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { amountToMajors, amountToMinors } from '../../../utils/money';
