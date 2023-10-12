@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { ErrorBoundary } from '..';
 import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -16,6 +15,7 @@ import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
 import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
+import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
