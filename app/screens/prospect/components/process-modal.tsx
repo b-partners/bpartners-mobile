@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
@@ -137,7 +137,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.email?.message}
-                      backgroundColor={palette.solidGrey}
+                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                     />
                   )}
                 />
@@ -154,7 +154,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.phone?.message}
-                      backgroundColor={palette.solidGrey}
+                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                     />
                   )}
                 />
@@ -171,7 +171,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.address?.message}
-                      backgroundColor={palette.solidGrey}
+                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                     />
                   )}
                 />
@@ -188,7 +188,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.name?.message}
-                      backgroundColor={palette.solidGrey}
+                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                     />
                   )}
                 />
@@ -205,7 +205,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                       value={value}
                       onChange={onChange}
                       errorMessage={errors.comment?.message}
-                      backgroundColor={palette.solidGrey}
+                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                     />
                   )}
                 />
@@ -224,7 +224,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   value={amount}
                   onChange={value => handleAmountChange(value)}
                   errorMessage={''}
-                  backgroundColor={palette.solidGrey}
+                  backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                 />
               </View>
               {prospect.status === ProspectStatus.TO_CONTACT ? (
@@ -304,7 +304,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                 borderRadius: 10,
                 paddingVertical: spacing[3],
                 paddingHorizontal: spacing[2],
-                width: 100,
+                width: 110,
                 height: 40,
                 marginRight: spacing[2],
               }}
@@ -324,7 +324,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   borderRadius: 10,
                   paddingVertical: spacing[3],
                   paddingHorizontal: spacing[2],
-                  width: 100,
+                  width: 110,
                   height: 40,
                   justifyContent: 'center',
                   alignItems: 'center',
