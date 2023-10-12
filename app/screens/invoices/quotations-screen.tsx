@@ -70,7 +70,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
         const newItem = {
           maturityDate: paymentItem.maturityDate,
           percent: paymentItem.paymentRequest.percentValue,
-          comment: paymentItem.comment,
+          comment: paymentItem.paymentRequest.comment,
           amount: paymentItem.amount,
         };
         editPayment.push(newItem);
