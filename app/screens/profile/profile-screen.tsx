@@ -43,13 +43,20 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           city: '',
           country: '',
           postalCode: '',
+          prospectingPerimeter: null,
         },
         businessActivities: {
           primary: '',
           secondary: '',
         },
         companyInfo: {
+          phone: '',
+          townCode: null,
+          isSubjectToVat: false,
           socialCapital: null,
+          location: null,
+          email: '',
+          tvaNumber: '',
         },
         revenueTargets: {
           // @ts-ignore
