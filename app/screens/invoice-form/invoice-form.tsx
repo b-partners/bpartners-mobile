@@ -7,8 +7,7 @@ import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Button, Icon, Loader, Text } from '../../components';
-import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
+import { Button, DatePickerField, Icon, Loader, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
@@ -158,7 +157,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
-  const onSubmit = async invoices => {
+  const onSubmit = async (invoices: { metadata: any; paymentRegulations: any }) => {
     try {
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
         const latestPayment = paymentFields[paymentFields.length - 1];
@@ -218,10 +217,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
-  const handleInvoicePreviewPress = async invoices => {
+  const handleInvoicePreviewPress = async (invoices: { metadata: any; paymentRegulations: any }) => {
     // TODO(UI): error handling
     setIsLoading(true);
-    let savedInvoice;
+    let savedInvoice: { fileId: any; title: any };
     try {
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
         const latestPayment = paymentFields[paymentFields.length - 1];
@@ -365,26 +364,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      {/*<View style={ROW_STYLE}>
-        <Controller
-          name='toPayAt'
-          control={control}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <DatePickerField
-                labelTx='invoiceFormScreen.invoiceForm.toPayAt'
-                isButtonPreset={false}
-                labelStyle={DATE_PICKER_LABEL_STYLE}
-                containerStyle={DATE_PICKER_CONTAINER_STYLE}
-                textStyle={DATE_PICKER_TEXT_STYLE}
-                dateSeparator='/'
-                value={value}
-                onDateChange={onChange}
-              />
-            );
-          }}
-        />
-      </View>*/}
       <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
         <Checkbox.Item
           status={allowPaymentDelay}
