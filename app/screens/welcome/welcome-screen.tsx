@@ -10,9 +10,10 @@ import * as Keychain from 'react-native-keychain';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 
 import awsExports from '../../../src/aws-exports';
-import { AutoImage, BgLayout, Button, Icon, Loader, Text } from '../../components';
+import { AutoImage, Button, Icon, Loader, Text } from '../../components';
 import env from '../../config/env';
 import { translate } from '../../i18n';
+import { BgLayout } from '../../layouts';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';

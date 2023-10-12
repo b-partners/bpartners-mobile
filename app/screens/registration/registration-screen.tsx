@@ -7,8 +7,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
-import { AutoImage, BgLayout, Button, CheckEmailModal, Icon, InputField, Loader, Text } from '../../components';
+import { AutoImage, Button, CheckEmailModal, Icon, InputField, Loader, Text } from '../../components';
 import { translate } from '../../i18n';
+import { BgLayout } from '../../layouts';
 import { useStores } from '../../models';
 import { CreateUser } from '../../models/entities/user/user';
 import { NavigatorParamList } from '../../navigators/utils/utils';
