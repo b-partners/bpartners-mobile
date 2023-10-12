@@ -75,7 +75,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('bp_home')} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='ProspectScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
           <Searchbar
             placeholder={translate('common.search')}

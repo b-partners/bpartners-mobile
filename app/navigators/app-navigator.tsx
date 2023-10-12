@@ -91,7 +91,7 @@ export type NavigatorParamList = {
 export type TabNavigatorParamList = {
   prospect: undefined;
   forgotPassword: undefined;
-  home: undefined;
+  bp_home: undefined;
   marketplace: undefined;
   paymentInitiation: undefined;
   paymentList: {
@@ -179,11 +179,11 @@ const AppTabStack = observer(function () {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={'home'}
+      initialRouteName={'bp_home'}
       tabBar={props => <BpTabNavigation {...props} />}
     >
       <>
-        <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+        <Tab.Screen name='bp_home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
         <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
         <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
         <Tab.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />
