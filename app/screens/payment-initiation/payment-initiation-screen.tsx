@@ -34,7 +34,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList
         style={HEADER}
         titleStyle={HEADER_TITLE}
         leftIcon={'back'}
-        onLeftPress={() => navigation.navigate('home')}
+        onLeftPress={() => navigation.navigate('bp_home')}
       />
       <Screen backgroundColor={palette.white} style={{ height: '100%', width: '100%' }}>
         <ScrollView style={FORM_FIELD_CONTAINER}>

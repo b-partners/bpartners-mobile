@@ -27,7 +27,7 @@ export const SupportContactScreen: FC<StackScreenProps<TabNavigatorParamList, 's
           leftIcon={'back'}
           // rightIcon={'info'}
           onLeftPress={async () => {
-            navigation.navigate('home');
+            navigation.navigate('bp_home');
           }}
         />
         <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>
