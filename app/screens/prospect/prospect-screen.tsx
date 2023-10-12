@@ -68,7 +68,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
 
       debounceTimeoutRef.current = setTimeout(async () => {
         await searchProspect();
-      }, 1000);
+      }, 1500);
     }
   };
 
