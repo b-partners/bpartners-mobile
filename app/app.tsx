@@ -18,8 +18,9 @@ import { ToggleStorybook } from '../storybook/toggle-storybook';
 import env from './config/env';
 import './i18n';
 import { RootStore, RootStoreProvider, setupRootStore } from './models';
-import { AppNavigator, useNavigationPersistence } from './navigators';
-import { ErrorBoundary } from './screens/error/error-boundary';
+import { AppNavigator } from './navigators/app-navigator';
+import { useNavigationPersistence } from './navigators/navigation-utilities';
+import { ErrorBoundary } from './screens';
 import { initFonts } from './theme/fonts';
 import './utils/ignore-warnings';
 // expo

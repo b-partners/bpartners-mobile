@@ -4,7 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { spacing } from '../../theme';
 import { printCurrencyToMajors } from '../../utils/money';
-import { AutoImage, Text } from '../index';
+import { AutoImage } from '../auto-image/auto-image';
+import { Text } from '../text/text';
 import { HEADER_STYLE } from './style';
 
 const CONTAINER_STYLE: ViewStyle = {

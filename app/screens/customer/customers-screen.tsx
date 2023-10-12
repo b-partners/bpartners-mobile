@@ -11,7 +11,7 @@ import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../com
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer as ICustomer } from '../../models/entities/customer/customer';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { getThreshold } from '../../utils/get-threshold';

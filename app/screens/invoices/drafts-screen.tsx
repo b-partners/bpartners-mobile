@@ -7,7 +7,7 @@ import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { getThreshold } from '../../utils/get-threshold';
@@ -84,7 +84,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
         const newItem = {
           maturityDate: paymentItem.maturityDate,
           percent: paymentItem.paymentRequest.percentValue,
-          comment: paymentItem.comment,
+          comment: paymentItem.paymentRequest.comment,
           amount: paymentItem.amount,
         };
         editPayment.push(newItem);

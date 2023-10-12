@@ -11,6 +11,7 @@ export const PaymentRequestModel = types.model('PaymentRequest').props({
   reference: types.maybeNull(types.string),
   initiatedDatetime: types.maybeNull(types.string),
   paymentStatus: types.maybeNull(types.string),
+  comment: types.maybeNull(types.string),
 });
 
 export const PaymentRegulationModel = types.model('PaymentRegulation').props({

@@ -7,7 +7,7 @@ import { View, ViewStyle } from 'react-native';
 import { Header, Loader, PDFView } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';

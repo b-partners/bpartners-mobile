@@ -10,7 +10,7 @@ import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
-import { navigate } from '../../../navigators';
+import { navigate } from '../../../navigators/navigation-utilities';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
