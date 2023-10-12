@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { AutoImage, Button, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { printCurrency } from '../../utils/money';

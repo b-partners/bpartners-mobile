@@ -8,7 +8,7 @@ import { ErrorBoundary } from '..';
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/style';

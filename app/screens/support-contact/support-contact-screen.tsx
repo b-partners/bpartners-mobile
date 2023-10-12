@@ -6,7 +6,7 @@ import ZocialIcon from 'react-native-vector-icons/Zocial';
 
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';

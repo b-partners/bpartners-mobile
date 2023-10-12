@@ -4,7 +4,7 @@ import React from 'react';
 import { MenuAction, MenuItem } from '../../../components';
 import { translate } from '../../../i18n';
 import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../../models/entities/invoice/invoice';
-import { TabNavigatorParamList } from '../../../navigators';
+import { TabNavigatorParamList } from '../../../navigators/utils/utils';
 import { palette } from '../../../theme/palette';
 
 export type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction };

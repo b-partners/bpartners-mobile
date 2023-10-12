@@ -7,7 +7,7 @@ import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice } from '../../../models/entities/invoice/invoice';
-import { goBack } from '../../../navigators';
+import { goBack } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { sendEmail } from '../../../utils/core/invoicing-utils';

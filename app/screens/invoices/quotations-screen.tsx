@@ -8,7 +8,8 @@ import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { TabNavigatorParamList, navigate } from '../../navigators';
+import { navigate } from '../../navigators/navigation-utilities';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';

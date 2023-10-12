@@ -8,7 +8,7 @@ import { Header, Loader, MenuItem, NoDataProvided } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';

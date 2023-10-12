@@ -6,7 +6,7 @@ import { Dimensions, Text, View } from 'react-native';
 import { Header, Loader, Screen } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';

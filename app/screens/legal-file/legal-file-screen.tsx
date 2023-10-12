@@ -6,7 +6,7 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 import { ErrorBoundary } from '..';
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { LegalFileView } from './component/legal-file-view';
 
 const FULL: ViewStyle = { flex: 1 };

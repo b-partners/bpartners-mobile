@@ -13,7 +13,7 @@ import InputFieldPassword from '../../components/input-field-password/input-fiel
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { IdentityState } from '../welcome/utils/utils';
