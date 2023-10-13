@@ -40,13 +40,15 @@ export const TransactionStoreModel = types
     getTransactionsSummary: flow(function* (year: number) {
       const transactionApi = new TransactionApi(self.environment.api);
       self.loadingTransactionsSummary = true;
-      try {
-        const getTransactionsSummaryResult = yield transactionApi.getTransactionsSummary(self.currentAccount.id, year);
-        self.getTransactionsSummarySuccess(getTransactionsSummaryResult.transactionSummary);
-      } catch (e) {
-        self.getTransactionsSummaryFail(e);
-      } finally {
-        self.loadingTransactionsSummary = false;
+      if (self.currentAccount) {
+        try {
+          const getTransactionsSummaryResult = yield transactionApi.getTransactionsSummary(self.currentAccount.id, year);
+          self.getTransactionsSummarySuccess(getTransactionsSummaryResult.transactionSummary);
+        } catch (e) {
+          self.getTransactionsSummaryFail(e);
+        } finally {
+          self.loadingTransactionsSummary = false;
+        }
       }
     }),
   }))
@@ -65,13 +67,15 @@ export const TransactionStoreModel = types
     getTransactionCategories: flow(function* () {
       const transactionApi = new TransactionApi(self.environment.api);
       self.loadingTransactionCategories = true;
-      try {
-        const getTransactionCategoriesResult = yield transactionApi.getTransactionCategories(self.currentAccount.id);
-        self.getTransactionCategoriesSuccess(getTransactionCategoriesResult.transactionCategories);
-      } catch (e) {
-        self.getTransactionCategoriesFail(e);
-      } finally {
-        self.loadingTransactionCategories = false;
+      if (self.currentAccount) {
+        try {
+          const getTransactionCategoriesResult = yield transactionApi.getTransactionCategories(self.currentAccount.id);
+          self.getTransactionCategoriesSuccess(getTransactionCategoriesResult.transactionCategories);
+        } catch (e) {
+          self.getTransactionCategoriesFail(e);
+        } finally {
+          self.loadingTransactionCategories = false;
+        }
       }
     }),
   }))
@@ -92,13 +96,15 @@ export const TransactionStoreModel = types
       self.transactions.replace([]);
       self.loadingTransactions = true;
       const transactionApi = new TransactionApi(self.environment.api);
-      try {
-        const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id, filter);
-        self.getTransactionsSuccess(getTransactionsResult.transactions);
-      } catch (e) {
-        self.getTransactionsFail(e);
-      } finally {
-        self.loadingTransactions = false;
+      if (self.currentAccount) {
+        try {
+          const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id, filter);
+          self.getTransactionsSuccess(getTransactionsResult.transactions);
+        } catch (e) {
+          self.getTransactionsFail(e);
+        } finally {
+          self.loadingTransactions = false;
+        }
       }
     }),
   }))
