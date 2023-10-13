@@ -28,6 +28,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   useEffect(() => {
     (async () => {
       const date = new Date();
+      await authStore.whoami(accessToken);
       await transactionStore.getTransactionCategories();
       await transactionStore.getTransactionsSummary(date.getFullYear());
       await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });

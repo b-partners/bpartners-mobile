@@ -7,7 +7,7 @@ import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../../mode
 import { TabNavigatorParamList } from '../../../navigators/utils/utils';
 import { palette } from '../../../theme/palette';
 
-export type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction };
+export type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction; invoiceAction: (item: IInvoice) => Promise<void> };
 
 export type InvoiceCreationProps = {
   navigation: MaterialTopTabNavigationProp<TabNavigatorParamList, 'invoices', undefined>;

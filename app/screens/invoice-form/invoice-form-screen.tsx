@@ -11,7 +11,7 @@ import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { InvoiceForm } from './invoice-form';
 
 const FULL: ViewStyle = {

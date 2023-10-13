@@ -19,7 +19,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Customer } from './components/customer';
 import { CustomerCreationModal } from './components/customer-creation-modal';
 

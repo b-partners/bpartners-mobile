@@ -76,10 +76,10 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
 
   return (
     <ErrorBoundary catchErrors='always'>
+      <Header headerTx='profileScreen.title' titleStyle={styles.headerTitle} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
       <View style={styles.container}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={styles.screen} preset='scroll'>
-          <Header headerTx='profileScreen.title' titleStyle={styles.headerTitle} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           <View style={styles.viewContainer}>
             {currentUser.logoFileId ? (
               <View style={styles.logoContainer}>

@@ -130,6 +130,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
                       editInvoice: () => editInvoice(item),
                       markAsProposal: () => markAsProposal(item),
                     }}
+                    invoiceAction={editInvoice}
                   />
                 )}
                 keyExtractor={item => item.id}
