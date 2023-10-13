@@ -1,7 +1,7 @@
 import { Auth } from '@aws-amplify/auth';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -16,8 +16,10 @@ import awsExports from '../../../src/aws-exports';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { color } from '../../theme';
+import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { AutoImage } from '../auto-image/auto-image';
+import { Loader } from '../loader/loader';
 import { BPDrawerHeader } from './components/bp-drawer-header';
 import {
   CENTER_CONTAINER_STYLE,
@@ -38,6 +40,7 @@ Amplify.configure(awsExports);
 export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { authStore } = useStores();
   const { currentUser, currentAccount, accessToken } = authStore;
+  const [isLoading, setIsLoading] = useState(false);
 
   const uri = createFileUrl(currentUser?.logoFileId, currentAccount?.id, accessToken, 'LOGO');
 
@@ -117,14 +120,20 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
       <TouchableOpacity
         style={LOGOUT_CONTAINER_STYLE}
         onPress={async () => {
+          setIsLoading(true);
           await Auth.signOut();
           await authStore.logout();
           await Keychain.resetGenericPassword();
           props.navigation.closeDrawer();
+          setIsLoading(false);
         }}
       >
         <View style={POWER_CONTAINER_STYLE}>
-          <IoniconIcon name='ios-power-outline' size={18} color={color.palette.secondaryColor} />
+          {isLoading ? (
+            <Loader size={'small'} color={palette.secondaryColor} />
+          ) : (
+            <IoniconIcon name='ios-power-outline' size={18} color={color.palette.secondaryColor} />
+          )}
         </View>
         <View style={CENTER_CONTAINER_STYLE}>
           <Text
