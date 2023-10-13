@@ -5,8 +5,8 @@ import CloseIcon from 'react-native-vector-icons/AntDesign';
 import RNFontAwesome from 'react-native-vector-icons/FontAwesome';
 import CopyContentIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { Button, Text } from '../../components';
-import { palette } from '../../theme/palette';
+import { Button, Text } from '../../../components';
+import { palette } from '../../../theme/palette';
 
 type ShareModalProps = {
   paymentUrl: string;

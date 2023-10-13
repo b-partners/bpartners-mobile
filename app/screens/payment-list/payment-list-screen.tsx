@@ -16,7 +16,7 @@ import { invoicePageSize } from '../invoice-form/components/utils';
 import { DraftsScreen } from '../invoices/drafts-screen';
 import { InvoicesScreen } from '../invoices/invoices-screen';
 import { QuotationsScreen } from '../invoices/quotations-screen';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
 const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW };
