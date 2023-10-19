@@ -1,9 +1,10 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
-import { withEnvironment, withRootStore } from '../..';
 import { LegalFileApi } from '../../../services/api/legal-file-api';
 import { LegalFileModel, LegalFileSnapshotOut } from '../../entities/legal-file/legal-file';
 import { withCredentials } from '../../extensions/with-credentials';
+import { withEnvironment } from '../../extensions/with-environment';
+import { withRootStore } from '../../extensions/with-root-store';
 
 export const LegalFileStoreModel = types
   .model('LegalFiles')

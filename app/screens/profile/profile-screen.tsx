@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { AutoImage, Button, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
 import { printCurrency } from '../../utils/money';
@@ -43,13 +43,20 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           city: '',
           country: '',
           postalCode: '',
+          prospectingPerimeter: null,
         },
         businessActivities: {
           primary: '',
           secondary: '',
         },
         companyInfo: {
+          phone: '',
+          townCode: null,
+          isSubjectToVat: false,
           socialCapital: null,
+          location: null,
+          email: '',
+          tvaNumber: '',
         },
         revenueTargets: {
           // @ts-ignore
@@ -69,10 +76,10 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
 
   return (
     <ErrorBoundary catchErrors='always'>
+      <Header headerTx='profileScreen.title' titleStyle={styles.headerTitle} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
       <View style={styles.container}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={styles.screen} preset='scroll'>
-          <Header headerTx='profileScreen.title' titleStyle={styles.headerTitle} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           <View style={styles.viewContainer}>
             {currentUser.logoFileId ? (
               <View style={styles.logoContainer}>

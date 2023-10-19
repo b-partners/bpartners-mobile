@@ -12,7 +12,7 @@ import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../com
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Product as IProduct } from '../../models/entities/product/product';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { commaToDot } from '../../utils/comma-to-dot';
@@ -22,7 +22,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Product } from './components/product';
 import { ProductCreationModal } from './components/product-creation-modal';
 

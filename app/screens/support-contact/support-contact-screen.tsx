@@ -6,7 +6,7 @@ import ZocialIcon from 'react-native-vector-icons/Zocial';
 
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -27,7 +27,7 @@ export const SupportContactScreen: FC<StackScreenProps<TabNavigatorParamList, 's
           leftIcon={'back'}
           // rightIcon={'info'}
           onLeftPress={async () => {
-            navigation.navigate('home');
+            navigation.navigate('bp_home');
           }}
         />
         <Screen style={CONTAINER} preset='auto' backgroundColor={palette.white}>

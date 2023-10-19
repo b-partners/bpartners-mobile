@@ -7,7 +7,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { Button, InputField, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { NavigatorParamList } from '../../../navigators';
+import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { commaValidation } from '../../../utils/comma-to-dot';

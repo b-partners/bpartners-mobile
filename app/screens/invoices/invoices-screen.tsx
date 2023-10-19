@@ -9,7 +9,8 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../models/entities/invoice/invoice';
-import { TabNavigatorParamList, navigate } from '../../navigators';
+import { navigate } from '../../navigators/navigation-utilities';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
@@ -106,7 +107,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       const newItem = {
         maturityDate: paymentItem.maturityDate,
         percent: paymentItem.paymentRequest.percentValue,
-        comment: paymentItem.comment,
+        comment: paymentItem.paymentRequest.comment,
         amount: paymentItem.amount,
       };
       editPayment.push(newItem);

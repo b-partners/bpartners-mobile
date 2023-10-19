@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Header, Screen } from '../../components';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';

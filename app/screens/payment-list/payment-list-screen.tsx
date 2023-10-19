@@ -8,7 +8,7 @@ import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -16,7 +16,7 @@ import { invoicePageSize } from '../invoice-form/components/utils';
 import { DraftsScreen } from '../invoices/drafts-screen';
 import { InvoicesScreen } from '../invoices/invoices-screen';
 import { QuotationsScreen } from '../invoices/quotations-screen';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
 const TAB_BAR_STYLE: ViewStyle = { backgroundColor: palette.white, ...NO_SHADOW };
@@ -56,7 +56,7 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
+      <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('bp_home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <Screen>
         <Tab.Navigator
           initialRouteName={initialRoute}

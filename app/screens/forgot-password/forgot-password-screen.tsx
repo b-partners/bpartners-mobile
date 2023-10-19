@@ -5,11 +5,10 @@ import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Dimensions, StyleSheet, View } from 'react-native';
 
-import { Button, Header, Loader, Screen, Text } from '../../components';
-import { CheckEmailModal } from '../../components/check-email/check-email-modal';
+import { Button, CheckEmailModal, Header, Loader, Screen, Text } from '../../components';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
@@ -93,7 +92,14 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
                 }}
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
-                  <InputField labelTx={'welcomeScreen.email'} error={!!errors.email} value={value} onChange={onChange} errorMessage={errors.email?.message} />
+                  <InputField
+                    labelTx={'welcomeScreen.email'}
+                    error={!!errors.email}
+                    value={value}
+                    onChange={onChange}
+                    errorMessage={errors.email?.message}
+                    backgroundColor={palette.white}
+                  />
                 )}
               />
             </View>

@@ -47,7 +47,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   };
 
   const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
-    account: () => handleNavigation('home'),
+    account: () => handleNavigation('bp_home'),
     activity: () => handleNavigationMarketplace(shouldShowProspects ? 'prospect' : 'marketplace'),
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
@@ -55,7 +55,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   };
 
   const RouteName: IconProps = {
-    account: 'home',
+    account: 'bp_home',
     activity: shouldShowProspects ? 'prospect' : 'marketplace',
     payment: 'paymentInitiation',
     facturation: 'paymentList',

@@ -11,7 +11,7 @@ import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../com
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer as ICustomer } from '../../models/entities/customer/customer';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { getThreshold } from '../../utils/get-threshold';
@@ -19,7 +19,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Customer } from './components/customer';
 import { CustomerCreationModal } from './components/customer-creation-modal';
 

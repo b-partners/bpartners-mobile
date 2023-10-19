@@ -7,13 +7,12 @@ import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
 import awsExports from '../../../src/aws-exports';
-import { AutoImage, Button, CheckEmailModal, Icon, Loader, Text } from '../../components';
-import { BgLayout } from '../../components';
-import InputField from '../../components/input-field/input-field';
+import { AutoImage, Button, CheckEmailModal, Icon, InputField, Loader, Text } from '../../components';
 import { translate } from '../../i18n';
+import { BgLayout } from '../../layouts';
 import { useStores } from '../../models';
 import { CreateUser } from '../../models/entities/user/user';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from '../welcome/components/underline-text';

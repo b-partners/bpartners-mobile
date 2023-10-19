@@ -7,15 +7,15 @@ import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Button, Icon, Loader, Text } from '../../components';
-import { DatePickerField } from '../../components/date-picker-field/date-picker-field';
+import { Button, DatePickerField, Icon, Loader, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../models/entities/invoice/invoice';
 import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { Product, createProductDefaultModel } from '../../models/entities/product/product';
-import { TabNavigatorParamList, navigate } from '../../navigators';
+import { navigate } from '../../navigators/navigation-utilities';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
@@ -64,9 +64,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [paymentCreation, setPaymentCreation] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoading, setIsLoading] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
 
   const {
     control,
@@ -158,7 +156,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
-  const onSubmit = async invoices => {
+  const onSubmit = async (invoices: { metadata: any; paymentRegulations: any }) => {
     try {
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
         const latestPayment = paymentFields[paymentFields.length - 1];
@@ -218,10 +216,9 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
-  const handleInvoicePreviewPress = async invoices => {
-    // TODO(UI): error handling
-    setIsLoading(true);
-    let savedInvoice;
+  const handleInvoicePreviewPress = async (invoices: { metadata: any; paymentRegulations: any }) => {
+    setPreviewLoading(true);
+    let savedInvoice: { fileId: any; title: any };
     try {
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
         const latestPayment = paymentFields[paymentFields.length - 1];
@@ -277,7 +274,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       __DEV__ && console.tron.error(e.message, e.stacktrace);
       throw e;
     } finally {
-      setIsLoading(false);
+      setPreviewLoading(false);
     }
   };
 
@@ -365,26 +362,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      {/*<View style={ROW_STYLE}>
-        <Controller
-          name='toPayAt'
-          control={control}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <DatePickerField
-                labelTx='invoiceFormScreen.invoiceForm.toPayAt'
-                isButtonPreset={false}
-                labelStyle={DATE_PICKER_LABEL_STYLE}
-                containerStyle={DATE_PICKER_CONTAINER_STYLE}
-                textStyle={DATE_PICKER_TEXT_STYLE}
-                dateSeparator='/'
-                value={value}
-                onDateChange={onChange}
-              />
-            );
-          }}
-        />
-      </View>*/}
       <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
         <Checkbox.Item
           status={allowPaymentDelay}
@@ -720,19 +697,31 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
 
-        {/*{isLoading && <Loader size={'large'} animating={true} />}*/}
-        <TouchableOpacity onPress={handleSubmit(handleInvoicePreviewPress)}>
+        {previewLoading ? (
           <View
             style={{
-              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
+              borderColor: palette.white,
               borderWidth: 2,
               borderRadius: 100,
               padding: spacing[3],
             }}
           >
-            <MaterialIcons name='preview' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
+            <Loader size={30} animating={true} color={palette.secondaryColor} />
           </View>
-        </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={handleSubmit(handleInvoicePreviewPress)}>
+            <View
+              style={{
+                borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
+                borderWidth: 2,
+                borderRadius: 100,
+                padding: spacing[3],
+              }}
+            >
+              <MaterialIcons name='preview' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
+            </View>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity
           onPress={() => {

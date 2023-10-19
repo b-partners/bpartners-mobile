@@ -9,7 +9,7 @@ import { Button, Header, Loader, Screen, Text } from '../../components';
 import InputFieldPassword from '../../components/input-field-password/input-field-password';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';

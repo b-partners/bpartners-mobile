@@ -5,10 +5,10 @@ import React, { FC } from 'react';
 import { ViewStyle } from 'react-native';
 
 import { Header } from '../../components';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { TabBar } from './components/tab-bar';
 import { ActivityForm } from './screen/activity-form';
 import { CompanyInfoForm } from './screen/company-info-form';

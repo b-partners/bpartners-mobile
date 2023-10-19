@@ -2,8 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { TextStyle, TouchableOpacity, View } from 'react-native';
 
-import { Text } from '../../../components';
-import { BulletSeparator, Menu } from '../../../components';
+import { BulletSeparator, Menu, Text } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { datePipe } from '../../../utils/pipes';
@@ -21,13 +20,13 @@ import {
 import { InvoiceProps, getStatusTextColor } from '../utils/utils';
 
 export const Invoice: React.FC<InvoiceProps> = props => {
-  const { item, menuItems, menuAction } = props;
+  const { item, menuItems, menuAction, invoiceAction } = props;
 
   const textColor: TextStyle = { color: getStatusTextColor(item.status) };
 
   return (
     <View style={styles.viewContainer}>
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={() => invoiceAction(item)}>
         <View style={styles.header}>
           <Text text={props.item.customer.firstName} style={HEADER_TEXT_STYLE} />
           <Text text={printCurrencyToMajors(item.totalPriceWithVat)} style={styles.totalPrice} />
