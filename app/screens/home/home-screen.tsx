@@ -3,10 +3,9 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 import { View } from 'react-native';
 
-import { Screen } from '../../components';
-import { HeaderWithBalance } from '../../components/header-with-balance/header-with-balance';
+import { HeaderWithBalance, Screen } from '../../components';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
@@ -29,6 +28,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   useEffect(() => {
     (async () => {
       const date = new Date();
+      await authStore.whoami(accessToken);
       await transactionStore.getTransactionCategories();
       await transactionStore.getTransactionsSummary(date.getFullYear());
       await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });

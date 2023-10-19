@@ -8,12 +8,12 @@ import { Header, Loader, MenuItem, NoDataProvided } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
-import { TabNavigatorParamList } from '../../navigators';
+import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
-import { HEADER, HEADER_TITLE } from '../payment-initiation/style';
+import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
 
@@ -68,14 +68,14 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
 
       debounceTimeoutRef.current = setTimeout(async () => {
         await searchProspect();
-      }, 1000);
+      }, 1500);
     }
   };
 
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('bp_home')} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='ProspectScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
           <Searchbar
             placeholder={translate('common.search')}

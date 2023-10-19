@@ -7,7 +7,7 @@ import { View, ViewStyle } from 'react-native';
 import { Header, Loader, PDFView } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
@@ -47,9 +47,8 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
           style={PDF_STYLE}
           enablePaging={true}
           source={{ uri: invoiceUrl, cache: false }}
-          renderActivityIndicator={() => <Loader size={'small'} color={palette.greyDarker} />}
+          renderActivityIndicator={() => <Loader size={'large'} color={palette.white} />}
           onError={error => {
-            __DEV__ && console.tron.log('An errror occured');
             __DEV__ && console.tron.error(error.message, [error.stackTrace]);
           }}
           onLoadComplete={() => __DEV__ && console.tron.log('complete')}

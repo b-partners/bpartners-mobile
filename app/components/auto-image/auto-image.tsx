@@ -1,6 +1,8 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { ImageProps as DefaultImageProps, ImageURISource, Platform, Image as RNImage } from 'react-native';
 
+import { Log } from '../../screens/welcome/utils/utils';
+
 type ImageProps = DefaultImageProps & {
   source: ImageURISource;
 };
@@ -43,5 +45,5 @@ export function AutoImage(props: ImageProps) {
     };
   }, [props.source]);
 
-  return <RNImage {...props} style={[imageSize, props.style]} />;
+  return <RNImage {...props} style={[imageSize, props.style]} onError={() => Log('Failed to get size of Image')} />;
 }

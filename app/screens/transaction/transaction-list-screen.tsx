@@ -10,7 +10,7 @@ import { BpPagination, HeaderWithBalance, Icon, Loader, NoDataProvided, Screen, 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Transaction as ITransaction, TransactionStatus } from '../../models/entities/transaction/transaction';
-import { NavigatorParamList } from '../../navigators';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';

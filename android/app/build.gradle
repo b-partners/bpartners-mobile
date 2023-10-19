@@ -82,14 +82,14 @@ import org.apache.tools.ant.taskdefs.condition.Os
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
-    bundleInDebug: true,
-    bundleInRelease: true,
-    bundleInPreprod: true,
-    bundleInProd: true,
-    // TODO: MUST BE ADDRESSED AS SOON AS POSSIBLE, dev mode MUST BE disabled on the end user environment
-    devDisabledInPreprod: false,
-    devDisabledInProd: false,
+        enableHermes: false,  // clean and rebuild if changing
+        bundleInDebug: true,
+        bundleInRelease: true,
+        bundleInPreprod: true,
+        bundleInProd: true,
+        // TODO: MUST BE ADDRESSED AS SOON AS POSSIBLE, dev mode MUST BE disabled on the end user environment
+        devDisabledInPreprod: false,
+        devDisabledInProd: false,
 ]
 
 // This method of including other gradle files is to support symlinks.
@@ -127,7 +127,7 @@ def enableProguardInReleaseBuilds = false
  * give correct results when using with locales other than en-US.  Note that
  * this variant is about 6MiB larger per architecture than default.
  */
- def jscFlavor = 'org.webkit:android-jsc-intl:+'
+def jscFlavor = 'org.webkit:android-jsc-intl:+'
 
 /**
  * Whether to enable the Hermes VM.
@@ -152,15 +152,15 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     packagingOptions {
-       pickFirst 'lib/x86/libc++_shared.so'
-       pickFirst 'lib/x86_64/libjsc.so'
-       pickFirst 'lib/x86/libc++_shared.so'
-       pickFirst 'lib/x86_64/libc++_shared.so'
-       pickFirst 'lib/arm64-v8a/libjsc.so'
-       pickFirst 'lib/arm64-v8a/libc++_shared.so'
-       pickFirst 'lib/x86_64/libc++_shared.so'
-       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-     }
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libjsc.so'
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+    }
 
     defaultConfig {
         applicationId "com.bpartnersmobile"
@@ -172,7 +172,7 @@ android {
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         manifestPlaceholders = [
-            appAuthRedirectScheme: 'app.bpartners.auth'
+                appAuthRedirectScheme: 'app.bpartners.auth'
         ]
 
         if (isNewArchitectureEnabled()) {
@@ -180,12 +180,12 @@ android {
             externalNativeBuild {
                 ndkBuild {
                     arguments "APP_PLATFORM=android-21",
-                        "APP_STL=c++_shared",
-                        "NDK_TOOLCHAIN_VERSION=clang",
-                        "GENERATED_SRC_DIR=$buildDir/generated/source",
-                        "PROJECT_BUILD_DIR=$buildDir",
-                        "REACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
-                        "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"
+                            "APP_STL=c++_shared",
+                            "NDK_TOOLCHAIN_VERSION=clang",
+                            "GENERATED_SRC_DIR=$buildDir/generated/source",
+                            "PROJECT_BUILD_DIR=$buildDir",
+                            "REACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
+                            "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"
                     cFlags "-Wall", "-Werror", "-fexceptions", "-frtti", "-DWITH_INSPECTOR=1"
                     cppFlags "-std=c++17"
                     // Make sure this target name is the same you specify inside the
@@ -262,8 +262,8 @@ android {
                 storePassword APP_UPLOAD_STORE_PASSWORD
                 keyAlias APP_UPLOAD_KEY_ALIAS
                 keyPassword APP_UPLOAD_KEY_PASSWORD
-                }
             }
+        }
     }
 
     buildTypes {

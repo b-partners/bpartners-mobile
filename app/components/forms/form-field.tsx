@@ -2,9 +2,10 @@ import { useFormikContext } from 'formik';
 import React from 'react';
 import { TextStyle, View } from 'react-native';
 
-import { Text, TextField, TextFieldProps } from '..';
 import { TxKeyPath } from '../../i18n';
 import { color } from '../../theme';
+import { TextField, TextFieldProps } from '../text-field/text-field';
+import { Text } from '../text/text';
 import ErrorMessage from './error-message';
 
 interface FormFieldProps extends TextFieldProps {

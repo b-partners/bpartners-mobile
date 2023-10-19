@@ -1,7 +1,7 @@
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { color } from '../../theme';
-import { palette } from '../../theme/palette';
+import { color } from '../../../theme';
+import { palette } from '../../../theme/palette';
 
 export const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
