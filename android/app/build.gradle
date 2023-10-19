@@ -1,5 +1,6 @@
 apply plugin: 'kotlin-android'
-apply plugin: "com.android.application"
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
@@ -309,6 +310,8 @@ android {
 dependencies {
     androidTestImplementation('com.wix:detox:+')
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     // TODO: replace this library later
