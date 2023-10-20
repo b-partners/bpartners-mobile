@@ -9,9 +9,11 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
+import messaging from '@react-native-firebase/messaging';
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useState } from 'react';
 import { LogBox } from 'react-native';
+import { Notifications } from 'react-native-notifications';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import { ToggleStorybook } from '../storybook/toggle-storybook';
@@ -21,6 +23,7 @@ import { RootStore, RootStoreProvider, setupRootStore } from './models';
 import { AppNavigator } from './navigators/app-navigator';
 import { useNavigationPersistence } from './navigators/navigation-utilities';
 import { ErrorBoundary } from './screens';
+import { Log } from './screens/welcome/utils/utils';
 import { initFonts } from './theme/fonts';
 import './utils/ignore-warnings';
 // expo
@@ -52,6 +55,21 @@ function App() {
     onNavigationStateChange,
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY);
+
+  useEffect(() => {
+    (async () => {
+      const authStatus = await messaging().requestPermission();
+      const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      if (!enabled) return;
+
+      const fcmToken = await messaging().getToken();
+      Log(fcmToken); // print it and use it to send notification from firebase
+
+      Notifications.registerRemoteNotifications();
+
+      // Notifications.events().registerRemoteNotificationsRegistered((token) => Log('this is the token: ' + token.deviceToken);
+    })();
+  }, []);
 
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
