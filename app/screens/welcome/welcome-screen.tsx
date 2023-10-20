@@ -96,6 +96,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       }
     } catch (error) {
       showMessage(translate('errors.credentials'), errorMessageStyles);
+      navigation.navigate('welcome');
     } finally {
       setLoading(false);
     }

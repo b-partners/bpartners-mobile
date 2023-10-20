@@ -56,6 +56,7 @@
     "amazon-cognito-identity-js": "^6.2.0",
     "apisauce": "2.1.5",
     "aws-amplify": "^5.1.3",
+    "aws-sdk": "^2.1477.0",
     "core-js": "^3.30.1",
     "eslint-config-react-native-prettier": "^1.0.1",
     "eslint-plugin-no-inline-styles": "^1.0.5",
