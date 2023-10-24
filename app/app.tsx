@@ -9,11 +9,12 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
-import messaging from '@react-native-firebase/messaging';
+import messaging, { firebase } from '@react-native-firebase/messaging';
 import * as Sentry from '@sentry/react-native';
+import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import React, { useEffect, useState } from 'react';
 import { LogBox } from 'react-native';
-import { Notifications } from 'react-native-notifications';
+import { Notifications, Registered } from 'react-native-notifications';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import { ToggleStorybook } from '../storybook/toggle-storybook';
@@ -45,6 +46,17 @@ Sentry.init({
 
 env.appEnv !== 'dev' && LogBox.ignoreAllLogs();
 
+const firebaseConfig = {
+  authDomain: '',
+  databaseURL: '',
+  storageBucket: '',
+  messagingSenderId: '398836708559',
+  measurementId: '',
+  projectId: 'bpartners-notification-push',
+  appId: '1:398836708559:android:40b9be40b768eb0206f3ba',
+  apiKey: 'AIzaSyBDpF1jZq0t3O5XXzvHcHdRYBGpfL9Fw58',
+};
+
 /**
  * This is the root component of our app.
  */
@@ -56,18 +68,80 @@ function App() {
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY);
 
+  const androidARN = 'arn:aws:sns:eu-west-3:688605879718:app/GCM/bpartners-notifications';
+
+  // @ts-ignore
+  const onRegistration = async (event: Registered) => {
+    try {
+      Log('Device Token Received', event.deviceToken);
+      const endpointParams = {
+        PlatformApplicationArn: androidARN,
+        Token: event.deviceToken,
+      };
+      //fetch credentials from Cognito to create the SNS endpoint
+      AWS.config = new AWS.Config();
+      AWS.config.accessKeyId = 'AKIA2AVA33WTCMVJTL5S';
+      AWS.config.secretAccessKey = '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';
+      AWS.config.region = 'eu-west-3';
+      const endpointARN = await createARNAsync(endpointParams);
+      if (!endpointARN) {
+        throw new Error('error creating endpointARN');
+      }
+      Log('endpointARN:', endpointARN);
+
+      //get endpoint attributes
+      let attributes = await getAttributesAsync({
+        EndpointArn: endpointARN,
+      });
+      console.log('attributes:', attributes);
+      //if token does not match current token
+      //or the endpoint is disabled, throw an error
+      // @ts-ignore
+      if ((attributes && !attributes.Enabled) || attributes.Token !== event.deviceToken) {
+        throw new Error('endpoint error');
+      }
+      //send the data to the backend
+      //registerDevice(endpointARN, event.deviceToken);
+    } catch (e) {
+      return 0;
+    }
+  };
+
+  const createARNAsync = params =>
+    new Promise((resolve, reject) => {
+      const sns = new AWS.SNS();
+      sns.createPlatformEndpoint(params, (err, data) => {
+        console.log('created endpoint', err, data);
+        if (err || !data.EndpointArn) {
+          return err ? reject(err) : reject('arn is missing');
+        }
+        resolve(data.EndpointArn);
+      });
+    });
+  const getAttributesAsync = params =>
+    new Promise((resolve, reject) => {
+      const sns = new AWS.SNS();
+      sns.getEndpointAttributes(params, (err, data) => {
+        console.log('got attrs:', err, data);
+        if (err || !data.Attributes) {
+          return err ? reject(err) : reject('attributes are missing in the response');
+        }
+        resolve(data.Attributes);
+      });
+    });
+
   useEffect(() => {
     (async () => {
+      await firebase.initializeApp(firebaseConfig);
       const authStatus = await messaging().requestPermission();
       const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      if (!enabled) return;
+      if (!enabled) {
+        Log('Notifications is enabled');
+      } else {
+        Notifications.registerRemoteNotifications();
 
-      const fcmToken = await messaging().getToken();
-      Log(fcmToken); // print it and use it to send notification from firebase
-
-      Notifications.registerRemoteNotifications();
-
-      // Notifications.events().registerRemoteNotificationsRegistered((token) => Log('this is the token: ' + token.deviceToken);
+        Notifications.events().registerRemoteNotificationsRegistered(token => onRegistration(token));
+      }
     })();
   }, []);
 
