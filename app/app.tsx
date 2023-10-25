@@ -46,7 +46,7 @@ Sentry.init({
 
 env.appEnv !== 'dev' && LogBox.ignoreAllLogs();
 
-const firebaseConfig = {
+export const firebaseConfig = {
   authDomain: '',
   databaseURL: '',
   storageBucket: '',
@@ -69,6 +69,7 @@ function App() {
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY);
 
   const androidARN = 'arn:aws:sns:eu-west-3:688605879718:app/GCM/bpartners-notifications';
+  const [message, setMessage] = useState<null | string>();
 
   // @ts-ignore
   const onRegistration = async (event: Registered) => {
@@ -94,19 +95,19 @@ function App() {
         EndpointArn: endpointARN,
       });
       console.log('attributes:', attributes);
-      //if token does not match current token
-      //or the endpoint is disabled, throw an error
       // @ts-ignore
       if ((attributes && !attributes.Enabled) || attributes.Token !== event.deviceToken) {
         throw new Error('endpoint error');
       }
-      //send the data to the backend
-      //registerDevice(endpointARN, event.deviceToken);
+      messaging().onMessage(async remoteMessage => {
+        const messageData = remoteMessage.data;
+        Log('data: ', messageData.default);
+        setMessage(messageData.default.toString());
+      });
     } catch (e) {
       return 0;
     }
   };
-
   const createARNAsync = params =>
     new Promise((resolve, reject) => {
       const sns = new AWS.SNS();
@@ -132,16 +133,14 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      await firebase.initializeApp(firebaseConfig);
-      const authStatus = await messaging().requestPermission();
-      const enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      if (!enabled) {
-        Log('Notifications is enabled');
-      } else {
-        Notifications.registerRemoteNotifications();
-
-        Notifications.events().registerRemoteNotificationsRegistered(token => onRegistration(token));
+      if (!firebase.apps.length) {
+        await firebase.initializeApp(firebaseConfig);
       }
+      await messaging().requestPermission();
+
+      Notifications.registerRemoteNotifications();
+
+      Notifications.events().registerRemoteNotificationsRegistered(token => onRegistration(token));
     })();
   }, []);
 
@@ -152,6 +151,25 @@ function App() {
       setupRootStore().then(setRootStore);
     })();
   }, []);
+
+  useEffect(() => {
+    const showNotification = (mes: string) => {
+      Notifications.postLocalNotification({
+        title: 'Bpartners',
+        body: mes,
+        // @ts-ignore
+        extra: 'data',
+        channelId: 'notification',
+        sound: 'default',
+        silent: false,
+        // smallIcon: 'ic_launcher',
+      });
+    };
+
+    if (message) {
+      showNotification(message);
+    }
+  }, [message]);
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
