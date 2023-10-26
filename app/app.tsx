@@ -9,6 +9,7 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import * as Sentry from '@sentry/react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
@@ -26,6 +27,7 @@ import { useNavigationPersistence } from './navigators/navigation-utilities';
 import { ErrorBoundary } from './screens';
 import { Log } from './screens/welcome/utils/utils';
 import { initFonts } from './theme/fonts';
+import { palette } from './theme/palette';
 import './utils/ignore-warnings';
 // expo
 import * as storage from './utils/storage';
@@ -153,20 +155,30 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const showNotification = (mes: string) => {
-      Notifications.postLocalNotification({
-        title: 'Bpartners',
+    const showNotification = async (mes: string) => {
+      const channelId = await notifee.createChannel({
+        id: 'notification',
+        name: 'notification channel',
+        lights: false,
+        vibration: true,
+        importance: AndroidImportance.HIGH,
+      });
+
+      await notifee.requestPermission();
+
+      await notifee.displayNotification({
+        title: 'Notification',
         body: mes,
-        // @ts-ignore
-        extra: 'data',
-        channelId: 'notification',
-        sound: 'default',
-        silent: false,
-        // smallIcon: 'ic_launcher',
+        android: {
+          channelId,
+          smallIcon: 'bpartners_logo',
+          color: palette.secondaryColor,
+        },
       });
     };
 
     if (message) {
+      Log('Notification will appear');
       showNotification(message);
     }
   }, [message]);
