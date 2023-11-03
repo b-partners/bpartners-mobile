@@ -152,6 +152,13 @@
       "proposalDeclined": "Quotation refused",
       "invoiceSent": "Invoice sent",
       "reserve": "Reserve"
+    },
+    "buttonActions": {
+      "abandonProspect": "Abandon this prospect",
+      "bookProspect": "Book this prospect",
+      "convertProspectIntoCustomer": "Turn into customer",
+      "freeUpProspect": "Free that prospect",
+      "convertCustomerIntoProspect": "Turn into prospect"
     }
   },
   "onboardingScreen": {
