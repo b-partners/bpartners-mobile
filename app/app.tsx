@@ -9,13 +9,9 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
-import notifee, { AndroidImportance } from '@notifee/react-native';
-import messaging, { firebase } from '@react-native-firebase/messaging';
 import * as Sentry from '@sentry/react-native';
-import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import React, { useEffect, useState } from 'react';
 import { LogBox } from 'react-native';
-import { Notifications, Registered } from 'react-native-notifications';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import { ToggleStorybook } from '../storybook/toggle-storybook';
@@ -25,9 +21,7 @@ import { RootStore, RootStoreProvider, setupRootStore } from './models';
 import { AppNavigator } from './navigators/app-navigator';
 import { useNavigationPersistence } from './navigators/navigation-utilities';
 import { ErrorBoundary } from './screens';
-import { Log } from './screens/welcome/utils/utils';
 import { initFonts } from './theme/fonts';
-import { palette } from './theme/palette';
 import './utils/ignore-warnings';
 // expo
 import * as storage from './utils/storage';
@@ -70,82 +64,6 @@ function App() {
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY);
 
-  const androidARN = 'arn:aws:sns:eu-west-3:688605879718:app/GCM/bpartners-notifications';
-  const [message, setMessage] = useState<null | string>();
-
-  // @ts-ignore
-  const onRegistration = async (event: Registered) => {
-    try {
-      Log('Device Token Received', event.deviceToken);
-      const endpointParams = {
-        PlatformApplicationArn: androidARN,
-        Token: event.deviceToken,
-      };
-      //fetch credentials from Cognito to create the SNS endpoint
-      AWS.config = new AWS.Config();
-      AWS.config.accessKeyId = 'AKIA2AVA33WTCMVJTL5S';
-      AWS.config.secretAccessKey = '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';
-      AWS.config.region = 'eu-west-3';
-      const endpointARN = await createARNAsync(endpointParams);
-      if (!endpointARN) {
-        throw new Error('error creating endpointARN');
-      }
-      Log('endpointARN:', endpointARN);
-
-      //get endpoint attributes
-      let attributes = await getAttributesAsync({
-        EndpointArn: endpointARN,
-      });
-      console.log('attributes:', attributes);
-      // @ts-ignore
-      if ((attributes && !attributes.Enabled) || attributes.Token !== event.deviceToken) {
-        throw new Error('endpoint error');
-      }
-      messaging().onMessage(async remoteMessage => {
-        const messageData = remoteMessage.data;
-        Log('data: ', messageData.default);
-        setMessage(messageData.default.toString());
-      });
-    } catch (e) {
-      return 0;
-    }
-  };
-  const createARNAsync = params =>
-    new Promise((resolve, reject) => {
-      const sns = new AWS.SNS();
-      sns.createPlatformEndpoint(params, (err, data) => {
-        console.log('created endpoint', err, data);
-        if (err || !data.EndpointArn) {
-          return err ? reject(err) : reject('arn is missing');
-        }
-        resolve(data.EndpointArn);
-      });
-    });
-  const getAttributesAsync = params =>
-    new Promise((resolve, reject) => {
-      const sns = new AWS.SNS();
-      sns.getEndpointAttributes(params, (err, data) => {
-        console.log('got attrs:', err, data);
-        if (err || !data.Attributes) {
-          return err ? reject(err) : reject('attributes are missing in the response');
-        }
-        resolve(data.Attributes);
-      });
-    });
-
-  useEffect(() => {
-    (async () => {
-      if (!firebase.apps.length) {
-        await firebase.initializeApp(firebaseConfig);
-      }
-      await messaging().requestPermission();
-
-      Notifications.registerRemoteNotifications();
-
-      Notifications.events().registerRemoteNotificationsRegistered(token => onRegistration(token));
-    })();
-  }, []);
-
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
     (async () => {
@@ -153,35 +71,6 @@ function App() {
       setupRootStore().then(setRootStore);
     })();
   }, []);
-
-  useEffect(() => {
-    const showNotification = async (mes: string) => {
-      const channelId = await notifee.createChannel({
-        id: 'notification',
-        name: 'notification channel',
-        lights: false,
-        vibration: true,
-        importance: AndroidImportance.HIGH,
-      });
-
-      await notifee.requestPermission();
-
-      await notifee.displayNotification({
-        title: 'Notification',
-        body: mes,
-        android: {
-          channelId,
-          smallIcon: 'bpartners_logo',
-          color: palette.secondaryColor,
-        },
-      });
-    };
-
-    if (message) {
-      Log('Notification will appear');
-      showNotification(message);
-    }
-  }, [message]);
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background

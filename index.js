@@ -7,9 +7,17 @@
 // side effect of breaking other tooling like mobile-center and react-native-rename.
 //
 // It's easier just to leave it here.
+import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 import { AppRegistry } from 'react-native';
 
 import App from './app/app.tsx';
+import { palette } from './app/theme/palette';
+
+notifee.onBackgroundEvent(async ({ type, detail }) => {
+  const { notification, pressAction } = detail;
+
+  await notifee.cancelNotification(notification.id);
+});
 
 AppRegistry.registerComponent('BpartnersMobile', () => App);
 export default App;
