@@ -107,6 +107,13 @@
       "proposalDeclined": "Devis refusé",
       "invoiceSent": "Facture envoyée",
       "reserve": "Réserver"
+    },
+    "buttonActions": {
+      "abandonProspect": "Abandonner ce prospect",
+      "bookProspect": "Réserver ce prospect",
+      "convertProspectIntoCustomer": "Transformer en client",
+      "freeUpProspect": "Libérer ce prospect",
+      "convertCustomerIntoProspect": "Remettre en prospect"
     }
   },
   "onboardingScreen": {
