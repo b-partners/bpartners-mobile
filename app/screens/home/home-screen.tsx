@@ -6,7 +6,6 @@ import { Base64 } from 'js-base64';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Notifications, Registered } from 'react-native-notifications';
 
 import { firebaseConfig } from '../../app';
 import { HeaderWithBalance, Screen } from '../../components';
@@ -46,12 +45,12 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   const [message, setMessage] = useState<null | string>();
 
   // @ts-ignore
-  const onRegistration = async (event: Registered) => {
+  const onRegistration = async (token: string) => {
     try {
-      Log('Device Token Received', event.deviceToken);
+      Log('Device Token Received', token);
       const endpointParams = {
         PlatformApplicationArn: androidARN,
-        Token: event.deviceToken,
+        Token: token,
       };
       // fetch credentials from Cognito to create the SNS endpoint
       AWS.config = new AWS.Config();
@@ -153,9 +152,9 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
       const fcmToken = await firebase.messaging().getToken();
       if (!fcmToken) {
-        Notifications.registerRemoteNotifications();
+        await firebase.messaging().registerDeviceForRemoteMessages();
 
-        Notifications.events().registerRemoteNotificationsRegistered(token => onRegistration(token));
+        firebase.messaging().onTokenRefresh(token => onRegistration(token));
       } else {
         await onRegistrated();
       }
