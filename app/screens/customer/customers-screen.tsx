@@ -21,15 +21,24 @@ import { invoicePageSize } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Customer } from './components/customer';
-import { CustomerCreationModal } from './components/customer-creation-modal';
+import { CustomerModal } from './components/customer-creation-modal';
 
+export type CustomerModalType = {
+    type: string,
+    state: boolean,
+    customer: ICustomer
+}
 export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { customerStore } = useStores();
   const { customers, loadingCustomer } = customerStore;
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [maxPage, setMaxPage] = useState(Math.ceil(customers.length / itemsPerPage));
-  const [creationModal, setCreationModal] = useState(false);
+  const [creationModal, setCreationModal] = useState<CustomerModalType>({
+      type: 'CREATION',
+      state: false,
+      customer: null
+  });
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = customers.slice(startItemIndex, endItemIndex);
@@ -158,7 +167,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               <FlatList<ICustomer>
                 data={displayedItems}
                 style={SECTION_LIST_CONTAINER_STYLE}
-                renderItem={({ item }) => <Customer item={item} />}
+                renderItem={({ item }) => <Customer item={item} setCreationModal={setCreationModal}/>}
                 keyExtractor={item => item.id}
                 refreshing={loadingCustomer}
                 onRefresh={handleRefresh}
@@ -200,7 +209,11 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               }}
               onPress={() => {
                 customerStore.saveCustomerInit();
-                setCreationModal(true);
+                setCreationModal({
+                    type: 'CREATION',
+                    state: true,
+                    customer: undefined,
+                });
               }}
             >
               <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
@@ -231,7 +244,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
             </IButton>
           </View>
         </KeyboardAvoidingView>
-        <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
+        <CustomerModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       </View>
     </ErrorBoundary>
   );
