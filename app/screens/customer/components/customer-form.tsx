@@ -14,15 +14,15 @@ import { CustomerModalType } from '../customers-screen';
 import { CustomerValidationSchema } from '../utils/customer-validator';
 import { intiaValueRenderer, saveOrUpdate } from '../utils/utils';
 
-export const CustomerCreationForm: FC<
+export const CustomerForm: FC<
   PropsWithoutRef<{
-    visibleModal: CustomerModalType;
-    setVisibleModal: Dispatch<SetStateAction<CustomerModalType>>;
+    modal: CustomerModalType;
+    setModal: Dispatch<SetStateAction<CustomerModalType>>;
     isKeyboardOpen: boolean;
   }>
 > = observer(props => {
-  const { visibleModal, setVisibleModal, isKeyboardOpen } = props;
-  const { customer, type } = visibleModal;
+  const { modal, setModal, isKeyboardOpen } = props;
+  const { customer, type } = modal;
 
   const { customerStore } = useStores();
   const { checkCustomer, loadingCustomerCreation } = customerStore;
@@ -141,7 +141,7 @@ export const CustomerCreationForm: FC<
                 ) : (
                   <Button
                     testID='submit'
-                    onPress={() => saveOrUpdate(visibleModal, setVisibleModal, customerStore, values)}
+                    onPress={() => saveOrUpdate(modal, setModal, customerStore, values)}
                     style={{
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
