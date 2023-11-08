@@ -13,9 +13,11 @@ export class CustomerApi {
   }
 
   async getCustomers(account: string, { filters = '', ...params }): Promise<GetCustomersResult> {
+
+    const filter = filters ? filters : null;
     // make the api call
     __DEV__ && console.tron.log(`Fetching account's customer`);
-    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/customers?filters=${filters}`, params);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/customers?filters=${filter}`, params);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
@@ -39,4 +41,16 @@ export class CustomerApi {
     const customers = response.data;
     return { kind: 'ok', customers };
   }
+  async updateCustomer(accountId: string, customer: Customer): Promise<GetCustomersResult> {
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.put(`accounts/${accountId}/customers`, [customer]);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const customers = response.data;
+    return { kind: 'ok', customers };
+  }
+
 }

@@ -1,16 +1,16 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Modal, View } from 'react-native';
 
 import { Header } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { palette } from '../../../theme/palette';
+import { CustomerModalType } from '../customers-screen';
 import { CustomerCreationForm } from './customer-creation-form';
-import {CustomerModalType} from "../customers-screen";
 
 type CustomerModalProps = {
-  visibleModal: CustomerModalType,
-  setVisibleModal: Dispatch<SetStateAction<CustomerModalType>>,
-}
+  visibleModal: CustomerModalType;
+  setVisibleModal: Dispatch<SetStateAction<CustomerModalType>>;
+};
 export const CustomerModal: React.FC<CustomerModalProps> = props => {
   const { visibleModal, setVisibleModal } = props;
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
@@ -33,9 +33,9 @@ export const CustomerModal: React.FC<CustomerModalProps> = props => {
                 rightIcon='cross'
                 onRightPress={closeShareModal}
                 style={{ borderTopLeftRadius: 50 }}
-                headerTx={visibleModal?.type === 'CREATION'
-                    ? 'invoiceFormScreen.customerSelectionForm.addClient'
-                    : 'invoiceFormScreen.customerSelectionForm.editClient' }
+                headerTx={
+                  visibleModal?.type === 'CREATION' ? 'invoiceFormScreen.customerSelectionForm.addClient' : 'invoiceFormScreen.customerSelectionForm.editClient'
+                }
               />
             )}
             <View style={{ width: '100%', height: '100%' }}>

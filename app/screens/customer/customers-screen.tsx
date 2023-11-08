@@ -24,10 +24,10 @@ import { Customer } from './components/customer';
 import { CustomerModal } from './components/customer-creation-modal';
 
 export type CustomerModalType = {
-    type: string,
-    state: boolean,
-    customer: ICustomer
-}
+  type: string;
+  state: boolean;
+  customer: ICustomer;
+};
 export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { customerStore } = useStores();
   const { customers, loadingCustomer } = customerStore;
@@ -35,9 +35,9 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   const itemsPerPage = 10;
   const [maxPage, setMaxPage] = useState(Math.ceil(customers.length / itemsPerPage));
   const [creationModal, setCreationModal] = useState<CustomerModalType>({
-      type: 'CREATION',
-      state: false,
-      customer: null
+    type: 'CREATION',
+    state: false,
+    customer: null,
   });
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
@@ -167,7 +167,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               <FlatList<ICustomer>
                 data={displayedItems}
                 style={SECTION_LIST_CONTAINER_STYLE}
-                renderItem={({ item }) => <Customer item={item} setCreationModal={setCreationModal}/>}
+                renderItem={({ item }) => <Customer item={item} setCreationModal={setCreationModal} />}
                 keyExtractor={item => item.id}
                 refreshing={loadingCustomer}
                 onRefresh={handleRefresh}
@@ -210,9 +210,9 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               onPress={() => {
                 customerStore.saveCustomerInit();
                 setCreationModal({
-                    type: 'CREATION',
-                    state: true,
-                    customer: undefined,
+                  type: 'CREATION',
+                  state: true,
+                  customer: undefined,
                 });
               }}
             >

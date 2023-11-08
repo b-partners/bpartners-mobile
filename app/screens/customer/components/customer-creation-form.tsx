@@ -3,17 +3,16 @@ import {observer} from 'mobx-react-lite';
 import React, {Dispatch, FC, PropsWithoutRef, SetStateAction} from 'react';
 import {ScrollView, View} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import * as yup from 'yup';
 
 import {Button, Loader, Text} from '../../../components';
 import FormField from '../../../components/forms/form-field';
-import {translate} from '../../../i18n';
 import {useStores} from '../../../models';
 import {color, spacing} from '../../../theme';
 import {palette} from '../../../theme/palette';
-import emptyToNull from '../../../utils/empty-to-null';
 import {INVALID_FORM_FIELD} from '../../invoice-form/styles';
 import {CustomerModalType} from '../customers-screen';
+import {CustomerValidationSchema} from "../utils/customer-validator";
+import {intiaValueRenderer, saveOrUpdate} from "../utils/utils";
 
 export const CustomerCreationForm: FC<
     PropsWithoutRef<{
@@ -22,65 +21,18 @@ export const CustomerCreationForm: FC<
         isKeyboardOpen: boolean;
     }>
 > = observer(props => {
-    const validationSchema = yup.object().shape({
-        customerFirstName: yup
-            .string()
-            .required(translate('errors.required'))
-            .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName')),
-        customerLastName: yup
-            .string()
-            .required(translate('errors.required'))
-            .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName')),
-        customerAddress: yup
-            .string()
-            .required(translate('errors.required'))
-            .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.address')),
-        customerPhoneNumber: yup
-            .string()
-            .required(translate('errors.required'))
-            .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber')),
-        customerEmail: yup.string().email(translate('errors.invalidEmail')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.email')),
-    });
+    const {visibleModal, setVisibleModal, isKeyboardOpen} = props;
+    const {customer, type} = visibleModal;
 
     const {customerStore} = useStores();
     const {checkCustomer, loadingCustomerCreation} = customerStore;
-
-    const {
-        visibleModal,
-        setVisibleModal,
-        isKeyboardOpen,
-    } = props;
-
-    const {customer, type} = visibleModal;
-    const intiaValueRenderer = () => {
-        if (customer) {
-            const {firstName, lastName, address, email, phone, comment} = customer;
-            return {
-                customerFirstName: firstName,
-                customerLastName: lastName,
-                customerAddress: address,
-                customerEmail: email,
-                customerPhoneNumber: phone,
-                customerComment: comment,
-            };
-        } else {
-            return {
-                customerFirstName: '',
-                customerLastName: '',
-                customerAddress: '',
-                customerEmail: '',
-                customerPhoneNumber: '',
-                customerComment: '',
-            };
-        }
-    };
 
     return (
         <View testID='customerCreationForm' style={{height: '100%', width: '100%'}}>
             {isKeyboardOpen && <View style={{width: '100%', height: 50, backgroundColor: palette.secondaryColor}}/>}
             <Formik
-                initialValues={intiaValueRenderer()}
-                validationSchema={validationSchema}
+                initialValues={intiaValueRenderer(customer)}
+                validationSchema={CustomerValidationSchema}
                 onSubmit={async values => {
                     __DEV__ && console.tron.log({values});
                     try {
@@ -193,32 +145,7 @@ export const CustomerCreationForm: FC<
                                 ) : (
                                     <Button
                                         testID='submit'
-                                        onPress={async () => {
-                                            try {
-                                                await customerStore.saveCustomer({
-                                                    ...emptyToNull({
-                                                        firstName: values.customerFirstName,
-                                                        lastName: values.customerLastName,
-                                                        email: values.customerEmail,
-                                                        phone: values.customerPhoneNumber,
-                                                        address: values.customerAddress,
-                                                        website: null,
-                                                        city: null,
-                                                        country: null,
-                                                        comment: null,
-                                                    }),
-                                                    zipCode: 0,
-                                                });
-                                                await customerStore.getCustomers();
-                                                setVisibleModal({
-                                                    type: 'CREATION',
-                                                    state: false,
-                                                    customer: undefined,
-                                                });
-                                            } catch (e) {
-                                                __DEV__ && console.tron.log(e);
-                                            }
-                                        }}
+                                        onPress={() => saveOrUpdate(visibleModal, setVisibleModal, customerStore, values)}
                                         style={{
                                             backgroundColor: color.palette.secondaryColor,
                                             height: 45,
@@ -227,13 +154,17 @@ export const CustomerCreationForm: FC<
                                         }}
                                         textStyle={{fontSize: 14, fontFamily: 'Geometria-Bold'}}
                                     >
-                                        {loadingCustomerCreation === true
-                                            ? <Loader/>
-                                            :
-                                            <Text tx={type === 'CREATION'
-                                                ? 'invoiceFormScreen.customerSelectionForm.customerCreationForm.add'
-                                                : 'invoiceFormScreen.customerSelectionForm.customerCreationForm.edit'}
-                                            />}
+                                        {loadingCustomerCreation === true ? (
+                                            <Loader/>
+                                        ) : (
+                                            <Text
+                                                tx={
+                                                    type === 'CREATION'
+                                                        ? 'invoiceFormScreen.customerSelectionForm.customerCreationForm.add'
+                                                        : 'invoiceFormScreen.customerSelectionForm.customerCreationForm.edit'
+                                                }
+                                            />
+                                        )}
                                     </Button>
                                 )}
                             </View>
