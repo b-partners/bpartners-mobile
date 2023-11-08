@@ -420,7 +420,8 @@
         "add": "Ajouter ce client",
         "edit": "Modifier ce client",
         "added": "Ajouté",
-        "fail": "Réessayer"
+        "fail": "Réessayer",
+        "addOrUpdate": "Mise à jour avec succès"
       }
     },
     "productCreationForm": {

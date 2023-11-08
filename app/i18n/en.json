@@ -436,7 +436,8 @@
         "add": "Add this customer",
         "edit": "Edit this customer",
         "added": "Added",
-        "fail": "Try again"
+        "fail": "Try again",
+        "addOrUpdate": "Updated successfully"
       }
     },
     "productCreationForm": {

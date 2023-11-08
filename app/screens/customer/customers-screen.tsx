@@ -53,7 +53,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     })();
-  }, []);
+  }, [creationModal]);
 
   const handleRefresh = async () => {
     await customerStore.getCustomers({ page: 1, pageSize: invoicePageSize });

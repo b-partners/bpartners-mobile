@@ -13,11 +13,9 @@ export class CustomerApi {
   }
 
   async getCustomers(account: string, { filters = '', ...params }): Promise<GetCustomersResult> {
-
-    const filter = filters ? filters : null;
     // make the api call
     __DEV__ && console.tron.log(`Fetching account's customer`);
-    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/customers?filters=${filter}`, params);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${account}/customers?filters=${filters}`, params);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
@@ -52,5 +50,4 @@ export class CustomerApi {
     const customers = response.data;
     return { kind: 'ok', customers };
   }
-
 }
