@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { FC, PropsWithoutRef } from 'react';
+import React, {Dispatch, FC, PropsWithoutRef, SetStateAction} from 'react';
 import { View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as yup from 'yup';
@@ -14,15 +14,17 @@ import { palette } from '../../../theme/palette';
 import { commaToDot, commaValidation } from '../../../utils/comma-to-dot';
 import { vatToMinors } from '../../../utils/money';
 import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
+import {ProductModalType} from "../products-screen";
 
-export const ProductCreationForm: FC<
+export const ProductForm: FC<
   PropsWithoutRef<{
-    setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
+      modal: ProductModalType;
+      setModal: Dispatch<SetStateAction<ProductModalType>>;
   }>
 > = observer(props => {
   const initialValues = { unitPrice: '', description: '' };
 
-  const { setVisibleModal } = props;
+    const { modal, setModal} = props;
 
   const validationSchema = yup.object().shape({
     unitPrice: yup
