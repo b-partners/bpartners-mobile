@@ -12,7 +12,7 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { printCurrencyToMajors, printVat } from '../../../../utils/money';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils/styles';
-import { ProductModal } from '../../../product/components/product-modal';
+import { ProductCreationModal } from '../../../product/components/product-creation-modal';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
 
@@ -141,7 +141,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                         <EntypoIcon name='chevron-thin-down' size={18} color='#000' />
                       </View>
                     </TouchableOpacity>
-                    <ProductModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
+                    <ProductCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
                     <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
                       <View>
                         <View
