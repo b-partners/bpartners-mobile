@@ -1,38 +1,58 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { Dispatch, FC, PropsWithoutRef, SetStateAction } from 'react';
+import React, { FC, PropsWithoutRef } from 'react';
 import { ScrollView, View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import * as yup from 'yup';
 
 import { Button, Loader, Text } from '../../../components';
 import FormField from '../../../components/forms/form-field';
+import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import emptyToNull from '../../../utils/empty-to-null';
 import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
-import { CustomerModalType } from '../customers-screen';
-import { CustomerValidationSchema } from '../utils/customer-validator';
-import { intiaValueRenderer, saveOrUpdate } from '../utils/utils';
 
-export const CustomerForm: FC<
+export const CustomerCreationForm: FC<
   PropsWithoutRef<{
-    modal: CustomerModalType;
-    setModal: Dispatch<SetStateAction<CustomerModalType>>;
+    setVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
     isKeyboardOpen: boolean;
   }>
 > = observer(props => {
-  const { modal, setModal, isKeyboardOpen } = props;
-  const { customer, type } = modal;
+  const initialValues = { customerFirstName: '', customerLastName: '', customerAddress: '', customerEmail: '', customerPhoneNumber: '', customerComment: '' };
+
+  const validationSchema = yup.object().shape({
+    customerFirstName: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.firstName')),
+    customerLastName: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.lastName')),
+    customerAddress: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.address')),
+    customerPhoneNumber: yup
+      .string()
+      .required(translate('errors.required'))
+      .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.phoneNumber')),
+    customerEmail: yup.string().email(translate('errors.invalidEmail')).label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.email')),
+  });
 
   const { customerStore } = useStores();
   const { checkCustomer, loadingCustomerCreation } = customerStore;
+
+  const { setVisibleModal, isKeyboardOpen } = props;
 
   return (
     <View testID='customerCreationForm' style={{ height: '100%', width: '100%' }}>
       {isKeyboardOpen && <View style={{ width: '100%', height: 50, backgroundColor: palette.secondaryColor }} />}
       <Formik
-        initialValues={intiaValueRenderer(customer)}
-        validationSchema={CustomerValidationSchema}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={async values => {
           __DEV__ && console.tron.log({ values });
           try {
@@ -141,7 +161,28 @@ export const CustomerForm: FC<
                 ) : (
                   <Button
                     testID='submit'
-                    onPress={() => saveOrUpdate(modal, setModal, customerStore, values)}
+                    onPress={async () => {
+                      try {
+                        await customerStore.saveCustomer({
+                          ...emptyToNull({
+                            firstName: values.customerFirstName,
+                            lastName: values.customerLastName,
+                            email: values.customerEmail,
+                            phone: values.customerPhoneNumber,
+                            address: values.customerAddress,
+                            website: null,
+                            city: null,
+                            country: null,
+                            comment: null,
+                          }),
+                          zipCode: 0,
+                        });
+                        await customerStore.getCustomers();
+                        setVisibleModal(false);
+                      } catch (e) {
+                        __DEV__ && console.tron.log(e);
+                      }
+                    }}
                     style={{
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,
@@ -150,17 +191,7 @@ export const CustomerForm: FC<
                     }}
                     textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
                   >
-                    {loadingCustomerCreation === true ? (
-                      <Loader />
-                    ) : (
-                      <Text
-                        tx={
-                          type === 'CREATION'
-                            ? 'invoiceFormScreen.customerSelectionForm.customerCreationForm.add'
-                            : 'invoiceFormScreen.customerSelectionForm.customerCreationForm.edit'
-                        }
-                      />
-                    )}
+                    {loadingCustomerCreation === true ? <Loader /> : <Text tx='invoiceFormScreen.customerSelectionForm.customerCreationForm.add' />}
                   </Button>
                 )}
               </View>

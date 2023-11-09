@@ -19,7 +19,7 @@ import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
-import { CustomerCreationModal } from '../customer/components/customer-modal';
+import { CustomerCreationModal } from '../customer/components/customer-creation-modal';
 import { LOADER_STYLE } from '../invoices/utils/styles';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { PaymentCreationModal } from './components/payment-regulation-form-field/payment-creation-modal';
