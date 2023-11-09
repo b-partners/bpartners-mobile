@@ -1,31 +1,23 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, View } from 'react-native';
 
 import { Header } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { palette } from '../../../theme/palette';
-import { CustomerModalType } from '../customers-screen';
-import { CustomerForm } from './customer-form';
+import { ModalProps } from '../../invoice-form/components/utils';
+import { CustomerCreationForm } from './customer-creation-form';
 
-type CustomerModalProps = {
-  modal: CustomerModalType;
-  setModal: Dispatch<SetStateAction<CustomerModalType>>;
-};
-export const CustomerModal: React.FC<CustomerModalProps> = props => {
-  const { modal, setModal } = props;
+export const CustomerCreationModal: React.FC<ModalProps> = props => {
+  const { visibleModal, setVisibleModal } = props;
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   const closeShareModal = () => {
-    setModal({
-      type: 'CREATION',
-      state: false,
-      customer: null,
-    });
+    setVisibleModal(false);
   };
 
   return (
     <KeyboardLayout setKeyboardOpen={setIsKeyboardOpen}>
-      <Modal animationType='slide' transparent={true} visible={modal?.state} onRequestClose={closeShareModal}>
+      <Modal animationType='slide' transparent={true} visible={visibleModal} onRequestClose={closeShareModal}>
         <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'flex-end', alignItems: 'center' }}>
           <View style={{ backgroundColor: palette.white, height: '100%', width: '100%' }}>
             {!isKeyboardOpen && (
@@ -33,13 +25,11 @@ export const CustomerModal: React.FC<CustomerModalProps> = props => {
                 rightIcon='cross'
                 onRightPress={closeShareModal}
                 style={{ borderTopLeftRadius: 50 }}
-                headerTx={
-                  modal?.type === 'CREATION' ? 'invoiceFormScreen.customerSelectionForm.addClient' : 'invoiceFormScreen.customerSelectionForm.editClient'
-                }
+                headerTx='invoiceFormScreen.customerSelectionForm.addClient'
               />
             )}
             <View style={{ width: '100%', height: '100%' }}>
-              <CustomerForm modal={modal} setModal={setModal} isKeyboardOpen={isKeyboardOpen} />
+              <CustomerCreationForm setVisibleModal={setVisibleModal} isKeyboardOpen={isKeyboardOpen} />
             </View>
           </View>
         </View>
