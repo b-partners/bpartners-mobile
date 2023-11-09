@@ -34,8 +34,7 @@
     "noInformation": "No information available",
     "noData": "Unknown",
     "search": "Search",
-    "open": "Open",
-    "addedOrUpdated": "Updated successfully !"
+    "open": "Open"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -454,9 +453,7 @@
     },
     "productCreationForm": {
       "unitPrice": "Unit price before tax (in €)",
-      "description": "Description",
-      "add": "Add this product",
-      "edit": "Edit this product"
+      "description": "Description"
     },
     "productForm": {
       "addProduct": "Add a product",
