@@ -37,16 +37,4 @@ export class ProductApi {
     const products = response.data;
     return { kind: 'ok', products };
   }
-
-  async updateProduct(accountId: string, product: Product): Promise<GetProductsResult> {
-    // make the api call
-    const response: ApiResponse<any> = await this.api.apisauce.put(`accounts/${accountId}/products`, [product]);
-    // the typical ways to die when calling an api
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response);
-      if (problem) throw new Error(problem.kind);
-    }
-    const products = response.data;
-    return { kind: 'ok', products };
-  }
 }
