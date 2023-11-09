@@ -26,15 +26,7 @@ export const CustomerModal: React.FC<CustomerModalProps> = props => {
   return (
     <KeyboardLayout setKeyboardOpen={setIsKeyboardOpen}>
       <Modal animationType='slide' transparent={true} visible={modal?.state} onRequestClose={closeShareModal}>
-        <View
-          style={{
-            height: '100%',
-            width: '100%',
-            backgroundColor: 'rgba(16,16,19,0.9)',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}
-        >
+        <View style={{ height: '100%', width: '100%', backgroundColor: 'rgba(16,16,19,0.9)', justifyContent: 'flex-end', alignItems: 'center' }}>
           <View style={{ backgroundColor: palette.white, height: '100%', width: '100%' }}>
             {!isKeyboardOpen && (
               <Header
