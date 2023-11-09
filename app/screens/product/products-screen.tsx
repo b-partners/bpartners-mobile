@@ -61,7 +61,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
                 showMessage(translate('errors.somethingWentWrong'), {backgroundColor: palette.pastelRed});
             }
         })();
-    }, []);
+    }, [modal]);
 
     const handleRefresh = async () => {
         await productStore.getProducts({page: 1, pageSize: invoicePageSize});
@@ -282,7 +282,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
                             <FlatList<IProduct>
                                 data={displayedItems}
                                 style={SECTION_LIST_CONTAINER_STYLE}
-                                renderItem={({item}) => <Product item={item}/>}
+                                renderItem={({item}) => <Product item={item} setModal={setModal}/>}
                                 keyExtractor={item => item.id}
                                 refreshing={loadingProduct}
                                 onRefresh={handleRefresh}
