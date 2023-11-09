@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-#import <Firebase.h>
+//#import <Firebase.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -36,7 +36,7 @@
 
   RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
 
-  [FIRApp configure];
+  // [FIRApp configure];
 
 #if RCT_NEW_ARCH_ENABLED
   _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
