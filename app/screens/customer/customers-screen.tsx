@@ -21,24 +21,15 @@ import { invoicePageSize } from '../invoice-form/components/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Customer } from './components/customer';
-import { CustomerModal } from './components/customer-modal';
+import { CustomerCreationModal } from './components/customer-creation-modal';
 
-export type CustomerModalType = {
-  type: string;
-  state: boolean;
-  customer: ICustomer;
-};
 export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { customerStore } = useStores();
   const { customers, loadingCustomer } = customerStore;
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [maxPage, setMaxPage] = useState(Math.ceil(customers.length / itemsPerPage));
-  const [modal, setModal] = useState<CustomerModalType>({
-    type: 'CREATION',
-    state: false,
-    customer: null,
-  });
+  const [creationModal, setCreationModal] = useState(false);
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = customers.slice(startItemIndex, endItemIndex);
@@ -53,7 +44,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     })();
-  }, [modal]);
+  }, []);
 
   const handleRefresh = async () => {
     await customerStore.getCustomers({ page: 1, pageSize: invoicePageSize });
@@ -167,7 +158,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               <FlatList<ICustomer>
                 data={displayedItems}
                 style={SECTION_LIST_CONTAINER_STYLE}
-                renderItem={({ item }) => <Customer item={item} setCreationModal={setModal} />}
+                renderItem={({ item }) => <Customer item={item} />}
                 keyExtractor={item => item.id}
                 refreshing={loadingCustomer}
                 onRefresh={handleRefresh}
@@ -209,11 +200,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               }}
               onPress={() => {
                 customerStore.saveCustomerInit();
-                setModal({
-                  type: 'CREATION',
-                  state: true,
-                  customer: null,
-                });
+                setCreationModal(true);
               }}
             >
               <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
@@ -244,7 +231,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
             </IButton>
           </View>
         </KeyboardAvoidingView>
-        <CustomerModal modal={modal} setModal={setModal} />
+        <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       </View>
     </ErrorBoundary>
   );
