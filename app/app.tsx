@@ -42,6 +42,17 @@ Sentry.init({
 
 env.appEnv !== 'dev' && LogBox.ignoreAllLogs();
 
+export const firebaseConfig = {
+  authDomain: '',
+  databaseURL: '',
+  storageBucket: '',
+  messagingSenderId: '398836708559',
+  measurementId: '',
+  projectId: 'bpartners-notification-push',
+  appId: '1:398836708559:android:40b9be40b768eb0206f3ba',
+  apiKey: 'AIzaSyBDpF1jZq0t3O5XXzvHcHdRYBGpfL9Fw58',
+};
+
 /**
  * This is the root component of our app.
  */
