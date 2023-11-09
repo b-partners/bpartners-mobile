@@ -1,3 +1,4 @@
+import { Auth } from '@aws-amplify/auth';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import { DrawerScreenProps } from '@react-navigation/drawer';
@@ -5,7 +6,7 @@ import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import { Base64 } from 'js-base64';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import { firebaseConfig } from '../../app';
 import { HeaderWithBalance, Screen } from '../../components';
@@ -14,6 +15,7 @@ import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { createFileUrl } from '../../utils/file-utils';
+import { RTLog } from '../../utils/reactotron-log';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
 import { Log } from '../welcome/utils/utils';
@@ -21,6 +23,7 @@ import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { Logo } from './components/logo';
 import { Menu } from './components/menu';
 import { TransactionSummary } from './components/transaction-summary';
+import { createARNAsync, getAttributesAsync } from './utils/function';
 import { FULL } from './utils/styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
@@ -45,32 +48,47 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   const [message, setMessage] = useState<null | string>();
 
   // @ts-ignore
-  const onRegistration = async (token: string) => {
+  const onRemoteMessage = async () => {
+    RTLog('onRemoteMessage called');
     try {
-      Log('Device Token Received', token);
-      const endpointParams = {
-        PlatformApplicationArn: androidARN,
-        Token: token,
-      };
-      // fetch credentials from Cognito to create the SNS endpoint
       AWS.config = new AWS.Config();
-      AWS.config.accessKeyId = 'AKIA2AVA33WTCMVJTL5S';
-      AWS.config.secretAccessKey = '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';
+      AWS.config.credentials = await Auth.currentCredentials();
       AWS.config.region = 'eu-west-3';
-      const endpointARN = await createARNAsync(endpointParams);
-      if (!endpointARN) {
-        throw new Error('error creating endpointARN');
-      }
-      Log('endpointARN:', endpointARN);
+    } catch (e) {
+      RTLog('Error configuring AWS');
+    }
+    RTLog('AWS Configuration finished');
+    const isRegistered = firebase.messaging().isDeviceRegisteredForRemoteMessages;
+    const [endpointARN, setEndpointARN] = useState('');
+    RTLog('Is Registered ? ' + isRegistered);
+    if (!isRegistered) {
+      RTLog('Register for remote notification');
+      await firebase.messaging().registerDeviceForRemoteMessages();
 
-      //get endpoint attributes
+      firebase.messaging().onTokenRefresh(async token => {
+        Log('Device Token Received', token);
+        const endpointParams = {
+          PlatformApplicationArn: androidARN,
+          Token: token,
+        };
+        const newARN = await createARNAsync(endpointParams);
+        if (!newARN) {
+          RTLog('Error creating endpointARN');
+        }
+        setEndpointARN(newARN.toString());
+      });
+    } else {
+      setEndpointARN(Base64.decode(currentUser.snsArn));
+    }
+    try {
+      Log('endpointARN:', endpointARN);
       let attributes = await getAttributesAsync({
         EndpointArn: endpointARN,
       });
       Log('attributes:', attributes);
       // @ts-ignore
       if ((attributes && !attributes.Enabled) || attributes.Token !== event.deviceToken) {
-        throw new Error('endpoint error');
+        RTLog('Endpoint Error');
       }
       messaging().onMessage(async remoteMessage => {
         const messageData = remoteMessage.data;
@@ -83,65 +101,9 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
         setMessage(messageData.default.toString());
       });
     } catch (e) {
-      return 0;
+      RTLog(e.message);
     }
   };
-
-  // @ts-ignore
-  const onRegistrated = async () => {
-    try {
-      AWS.config = new AWS.Config();
-      AWS.config.accessKeyId = 'AKIA2AVA33WTCMVJTL5S';
-      AWS.config.secretAccessKey = '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';
-      AWS.config.region = 'eu-west-3';
-      const endpointARN = Base64.decode(currentUser.snsArn);
-      Log('endpointARN:', endpointARN);
-
-      //get endpoint attributes
-      let attributes = await getAttributesAsync({
-        EndpointArn: endpointARN,
-      });
-      Log('attributes:', attributes);
-      // @ts-ignore
-      if ((attributes && !attributes.Enabled) || attributes.Token !== event.deviceToken) {
-        throw new Error('endpoint error');
-      }
-      messaging().onMessage(async remoteMessage => {
-        const messageData = remoteMessage.data;
-        Log('data: ', messageData.default);
-        setMessage(messageData.default.toString());
-      });
-      messaging().setBackgroundMessageHandler(async remoteMessage => {
-        const messageData = remoteMessage.data;
-        Log('data: ', messageData.default);
-        setMessage(messageData.default.toString());
-      });
-    } catch (e) {
-      return 0;
-    }
-  };
-  const createARNAsync = params =>
-    new Promise((resolve, reject) => {
-      const sns = new AWS.SNS();
-      sns.createPlatformEndpoint(params, (err, data) => {
-        console.log('created endpoint', err, data);
-        if (err || !data.EndpointArn) {
-          return err ? reject(err) : reject('arn is missing');
-        }
-        resolve(data.EndpointArn);
-      });
-    });
-  const getAttributesAsync = params =>
-    new Promise((resolve, reject) => {
-      const sns = new AWS.SNS();
-      sns.getEndpointAttributes(params, (err, data) => {
-        console.log('got attrs:', err, data);
-        if (err || !data.Attributes) {
-          return err ? reject(err) : reject('attributes are missing in the response');
-        }
-        resolve(data.Attributes);
-      });
-    });
 
   useEffect(() => {
     (async () => {
@@ -150,14 +112,12 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       }
       await messaging().requestPermission();
 
-      const fcmToken = await firebase.messaging().getToken();
-      if (!fcmToken) {
+      if (Platform.OS === 'ios') {
         await firebase.messaging().registerDeviceForRemoteMessages();
-
-        firebase.messaging().onTokenRefresh(token => onRegistration(token));
-      } else {
-        await onRegistrated();
+        const apnsToken = await firebase.messaging().getAPNSToken();
+        Log('APNS Token: ' + apnsToken);
       }
+      await onRemoteMessage();
     })();
   }, []);
 
