@@ -487,8 +487,7 @@
     },
     "customerSelectionForm": {
       "title": "Client Name",
-      "addClient": "Add a customer",
-      "editClient": "Edit a customer",
+      "addClient": "Add a client",
       "validate": "Validate",
       "customerType": {
         "professional": "Professional",
@@ -503,10 +502,8 @@
         "phoneNumber": "Phone Number",
         "comment": "Comment (Optional)",
         "add": "Add this customer",
-        "edit": "Edit this customer",
         "added": "Added",
-        "fail": "Try again",
-        "addOrUpdate": "Updated successfully !"
+        "fail": "Try again"
       }
     },
     "productCreationForm": {
