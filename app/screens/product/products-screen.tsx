@@ -120,6 +120,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
   }
 
   const searchProduct = async () => {
+    setCurrentPage(1);
     const searchPrice = watch('price');
     searchPrice
       ? await productStore.getProducts({
