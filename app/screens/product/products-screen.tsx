@@ -24,23 +24,14 @@ import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils'
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Product } from './components/product';
-import { ProductModal } from './components/product-modal';
+import { ProductCreationModal } from './components/product-creation-modal';
 
-export type ProductModalType = {
-  type: string;
-  state: boolean;
-  product: IProduct;
-};
 export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { productStore } = useStores();
   const { products, loadingProduct } = productStore;
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(products.length / itemsPerPage));
-  const [modal, setModal] = useState<ProductModalType>({
-    type: 'CREATION',
-    state: false,
-    product: null,
-  });
+  const [creationModal, setCreationModal] = useState(false);
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = products.slice(startItemIndex, endItemIndex);
@@ -61,7 +52,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     })();
-  }, [modal]);
+  }, []);
 
   const handleRefresh = async () => {
     await productStore.getProducts({ page: 1, pageSize: invoicePageSize });
@@ -120,7 +111,6 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
   }
 
   const searchProduct = async () => {
-    setCurrentPage(1);
     const searchPrice = watch('price');
     searchPrice
       ? await productStore.getProducts({
@@ -129,11 +119,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
           page: 1,
           pageSize: invoicePageSize,
         })
-      : await productStore.getProducts({
-          descriptionFilter: searchDescription,
-          page: 1,
-          pageSize: invoicePageSize,
-        });
+      : await productStore.getProducts({ descriptionFilter: searchDescription, page: 1, pageSize: invoicePageSize });
   };
 
   const handleSearchPrice = async price => {
@@ -144,11 +130,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
           page: 1,
           pageSize: invoicePageSize,
         })
-      : await productStore.getProducts({
-          priceFilter: vatToMinors(commaToDot(price)),
-          page: 1,
-          pageSize: invoicePageSize,
-        });
+      : await productStore.getProducts({ priceFilter: vatToMinors(commaToDot(price)), page: 1, pageSize: invoicePageSize });
   };
 
   const descriptionTimeout = useRef(null);
@@ -180,11 +162,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
         updateMaxPage();
       } else {
         if (searchDescription) {
-          await productStore.getProducts({
-            descriptionFilter: searchDescription,
-            page: 1,
-            pageSize: invoicePageSize,
-          });
+          await productStore.getProducts({ descriptionFilter: searchDescription, page: 1, pageSize: invoicePageSize });
           updateMaxPage();
         } else {
           await handleRefresh();
@@ -197,15 +175,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='productScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
       <View testID='ProductsScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            height: 60,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
+        <View style={{ flexDirection: 'row', width: '100%', height: 60, justifyContent: 'center', alignItems: 'center' }}>
           <Searchbar
             placeholder={translate('common.search')}
             onChangeText={handleInputChange}
@@ -226,11 +196,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             onClearIconPress={async () => {
               const searchPrice = watch('price');
               if (searchPrice) {
-                await productStore.getProducts({
-                  priceFilter: vatToMinors(commaToDot(searchPrice)),
-                  page: 1,
-                  pageSize: invoicePageSize,
-                });
+                await productStore.getProducts({ priceFilter: vatToMinors(commaToDot(searchPrice)), page: 1, pageSize: invoicePageSize });
                 updateMaxPage();
               } else {
                 await handleRefresh();
@@ -271,12 +237,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
         </View>
         {!loadingProduct ? (
           <Screen
-            style={{
-              backgroundColor: color.transparent,
-              display: 'flex',
-              flexDirection: 'column',
-              paddingBottom: spacing[3],
-            }}
+            style={{ backgroundColor: color.transparent, display: 'flex', flexDirection: 'column', paddingBottom: spacing[3] }}
             preset='scroll'
             backgroundColor={palette.white}
           >
@@ -284,7 +245,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
               <FlatList<IProduct>
                 data={displayedItems}
                 style={SECTION_LIST_CONTAINER_STYLE}
-                renderItem={({ item }) => <Product item={item} setModal={setModal} />}
+                renderItem={({ item }) => <Product item={item} />}
                 keyExtractor={item => item.id}
                 refreshing={loadingProduct}
                 onRefresh={handleRefresh}
@@ -324,14 +285,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
                 alignContent: 'center',
                 marginLeft: spacing[6],
               }}
-              onPress={() => {
-                productStore.saveProductInit();
-                setModal({
-                  type: 'CREATION',
-                  state: true,
-                  product: null,
-                });
-              }}
+              onPress={() => setCreationModal(true)}
             >
               <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
               <Text tx={'common.create'} style={{ fontSize: 14 }} />
@@ -361,7 +315,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             </IButton>
           </View>
         </KeyboardAvoidingView>
-        <ProductModal modal={modal} setModal={setModal} />
+        <ProductCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
       </View>
     </ErrorBoundary>
   );
