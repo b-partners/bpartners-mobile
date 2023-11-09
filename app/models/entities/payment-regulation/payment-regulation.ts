@@ -14,8 +14,16 @@ export const PaymentRequestModel = types.model('PaymentRequest').props({
   comment: types.maybeNull(types.string),
 });
 
+export const PaymentStatusModel = types.model('PaymentStatus').props({
+  paymentMethod: types.maybeNull(types.string),
+  paymentStatus: types.maybeNull(types.string),
+  updatedAt: types.maybeNull(types.string),
+  userUpdated: types.maybeNull(types.boolean),
+});
+
 export const PaymentRegulationModel = types.model('PaymentRegulation').props({
   paymentRequest: types.maybe(PaymentRequestModel),
+  status: types.maybeNull(PaymentStatusModel),
   maturityDate: types.maybeNull(types.string),
   comment: types.maybeNull(types.string),
   percent: types.maybeNull(types.number),
