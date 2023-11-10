@@ -34,7 +34,8 @@
     "noInformation": "Aucune information",
     "noData": "Non renseigné",
     "search": "Rechercher",
-    "open": "Ouvrir"
+    "open": "Ouvrir",
+    "addedOrUpdated": "Mis à jour avec succès !"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -429,7 +430,9 @@
     },
     "productCreationForm": {
       "unitPrice": "Prix unitaire HT (en €)",
-      "description": "Description"
+      "description": "Description",
+      "add": "Ajouter ce produit",
+      "edit": "Modifier ce produit"
     },
     "productForm": {
       "addProduct": "Ajouter un produit",
