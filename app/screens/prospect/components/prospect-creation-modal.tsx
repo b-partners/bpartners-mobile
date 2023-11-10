@@ -7,18 +7,14 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { useStores } from '../../../models';
-import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
-import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
-import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
-import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
+import { ProspectCreationModalProps, ProspectFeedback } from '../utils/utils';
 import { ButtonActions } from './button-action';
 
-export const ProcessModal: React.FC<ProcessModalProps> = props => {
-  const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus } = props;
+export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props => {
+  const { showModal, setShowModal, status, setStatus } = props;
 
   const { prospectStore } = useStores();
 
@@ -26,7 +22,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const [amount, setAmount] = useState(amountToMajors(prospect?.contractAmount)?.toString());
+  const [amount, setAmount] = useState();
 
   const closeModal = () => {
     setStatus(null);
@@ -42,11 +38,11 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
   } = useForm({
     mode: 'all',
     defaultValues: {
-      email: prospect?.email,
-      phone: prospect?.phone,
-      address: prospect?.address,
-      name: prospect?.name,
-      comment: prospect?.comment,
+      email: '',
+      phone: '',
+      address: '',
+      name: '',
+      comment: '',
     },
   });
 
@@ -56,20 +52,8 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
 
   const onSubmit = async prospectInfos => {
     setIsLoading(true);
-    const editedStatus = current === ProspectFeedback.NOT_INTERESTED || current === ProspectFeedback.PROPOSAL_DECLINED ? ProspectStatus.TO_CONTACT : status;
-    const prospectToBeEdited = {
-      ...prospect,
-      name: prospectInfos.name,
-      email: prospectInfos.email,
-      phone: prospectInfos.phone,
-      address: prospectInfos.address,
-      comment: prospectInfos.comment,
-      contractAmount: amountToMinors(parseInt(amount, 10)),
-      status: editedStatus,
-    };
-    delete prospectToBeEdited.location;
     try {
-      await prospectStore.updateProspects(prospectToBeEdited.id, prospectToBeEdited);
+      // await prospectStore.updateProspects(prospectToBeEdited.id, prospectToBeEdited);
     } catch (e) {
       showMessage(e);
       throw e;
@@ -77,7 +61,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       setIsLoading(false);
       closeModal();
       await prospectStore.getProspects();
-      setCurrentStatus(editedStatus);
+      // setCurrentStatus(editedStatus);
     }
   };
 
@@ -120,7 +104,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           >
             <View style={{ height: '100%', width: '85%', flexDirection: 'row', alignItems: 'center', paddingLeft: spacing[4] }}>
               <Text text={'Prospect : '} style={{ fontSize: 15, color: palette.secondaryColor }} />
-              <Text text={prospect?.name} style={{ fontSize: 15, color: palette.secondaryColor }} />
+              <Text text={''} style={{ fontSize: 15, color: palette.secondaryColor }} />
             </View>
             <TouchableOpacity onPress={closeModal} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <AntDesignIcon name='close' color={color.palette.lightGrey} size={20} />
@@ -230,61 +214,6 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                 />
               </View>
-              {prospect?.status === ProspectStatus.TO_CONTACT ? (
-                <View style={{ flex: 1, paddingTop: spacing[4] }}>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.INTERESTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.INTERESTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.INTERESTED} />
-                    <Text tx={'prospectScreen.process.interested'} style={current === ProspectFeedback.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.NOT_INTERESTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.NOT_INTERESTED} />
-                    <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_SENT)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_SENT} />
-                    <Text tx={'prospectScreen.process.proposalSent'} style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View style={{ flex: 1, paddingTop: spacing[4] }}>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_ACCEPTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_ACCEPTED} />
-                    <Text
-                      tx={'prospectScreen.process.proposalAccepted'}
-                      style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED_TEXT : UNCHECKED_TEXT}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_DECLINED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_DECLINED} />
-                    <Text
-                      tx={'prospectScreen.process.proposalDeclined'}
-                      style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED_TEXT : UNCHECKED_TEXT}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.INVOICE_SENT ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.INVOICE_SENT)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.INVOICE_SENT} />
-                    <Text tx={'prospectScreen.process.invoiceSent'} style={current === ProspectFeedback.INVOICE_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                </View>
-              )}
             </View>
           )}
           <View
@@ -301,7 +230,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           >
             <ButtonActions
               isLoading={isLoading}
-              prospectStatus={prospect?.status}
+              prospectStatus={status}
               selectedStatus={status}
               prospectFeedBack={current}
               currentPage={currentPage}
