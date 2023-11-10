@@ -9,6 +9,7 @@ import { translate } from '../../../i18n';
 import { PaymentMethodModel } from '../../../models/entities/invoice/invoice';
 import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { formatDate } from '../../../utils/format-date';
 import { printCurrency } from '../../../utils/money';
 import { transactionStyles } from '../../transaction/utils/styles';
 import {
@@ -50,6 +51,26 @@ export const PartialPaymentModal = (props: PartialPaymentProps) => {
             {item.paymentRegulations.map(paymentRegulation => (
               <View style={styles.body} key={paymentRegulation.paymentRequest.id}>
                 <View style={styles.infosContainer}>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      width: 70,
+                      height: 25,
+                      top: 0,
+                      left: -15,
+                      transform: [{ rotate: '-35deg' }],
+                      borderRadius: 15,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      zIndex: 10,
+                    }}
+                  >
+                    {paymentRegulation.status.paymentStatus === 'UNPAID' ? (
+                      <Text text={'A payer'} style={{ fontFamily: 'Geometria', color: palette.saffron, fontSize: 15, fontWeight: 'bold' }} />
+                    ) : (
+                      <Text text={'Payée'} style={{ fontFamily: 'Geometria-Bold', color: palette.apple, fontSize: 16, fontWeight: 'bold' }} />
+                    )}
+                  </View>
                   <View style={styles.titleContainer}>
                     <Text text={paymentRegulation.paymentRequest.label} style={styles.text} />
                   </View>
@@ -58,39 +79,50 @@ export const PartialPaymentModal = (props: PartialPaymentProps) => {
                   </View>
                 </View>
                 <View style={styles.buttonContainer}>
-                  <Dropdown<PaymentMethodModel>
-                    items={paymentMethods}
-                    labelField='label'
-                    valueField='value'
-                    onChangeText={() => {}}
-                    onChange={method => setSelectedMethod(method)}
-                    placeholder={translate('transactionListScreen.transactionCategoryPlaceholder')}
-                    value={selectedMethod}
-                    dropdownContainerStyle={styles.dropdownContainer}
-                    style={styles.dropdown}
-                    selectedItemTextStyle={{ color: palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
-                    itemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria' }}
-                    placeholderTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
-                  >
-                    <View testID='transaction-category-container' style={transactionStyles.dropdownChildren}>
-                      <Text text={selectedMethod.label} testID='transaction-category' numberOfLines={2} style={styles.dropdownChildrenText} />
-                      <Ionicons name='chevron-down-sharp' size={17} color={palette.lightGrey} />
+                  {paymentRegulation.status.paymentStatus === 'UNPAID' ? (
+                    <>
+                      <Dropdown<PaymentMethodModel>
+                        items={paymentMethods}
+                        labelField='label'
+                        valueField='value'
+                        onChangeText={() => {}}
+                        onChange={method => setSelectedMethod(method)}
+                        placeholder={translate('transactionListScreen.transactionCategoryPlaceholder')}
+                        value={selectedMethod}
+                        dropdownContainerStyle={styles.dropdownContainer}
+                        style={styles.dropdown}
+                        selectedItemTextStyle={{ color: palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
+                        itemTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria' }}
+                        placeholderTextStyle={{ color: color.palette.textClassicColor, fontFamily: 'Geometria-Bold' }}
+                      >
+                        <View testID='transaction-category-container' style={transactionStyles.dropdownChildren}>
+                          <Text text={selectedMethod.label} testID='transaction-category' numberOfLines={2} style={styles.dropdownChildrenText} />
+                          <Ionicons name='chevron-down-sharp' size={17} color={palette.lightGrey} />
+                        </View>
+                      </Dropdown>
+                      <Button
+                        onPress={() => {
+                          markAsPaid(selectedMethod.value);
+                        }}
+                        style={styles.button}
+                      >
+                        {isLoading ? (
+                          <Loader size={20} containerStyle={LOADER_STYLE} color={palette.white} />
+                        ) : (
+                          <>
+                            <SimpleLineIcons name='check-all' size={20} color='white' />
+                          </>
+                        )}
+                      </Button>
+                    </>
+                  ) : (
+                    <View style={{ height: 45, justifyContent: 'center', alignItems: 'center', width: '90%' }}>
+                      <Text
+                        text={`Payée le: ${formatDate(paymentRegulation.status.updatedAt)}`}
+                        style={{ color: palette.lightGrey, fontFamily: 'Geometria' }}
+                      ></Text>
                     </View>
-                  </Dropdown>
-                  <Button
-                    onPress={() => {
-                      markAsPaid(selectedMethod.value);
-                    }}
-                    style={styles.button}
-                  >
-                    {isLoading ? (
-                      <Loader size={20} containerStyle={LOADER_STYLE} color={palette.white} />
-                    ) : (
-                      <>
-                        <SimpleLineIcons name='check-all' size={20} color='white' />
-                      </>
-                    )}
-                  </Button>
+                  )}
                 </View>
               </View>
             ))}
