@@ -22,6 +22,14 @@ export interface InputFieldProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   markAsPaid: (method: PaymentMethod) => void;
 }
+
+export interface PartialPaymentProps {
+  isLoading: boolean;
+  isOpen: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  markAsPaid: (method: PaymentMethod) => void;
+  item: IInvoice;
+}
 export const getStatusTextColor = (status: InvoiceStatus) => {
   switch (status) {
     case InvoiceStatus.PROPOSAL:

@@ -19,6 +19,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
+import { PartialPaymentModal } from './components/partial-payment-modal';
 import { PaymentMethodSelectionModal } from './components/payment-method-selection';
 import { SendingConfirmationModal } from './components/sending-confirmation-modal';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
@@ -46,6 +47,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
   const [openModal, setOpenModal] = useState(false);
   const [openPaymentMethodModal, setOpenPaymentMethodModal] = useState(false);
+  const [openPartialPaymentModal, setOpenPartialPaymentModal] = useState(false);
   const [sendingRequest, setSendingRequest] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
@@ -95,7 +97,11 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
 
   const openMethodSelection = (item: IInvoice) => {
     setCurrentInvoice(item);
-    setOpenPaymentMethodModal(true);
+    if (item.paymentRegulations.length > 0) {
+      setOpenPartialPaymentModal(true);
+    } else {
+      setOpenPaymentMethodModal(true);
+    }
   };
 
   const markAsPaid = async (method: PaymentMethod) => {
@@ -191,6 +197,15 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               }}
             />
           </View>
+          {currentInvoice && (
+            <PartialPaymentModal
+              item={currentInvoice}
+              isOpen={openPartialPaymentModal}
+              setOpen={setOpenPartialPaymentModal}
+              markAsPaid={() => {}}
+              isLoading={false}
+            />
+          )}
           <PaymentMethodSelectionModal isOpen={openPaymentMethodModal} setOpen={setOpenPaymentMethodModal} markAsPaid={markAsPaid} isLoading={isLoading} />
         </View>
         {sendingRequest && (
