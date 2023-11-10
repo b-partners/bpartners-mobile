@@ -28,7 +28,7 @@ export const CustomerStoreModel = types
   }))
   .actions(self => ({
     getCustomersFail: error => {
-      __DEV__ && console.tron.log(error);
+      __DEV__ && console.tron.log(error.message());
       self.catchOrThrow(error);
     },
   }))
@@ -77,6 +77,42 @@ export const CustomerStoreModel = types
         __DEV__ && console.tron.log(`Customer saved`);
       } catch (e) {
         __DEV__ && console.tron.log(`FAIL TO SAVE CUSTOMER`);
+        self.saveCustomerFail(e);
+      } finally {
+        self.loadingCustomerCreation = false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateCustomerInit: () => {
+      self.checkCustomer = null;
+    },
+  }))
+  .actions(self => ({
+    updateCustomerFail: error => {
+      self.checkCustomer = false;
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    updateCustomerSuccess: () => {
+      self.checkCustomer = true;
+      setTimeout(() => {
+        self.updateCustomerInit();
+      }, 3000);
+    },
+  }))
+  .actions(self => ({
+    updateCustomer: flow(function* (customer: Customer) {
+      self.loadingCustomerCreation = true;
+      const customerApi = new CustomerApi(self.environment.api);
+      try {
+        yield customerApi.updateCustomer(self.currentAccount.id, customer);
+        self.updateCustomerSuccess();
+        __DEV__ && console.tron.log(`Customer updated`);
+      } catch (e) {
+        __DEV__ && console.tron.log(`FAIL TO UPDATE CUSTOMER`);
         self.saveCustomerFail(e);
       } finally {
         self.loadingCustomerCreation = false;

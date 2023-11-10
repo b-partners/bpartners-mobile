@@ -40,4 +40,15 @@ export class CustomerApi {
     const customers = response.data;
     return { kind: 'ok', customers };
   }
+  async updateCustomer(accountId: string, customer: Customer): Promise<GetCustomersResult> {
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.put(`accounts/${accountId}/customers`, [customer]);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const customers = response.data;
+    return { kind: 'ok', customers };
+  }
 }
