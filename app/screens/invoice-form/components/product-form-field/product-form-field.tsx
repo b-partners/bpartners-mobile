@@ -13,6 +13,7 @@ import { palette } from '../../../../theme/palette';
 import { printCurrencyToMajors, printVat } from '../../../../utils/money';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils/styles';
 import { ProductModal } from '../../../product/components/product-modal';
+import { ProductModalType } from '../../../product/products-screen';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
 
@@ -28,7 +29,11 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const { onValueChange, onDeleteItem, items, temp, index } = props;
   const [currentProduct, setCurrentProduct] = useState<Product | null>(temp);
 
-  const [creationModal, setCreationModal] = useState(false);
+  const [modal, setModal] = useState<ProductModalType>({
+    type: 'CREATION',
+    state: false,
+    product: null,
+  });
   const [visible, setVisible] = useState(false);
   const [quantityValue, setQuantityValue] = useState(temp?.quantity?.toString());
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -96,7 +101,11 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                   <TouchableOpacity
                     onPress={() => {
                       productStore.saveProductInit();
-                      setCreationModal(true);
+                      setModal({
+                        type: 'CREATION',
+                        state: true,
+                        product: null,
+                      });
                     }}
                     style={{ flex: 1, height: 70, justifyContent: 'center', alignItems: 'center' }}
                   >
@@ -141,7 +150,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                         <EntypoIcon name='chevron-thin-down' size={18} color='#000' />
                       </View>
                     </TouchableOpacity>
-                    <ProductModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
+                    <ProductModal modal={modal} setModal={setModal} />
                     <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
                       <View>
                         <View
@@ -206,7 +215,10 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                           }}
                                           onPress={() => {
                                             setQuantityValue('1');
-                                            setCurrentProduct({ ...product, quantity: 1 });
+                                            setCurrentProduct({
+                                              ...product,
+                                              quantity: 1,
+                                            });
                                             setTotalPrice(product.unitPrice * 1);
                                           }}
                                         >
@@ -233,15 +245,41 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                   ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
                                 />
                               </View>
-                              <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
-                                <View style={{ width: '25%', alignItems: 'center', flexDirection: 'row', height: '100%', justifyContent: 'space-evenly' }}>
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  marginTop: spacing[2],
+                                  height: 80,
+                                }}
+                              >
+                                <View
+                                  style={{
+                                    width: '25%',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    height: '100%',
+                                    justifyContent: 'space-evenly',
+                                  }}
+                                >
                                   {currentPage === 1 ? (
-                                    <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                                    <View
+                                      style={{
+                                        width: '35%',
+                                        height: '80%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                      }}
+                                    >
                                       <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
                                     </View>
                                   ) : (
                                     <TouchableOpacity
-                                      style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                                      style={{
+                                        width: '35%',
+                                        height: '80%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                      }}
                                       onPress={() => {
                                         setCurrentPage(currentPage - 1);
                                       }}
@@ -249,16 +287,42 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                       <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
                                     </TouchableOpacity>
                                   )}
-                                  <View style={{ width: '30%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text text={currentPage.toString()} style={{ fontSize: 20, fontWeight: '600', color: palette.textClassicColor }} />
+                                  <View
+                                    style={{
+                                      width: '30%',
+                                      height: '80%',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    <Text
+                                      text={currentPage.toString()}
+                                      style={{
+                                        fontSize: 20,
+                                        fontWeight: '600',
+                                        color: palette.textClassicColor,
+                                      }}
+                                    />
                                   </View>
                                   {currentPage === items.length ? (
-                                    <View style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+                                    <View
+                                      style={{
+                                        width: '35%',
+                                        height: '80%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                      }}
+                                    >
                                       <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
                                     </View>
                                   ) : (
                                     <TouchableOpacity
-                                      style={{ width: '35%', height: '80%', justifyContent: 'center', alignItems: 'center' }}
+                                      style={{
+                                        width: '35%',
+                                        height: '80%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                      }}
                                       onPress={() => {
                                         setCurrentPage(currentPage + 1);
                                       }}
