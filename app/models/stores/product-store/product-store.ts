@@ -78,6 +78,39 @@ export const ProductStoreModel = types
         self.loadingProductCreation = false;
       }
     }),
+  }))
+  .actions(self => ({
+    updateProductInit: () => {
+      self.checkProduct = null;
+    },
+  }))
+  .actions(self => ({
+    updateProductFail: error => {
+      self.checkProduct = false;
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    updateProductSuccess: () => {
+      self.checkProduct = true;
+    },
+  }))
+  .actions(self => ({
+    updateProduct: flow(function* (product: Product) {
+      self.loadingProductCreation = true;
+      const productApi = new ProductApi(self.environment.api);
+      try {
+        yield productApi.updateProduct(self.currentAccount.id, product);
+        self.updateProductSuccess();
+        __DEV__ && console.tron.log(`Product updated`);
+      } catch (e) {
+        __DEV__ && console.tron.log(`FAIL TO UPDATE PRODUCT`);
+        self.updateProductFail(e);
+      } finally {
+        self.loadingProductCreation = false;
+      }
+    }),
   }));
 
 export interface ProductStore extends Instance<typeof ProductStoreModel> {}
