@@ -88,6 +88,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   };
 
   const searchCustomer = async () => {
+    setCurrentPage(1);
     Platform.OS === 'ios'
       ? await customerStore.getCustomers({ filters: searchQuery.replaceAll(' ', '%2C'), page: 1, pageSize: invoicePageSize })
       : await customerStore.getCustomers({ filters: searchQuery, page: 1, pageSize: invoicePageSize });
