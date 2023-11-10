@@ -4,28 +4,28 @@ import { Modal, View } from 'react-native';
 import { Header } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { palette } from '../../../theme/palette';
-import { CustomerModalType } from '../customers-screen';
-import { CustomerForm } from './customer-form';
+import { ProductModalType } from '../products-screen';
+import { ProductForm } from './product-form';
 
-type CustomerModalProps = {
-  modal: CustomerModalType;
-  setModal: Dispatch<SetStateAction<CustomerModalType>>;
+type ProductModalProps = {
+  modal: ProductModalType;
+  setModal: Dispatch<SetStateAction<ProductModalType>>;
 };
-export const CustomerModal: React.FC<CustomerModalProps> = props => {
+export const ProductModal: React.FC<ProductModalProps> = props => {
   const { modal, setModal } = props;
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
-  const closeShareModal = () => {
+  const closeModal = () => {
     setModal({
       type: 'CREATION',
       state: false,
-      customer: null,
+      product: null,
     });
   };
 
   return (
     <KeyboardLayout setKeyboardOpen={setIsKeyboardOpen}>
-      <Modal animationType='slide' transparent={true} visible={modal?.state} onRequestClose={closeShareModal}>
+      <Modal animationType='slide' transparent={true} visible={modal?.state} onRequestClose={closeModal}>
         <View
           style={{
             height: '100%',
@@ -37,17 +37,10 @@ export const CustomerModal: React.FC<CustomerModalProps> = props => {
         >
           <View style={{ backgroundColor: palette.white, height: '100%', width: '100%' }}>
             {!isKeyboardOpen && (
-              <Header
-                rightIcon='cross'
-                onRightPress={closeShareModal}
-                style={{ borderTopLeftRadius: 50 }}
-                headerTx={
-                  modal?.type === 'CREATION' ? 'invoiceFormScreen.customerSelectionForm.addClient' : 'invoiceFormScreen.customerSelectionForm.editClient'
-                }
-              />
+              <Header rightIcon='cross' onRightPress={closeModal} style={{ borderTopLeftRadius: 50 }} headerTx='invoiceFormScreen.invoiceForm.addItem' />
             )}
             <View style={{ width: '100%', height: '100%' }}>
-              <CustomerForm modal={modal} setModal={setModal} isKeyboardOpen={isKeyboardOpen} />
+              <ProductForm modal={modal} setModal={setModal} isKeyboardOpen={isKeyboardOpen} />
             </View>
           </View>
         </View>
