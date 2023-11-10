@@ -27,7 +27,7 @@ export interface PartialPaymentProps {
   isLoading: boolean;
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  markAsPaid: (method: PaymentMethod) => void;
+  updateStatus: (invoiceId: string, paymentId: string, currentMethod: PaymentMethod) => void;
   item: IInvoice;
 }
 export const getStatusTextColor = (status: InvoiceStatus) => {

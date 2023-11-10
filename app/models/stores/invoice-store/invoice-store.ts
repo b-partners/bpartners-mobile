@@ -3,7 +3,7 @@ import uuid from 'react-native-uuid';
 
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
-import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, SearchInvoiceModel } from '../../entities/invoice/invoice';
+import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, MethodModel, SearchInvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -157,6 +157,18 @@ export const InvoiceStoreModel = types
         );
       } catch (e) {
         __DEV__ && console.tron.log('This is the error :' + e);
+        self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updatePaymentRegulationStatus: flow(function* (invoiceId: string, paymentId: string, method: MethodModel) {
+      const paymentApi = new PaymentApi(self.environment.api);
+      try {
+        const getPaymentRegulationStatusResult = yield paymentApi.updatePaymentRegulationStatus(self.currentAccount.id, invoiceId, paymentId, method);
+        return getPaymentRegulationStatusResult.invoice;
+      } catch (e) {
+        __DEV__ && console.tron.log(e);
         self.catchOrThrow(e);
       }
     }),

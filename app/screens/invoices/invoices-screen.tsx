@@ -50,6 +50,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const [openPartialPaymentModal, setOpenPartialPaymentModal] = useState(false);
   const [sendingRequest, setSendingRequest] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
   const [currentInvoice, setCurrentInvoice] = useState<IInvoice | null>(null);
   const { currentAccountHolder, currentUser } = authStore;
@@ -101,6 +102,22 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       setOpenPartialPaymentModal(true);
     } else {
       setOpenPaymentMethodModal(true);
+    }
+  };
+
+  const updateStatus = async (invoiceId: string, paymentId: string, currentMethod: PaymentMethod) => {
+    setIsStatusUpdating(true);
+    try {
+      const method = {
+        method: currentMethod,
+      };
+      const invoiceUpdated = await invoiceStore.updatePaymentRegulationStatus(invoiceId, paymentId, method);
+      await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
+      setCurrentInvoice(invoiceUpdated);
+    } catch {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    } finally {
+      setIsStatusUpdating(false);
     }
   };
 
@@ -202,8 +219,8 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               item={currentInvoice}
               isOpen={openPartialPaymentModal}
               setOpen={setOpenPartialPaymentModal}
-              markAsPaid={() => {}}
-              isLoading={false}
+              updateStatus={updateStatus}
+              isLoading={isStatusUpdating}
             />
           )}
           <PaymentMethodSelectionModal isOpen={openPaymentMethodModal} setOpen={setOpenPaymentMethodModal} markAsPaid={markAsPaid} isLoading={isLoading} />

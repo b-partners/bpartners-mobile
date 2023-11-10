@@ -24,7 +24,7 @@ import {
 import { PartialPaymentProps, paymentMethods } from '../utils/utils';
 
 export const PartialPaymentModal = (props: PartialPaymentProps) => {
-  const { isOpen, setOpen, markAsPaid, isLoading, item } = props;
+  const { isOpen, setOpen, updateStatus, isLoading, item } = props;
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodModel>(paymentMethods[0]);
 
   return (
@@ -102,7 +102,7 @@ export const PartialPaymentModal = (props: PartialPaymentProps) => {
                       </Dropdown>
                       <Button
                         onPress={() => {
-                          markAsPaid(selectedMethod.value);
+                          updateStatus(item.id, paymentRegulation.paymentRequest.id, selectedMethod.value);
                         }}
                         style={styles.button}
                       >
