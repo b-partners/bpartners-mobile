@@ -9,12 +9,14 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../models/entities/invoice/invoice';
+import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { navigate } from '../../navigators/navigation-utilities';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
 import { getThreshold } from '../../utils/get-threshold';
+import { RTLog } from '../../utils/reactotron-log';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
@@ -107,17 +109,31 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
 
   const updateStatus = async (invoiceId: string, paymentId: string, currentMethod: PaymentMethod) => {
     setIsStatusUpdating(true);
+    setSendingRequest(true);
+    setCurrentCustomer(currentInvoice.customer);
     try {
       const method = {
         method: currentMethod,
       };
-      const invoiceUpdated = await invoiceStore.updatePaymentRegulationStatus(invoiceId, paymentId, method);
+      const updatedInvoice = await invoiceStore.updatePaymentRegulationStatus(invoiceId, paymentId, method);
       await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
-      setCurrentInvoice(invoiceUpdated);
+      setCurrentInvoice(updatedInvoice);
+      RTLog(updatedInvoice);
+      let paid = 0;
+      updatedInvoice.paymentRegulations.map((paymentRegulation: PaymentRegulation) => {
+        if (paymentRegulation.status.paymentStatus === 'PAID') {
+          paid += 1;
+        }
+      });
+      if (paid === updatedInvoice.paymentRegulations.length) {
+        setOpenPartialPaymentModal(false);
+        setOpenModal(true);
+      }
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
       setIsStatusUpdating(false);
+      setSendingRequest(false);
     }
   };
 
