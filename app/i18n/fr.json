@@ -311,6 +311,8 @@
       "addItem": "Add item",
       "ref": "Référence",
       "title": "Titre",
+      "price": "Prix TTC",
+      "status": "Statut",
       "vat": "TVA",
       "sendingDate": "Date d'envoi",
       "validityDate": "Date de validité",
@@ -324,7 +326,8 @@
       "cash": "Espèces",
       "bankTransfer": "Virement bancaire",
       "cheque": "Chèque",
-      "paymentMethod": "Mode de paiement"
+      "paymentMethod": "Mode de paiement",
+      "pay": "Payer"
     },
     "status": {
       "PAID": "Payée",

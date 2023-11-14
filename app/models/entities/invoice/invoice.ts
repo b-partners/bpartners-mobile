@@ -22,6 +22,10 @@ export enum PaymentMethod {
   MULTIPLE = 'MULTIPLE',
 }
 
+export const MethodModel = types.model('MethodModel').props({
+  method: types.maybeNull(types.enumeration(Object.values(PaymentMethod))),
+});
+
 export const SearchInvoiceModel = types.model('SearchInvoice').props({
   id: types.maybeNull(types.string),
   title: types.maybeNull(types.string),
@@ -64,6 +68,8 @@ export const InvoiceModel = types.model('Invoice').props({
 export interface Invoice extends Instance<typeof InvoiceModel> {}
 export interface SearchInvoice extends Instance<typeof SearchInvoiceModel> {}
 export interface PaymentMethodModel extends Instance<typeof PaymentMethodModel> {}
+
+export interface MethodModel extends Instance<typeof MethodModel> {}
 
 export interface InvoiceSnapshotOut extends SnapshotOut<typeof InvoiceModel> {}
 

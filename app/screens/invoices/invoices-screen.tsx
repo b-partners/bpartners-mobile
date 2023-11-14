@@ -9,16 +9,19 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
 import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../models/entities/invoice/invoice';
+import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { navigate } from '../../navigators/navigation-utilities';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
 import { getThreshold } from '../../utils/get-threshold';
+import { RTLog } from '../../utils/reactotron-log';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
+import { PartialPaymentModal } from './components/partial-payment-modal';
 import { PaymentMethodSelectionModal } from './components/payment-method-selection';
 import { SendingConfirmationModal } from './components/sending-confirmation-modal';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
@@ -46,8 +49,10 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
   const [openModal, setOpenModal] = useState(false);
   const [openPaymentMethodModal, setOpenPaymentMethodModal] = useState(false);
+  const [openPartialPaymentModal, setOpenPartialPaymentModal] = useState(false);
   const [sendingRequest, setSendingRequest] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
   const [currentInvoice, setCurrentInvoice] = useState<IInvoice | null>(null);
   const { currentAccountHolder, currentUser } = authStore;
@@ -95,7 +100,41 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
 
   const openMethodSelection = (item: IInvoice) => {
     setCurrentInvoice(item);
-    setOpenPaymentMethodModal(true);
+    if (item.paymentRegulations.length > 0) {
+      setOpenPartialPaymentModal(true);
+    } else {
+      setOpenPaymentMethodModal(true);
+    }
+  };
+
+  const updateStatus = async (invoiceId: string, paymentId: string, currentMethod: PaymentMethod) => {
+    setIsStatusUpdating(true);
+    setSendingRequest(true);
+    setCurrentCustomer(currentInvoice.customer);
+    try {
+      const method = {
+        method: currentMethod,
+      };
+      const updatedInvoice = await invoiceStore.updatePaymentRegulationStatus(invoiceId, paymentId, method);
+      await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
+      setCurrentInvoice(updatedInvoice);
+      RTLog(updatedInvoice);
+      let paid = 0;
+      updatedInvoice.paymentRegulations.map((paymentRegulation: PaymentRegulation) => {
+        if (paymentRegulation.status.paymentStatus === 'PAID') {
+          paid += 1;
+        }
+      });
+      if (paid === updatedInvoice.paymentRegulations.length) {
+        setOpenPartialPaymentModal(false);
+        setOpenModal(true);
+      }
+    } catch {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    } finally {
+      setIsStatusUpdating(false);
+      setSendingRequest(false);
+    }
   };
 
   const markAsPaid = async (method: PaymentMethod) => {
@@ -191,6 +230,15 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               }}
             />
           </View>
+          {currentInvoice && (
+            <PartialPaymentModal
+              item={currentInvoice}
+              isOpen={openPartialPaymentModal}
+              setOpen={setOpenPartialPaymentModal}
+              updateStatus={updateStatus}
+              isLoading={isStatusUpdating}
+            />
+          )}
           <PaymentMethodSelectionModal isOpen={openPaymentMethodModal} setOpen={setOpenPaymentMethodModal} markAsPaid={markAsPaid} isLoading={isLoading} />
         </View>
         {sendingRequest && (

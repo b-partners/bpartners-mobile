@@ -2,7 +2,7 @@ import { ApiErrorResponse, ApiOkResponse, ApiResponse } from 'apisauce';
 
 import env from '../../config/env';
 import { Criteria } from '../../models/entities/criteria/criteria';
-import { Invoice } from '../../models/entities/invoice/invoice';
+import { Invoice, MethodModel } from '../../models/entities/invoice/invoice';
 import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
@@ -97,5 +97,19 @@ export class PaymentApi {
     }
     const invoices = this.mapInvoices(response);
     return { kind: 'ok', invoices };
+  }
+
+  async updatePaymentRegulationStatus(accountId: string, invoiceId: string, paymentId: string, method: MethodModel): Promise<GetInvoiceResult> {
+    const response: ApiResponse<any> = await this.api.apisauce.put(
+      `accounts/${accountId}/invoices/${invoiceId}/paymentRegulations/${paymentId}/paymentMethod`,
+      method
+    );
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const invoice = this.mapInvoice(response.data);
+    return { kind: 'ok', invoice };
   }
 }

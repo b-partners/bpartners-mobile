@@ -6,7 +6,7 @@ import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import { Base64 } from 'js-base64';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 
 import { firebaseConfig } from '../../app';
 import { HeaderWithBalance, Screen } from '../../components';
@@ -112,11 +112,11 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       }
       await messaging().requestPermission();
 
-      if (Platform.OS === 'ios') {
+      /*if (Platform.OS === 'ios') {
         await firebase.messaging().registerDeviceForRemoteMessages();
         const apnsToken = await firebase.messaging().getAPNSToken();
         Log('APNS Token: ' + apnsToken);
-      }
+      }*/
       await onRemoteMessage();
     })();
   }, []);

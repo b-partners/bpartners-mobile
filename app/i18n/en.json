@@ -328,6 +328,8 @@
       "addItem": "Add item",
       "ref": "Ref",
       "title": "Title",
+      "price": "Price incl. VAT",
+      "status": "Status",
       "vat": "VTA",
       "sendingDate": "Sending date",
       "toPayAt": "To pay at",
@@ -340,7 +342,8 @@
       "cash": "Cash",
       "bankTransfer": "Bank transfer",
       "cheque": "Cheque",
-      "paymentMethod": "Method of payment"
+      "paymentMethod": "Method of payment",
+      "pay": "Pay"
     },
     "status": {
       "PAID": "Paid",
