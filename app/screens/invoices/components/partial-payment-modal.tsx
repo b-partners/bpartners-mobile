@@ -120,7 +120,7 @@ export const PartialPaymentModal = (props: PartialPaymentProps) => {
                       <Text
                         text={`Payée le: ${formatDate(paymentRegulation.status.updatedAt)}`}
                         style={{ color: palette.lightGrey, fontFamily: 'Geometria' }}
-                      ></Text>
+                      />
                     </View>
                   )}
                 </View>
