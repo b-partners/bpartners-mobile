@@ -7,8 +7,19 @@ import { palette } from '../../../theme/palette';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 
 export const ButtonActions = props => {
-  const { isLoading, isCreating, prospectStatus, selectedStatus, prospectFeedBack, currentPage, handleSubmit, onSubmit, handleAmountRender, closeModal, setCurrentPage } =
-    props;
+  const {
+    isLoading,
+    isCreating,
+    prospectStatus,
+    selectedStatus,
+    prospectFeedBack,
+    currentPage,
+    handleSubmit,
+    onSubmit,
+    handleAmountRender,
+    closeModal,
+    setCurrentPage,
+  } = props;
 
   const getPrimaryButtonText = (status, feedback, currentStatus) => {
     const statuses = {
