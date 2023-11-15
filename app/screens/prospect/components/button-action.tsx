@@ -7,7 +7,7 @@ import { palette } from '../../../theme/palette';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 
 export const ButtonActions = props => {
-  const { isLoading, prospectStatus, selectedStatus, prospectFeedBack, currentPage, handleSubmit, onSubmit, handleAmountRender, closeModal, setCurrentPage } =
+  const { isLoading, isCreating, prospectStatus, selectedStatus, prospectFeedBack, currentPage, handleSubmit, onSubmit, handleAmountRender, closeModal, setCurrentPage } =
     props;
 
   const getPrimaryButtonText = (status, feedback, currentStatus) => {
@@ -29,7 +29,7 @@ export const ButtonActions = props => {
       },
     };
 
-    const defaultText = 'Valider';
+    const defaultText = 'common.create';
 
     if (statuses[status]) {
       const statusObj = statuses[status];
@@ -66,7 +66,7 @@ export const ButtonActions = props => {
         <View style={{ paddingVertical: spacing[3], paddingHorizontal: spacing[2], width: 100, height: 40 }}>
           <Loader size={20} color={palette.secondaryColor} />
         </View>
-      ) : prospectFeedBack === null && currentPage === 2 ? (
+      ) : prospectFeedBack === null && currentPage === 2 && !isCreating ? (
         <View
           style={{
             backgroundColor: palette.solidGrey,
