@@ -14,9 +14,9 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
+import { CreationPortal } from './components/portal-creation';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
-import {CreationPortal} from "./components/portal-creation";
 
 export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
   const { prospectStore } = useStores();
