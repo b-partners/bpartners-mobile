@@ -1,23 +1,22 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Button as IButton, Menu, Portal, Provider, Searchbar } from 'react-native-paper';
+import { Menu, Provider, Searchbar } from 'react-native-paper';
 
-import { Header, Loader, NoDataProvided, Text } from '../../components';
+import { Header, Loader, NoDataProvided } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Prospect, ProspectStatus } from '../../models/entities/prospect/prospect';
+import { Prospect } from '../../models/entities/prospect/prospect';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
-import { color, spacing } from '../../theme';
+import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { ProspectCreationModal } from './components/prospect-creation-modal';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
+import {CreationPortal} from "./components/portal-creation";
 
 export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
   const { prospectStore } = useStores();
@@ -25,9 +24,6 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
 
   const [currentStatus, setCurrentStatus] = useState<string>('TO_CONTACT');
   const [searchQuery, setSearchQuery] = React.useState('');
-
-  const [creationModal, setCreationModal] = useState(false);
-  const [status, setStatus] = useState<ProspectStatus | null>(null);
 
   const getActiveClassName = useCallback(
     (activeStatus): object => {
@@ -96,27 +92,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
               inputStyle={{ color: palette.black, alignSelf: 'center' }}
               placeholderTextColor={palette.lightGrey}
             />
-            <IButton
-              compact={true}
-              buttonColor={palette.secondaryColor}
-              textColor={palette.white}
-              style={{
-                width: 100,
-                height: 40,
-                borderRadius: 10,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignContent: 'center',
-                marginTop: spacing[4],
-              }}
-              onPress={() => {
-                setCreationModal(true);
-              }}
-            >
-              <MaterialCommunityIcons name='plus' size={20} color={palette.white} />
-              <Text tx={'common.create'} style={{ fontSize: 14 }} />
-            </IButton>
+            <CreationPortal />
           </View>
           <View style={styles.menuContainer}>
             {PROSPECT_STATUS.map(status => {
@@ -144,11 +120,6 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
               <NoDataProvided />
             )}
           </ScrollView>
-          {creationModal && (
-            <Portal>
-              <ProspectCreationModal showModal={creationModal} setShowModal={setCreationModal} status={status} setStatus={setStatus} />
-            </Portal>
-          )}
         </View>
       </ErrorBoundary>
     </Provider>
