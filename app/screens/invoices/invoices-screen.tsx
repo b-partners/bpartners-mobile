@@ -50,7 +50,6 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const [openModal, setOpenModal] = useState(false);
   const [openPaymentMethodModal, setOpenPaymentMethodModal] = useState(false);
   const [openPartialPaymentModal, setOpenPartialPaymentModal] = useState(false);
-  const [sendingRequest, setSendingRequest] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isStatusUpdating, setIsStatusUpdating] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
@@ -109,7 +108,6 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
 
   const updateStatus = async (invoiceId: string, paymentId: string, currentMethod: PaymentMethod) => {
     setIsStatusUpdating(true);
-    setSendingRequest(true);
     setCurrentCustomer(currentInvoice.customer);
     try {
       const method = {
@@ -133,14 +131,12 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
       setIsStatusUpdating(false);
-      setSendingRequest(false);
     }
   };
 
   const markAsPaid = async (method: PaymentMethod) => {
     setIsLoading(true);
     setCurrentCustomer(currentInvoice.customer);
-    setSendingRequest(true);
     const editPayment = [];
     currentInvoice.paymentRegulations.forEach(paymentItem => {
       const newItem = {
@@ -241,14 +237,13 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
           )}
           <PaymentMethodSelectionModal isOpen={openPaymentMethodModal} setOpen={setOpenPaymentMethodModal} markAsPaid={markAsPaid} isLoading={isLoading} />
         </View>
-        {sendingRequest && (
+        {currentCustomer && (
           <SendingConfirmationModal
             confirmationModal={openModal}
             setConfirmationModal={setOpenModal}
             customer={currentCustomer}
             accountHolder={currentAccountHolder}
             user={currentUser}
-            setSendingRequest={setSendingRequest}
           />
         )}
       </View>

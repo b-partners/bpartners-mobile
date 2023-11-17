@@ -27,11 +27,10 @@ type InvoiceCreationModalProps = {
   customer: Customer;
   accountHolder: AccountHolder;
   user: User;
-  setSendingRequest: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const SendingConfirmationModal: React.FC<InvoiceCreationModalProps> = props => {
-  const { confirmationModal, setConfirmationModal, customer, accountHolder, user, setSendingRequest } = props;
+  const { confirmationModal, setConfirmationModal, customer, accountHolder, user } = props;
 
   const openMailApp = () => {
     const recipient = customer.email;
@@ -61,7 +60,7 @@ ${user?.phone}</p>`;
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     });
-    setSendingRequest(false);
+    setConfirmationModal(false);
   };
 
   return (
