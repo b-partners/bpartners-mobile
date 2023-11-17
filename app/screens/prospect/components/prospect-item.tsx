@@ -15,7 +15,6 @@ import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
-import { Location } from './location';
 import { ProcessModal } from './process-modal';
 
 const IconGroup = {
@@ -74,7 +73,6 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
               </Paragraph>
             </View>
           </View>
-          <View style={styles.location}>{prospect.location && <Location prospect={prospect} />}</View>
           <View style={styles.menuContainer}>
             <CMenu
               items={menuItem}

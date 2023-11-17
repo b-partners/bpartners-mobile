@@ -19,6 +19,13 @@ export type ProcessModalProps = {
   setStatus: React.Dispatch<React.SetStateAction<ProspectStatus | null>>;
 };
 
+export type ProspectCreationModalProps = {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  status: ProspectStatus;
+  setStatus: React.Dispatch<React.SetStateAction<ProspectStatus | null>>;
+};
+
 export enum ProspectFeedback {
   NOT_INTERESTED = 'NOT_INTERESTED',
   INTERESTED = 'INTERESTED',

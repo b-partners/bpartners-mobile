@@ -14,6 +14,7 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
+import { CreationPortal } from './components/portal-creation';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
 
@@ -79,17 +80,20 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('bp_home')} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='ProspectScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-          <Searchbar
-            placeholder={translate('common.search')}
-            onChangeText={handleInputChange}
-            value={searchQuery}
-            style={styles.searchbar}
-            iconColor={palette.lightGrey}
-            clearIcon='close-circle'
-            onClearIconPress={handleRefresh}
-            inputStyle={{ color: palette.black, alignSelf: 'center' }}
-            placeholderTextColor={palette.lightGrey}
-          />
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <Searchbar
+              placeholder={translate('common.search')}
+              onChangeText={handleInputChange}
+              value={searchQuery}
+              style={styles.searchbar}
+              iconColor={palette.lightGrey}
+              clearIcon='close-circle'
+              onClearIconPress={handleRefresh}
+              inputStyle={{ color: palette.black, alignSelf: 'center' }}
+              placeholderTextColor={palette.lightGrey}
+            />
+            <CreationPortal />
+          </View>
           <View style={styles.menuContainer}>
             {PROSPECT_STATUS.map(status => {
               return (
