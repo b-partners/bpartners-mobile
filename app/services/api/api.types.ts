@@ -56,6 +56,8 @@ export type BankConnection =
 
 export type GetTokenResult = { kind: 'ok'; accessToken: string; refreshToken: string; whoami: Whoami } | GeneralApiProblem;
 
+export type GetTokenRegistrationResult = { kind: 'ok'; user: User } | GeneralApiProblem;
+
 export type GetWhoAmIResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type CreateUserResult = { kind: 'ok'; newUser: User } | GeneralApiProblem;
