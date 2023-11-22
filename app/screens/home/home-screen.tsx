@@ -61,9 +61,9 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   const onRemoteMessage = async () => {
     RTLog('onRemoteMessage called');
     AWS.config = new AWS.Config();
-    AWS.config.accessKeyId = Base64.decode(env.accessKeyId);
-    AWS.config.secretAccessKey = Base64.decode(env.secretAccessKey);
-    AWS.config.region = Base64.decode(env.region);
+    AWS.config.accessKeyId = env.accessKeyId;
+    AWS.config.secretAccessKey = env.secretAccessKey;
+    AWS.config.region = env.region;
 
     const isRegistered = firebase.messaging().isDeviceRegisteredForRemoteMessages;
     if (!isRegistered) {
