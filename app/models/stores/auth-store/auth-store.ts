@@ -6,6 +6,7 @@ import { AccountApi } from '../../../services/api/account-api';
 import { AuthApi } from '../../../services/api/auth-api';
 import { BankApi } from '../../../services/api/bank-api';
 import { palette } from '../../../theme/palette';
+import { RTLog } from '../../../utils/reactotron-log';
 import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
@@ -95,6 +96,11 @@ export const AuthStoreModel = types
       yield save('accessToken', self.accessToken);
     }),
   }))
+  .actions(self => ({
+    setCurrentUser: (user: User) => {
+      self.currentUser = user;
+    },
+  }))
   .actions(() => ({
     getTokenFail: error => {
       __DEV__ && console.tron.log(error.message);
@@ -131,6 +137,19 @@ export const AuthStoreModel = types
         yield self.getTokenSuccess({ accessToken: accessToken, refreshToken: refreshToken });
       } catch (e) {
         self.getTokenFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    registerFCMToken: flow(function* (token: string) {
+      const authApi = new AuthApi(self.environment.api);
+      try {
+        const getEndpointARNResult = yield authApi.tokenRegistration(self.currentUser.id, token);
+        self.setCurrentUser(getEndpointARNResult.user);
+        return getEndpointARNResult;
+      } catch (e) {
+        self.catchOrThrow(e);
+        RTLog(e.message);
       }
     }),
   }))
