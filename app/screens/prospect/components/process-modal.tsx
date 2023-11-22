@@ -4,7 +4,7 @@ import { Platform, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, InputField, Loader, Text } from '../../../components';
+import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { useStores } from '../../../models';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
@@ -13,18 +13,21 @@ import { palette } from '../../../theme/palette';
 import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
-import { SHADOW_STYLE } from '../../invoices/utils/styles';
 import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
 import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
+import { ButtonActions } from './button-action';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
-  const { prospectStore } = useStores();
   const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus } = props;
+
+  const { prospectStore } = useStores();
+
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const [amount, setAmount] = useState(amountToMajors(prospect.contractAmount).toString());
+  const [amount, setAmount] = useState(amountToMajors(prospect?.contractAmount)?.toString());
+
   const closeModal = () => {
     setStatus(null);
     setCurrent(null);
@@ -39,11 +42,11 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
   } = useForm({
     mode: 'all',
     defaultValues: {
-      email: prospect.email,
-      phone: prospect.phone,
-      address: prospect.address,
-      name: prospect.name,
-      comment: prospect.comment,
+      email: prospect?.email,
+      phone: prospect?.phone,
+      address: prospect?.address,
+      name: prospect?.name,
+      comment: prospect?.comment,
     },
   });
 
@@ -227,7 +230,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                 />
               </View>
-              {prospect.status === ProspectStatus.TO_CONTACT ? (
+              {prospect?.status === ProspectStatus.TO_CONTACT ? (
                 <View style={{ flex: 1, paddingTop: spacing[4] }}>
                   <TouchableOpacity
                     style={current === ProspectFeedback.INTERESTED ? CHECKED : UNCHECKED}
@@ -296,58 +299,18 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               flexDirection: 'row',
             }}
           >
-            <Button
-              tx={currentPage === 1 ? 'common.cancel' : 'common.back'}
-              style={{
-                ...SHADOW_STYLE,
-                backgroundColor: palette.secondaryColor,
-                borderRadius: 10,
-                paddingVertical: spacing[3],
-                paddingHorizontal: spacing[2],
-                width: 110,
-                height: 40,
-                marginRight: spacing[2],
-              }}
-              onPress={() => {
-                currentPage === 1 ? closeModal() : setCurrentPage(1);
-              }}
-              textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
+            <ButtonActions
+              isLoading={isLoading}
+              prospectStatus={prospect?.status}
+              selectedStatus={status}
+              prospectFeedBack={current}
+              currentPage={currentPage}
+              handleSubmit={handleSubmit}
+              onSubmit={onSubmit}
+              handleAmountRender={handleAmountRender}
+              closeModal={closeModal}
+              setCurrentPage={setCurrentPage}
             />
-            {isLoading ? (
-              <View style={{ paddingVertical: spacing[3], paddingHorizontal: spacing[2], width: 100, height: 40 }}>
-                <Loader size={20} color={palette.secondaryColor} />
-              </View>
-            ) : current === null && currentPage === 2 ? (
-              <View
-                style={{
-                  backgroundColor: palette.solidGrey,
-                  borderRadius: 10,
-                  paddingVertical: spacing[3],
-                  paddingHorizontal: spacing[2],
-                  width: 110,
-                  height: 40,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Text tx={'prospectScreen.process.reserve'} style={{ color: palette.lighterGrey }} />
-              </View>
-            ) : (
-              <Button
-                tx={currentPage === 1 ? 'common.next' : 'prospectScreen.process.reserve'}
-                style={{
-                  ...SHADOW_STYLE,
-                  backgroundColor: palette.secondaryColor,
-                  borderRadius: 10,
-                  paddingVertical: spacing[3],
-                  paddingHorizontal: spacing[2],
-                  width: 100,
-                  height: 40,
-                }}
-                onPress={currentPage !== 1 ? handleSubmit(onSubmit) : handleAmountRender}
-                textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
-              />
-            )}
           </View>
         </View>
       </Modal>

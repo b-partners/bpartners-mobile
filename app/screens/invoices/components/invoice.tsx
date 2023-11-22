@@ -26,7 +26,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
 
   return (
     <View style={styles.viewContainer}>
-      <TouchableOpacity style={styles.container} onPress={() => invoiceAction(item)}>
+      <TouchableOpacity style={styles.container} onPress={() => invoiceAction && invoiceAction(item)}>
         <View style={styles.header}>
           <Text text={props.item.customer.firstName} style={HEADER_TEXT_STYLE} />
           <Text text={printCurrencyToMajors(item.totalPriceWithVat)} style={styles.totalPrice} />

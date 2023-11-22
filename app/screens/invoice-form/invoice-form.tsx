@@ -19,7 +19,8 @@ import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
-import { CustomerCreationModal } from '../customer/components/customer-creation-modal';
+import { CustomerModal } from '../customer/components/customer-modal';
+import { CustomerModalType } from '../customer/customers-screen';
 import { LOADER_STYLE } from '../invoices/utils/styles';
 import { CustomerFormFieldFooter } from './components/customer/customer-form-field-footer';
 import { PaymentCreationModal } from './components/payment-regulation-form-field/payment-creation-modal';
@@ -60,7 +61,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { customers } = customerStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
-  const [creationModal, setCreationModal] = useState(false);
+  const [modal, setModal] = useState<CustomerModalType>({
+    type: 'CREATION',
+    state: false,
+    customer: null,
+  });
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [paymentCreation, setPaymentCreation] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
@@ -90,7 +95,14 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       required: translate('errors.required'),
     },
   });
-  const { fields: paymentFields, remove: paymentRemove, append: paymentAppend } = useFieldArray({ control, name: 'paymentRegulations' });
+  const {
+    fields: paymentFields,
+    remove: paymentRemove,
+    append: paymentAppend,
+  } = useFieldArray({
+    control,
+    name: 'paymentRegulations',
+  });
   const hasError = errors.title || errors.ref || errors.products || errors.customer;
 
   const [removeProduct, setRemoveProduct] = useState(false);
@@ -197,11 +209,19 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
-        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
+        await quotationStore.getQuotations({
+          status: InvoiceStatus.PROPOSAL,
+          page: 1,
+          pageSize: invoicePageSize,
+        });
       }
       if (invoiceType === InvoiceStatus.PROPOSAL) {
         navigateToTab('quotations');
-        await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: invoicePageSize });
+        await quotationStore.getQuotations({
+          status: InvoiceStatus.PROPOSAL,
+          page: 1,
+          pageSize: invoicePageSize,
+        });
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
       }
       if (invoiceType === InvoiceStatus.CONFIRMED) {
@@ -263,7 +283,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         invoice: savedInvoice,
         situation: true,
       });
-      invoiceType === 'DRAFT' && (await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize }));
+      invoiceType === 'DRAFT' &&
+        (await draftStore.getDrafts({
+          status: InvoiceStatus.DRAFT,
+          page: 1,
+          pageSize: invoicePageSize,
+        }));
       invoiceType === 'PROPOSAL' &&
         (await quotationStore.getQuotations({
           status: InvoiceStatus.PROPOSAL,
@@ -488,7 +513,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       <Button
         onPress={() => {
           customerStore.saveCustomerInit();
-          setCreationModal(true);
+          setModal({
+            type: 'CREATION',
+            state: true,
+            customer: null,
+          });
         }}
         style={{
           flexDirection: 'row',
@@ -511,10 +540,15 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </Button>
-      <CustomerCreationModal visibleModal={creationModal} setVisibleModal={setCreationModal} />
+      <CustomerModal modal={modal} setModal={setModal} />
       <List.Accordion
         title='Produits'
-        style={{ borderColor: errors.products ? palette.pastelRed : '#E1E5EF', borderWidth: 1, height: 70, justifyContent: 'center' }}
+        style={{
+          borderColor: errors.products ? palette.pastelRed : '#E1E5EF',
+          borderWidth: 1,
+          height: 70,
+          justifyContent: 'center',
+        }}
         titleStyle={{
           fontFamily: 'Geometria-Bold',
           fontSize: 12,

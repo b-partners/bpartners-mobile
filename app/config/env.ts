@@ -19,4 +19,7 @@ export default {
   authorizationEndpoint: config.AUTHORIZATION_ENDPOINT || '',
   tokenEndpoint: config.TOKEN_ENDPOINT || '',
   ciAccessToken: config.CI_ACCESS_TOKEN || '',
+  accessKeyId: config.ACCESS_KEY_ID || '',
+  secretAccessKey: config.SECRET_ACCESS_KEY || '',
+  region: config.REGION || '',
 };

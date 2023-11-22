@@ -4,7 +4,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Menu, Provider, Searchbar } from 'react-native-paper';
 
-import { Header, Loader, MenuItem, NoDataProvided } from '../../components';
+import { Header, Loader, NoDataProvided } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect } from '../../models/entities/prospect/prospect';
@@ -14,6 +14,7 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
+import { CreationPortal } from './components/portal-creation';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
 
@@ -37,11 +38,13 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
 
   const filteredProspect = prospects.filter(item => item.status === currentStatus);
 
-  const items: MenuItem[] = [
-    { id: 'toContact', title: translate('prospectScreen.tab.toContact') },
-    { id: 'contacted', title: translate('prospectScreen.tab.contacted') },
-    { id: 'converted', title: translate('prospectScreen.tab.converted') },
+  const PROSPECT_STATUS = [
+    { id: 'toContact', title: translate('prospectScreen.tab.toContact'), label: 'TO_CONTACT' },
+    { id: 'contacted', title: translate('prospectScreen.tab.contacted'), label: 'CONTACTED' },
+    { id: 'converted', title: translate('prospectScreen.tab.converted'), label: 'CONVERTED' },
   ];
+
+  const prospectWithoutCurrentStatus = PROSPECT_STATUS.filter(status => status.label !== currentStatus);
 
   const handleRefresh = async () => {
     await prospectStore.getProspects();
@@ -77,36 +80,32 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('bp_home')} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='ProspectScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-          <Searchbar
-            placeholder={translate('common.search')}
-            onChangeText={handleInputChange}
-            value={searchQuery}
-            style={styles.searchbar}
-            iconColor={palette.lightGrey}
-            clearIcon='close-circle'
-            onClearIconPress={handleRefresh}
-            inputStyle={{ color: palette.black, alignSelf: 'center' }}
-            placeholderTextColor={palette.lightGrey}
-          />
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <Searchbar
+              placeholder={translate('common.search')}
+              onChangeText={handleInputChange}
+              value={searchQuery}
+              style={styles.searchbar}
+              iconColor={palette.lightGrey}
+              clearIcon='close-circle'
+              onClearIconPress={handleRefresh}
+              inputStyle={{ color: palette.black, alignSelf: 'center' }}
+              placeholderTextColor={palette.lightGrey}
+            />
+            <CreationPortal />
+          </View>
           <View style={styles.menuContainer}>
-            <Menu.Item
-              onPress={() => handleClickMenu('TO_CONTACT')}
-              title={translate('prospectScreen.tab.toContact')}
-              titleStyle={{ color: palette.secondaryColor }}
-              style={{ ...getActiveClassName('TO_CONTACT'), width: '28%' }}
-            />
-            <Menu.Item
-              onPress={() => handleClickMenu('CONTACTED')}
-              title={translate('prospectScreen.tab.contacted')}
-              titleStyle={{ color: palette.secondaryColor }}
-              style={{ ...getActiveClassName('CONTACTED'), width: '28%' }}
-            />
-            <Menu.Item
-              onPress={() => handleClickMenu('CONVERTED')}
-              title={translate('prospectScreen.tab.converted')}
-              titleStyle={{ color: palette.secondaryColor }}
-              style={{ ...getActiveClassName('CONVERTED'), width: '28%' }}
-            />
+            {PROSPECT_STATUS.map(status => {
+              return (
+                <Menu.Item
+                  onPress={() => handleClickMenu(status.label)}
+                  key={status.id}
+                  title={status.title}
+                  titleStyle={{ color: palette.secondaryColor }}
+                  style={{ ...getActiveClassName(status.label), width: '28%' }}
+                />
+              );
+            })}
           </View>
           <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
             {loadingProspect ? (
@@ -115,7 +114,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
               </View>
             ) : filteredProspect.length > 0 ? (
               filteredProspect.map((item: Prospect, index: number) => {
-                return <ProspectItem menuItem={items} prospect={item} setCurrentStatus={setCurrentStatus} key={index} />;
+                return <ProspectItem menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} key={index} />;
               })
             ) : (
               <NoDataProvided />

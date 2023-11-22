@@ -236,6 +236,99 @@ export const paymentMethodSelectionStyles = StyleSheet.create({
     fontFamily: 'Geometria',
   },
 });
+
+export const partialPaymentStyles = StyleSheet.create({
+  body: {
+    width: '90%',
+    flex: 1,
+    marginVertical: '5%',
+    marginLeft: '5%',
+    flexDirection: 'column',
+    shadowColor: palette.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalContainer: {
+    backgroundColor: palette.white,
+    height: 300,
+    width: '95%',
+    borderRadius: 15,
+  },
+  dropdown: {
+    height: 40,
+    backgroundColor: color.palette.white,
+    borderRadius: 25,
+    paddingHorizontal: spacing[4],
+    shadowColor: palette.lightGrey,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  dropdownContainer: {
+    marginTop: spacing[2],
+  },
+  dropdownChildrenText: {
+    color: palette.lightGrey,
+    fontFamily: 'Geometria-Bold',
+    fontSize: 16,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'flex-start',
+    paddingTop: spacing[1],
+  },
+  infosContainer: {
+    height: 60,
+    backgroundColor: palette.secondaryColor,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  titleContainer: {
+    height: 30,
+    width: '75%',
+    paddingLeft: '10%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  labelContainer: {
+    height: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 15,
+    color: palette.white,
+    fontFamily: 'Geometria',
+  },
+  button: {
+    flexDirection: 'row',
+    backgroundColor: palette.secondaryColor,
+    borderRadius: 10,
+    paddingVertical: spacing[1],
+    marginRight: '2%',
+    height: 45,
+    marginTop: spacing[3],
+    width: '15%',
+    marginHorizontal: '2%',
+  },
+  buttonText: {
+    color: palette.white,
+    marginRight: spacing[2],
+    fontFamily: 'Geometria',
+  },
+});
 export const sendingConfirmationModalStyles = StyleSheet.create({
   body: {
     width: '100%',
