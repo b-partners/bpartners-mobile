@@ -64,6 +64,7 @@ buck-out/
 /ios/Podfile.lock
 /vendor/bundle/
 
+.env
 .env.*
 !.env.template
 /.expo/
