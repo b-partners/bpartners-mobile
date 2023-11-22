@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { Card, Paragraph, Portal, Title } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Menu as CMenu } from '../../../components/menu/menu';
@@ -14,7 +15,6 @@ import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
-import { Location } from './location';
 import { ProcessModal } from './process-modal';
 
 const IconGroup = {
@@ -22,6 +22,7 @@ const IconGroup = {
   phone: <MaterialCommunity name='phone' size={18} color={color.palette.secondaryColor} />,
   address: <EntypoIcon name='home' size={18} color={color.palette.secondaryColor} />,
   town: <MaterialCommunityIcons name='city' size={18} color={color.palette.secondaryColor} />,
+  comment: <MaterialIcons name={'insert-comment'} size={18} color={color.palette.secondaryColor} />,
   rating: <EntypoIcon name='star' size={18} color={color.palette.secondaryColor} />,
   date: <Octicons name='clock' size={18} color={color.palette.secondaryColor} />,
 };
@@ -58,6 +59,10 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
               <Paragraph>{prospect.townCode ? <>{prospect.townCode}</> : translate('common.noData')}</Paragraph>
             </View>
             <View style={styles.rowDirection}>
+              <Paragraph style={{ marginRight: 5 }}>{IconGroup.comment}</Paragraph>
+              <Paragraph>{prospect.comment ? <>{prospect.comment}</> : translate('common.noData')}</Paragraph>
+            </View>
+            <View style={styles.rowDirection}>
               <Paragraph style={{ marginRight: 5 }}>{IconGroup.rating}</Paragraph>
               <Paragraph>{prospect.rating && prospect.rating.value > 0 ? <>{prospect.rating.value.toFixed()}</> : translate('common.noData')}</Paragraph>
             </View>
@@ -68,7 +73,6 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
               </Paragraph>
             </View>
           </View>
-          <View style={styles.location}>{prospect.location && <Location prospect={prospect} />}</View>
           <View style={styles.menuContainer}>
             <CMenu
               items={menuItem}

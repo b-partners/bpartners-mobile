@@ -34,7 +34,8 @@
     "noInformation": "Aucune information",
     "noData": "Non renseigné",
     "search": "Rechercher",
-    "open": "Ouvrir"
+    "open": "Ouvrir",
+    "addedOrUpdated": "Mis à jour avec succès !"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -107,6 +108,13 @@
       "proposalDeclined": "Devis refusé",
       "invoiceSent": "Facture envoyée",
       "reserve": "Réserver"
+    },
+    "buttonActions": {
+      "abandonProspect": "Abandonner ce prospect",
+      "bookProspect": "Réserver ce prospect",
+      "convertProspectIntoCustomer": "Transformer en client",
+      "freeUpProspect": "Libérer ce prospect",
+      "convertCustomerIntoProspect": "Remettre en prospect"
     }
   },
   "onboardingScreen": {
@@ -303,6 +311,8 @@
       "addItem": "Add item",
       "ref": "Référence",
       "title": "Titre",
+      "price": "Prix TTC",
+      "status": "Statut",
       "vat": "TVA",
       "sendingDate": "Date d'envoi",
       "validityDate": "Date de validité",
@@ -316,7 +326,8 @@
       "cash": "Espèces",
       "bankTransfer": "Virement bancaire",
       "cheque": "Chèque",
-      "paymentMethod": "Mode de paiement"
+      "paymentMethod": "Mode de paiement",
+      "pay": "Payer"
     },
     "status": {
       "PAID": "Payée",
@@ -401,6 +412,7 @@
     "customerSelectionForm": {
       "title": "Nom du client",
       "addClient": "Ajouter un client",
+      "editClient": "Editer un client",
       "validate": "Valider",
       "customerCreationForm": {
         "firstName": "Prénom",
@@ -410,13 +422,17 @@
         "phoneNumber": "Numéro de Téléphone",
         "comment": "Commentaire (Facultatif)",
         "add": "Ajouter ce client",
+        "edit": "Modifier ce client",
         "added": "Ajouté",
-        "fail": "Réessayer"
+        "fail": "Réessayer",
+        "addOrUpdate": "Mis à jour avec succès !"
       }
     },
     "productCreationForm": {
       "unitPrice": "Prix unitaire HT (en €)",
-      "description": "Description"
+      "description": "Description",
+      "add": "Ajouter ce produit",
+      "edit": "Modifier ce produit"
     },
     "productForm": {
       "addProduct": "Ajouter un produit",

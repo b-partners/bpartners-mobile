@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398836708559",
+    "project_id": "bpartners-notification-push",
+    "storage_bucket": "bpartners-notification-push.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398836708559:android:40b9be40b768eb0206f3ba",
+        "android_client_info": {
+          "package_name": "com.bpartnersmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDpF1jZq0t3O5XXzvHcHdRYBGpfL9Fw58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

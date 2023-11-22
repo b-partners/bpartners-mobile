@@ -65,6 +65,17 @@ export const ProspectStoreModel = types
         self.saveProspectFail(e);
       }
     }),
+  }))
+  .actions(self => ({
+    creationProspect: flow(function* (prospect: Prospect) {
+      const prospectApi = new ProspectApi(self.environment.api);
+      try {
+        const createdProspect = yield prospectApi.createProspect(self.currentAccountHolder.id, prospect);
+        self.saveProspectSuccess(createdProspect.prospect);
+      } catch (e) {
+        self.saveProspectFail(e);
+      }
+    }),
   }));
 
 export interface ProspectStore extends Instance<typeof ProspectStoreModel> {}

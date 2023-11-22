@@ -34,7 +34,8 @@
     "noInformation": "No information available",
     "noData": "Unknown",
     "search": "Search",
-    "open": "Open"
+    "open": "Open",
+    "addedOrUpdated": "Updated successfully !"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -152,6 +153,13 @@
       "proposalDeclined": "Quotation refused",
       "invoiceSent": "Invoice sent",
       "reserve": "Reserve"
+    },
+    "buttonActions": {
+      "abandonProspect": "Abandon this prospect",
+      "bookProspect": "Book this prospect",
+      "convertProspectIntoCustomer": "Turn into customer",
+      "freeUpProspect": "Free that prospect",
+      "convertCustomerIntoProspect": "Turn into prospect"
     }
   },
   "onboardingScreen": {
@@ -320,6 +328,8 @@
       "addItem": "Add item",
       "ref": "Ref",
       "title": "Title",
+      "price": "Price incl. VAT",
+      "status": "Status",
       "vat": "VTA",
       "sendingDate": "Sending date",
       "toPayAt": "To pay at",
@@ -332,7 +342,8 @@
       "cash": "Cash",
       "bankTransfer": "Bank transfer",
       "cheque": "Cheque",
-      "paymentMethod": "Method of payment"
+      "paymentMethod": "Method of payment",
+      "pay": "Pay"
     },
     "status": {
       "PAID": "Paid",
@@ -416,7 +427,8 @@
     },
     "customerSelectionForm": {
       "title": "Client Name",
-      "addClient": "Add a client",
+      "addClient": "Add a customer",
+      "editClient": "Edit a customer",
       "validate": "Validate",
       "customerCreationForm": {
         "firstName": "First name",
@@ -426,13 +438,17 @@
         "phoneNumber": "Phone Number",
         "comment": "Comment (Optional)",
         "add": "Add this customer",
+        "edit": "Edit this customer",
         "added": "Added",
-        "fail": "Try again"
+        "fail": "Try again",
+        "addOrUpdate": "Updated successfully !"
       }
     },
     "productCreationForm": {
       "unitPrice": "Unit price before tax (in €)",
-      "description": "Description"
+      "description": "Description",
+      "add": "Add this product",
+      "edit": "Edit this product"
     },
     "productForm": {
       "addProduct": "Add a product",

@@ -78,7 +78,6 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
         navigation.navigate('changePassword', { userName: inputUsername, password: inputPassword });
       } else {
         const session = await Auth.currentSession();
-
         const newIdentity: IdentityState = {
           accessToken: session.getIdToken().getJwtToken(),
           refreshToken: user.signInUserSession.refreshToken.token,
@@ -96,6 +95,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       }
     } catch (error) {
       showMessage(translate('errors.credentials'), errorMessageStyles);
+      navigation.navigate('welcome');
     } finally {
       setLoading(false);
     }

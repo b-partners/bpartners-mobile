@@ -45,4 +45,15 @@ export class ProspectApi {
     const prospect = response.data;
     return { kind: 'ok', prospect };
   }
+  async createProspect(ahId: string, payload: Prospect): Promise<UpdateProspectResult> {
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.put(`accountHolders/${ahId}/prospects`, [payload]);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const prospect = response.data;
+    return { kind: 'ok', prospect };
+  }
 }

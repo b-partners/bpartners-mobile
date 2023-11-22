@@ -48,7 +48,7 @@ export const prospectStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing[4],
-    width: '90%',
+    width: '60%',
     marginHorizontal: '5%',
   },
   container: {
