@@ -91,6 +91,7 @@ project.ext.react = [
         // TODO: MUST BE ADDRESSED AS SOON AS POSSIBLE, dev mode MUST BE disabled on the end user environment
         devDisabledInPreprod: false,
         devDisabledInProd: false,
+        nodeExecutableAndArgs: ["node", "--max_old_space_size=8192"],
 ]
 
 // This method of including other gradle files is to support symlinks.
