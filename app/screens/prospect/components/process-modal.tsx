@@ -6,6 +6,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
+import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
@@ -18,7 +19,7 @@ import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
 import { ButtonActions } from './button-action';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
-  const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus } = props;
+  const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus, isEditing, setIsEditing } = props;
 
   const { prospectStore } = useStores();
 
@@ -32,6 +33,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     setStatus(null);
     setCurrent(null);
     setCurrentPage(1);
+    setIsEditing(false);
     setShowModal(false);
   };
 
@@ -54,22 +56,34 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     setCurrentPage(2);
   };
 
+  const handleStatus = () => {
+    if (status && (current === ProspectFeedback.NOT_INTERESTED || current === ProspectFeedback.PROPOSAL_DECLINED)) {
+      return ProspectStatus.TO_CONTACT;
+    } else if (status === null) {
+      return prospect?.status;
+    } else {
+      return status;
+    }
+  };
+
   const onSubmit = async prospectInfos => {
     setIsLoading(true);
-    const editedStatus = current === ProspectFeedback.NOT_INTERESTED || current === ProspectFeedback.PROPOSAL_DECLINED ? ProspectStatus.TO_CONTACT : status;
     const prospectToBeEdited = {
       ...prospect,
       name: prospectInfos.name,
+      status: handleStatus(),
       email: prospectInfos.email,
       phone: prospectInfos.phone,
       address: prospectInfos.address,
       comment: prospectInfos.comment,
       contractAmount: amountToMinors(parseInt(amount, 10)),
-      status: editedStatus,
     };
     delete prospectToBeEdited.location;
     try {
       await prospectStore.updateProspects(prospectToBeEdited.id, prospectToBeEdited);
+      setTimeout(() => {
+        showMessage(translate('common.addedOrUpdated'), { backgroundColor: palette.green });
+      }, 1500);
     } catch (e) {
       showMessage(e);
       throw e;
@@ -77,7 +91,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       setIsLoading(false);
       closeModal();
       await prospectStore.getProspects();
-      setCurrentStatus(editedStatus);
+      setCurrentStatus(handleStatus());
     }
   };
 
@@ -118,7 +132,15 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               borderTopRightRadius: 20,
             }}
           >
-            <View style={{ height: '100%', width: '85%', flexDirection: 'row', alignItems: 'center', paddingLeft: spacing[4] }}>
+            <View
+              style={{
+                height: '100%',
+                width: '85%',
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingLeft: spacing[4],
+              }}
+            >
               <Text text={'Prospect : '} style={{ fontSize: 15, color: palette.secondaryColor }} />
               <Text text={prospect?.name} style={{ fontSize: 15, color: palette.secondaryColor }} />
             </View>
@@ -216,7 +238,14 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             </View>
           ) : (
             <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
-              <View style={{ width: '100%', marginVertical: spacing[2], flexDirection: 'column', alignItems: 'center' }}>
+              <View
+                style={{
+                  width: '100%',
+                  marginVertical: spacing[2],
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
                 <Text tx={'prospectScreen.process.amountLabel'} style={{ color: palette.lightGrey }} />
               </View>
               <View style={{ marginBottom: 10, width: '100%' }}>
@@ -230,59 +259,63 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                 />
               </View>
-              {prospect?.status === ProspectStatus.TO_CONTACT ? (
+              {!isEditing && (
                 <View style={{ flex: 1, paddingTop: spacing[4] }}>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.INTERESTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.INTERESTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.INTERESTED} />
-                    <Text tx={'prospectScreen.process.interested'} style={current === ProspectFeedback.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.NOT_INTERESTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.NOT_INTERESTED} />
-                    <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_SENT)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_SENT} />
-                    <Text tx={'prospectScreen.process.proposalSent'} style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View style={{ flex: 1, paddingTop: spacing[4] }}>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_ACCEPTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_ACCEPTED} />
-                    <Text
-                      tx={'prospectScreen.process.proposalAccepted'}
-                      style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED_TEXT : UNCHECKED_TEXT}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_DECLINED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_DECLINED} />
-                    <Text
-                      tx={'prospectScreen.process.proposalDeclined'}
-                      style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED_TEXT : UNCHECKED_TEXT}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.INVOICE_SENT ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.INVOICE_SENT)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.INVOICE_SENT} />
-                    <Text tx={'prospectScreen.process.invoiceSent'} style={current === ProspectFeedback.INVOICE_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
+                  {prospect?.status === ProspectStatus.TO_CONTACT ? (
+                    <>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.INTERESTED ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.INTERESTED)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.INTERESTED} />
+                        <Text tx={'prospectScreen.process.interested'} style={current === ProspectFeedback.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.NOT_INTERESTED)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.NOT_INTERESTED} />
+                        <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.PROPOSAL_SENT)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.PROPOSAL_SENT} />
+                        <Text tx={'prospectScreen.process.proposalSent'} style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                      </TouchableOpacity>
+                    </>
+                  ) : (
+                    <>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.PROPOSAL_ACCEPTED)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.PROPOSAL_ACCEPTED} />
+                        <Text
+                          tx={'prospectScreen.process.proposalAccepted'}
+                          style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED_TEXT : UNCHECKED_TEXT}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.PROPOSAL_DECLINED)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.PROPOSAL_DECLINED} />
+                        <Text
+                          tx={'prospectScreen.process.proposalDeclined'}
+                          style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED_TEXT : UNCHECKED_TEXT}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.INVOICE_SENT ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.INVOICE_SENT)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.INVOICE_SENT} />
+                        <Text tx={'prospectScreen.process.invoiceSent'} style={current === ProspectFeedback.INVOICE_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                      </TouchableOpacity>
+                    </>
+                  )}
                 </View>
               )}
             </View>
@@ -301,6 +334,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           >
             <ButtonActions
               isLoading={isLoading}
+              isEditing={isEditing}
               prospectStatus={prospect?.status}
               selectedStatus={status}
               prospectFeedBack={current}
