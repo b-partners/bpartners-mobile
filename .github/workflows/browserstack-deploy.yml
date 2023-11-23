@@ -70,6 +70,9 @@ jobs:
           echo SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo ACCESS_KEY_ID= ${{ secrets.ACCESS_KEY_ID }} >> .env
+          echo REGION= ${{ secrets.REGION }} >> .env
+          echo SECRET_ACCESS_KEY = ${{ secrets.SECRET_ACCESS_KEY }} >> .env
 
       - name: Build apk and bundle
         run: |
