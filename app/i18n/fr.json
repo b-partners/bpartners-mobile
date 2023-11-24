@@ -347,6 +347,7 @@
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
       "markAsPaid": "Marquer comme payée",
+      "showRelaunchHistory": "Historiques de relance",
       "downloadInvoice": "Télécharger la facture ",
       "editDraft": "Modifier le brouillon"
     },

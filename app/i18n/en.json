@@ -363,6 +363,7 @@
       "markAsInvoice": "Mark as invoice",
       "markAsProposal": "Mark as proposal",
       "markAsPaid": "Mark as paid",
+      "showRelaunchHistory": "Relaunch histories",
       "downloadInvoice": "Download",
       "editDraft": "Edit"
     },

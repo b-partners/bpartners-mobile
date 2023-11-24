@@ -19,6 +19,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
+import { RelaunchHistoryModal } from './components/relaunch-history-modal';
 import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
@@ -36,6 +37,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
   const { invoiceStore, authStore, quotationStore } = useStores();
   const { loadingQuotation, quotations } = quotationStore;
   const [navigationState, setNavigationState] = useState(false);
+  const [relaunchHistory, setRelaunchHistory] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(quotations.length / itemsPerPage));
   const messageOption = { backgroundColor: palette.green };
@@ -101,10 +103,15 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     });
   };
 
+  const showRelaunchHistory = () => {
+    setRelaunchHistory(true);
+  };
+
   const items: MenuItem[] = [
     { id: 'markAsInvoice', title: translate('invoiceScreen.menu.markAsInvoice') },
     { id: 'senByEmail', title: translate('invoicePreviewScreen.send') },
     { id: 'previewQuotation', title: translate('invoicePreviewScreen.previewQuotation') },
+    { id: 'showRelaunchHistory', title: translate('invoiceScreen.menu.showRelaunchHistory') },
   ];
 
   return (
@@ -126,6 +133,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
                       markAsInvoice: () => markAsInvoice(item),
                       senByEmail: () => sendEmail(authStore, item),
                       previewQuotation: () => previewQuotation(item),
+                      showRelaunchHistory: () => showRelaunchHistory(),
                     }}
                   />
                 )}
@@ -155,6 +163,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
             invoiceStatus={InvoiceStatus.PROPOSAL}
           />
         </View>
+        <RelaunchHistoryModal isOpen={relaunchHistory} setOpen={setRelaunchHistory} />
       </View>
     </ErrorBoundary>
   );
