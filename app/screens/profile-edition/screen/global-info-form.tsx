@@ -34,10 +34,10 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
       siren: currentAccountHolder?.siren,
       officialActivityName: currentAccountHolder?.officialActivityName,
       initialCashFlow: amountToMajors(currentAccountHolder?.initialCashflow).toString(),
-      address: currentAccountHolder?.contactAddress.address,
-      city: currentAccountHolder?.contactAddress.city,
-      country: currentAccountHolder?.contactAddress.country,
-      postalCode: currentAccountHolder?.contactAddress.postalCode,
+      address: currentAccountHolder?.contactAddress.address ?? '',
+      city: currentAccountHolder?.contactAddress.city ?? '',
+      country: currentAccountHolder?.contactAddress.country ?? '',
+      postalCode: currentAccountHolder?.contactAddress.postalCode ?? '',
     },
   });
 
