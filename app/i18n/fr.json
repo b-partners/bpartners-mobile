@@ -569,5 +569,8 @@
     "title": "Mes produits",
     "export": "Exporter",
     "price": "Prix"
+  },
+  "relaunchHistoryModal": {
+    "title": "Historique de relance"
   }
 }

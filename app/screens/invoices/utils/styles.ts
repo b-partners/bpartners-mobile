@@ -57,7 +57,8 @@ export const SECTION_HEADER_TEXT_STYLE: TextStyle = {
 };
 export const SECTION_LIST_CONTAINER_STYLE: ViewStyle = {
   marginHorizontal: spacing[4],
-  borderColor: color.transparent,
+  borderColor: palette.white,
+  backgroundColor: palette.white,
 };
 export const SEPARATOR_STYLE = { borderColor: palette.lighterGrey };
 export const FOOTER_COMPONENT_STYLE = { marginBottom: spacing[0] };
@@ -327,6 +328,26 @@ export const partialPaymentStyles = StyleSheet.create({
     color: palette.white,
     marginRight: spacing[2],
     fontFamily: 'Geometria',
+  },
+});
+
+export const relaunchHistoryModalStyles = StyleSheet.create({
+  modalContainer: {
+    backgroundColor: palette.white,
+    height: '60%',
+    width: '95%',
+    borderRadius: 15,
+  },
+  referenceContainer: {
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  reference: {
+    color: palette.greyDarker,
+    fontFamily: 'Geometria',
+    fontSize: 16,
   },
 });
 export const sendingConfirmationModalStyles = StyleSheet.create({

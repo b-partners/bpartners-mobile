@@ -34,6 +34,7 @@ export interface PartialPaymentProps {
 export interface RelaunchHistoryProps {
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  item: IInvoice;
 }
 export const getStatusTextColor = (status: InvoiceStatus) => {
   switch (status) {

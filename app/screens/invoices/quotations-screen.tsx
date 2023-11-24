@@ -40,6 +40,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
   const [relaunchHistory, setRelaunchHistory] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(quotations.length / itemsPerPage));
+  const [currentQuotation, setCurrentQuotation] = useState<IInvoice>();
   const messageOption = { backgroundColor: palette.green };
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
@@ -94,7 +95,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
     }
   };
-  const previewQuotation = item => {
+  const previewQuotation = (item: IInvoice) => {
     navigate('invoicePreview', {
       fileId: item.fileId,
       invoiceTitle: item.title,
@@ -103,7 +104,8 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     });
   };
 
-  const showRelaunchHistory = () => {
+  const showRelaunchHistory = (item: IInvoice) => {
+    setCurrentQuotation(item);
     setRelaunchHistory(true);
   };
 
@@ -133,7 +135,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
                       markAsInvoice: () => markAsInvoice(item),
                       senByEmail: () => sendEmail(authStore, item),
                       previewQuotation: () => previewQuotation(item),
-                      showRelaunchHistory: () => showRelaunchHistory(),
+                      showRelaunchHistory: () => showRelaunchHistory(item),
                     }}
                   />
                 )}
@@ -163,7 +165,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
             invoiceStatus={InvoiceStatus.PROPOSAL}
           />
         </View>
-        <RelaunchHistoryModal isOpen={relaunchHistory} setOpen={setRelaunchHistory} />
+        {currentQuotation && <RelaunchHistoryModal isOpen={relaunchHistory} setOpen={setRelaunchHistory} item={currentQuotation} />}
       </View>
     </ErrorBoundary>
   );
