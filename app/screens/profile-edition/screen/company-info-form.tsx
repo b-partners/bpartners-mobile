@@ -30,10 +30,10 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
     mode: 'all',
     defaultValues: {
       socialCapital: amountToMajors(currentAccountHolder?.companyInfo.socialCapital).toString(),
-      phone: currentAccountHolder?.companyInfo.phone,
-      email: currentAccountHolder?.companyInfo.email,
-      townCode: currentAccountHolder?.companyInfo.townCode.toString(),
-      tvaNumber: currentAccountHolder?.companyInfo.tvaNumber,
+      phone: currentAccountHolder?.companyInfo.phone ?? '',
+      email: currentAccountHolder?.companyInfo.email ?? '',
+      townCode: currentAccountHolder?.companyInfo.townCode.toString() ?? '',
+      tvaNumber: currentAccountHolder?.companyInfo.tvaNumber ?? '',
     },
   });
 
