@@ -28,7 +28,7 @@ export const RevenueTargetsForm: FC<MaterialTopTabScreenProps<NavigatorParamList
     formState: { errors },
   } = useForm({
     mode: 'all',
-    defaultValues: { revenueTargets: amountToMajors(currentAccountHolder?.revenueTargets[0].amountTarget).toString() },
+    defaultValues: { revenueTargets: amountToMajors(currentAccountHolder?.revenueTargets[0].amountTarget ?? 10000).toString() },
   });
 
   useEffect(() => {

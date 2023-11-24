@@ -53,7 +53,7 @@ export const ActivityForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
     formState: { errors },
   } = useForm({
     mode: 'all',
-    defaultValues: { primary: currentAccountHolder?.businessActivities.primary, secondary: currentAccountHolder?.businessActivities.secondary },
+    defaultValues: { primary: currentAccountHolder?.businessActivities.primary ?? '', secondary: currentAccountHolder?.businessActivities.secondary ?? '' },
   });
 
   const hasErrors = errors.primary || errors.secondary;

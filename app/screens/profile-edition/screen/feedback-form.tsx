@@ -27,7 +27,7 @@ export const FeedbackForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
     formState: { errors },
   } = useForm({
     mode: 'all',
-    defaultValues: { feedbackLink: currentAccountHolder?.feedback.feedbackLink },
+    defaultValues: { feedbackLink: currentAccountHolder?.feedback.feedbackLink ?? '' },
   });
 
   useEffect(() => {
