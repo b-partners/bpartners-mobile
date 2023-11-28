@@ -1,10 +1,9 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-
 import { BusinessActivityModel, createBusinessActivityDefaultModel } from '../business-activity/business-activity';
 import { CompanyInfoModel, createCompanyInfoDefaultModel } from '../company-info/company-info';
 import { ContactAddressModel, createContactAddressDefaultModel } from '../contact-address/contact-address';
 import { FeedbackModel } from '../feedback/feedback';
 import { RevenueTargetModel } from '../revenue-target/revenue-target';
+import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export enum VerificationStatus {
   VERIFIED = 'VERIFIED',

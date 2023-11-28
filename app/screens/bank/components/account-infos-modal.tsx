@@ -1,12 +1,11 @@
-import { Formik } from 'formik';
-import React from 'react';
-import { View } from 'react-native';
-import { Modal } from 'react-native-paper';
-
 import { Header } from '../../../components';
 import FormField from '../../../components/forms/form-field';
 import { Account } from '../../../models/entities/account/account';
 import { color, spacing } from '../../../theme';
+import { Formik } from 'formik';
+import React from 'react';
+import { View } from 'react-native';
+import { Modal } from 'react-native-paper';
 
 type PaymentModalProps = {
   showModal: boolean;

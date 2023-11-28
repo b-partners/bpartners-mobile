@@ -1,9 +1,8 @@
-import { ApiResponse } from 'apisauce';
-
 import { CreateUser } from '../../models/entities/user/user';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { CreateUserResult, GetOnboardingURL } from './api.types';
+import { ApiResponse } from 'apisauce';
 
 export class OnboardingApi {
   private api: Api;

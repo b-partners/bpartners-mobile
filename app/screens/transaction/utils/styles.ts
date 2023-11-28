@@ -1,7 +1,6 @@
-import { StyleSheet, ViewStyle } from 'react-native';
-
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { StyleSheet, ViewStyle } from 'react-native';
 
 export const LIST_CONTAINER: ViewStyle = {
   flexDirection: 'column',

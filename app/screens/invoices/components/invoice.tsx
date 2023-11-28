@@ -1,7 +1,3 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React from 'react';
-import { TextStyle, TouchableOpacity, View } from 'react-native';
-
 import { BulletSeparator, Menu, Text } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
@@ -18,6 +14,9 @@ import {
   invoiceStyles as styles,
 } from '../utils/styles';
 import { InvoiceProps, getStatusTextColor } from '../utils/utils';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React from 'react';
+import { TextStyle, TouchableOpacity, View } from 'react-native';
 
 export const Invoice: React.FC<InvoiceProps> = props => {
   const { item, menuItems, menuAction, invoiceAction } = props;

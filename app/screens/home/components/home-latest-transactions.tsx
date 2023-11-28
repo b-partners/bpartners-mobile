@@ -1,8 +1,3 @@
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import React from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import Snackbar from 'react-native-snackbar';
-
 import { Button, Icon, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { TransactionType } from '../../../models/entities/transaction-category/transaction-category';
@@ -11,6 +6,10 @@ import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import React from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 
 type HomeLatestTransactionProps = {
   transactions: ITransaction[];

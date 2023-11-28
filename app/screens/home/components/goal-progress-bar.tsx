@@ -1,12 +1,11 @@
-import React from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
-
 import { Icon, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { RevenueTarget } from '../../../models/entities/revenue-target/revenue-target';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { currencyPipe } from '../../../utils/pipes';
+import React from 'react';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
 const ROW: ViewStyle = {
   display: 'flex',

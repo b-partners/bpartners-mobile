@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
-import { TextStyle, TouchableOpacity, View } from 'react-native';
-
 import { Text } from '../../../components';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
 import { InvoiceRowProps } from '../utils/utils';
+import React, { FC } from 'react';
+import { TextStyle, TouchableOpacity, View } from 'react-native';
 
 const CUSTOMER_NAME: TextStyle = {
   color: palette.lightGrey,

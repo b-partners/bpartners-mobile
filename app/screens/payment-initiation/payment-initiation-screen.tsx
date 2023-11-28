@@ -1,8 +1,3 @@
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
-import { ScrollView, ViewStyle } from 'react-native';
-
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
@@ -12,6 +7,10 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { IbanModal } from './components/iban-modal';
 import { PaymentInitiationForm } from './components/payment-initiation-form';
 import { HEADER, HEADER_TITLE } from './utils/style';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useState } from 'react';
+import { ScrollView, ViewStyle } from 'react-native';
 
 const FORM_FIELD_CONTAINER: ViewStyle = { paddingHorizontal: spacing[3] };
 

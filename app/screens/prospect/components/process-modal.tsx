@@ -1,9 +1,3 @@
-import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Platform, TouchableOpacity, View } from 'react-native';
-import { Modal } from 'react-native-paper';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { useStores } from '../../../models';
@@ -16,6 +10,11 @@ import RadioButton from '../../invoice-form/components/select-form-field/radio-b
 import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
 import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
 import { ButtonActions } from './button-action';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Platform, TouchableOpacity, View } from 'react-native';
+import { Modal } from 'react-native-paper';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus } = props;

@@ -1,13 +1,12 @@
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
-
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { ErrorBoundary } from '../error/error-boundary';
 import { LegalFileView } from './component/legal-file-view';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect } from 'react';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
 const FULL: ViewStyle = { flex: 1 };
 const HEADER_TEXT_STYLE: TextStyle = {

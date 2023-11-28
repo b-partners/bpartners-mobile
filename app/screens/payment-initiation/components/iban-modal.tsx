@@ -1,11 +1,10 @@
+import { BpPagination, Button, Text } from '../../../components';
+import { spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 import React, { useState } from 'react';
 import { Modal, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-
-import { BpPagination, Button, Text } from '../../../components';
-import { spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
 
 type IbanModalProps = {
   ibanModal: boolean;

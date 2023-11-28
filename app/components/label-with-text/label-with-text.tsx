@@ -1,8 +1,7 @@
-import * as React from 'react';
-import { Image, View } from 'react-native';
-
 import { palette } from '../../theme/palette';
 import { Text } from '../text/text';
+import * as React from 'react';
+import { Image, View } from 'react-native';
 
 export function LabelWithTextRow(props) {
   const { label, text, countryFlag } = props;

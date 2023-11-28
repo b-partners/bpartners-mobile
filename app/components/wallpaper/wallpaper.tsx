@@ -1,8 +1,7 @@
-import React from 'react';
-
 import { AutoImage as Image } from '../auto-image/auto-image';
 import { presets } from './wallpaper.presets';
 import { WallpaperProps } from './wallpaper.props';
+import React from 'react';
 
 const defaultImage = require('./bg.png');
 

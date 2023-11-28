@@ -1,9 +1,3 @@
-import React, { useState } from 'react';
-import {
-  /*TouchableOpacity,*/
-  View,
-} from 'react-native';
-
 //import IoniconIcon from 'react-native-vector-icons/Ionicons';
 //import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LabelWithTextColumn } from '../../../components';
@@ -14,6 +8,11 @@ import { Account } from '../../../models/entities/account/account';
 import { palette } from '../../../theme/palette';
 import { Logo } from '../../home/components/logo';
 import { AccountInfosModal } from './account-infos-modal';
+import React, { useState } from 'react';
+import {
+  /*TouchableOpacity,*/
+  View,
+} from 'react-native';
 
 type BankInfosProps = {
   currentAccount: Account;

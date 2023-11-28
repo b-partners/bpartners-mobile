@@ -1,8 +1,7 @@
-import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
-import React, { FC } from 'react';
-
 import { palette } from '../../../../theme/palette';
 import { CircleOutline } from './circle-outline';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import React, { FC } from 'react';
 
 type TRadioButton = {
   isActive?: boolean;

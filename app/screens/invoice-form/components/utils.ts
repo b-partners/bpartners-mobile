@@ -1,7 +1,6 @@
+import { color, spacing } from '../../../theme';
 import React from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
-
-import { color, spacing } from '../../../theme';
 
 export type ModalProps = {
   visibleModal: boolean;

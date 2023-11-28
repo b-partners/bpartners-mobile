@@ -1,8 +1,3 @@
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
-import { TextStyle, ViewStyle } from 'react-native';
-
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
@@ -10,6 +5,10 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { Bank } from './components/bank';
 import { NoBank } from './components/no-bank';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { TextStyle, ViewStyle } from 'react-native';
 
 const CONTAINER: ViewStyle = {
   backgroundColor: palette.white,

@@ -1,7 +1,6 @@
-import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
-
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 export const CHECKED: ViewStyle = {
   width: '100%',

@@ -1,9 +1,3 @@
-import { StackScreenProps } from '@react-navigation/stack';
-import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
-import { View, ViewStyle } from 'react-native';
-import ZocialIcon from 'react-native-vector-icons/Zocial';
-
 import { Header, Screen, Text } from '../../components';
 import { translate } from '../../i18n';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
@@ -11,6 +5,11 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { SCREEN_STYLE } from '../marketplace/styles';
+import { StackScreenProps } from '@react-navigation/stack';
+import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { View, ViewStyle } from 'react-native';
+import ZocialIcon from 'react-native-vector-icons/Zocial';
 
 const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,

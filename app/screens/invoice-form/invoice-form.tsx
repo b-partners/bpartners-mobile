@@ -1,12 +1,3 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useEffect, useState } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { Checkbox, List } from 'react-native-paper';
-import RNVIcon from 'react-native-vector-icons/AntDesign';
-import Octicons from 'react-native-vector-icons/Octicons';
-
 import { Button, DatePickerField, Icon, Loader, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -31,6 +22,14 @@ import { SelectFormField } from './components/select-form-field/select-form-fiel
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, dateConversion, invoicePageSize } from './components/utils';
 import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
+import { MaterialIcons } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useEffect, useState } from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Checkbox, List } from 'react-native-paper';
+import RNVIcon from 'react-native-vector-icons/AntDesign';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 type InvoiceFormProps = {
   invoice?: Invoice;

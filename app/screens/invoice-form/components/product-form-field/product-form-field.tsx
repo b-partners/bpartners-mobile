@@ -1,10 +1,4 @@
 // *import { Octicons } from '@expo/vector-icons';
-import { Observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
-import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
-import RNVIcon from 'react-native-vector-icons/AntDesign';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-
 import { Button, Icon, Separator, Text, TextField } from '../../../../components';
 import { useStores } from '../../../../models';
 import { Product } from '../../../../models/entities/product/product';
@@ -16,6 +10,11 @@ import { ProductModal } from '../../../product/components/product-modal';
 import { ProductModalType } from '../../../product/products-screen';
 import { InvoiceFormField } from '../../invoice-form-field';
 import RadioButton from '../select-form-field/radio-button';
+import { Observer } from 'mobx-react-lite';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
+import RNVIcon from 'react-native-vector-icons/AntDesign';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 type ProductFormFieldProps = {
   index: number;

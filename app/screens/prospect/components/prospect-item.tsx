@@ -1,12 +1,3 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { Card, Paragraph, Portal, Title } from 'react-native-paper';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
-
 import { Menu as CMenu } from '../../../components/menu/menu';
 import { translate } from '../../../i18n';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
@@ -16,6 +7,14 @@ import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
 import { ProcessModal } from './process-modal';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { Card, Paragraph, Portal, Title } from 'react-native-paper';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 const IconGroup = {
   email: <MaterialCommunity name='email' size={18} color={color.palette.secondaryColor} />,

@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { TextInput } from 'react-native-paper';
-
 import { TxKeyPath } from '../../i18n';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import ErrorMessage from '../forms/error-message';
 import { Text } from '../text/text';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 interface InputFieldProps {
   labelTx: TxKeyPath;

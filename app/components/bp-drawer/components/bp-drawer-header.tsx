@@ -1,14 +1,13 @@
+import { User } from '../../../models/entities/user/user';
+import { color, spacing } from '../../../theme';
+import { AutoImage } from '../../auto-image/auto-image';
+import { Icon } from '../../icon/icon';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { DrawerActions } from '@react-navigation/native';
 import React from 'react';
 import { Platform, Text, TouchableOpacity, View } from 'react-native';
 // import { Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { User } from '../../../models/entities/user/user';
-import { color, spacing } from '../../../theme';
-import { AutoImage } from '../../auto-image/auto-image';
-import { Icon } from '../../icon/icon';
 
 export function BPDrawerHeader(props: {
   onPress: () => void;

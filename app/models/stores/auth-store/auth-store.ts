@@ -1,5 +1,3 @@
-import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
-
 import env from '../../../config/env';
 import { translate } from '../../../i18n';
 import { AccountApi } from '../../../services/api/account-api';
@@ -19,6 +17,7 @@ import { AuthUserModel } from '../../entities/user/AuthUser';
 import { User, UserModel } from '../../entities/user/user';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
+import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 export const AuthStoreModel = types
   .model('SignIn')

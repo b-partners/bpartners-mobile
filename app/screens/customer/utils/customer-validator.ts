@@ -1,6 +1,5 @@
-import * as yup from 'yup';
-
 import { translate } from '../../../i18n';
+import * as yup from 'yup';
 
 export const CustomerValidationSchema = yup.object().shape({
   customerId: yup.string(),

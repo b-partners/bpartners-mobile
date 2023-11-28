@@ -1,12 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-
 import { Text } from '../../../components';
 import { Product as IProduct } from '../../../models/entities/product/product';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { ProductModalType } from '../products-screen';
+import React, { Dispatch, SetStateAction } from 'react';
+import { TouchableOpacity, View } from 'react-native';
 
 type ProductProps = {
   item: IProduct;

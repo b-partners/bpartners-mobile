@@ -1,6 +1,5 @@
-import { StyleSheet } from 'react-native';
-
 import { spacing } from '../../../theme';
+import { StyleSheet } from 'react-native';
 
 export const customerStyles = StyleSheet.create({
   viewContainer: {

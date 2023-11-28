@@ -1,6 +1,5 @@
-import { TextStyle, ViewStyle } from 'react-native';
-
 import { spacing } from '../../theme';
+import { TextStyle, ViewStyle } from 'react-native';
 
 export const LOGO_STYLE: TextStyle = { color: '#fff' };
 export const HEADER_STYLE: ViewStyle = {

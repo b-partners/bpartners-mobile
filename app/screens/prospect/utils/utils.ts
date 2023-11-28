@@ -1,7 +1,6 @@
-import React from 'react';
-
 import { MenuItem } from '../../../components';
 import { Prospect, ProspectStatus } from '../../../models/entities/prospect/prospect';
+import React from 'react';
 
 export type ProspectItemProps = {
   menuItem: MenuItem[];

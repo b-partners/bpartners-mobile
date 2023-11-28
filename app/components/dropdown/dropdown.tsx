@@ -1,11 +1,10 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { Dropdown as DropdownPicker } from 'react-native-element-dropdown';
-
 import { translate } from '../../i18n';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Dropdown as DropdownPicker } from 'react-native-element-dropdown';
 
 interface DropdownProps<T> extends PropsWithChildren<any> {
   items: T[];

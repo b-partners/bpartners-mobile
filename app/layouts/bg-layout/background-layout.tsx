@@ -1,10 +1,9 @@
-import React from 'react';
-import { Dimensions } from 'react-native';
-
 import { AutoImage, Screen } from '../../components';
 import KeyboardAvoidingWrapper from '../../components/keyboard-avoiding-wrapper/keyboard-avoiding-wrapper';
 import { ErrorBoundary } from '../../screens';
 import { palette } from '../../theme/palette';
+import React from 'react';
+import { Dimensions } from 'react-native';
 
 export const BgLayout: React.FC = ({ children }) => {
   const screenHeight = Dimensions.get('screen').height;

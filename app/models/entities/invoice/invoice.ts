@@ -1,11 +1,10 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import uuid from 'react-native-uuid';
-
 import { CustomerModel } from '../customer/customer';
 import { GlobalDiscountModel } from '../global-discount/global-discount';
 import { MetadataModel } from '../metadata/metadata';
 import { PaymentRegulationModel } from '../payment-regulation/payment-regulation';
 import { ProductModel } from '../product/product';
+import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+import uuid from 'react-native-uuid';
 
 export enum InvoiceStatus {
   PAID = 'PAID',

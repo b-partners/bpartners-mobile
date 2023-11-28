@@ -1,10 +1,9 @@
-import React from 'react';
-import { View } from 'react-native';
-
 import { Button, Loader, Text } from '../../../components';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
+import React from 'react';
+import { View } from 'react-native';
 
 export const ButtonActions = props => {
   const {

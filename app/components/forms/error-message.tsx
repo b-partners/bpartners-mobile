@@ -1,8 +1,7 @@
+import { color } from '../../theme';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
-
-import { color } from '../../theme';
 
 const ERROR_TEXT: TextStyle = {
   color: color.error,

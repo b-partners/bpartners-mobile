@@ -1,9 +1,3 @@
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { Menu, Provider, Searchbar } from 'react-native-paper';
-
 import { Header, Loader, NoDataProvided } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -17,6 +11,11 @@ import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { CreationPortal } from './components/portal-creation';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import { Menu, Provider, Searchbar } from 'react-native-paper';
 
 export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
   const { prospectStore } = useStores();

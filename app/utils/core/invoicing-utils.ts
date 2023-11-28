@@ -1,12 +1,11 @@
-import * as FileSystem from 'expo-file-system';
-import { Platform } from 'react-native';
-
 import { translate } from '../../i18n';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { AuthStore } from '../../models/stores/auth-store/auth-store';
 import { sendError } from '../../services/logs/logs';
 import { sendEmail as sendInvoiceAttachment } from '../email';
 import { createFileUrl } from '../file-utils';
+import * as FileSystem from 'expo-file-system';
+import { Platform } from 'react-native';
 
 function formatMailBody(bodyMessage: string) {
   // email body as html does not work perfectly on android

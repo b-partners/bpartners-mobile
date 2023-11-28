@@ -1,12 +1,11 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { Button as IButton, Portal } from 'react-native-paper';
-
 import { Text } from '../../../components';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { ProspectCreationModal } from './prospect-creation-modal';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Button as IButton, Portal } from 'react-native-paper';
 
 export const CreationPortal = () => {
   const [creationModal, setCreationModal] = useState(false);

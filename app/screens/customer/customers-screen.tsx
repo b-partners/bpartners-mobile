@@ -1,12 +1,3 @@
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Linking, Platform, View } from 'react-native';
-import RNFS from 'react-native-fs';
-import { Button as IButton, Searchbar } from 'react-native-paper';
-import Snackbar from 'react-native-snackbar';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { BpPagination, Header, Loader, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -22,6 +13,14 @@ import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } fro
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Customer } from './components/customer';
 import { CustomerModal } from './components/customer-modal';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { FlatList, KeyboardAvoidingView, Linking, Platform, View } from 'react-native';
+import RNFS from 'react-native-fs';
+import { Button as IButton, Searchbar } from 'react-native-paper';
+import Snackbar from 'react-native-snackbar';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export type CustomerModalType = {
   type: string;

@@ -1,9 +1,3 @@
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-
 import { Button, InputField, Loader } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -15,6 +9,11 @@ import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 
 export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function CompanyInfoForm() {
   const { authStore } = useStores();

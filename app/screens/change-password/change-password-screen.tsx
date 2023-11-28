@@ -1,12 +1,3 @@
-import { Auth } from '@aws-amplify/auth';
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { Amplify } from 'aws-amplify';
-import * as WebBrowser from 'expo-web-browser';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { View } from 'react-native';
-
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Loader, Text } from '../../components';
 import InputFieldPassword from '../../components/input-field-password/input-field-password';
@@ -20,6 +11,14 @@ import { showMessage } from '../../utils/snackbar';
 import { IdentityState } from '../welcome/utils/utils';
 import { styles } from './utils/styles';
 import { passwordPattern } from './utils/utils';
+import { Auth } from '@aws-amplify/auth';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { Amplify } from 'aws-amplify';
+import * as WebBrowser from 'expo-web-browser';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { View } from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession();
 

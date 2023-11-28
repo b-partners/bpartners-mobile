@@ -1,9 +1,3 @@
-import React, { useState } from 'react';
-import { Modal, View } from 'react-native';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
 import { Button, Dropdown, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { PaymentMethodModel } from '../../../models/entities/invoice/invoice';
@@ -21,6 +15,11 @@ import {
   paymentMethodSelectionStyles as styles,
 } from '../utils/styles';
 import { InputFieldProps, paymentMethods } from '../utils/utils';
+import React, { useState } from 'react';
+import { Modal, View } from 'react-native';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 export const PaymentMethodSelectionModal = (props: InputFieldProps) => {
   const { isOpen, setOpen, markAsPaid, isLoading } = props;

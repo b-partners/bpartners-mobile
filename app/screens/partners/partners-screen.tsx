@@ -1,14 +1,13 @@
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
-import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
-
 import { Header, Screen } from '../../components';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { PartnersCard } from './components/partners-card';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
+import React, { FC } from 'react';
+import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 
 const CONTAINER: ViewStyle = {
   backgroundColor: palette.white,
