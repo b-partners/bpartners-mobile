@@ -10,6 +10,7 @@ export const ButtonActions = props => {
   const {
     isLoading,
     isCreating,
+    isEditing,
     prospectStatus,
     selectedStatus,
     prospectFeedBack,
@@ -22,6 +23,13 @@ export const ButtonActions = props => {
   } = props;
 
   const getPrimaryButtonText = (status, feedback, currentStatus) => {
+    if (isCreating) {
+      return 'common.create';
+    }
+
+    if (isEditing) {
+      return 'common.edit';
+    }
     const statuses = {
       TO_CONTACT: {
         NOT_INTERESTED: 'prospectScreen.buttonActions.abandonProspect',
@@ -40,7 +48,7 @@ export const ButtonActions = props => {
       },
     };
 
-    const defaultText = 'common.create';
+    const defaultText = 'common.submit';
 
     if (statuses[status]) {
       const statusObj = statuses[status];
@@ -77,7 +85,7 @@ export const ButtonActions = props => {
         <View style={{ paddingVertical: spacing[3], paddingHorizontal: spacing[2], width: 100, height: 40 }}>
           <Loader size={20} color={palette.secondaryColor} />
         </View>
-      ) : prospectFeedBack === null && currentPage === 2 && !isCreating ? (
+      ) : prospectFeedBack === null && currentPage === 2 && !isCreating && !isEditing ? (
         <View
           style={{
             backgroundColor: palette.solidGrey,
@@ -90,7 +98,7 @@ export const ButtonActions = props => {
             alignItems: 'center',
           }}
         >
-          <Text tx={'prospectScreen.process.reserve'} style={{ color: palette.lighterGrey }} />
+          <Text tx={getPrimaryButtonText(prospectStatus, prospectFeedBack, selectedStatus)} style={{ color: palette.lighterGrey }} />
         </View>
       ) : (
         <Button

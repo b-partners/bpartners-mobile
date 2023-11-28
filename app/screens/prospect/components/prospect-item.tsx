@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Card, Paragraph, Portal, Title } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,7 +10,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { Menu as CMenu } from '../../../components/menu/menu';
 import { translate } from '../../../i18n';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
-import { color } from '../../../theme';
+import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
@@ -30,11 +30,17 @@ const IconGroup = {
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
   const { menuItem, prospect, setCurrentStatus, key } = props;
   const [showModal, setShowModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState<ProspectStatus | null>(null);
 
   useEffect(() => {
     status != null && setShowModal(true);
   }, [status]);
+
+  const onEditing = () => {
+    setShowModal(true);
+    setIsEditing(true);
+  };
 
   return (
     <View key={key} style={styles.container}>
@@ -90,6 +96,9 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
             >
               <MaterialCommunityIcons name='dots-vertical' size={21} color={palette.secondaryColor} />
             </CMenu>
+            <TouchableOpacity style={{ marginLeft: spacing[2], flex: 1 }} onPress={onEditing}>
+              <MaterialCommunityIcons name='pencil' size={22} color={palette.secondaryColor} />
+            </TouchableOpacity>
           </View>
         </Card.Content>
       </Card>
@@ -102,6 +111,8 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
             setCurrentStatus={setCurrentStatus}
             status={status}
             setStatus={setStatus}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
           />
         </Portal>
       )}
