@@ -1,7 +1,7 @@
 import { ApiErrorResponse, ApiOkResponse, ApiResponse } from 'apisauce';
 
 import env from '../../config/env';
-import { Criteria } from '../../models/entities/criteria/criteria';
+import { Criteria, PageCriteria } from '../../models/entities/criteria/criteria';
 import { Invoice, MethodModel } from '../../models/entities/invoice/invoice';
 import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
 import { Api } from './api';
@@ -104,6 +104,17 @@ export class PaymentApi {
       `accounts/${accountId}/invoices/${invoiceId}/paymentRegulations/${paymentId}/paymentMethod`,
       method
     );
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const invoice = this.mapInvoice(response.data);
+    return { kind: 'ok', invoice };
+  }
+
+  async getInvoiceRelaunches(accountId: string, invoiceId: string, pageCriteria: PageCriteria): Promise<GetInvoiceResult> {
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoices/${invoiceId}/relaunches`, pageCriteria);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
