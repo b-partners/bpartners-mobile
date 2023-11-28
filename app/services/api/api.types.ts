@@ -3,7 +3,7 @@ import { Account } from '../../models/entities/account/account';
 import { BusinessActivityItem } from '../../models/entities/business-activity/business-activity';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
-import { Invoice } from '../../models/entities/invoice/invoice';
+import { Invoice, InvoiceRelaunch } from '../../models/entities/invoice/invoice';
 import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Marketplace } from '../../models/entities/marketplace/marketplace';
 import { Product } from '../../models/entities/product/product';
@@ -71,6 +71,8 @@ export type GetProductsResult = { kind: 'ok'; products: Product[] } | GeneralApi
 export type GetInvoicesResult = { kind: 'ok'; invoices: Invoice[] } | GeneralApiProblem;
 
 export type GetInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
+
+export type GetInvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch[] } | GeneralApiProblem;
 
 export type CrupdateInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
 

@@ -6,7 +6,7 @@ import { Invoice, MethodModel } from '../../models/entities/invoice/invoice';
 import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { CrupdateInvoiceResult, GetInvoiceResult, GetInvoicesResult, InitPaymentResult } from './api.types';
+import { CrupdateInvoiceResult, GetInvoiceRelaunchResult, GetInvoiceResult, GetInvoicesResult, InitPaymentResult } from './api.types';
 
 export class PaymentApi {
   private api: Api;
@@ -113,14 +113,14 @@ export class PaymentApi {
     return { kind: 'ok', invoice };
   }
 
-  async getInvoiceRelaunches(accountId: string, invoiceId: string, pageCriteria: PageCriteria): Promise<GetInvoiceResult> {
+  async getInvoiceRelaunches(accountId: string, invoiceId: string, pageCriteria: PageCriteria): Promise<GetInvoiceRelaunchResult> {
     const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoices/${invoiceId}/relaunches`, pageCriteria);
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);
     }
-    const invoice = this.mapInvoice(response.data);
-    return { kind: 'ok', invoice };
+    const invoiceRelaunch = response.data;
+    return { kind: 'ok', invoiceRelaunch };
   }
 }
