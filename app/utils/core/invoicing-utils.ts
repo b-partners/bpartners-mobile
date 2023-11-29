@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { AuthStore } from '../../models/stores/auth-store/auth-store';
+import { InvoiceStore } from '../../models/stores/invoice-store/invoice-store';
 import { sendError } from '../../services/logs/logs';
 import { sendEmail as sendInvoiceAttachment } from '../email';
 import { createFileUrl } from '../file-utils';
@@ -14,7 +15,7 @@ function formatMailBody(bodyMessage: string) {
 }
 
 // Used to send an invoice attachment
-export async function sendEmail(authStore: AuthStore, invoice: Invoice, isInvoice?: boolean) {
+export async function sendEmail(authStore: AuthStore, invoiceStore: InvoiceStore, invoice: Invoice, isInvoice?: boolean) {
   const { accessToken, currentAccount, currentAccountHolder } = authStore;
   const { fileId, customer, title } = invoice;
   const fileName = `${invoice.title}.pdf`;
@@ -36,7 +37,7 @@ export async function sendEmail(authStore: AuthStore, invoice: Invoice, isInvoic
 
   const bodyMessage = `Bonjour ${customer?.lastName},
   
-Dans la continuité de notre échange, vous trouverez ci-joint le devis.
+Dans la continuité de notre échange, vous trouverez ci-joint ${isInvoice ? 'la facture' : 'le devis'}.
 
 Dès réception de votre bon pour accord, je vous contacterai pour organiser la prestation.
 
@@ -45,6 +46,7 @@ Dans cette attente,
 ${currentAccountHolder.name}
 ${currentAccount.name}
 ${currentAccountHolder.companyInfo.phone}`;
+
   const body = formatMailBody(bodyMessage);
   const emailToSend = {
     subject: `[${currentAccountHolder.name}] - ${title} - ${customer.lastName}`,
@@ -55,8 +57,15 @@ ${currentAccountHolder.companyInfo.phone}`;
     isHTML: true,
     attachments: [downloadedFileUri],
   };
+  const payload = {
+    attachments: [],
+    subject: `[${currentAccountHolder.name}] - ${title} - ${customer.lastName}`,
+    message: body,
+    isFromScratch: true,
+  };
 
   try {
+    await invoiceStore.relaunchInvoice(invoice.id, payload);
     await sendInvoiceAttachment(emailToSend);
   } catch (e) {
     sendError(e, { email: emailToSend });

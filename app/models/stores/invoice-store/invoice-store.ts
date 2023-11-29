@@ -175,6 +175,18 @@ export const InvoiceStoreModel = types
     }),
   }))
   .actions(self => ({
+    relaunchInvoice: flow(function* (invoiceId: string, payload: any) {
+      const paymentApi = new PaymentApi(self.environment.api);
+      try {
+        const getInvoiceRelaunchesResult = yield paymentApi.relaunchInvoice(self.currentAccount.id, invoiceId, payload);
+        return getInvoiceRelaunchesResult.invoiceRelaunch;
+      } catch (e) {
+        RTLog(e.message);
+        self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
     getInvoiceRelaunches: flow(function* (invoiceId: string, pageCriteria: PageCriteria) {
       const paymentApi = new PaymentApi(self.environment.api);
       try {

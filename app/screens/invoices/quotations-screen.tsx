@@ -133,7 +133,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
                     menuItems={items}
                     menuAction={{
                       markAsInvoice: () => markAsInvoice(item),
-                      senByEmail: () => sendEmail(authStore, item),
+                      senByEmail: () => sendEmail(authStore, invoiceStore, item),
                       previewQuotation: () => previewQuotation(item),
                       showRelaunchHistory: () => showRelaunchHistory(item),
                     }}

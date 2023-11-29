@@ -72,6 +72,8 @@ export type GetInvoicesResult = { kind: 'ok'; invoices: Invoice[] } | GeneralApi
 
 export type GetInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
 
+export type InvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch } | GeneralApiProblem;
+
 export type GetInvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch[] } | GeneralApiProblem;
 
 export type CrupdateInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;

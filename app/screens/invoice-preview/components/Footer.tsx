@@ -80,7 +80,7 @@ const Footer: FC<IFooter> = props => {
   const [downloadFinished, setDownloadFinished] = useState(false);
   const fileName = `${translate('invoicePreviewScreen.invoice')}-${title}.pdf`;
 
-  const { authStore } = useStores();
+  const { authStore, invoiceStore } = useStores();
   useEffect(() => {
     setDownloadFinished(false);
     setDownloadError(false);
@@ -88,7 +88,7 @@ const Footer: FC<IFooter> = props => {
   }, [invoice]);
 
   async function handleSendInvoice() {
-    await sendEmail(authStore, invoice);
+    await sendEmail(authStore, invoiceStore, invoice);
   }
 
   async function download() {

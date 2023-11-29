@@ -76,7 +76,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const items: MenuItem[] = [
     { id: 'markAsPaid', title: translate('invoiceScreen.menu.markAsPaid') },
     { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
-    { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
+    { id: 'sendInvoice', title: translate('invoicePreviewScreen.send') },
   ];
 
   const simpleItems: MenuItem[] = [
@@ -94,7 +94,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   };
 
   const sendInvoice = async (item: IInvoice) => {
-    await sendEmail(authStore, item, true);
+    await sendEmail(authStore, invoiceStore, item, true);
   };
 
   const openMethodSelection = (item: IInvoice) => {
