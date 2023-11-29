@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
+import { Invoice, InvoiceStatus, SearchInvoice } from '../../../models/entities/invoice/invoice';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { amountToMajors, amountToMinors } from '../../../utils/money';
+import { amountToMajors, amountToMinors, printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
+import { invoicePageSize } from '../../invoice-form/components/utils';
+import { InvoiceSelectionModal } from '../../transaction/components/invoice-selection-modal';
+import { TransactionField } from '../../transaction/components/transaction-field';
+import { transactionModalStyles as styles } from '../../transaction/utils/styles';
 import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
 import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
 import { ButtonActions } from './button-action';
@@ -21,17 +28,24 @@ import { ButtonActions } from './button-action';
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus, isEditing, setIsEditing } = props;
 
-  const { prospectStore } = useStores();
+  const { prospectStore, quotationStore, invoiceStore } = useStores();
+
+  const { invoices, paidInvoices } = invoiceStore;
+
+  const { quotations } = quotationStore;
 
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setVisible] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice>();
   const [amount, setAmount] = useState(amountToMajors(prospect?.contractAmount)?.toString());
 
   const closeModal = () => {
     setStatus(null);
     setCurrent(null);
+    setSelectedInvoice(null);
     setCurrentPage(1);
     setIsEditing(false);
     setShowModal(false);
@@ -52,6 +66,43 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     },
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const commonFetchParams = { page: 1, pageSize: invoicePageSize };
+        if (!selectedInvoice && prospect?.invoiceID) {
+          const associatedInvoice = await invoiceStore.getInvoice(prospect.invoiceID);
+          setSelectedInvoice(associatedInvoice);
+        } else if (prospect?.status === 'TO_CONTACT') {
+          await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, ...commonFetchParams });
+        } else {
+          await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, ...commonFetchParams });
+          await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, ...commonFetchParams });
+        }
+      } catch (e) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+        setVisible(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [isVisible]);
+
+  const invoiceHandler = () => {
+    return prospect?.status === 'TO_CONTACT' ? quotations : invoices.concat(paidInvoices);
+  };
+
+  const handleSelectedInvoice = (invoice: Invoice | SearchInvoice) => {
+    setSelectedInvoice(invoice as Invoice);
+  };
+
+  const openInvoiceSelection = async () => {
+    setVisible(true);
+  };
+
   const handleAmountRender = () => {
     setCurrentPage(2);
   };
@@ -68,6 +119,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
 
   const onSubmit = async prospectInfos => {
     setIsLoading(true);
+
     const prospectToBeEdited = {
       ...prospect,
       name: prospectInfos.name,
@@ -77,6 +129,8 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       address: prospectInfos.address,
       comment: prospectInfos.comment,
       contractAmount: amountToMinors(parseInt(amount, 10)),
+      // @ts-ignore
+      invoiceID: selectedInvoice?.id || null,
     };
     delete prospectToBeEdited.location;
     try {
@@ -238,6 +292,32 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             </View>
           ) : (
             <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
+              <TouchableOpacity style={styles.navigation} onPress={openInvoiceSelection}>
+                <View style={styles.transactionIcon}>
+                  <SimpleLineIcons name='paper-clip' size={18} color={palette.secondaryColor} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text tx={'transactionListScreen.associate'} style={styles.text} />
+                </View>
+                <View style={styles.transactionIcon}>
+                  <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
+                </View>
+              </TouchableOpacity>
+              {selectedInvoice && (
+                <View
+                  style={{
+                    width: '100%',
+                    marginVertical: spacing[2],
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text tx={'transactionListScreen.associatedLabel'} style={styles.associatedLabel} />
+                  <TransactionField label='transactionListScreen.reference' text={selectedInvoice?.ref} />
+                  <TransactionField label='transactionListScreen.titleLabel' text={selectedInvoice.title} />
+                  <TransactionField label='transactionListScreen.total' text={printCurrencyToMajors(selectedInvoice.totalPriceWithVat)} />
+                </View>
+              )}
               <View
                 style={{
                   width: '100%',
@@ -318,6 +398,14 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 </View>
               )}
+              <InvoiceSelectionModal
+                showModal={isVisible}
+                setShowModal={setVisible}
+                setTransactionModal={setShowModal}
+                invoices={invoiceHandler()}
+                loading={isLoading}
+                getSelectedInvoice={handleSelectedInvoice}
+              />
             </View>
           )}
           <View

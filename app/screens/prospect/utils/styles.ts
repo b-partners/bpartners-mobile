@@ -83,6 +83,7 @@ export const prospectItemStyles = StyleSheet.create({
   },
   rowDirection: {
     flexDirection: 'row',
+    color: palette.black,
   },
   location: {
     paddingTop: 9,
