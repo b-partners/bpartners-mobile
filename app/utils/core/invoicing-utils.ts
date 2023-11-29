@@ -1,7 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import { Platform } from 'react-native';
 
-import { translate } from '../../i18n';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { AuthStore } from '../../models/stores/auth-store/auth-store';
 import { sendError } from '../../services/logs/logs';
@@ -16,9 +15,9 @@ function formatMailBody(bodyMessage: string) {
 
 // Used to send an invoice attachment
 export async function sendEmail(authStore: AuthStore, invoice: Invoice, isInvoice?: boolean) {
-  const { accessToken, currentAccount } = authStore;
+  const { accessToken, currentAccount, currentAccountHolder } = authStore;
   const { fileId, customer, title } = invoice;
-  const fileName = `temp.pdf`;
+  const fileName = `${invoice.title}.pdf`;
   // TODO: what about draft and quotation
   const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
 
@@ -35,10 +34,20 @@ export async function sendEmail(authStore: AuthStore, invoice: Invoice, isInvoic
     sendError({ message: 'Error occured while downloading file: ' + fileUri, exception: e }, {});
   }
 
-  const bodyMessage = `${translate(isInvoice ? 'invoicePreviewScreen.email.invoice' : 'invoicePreviewScreen.email.quotation')}`;
+  const bodyMessage = `Bonjour ${customer?.lastName},
+  
+Dans la continuité de notre échange, vous trouverez ci-joint le devis.
+
+Dès réception de votre bon pour accord, je vous contacterai pour organiser la prestation.
+
+Dans cette attente,
+
+${currentAccountHolder.name}
+${currentAccount.name}
+${currentAccountHolder.companyInfo.phone}`;
   const body = formatMailBody(bodyMessage);
   const emailToSend = {
-    subject: `${translate(isInvoice ? 'invoicePreviewScreen.invoice' : 'invoicePreviewScreen.quotation')} ${title}`,
+    subject: `[${currentAccountHolder.name}] - ${title} - ${customer.lastName}`,
     recipients: [customer.email],
     // TODO add current account holder email
     ccRecipients: [],
