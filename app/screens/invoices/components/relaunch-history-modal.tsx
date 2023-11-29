@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, View } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, Text } from '../../../components';
 import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
+import { InvoiceRelaunch } from '../../../models/entities/invoice/invoice';
+import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import {
   MODAL_HEADER_BUTTON_STYLE,
@@ -17,6 +21,18 @@ import { RelaunchHistoryProps } from '../utils/utils';
 
 export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
   const { isOpen, setOpen, item } = props;
+  const { invoiceStore } = useStores();
+  const [relaunches, setRelaunches] = useState<InvoiceRelaunch[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const invoiceRelaunches = await invoiceStore.getInvoiceRelaunches(item.id, { page: 1, pageSize: 500 });
+      setRelaunches(invoiceRelaunches);
+      relaunches && setLoading(false);
+    })();
+  }, []);
 
   return (
     <Modal visible={isOpen} transparent={true} onDismiss={() => setOpen(false)}>
@@ -37,6 +53,17 @@ export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
           <View style={styles.referenceContainer}>
             <Text text={`${translate('invoicePreviewScreen.quotation')} : (${item.ref})`} style={styles.reference} />
           </View>
+          {loading ? (
+            <View style={{ height: '75%', paddingTop: spacing[4] }}>
+              <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />
+            </View>
+          ) : (
+            <View style={{ height: 100, width: '100%' }}>
+              {relaunches.map((relaunch: InvoiceRelaunch) => {
+                return <Text text={relaunch.emailInfo.emailObject} style={MODAL_HEADER_TEXT_STYLE} key={relaunch.id} />;
+              })}
+            </View>
+          )}
         </View>
       </View>
     </Modal>

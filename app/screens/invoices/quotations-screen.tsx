@@ -104,7 +104,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     });
   };
 
-  const showRelaunchHistory = (item: IInvoice) => {
+  const showRelaunchHistory = async (item: IInvoice) => {
     setCurrentQuotation(item);
     setRelaunchHistory(true);
   };

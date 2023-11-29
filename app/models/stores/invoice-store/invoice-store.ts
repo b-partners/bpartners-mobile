@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { RTLog } from '../../../utils/reactotron-log';
 import { Criteria, PageCriteria } from '../../entities/criteria/criteria';
-import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceRelaunchModel, InvoiceStatus, MethodModel, SearchInvoiceModel } from '../../entities/invoice/invoice';
+import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, MethodModel, SearchInvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -16,7 +16,6 @@ export const InvoiceStoreModel = types
     paidInvoices: types.optional(types.array(InvoiceModel), []),
     searchInvoices: types.optional(types.array(SearchInvoiceModel), []),
     invoice: types.optional(InvoiceModel, {}),
-    invoiceRelaunch: types.optional(types.array(InvoiceRelaunchModel), []),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
     loading: types.optional(types.boolean, false),
@@ -176,11 +175,11 @@ export const InvoiceStoreModel = types
     }),
   }))
   .actions(self => ({
-    getInvoiceRelaunches: flow(function* (accountId: string, invoiceId: string, pageCriteria: PageCriteria) {
+    getInvoiceRelaunches: flow(function* (invoiceId: string, pageCriteria: PageCriteria) {
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoiceRelaunchesResult = yield paymentApi.getInvoiceRelaunches(self.currentAccount.id, invoiceId, pageCriteria);
-        self.invoiceRelaunch = getInvoiceRelaunchesResult.invoiceRelaunch;
+        return getInvoiceRelaunchesResult.invoiceRelaunch;
       } catch (e) {
         RTLog(e.message);
         self.catchOrThrow(e);
