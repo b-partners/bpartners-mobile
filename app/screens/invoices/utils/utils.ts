@@ -3,7 +3,7 @@ import React from 'react';
 
 import { MenuAction, MenuItem } from '../../../components';
 import { translate } from '../../../i18n';
-import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceRelaunch, InvoiceStatus, PaymentMethod } from '../../../models/entities/invoice/invoice';
 import { TabNavigatorParamList } from '../../../navigators/utils/utils';
 import { palette } from '../../../theme/palette';
 
@@ -14,6 +14,11 @@ export type InvoiceCreationProps = {
   navigationState: boolean;
   setNavigationState: React.Dispatch<React.SetStateAction<boolean>>;
   invoiceStatus?: string;
+};
+
+export type RelaunchItemProps = {
+  item: InvoiceRelaunch;
+  index: number;
 };
 
 export interface InputFieldProps {

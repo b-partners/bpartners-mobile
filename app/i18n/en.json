@@ -588,6 +588,7 @@
     "price": "Price"
   },
   "relaunchHistoryModal": {
-    "title": "Relaunch history"
+    "title": "Relaunch history",
+    "quotationRelaunchedAt": "Quotation relaunched at"
   }
 }

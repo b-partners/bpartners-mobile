@@ -350,6 +350,56 @@ export const relaunchHistoryModalStyles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export const relaunchItemStyles = StyleSheet.create({
+  itemContainer: {
+    width: '95%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80,
+    borderBottomWidth: 1,
+    borderColor: palette.lighterGrey,
+    flexDirection: 'row',
+    marginLeft: '3%',
+  },
+  textContainer: {
+    width: '80%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  title: {
+    marginTop: spacing[2],
+    color: palette.textClassicColor,
+    fontFamily: 'Geometria',
+    fontSize: 14,
+  },
+  object: {
+    marginTop: spacing[2],
+    color: palette.lightGrey,
+    fontFamily: 'Geometria',
+    fontSize: 14,
+  },
+  iconContainer: {
+    width: '15%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  numberColumn: {
+    width: '10%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: spacing[1],
+  },
+  numberContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 500,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: palette.lighterGrey,
+  },
+});
 export const sendingConfirmationModalStyles = StyleSheet.create({
   body: {
     width: '100%',

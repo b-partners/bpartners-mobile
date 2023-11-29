@@ -18,6 +18,7 @@ import {
   relaunchHistoryModalStyles as styles,
 } from '../utils/styles';
 import { RelaunchHistoryProps } from '../utils/utils';
+import { RelaunchItem } from './relaunch-item';
 
 export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
   const { isOpen, setOpen, item } = props;
@@ -29,10 +30,12 @@ export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
     (async () => {
       setLoading(true);
       const invoiceRelaunches = await invoiceStore.getInvoiceRelaunches(item.id, { page: 1, pageSize: 500 });
-      setRelaunches(invoiceRelaunches);
+      if (invoiceRelaunches) {
+        setRelaunches(invoiceRelaunches);
+      }
       relaunches && setLoading(false);
     })();
-  }, []);
+  }, [isOpen]);
 
   return (
     <Modal visible={isOpen} transparent={true} onDismiss={() => setOpen(false)}>
@@ -59,8 +62,8 @@ export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
             </View>
           ) : (
             <View style={{ height: 100, width: '100%' }}>
-              {relaunches.map((relaunch: InvoiceRelaunch) => {
-                return <Text text={relaunch.emailInfo.emailObject} style={MODAL_HEADER_TEXT_STYLE} key={relaunch.id} />;
+              {relaunches.map((relaunch: InvoiceRelaunch, index: number) => {
+                return <RelaunchItem item={relaunch} key={relaunch.id} index={index} />;
               })}
             </View>
           )}

@@ -571,6 +571,7 @@
     "price": "Prix"
   },
   "relaunchHistoryModal": {
-    "title": "Historique de relance"
+    "title": "Historique de relance",
+    "quotationRelaunchedAt": "Devis relancé le"
   }
 }
