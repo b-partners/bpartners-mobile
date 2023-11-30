@@ -16,6 +16,7 @@ import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
 import { ProcessModal } from './process-modal';
+import {Text} from "../../../components";
 
 const IconGroup = {
   email: <MaterialCommunity name='email' size={18} color={color.palette.secondaryColor} />,
@@ -96,11 +97,19 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
                 },
               }}
             >
-              <MaterialCommunityIcons name='dots-vertical' size={21} color={palette.secondaryColor} />
+              <Text
+                  tx={'common.edit'}
+                  style={{
+                    color: palette.black,
+                    fontSize: 12,
+                    fontFamily: 'Geometria',
+                    borderWidth: 1,
+                    borderColor: palette.lighterGrey,
+                    paddingHorizontal: spacing[4],
+                    paddingVertical: spacing[2]
+                  }}
+              />
             </CMenu>
-            <TouchableOpacity style={{ marginLeft: spacing[2], flex: 1 }} onPress={onEditing}>
-              <MaterialCommunityIcons name='pencil' size={22} color={palette.secondaryColor} />
-            </TouchableOpacity>
           </View>
         </Card.Content>
       </Card>
