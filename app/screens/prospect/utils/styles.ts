@@ -91,7 +91,7 @@ export const prospectItemStyles = StyleSheet.create({
     height: 30,
   },
   menuContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 17,
     right: 10,
     display: 'flex',

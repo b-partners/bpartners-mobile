@@ -2,21 +2,21 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { Card, Paragraph, Portal, Title } from 'react-native-paper';
+import Popover from 'react-native-popover-view';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-import { Menu as CMenu } from '../../../components/menu/menu';
+import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
-import { color, spacing } from '../../../theme';
+import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
 import { ProcessModal } from './process-modal';
-import {Text} from "../../../components";
 
 const IconGroup = {
   email: <MaterialCommunity name='email' size={18} color={color.palette.secondaryColor} />,
@@ -29,7 +29,7 @@ const IconGroup = {
 };
 
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
-  const { menuItem, prospect, setCurrentStatus } = props;
+  const { prospect, setCurrentStatus } = props;
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState<ProspectStatus | null>(null);
@@ -38,10 +38,10 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
     status != null && setShowModal(true);
   }, [status]);
 
-  const onEditing = () => {
-    setShowModal(true);
-    setIsEditing(true);
-  };
+  // const onEditing = () => {
+  //   setShowModal(true);
+  //   setIsEditing(true);
+  // };
 
   return (
     <View style={styles.container}>
@@ -83,33 +83,15 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
             </View>
           </View>
           <View style={styles.menuContainer}>
-            <CMenu
-              items={menuItem}
-              actions={{
-                toContact: () => {
-                  prospect.status !== ProspectStatus.TO_CONTACT && setStatus(ProspectStatus.TO_CONTACT);
-                },
-                contacted: () => {
-                  prospect.status !== ProspectStatus.CONTACTED && setStatus(ProspectStatus.CONTACTED);
-                },
-                converted: () => {
-                  prospect.status !== ProspectStatus.CONVERTED && setStatus(ProspectStatus.CONVERTED);
-                },
-              }}
+            <Popover
+              from={
+                <TouchableOpacity>
+                  <Text>Press here to open popover!</Text>
+                </TouchableOpacity>
+              }
             >
-              <Text
-                  tx={'common.edit'}
-                  style={{
-                    color: palette.black,
-                    fontSize: 12,
-                    fontFamily: 'Geometria',
-                    borderWidth: 1,
-                    borderColor: palette.lighterGrey,
-                    paddingHorizontal: spacing[4],
-                    paddingVertical: spacing[2]
-                  }}
-              />
-            </CMenu>
+              <Text>This is the contents of the popover</Text>
+            </Popover>
           </View>
         </Card.Content>
       </Card>
