@@ -12,7 +12,6 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoices/utils/styles';
-import { Log } from '../../welcome/utils/utils';
 import { InvoiceSelectionModalProps } from '../utils/utils';
 import { InvoiceRow } from './invoice-row';
 
@@ -38,8 +37,6 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
   const [keyboardOpen, setKeyboardOpen] = useState(false);
 
   const onChangeSearch = query => setSearchQuery(query);
-
-  Log(transaction);
 
   const associate = async () => {
     setLoadingCreation(true);
