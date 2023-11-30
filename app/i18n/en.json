@@ -110,7 +110,7 @@
     "balance": "Balance",
     "reference": "Reference",
     "titleLabel": "Title",
-    "total": "total",
+    "total": "Total",
     "associate": "Associate an invoice",
     "associatedLabel": "Related document",
     "status": {
@@ -152,7 +152,11 @@
       "proposalAccepted": "Quotation accepted",
       "proposalDeclined": "Quotation refused",
       "invoiceSent": "Invoice sent",
-      "reserve": "Reserve"
+      "reserve": "Reserve",
+      "associateWithAnInvoice": "Associate with an invoice",
+      "associateWithAQuotation": "Associate with a quotation",
+      "associatedInvoice": "Associated invoice",
+      "associatedQuotation": "Associated Quotation"
     },
     "buttonActions": {
       "abandonProspect": "Abandon this prospect",

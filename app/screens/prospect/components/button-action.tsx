@@ -65,7 +65,7 @@ export const ButtonActions = props => {
   return (
     <>
       <Button
-        tx={currentPage === 1 ? 'common.cancel' : 'common.back'}
+        tx={currentPage === 1 || isCreating ? 'common.cancel' : 'common.back'}
         style={{
           ...SHADOW_STYLE,
           backgroundColor: palette.secondaryColor,
@@ -77,7 +77,7 @@ export const ButtonActions = props => {
           marginRight: spacing[2],
         }}
         onPress={() => {
-          currentPage === 1 ? closeModal() : setCurrentPage(1);
+          currentPage === 1 || isCreating ? closeModal() : setCurrentPage(1);
         }}
         textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
       />
@@ -92,7 +92,7 @@ export const ButtonActions = props => {
             borderRadius: 10,
             paddingVertical: spacing[3],
             paddingHorizontal: spacing[2],
-            width: 110,
+            width: 200,
             height: 40,
             justifyContent: 'center',
             alignItems: 'center',
@@ -102,7 +102,7 @@ export const ButtonActions = props => {
         </View>
       ) : (
         <Button
-          tx={currentPage === 1 ? 'common.next' : getPrimaryButtonText(prospectStatus, prospectFeedBack, selectedStatus)}
+          tx={currentPage === 1 && !isCreating ? 'common.next' : getPrimaryButtonText(prospectStatus, prospectFeedBack, selectedStatus)}
           style={{
             ...SHADOW_STYLE,
             backgroundColor: palette.secondaryColor,
@@ -112,7 +112,7 @@ export const ButtonActions = props => {
             width: 200,
             height: 40,
           }}
-          onPress={currentPage !== 1 ? handleSubmit(onSubmit) : handleAmountRender}
+          onPress={currentPage !== 1 || isCreating ? handleSubmit(onSubmit) : handleAmountRender}
           textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
         />
       )}

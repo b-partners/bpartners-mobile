@@ -99,10 +99,6 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     setSelectedInvoice(invoice as Invoice);
   };
 
-  const openInvoiceSelection = async () => {
-    setVisible(true);
-  };
-
   const handleAmountRender = () => {
     setCurrentPage(2);
   };
@@ -174,13 +170,13 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             borderRadius: 20,
             marginHorizontal: '2%',
             width: '96%',
-            height: 450,
+            height: 520,
           }}
         >
           <View
             style={{
               flexDirection: 'row',
-              height: 50,
+              height: 60,
               width: '100%',
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
@@ -195,8 +191,8 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                 paddingLeft: spacing[4],
               }}
             >
-              <Text text={'Prospect : '} style={{ fontSize: 15, color: palette.secondaryColor }} />
-              <Text text={prospect?.name} style={{ fontSize: 15, color: palette.secondaryColor }} />
+              <Text text={'Prospect : '} style={{ fontSize: 18, color: palette.secondaryColor }} />
+              <Text text={prospect?.name} style={{ fontSize: 18, color: palette.secondaryColor }} />
             </View>
             <TouchableOpacity onPress={closeModal} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <AntDesignIcon name='close' color={color.palette.lightGrey} size={20} />
@@ -204,7 +200,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           </View>
           {currentPage === 1 ? (
             <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='email'
@@ -221,7 +217,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='phone'
@@ -238,7 +234,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='address'
@@ -255,7 +251,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='name'
@@ -272,7 +268,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='comment'
@@ -291,13 +287,24 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               </View>
             </View>
           ) : (
-            <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
-              <TouchableOpacity style={styles.navigation} onPress={openInvoiceSelection}>
+            <View style={{ flex: 1, paddingHorizontal: spacing[4] }}>
+              <TouchableOpacity style={styles.navigation} onPress={() => setVisible(true)}>
                 <View style={styles.transactionIcon}>
                   <SimpleLineIcons name='paper-clip' size={18} color={palette.secondaryColor} />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text tx={'transactionListScreen.associate'} style={styles.text} />
+                  <Text
+                    tx={
+                      prospect?.status === ProspectStatus.TO_CONTACT
+                        ? 'prospectScreen.process.associateWithAQuotation'
+                        : 'prospectScreen.process.associateWithAnInvoice'
+                    }
+                    style={{
+                      color: palette.black,
+                      fontSize: 18,
+                      fontFamily: 'Geometria',
+                    }}
+                  />
                 </View>
                 <View style={styles.transactionIcon}>
                   <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
@@ -307,12 +314,21 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                 <View
                   style={{
                     width: '100%',
-                    marginVertical: spacing[2],
+                    marginVertical: spacing[1],
+                    paddingVertical: spacing[2],
                     flexDirection: 'column',
                     alignItems: 'center',
+                    borderWidth: 1,
+                    borderColor: palette.lighterGrey,
+                    borderRadius: 10,
                   }}
                 >
-                  <Text tx={'transactionListScreen.associatedLabel'} style={styles.associatedLabel} />
+                  <Text
+                    tx={
+                      prospect?.status === ProspectStatus.TO_CONTACT ? 'prospectScreen.process.associatedQuotation' : 'prospectScreen.process.associatedInvoice'
+                    }
+                    style={styles.associatedLabel}
+                  />
                   <TransactionField label='transactionListScreen.reference' text={selectedInvoice?.ref} />
                   <TransactionField label='transactionListScreen.titleLabel' text={selectedInvoice.title} />
                   <TransactionField label='transactionListScreen.total' text={printCurrencyToMajors(selectedInvoice.totalPriceWithVat)} />
@@ -340,7 +356,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                 />
               </View>
               {!isEditing && (
-                <View style={{ flex: 1, paddingTop: spacing[4] }}>
+                <View style={{ flex: 1, paddingTop: spacing[2] }}>
                   {prospect?.status === ProspectStatus.TO_CONTACT ? (
                     <>
                       <TouchableOpacity
@@ -401,7 +417,6 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               <InvoiceSelectionModal
                 showModal={isVisible}
                 setShowModal={setVisible}
-                setTransactionModal={setShowModal}
                 invoices={invoiceHandler()}
                 loading={isLoading}
                 getSelectedInvoice={handleSelectedInvoice}
