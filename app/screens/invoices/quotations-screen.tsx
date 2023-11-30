@@ -1,12 +1,12 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
 import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceRelaunch, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { navigate } from '../../navigators/navigation-utilities';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
@@ -20,6 +20,7 @@ import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils'
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
 import { RelaunchHistoryModal } from './components/relaunch-history-modal';
+import { RelaunchMessageModal } from './components/relaunch-message-modal';
 import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
@@ -38,7 +39,9 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
   const { loadingQuotation, quotations } = quotationStore;
   const [navigationState, setNavigationState] = useState(false);
   const [relaunchHistory, setRelaunchHistory] = useState(false);
+  const [relaunchMessage, setRelaunchMessage] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentRelaunch, setCurrentRelaunch] = useState<InvoiceRelaunch>();
   const [maxPage, setMaxPage] = useState(Math.ceil(quotations.length / itemsPerPage));
   const [currentQuotation, setCurrentQuotation] = useState<IInvoice>();
   const messageOption = { backgroundColor: palette.green };
@@ -106,6 +109,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
 
   const showRelaunchHistory = async (item: IInvoice) => {
     setCurrentQuotation(item);
+    setRelaunchHistory(false);
     setRelaunchHistory(true);
   };
 
@@ -115,6 +119,12 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     { id: 'previewQuotation', title: translate('invoicePreviewScreen.previewQuotation') },
     { id: 'showRelaunchHistory', title: translate('invoiceScreen.menu.showRelaunchHistory') },
   ];
+
+  useEffect(() => {
+    if (currentRelaunch) {
+      setRelaunchMessage(true);
+    }
+  }, [currentRelaunch]);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -165,7 +175,10 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
             invoiceStatus={InvoiceStatus.PROPOSAL}
           />
         </View>
-        {currentQuotation && <RelaunchHistoryModal isOpen={relaunchHistory} setOpen={setRelaunchHistory} item={currentQuotation} />}
+        {currentQuotation && (
+          <RelaunchHistoryModal isOpen={relaunchHistory} setOpen={setRelaunchHistory} item={currentQuotation} setCurrentRelaunch={setCurrentRelaunch} />
+        )}
+        {currentRelaunch && <RelaunchMessageModal isOpen={relaunchMessage} setOpen={setRelaunchMessage} invoice={currentQuotation} item={currentRelaunch} />}
       </View>
     </ErrorBoundary>
   );

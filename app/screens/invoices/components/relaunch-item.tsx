@@ -10,7 +10,7 @@ import { relaunchItemStyles as styles } from '../utils/styles';
 import { RelaunchItemProps } from '../utils/utils';
 
 export const RelaunchItem: React.FC<RelaunchItemProps> = props => {
-  const { item, index } = props;
+  const { item, index, setCurrentRelaunch } = props;
 
   return (
     <View style={styles.itemContainer}>
@@ -24,7 +24,7 @@ export const RelaunchItem: React.FC<RelaunchItemProps> = props => {
         <Text text={item.emailInfo.emailObject} style={styles.object} numberOfLines={1} />
       </View>
       <View style={styles.iconContainer}>
-        <IoniconIcon name='eye-sharp' size={28} color={palette.secondaryColor} onPress={() => {}} />
+        <IoniconIcon name='eye-sharp' size={28} color={palette.secondaryColor} onPress={() => setCurrentRelaunch(item)} />
       </View>
     </View>
   );

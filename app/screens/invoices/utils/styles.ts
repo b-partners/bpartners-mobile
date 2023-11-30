@@ -351,6 +351,44 @@ export const relaunchHistoryModalStyles = StyleSheet.create({
   },
 });
 
+export const relaunchMessageModalStyles = StyleSheet.create({
+  modalContainer: {
+    backgroundColor: palette.white,
+    height: '60%',
+    width: '95%',
+    borderRadius: 15,
+  },
+  referenceContainer: {
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  reference: {
+    color: palette.greyDarker,
+    fontFamily: 'Geometria',
+    fontSize: 16,
+  },
+  object: {
+    color: palette.textClassicColor,
+    fontFamily: 'Geometria',
+    fontSize: 14,
+    marginBottom: spacing[4],
+  },
+  message: {
+    color: palette.greyDarker,
+    fontFamily: 'Geometria',
+    fontSize: 16,
+  },
+  messageContainer: {
+    width: '100%',
+    height: 200,
+    marginVertical: spacing[4],
+    justifyContent: 'center',
+    paddingLeft: spacing[2],
+  },
+});
+
 export const relaunchItemStyles = StyleSheet.create({
   itemContainer: {
     width: '95%',

@@ -19,6 +19,7 @@ export type InvoiceCreationProps = {
 export type RelaunchItemProps = {
   item: InvoiceRelaunch;
   index: number;
+  setCurrentRelaunch: React.Dispatch<React.SetStateAction<InvoiceRelaunch>>;
 };
 
 export interface InputFieldProps {
@@ -40,6 +41,14 @@ export interface RelaunchHistoryProps {
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   item: IInvoice;
+  setCurrentRelaunch: React.Dispatch<React.SetStateAction<InvoiceRelaunch>>;
+}
+
+export interface RelaunchMessageProps {
+  isOpen: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  invoice: IInvoice;
+  item: InvoiceRelaunch;
 }
 export const getStatusTextColor = (status: InvoiceStatus) => {
   switch (status) {

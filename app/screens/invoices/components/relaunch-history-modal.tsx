@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View } from 'react-native';
+import { Modal, ScrollView, View } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
@@ -21,7 +21,7 @@ import { RelaunchHistoryProps } from '../utils/utils';
 import { RelaunchItem } from './relaunch-item';
 
 export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
-  const { isOpen, setOpen, item } = props;
+  const { isOpen, setOpen, item, setCurrentRelaunch } = props;
   const { invoiceStore } = useStores();
   const [relaunches, setRelaunches] = useState<InvoiceRelaunch[]>([]);
   const [loading, setLoading] = useState(false);
@@ -61,11 +61,11 @@ export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
               <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} />
             </View>
           ) : (
-            <View style={{ height: 100, width: '100%' }}>
+            <ScrollView style={{ flex: 1, marginBottom: spacing[4], backgroundColor: palette.white, flexDirection: 'column', marginTop: spacing[2] }}>
               {relaunches.map((relaunch: InvoiceRelaunch, index: number) => {
-                return <RelaunchItem item={relaunch} key={relaunch.id} index={index} />;
+                return <RelaunchItem item={relaunch} key={relaunch.id} index={index} setCurrentRelaunch={setCurrentRelaunch} />;
               })}
-            </View>
+            </ScrollView>
           )}
         </View>
       </View>
