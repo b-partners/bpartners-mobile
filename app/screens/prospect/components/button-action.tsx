@@ -65,7 +65,7 @@ export const ButtonActions = props => {
   return (
     <>
       <Button
-        tx={currentPage === 1 ? 'common.cancel' : 'common.back'}
+        tx={currentPage === 1 || isCreating ? 'common.cancel' : 'common.back'}
         style={{
           ...SHADOW_STYLE,
           backgroundColor: palette.secondaryColor,
