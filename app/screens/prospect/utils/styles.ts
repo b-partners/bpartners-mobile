@@ -83,6 +83,7 @@ export const prospectItemStyles = StyleSheet.create({
   },
   rowDirection: {
     flexDirection: 'row',
+    color: palette.black,
   },
   location: {
     paddingTop: 9,
@@ -90,11 +91,12 @@ export const prospectItemStyles = StyleSheet.create({
     height: 30,
   },
   menuContainer: {
-    width: 20,
+    width: 50,
     height: 35,
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: spacing[3],
+    marginLeft: spacing[2],
   },
 });

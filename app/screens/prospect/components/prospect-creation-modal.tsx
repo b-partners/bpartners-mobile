@@ -1,9 +1,11 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { v4 as uuidv4 } from 'uuid';
+import * as yup from 'yup';
 
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
@@ -24,7 +26,6 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const [amount, setAmount] = useState('');
 
   const closeModal = () => {
     setStatus(null);
@@ -32,6 +33,16 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
     setCurrentPage(1);
     setShowModal(false);
   };
+
+  const prospectInfoResolver = yup.object({
+    email: yup.string(),
+    phone: yup.string(),
+    address: yup.string(),
+    name: yup.string().required(translate('errors.required')),
+    comment: yup.string(),
+  });
+
+  const prospectResolver = yupResolver(prospectInfoResolver);
 
   const {
     handleSubmit,
@@ -45,8 +56,8 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
       address: '',
       name: '',
       comment: '',
-      contractAmount: '',
     },
+    resolver: prospectResolver,
   });
 
   const handleAmountRender = () => {
@@ -59,7 +70,6 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
       await prospectStore.creationProspect({
         id: uuidv4(),
         status: 'TO_CONTACT',
-        contractAmount: parseInt(amount, 10),
         ...prospectInfos,
       });
       showMessage(translate('common.added'), { backgroundColor: palette.green });
@@ -70,13 +80,6 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
       setIsLoading(false);
       closeModal();
       await prospectStore.getProspects();
-    }
-  };
-
-  const handleAmountChange = value => {
-    const regex = /^\d*$/;
-    if (regex.test(value)) {
-      setAmount(value);
     }
   };
 
@@ -126,7 +129,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
               <AntDesignIcon name='close' color={color.palette.lightGrey} size={20} />
             </TouchableOpacity>
           </View>
-          {currentPage === 1 ? (
+          {currentPage === 1 && (
             <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
               <View style={{ marginBottom: 10, width: '100%' }}>
                 <Controller
@@ -211,30 +214,6 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
                       backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                     />
                   )}
-                />
-              </View>
-            </View>
-          ) : (
-            <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
-              <View
-                style={{
-                  width: '100%',
-                  marginVertical: spacing[2],
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Text tx={'prospectScreen.process.amountLabel'} style={{ color: palette.lightGrey }} />
-              </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
-                <InputField
-                  keyboardType={'numeric'}
-                  labelTx={'prospectScreen.process.amount'}
-                  error={null}
-                  value={amount}
-                  onChange={value => handleAmountChange(value)}
-                  errorMessage={''}
-                  backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                 />
               </View>
             </View>
