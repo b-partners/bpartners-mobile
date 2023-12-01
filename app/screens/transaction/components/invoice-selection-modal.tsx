@@ -16,7 +16,7 @@ import { InvoiceSelectionModalProps } from '../utils/utils';
 import { InvoiceRow } from './invoice-row';
 
 export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props => {
-  const { showModal, setShowModal, invoices, loading, transaction, setTransactionModal } = props;
+  const { showModal, setShowModal, invoices, loading, transaction, setTransactionModal, getSelectedInvoice } = props;
 
   const { transactionStore, invoiceStore } = useStores();
   const { searchInvoices } = invoiceStore;
@@ -41,14 +41,18 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
   const associate = async () => {
     setLoadingCreation(true);
     try {
-      await transactionStore.associateTransaction(transaction.id, selectedInvoice.id);
-      setShowModal(false);
-      setTransactionModal(false);
-      await transactionStore.getTransactions();
+      if (!transaction) {
+        await getSelectedInvoice(selectedInvoice);
+      } else {
+        await transactionStore.associateTransaction(transaction.id, selectedInvoice.id);
+        await transactionStore.getTransactions();
+        setTransactionModal(false);
+      }
     } catch (error) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
       setLoadingCreation(false);
+      setShowModal(false);
     }
   };
 
@@ -99,7 +103,15 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
               keyboardOpen && Platform.OS === 'android' ? { height: '90%' } : { height: '60%' },
             ]}
           >
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: spacing[1], paddingHorizontal: spacing[2], height: '5%' }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginVertical: spacing[1],
+                paddingHorizontal: spacing[2],
+                height: '5%',
+              }}
+            >
               <Text
                 tx={'paymentListScreen.tabs.invoices'}
                 style={{
@@ -119,7 +131,13 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
               onClearIconPress={() => {
                 setIsSearching(false);
               }}
-              style={{ backgroundColor: palette.solidGrey, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
+              style={{
+                backgroundColor: palette.solidGrey,
+                height: 40,
+                borderRadius: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
               iconColor={palette.lightGrey}
               clearIcon='close-circle'
               inputStyle={{ color: palette.black, alignSelf: 'center' }}

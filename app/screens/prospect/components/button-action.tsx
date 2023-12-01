@@ -10,6 +10,7 @@ export const ButtonActions = props => {
   const {
     isLoading,
     isCreating,
+    isEditing,
     prospectStatus,
     selectedStatus,
     prospectFeedBack,
@@ -22,6 +23,13 @@ export const ButtonActions = props => {
   } = props;
 
   const getPrimaryButtonText = (status, feedback, currentStatus) => {
+    if (isCreating) {
+      return 'common.create';
+    }
+
+    if (isEditing) {
+      return 'common.edit';
+    }
     const statuses = {
       TO_CONTACT: {
         NOT_INTERESTED: 'prospectScreen.buttonActions.abandonProspect',
@@ -40,7 +48,7 @@ export const ButtonActions = props => {
       },
     };
 
-    const defaultText = 'common.create';
+    const defaultText = 'common.submit';
 
     if (statuses[status]) {
       const statusObj = statuses[status];
@@ -57,7 +65,7 @@ export const ButtonActions = props => {
   return (
     <>
       <Button
-        tx={currentPage === 1 ? 'common.cancel' : 'common.back'}
+        tx={currentPage === 1 || isCreating ? 'common.cancel' : 'common.back'}
         style={{
           ...SHADOW_STYLE,
           backgroundColor: palette.secondaryColor,
@@ -69,32 +77,32 @@ export const ButtonActions = props => {
           marginRight: spacing[2],
         }}
         onPress={() => {
-          currentPage === 1 ? closeModal() : setCurrentPage(1);
+          currentPage === 1 || isCreating ? closeModal() : setCurrentPage(1);
         }}
         textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
       />
-      {isLoading ? (
+      {currentPage === 2 && isLoading ? (
         <View style={{ paddingVertical: spacing[3], paddingHorizontal: spacing[2], width: 100, height: 40 }}>
           <Loader size={20} color={palette.secondaryColor} />
         </View>
-      ) : prospectFeedBack === null && currentPage === 2 && !isCreating ? (
+      ) : prospectFeedBack === null && currentPage === 2 && !isCreating && !isEditing ? (
         <View
           style={{
             backgroundColor: palette.solidGrey,
             borderRadius: 10,
             paddingVertical: spacing[3],
             paddingHorizontal: spacing[2],
-            width: 110,
+            width: 200,
             height: 40,
             justifyContent: 'center',
             alignItems: 'center',
           }}
         >
-          <Text tx={'prospectScreen.process.reserve'} style={{ color: palette.lighterGrey }} />
+          <Text tx={getPrimaryButtonText(prospectStatus, prospectFeedBack, selectedStatus)} style={{ color: palette.lighterGrey }} />
         </View>
       ) : (
         <Button
-          tx={currentPage === 1 ? 'common.next' : getPrimaryButtonText(prospectStatus, prospectFeedBack, selectedStatus)}
+          tx={currentPage === 1 && !isCreating ? 'common.next' : getPrimaryButtonText(prospectStatus, prospectFeedBack, selectedStatus)}
           style={{
             ...SHADOW_STYLE,
             backgroundColor: palette.secondaryColor,
@@ -104,7 +112,7 @@ export const ButtonActions = props => {
             width: 200,
             height: 40,
           }}
-          onPress={currentPage !== 1 ? handleSubmit(onSubmit) : handleAmountRender}
+          onPress={currentPage !== 1 || isCreating ? handleSubmit(onSubmit) : handleAmountRender}
           textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
         />
       )}

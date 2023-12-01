@@ -19,6 +19,7 @@
     "ok": "OK!",
     "submit": "Confirmer",
     "create": "Créer",
+    "edit": "Modifier",
     "or": "ou",
     "next": "Suivant",
     "cancel": "Annuler",
@@ -28,7 +29,6 @@
     "added": "Ajouté avec succès",
     "registered": "Enregistré",
     "saved": "Sauvegardé dans:",
-    "edit": "Modifier",
     "register": "ENREGISTRER",
     "noComment": "Aucun Commentaire",
     "noInformation": "Aucune information",
@@ -66,7 +66,7 @@
     "balance": "Balance",
     "reference": "Référence",
     "titleLabel": "Titre",
-    "total": "total",
+    "total": "Total",
     "associate": "Associer une facture",
     "associatedLabel": "Document associé",
     "status": {
@@ -107,7 +107,11 @@
       "proposalAccepted": "Devis accepté",
       "proposalDeclined": "Devis refusé",
       "invoiceSent": "Facture envoyée",
-      "reserve": "Réserver"
+      "reserve": "Réserver",
+      "associateWithAnInvoice": "Associer à une facture",
+      "associateWithAQuotation": "Associer à un devis",
+      "associatedInvoice": "Facture associée",
+      "associatedQuotation": "Devis associé"
     },
     "buttonActions": {
       "abandonProspect": "Abandonner ce prospect",

@@ -114,7 +114,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
               </View>
             ) : filteredProspect.length > 0 ? (
               filteredProspect.map((item: Prospect, index: number) => {
-                return <ProspectItem menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} key={index} />;
+                return <ProspectItem key={index} menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} />;
               })
             ) : (
               <NoDataProvided />
