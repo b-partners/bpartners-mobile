@@ -6,7 +6,7 @@ import ReactNativeBlobUtil from 'react-native-blob-util';
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { Invoice } from '../../../models/entities/invoice/invoice';
+import { Invoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { goBack } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -88,7 +88,9 @@ const Footer: FC<IFooter> = props => {
   }, [invoice]);
 
   async function handleSendInvoice() {
-    await sendEmail(authStore, invoiceStore, invoice);
+    if (invoice.status === InvoiceStatus.PROPOSAL) {
+      await sendEmail(authStore, invoiceStore, invoice);
+    }
   }
 
   async function download() {

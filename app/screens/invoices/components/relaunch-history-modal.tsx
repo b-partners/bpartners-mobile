@@ -6,7 +6,7 @@ import CloseIcon from 'react-native-vector-icons/AntDesign';
 import { Button, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { InvoiceRelaunch } from '../../../models/entities/invoice/invoice';
+import { InvoiceRelaunch, InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import {
@@ -54,7 +54,10 @@ export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
             </Button>
           </View>
           <View style={styles.referenceContainer}>
-            <Text text={`${translate('invoicePreviewScreen.quotation')} : (${item.ref})`} style={styles.reference} />
+            <Text
+              text={`${translate(item.status === InvoiceStatus.PROPOSAL ? 'invoicePreviewScreen.quotation' : 'invoicePreviewScreen.invoice')} : (${item.ref})`}
+              style={styles.reference}
+            />
           </View>
           {loading ? (
             <View style={{ height: '75%', paddingTop: spacing[4] }}>

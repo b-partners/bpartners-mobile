@@ -47,7 +47,7 @@ export const RelaunchMessageModal = (props: RelaunchMessageProps) => {
           </View>
           <View style={styles.referenceContainer}>
             <Text
-              text={`${translate(invoice.status === InvoiceStatus.CONFIRMED ? 'invoicePreviewScreen.quotation' : 'invoicePreviewScreen.invoice')} : (${
+              text={`${translate(invoice.status === InvoiceStatus.PROPOSAL ? 'invoicePreviewScreen.quotation' : 'invoicePreviewScreen.invoice')} : (${
                 invoice.ref
               })`}
               style={styles.reference}

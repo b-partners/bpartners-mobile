@@ -7,7 +7,6 @@ import { InvoiceStore } from '../../models/stores/invoice-store/invoice-store';
 import { sendError } from '../../services/logs/logs';
 import { sendEmail as sendInvoiceAttachment } from '../email';
 import { createFileUrl } from '../file-utils';
-import { RTLog } from '../reactotron-log';
 import { convertPlainTextToHTML } from '../text-to-html';
 
 function formatMailBody(bodyMessage: string) {
@@ -90,9 +89,8 @@ ${currentAccountHolder.companyInfo.phone}`;
   };
 
   try {
-    RTLog(isRelaunch, body);
-    /*await invoiceStore.relaunchInvoice(invoice.id, payload);
-    await sendInvoiceAttachment(emailToSend);*/
+    await invoiceStore.relaunchInvoice(invoice.id, payload);
+    await sendInvoiceAttachment(emailToSend);
   } catch (e) {
     sendError(e, { email: emailToSend });
     __DEV__ && console.tron.log(e.message);

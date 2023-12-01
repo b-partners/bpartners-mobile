@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
 import { BpPagination, Button, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
+import { ReloadModal } from '../../components/reload-modal/reload-modal';
 // import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -60,7 +61,22 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const [currentRelaunch, setCurrentRelaunch] = useState<InvoiceRelaunch | null>();
   const [relaunchHistory, setRelaunchHistory] = useState(false);
   const [relaunchMessage, setRelaunchMessage] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [rotation, setRotation] = useState(0);
   const { currentAccountHolder, currentUser } = authStore;
+
+  useEffect(() => {
+    if (modalVisible) {
+      const intervalId = setInterval(() => {
+        setRotation(rot => rot + 50);
+      }, 100);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+    return () => {};
+  }, [modalVisible]);
 
   const handleRefresh = async () => {
     await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
@@ -102,12 +118,15 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   };
 
   const sendInvoice = async (item: IInvoice) => {
+    setModalVisible(true);
     const invoiceRelaunches = await invoiceStore.getInvoiceRelaunches(item.id, { page: 1, pageSize: 500 });
     if (invoiceRelaunches.length > 0) {
       const lastRelaunch: InvoiceRelaunch = invoiceRelaunches[invoiceRelaunches.length - 1];
       const date = formatDate(lastRelaunch.creationDatetime);
+      setModalVisible(false);
       await sendEmail(authStore, invoiceStore, item, true, true, date);
     } else {
+      setModalVisible(false);
       await sendEmail(authStore, invoiceStore, item, true);
     }
   };
@@ -287,6 +306,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             setCurrentRelaunch={setCurrentRelaunch}
           />
         )}
+        <ReloadModal isOpen={modalVisible} setOpen={setModalVisible} rotation={rotation} />
       </View>
     </ErrorBoundary>
   );
