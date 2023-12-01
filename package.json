@@ -74,7 +74,6 @@
     "formik": "^2.2.9",
     "i18n-js": "3.9.2",
     "js-base64": "^3.7.5",
-    "lottie-react-native": "^6.4.1",
     "mobx": "6.6.0",
     "mobx-react-lite": "3.4.0",
     "mobx-state-tree": "5.1.5",
