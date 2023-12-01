@@ -1,12 +1,13 @@
 import * as FileSystem from 'expo-file-system';
 import { Platform } from 'react-native';
 
-import { translate } from '../../i18n';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { AuthStore } from '../../models/stores/auth-store/auth-store';
+import { InvoiceStore } from '../../models/stores/invoice-store/invoice-store';
 import { sendError } from '../../services/logs/logs';
 import { sendEmail as sendInvoiceAttachment } from '../email';
 import { createFileUrl } from '../file-utils';
+import { convertPlainTextToHTML } from '../text-to-html';
 
 function formatMailBody(bodyMessage: string) {
   // email body as html does not work perfectly on android
@@ -15,10 +16,17 @@ function formatMailBody(bodyMessage: string) {
 }
 
 // Used to send an invoice attachment
-export async function sendEmail(authStore: AuthStore, invoice: Invoice, isInvoice?: boolean) {
-  const { accessToken, currentAccount } = authStore;
+export async function sendEmail(
+  authStore: AuthStore,
+  invoiceStore: InvoiceStore,
+  invoice: Invoice,
+  isInvoice?: boolean,
+  isRelaunch?: boolean,
+  relaunchDate?: string
+) {
+  const { accessToken, currentAccount, currentAccountHolder } = authStore;
   const { fileId, customer, title } = invoice;
-  const fileName = `temp.pdf`;
+  const fileName = `${invoice.title}.pdf`;
   // TODO: what about draft and quotation
   const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
 
@@ -35,10 +43,37 @@ export async function sendEmail(authStore: AuthStore, invoice: Invoice, isInvoic
     sendError({ message: 'Error occured while downloading file: ' + fileUri, exception: e }, {});
   }
 
-  const bodyMessage = `${translate(isInvoice ? 'invoicePreviewScreen.email.invoice' : 'invoicePreviewScreen.email.quotation')}`;
-  const body = formatMailBody(bodyMessage);
+  const bodyMessage = `Bonjour ${customer?.lastName},
+  
+Dans la continuité de notre échange, vous trouverez ci-joint ${isInvoice ? 'la facture' : 'le devis'}.
+
+Dès réception de votre bon pour accord, je vous contacterai pour organiser la prestation.
+
+Dans cette attente,
+
+${currentAccountHolder.name}
+${currentAccount.name}
+${currentAccountHolder.companyInfo.phone}`;
+
+  const bodyRelaunchMessage = `Bonjour ${customer?.lastName},
+  
+Nous espérons que vous allez bien.
+  
+Dans la continuité de notre échange, je vous ai fait parvenir un devis le ${relaunchDate}. Avez-vous pu le parcourir ? 
+
+Dès réception de votre bon pour accord, un technicien vous contactera afin d’organiser une intervention dans les plus brefs délais.
+  
+Nous restons à votre entière disposition pour tous renseignements complémentaires.
+
+Vous remerciant pour votre confiance.
+
+${currentAccountHolder.name}
+${currentAccount.name}
+${currentAccountHolder.companyInfo.phone}`;
+
+  const body = formatMailBody(isRelaunch ? bodyRelaunchMessage : bodyMessage);
   const emailToSend = {
-    subject: `${translate(isInvoice ? 'invoicePreviewScreen.invoice' : 'invoicePreviewScreen.quotation')} ${title}`,
+    subject: `[${currentAccountHolder.name}] - ${title} - ${customer.lastName}`,
     recipients: [customer.email],
     // TODO add current account holder email
     ccRecipients: [],
@@ -46,8 +81,15 @@ export async function sendEmail(authStore: AuthStore, invoice: Invoice, isInvoic
     isHTML: true,
     attachments: [downloadedFileUri],
   };
+  const payload = {
+    attachments: [],
+    subject: `[${currentAccountHolder.name}] - ${title} - ${customer.lastName}`,
+    message: convertPlainTextToHTML(body),
+    isFromScratch: true,
+  };
 
   try {
+    await invoiceStore.relaunchInvoice(invoice.id, payload);
     await sendInvoiceAttachment(emailToSend);
   } catch (e) {
     sendError(e, { email: emailToSend });

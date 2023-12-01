@@ -351,6 +351,7 @@
       "markAsInvoice": "Transformer en facture",
       "markAsProposal": "Transformer en devis",
       "markAsPaid": "Marquer comme payée",
+      "showRelaunchHistory": "Historiques de relance",
       "downloadInvoice": "Télécharger la facture ",
       "editDraft": "Modifier le brouillon"
     },
@@ -464,7 +465,7 @@
     "previewOfInvoice": "Apercu du devis N°",
     "delete": "Supprimer",
     "edit": "Modifier",
-    "send": "Envoyer le devis",
+    "send": "Envoyer ou relancer",
     "quotation": "Devis",
     "invoice": "Facture",
     "sendInvoice": "Envoyer la facture",
@@ -572,5 +573,9 @@
     "title": "Mes produits",
     "export": "Exporter",
     "price": "Prix"
+  },
+  "relaunchHistoryModal": {
+    "title": "Historique de relance",
+    "quotationRelaunchedAt": "Devis relancé le"
   }
 }
