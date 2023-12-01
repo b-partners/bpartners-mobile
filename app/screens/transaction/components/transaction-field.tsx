@@ -8,10 +8,13 @@ import { palette } from '../../../theme/palette';
 export const TransactionField = ({ label, text }) => (
   <View
     style={{
-      height: 30,
-      marginHorizontal: '5%',
+      height: 25,
+      width: '100%',
+      paddingHorizontal: '5%',
+      display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'flex-start',
     }}
   >
     <Text
@@ -21,6 +24,7 @@ export const TransactionField = ({ label, text }) => (
         color: palette.lighterBlack,
         fontFamily: 'Geometria',
         width: '40%',
+        display: 'flex',
       }}
     />
     <Text

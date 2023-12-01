@@ -2,7 +2,8 @@ import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-sta
 import uuid from 'react-native-uuid';
 
 import { PaymentApi } from '../../../services/api/payment-api';
-import { Criteria } from '../../entities/criteria/criteria';
+import { RTLog } from '../../../utils/reactotron-log';
+import { Criteria, PageCriteria } from '../../entities/criteria/criteria';
 import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, MethodModel, SearchInvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -169,6 +170,30 @@ export const InvoiceStoreModel = types
         return getPaymentRegulationStatusResult.invoice;
       } catch (e) {
         __DEV__ && console.tron.log(e);
+        self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    relaunchInvoice: flow(function* (invoiceId: string, payload: any) {
+      const paymentApi = new PaymentApi(self.environment.api);
+      try {
+        const getInvoiceRelaunchesResult = yield paymentApi.relaunchInvoice(self.currentAccount.id, invoiceId, payload);
+        return getInvoiceRelaunchesResult.invoiceRelaunch;
+      } catch (e) {
+        RTLog(e.message);
+        self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getInvoiceRelaunches: flow(function* (invoiceId: string, pageCriteria: PageCriteria) {
+      const paymentApi = new PaymentApi(self.environment.api);
+      try {
+        const getInvoiceRelaunchesResult = yield paymentApi.getInvoiceRelaunches(self.currentAccount.id, invoiceId, pageCriteria);
+        return getInvoiceRelaunchesResult.invoiceRelaunch;
+      } catch (e) {
+        RTLog(e.message);
         self.catchOrThrow(e);
       }
     }),

@@ -1,37 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
+import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
+import { Invoice, InvoiceStatus, SearchInvoice } from '../../../models/entities/invoice/invoice';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { amountToMajors, amountToMinors } from '../../../utils/money';
+import { amountToMajors, amountToMinors, printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
+import { invoicePageSize } from '../../invoice-form/components/utils';
+import { InvoiceSelectionModal } from '../../transaction/components/invoice-selection-modal';
+import { TransactionField } from '../../transaction/components/transaction-field';
+import { transactionModalStyles as styles } from '../../transaction/utils/styles';
 import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
 import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
 import { ButtonActions } from './button-action';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
-  const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus } = props;
+  const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus, isEditing, setIsEditing } = props;
 
-  const { prospectStore } = useStores();
+  const { prospectStore, quotationStore, invoiceStore } = useStores();
+
+  const { invoices, paidInvoices } = invoiceStore;
+
+  const { quotations } = quotationStore;
 
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const [isVisible, setVisible] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice>();
   const [amount, setAmount] = useState(amountToMajors(prospect?.contractAmount)?.toString());
 
   const closeModal = () => {
     setStatus(null);
     setCurrent(null);
+    setSelectedInvoice(null);
     setCurrentPage(1);
+    setIsEditing(false);
     setShowModal(false);
   };
 
@@ -50,34 +67,82 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     },
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const commonFetchParams = { page: 1, pageSize: invoicePageSize };
+        if (!selectedInvoice && prospect?.invoiceID) {
+          const associatedInvoice = await invoiceStore.getInvoice(prospect.invoiceID);
+          setSelectedInvoice(associatedInvoice);
+        } else if (prospect?.status === 'TO_CONTACT') {
+          await quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, ...commonFetchParams });
+        } else {
+          await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, ...commonFetchParams });
+          await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, ...commonFetchParams });
+        }
+      } catch (e) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+        setVisible(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [isVisible]);
+
+  const invoiceHandler = () => {
+    return prospect?.status === 'TO_CONTACT' ? quotations : invoices.concat(paidInvoices);
+  };
+
+  const handleSelectedInvoice = (invoice: Invoice | SearchInvoice) => {
+    setSelectedInvoice(invoice as Invoice);
+  };
+
   const handleAmountRender = () => {
     setCurrentPage(2);
   };
 
+  const handleStatus = () => {
+    if (status && (current === ProspectFeedback.NOT_INTERESTED || current === ProspectFeedback.PROPOSAL_DECLINED)) {
+      return ProspectStatus.TO_CONTACT;
+    } else if (status === null) {
+      return prospect?.status;
+    } else {
+      return status;
+    }
+  };
+
   const onSubmit = async prospectInfos => {
-    setIsLoading(true);
-    const editedStatus = current === ProspectFeedback.NOT_INTERESTED || current === ProspectFeedback.PROPOSAL_DECLINED ? ProspectStatus.TO_CONTACT : status;
+    setIsButtonLoading(true);
+
     const prospectToBeEdited = {
       ...prospect,
       name: prospectInfos.name,
+      status: handleStatus(),
       email: prospectInfos.email,
       phone: prospectInfos.phone,
       address: prospectInfos.address,
       comment: prospectInfos.comment,
       contractAmount: amountToMinors(parseInt(amount, 10)),
-      status: editedStatus,
+      // @ts-ignore
+      invoiceID: selectedInvoice?.id || null,
     };
     delete prospectToBeEdited.location;
     try {
       await prospectStore.updateProspects(prospectToBeEdited.id, prospectToBeEdited);
+      setTimeout(() => {
+        showMessage(translate('common.addedOrUpdated'), { backgroundColor: palette.green });
+      }, 1500);
     } catch (e) {
       showMessage(e);
       throw e;
     } finally {
-      setIsLoading(false);
+      setIsButtonLoading(false);
       closeModal();
       await prospectStore.getProspects();
-      setCurrentStatus(editedStatus);
+      setCurrentStatus(handleStatus());
     }
   };
 
@@ -106,21 +171,29 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             borderRadius: 20,
             marginHorizontal: '2%',
             width: '96%',
-            height: 450,
+            height: 520,
           }}
         >
           <View
             style={{
               flexDirection: 'row',
-              height: 50,
+              height: 60,
               width: '100%',
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
             }}
           >
-            <View style={{ height: '100%', width: '85%', flexDirection: 'row', alignItems: 'center', paddingLeft: spacing[4] }}>
-              <Text text={'Prospect : '} style={{ fontSize: 15, color: palette.secondaryColor }} />
-              <Text text={prospect?.name} style={{ fontSize: 15, color: palette.secondaryColor }} />
+            <View
+              style={{
+                height: '100%',
+                width: '85%',
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingLeft: spacing[4],
+              }}
+            >
+              <Text text={'Prospect : '} style={{ fontSize: 18, color: palette.secondaryColor }} />
+              <Text text={prospect?.name} style={{ fontSize: 18, color: palette.secondaryColor }} />
             </View>
             <TouchableOpacity onPress={closeModal} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <AntDesignIcon name='close' color={color.palette.lightGrey} size={20} />
@@ -128,7 +201,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           </View>
           {currentPage === 1 ? (
             <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='email'
@@ -145,7 +218,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='phone'
@@ -162,7 +235,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='address'
@@ -179,7 +252,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='name'
@@ -196,7 +269,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
+              <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
                   name='comment'
@@ -215,8 +288,61 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               </View>
             </View>
           ) : (
-            <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
-              <View style={{ width: '100%', marginVertical: spacing[2], flexDirection: 'column', alignItems: 'center' }}>
+            <View style={{ flex: 1, paddingHorizontal: spacing[4] }}>
+              <TouchableOpacity style={styles.navigation} onPress={() => setVisible(true)}>
+                <View style={styles.transactionIcon}>
+                  <SimpleLineIcons name='paper-clip' size={18} color={palette.secondaryColor} />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text
+                    tx={
+                      prospect?.status === ProspectStatus.TO_CONTACT
+                        ? 'prospectScreen.process.associateWithAQuotation'
+                        : 'prospectScreen.process.associateWithAnInvoice'
+                    }
+                    style={{
+                      color: palette.black,
+                      fontSize: 18,
+                      fontFamily: 'Geometria',
+                    }}
+                  />
+                </View>
+                <View style={styles.transactionIcon}>
+                  <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
+                </View>
+              </TouchableOpacity>
+              {selectedInvoice && (
+                <View
+                  style={{
+                    width: '100%',
+                    marginVertical: spacing[1],
+                    paddingVertical: spacing[2],
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    borderWidth: 1,
+                    borderColor: palette.lighterGrey,
+                    borderRadius: 10,
+                  }}
+                >
+                  <Text
+                    tx={
+                      prospect?.status === ProspectStatus.TO_CONTACT ? 'prospectScreen.process.associatedQuotation' : 'prospectScreen.process.associatedInvoice'
+                    }
+                    style={styles.associatedLabel}
+                  />
+                  <TransactionField label='transactionListScreen.reference' text={selectedInvoice?.ref} />
+                  <TransactionField label='transactionListScreen.titleLabel' text={selectedInvoice.title} />
+                  <TransactionField label='transactionListScreen.total' text={printCurrencyToMajors(selectedInvoice.totalPriceWithVat)} />
+                </View>
+              )}
+              <View
+                style={{
+                  width: '100%',
+                  marginVertical: spacing[2],
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
                 <Text tx={'prospectScreen.process.amountLabel'} style={{ color: palette.lightGrey }} />
               </View>
               <View style={{ marginBottom: 10, width: '100%' }}>
@@ -230,61 +356,72 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
                 />
               </View>
-              {prospect?.status === ProspectStatus.TO_CONTACT ? (
-                <View style={{ flex: 1, paddingTop: spacing[4] }}>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.INTERESTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.INTERESTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.INTERESTED} />
-                    <Text tx={'prospectScreen.process.interested'} style={current === ProspectFeedback.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.NOT_INTERESTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.NOT_INTERESTED} />
-                    <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_SENT)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_SENT} />
-                    <Text tx={'prospectScreen.process.proposalSent'} style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View style={{ flex: 1, paddingTop: spacing[4] }}>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_ACCEPTED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_ACCEPTED} />
-                    <Text
-                      tx={'prospectScreen.process.proposalAccepted'}
-                      style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED_TEXT : UNCHECKED_TEXT}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.PROPOSAL_DECLINED)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.PROPOSAL_DECLINED} />
-                    <Text
-                      tx={'prospectScreen.process.proposalDeclined'}
-                      style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED_TEXT : UNCHECKED_TEXT}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={current === ProspectFeedback.INVOICE_SENT ? CHECKED : UNCHECKED}
-                    onPress={() => setCurrent(ProspectFeedback.INVOICE_SENT)}
-                  >
-                    <RadioButton isActive={current === ProspectFeedback.INVOICE_SENT} />
-                    <Text tx={'prospectScreen.process.invoiceSent'} style={current === ProspectFeedback.INVOICE_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
-                  </TouchableOpacity>
+              {!isEditing && (
+                <View style={{ flex: 1, paddingTop: spacing[2] }}>
+                  {prospect?.status === ProspectStatus.TO_CONTACT ? (
+                    <>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.INTERESTED ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.INTERESTED)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.INTERESTED} />
+                        <Text tx={'prospectScreen.process.interested'} style={current === ProspectFeedback.INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.NOT_INTERESTED)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.NOT_INTERESTED} />
+                        <Text tx={'prospectScreen.process.notInterested'} style={current === ProspectFeedback.NOT_INTERESTED ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.PROPOSAL_SENT)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.PROPOSAL_SENT} />
+                        <Text tx={'prospectScreen.process.proposalSent'} style={current === ProspectFeedback.PROPOSAL_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                      </TouchableOpacity>
+                    </>
+                  ) : (
+                    <>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.PROPOSAL_ACCEPTED)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.PROPOSAL_ACCEPTED} />
+                        <Text
+                          tx={'prospectScreen.process.proposalAccepted'}
+                          style={current === ProspectFeedback.PROPOSAL_ACCEPTED ? CHECKED_TEXT : UNCHECKED_TEXT}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.PROPOSAL_DECLINED)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.PROPOSAL_DECLINED} />
+                        <Text
+                          tx={'prospectScreen.process.proposalDeclined'}
+                          style={current === ProspectFeedback.PROPOSAL_DECLINED ? CHECKED_TEXT : UNCHECKED_TEXT}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={current === ProspectFeedback.INVOICE_SENT ? CHECKED : UNCHECKED}
+                        onPress={() => setCurrent(ProspectFeedback.INVOICE_SENT)}
+                      >
+                        <RadioButton isActive={current === ProspectFeedback.INVOICE_SENT} />
+                        <Text tx={'prospectScreen.process.invoiceSent'} style={current === ProspectFeedback.INVOICE_SENT ? CHECKED_TEXT : UNCHECKED_TEXT} />
+                      </TouchableOpacity>
+                    </>
+                  )}
                 </View>
               )}
+              <InvoiceSelectionModal
+                showModal={isVisible}
+                setShowModal={setVisible}
+                invoices={invoiceHandler()}
+                loading={isLoading}
+                getSelectedInvoice={handleSelectedInvoice}
+              />
             </View>
           )}
           <View
@@ -300,7 +437,8 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             }}
           >
             <ButtonActions
-              isLoading={isLoading}
+              isLoading={isButtonLoading}
+              isEditing={isEditing}
               prospectStatus={prospect?.status}
               selectedStatus={status}
               prospectFeedBack={current}
