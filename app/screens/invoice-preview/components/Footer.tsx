@@ -88,8 +88,10 @@ const Footer: FC<IFooter> = props => {
   }, [invoice]);
 
   async function handleSendInvoice() {
-    if (invoice.status === InvoiceStatus.PROPOSAL) {
+    if (invoice.status !== InvoiceStatus.DRAFT) {
       await sendEmail(authStore, invoiceStore, invoice);
+    } else {
+      showMessage(translate('errors.sendDraft'), { backgroundColor: palette.yellow });
     }
   }
 
