@@ -7,6 +7,7 @@ import { InvoiceStore } from '../../models/stores/invoice-store/invoice-store';
 import { sendError } from '../../services/logs/logs';
 import { sendEmail as sendInvoiceAttachment } from '../email';
 import { createFileUrl } from '../file-utils';
+import { convertPlainTextToHTML } from '../text-to-html';
 
 function formatMailBody(bodyMessage: string) {
   // email body as html does not work perfectly on android
@@ -60,7 +61,7 @@ ${currentAccountHolder.companyInfo.phone}`;
   const payload = {
     attachments: [],
     subject: `[${currentAccountHolder.name}] - ${title} - ${customer.lastName}`,
-    message: body,
+    message: convertPlainTextToHTML(body),
     isFromScratch: true,
   };
 

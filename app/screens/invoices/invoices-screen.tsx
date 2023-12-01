@@ -8,7 +8,7 @@ import { BpPagination, Button, Loader, MenuItem, NoDataProvided, Screen, Separat
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
-import { Invoice as IInvoice, InvoiceStatus, PaymentMethod } from '../../models/entities/invoice/invoice';
+import { Invoice as IInvoice, InvoiceRelaunch, InvoiceStatus, PaymentMethod } from '../../models/entities/invoice/invoice';
 import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { navigate } from '../../navigators/navigation-utilities';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
@@ -23,6 +23,8 @@ import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils'
 import { Invoice } from './components/invoice';
 import { PartialPaymentModal } from './components/partial-payment-modal';
 import { PaymentMethodSelectionModal } from './components/payment-method-selection';
+import { RelaunchHistoryModal } from './components/relaunch-history-modal';
+import { RelaunchMessageModal } from './components/relaunch-message-modal';
 import { SendingConfirmationModal } from './components/sending-confirmation-modal';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
@@ -54,6 +56,9 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const [isStatusUpdating, setIsStatusUpdating] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
   const [currentInvoice, setCurrentInvoice] = useState<IInvoice | null>(null);
+  const [currentRelaunch, setCurrentRelaunch] = useState<InvoiceRelaunch>();
+  const [relaunchHistory, setRelaunchHistory] = useState(false);
+  const [relaunchMessage, setRelaunchMessage] = useState(false);
   const { currentAccountHolder, currentUser } = authStore;
 
   const handleRefresh = async () => {
@@ -77,11 +82,13 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     { id: 'markAsPaid', title: translate('invoiceScreen.menu.markAsPaid') },
     { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
     { id: 'sendInvoice', title: translate('invoicePreviewScreen.send') },
+    { id: 'showRelaunchHistory', title: translate('invoiceScreen.menu.showRelaunchHistory') },
   ];
 
   const simpleItems: MenuItem[] = [
     { id: 'downloadInvoice', title: translate('invoiceScreen.menu.downloadInvoice') },
-    { id: 'sendInvoice', title: translate('invoicePreviewScreen.sendInvoice') },
+    { id: 'sendInvoice', title: translate('invoicePreviewScreen.send') },
+    { id: 'showRelaunchHistory', title: translate('invoiceScreen.menu.showRelaunchHistory') },
   ];
 
   const downloadInvoice = (item: IInvoice) => {
@@ -95,6 +102,12 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
 
   const sendInvoice = async (item: IInvoice) => {
     await sendEmail(authStore, invoiceStore, item, true);
+  };
+
+  const showRelaunchHistory = async (item: IInvoice) => {
+    setCurrentInvoice(item);
+    setRelaunchHistory(false);
+    setRelaunchHistory(true);
   };
 
   const openMethodSelection = (item: IInvoice) => {
@@ -184,6 +197,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
                         markAsPaid: () => openMethodSelection(item),
                         downloadInvoice: () => downloadInvoice(item),
                         sendInvoice: () => sendInvoice(item),
+                        showRelaunchHistory: () => showRelaunchHistory(item),
                       }}
                     />
                   ) : (
@@ -193,6 +207,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
                       menuAction={{
                         downloadInvoice: () => downloadInvoice(item),
                         sendInvoice: () => sendInvoice(item),
+                        showRelaunchHistory: () => showRelaunchHistory(item),
                       }}
                     />
                   )
@@ -246,6 +261,10 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             user={currentUser}
           />
         )}
+        {currentInvoice && (
+          <RelaunchHistoryModal isOpen={relaunchHistory} setOpen={setRelaunchHistory} item={currentInvoice} setCurrentRelaunch={setCurrentRelaunch} />
+        )}
+        {currentRelaunch && <RelaunchMessageModal isOpen={relaunchMessage} setOpen={setRelaunchMessage} invoice={currentInvoice} item={currentRelaunch} />}
       </View>
     </ErrorBoundary>
   );
