@@ -92,7 +92,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
       await sendEmail(authStore, invoiceStore, item, false, true, date);
     } else {
       setModalVisible(false);
-      await sendEmail(authStore, invoiceStore, item);
+      await sendEmail(authStore, invoiceStore, item, false, false);
     }
   };
 

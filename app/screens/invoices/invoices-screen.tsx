@@ -127,7 +127,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       await sendEmail(authStore, invoiceStore, item, true, true, date);
     } else {
       setModalVisible(false);
-      await sendEmail(authStore, invoiceStore, item, true);
+      await sendEmail(authStore, invoiceStore, item, true, false);
     }
   };
 
