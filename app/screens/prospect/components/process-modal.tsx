@@ -37,6 +37,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [isVisible, setVisible] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice>();
@@ -114,7 +115,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
   };
 
   const onSubmit = async prospectInfos => {
-    setIsLoading(true);
+    setIsButtonLoading(true);
 
     const prospectToBeEdited = {
       ...prospect,
@@ -138,7 +139,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       showMessage(e);
       throw e;
     } finally {
-      setIsLoading(false);
+      setIsButtonLoading(false);
       closeModal();
       await prospectStore.getProspects();
       setCurrentStatus(handleStatus());
@@ -436,7 +437,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             }}
           >
             <ButtonActions
-              isLoading={isLoading}
+              isLoading={isButtonLoading}
               isEditing={isEditing}
               prospectStatus={prospect?.status}
               selectedStatus={status}
