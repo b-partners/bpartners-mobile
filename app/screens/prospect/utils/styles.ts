@@ -100,4 +100,38 @@ export const prospectItemStyles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: spacing[2],
   },
+  editButton: {
+    fontSize: 12,
+    color: palette.black,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: palette.lighterGrey,
+    paddingHorizontal: spacing[3],
+    paddingVertical: spacing[2],
+  },
+  popOverContainer: {
+    height: 250,
+    width: 250,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  processButton: {
+    width: 150,
+    height: 40,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing[1],
+  },
+  processButtonText: {
+    fontSize: 12,
+    color: palette.white,
+  },
+  separatorCommonStyle: {
+    flex: 1,
+    height: 1,
+    backgroundColor: palette.lighterGrey,
+  },
 });

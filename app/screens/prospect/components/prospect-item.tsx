@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { Card, Paragraph, Portal, Title } from 'react-native-paper';
+import { Card, Button as IButton, Paragraph, Portal, Title } from 'react-native-paper';
 import Popover from 'react-native-popover-view';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,7 +11,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
-import { color } from '../../../theme';
+import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
@@ -29,26 +29,43 @@ const IconGroup = {
 };
 
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
-  const { prospect, setCurrentStatus } = props;
+  const { prospect, setCurrentStatus, menuItem } = props;
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPopOverOpen, setIsPopOverOpen] = useState(false);
   const [status, setStatus] = useState<ProspectStatus | null>(null);
 
   useEffect(() => {
     status != null && setShowModal(true);
   }, [status]);
 
-  // const onEditing = () => {
-  //   setShowModal(true);
-  //   setIsEditing(true);
-  // };
+  const onEditing = () => {
+    setShowModal(true);
+    setIsEditing(true);
+    setIsPopOverOpen(false);
+  };
+
+  const openPopover = () => {
+    setIsPopOverOpen(true);
+  };
+
+  const closePopover = () => {
+    setIsPopOverOpen(false);
+  };
 
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
         <Card.Content style={styles.rowDirection}>
           <View style={{ width: '80%' }}>
-            <Title style={{ fontSize: 16, color: palette.black }}>{prospect.name ? prospect.name : translate('common.noData')}</Title>
+            <Title
+              style={{
+                fontSize: 16,
+                color: palette.black,
+              }}
+            >
+              {prospect.name ? prospect.name : translate('common.noData')}
+            </Title>
             <View style={styles.cardBody}>
               <Paragraph style={{ marginRight: 5 }}>{IconGroup.email}</Paragraph>
               <Paragraph style={{ color: palette.black }}>{prospect.email ? <>{prospect.email}</> : translate('common.noData')}</Paragraph>
@@ -84,13 +101,58 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
           </View>
           <View style={styles.menuContainer}>
             <Popover
+              isVisible={isPopOverOpen}
+              onRequestClose={closePopover}
               from={
-                <TouchableOpacity>
-                  <Text>Press here to open popover!</Text>
+                <TouchableOpacity onPress={openPopover}>
+                  <Text tx={'common.edit'} style={styles.editButton} />
                 </TouchableOpacity>
               }
             >
-              <Text>This is the contents of the popover</Text>
+              <View style={styles.popOverContainer}>
+                <Text
+                  tx={'prospectScreen.process.onProspectChangingStatus'}
+                  style={{
+                    color: palette.black,
+                    padding: spacing[3],
+                    textAlign: 'center',
+                  }}
+                />
+                {menuItem.map(item => {
+                  return (
+                    <IButton
+                      key={item.id}
+                      compact={true}
+                      buttonColor={palette.secondaryColor}
+                      textColor={palette.white}
+                      style={styles.processButton}
+                      onPress={() => {
+                        setStatus(ProspectStatus[item.label]);
+                        closePopover();
+                      }}
+                    >
+                      <Text text={item.title} style={styles.processButtonText} />
+                    </IButton>
+                  );
+                })}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ ...styles.separatorCommonStyle, marginLeft: spacing[4] }} />
+                  <View>
+                    <Text
+                      style={{
+                        color: palette.black,
+                        padding: spacing[2],
+                        textAlign: 'center',
+                      }}
+                      tx={'common.or'}
+                    />
+                  </View>
+                  <View style={{ ...styles.separatorCommonStyle, marginRight: spacing[4] }} />
+                </View>
+                <IButton compact={true} buttonColor={palette.secondaryColor} textColor={palette.white} style={styles.processButton} onPress={onEditing}>
+                  <Text tx={'prospectScreen.process.editProspect'} style={styles.processButtonText} />
+                </IButton>
+              </View>
             </Popover>
           </View>
         </Card.Content>

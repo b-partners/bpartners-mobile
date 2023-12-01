@@ -20,7 +20,7 @@
     "submit": "Confirm",
     "create": "Create",
     "edit": "Edit",
-    "or": "or",
+    "or": "Or",
     "next": "Next",
     "cancel": "Cancel",
     "back": "Back",
@@ -156,7 +156,9 @@
       "associateWithAnInvoice": "Associate with an invoice",
       "associateWithAQuotation": "Associate with a quotation",
       "associatedInvoice": "Associated invoice",
-      "associatedQuotation": "Associated Quotation"
+      "associatedQuotation": "Associated Quotation",
+      "editProspect": "Edit the prospect",
+      "onProspectChangingStatus": "Change the prospect's status to protect it"
     },
     "buttonActions": {
       "abandonProspect": "Abandon this prospect",
