@@ -49,6 +49,7 @@ export interface RelaunchMessageProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   invoice: IInvoice;
   item: InvoiceRelaunch;
+  setCurrentRelaunch: React.Dispatch<React.SetStateAction<InvoiceRelaunch>>;
 }
 export const getStatusTextColor = (status: InvoiceStatus) => {
   switch (status) {

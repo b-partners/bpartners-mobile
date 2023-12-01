@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
 import { BpPagination, Button, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
@@ -15,6 +15,7 @@ import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
+import { formatDate } from '../../utils/format-date';
 import { getThreshold } from '../../utils/get-threshold';
 import { RTLog } from '../../utils/reactotron-log';
 import { showMessage } from '../../utils/snackbar';
@@ -56,7 +57,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   const [isStatusUpdating, setIsStatusUpdating] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
   const [currentInvoice, setCurrentInvoice] = useState<IInvoice | null>(null);
-  const [currentRelaunch, setCurrentRelaunch] = useState<InvoiceRelaunch>();
+  const [currentRelaunch, setCurrentRelaunch] = useState<InvoiceRelaunch | null>();
   const [relaunchHistory, setRelaunchHistory] = useState(false);
   const [relaunchMessage, setRelaunchMessage] = useState(false);
   const { currentAccountHolder, currentUser } = authStore;
@@ -101,7 +102,14 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   };
 
   const sendInvoice = async (item: IInvoice) => {
-    await sendEmail(authStore, invoiceStore, item, true);
+    const invoiceRelaunches = await invoiceStore.getInvoiceRelaunches(item.id, { page: 1, pageSize: 500 });
+    if (invoiceRelaunches.length > 0) {
+      const lastRelaunch: InvoiceRelaunch = invoiceRelaunches[invoiceRelaunches.length - 1];
+      const date = formatDate(lastRelaunch.creationDatetime);
+      await sendEmail(authStore, invoiceStore, item, true, true, date);
+    } else {
+      await sendEmail(authStore, invoiceStore, item, true);
+    }
   };
 
   const showRelaunchHistory = async (item: IInvoice) => {
@@ -176,6 +184,12 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
   };
+
+  useEffect(() => {
+    if (currentRelaunch) {
+      setRelaunchMessage(true);
+    }
+  }, [currentRelaunch]);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -264,7 +278,15 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
         {currentInvoice && (
           <RelaunchHistoryModal isOpen={relaunchHistory} setOpen={setRelaunchHistory} item={currentInvoice} setCurrentRelaunch={setCurrentRelaunch} />
         )}
-        {currentRelaunch && <RelaunchMessageModal isOpen={relaunchMessage} setOpen={setRelaunchMessage} invoice={currentInvoice} item={currentRelaunch} />}
+        {currentRelaunch && (
+          <RelaunchMessageModal
+            isOpen={relaunchMessage}
+            setOpen={setRelaunchMessage}
+            invoice={currentInvoice}
+            item={currentRelaunch}
+            setCurrentRelaunch={setCurrentRelaunch}
+          />
+        )}
       </View>
     </ErrorBoundary>
   );

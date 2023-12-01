@@ -7,6 +7,7 @@ import { InvoiceStore } from '../../models/stores/invoice-store/invoice-store';
 import { sendError } from '../../services/logs/logs';
 import { sendEmail as sendInvoiceAttachment } from '../email';
 import { createFileUrl } from '../file-utils';
+import { RTLog } from '../reactotron-log';
 import { convertPlainTextToHTML } from '../text-to-html';
 
 function formatMailBody(bodyMessage: string) {
@@ -16,7 +17,14 @@ function formatMailBody(bodyMessage: string) {
 }
 
 // Used to send an invoice attachment
-export async function sendEmail(authStore: AuthStore, invoiceStore: InvoiceStore, invoice: Invoice, isInvoice?: boolean) {
+export async function sendEmail(
+  authStore: AuthStore,
+  invoiceStore: InvoiceStore,
+  invoice: Invoice,
+  isInvoice?: boolean,
+  isRelaunch?: boolean,
+  relaunchDate?: string
+) {
   const { accessToken, currentAccount, currentAccountHolder } = authStore;
   const { fileId, customer, title } = invoice;
   const fileName = `${invoice.title}.pdf`;
@@ -48,7 +56,23 @@ ${currentAccountHolder.name}
 ${currentAccount.name}
 ${currentAccountHolder.companyInfo.phone}`;
 
-  const body = formatMailBody(bodyMessage);
+  const bodyRelaunchMessage = `Bonjour ${customer?.lastName},
+  
+Nous espérons que vous allez bien.
+  
+Dans la continuité de notre échange, je vous ai fait parvenir un devis le ${relaunchDate}. Avez-vous pu le parcourir ? 
+
+Dès réception de votre bon pour accord, un technicien vous contactera afin d’organiser une intervention dans les plus brefs délais.
+  
+Nous restons à votre entière disposition pour tous renseignements complémentaires.
+
+Vous remerciant pour votre confiance.
+
+${currentAccountHolder.name}
+${currentAccount.name}
+${currentAccountHolder.companyInfo.phone}`;
+
+  const body = formatMailBody(isRelaunch ? bodyRelaunchMessage : bodyMessage);
   const emailToSend = {
     subject: `[${currentAccountHolder.name}] - ${title} - ${customer.lastName}`,
     recipients: [customer.email],
@@ -66,8 +90,9 @@ ${currentAccountHolder.companyInfo.phone}`;
   };
 
   try {
-    await invoiceStore.relaunchInvoice(invoice.id, payload);
-    await sendInvoiceAttachment(emailToSend);
+    RTLog(isRelaunch, body);
+    /*await invoiceStore.relaunchInvoice(invoice.id, payload);
+    await sendInvoiceAttachment(emailToSend);*/
   } catch (e) {
     sendError(e, { email: emailToSend });
     __DEV__ && console.tron.log(e.message);

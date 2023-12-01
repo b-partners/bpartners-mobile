@@ -13,6 +13,7 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
+import { formatDate } from '../../utils/format-date';
 import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -41,7 +42,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
   const [relaunchHistory, setRelaunchHistory] = useState(false);
   const [relaunchMessage, setRelaunchMessage] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentRelaunch, setCurrentRelaunch] = useState<InvoiceRelaunch>();
+  const [currentRelaunch, setCurrentRelaunch] = useState<InvoiceRelaunch | null>();
   const [maxPage, setMaxPage] = useState(Math.ceil(quotations.length / itemsPerPage));
   const [currentQuotation, setCurrentQuotation] = useState<IInvoice>();
   const messageOption = { backgroundColor: palette.green };
@@ -62,6 +63,17 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
       } catch (error) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
+    }
+  };
+
+  const sendQuotation = async (item: IInvoice) => {
+    const invoiceRelaunches = await invoiceStore.getInvoiceRelaunches(item.id, { page: 1, pageSize: 500 });
+    if (invoiceRelaunches.length > 0) {
+      const lastRelaunch: InvoiceRelaunch = invoiceRelaunches[invoiceRelaunches.length - 1];
+      const date = formatDate(lastRelaunch.creationDatetime);
+      await sendEmail(authStore, invoiceStore, item, false, true, date);
+    } else {
+      await sendEmail(authStore, invoiceStore, item);
     }
   };
 
@@ -143,7 +155,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
                     menuItems={items}
                     menuAction={{
                       markAsInvoice: () => markAsInvoice(item),
-                      senByEmail: () => sendEmail(authStore, invoiceStore, item),
+                      senByEmail: () => sendQuotation(item),
                       previewQuotation: () => previewQuotation(item),
                       showRelaunchHistory: () => showRelaunchHistory(item),
                     }}
@@ -178,7 +190,15 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
         {currentQuotation && (
           <RelaunchHistoryModal isOpen={relaunchHistory} setOpen={setRelaunchHistory} item={currentQuotation} setCurrentRelaunch={setCurrentRelaunch} />
         )}
-        {currentRelaunch && <RelaunchMessageModal isOpen={relaunchMessage} setOpen={setRelaunchMessage} invoice={currentQuotation} item={currentRelaunch} />}
+        {currentRelaunch && (
+          <RelaunchMessageModal
+            isOpen={relaunchMessage}
+            setOpen={setRelaunchMessage}
+            invoice={currentQuotation}
+            item={currentRelaunch}
+            setCurrentRelaunch={setCurrentRelaunch}
+          />
+        )}
       </View>
     </ErrorBoundary>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 
 import { Text } from '../../../components';
@@ -23,9 +23,9 @@ export const RelaunchItem: React.FC<RelaunchItemProps> = props => {
         <Text text={`${translate('relaunchHistoryModal.quotationRelaunchedAt')} ${formatDate(item.creationDatetime)}`} style={styles.title} />
         <Text text={item.emailInfo.emailObject} style={styles.object} numberOfLines={1} />
       </View>
-      <View style={styles.iconContainer}>
-        <IoniconIcon name='eye-sharp' size={28} color={palette.secondaryColor} onPress={() => setCurrentRelaunch(item)} />
-      </View>
+      <TouchableOpacity style={styles.iconContainer} onPress={() => setCurrentRelaunch(item)}>
+        <IoniconIcon name='eye-sharp' size={28} color={palette.secondaryColor} />
+      </TouchableOpacity>
     </View>
   );
 };

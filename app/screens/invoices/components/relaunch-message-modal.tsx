@@ -4,6 +4,7 @@ import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, Text } from '../../../components';
 import { translate } from '../../../i18n';
+import { InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { convertHTMLToPlainText } from '../../../utils/html-to-text';
@@ -18,13 +19,18 @@ import {
 import { RelaunchMessageProps } from '../utils/utils';
 
 export const RelaunchMessageModal = (props: RelaunchMessageProps) => {
-  const { isOpen, setOpen, item, invoice } = props;
+  const { isOpen, setOpen, item, invoice, setCurrentRelaunch } = props;
 
   const plainText = convertHTMLToPlainText(item.emailInfo.emailBody);
   const lines = plainText.split('\n');
 
+  const onClose = () => {
+    setCurrentRelaunch(undefined);
+    setOpen(false);
+  };
+
   return (
-    <Modal visible={isOpen} transparent={true} onDismiss={() => setOpen(false)}>
+    <Modal visible={isOpen} transparent={true} onDismiss={onClose}>
       <View style={MODAL_STYLE}>
         <View style={styles.modalContainer}>
           <View style={MODAL_HEADER_STYLE}>
@@ -40,7 +46,12 @@ export const RelaunchMessageModal = (props: RelaunchMessageProps) => {
             </Button>
           </View>
           <View style={styles.referenceContainer}>
-            <Text text={`${translate('invoicePreviewScreen.quotation')} : (${invoice.ref})`} style={styles.reference} />
+            <Text
+              text={`${translate(invoice.status === InvoiceStatus.CONFIRMED ? 'invoicePreviewScreen.quotation' : 'invoicePreviewScreen.invoice')} : (${
+                invoice.ref
+              })`}
+              style={styles.reference}
+            />
           </View>
           <ScrollView
             style={{
