@@ -369,6 +369,7 @@
       "markAsInvoice": "Mark as invoice",
       "markAsProposal": "Mark as proposal",
       "markAsPaid": "Mark as paid",
+      "showRelaunchHistory": "Relaunch histories",
       "downloadInvoice": "Download",
       "editDraft": "Edit"
     },
@@ -482,7 +483,7 @@
     "previewOfInvoice": "Preview of invoice No.",
     "delete": "Delete",
     "edit": "Edit",
-    "send": "Send this quotation",
+    "send": "Send or relaunch",
     "quotation": "Quotation",
     "invoice": "Invoice",
     "sendInvoice": "Send this invoice",
@@ -591,5 +592,9 @@
     "title": "My products",
     "export": "Exporter",
     "price": "Price"
+  },
+  "relaunchHistoryModal": {
+    "title": "Relaunch history",
+    "quotationRelaunchedAt": "Quotation relaunched at"
   }
 }

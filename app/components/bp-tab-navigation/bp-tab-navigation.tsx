@@ -8,7 +8,7 @@ import { AutoImage } from '../auto-image/auto-image';
 import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
 import { BottomTab } from './components/bottom-tab';
 import { tabNavigationStyles as styles } from './utils/styles';
-import { BOTTOM_TAB_ROUTES, IconProps, IconRouteProps, hasBusinessActivities, hasCarreleur } from './utils/utils';
+import { BOTTOM_TAB_ROUTES, IconProps, IconRouteProps } from './utils/utils';
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   const {
@@ -16,10 +16,8 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     navigation: { navigate },
   } = props;
   const currentTab = routeNames[index];
-  const { marketplaceStore, currentAccountHolder } = useStores();
+  const { marketplaceStore } = useStores();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-
-  const shouldShowProspects = hasBusinessActivities(currentAccountHolder) && hasCarreleur(currentAccountHolder.businessActivities);
 
   const handleNavigationMarketplace = useCallback((routeName: string) => {
     navigate(routeName);
@@ -48,7 +46,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
     account: () => handleNavigation('bp_home'),
-    activity: () => handleNavigationMarketplace(shouldShowProspects ? 'prospect' : 'marketplace'),
+    activity: () => handleNavigationMarketplace('prospect'),
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => handleNavigation('supportContact'),
@@ -56,7 +54,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   const RouteName: IconProps = {
     account: 'bp_home',
-    activity: shouldShowProspects ? 'prospect' : 'marketplace',
+    activity: 'prospect',
     payment: 'paymentInitiation',
     facturation: 'paymentList',
     service: 'supportContact',
@@ -64,7 +62,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   const ROUTE: IconProps = {
     account: translate('bottomTab.account'),
-    activity: shouldShowProspects ? translate('prospectScreen.title') : translate('bottomTab.activity'),
+    activity: translate('prospectScreen.title'),
     payment: translate('bottomTab.payment'),
     facturation: translate('bottomTab.facturation'),
     service: translate('bottomTab.service'),
