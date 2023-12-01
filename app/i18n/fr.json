@@ -20,7 +20,7 @@
     "submit": "Confirmer",
     "create": "Créer",
     "edit": "Modifier",
-    "or": "ou",
+    "or": "Ou",
     "next": "Suivant",
     "cancel": "Annuler",
     "back": "Précédent",
@@ -111,7 +111,9 @@
       "associateWithAnInvoice": "Associer à une facture",
       "associateWithAQuotation": "Associer à un devis",
       "associatedInvoice": "Facture associée",
-      "associatedQuotation": "Devis associé"
+      "associatedQuotation": "Devis associé",
+      "editProspect": "Modifier le prospect",
+      "onProspectChangingStatus": "Changez le statut du prospect pour le protéger"
     },
     "buttonActions": {
       "abandonProspect": "Abandonner ce prospect",
