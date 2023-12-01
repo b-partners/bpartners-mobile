@@ -19,7 +19,8 @@
     "ok": "OK!",
     "submit": "Confirm",
     "create": "Create",
-    "or": "or",
+    "edit": "Edit",
+    "or": "Or",
     "next": "Next",
     "cancel": "Cancel",
     "back": "Back",
@@ -28,7 +29,6 @@
     "added": "Successfully added",
     "registered": "Registered",
     "saved": "Saved at:",
-    "edit": "Edit",
     "register": "REGISTER",
     "noComment": "No Comment",
     "noInformation": "No information available",
@@ -110,7 +110,7 @@
     "balance": "Balance",
     "reference": "Reference",
     "titleLabel": "Title",
-    "total": "total",
+    "total": "Total",
     "associate": "Associate an invoice",
     "associatedLabel": "Related document",
     "status": {
@@ -152,7 +152,13 @@
       "proposalAccepted": "Quotation accepted",
       "proposalDeclined": "Quotation refused",
       "invoiceSent": "Invoice sent",
-      "reserve": "Reserve"
+      "reserve": "Reserve",
+      "associateWithAnInvoice": "Associate with an invoice",
+      "associateWithAQuotation": "Associate with a quotation",
+      "associatedInvoice": "Associated invoice",
+      "associatedQuotation": "Associated Quotation",
+      "editProspect": "Edit the prospect",
+      "onProspectChangingStatus": "Change the prospect's status to protect it"
     },
     "buttonActions": {
       "abandonProspect": "Abandon this prospect",
@@ -363,6 +369,7 @@
       "markAsInvoice": "Mark as invoice",
       "markAsProposal": "Mark as proposal",
       "markAsPaid": "Mark as paid",
+      "showRelaunchHistory": "Relaunch histories",
       "downloadInvoice": "Download",
       "editDraft": "Edit"
     },
@@ -476,7 +483,7 @@
     "previewOfInvoice": "Preview of invoice No.",
     "delete": "Delete",
     "edit": "Edit",
-    "send": "Send this quotation",
+    "send": "Send or relaunch",
     "quotation": "Quotation",
     "invoice": "Invoice",
     "sendInvoice": "Send this invoice",
@@ -585,5 +592,9 @@
     "title": "My products",
     "export": "Exporter",
     "price": "Price"
+  },
+  "relaunchHistoryModal": {
+    "title": "Relaunch history",
+    "quotationRelaunchedAt": "Quotation relaunched at"
   }
 }
