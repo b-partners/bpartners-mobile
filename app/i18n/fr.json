@@ -56,7 +56,8 @@
     "invalidPassword": "Le mot de passe doit au moins contenir une majuscule, un caractère spécial (., -, &, @ etc) et un chiffre",
     "invalidConfirmPassword": "Les mots de passe ne correspondent pas !",
     "changePassword": "Nouveau mot de passe",
-    "oops": "Oups !"
+    "oops": "Oups !",
+    "sendDraft": "Un brouillon ne peut pas être envoyé"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
