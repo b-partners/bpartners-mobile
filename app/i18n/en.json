@@ -56,7 +56,8 @@
     "invalidPassword": "The password must contain at least one capital letter, one special character (., -, &, @ etc) and one number",
     "invalidConfirmPassword": "The passwords don't match !",
     "changePassword": "New password",
-    "oops": "Oops !"
+    "oops": "Oops !",
+    "sendDraft": "A draft cannot be sent"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
