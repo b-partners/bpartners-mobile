@@ -57,7 +57,8 @@ export const SECTION_HEADER_TEXT_STYLE: TextStyle = {
 };
 export const SECTION_LIST_CONTAINER_STYLE: ViewStyle = {
   marginHorizontal: spacing[4],
-  borderColor: color.transparent,
+  borderColor: palette.white,
+  backgroundColor: palette.white,
 };
 export const SEPARATOR_STYLE = { borderColor: palette.lighterGrey };
 export const FOOTER_COMPONENT_STYLE = { marginBottom: spacing[0] };
@@ -327,6 +328,114 @@ export const partialPaymentStyles = StyleSheet.create({
     color: palette.white,
     marginRight: spacing[2],
     fontFamily: 'Geometria',
+  },
+});
+
+export const relaunchHistoryModalStyles = StyleSheet.create({
+  modalContainer: {
+    backgroundColor: palette.white,
+    height: '60%',
+    width: '95%',
+    borderRadius: 15,
+  },
+  referenceContainer: {
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  reference: {
+    color: palette.greyDarker,
+    fontFamily: 'Geometria',
+    fontSize: 16,
+  },
+});
+
+export const relaunchMessageModalStyles = StyleSheet.create({
+  modalContainer: {
+    backgroundColor: palette.white,
+    height: '60%',
+    width: '95%',
+    borderRadius: 15,
+  },
+  referenceContainer: {
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  reference: {
+    color: palette.greyDarker,
+    fontFamily: 'Geometria',
+    fontSize: 16,
+  },
+  object: {
+    color: palette.textClassicColor,
+    fontFamily: 'Geometria',
+    fontSize: 14,
+    marginBottom: spacing[4],
+  },
+  message: {
+    color: palette.greyDarker,
+    fontFamily: 'Geometria',
+    fontSize: 16,
+  },
+  messageContainer: {
+    width: '100%',
+    height: 200,
+    marginVertical: spacing[4],
+    justifyContent: 'center',
+    paddingLeft: spacing[2],
+  },
+});
+
+export const relaunchItemStyles = StyleSheet.create({
+  itemContainer: {
+    width: '95%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80,
+    borderBottomWidth: 1,
+    borderColor: palette.lighterGrey,
+    flexDirection: 'row',
+    marginLeft: '3%',
+  },
+  textContainer: {
+    width: '80%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  title: {
+    marginTop: spacing[2],
+    color: palette.textClassicColor,
+    fontFamily: 'Geometria',
+    fontSize: 14,
+  },
+  object: {
+    marginTop: spacing[2],
+    color: palette.lightGrey,
+    fontFamily: 'Geometria',
+    fontSize: 14,
+  },
+  iconContainer: {
+    width: '15%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  numberColumn: {
+    width: '10%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: spacing[1],
+  },
+  numberContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 500,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: palette.lighterGrey,
   },
 });
 export const sendingConfirmationModalStyles = StyleSheet.create({

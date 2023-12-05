@@ -14,10 +14,11 @@ export type InvoiceRowProps = {
 export type InvoiceSelectionModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setTransactionModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setTransactionModal?: React.Dispatch<React.SetStateAction<boolean>>;
   invoices: Invoice[];
   loading: boolean;
-  transaction: Transaction;
+  transaction?: Transaction;
+  getSelectedInvoice?: (invoice: Invoice | SearchInvoice) => void;
 };
 
 export type PaymentModalProps = {

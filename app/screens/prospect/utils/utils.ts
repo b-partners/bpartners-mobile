@@ -12,6 +12,8 @@ export type ProspectItemProps = {
 
 export type ProcessModalProps = {
   showModal: boolean;
+  isEditing: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentStatus: React.Dispatch<React.SetStateAction<string>>;
   prospect: Prospect;

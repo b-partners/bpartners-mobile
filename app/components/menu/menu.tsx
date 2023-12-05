@@ -2,7 +2,7 @@ import { MenuView } from '@react-native-menu/menu';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-export type MenuItem = { id: string; title: string; subItems?: MenuItem[] };
+export type MenuItem = { id: string; title: string; subItems?: MenuItem[]; label?: string };
 
 export type MenuAction = Record<string, (...args: any) => void>;
 

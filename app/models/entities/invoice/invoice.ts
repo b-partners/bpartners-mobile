@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import uuid from 'react-native-uuid';
 
 import { CustomerModel } from '../customer/customer';
+import { FileIdModel } from '../file/file';
 import { GlobalDiscountModel } from '../global-discount/global-discount';
 import { MetadataModel } from '../metadata/metadata';
 import { PaymentRegulationModel } from '../payment-regulation/payment-regulation';
@@ -37,6 +38,20 @@ export const PaymentMethodModel = types.model('PaymentMethodModel').props({
   value: types.maybeNull(types.enumeration(Object.values(PaymentMethod))),
 });
 
+export const EmailInfoModel = types.model('EmailInfoModel').props({
+  attachmentFileId: types.maybeNull(types.string),
+  emailObject: types.maybeNull(types.string),
+  emailBody: types.maybeNull(types.string),
+});
+export const InvoiceRelaunchModel = types.model('InvoiceRelaunchModel').props({
+  accountId: types.maybeNull(types.string),
+  attachments: types.optional(types.array(FileIdModel), []),
+  emailInfo: types.maybeNull(EmailInfoModel),
+  id: types.maybeNull(types.string),
+  isUserRelaunched: types.maybeNull(types.boolean),
+  creationDatetime: types.maybeNull(types.string),
+});
+
 export const InvoiceModel = types.model('Invoice').props({
   id: types.maybeNull(types.string),
   paymentUrl: types.maybeNull(types.string),
@@ -70,6 +85,7 @@ export interface SearchInvoice extends Instance<typeof SearchInvoiceModel> {}
 export interface PaymentMethodModel extends Instance<typeof PaymentMethodModel> {}
 
 export interface MethodModel extends Instance<typeof MethodModel> {}
+export interface InvoiceRelaunch extends Instance<typeof InvoiceRelaunchModel> {}
 
 export interface InvoiceSnapshotOut extends SnapshotOut<typeof InvoiceModel> {}
 
