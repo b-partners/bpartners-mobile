@@ -75,7 +75,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
     bank: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
     partners: <FontAwesomeIcon name='handshake-o' size={22} color={color.palette.secondaryColor} />,
-    calendar: <MaterialIcon name='calendar-month' size={22} color={color.palette.secondaryColor} />,
+    calendar: <IoniconIcon name='calendar' size={22} color={color.palette.secondaryColor} />,
   };
 
   return (
