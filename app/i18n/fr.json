@@ -595,5 +595,8 @@
   "relaunchHistoryModal": {
     "title": "Historique de relance",
     "quotationRelaunchedAt": "Devis relancé le"
+  },
+  "calendarScreen": {
+    "title": "Mon agenda"
   }
 }

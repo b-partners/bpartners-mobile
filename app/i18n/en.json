@@ -612,5 +612,8 @@
   "relaunchHistoryModal": {
     "title": "Relaunch history",
     "quotationRelaunchedAt": "Quotation relaunched at"
+  },
+  "calendarScreen": {
+    "title": "Mon calendar"
   }
 }

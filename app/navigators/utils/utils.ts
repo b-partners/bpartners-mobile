@@ -29,6 +29,7 @@ export type NavigatorParamList = {
     password: string;
   };
   profileEdition: undefined;
+  calendar: undefined;
 };
 
 export type TabNavigatorParamList = {

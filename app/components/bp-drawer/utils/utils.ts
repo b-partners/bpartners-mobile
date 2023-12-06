@@ -14,4 +14,5 @@ export type RouteNameProps = {
   supportContact: string | React.ReactElement;
   bank: string | React.ReactElement;
   partners: string | React.ReactElement;
+  calendar: string | React.ReactElement;
 };
