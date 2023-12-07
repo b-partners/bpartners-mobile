@@ -34,4 +34,5 @@ export const palette = {
   blueDarker: '#3A5085',
   yellowDarker: '#F2C30C',
   blue: '#0091DB',
+  lightBlue: '#caeced',
 };
