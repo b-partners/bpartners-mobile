@@ -1,8 +1,10 @@
 import React from 'react';
-import { Linking, Modal, View } from 'react-native';
+import { Linking, Modal, TouchableOpacity, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import { AutoImage, Button, Text } from '../../../components';
+import { TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -57,7 +59,7 @@ export const SynchronizeModal = (props: SynchronizeModalProps) => {
             <Text style={{ fontSize: 15, fontFamily: 'Geometria', color: palette.textClassicColor }} tx={'calendarScreen.firstLabel'} />
             <Text style={{ fontSize: 15, fontFamily: 'Geometria', color: palette.textClassicColor }} tx={'calendarScreen.secondLabel'} />
             <Text style={{ fontSize: 15, fontFamily: 'Geometria', color: palette.textClassicColor }} tx={'calendarScreen.thirdLabel'} />
-            <View style={{ marginVertical: spacing[4] }}>
+            <View style={{ marginTop: spacing[4], marginBottom: spacing[2] }}>
               <ScrollingText text={translate('calendarScreen.firstText')} containerWidth={containerWidth} />
             </View>
             <View style={{ flexDirection: 'row' }}>
@@ -67,6 +69,32 @@ export const SynchronizeModal = (props: SynchronizeModalProps) => {
                 text={'https://legal.bpartners.app/'}
                 onPress={() => Linking.openURL('https://legal.bpartners.app/')}
               />
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: spacing[6] }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: palette.secondaryColor,
+                  width: 200,
+                  height: 35,
+                  bottom: '3%',
+                  alignSelf: 'center',
+                  borderRadius: 5,
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                }}
+              >
+                <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
+                  <Text
+                    tx={'calendarScreen.sync'}
+                    style={{
+                      ...TEXT_STYLE,
+                      color: palette.white,
+                      fontFamily: 'Geometria',
+                    }}
+                  />
+                  <MaterialIcon name='sync' size={22} color={palette.white} />
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
