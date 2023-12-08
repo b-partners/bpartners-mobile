@@ -15,7 +15,7 @@ export class AccountApi {
     this.api = api;
   }
 
-  async getAccounts(userId: string): Promise<GetUserAccount> {
+  async getAccount(userId: string): Promise<GetUserAccount> {
     // make the api call
     const response: ApiResponse<any> = await this.api.apisauce.get(`users/${userId}/accounts`);
     // the typical ways to die when calling an api
@@ -28,6 +28,20 @@ export class AccountApi {
     }
     const [fetchedAccount] = response.data;
     return { kind: 'ok', account: fetchedAccount };
+  }
+
+  async getAccounts(userId: string): Promise<GetUserAccount> {
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.get(`users/${userId}/accounts`);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) {
+        __DEV__ && console.tron.log(problem.kind);
+        throw new Error(problem.kind);
+      }
+    }
+    return response.data;
   }
 
   async getAccountHolders(user: string, account: string): Promise<GetAccountHolderResult> {

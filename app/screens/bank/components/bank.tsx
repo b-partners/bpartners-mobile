@@ -1,124 +1,246 @@
-import React, { useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TextStyle, TouchableOpacity, View } from 'react-native';
 import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { LabelWithTextColumn, Text } from '../../../components';
+import { GradientBackground, Icon, LabelWithTextColumn, Screen, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { color } from '../../../theme';
-import { spacing } from '../../../theme';
+import { Account } from '../../../models/entities/account/account';
+import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { showMessage } from '../../../utils/snackbar';
+import { ErrorBoundary } from '../../error/error-boundary';
 import { Logo } from '../../home/components/logo';
+import { CustomerFormFieldFooter } from '../../invoice-form/components/customer/customer-form-field-footer';
+import { Log } from '../../welcome/utils/utils';
+import { getCurrentAccount } from '../utils/get-current-account';
 import { BankEditionModal } from './bank-edition-modal';
+import { BankSelectionField } from './bank-selection-field';
 
 export const Bank: React.FC = () => {
   const { authStore } = useStores();
-  const { currentAccount, accountInfo } = authStore;
+  const { currentAccount, accountInfo, accountList } = authStore;
 
+  Log('accountList');
+  Log(accountList);
+  Log('currentAccount');
+  Log(accountInfo);
+  Log('Active account');
+  Log(getCurrentAccount(accountList));
+
+  const [selectedAccount, setSelectedAccount] = useState<Account>(getCurrentAccount(accountList));
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await authStore.getAccountList();
+      } catch (e) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+        setShowModal(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const CONTAINER_STYLE: TextStyle = {
+    width: '90%',
+    height: 300,
+    backgroundColor: palette.solidGrey,
+    marginHorizontal: '5%',
+    marginTop: '5%',
+    borderRadius: 10,
+    flexDirection: 'column',
+  };
 
   return (
     <>
-      <View style={{ width: '100%', height: '100%', flexDirection: 'column' }}>
-        <View
-          style={{
-            width: '90%',
-            height: 320,
-            backgroundColor: palette.solidGrey,
-            marginHorizontal: '5%',
-            marginTop: '10%',
-            borderRadius: 10,
-            flexDirection: 'column',
-          }}
-        >
-          <View style={{ width: '100%', height: 70, marginTop: 20, flexDirection: 'row' }}>
-            <View style={{ width: '70%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-              <Text
+      <ErrorBoundary catchErrors='always'>
+        <View style={{ flex: 1, width: '100%', height: '100%', flexDirection: 'column' }}>
+          <GradientBackground colors={['#422443', '#281b34']} />
+          <Screen style={{ borderWidth: 1, borderColor: palette.secondaryColor }} preset='scroll'>
+            <View style={CONTAINER_STYLE}>
+              <View style={{ width: '100%', height: 70, marginTop: 20, flexDirection: 'row' }}>
+                <View
+                  style={{
+                    width: '70%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 28,
+                      fontFamily: 'Geometria',
+                      color: palette.black,
+                      width: '100%',
+                      padding: spacing[3],
+                    }}
+                  >
+                    {accountInfo?.name}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    width: '30%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'flex-end',
+                  }}
+                >
+                  <Logo uri={currentAccount?.bank?.logoUrl} logoStyle={{ width: 140, height: 70 }} />
+                </View>
+              </View>
+              <View
                 style={{
-                  fontSize: 28,
-                  fontFamily: 'Geometria',
-                  color: palette.black,
                   width: '100%',
-                  padding: spacing[3],
+                  flex: 1,
+                  marginTop: 15,
+                  flexDirection: 'column',
+                  marginBottom: 10,
                 }}
               >
-                {accountInfo?.name}
-              </Text>
+                <LabelWithTextColumn label='bankScreen.accountName' text={accountInfo?.name} />
+                <LabelWithTextColumn label='bankScreen.bic' text={accountInfo?.bic} />
+                <LabelWithTextColumn label='bankScreen.iban' text={accountInfo?.iban} />
+              </View>
             </View>
-            <View style={{ width: '30%', height: '100%', justifyContent: 'center', alignItems: 'flex-end' }}>
-              <Logo uri={currentAccount?.bank?.logoUrl} logoStyle={{ width: 140, height: 70 }} />
+            <TouchableOpacity
+              style={{
+                position: 'relative',
+                backgroundColor: palette.secondaryColor,
+                width: '90%',
+                height: 40,
+                alignSelf: 'center',
+                borderRadius: 10,
+                justifyContent: 'center',
+                flexDirection: 'row',
+                borderWidth: 1,
+                marginTop: spacing[3],
+                borderColor: palette.secondaryColor,
+              }}
+              onPress={() => setShowModal(true)}
+            >
+              <View style={{ justifyContent: 'center', marginRight: 8 }}>
+                <IoniconIcon name='ios-pencil' size={22} color={color.palette.white} />
+              </View>
+              <View style={{ justifyContent: 'center' }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: color.palette.white,
+                    fontFamily: 'Geometria',
+                  }}
+                >
+                  {translate('common.edit')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View>
+              <Text
+                style={{
+                  ...CONTAINER_STYLE,
+                  color: palette.black,
+                  height: 50,
+                  textAlign: 'center',
+                  paddingVertical: spacing[3],
+                }}
+                tx={'bankScreen.changeIncomingAccount'}
+              />
             </View>
-          </View>
-          <View style={{ width: '100%', flex: 1, marginTop: 20, flexDirection: 'column', marginBottom: 10 }}>
-            <LabelWithTextColumn label='bankScreen.accountName' text={accountInfo?.name} />
-            <LabelWithTextColumn label='bankScreen.bic' text={accountInfo?.bic} />
-            <LabelWithTextColumn label='bankScreen.iban' text={accountInfo?.iban} />
-          </View>
+            <BankSelectionField
+              accounts={accountList}
+              selectedAccount={selectedAccount}
+              setSelectedAccount={setSelectedAccount}
+              onValueChange={newValue => {
+                setSelectedAccount(newValue);
+              }}
+              labelTx='bankScreen.myAccount'
+              modalTx='bankScreen.accountSelection'
+              placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
+              items={accountList}
+              itemLabel='name'
+              itemValue='id'
+              itemSuffix={<Icon icon='edit' />}
+              itemSuffixAction={() => {}}
+              footer={<CustomerFormFieldFooter />}
+              selectContainerStyle={{
+                paddingHorizontal: spacing[4],
+                width: '90%',
+                alignSelf: 'center',
+                borderWidth: 1,
+                borderRadius: 10,
+                borderColor: palette.lighterGrey,
+                backgroundColor: palette.solidGrey,
+              }}
+              style={{}}
+            />
+            <TouchableOpacity
+              style={{
+                position: 'relative',
+                backgroundColor: palette.secondaryColor,
+                width: '90%',
+                height: 40,
+                alignSelf: 'center',
+                borderRadius: 10,
+                justifyContent: 'center',
+                flexDirection: 'row',
+                borderWidth: 1,
+                borderColor: palette.secondaryColor,
+              }}
+              onPress={() => setShowModal(true)}
+            >
+              <View style={{ justifyContent: 'center', marginRight: 8 }}>
+                <IoniconIcon name='ios-pencil' size={22} color={color.palette.white} />
+              </View>
+              <View style={{ justifyContent: 'center' }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: color.palette.white,
+                    fontFamily: 'Geometria',
+                  }}
+                >
+                  {translate('common.edit')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                position: 'relative',
+                backgroundColor: palette.secondaryColor,
+                width: '90%',
+                height: 40,
+                alignSelf: 'center',
+                borderRadius: 10,
+                justifyContent: 'center',
+                flexDirection: 'row',
+                borderWidth: 1,
+                borderColor: palette.secondaryColor,
+              }}
+            >
+              <View style={{ justifyContent: 'center', marginRight: 8 }}>
+                <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.white} />
+              </View>
+              <View style={{ justifyContent: 'center' }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: color.palette.white,
+                    fontFamily: 'Geometria',
+                  }}
+                >
+                  {translate('bankScreen.logout')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </Screen>
         </View>
-        <TouchableOpacity
-          style={{
-            position: 'relative',
-            backgroundColor: palette.white,
-            width: '70%',
-            height: 40,
-            marginTop: 30,
-            alignSelf: 'center',
-            borderRadius: 40,
-            justifyContent: 'center',
-            flexDirection: 'row',
-            borderWidth: 1,
-            borderColor: palette.secondaryColor,
-          }}
-          onPress={() => setShowModal(true)}
-        >
-          <View style={{ justifyContent: 'center', marginRight: 8 }}>
-            <IoniconIcon name='ios-pencil' size={22} color={color.palette.secondaryColor} />
-          </View>
-          <View style={{ justifyContent: 'center' }}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: color.palette.secondaryColor,
-                fontFamily: 'Geometria',
-              }}
-            >
-              {translate('common.edit')}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            position: 'relative',
-            backgroundColor: palette.white,
-            width: '90%',
-            height: 40,
-            marginTop: 30,
-            alignSelf: 'center',
-            borderRadius: 40,
-            justifyContent: 'center',
-            flexDirection: 'row',
-            borderWidth: 1,
-            borderColor: palette.secondaryColor,
-          }}
-        >
-          <View style={{ justifyContent: 'center', marginRight: 8 }}>
-            <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />
-          </View>
-          <View style={{ justifyContent: 'center' }}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: color.palette.secondaryColor,
-                fontFamily: 'Geometria',
-              }}
-            >
-              {translate('bankScreen.logout')}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <BankEditionModal showModal={showModal} setShowModal={setShowModal} accountInfo={accountInfo} />
+        <BankEditionModal showModal={showModal} setShowModal={setShowModal} accountInfo={accountInfo} />
+      </ErrorBoundary>
     </>
   );
 };
