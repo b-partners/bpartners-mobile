@@ -526,7 +526,10 @@
     "iban": "IBAN",
     "logout": "Déconnecter Ma Banque",
     "noBank": "Aucune banque associé",
-    "associate": "Associer une banque"
+    "associate": "Associer une banque",
+    "myAccount": "Mon compte",
+    "accountSelection": "Sélection du compte",
+    "changeIncomingAccount": "Changer de compte d’encaissement."
   },
   "forgotPasswordScreen": {
     "title": "Mot de passe oublié ?",

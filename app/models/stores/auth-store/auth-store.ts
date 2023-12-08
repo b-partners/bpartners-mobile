@@ -30,6 +30,7 @@ export const AuthStoreModel = types
     accessToken: types.maybeNull(types.string),
     currentUser: types.maybeNull(UserModel),
     currentAccount: types.maybeNull(AccountModel),
+    accountList: types.optional(types.array(AccountModel), []),
     currentAccountHolder: types.maybeNull(AccountHolderModel),
     loadingUpdateInfos: types.optional(types.boolean, false),
     userAuth: types.maybeNull(AuthUserModel),
@@ -188,9 +189,33 @@ export const AuthStoreModel = types
     getAccounts: flow(function* () {
       const accountApi = new AccountApi(self.environment.api);
       try {
-        const getAccountResult = yield accountApi.getAccounts(self.currentUser.id);
+        const getAccountResult = yield accountApi.getAccount(self.currentUser.id);
         const getAccountHolderResult = yield accountApi.getAccountHolders(self.currentUser.id, getAccountResult.account.id);
         self.getAccountSuccess(self.currentUser, getAccountResult.account, getAccountHolderResult.accountHolder);
+      } catch (e) {
+        self.getAccountFail(e);
+        __DEV__ && console.tron.log('Handle who am I error here');
+      }
+    }),
+  }))
+  .actions(self => ({
+    getAccountListSuccess: (accountList: Account[]) => {
+      const accountModels = accountList.map(account => AccountModel.create(account));
+      self.accountList.replace(accountModels);
+    },
+  }))
+  .actions(self => ({
+    getAccountListFail: error => {
+      __DEV__ && console.tron.log(error.message);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getAccountList: flow(function* () {
+      const accountApi = new AccountApi(self.environment.api);
+      try {
+        const getAccountListResult = yield accountApi.getAccounts(self.currentUser.id);
+        self.getAccountListSuccess(getAccountListResult);
       } catch (e) {
         self.getAccountFail(e);
         __DEV__ && console.tron.log('Handle who am I error here');

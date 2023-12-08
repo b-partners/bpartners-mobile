@@ -6,6 +6,7 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Button, Icon, Separator, Text, TextField } from '../../../../components';
+import RadioButton from '../../../../components/radio-button/radio-button';
 import { useStores } from '../../../../models';
 import { Product } from '../../../../models/entities/product/product';
 import { color, spacing } from '../../../../theme';
@@ -15,7 +16,6 @@ import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils
 import { ProductModal } from '../../../product/components/product-modal';
 import { ProductModalType } from '../../../product/products-screen';
 import { InvoiceFormField } from '../../invoice-form-field';
-import RadioButton from '../select-form-field/radio-button';
 
 type ProductFormFieldProps = {
   index: number;

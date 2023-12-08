@@ -543,7 +543,10 @@
     "iban": "IBAN",
     "logout": "Disconnect my Bank",
     "noBank": "No associated bank",
-    "associate": "Associate a bank"
+    "associate": "Associate a bank",
+    "myAccount": "My account",
+    "accountSelection": "Account selection",
+    "changeIncomingAccount": "Change your incoming payment account."
   },
   "forgotPasswordScreen": {
     "title": "Forgot your password ?",
