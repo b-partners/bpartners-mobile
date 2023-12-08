@@ -10,7 +10,7 @@ import { RTLog } from '../../../utils/reactotron-log';
 import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
-import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
+import { Account, AccountInfos, AccountInfosModel, AccountModel } from '../../entities/account/account';
 import { BusinessActivity } from '../../entities/business-activity/business-activity';
 import { CompanyInfo } from '../../entities/company-info/company-info';
 import { Feedback } from '../../entities/feedback/feedback';
@@ -33,6 +33,7 @@ export const AuthStoreModel = types
     currentAccountHolder: types.maybeNull(AccountHolderModel),
     loadingUpdateInfos: types.optional(types.boolean, false),
     userAuth: types.maybeNull(AuthUserModel),
+    accountInfo: types.maybeNull(AccountInfosModel),
   })
   .extend(withEnvironment)
   .extend(withRootStore)
@@ -197,8 +198,8 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    updateAccountInfosSuccess: (account: Account) => {
-      self.currentAccount = account;
+    updateAccountInfosSuccess: (accountInfo: AccountInfos) => {
+      self.accountInfo = accountInfo;
     },
   }))
   .actions(self => ({
@@ -213,9 +214,10 @@ export const AuthStoreModel = types
       const bankApi = new BankApi(self.environment.api);
       const successMessageOption = { backgroundColor: palette.green };
       try {
-        const updateAccountResult = yield bankApi.updateAccountInfos(self.currentUser.id, self.currentAccount.id, infos);
-        self.updateAccountInfosSuccess(updateAccountResult.account);
-        showMessage(translate('common.added'), successMessageOption);
+        const { name, iban, bic } = yield bankApi.updateAccountInfos(self.currentUser.id, self.currentAccount.id, infos);
+        const accountInfoResult = { name, iban, bic };
+        self.updateAccountInfosSuccess(accountInfoResult);
+        showMessage(translate('common.registered'), successMessageOption);
       } catch (e) {
         self.updateAccountInfosFail(e);
       } finally {
