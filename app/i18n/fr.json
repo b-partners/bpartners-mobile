@@ -597,6 +597,11 @@
     "quotationRelaunchedAt": "Devis relancé le"
   },
   "calendarScreen": {
-    "title": "Mon agenda"
+    "title": "Mon agenda",
+    "firstLabel": "Votre session Google Agenda a expiré,",
+    "secondLabel": "veuillez synchroniser votre agenda pour obtenir",
+    "thirdLabel": "de nouveaux à proximité de vos prochains RDV.",
+    "firstText": "En continuant, vous acceptez que BPartners transmette les adresses récoltées depuis vos agendas à des services tiers sécurisés, de façon anonyme, pour générer des nouveaux prospects.",
+    "secondText": "Pour plus d'infos, consultez: "
   }
 }

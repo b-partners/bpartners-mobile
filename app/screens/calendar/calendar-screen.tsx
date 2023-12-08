@@ -3,16 +3,19 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { View } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
 
-import { Header, Screen } from '../../components';
+import { Button, Header, Screen } from '../../components';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
+import { SynchronizeModal } from './components/synchronize-modal';
 import { calendarScreenStyles as styles } from './utils/styles';
 
 export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState<DateData>();
+  const [isOpen, setOpen] = useState(false);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -43,8 +46,22 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
                 textDisabledColor: palette.lightGrey,
               }}
             />
+            <Button
+              onPress={() => {
+                setOpen(true);
+              }}
+              style={{
+                backgroundColor: palette.white,
+                position: 'absolute',
+                right: 10,
+                top: 10,
+              }}
+            >
+              <CloseIcon name='close' size={25} color={palette.secondaryColor} />
+            </Button>
           </View>
         </Screen>
+        <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />
       </View>
     </ErrorBoundary>
   );
