@@ -1,6 +1,7 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
 import { BusinessActivityItem } from '../../models/entities/business-activity/business-activity';
+import { Calendar } from '../../models/entities/calendar/calendar';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
 import { Invoice, InvoiceRelaunch } from '../../models/entities/invoice/invoice';
@@ -26,6 +27,11 @@ export type RedirectionUrlsStatus = {
   };
 };
 
+export type RedirectionStatusUrls = {
+  successUrl: string;
+  failureUrl: string;
+};
+
 export type GetUsersResult = { kind: 'ok'; users: User[] } | GeneralApiProblem;
 export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
@@ -42,6 +48,10 @@ export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl:
 export type GetBusinessActivitiesResult = { kind: 'ok'; businessActivities: BusinessActivityItem[] } | GeneralApiProblem;
 
 export type SignInResult = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
+
+export type InitiateConsentResult = { kind: 'ok'; redirectionStatusUrls: RedirectionUrlsStatus } | GeneralApiProblem;
+
+export type GetCalendarsResult = { kind: 'ok'; calendars: Calendar[] } | GeneralApiProblem;
 
 export type BankConnection =
   | {
@@ -64,7 +74,7 @@ export type CreateUserResult = { kind: 'ok'; newUser: User } | GeneralApiProblem
 
 export type GetUserAccount = { kind: 'ok'; account: Account } | GeneralApiProblem;
 
-export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem | void;
+export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem;
 
 export type GetProductsResult = { kind: 'ok'; products: Product[] } | GeneralApiProblem;
 
