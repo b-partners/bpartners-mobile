@@ -41,7 +41,18 @@ export const EventsModal = (props: SynchronizeModalProps) => {
             </Button>
           </View>
           <ScrollView style={{ width: '100%', height: '100%' }} contentContainerStyle={{ alignItems: 'center' }}>
-            <View style={{ width: '96%', height: 80, backgroundColor: palette.secondaryColor, borderRadius: 5 }}></View>
+            <View
+              style={{
+                width: '96%',
+                height: 80,
+                borderRadius: 5,
+                borderBottomWidth: 2,
+                borderColor: palette.lighterGrey,
+                backgroundColor: palette.blue,
+              }}
+            >
+              <View style={{ height: '100%', width: '30%', backgroundColor: palette.white }}></View>
+            </View>
           </ScrollView>
         </View>
       </View>

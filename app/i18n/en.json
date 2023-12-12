@@ -57,7 +57,8 @@
     "invalidConfirmPassword": "The passwords don't match !",
     "changePassword": "New password",
     "oops": "Oops !",
-    "sendDraft": "A draft cannot be sent"
+    "sendDraft": "A draft cannot be sent",
+    "openBrowser": "Unable to open your browser"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"

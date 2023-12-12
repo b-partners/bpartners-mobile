@@ -57,7 +57,8 @@
     "invalidConfirmPassword": "Les mots de passe ne correspondent pas !",
     "changePassword": "Nouveau mot de passe",
     "oops": "Oups !",
-    "sendDraft": "Un brouillon ne peut pas être envoyé"
+    "sendDraft": "Un brouillon ne peut pas être envoyé",
+    "openBrowser": "Impossible d'ouvrir votre navigateur"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
