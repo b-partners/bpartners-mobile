@@ -9,6 +9,7 @@ import { Button, Header, Screen } from '../../components';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
+import { EventsModal } from './components/events-modal';
 import { SynchronizeModal } from './components/synchronize-modal';
 import { calendarScreenStyles as styles } from './utils/styles';
 
@@ -16,6 +17,7 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
   const today = new Date();
   const [currentDate, setCurrentDate] = useState<DateData>();
   const [isOpen, setOpen] = useState(false);
+  const [isEventsModal, setEventsModal] = useState(false);
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -26,6 +28,7 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
             <Calendar
               onDayPress={date => {
                 setCurrentDate(date);
+                setEventsModal(true);
               }}
               markedDates={{
                 '2023-12-12': { marked: true, dotColor: palette.blue, activeOpacity: 0 },
@@ -62,6 +65,7 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
           </View>
         </Screen>
         <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />
+        <EventsModal isOpen={isEventsModal} setOpen={setEventsModal} />
       </View>
     </ErrorBoundary>
   );

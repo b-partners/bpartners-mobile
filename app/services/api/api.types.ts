@@ -27,10 +27,7 @@ export type RedirectionUrlsStatus = {
   };
 };
 
-export type RedirectionStatusUrls = {
-  successUrl: string;
-  failureUrl: string;
-};
+export type RedirectionStatusUrls = { redirectionStatusUrls: { successUrl: string; failureUrl: string } };
 
 export type GetUsersResult = { kind: 'ok'; users: User[] } | GeneralApiProblem;
 export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
