@@ -126,6 +126,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       address: prospectInfos.address,
       comment: prospectInfos.comment,
       contractAmount: amountToMinors(parseInt(amount, 10)),
+      prospectFeedback: current,
       // @ts-ignore
       invoiceID: selectedInvoice?.id || null,
     };
