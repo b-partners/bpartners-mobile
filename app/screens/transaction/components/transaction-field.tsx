@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';
+import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
 export const TransactionField = ({ label, text }) => (
@@ -25,6 +26,7 @@ export const TransactionField = ({ label, text }) => (
         fontFamily: 'Geometria',
         width: '40%',
         display: 'flex',
+        marginRight: spacing[2],
       }}
     />
     <Text
