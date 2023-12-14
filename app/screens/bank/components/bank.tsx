@@ -18,10 +18,11 @@ import { CustomerFormFieldFooter } from '../../invoice-form/components/customer/
 import { getCurrentAccount, getCurrentAccountInfo } from '../utils/get-current-account';
 import { BankEditionModal } from './bank-edition-modal';
 import { BankSelectionField } from './bank-selection-field';
+import { ProgressBar } from 'react-native-paper';
 
 export const Bank: React.FC = () => {
-  const { authStore } = useStores();
-  const { currentAccount } = authStore;
+    const {authStore} = useStores();
+    const {currentAccount} = authStore;
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -60,7 +61,7 @@ export const Bank: React.FC = () => {
   }, [showModal]);
 
   const CONTAINER_STYLE: TextStyle = {
-    width: '90%',
+    width: '90.5%',
     height: 300,
     backgroundColor: palette.solidGrey,
     marginHorizontal: '5%',
