@@ -4,9 +4,10 @@ import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button } from '../../../components';
 import { palette } from '../../../theme/palette';
-import { SynchronizeModalProps } from '../utils/utils';
+import { EventsModalProps } from '../utils/utils';
+import { EventCard } from './event-card';
 
-export const EventsModal = (props: SynchronizeModalProps) => {
+export const EventsModal = (props: EventsModalProps) => {
   const { isOpen, setOpen } = props;
 
   const onClose = () => {
@@ -41,18 +42,9 @@ export const EventsModal = (props: SynchronizeModalProps) => {
             </Button>
           </View>
           <ScrollView style={{ width: '100%', height: '100%' }} contentContainerStyle={{ alignItems: 'center' }}>
-            <View
-              style={{
-                width: '96%',
-                height: 80,
-                borderRadius: 5,
-                borderBottomWidth: 2,
-                borderColor: palette.lighterGrey,
-                backgroundColor: palette.blue,
-              }}
-            >
-              <View style={{ height: '100%', width: '30%', backgroundColor: palette.white }}></View>
-            </View>
+            <EventCard date={'9'} dateName={'Lun'} time={'12:00 - 12:50'} title={'Daily Expressif'} />
+            <EventCard date={'9'} dateName={'Lun'} time={'12:00 - 12:50'} title={'Daily Expressif'} />
+            <EventCard date={'9'} dateName={'Lun'} time={'12:00 - 12:50'} title={'Daily Expressif'} />
           </ScrollView>
         </View>
       </View>

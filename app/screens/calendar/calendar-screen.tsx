@@ -1,11 +1,11 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, Header, Screen } from '../../components';
+import { Header, Screen } from '../../components';
+import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -15,9 +15,16 @@ import { calendarScreenStyles as styles } from './utils/styles';
 
 export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
   const today = new Date();
+  const { calendarStore } = useStores();
   const [currentDate, setCurrentDate] = useState<DateData>();
   const [isOpen, setOpen] = useState(false);
   const [isEventsModal, setEventsModal] = useState(false);
+
+  /*useEffect(() => {
+    (async () => {
+      await calendarStore.getCalendars();
+    })();
+  }, []);*/
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -27,7 +34,13 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
           <View style={styles.calendarContainer}>
             <Calendar
               onDayPress={date => {
-                setCurrentDate(date);
+                setCurrentDate(prevDate => ({
+                  ...prevDate,
+                  dateString: date.dateString,
+                  day: date.day,
+                  month: date.month,
+                  year: date.year,
+                }));
                 setEventsModal(true);
               }}
               markedDates={{
@@ -35,7 +48,7 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
                 '2023-12-17': { marked: true, dotColor: palette.blue, activeOpacity: 0 },
                 '2023-12-18': { marked: true, dotColor: palette.blue, activeOpacity: 0 },
                 '2023-12-25': { marked: true, dotColor: palette.blue, activeOpacity: 0 },
-                [currentDate?.dateString ?? today.getDate()]: { selected: true },
+                [currentDate?.dateString ?? today.toISOString().split('T')[0]]: { selected: true },
               }}
               theme={{
                 backgroundColor: palette.white,
@@ -49,19 +62,6 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
                 textDisabledColor: palette.lightGrey,
               }}
             />
-            <Button
-              onPress={() => {
-                setOpen(true);
-              }}
-              style={{
-                backgroundColor: palette.white,
-                position: 'absolute',
-                right: 10,
-                top: 10,
-              }}
-            >
-              <CloseIcon name='close' size={25} color={palette.secondaryColor} />
-            </Button>
           </View>
         </Screen>
         <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />

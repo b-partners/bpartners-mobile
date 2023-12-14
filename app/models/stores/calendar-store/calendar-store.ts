@@ -7,13 +7,16 @@ import { RedirectionStatusUrls } from '../../../services/api';
 import { CalendarApi } from '../../../services/api/calendar-api';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
+import { CalendarModel } from '../../entities/calendar/calendar';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
 
 export const CalendarStoreModel = types
   .model('Calendar')
-  .props({})
+  .props({
+    calendars: types.maybeNull(types.array(CalendarModel)),
+  })
   .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
@@ -36,7 +39,6 @@ export const CalendarStoreModel = types
           showMessage(translate('errors.openBrowser'), { backgroundColor: palette.yellow });
         });
       } catch (e) {
-        __DEV__ && console.tron.log('Failed to init calendar consent');
         Log('Failed to init calendar consent');
         self.catchOrThrow(e);
       }
@@ -46,20 +48,10 @@ export const CalendarStoreModel = types
     getCalendars: flow(function* () {
       const calendarApi = new CalendarApi(self.environment.api);
       try {
-        const payload: RedirectionStatusUrls = {
-          redirectionStatusUrls: {
-            successUrl: 'bpartners://',
-            failureUrl: 'bpartners://',
-          },
-        };
-        const calendarConsentResult = yield calendarApi.initiateConsent(self.currentUser.id, payload);
-        Linking.openURL(calendarConsentResult.redirectionUrl).catch(err => {
-          Log("Erreur lors de l'ouverture du lien :", err);
-          showMessage(translate('errors.openBrowser'), { backgroundColor: palette.yellow });
-        });
+        const getCalendarResult = yield calendarApi.getCalendars(self.currentUser.id);
+        Log(getCalendarResult);
       } catch (e) {
-        __DEV__ && console.tron.log('Failed to init calendar consent');
-        Log('Failed to init calendar consent');
+        Log('Failed to get calendars');
         self.catchOrThrow(e);
       }
     }),
