@@ -255,6 +255,33 @@ export const AuthStoreModel = types
       }
     }),
   }))
+  .actions(() => ({
+    setActiveAccountSuccess: () => {
+      __DEV__ && console.tron.log('Account activated successfully !');
+      // self.currentUser = updatedUser;
+    },
+  }))
+  .actions(self => ({
+    setActiveAccountFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    // @ts-ignore
+    setActiveAccount: flow(function* (accountID: string) {
+      const successMessageOption = { backgroundColor: palette.green };
+      const accountApi = new AccountApi(self.environment.api);
+      try {
+        const updatedUser = yield accountApi.setActiveAccount(self.currentUser.id, accountID);
+        self.setActiveAccountSuccess();
+        showMessage(translate('common.addedOrUpdated'), successMessageOption);
+        return updatedUser;
+      } catch (e) {
+        self.setActiveAccountFail(e);
+      }
+    }),
+  }))
   .actions(self => ({
     updateAccountHolderInfosSuccess: (accountHolder: AccountHolder) => {
       self.currentAccountHolder = accountHolder;
