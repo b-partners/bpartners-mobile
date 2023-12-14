@@ -174,7 +174,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             borderRadius: 20,
             marginHorizontal: '2%',
             width: '96%',
-            height: 400,
+            height: keyboardOpen ? 400 : 520,
           }}
         >
           <View
@@ -291,7 +291,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
               </View>
             </ScrollView>
           ) : (
-            <View style={{ flex: 1, paddingHorizontal: spacing[4] }}>
+            <ScrollView style={{ width: '100%', height: '100%', paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
               <TouchableOpacity style={styles.navigation} onPress={() => setVisible(true)}>
                 <View style={styles.transactionIcon}>
                   <SimpleLineIcons name='paper-clip' size={18} color={palette.secondaryColor} />
@@ -446,7 +446,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                 loading={isLoading}
                 getSelectedInvoice={handleSelectedInvoice}
               />
-            </View>
+            </ScrollView>
           )}
           <View
             style={{
