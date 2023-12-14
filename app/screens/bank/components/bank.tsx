@@ -60,7 +60,7 @@ export const Bank: React.FC = () => {
   }, [showModal]);
 
   const CONTAINER_STYLE: TextStyle = {
-    width: '90%',
+    width: '90.5%',
     height: 300,
     backgroundColor: palette.solidGrey,
     marginHorizontal: '5%',
