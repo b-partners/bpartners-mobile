@@ -173,6 +173,7 @@ export const AuthStoreModel = types
     getAccountSuccess: async (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
       self.currentAccount = { ...currentAccount };
       self.currentAccountHolder = { ...currentAccountHolder };
+      self.accountInfo = {... currentAccount};
 
       await save('currentUser', currentUser);
       await save('currentAccount', currentAccount);
@@ -211,11 +212,13 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
+    // @ts-ignore
     getAccountList: flow(function* () {
       const accountApi = new AccountApi(self.environment.api);
       try {
         const getAccountListResult = yield accountApi.getAccounts(self.currentUser.id);
         self.getAccountListSuccess(getAccountListResult);
+        return getAccountListResult;
       } catch (e) {
         self.getAccountFail(e);
         __DEV__ && console.tron.log('Handle who am I error here');
@@ -234,6 +237,7 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
+    // @ts-ignore
     updateAccountInfos: flow(function* (infos: AccountInfos) {
       self.loadingUpdateInfos = true;
       const bankApi = new BankApi(self.environment.api);
@@ -243,6 +247,7 @@ export const AuthStoreModel = types
         const accountInfoResult = { name, iban, bic };
         self.updateAccountInfosSuccess(accountInfoResult);
         showMessage(translate('common.registered'), successMessageOption);
+        return accountInfoResult;
       } catch (e) {
         self.updateAccountInfosFail(e);
       } finally {
