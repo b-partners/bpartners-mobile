@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { InputField, Text } from '../../../components';
@@ -12,9 +13,10 @@ import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice, InvoiceStatus, SearchInvoice } from '../../../models/entities/invoice/invoice';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
+import { navigate } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { amountToMajors, amountToMinors, printCurrencyToMajors } from '../../../utils/money';
+import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
 import { invoicePageSize } from '../../invoice-form/components/utils';
@@ -126,6 +128,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       address: prospectInfos.address,
       comment: prospectInfos.comment,
       contractAmount: amountToMinors(parseInt(amount, 10)),
+      prospectFeedback: current,
       // @ts-ignore
       invoiceID: selectedInvoice?.id || null,
     };
@@ -171,7 +174,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             borderRadius: 20,
             marginHorizontal: '2%',
             width: '96%',
-            height: 520,
+            height: 400,
           }}
         >
           <View
@@ -200,7 +203,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             </TouchableOpacity>
           </View>
           {currentPage === 1 ? (
-            <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
+            <ScrollView style={{ width: '100%', height: '100%', paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
               <View style={{ marginBottom: 20, width: '100%' }}>
                 <Controller
                   control={control}
@@ -286,7 +289,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-            </View>
+            </ScrollView>
           ) : (
             <View style={{ flex: 1, paddingHorizontal: spacing[4] }}>
               <TouchableOpacity style={styles.navigation} onPress={() => setVisible(true)}>
@@ -312,28 +315,49 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                 </View>
               </TouchableOpacity>
               {selectedInvoice && (
-                <View
+                <TouchableOpacity
                   style={{
                     width: '100%',
                     marginVertical: spacing[1],
                     paddingVertical: spacing[2],
                     flexDirection: 'column',
                     alignItems: 'center',
-                    borderWidth: 1,
+                    borderWidth: 2,
                     borderColor: palette.lighterGrey,
                     borderRadius: 10,
                   }}
+                  onPress={() => {
+                    navigate('invoicePreview', {
+                      fileId: selectedInvoice.fileId,
+                      invoiceTitle: selectedInvoice.title,
+                      invoice: selectedInvoice,
+                      situation: false,
+                    });
+                    closeModal();
+                  }}
                 >
-                  <Text
-                    tx={
+                  <View
+                    style={{
+                      position: 'absolute',
+                      width: 70,
+                      height: 25,
+                      top: 8,
+                      right: -15,
+                      borderRadius: 15,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      zIndex: 10,
+                    }}
+                  >
+                    <IoniconIcon name='eye-sharp' size={15} color={color.palette.secondaryColor} />
+                  </View>
+                  <TransactionField
+                    label={
                       prospect?.status === ProspectStatus.TO_CONTACT ? 'prospectScreen.process.associatedQuotation' : 'prospectScreen.process.associatedInvoice'
                     }
-                    style={styles.associatedLabel}
+                    text={selectedInvoice?.ref}
                   />
-                  <TransactionField label='transactionListScreen.reference' text={selectedInvoice?.ref} />
-                  <TransactionField label='transactionListScreen.titleLabel' text={selectedInvoice.title} />
-                  <TransactionField label='transactionListScreen.total' text={printCurrencyToMajors(selectedInvoice.totalPriceWithVat)} />
-                </View>
+                </TouchableOpacity>
               )}
               <View
                 style={{
