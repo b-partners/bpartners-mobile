@@ -11,7 +11,6 @@ import {color, spacing} from '../../../theme';
 import {palette} from '../../../theme/palette';
 import {showMessage} from '../../../utils/snackbar';
 import {SHADOW_STYLE} from '../../invoices/utils/styles';
-import {Log} from "../../welcome/utils/utils";
 
 type BankModalProps = {
     showModal: boolean;
@@ -22,9 +21,6 @@ type BankModalProps = {
 
 export const BankEditionModal: React.FC<BankModalProps> = props => {
     const {showModal, setShowModal, accountInfo, setAccountInfo} = props;
-
-    Log("accountInfo in BankEditionModal");
-    Log(accountInfo);
 
     const {authStore} = useStores();
 

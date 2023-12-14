@@ -4,7 +4,7 @@ import IoniconIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {GradientBackground, Icon, LabelWithTextColumn, Screen, Text} from '../../../components';
+import {Icon, LabelWithTextColumn, Text} from '../../../components';
 import {translate} from '../../../i18n';
 import {useStores} from '../../../models';
 import {Account, AccountInfos} from '../../../models/entities/account/account';
@@ -57,7 +57,7 @@ export const Bank: React.FC = () => {
         return () => {
             isCancelled = true;
         };
-    }, []);
+    }, [showModal]);
 
     const CONTAINER_STYLE: TextStyle = {
         width: '90%',
@@ -74,197 +74,200 @@ export const Bank: React.FC = () => {
             <View style={{width: '100%', height: '100%', flexDirection: 'column'}}>
                 <ErrorBoundary catchErrors='always'>
                     <View style={{flex: 1, width: '100%', height: '100%', flexDirection: 'column'}}>
-                        <GradientBackground colors={['#422443', '#281b34']}/>
-                        <Screen style={{borderWidth: 1, borderColor: palette.secondaryColor}} preset='scroll'>
-                            {loading && <ProgressBar
-                                progress={0.5}
-                                color={palette.secondaryColor}
-                                indeterminate={true}
-                                style={{marginTop: spacing[2]}}
-                            />}
-                            <View style={CONTAINER_STYLE}>
-                                <View style={{width: '100%', height: 70, marginTop: 20, flexDirection: 'row'}}>
-                                    <View
+                        {loading && <ProgressBar
+                            progress={0.5}
+                            color={palette.secondaryColor}
+                            indeterminate={true}
+                            style={{marginTop: spacing[2]}}
+                        />}
+                        <View style={CONTAINER_STYLE}>
+                            <View style={{width: '100%', height: 70, marginTop: 20, flexDirection: 'row'}}>
+                                <View
+                                    style={{
+                                        width: '70%',
+                                        height: '100%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <Text
                                         style={{
-                                            width: '70%',
-                                            height: '100%',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
+                                            fontSize: 28,
+                                            fontFamily: 'Geometria',
+                                            color: palette.black,
+                                            width: '100%',
+                                            padding: spacing[3],
                                         }}
                                     >
-                                        <Text
-                                            style={{
-                                                fontSize: 28,
-                                                fontFamily: 'Geometria',
-                                                color: palette.black,
-                                                width: '100%',
-                                                padding: spacing[3],
-                                            }}
-                                        >
-                                            {accountInfo?.name}
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={{
-                                            width: '30%',
-                                            height: '100%',
-                                            justifyContent: 'center',
-                                            alignItems: 'flex-end',
-                                        }}
-                                    >
-                                        <Logo uri={currentAccount?.bank?.logoUrl} logoStyle={{width: 140, height: 70}}/>
-                                    </View>
+                                        {accountInfo?.name}
+                                    </Text>
                                 </View>
                                 <View
                                     style={{
-                                        width: '100%',
-                                        flex: 1,
-                                        marginTop: 15,
-                                        flexDirection: 'column',
-                                        marginBottom: 10,
+                                        width: '30%',
+                                        height: '100%',
+                                        justifyContent: 'center',
+                                        alignItems: 'flex-end',
                                     }}
                                 >
-                                    <LabelWithTextColumn label='bankScreen.accountName' text={accountInfo?.name}/>
-                                    <LabelWithTextColumn label='bankScreen.bic' text={accountInfo?.bic}/>
-                                    <LabelWithTextColumn label='bankScreen.iban' text={accountInfo?.iban}/>
+                                    <Logo uri={currentAccount?.bank?.logoUrl} logoStyle={{width: 140, height: 70}}/>
                                 </View>
                             </View>
-                            <TouchableOpacity
+                            <View
                                 style={{
-                                    position: 'relative',
-                                    backgroundColor: palette.secondaryColor,
-                                    width: '90%',
-                                    height: 40,
-                                    alignSelf: 'center',
-                                    borderRadius: 10,
-                                    justifyContent: 'center',
-                                    flexDirection: 'row',
-                                    borderWidth: 1,
-                                    marginTop: spacing[2],
-                                    borderColor: palette.secondaryColor,
+                                    width: '100%',
+                                    flex: 1,
+                                    marginTop: 15,
+                                    flexDirection: 'column',
+                                    marginBottom: 10,
                                 }}
-                                onPress={() => setShowModal(true)}
                             >
-                                <View style={{justifyContent: 'center', marginRight: 8}}>
-                                    <IoniconIcon name='ios-pencil' size={22} color={color.palette.white}/>
-                                </View>
-                                <View style={{justifyContent: 'center'}}>
-                                    <Text
-                                        style={{
-                                            fontSize: 16,
-                                            color: color.palette.white,
-                                            fontFamily: 'Geometria',
-                                        }}
-                                    >
-                                        {translate('common.edit')}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                            <View>
+                                <LabelWithTextColumn label='bankScreen.accountName' text={accountInfo?.name}/>
+                                <LabelWithTextColumn label='bankScreen.bic' text={accountInfo?.bic}/>
+                                <LabelWithTextColumn label='bankScreen.iban' text={accountInfo?.iban}/>
+                            </View>
+                        </View>
+                        <TouchableOpacity
+                            style={{
+                                position: 'relative',
+                                backgroundColor: palette.secondaryColor,
+                                width: '90%',
+                                height: 40,
+                                alignSelf: 'center',
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                flexDirection: 'row',
+                                borderWidth: 1,
+                                marginTop: spacing[2],
+                                borderColor: palette.secondaryColor,
+                            }}
+                            onPress={() => setShowModal(true)}
+                        >
+                            <View style={{justifyContent: 'center', marginRight: 8}}>
+                                <IoniconIcon name='ios-pencil' size={22} color={color.palette.white}/>
+                            </View>
+                            <View style={{justifyContent: 'center'}}>
                                 <Text
                                     style={{
-                                        ...CONTAINER_STYLE,
-                                        marginTop: spacing[5],
-                                        color: palette.black,
-                                        height: 50,
-                                        textAlign: 'center',
-                                        paddingVertical: spacing[3],
+                                        fontSize: 16,
+                                        color: color.palette.white,
+                                        fontFamily: 'Geometria',
                                     }}
-                                    tx={'bankScreen.changeIncomingAccount'}
-                                />
+                                >
+                                    {translate('common.edit')}
+                                </Text>
                             </View>
-                            <BankSelectionField
-                                accounts={accountList}
-                                selectedAccount={selectedAccount}
-                                setSelectedAccount={setSelectedAccount}
-                                onValueChange={newValue => {
-                                    setSelectedAccount(newValue);
+                        </TouchableOpacity>
+                        <View>
+                            <Text
+                                style={{
+                                    ...CONTAINER_STYLE,
+                                    marginTop: spacing[5],
+                                    color: palette.black,
+                                    height: 50,
+                                    textAlign: 'center',
+                                    paddingVertical: spacing[3],
                                 }}
-                                labelTx='bankScreen.myAccount'
-                                modalTx='bankScreen.accountSelection'
-                                placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
-                                items={accountList}
-                                itemLabel='name'
-                                itemValue='id'
-                                itemSuffix={<Icon icon='edit'/>}
-                                itemSuffixAction={() => {
-                                }}
-                                footer={<CustomerFormFieldFooter/>}
-                                selectContainerStyle={{
-                                    paddingHorizontal: spacing[4],
-                                    width: '90%',
-                                    alignSelf: 'center',
-                                    borderWidth: 1,
-                                    borderRadius: 10,
-                                    borderColor: palette.lighterGrey,
-                                    backgroundColor: palette.solidGrey,
-                                    marginVertical: spacing[2],
-                                }}
-                                style={{}}
+                                tx={'bankScreen.changeIncomingAccount'}
                             />
-                            <TouchableOpacity
-                                style={{
-                                    position: 'relative',
-                                    backgroundColor: palette.secondaryColor,
-                                    width: '90%',
-                                    height: 40,
-                                    alignSelf: 'center',
-                                    borderRadius: 10,
-                                    justifyContent: 'center',
-                                    flexDirection: 'row',
-                                    borderWidth: 1,
-                                    borderColor: palette.secondaryColor,
-                                }}
-                                onPress={() => setShowModal(true)}
-                            >
-                                <View style={{justifyContent: 'center', marginRight: 8}}>
-                                    <MaterialCommunityIcons name='zip-disk' size={22} color={color.palette.white}/>
-                                </View>
-                                <View style={{justifyContent: 'center'}}>
-                                    <Text
-                                        style={{
-                                            fontSize: 16,
-                                            color: color.palette.white,
-                                            fontFamily: 'Geometria',
-                                        }}
-                                    >
-                                        {translate('common.register')}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={{
-                                    position: 'relative',
-                                    backgroundColor: palette.secondaryColor,
-                                    width: '90%',
-                                    height: 40,
-                                    alignSelf: 'center',
-                                    borderRadius: 10,
-                                    justifyContent: 'center',
-                                    marginVertical: spacing[5],
-                                    flexDirection: 'row',
-                                    borderWidth: 1,
-                                    borderColor: palette.secondaryColor,
-                                }}
-                            >
-                                <View style={{justifyContent: 'center', marginRight: 8}}>
-                                    <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.white}/>
-                                </View>
-                                <View style={{justifyContent: 'center'}}>
-                                    <Text
-                                        style={{
-                                            fontSize: 16,
-                                            color: color.palette.white,
-                                            fontFamily: 'Geometria',
-                                        }}
-                                    >
-                                        {translate('bankScreen.logout')}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </Screen>
+                        </View>
+                        <BankSelectionField
+                            accounts={accountList}
+                            selectedAccount={selectedAccount}
+                            setSelectedAccount={setSelectedAccount}
+                            onValueChange={newValue => {
+                                setSelectedAccount(newValue);
+                            }}
+                            labelTx='bankScreen.myAccount'
+                            modalTx='bankScreen.accountSelection'
+                            placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
+                            items={accountList}
+                            itemLabel='name'
+                            itemValue='id'
+                            itemSuffix={<Icon icon='edit'/>}
+                            itemSuffixAction={() => {
+                            }}
+                            footer={<CustomerFormFieldFooter/>}
+                            selectContainerStyle={{
+                                paddingHorizontal: spacing[4],
+                                width: '90%',
+                                alignSelf: 'center',
+                                borderWidth: 1,
+                                borderRadius: 10,
+                                borderColor: palette.lighterGrey,
+                                backgroundColor: palette.solidGrey,
+                                marginVertical: spacing[2],
+                            }}
+                            style={{}}
+                        />
+                        <TouchableOpacity
+                            style={{
+                                position: 'relative',
+                                backgroundColor: palette.secondaryColor,
+                                width: '90%',
+                                height: 40,
+                                alignSelf: 'center',
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                flexDirection: 'row',
+                                borderWidth: 1,
+                                borderColor: palette.secondaryColor,
+                            }}
+                            onPress={() => setShowModal(true)}
+                        >
+                            <View style={{justifyContent: 'center', marginRight: 8}}>
+                                <MaterialCommunityIcons name='zip-disk' size={22} color={color.palette.white}/>
+                            </View>
+                            <View style={{justifyContent: 'center'}}>
+                                <Text
+                                    style={{
+                                        fontSize: 16,
+                                        color: color.palette.white,
+                                        fontFamily: 'Geometria',
+                                    }}
+                                >
+                                    {translate('common.register')}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                position: 'relative',
+                                backgroundColor: palette.secondaryColor,
+                                width: '90%',
+                                height: 40,
+                                alignSelf: 'center',
+                                borderRadius: 10,
+                                justifyContent: 'center',
+                                marginVertical: spacing[5],
+                                flexDirection: 'row',
+                                borderWidth: 1,
+                                borderColor: palette.secondaryColor,
+                            }}
+                        >
+                            <View style={{justifyContent: 'center', marginRight: 8}}>
+                                <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.white}/>
+                            </View>
+                            <View style={{justifyContent: 'center'}}>
+                                <Text
+                                    style={{
+                                        fontSize: 16,
+                                        color: color.palette.white,
+                                        fontFamily: 'Geometria',
+                                    }}
+                                >
+                                    {translate('bankScreen.logout')}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                    {showModal && <BankEditionModal showModal={showModal} setShowModal={setShowModal} accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
+                    {showModal &&
+                        <BankEditionModal
+                            showModal={showModal}
+                            setShowModal={setShowModal}
+                            accountInfo={accountInfo}
+                            setAccountInfo={setAccountInfo}
+                        />}
                 </ErrorBoundary>
             </View>
         </ScrollView>
