@@ -56,8 +56,8 @@ export const BankSelectionField: React.FC<SelectFormFieldProps> = props => {
 
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
-  const displayedAccounts = accounts.slice(startItemIndex, endItemIndex);
-  const maxPage = Math.ceil(accounts.length / itemsPerPage);
+  const displayedAccounts = accounts?.slice(startItemIndex, endItemIndex);
+  const maxPage = Math.ceil(accounts?.length / itemsPerPage);
 
   return (
     <Observer>
