@@ -173,7 +173,7 @@ export const AuthStoreModel = types
     getAccountSuccess: async (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
       self.currentAccount = { ...currentAccount };
       self.currentAccountHolder = { ...currentAccountHolder };
-      self.accountInfo = {... currentAccount};
+      self.accountInfo = { ...currentAccount };
 
       await save('currentUser', currentUser);
       await save('currentAccount', currentAccount);

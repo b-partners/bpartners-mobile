@@ -1,4 +1,4 @@
-import {Account, AccountInfos} from '../../../models/entities/account/account';
+import { Account, AccountInfos } from '../../../models/entities/account/account';
 
 export const getCurrentAccount = (accounts: Account[]): Account => {
   const currentAccount = accounts?.filter(account => account.active);
