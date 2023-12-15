@@ -24,6 +24,7 @@ type SelectFormFieldProps = TextFieldProps & {
   accounts: Account[];
   selectedAccount: Account;
   setSelectedAccount: React.Dispatch<React.SetStateAction<Account>>;
+  showVisible: (visible: boolean) => void;
   error?: boolean;
 };
 
@@ -37,6 +38,7 @@ export const BankSelectionField: React.FC<SelectFormFieldProps> = props => {
   const {
     accounts,
     selectedAccount,
+    showVisible,
     setSelectedAccount,
     selectContainerStyle,
     labelStyle: labelStyleOverrides,
@@ -58,6 +60,8 @@ export const BankSelectionField: React.FC<SelectFormFieldProps> = props => {
   const endItemIndex = currentPage * itemsPerPage;
   const displayedAccounts = accounts?.slice(startItemIndex, endItemIndex);
   const maxPage = Math.ceil(accounts?.length / itemsPerPage);
+
+  showVisible(visible);
 
   return (
     <Observer>

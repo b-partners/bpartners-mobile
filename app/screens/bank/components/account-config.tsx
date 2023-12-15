@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { Icon, Text } from '../../../components';
+import { Icon, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { Account } from '../../../models/entities/account/account';
+import { Account, AccountInfos } from '../../../models/entities/account/account';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
@@ -16,18 +16,28 @@ type TAccountConfigProps = {
   accountList: Account[];
   selectedAccount: Account;
   setSelectedAccount: React.Dispatch<React.SetStateAction<Account>>;
+  setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfos>>;
 };
 
 const AccountConfig: FC<TAccountConfigProps> = props => {
   const { authStore } = useStores();
-  const { accountList, selectedAccount, setSelectedAccount } = props;
+  const { accountList, selectedAccount, setSelectedAccount, setAccountInfo } = props;
+  const [isDisable, setIsDisable] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onActivateAccount = async () => {
+    setIsLoading(true);
     try {
       await authStore.setActiveAccount(selectedAccount?.id);
+      setAccountInfo(selectedAccount);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    } finally {
+      setIsLoading(false);
     }
+  };
+  const showVisible = visible => {
+    visible && setIsDisable(false);
   };
 
   return (
@@ -36,9 +46,7 @@ const AccountConfig: FC<TAccountConfigProps> = props => {
         accounts={accountList}
         selectedAccount={selectedAccount}
         setSelectedAccount={setSelectedAccount}
-        onValueChange={newValue => {
-          setSelectedAccount(newValue);
-        }}
+        onValueChange={newValue => setSelectedAccount(newValue)}
         labelTx='bankScreen.myAccount'
         modalTx='bankScreen.accountSelection'
         placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
@@ -58,38 +66,70 @@ const AccountConfig: FC<TAccountConfigProps> = props => {
           backgroundColor: palette.solidGrey,
           marginVertical: spacing[2],
         }}
-        style={{}}
+        showVisible={showVisible}
       />
-      <TouchableOpacity
-        style={{
-          position: 'relative',
-          backgroundColor: palette.secondaryColor,
-          width: '90%',
-          height: 40,
-          alignSelf: 'center',
-          borderRadius: 10,
-          justifyContent: 'center',
-          flexDirection: 'row',
-          borderWidth: 1,
-          borderColor: palette.secondaryColor,
-        }}
-        onPress={onActivateAccount}
-      >
-        <View style={{ justifyContent: 'center', marginRight: 8 }}>
-          <MaterialCommunityIcons name='zip-disk' size={22} color={color.palette.white} />
+      {isDisable ? (
+        <View
+          style={{
+            position: 'relative',
+            backgroundColor: palette.lighterGrey,
+            width: '90%',
+            height: 40,
+            alignSelf: 'center',
+            borderRadius: 10,
+            justifyContent: 'center',
+            flexDirection: 'row',
+            borderWidth: 1,
+            borderColor: palette.lighterGrey,
+          }}
+        >
+          <View style={{ justifyContent: 'center', marginRight: 8 }}>
+            <MaterialCommunityIcons name='zip-disk' size={22} color={color.palette.greyDarker} />
+          </View>
+          <View style={{ justifyContent: 'center' }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: color.palette.greyDarker,
+                fontFamily: 'Geometria',
+              }}
+            >
+              {translate('common.register')}
+            </Text>
+          </View>
         </View>
-        <View style={{ justifyContent: 'center' }}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: color.palette.white,
-              fontFamily: 'Geometria',
-            }}
-          >
-            {translate('common.register')}
-          </Text>
-        </View>
-      </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={{
+            position: 'relative',
+            backgroundColor: palette.secondaryColor,
+            width: '90%',
+            height: 40,
+            alignSelf: 'center',
+            borderRadius: 10,
+            justifyContent: 'center',
+            flexDirection: 'row',
+            borderWidth: 1,
+            borderColor: palette.secondaryColor,
+          }}
+          onPress={onActivateAccount}
+        >
+          <View style={{ justifyContent: 'center', marginRight: 8 }}>
+            {isLoading ? <Loader size={22} color={palette.white} /> : <MaterialCommunityIcons name='zip-disk' size={22} color={color.palette.white} />}
+          </View>
+          <View style={{ justifyContent: 'center' }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: color.palette.white,
+                fontFamily: 'Geometria',
+              }}
+            >
+              {translate('common.register')}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
     </>
   );
 };

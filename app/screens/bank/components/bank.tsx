@@ -22,6 +22,7 @@ export const Bank: React.FC = () => {
   const { currentAccount } = authStore;
 
   const [showModal, setShowModal] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [accountList, setAccountList] = useState<Account[]>();
   const [selectedAccount, setSelectedAccount] = useState<Account>();
@@ -164,7 +165,12 @@ export const Bank: React.FC = () => {
                 tx={'bankScreen.changeIncomingAccount'}
               />
             </View>
-            <AccountConfig accountList={accountList} selectedAccount={selectedAccount} setSelectedAccount={setSelectedAccount} />
+            <AccountConfig
+              accountList={accountList}
+              selectedAccount={selectedAccount}
+              setSelectedAccount={setSelectedAccount}
+              setAccountInfo={setAccountInfo}
+            />
             <TouchableOpacity
               style={{
                 position: 'relative',
