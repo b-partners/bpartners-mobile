@@ -550,7 +550,8 @@
     "disconnectionModal": {
       "confirm": "Confirmation",
       "confirmationPhrase": "Do you want to disconnect the bank",
-      "disconnect": "Disconnect"
+      "disconnect": "Disconnect",
+      "disconnected": "Disconnected"
     }
   },
   "forgotPasswordScreen": {

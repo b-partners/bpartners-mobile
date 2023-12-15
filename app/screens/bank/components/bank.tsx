@@ -206,7 +206,12 @@ export const Bank: React.FC = () => {
           </View>
           {showModal && <BankEditionModal showModal={showModal} setShowModal={setShowModal} accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
           {confirmationModal && (
-            <BankDisconnectionModal confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} accountInfo={accountInfo} />
+            <BankDisconnectionModal
+              confirmationModal={confirmationModal}
+              setConfirmationModal={setConfirmationModal}
+              accountInfo={accountInfo}
+              setAccountInfo={setAccountInfo}
+            />
           )}
         </ErrorBoundary>
       </View>

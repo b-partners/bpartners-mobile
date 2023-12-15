@@ -239,7 +239,6 @@ export const AuthStoreModel = types
   .actions(self => ({
     // @ts-ignore
     updateAccountInfos: flow(function* (infos: AccountInfos) {
-      self.loadingUpdateInfos = true;
       const bankApi = new BankApi(self.environment.api);
       const successMessageOption = { backgroundColor: palette.green };
       try {
@@ -247,6 +246,35 @@ export const AuthStoreModel = types
         const accountInfoResult = { name, iban, bic };
         self.updateAccountInfosSuccess(accountInfoResult);
         showMessage(translate('common.registered'), successMessageOption);
+        return accountInfoResult;
+      } catch (e) {
+        self.updateAccountInfosFail(e);
+      } finally {
+        self.loadingUpdateInfos = false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    disconnectBankSuccess: (accountInfo: AccountInfos) => {
+      self.accountInfo = accountInfo;
+    },
+  }))
+  .actions(self => ({
+    disconnectBankFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    // @ts-ignore
+    disconnectBank: flow(function* () {
+      const bankApi = new BankApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const { name, iban, bic } = yield bankApi.disconnectBank(self.currentUser.id);
+        const accountInfoResult = { name, iban, bic };
+        self.updateAccountInfosSuccess(accountInfoResult);
+        showMessage(translate('bankScreen.disconnectionModal.disconnected'), successMessageOption);
         return accountInfoResult;
       } catch (e) {
         self.updateAccountInfosFail(e);

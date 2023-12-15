@@ -1,22 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Modal } from 'react-native-paper';
-import { Button, Text } from '../../../components';
+import { Button, Loader, Text } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { color, spacing } from '../../../theme';
 import { AccountInfos } from '../../../models/entities/account/account';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
+import { showMessage } from '../../../utils/snackbar';
+import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
 
 type BankModalProps = {
   confirmationModal: boolean;
   setConfirmationModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfos>>;
   accountInfo: AccountInfos;
 };
 
 export const BankDisconnectionModal: React.FC<BankModalProps> = props => {
-  const { confirmationModal, setConfirmationModal, accountInfo } = props;
+  const { confirmationModal, setConfirmationModal, accountInfo, setAccountInfo } = props;
 
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { authStore } = useStores();
+  const disconnectBank = async () => {
+    setIsLoading(true);
+    try {
+      const currentAccount = await authStore.disconnectBank();
+      setAccountInfo(currentAccount);
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Modal
@@ -95,9 +112,11 @@ export const BankDisconnectionModal: React.FC<BankModalProps> = props => {
               width: 150,
               height: 40,
             }}
-            onPress={() => {}}
+            onPress={disconnectBank}
             textStyle={{ fontSize: 16 }}
-          />
+          >
+            {isLoading && <Loader size={22} color={palette.white} />}
+          </Button>
           <Button
             tx={'common.cancel'}
             style={{

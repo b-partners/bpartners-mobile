@@ -533,7 +533,8 @@
     "disconnectionModal": {
       "confirm": "Confirmation",
       "confirmationPhrase": "Voulez-vous déconnecter la banque",
-      "disconnect": "Déconnecter"
+      "disconnect": "Déconnecter",
+      "disconnected": "Déconnecté"
     }
   },
   "forgotPasswordScreen": {
