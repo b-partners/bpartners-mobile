@@ -16,6 +16,7 @@ import { Logo } from '../../home/components/logo';
 import { getCurrentAccount, getCurrentAccountInfo } from '../utils/get-current-account';
 import AccountConfig from './account-config';
 import { BankEditionModal } from './bank-edition-modal';
+import { BankDisconnectionModal } from './disconnection-modal';
 
 export const Bank: React.FC = () => {
   const { authStore } = useStores();
@@ -185,6 +186,7 @@ export const Bank: React.FC = () => {
                 borderWidth: 1,
                 borderColor: palette.secondaryColor,
               }}
+              onPress={() => setConfirmationModal(true)}
             >
               <View style={{ justifyContent: 'center', marginRight: 8 }}>
                 <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.white} />
@@ -203,6 +205,9 @@ export const Bank: React.FC = () => {
             </TouchableOpacity>
           </View>
           {showModal && <BankEditionModal showModal={showModal} setShowModal={setShowModal} accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
+          {confirmationModal && (
+            <BankDisconnectionModal confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} accountInfo={accountInfo} />
+          )}
         </ErrorBoundary>
       </View>
     </ScrollView>

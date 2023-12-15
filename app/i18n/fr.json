@@ -529,7 +529,12 @@
     "associate": "Associer une banque",
     "myAccount": "Mon compte",
     "accountSelection": "Sélection du compte",
-    "changeIncomingAccount": "Changer de compte d’encaissement."
+    "changeIncomingAccount": "Changer de compte d’encaissement.",
+    "disconnectionModal": {
+      "confirm": "Confirmation",
+      "confirmationPhrase": "Voulez-vous déconnecter la banque",
+      "disconnect": "Déconnecter"
+    }
   },
   "forgotPasswordScreen": {
     "title": "Mot de passe oublié ?",

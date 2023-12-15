@@ -546,7 +546,12 @@
     "associate": "Associate a bank",
     "myAccount": "My account",
     "accountSelection": "Account selection",
-    "changeIncomingAccount": "Change your incoming payment account."
+    "changeIncomingAccount": "Change your incoming payment account.",
+    "disconnectionModal": {
+      "confirm": "Confirmation",
+      "confirmationPhrase": "Do you want to disconnect the bank",
+      "disconnect": "Disconnect"
+    }
   },
   "forgotPasswordScreen": {
     "title": "Forgot your password ?",
