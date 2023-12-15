@@ -439,11 +439,13 @@
     "productCreationForm": {
       "unitPrice": "Prix unitaire HT (en €)",
       "description": "Description",
+      "tva": "TVA (en %)",
       "add": "Ajouter ce produit",
       "edit": "Modifier ce produit"
     },
     "productForm": {
       "addProduct": "Ajouter un produit",
+      "editProduct": "Modifier un produit",
       "title": "Produit",
       "placeholder": "Sélectionner un produit",
       "unitPrice": "Prix Unit.",
@@ -584,6 +586,10 @@
   "productScreen": {
     "title": "Mes produits",
     "export": "Exporter",
+    "description": "Description",
+    "unitPriceExclTax": "Prix unitaire HT",
+    "tva": "TVA",
+    "unitPriceInclTax": "Prix unitaire TTC",
     "price": "Prix"
   },
   "relaunchHistoryModal": {

@@ -91,10 +91,12 @@ export const Bank: React.FC = () => {
                       fontFamily: 'Geometria',
                       color: palette.black,
                       width: '100%',
+                      height: 50,
+                      alignItems: 'center',
                       padding: spacing[3],
                     }}
                   >
-                    {accountInfo?.name}
+                    {currentAccount?.bank?.name}
                   </Text>
                 </View>
                 <View
@@ -209,7 +211,7 @@ export const Bank: React.FC = () => {
             <BankDisconnectionModal
               confirmationModal={confirmationModal}
               setConfirmationModal={setConfirmationModal}
-              accountInfo={accountInfo}
+              currentAccount={currentAccount}
               setAccountInfo={setAccountInfo}
             />
           )}

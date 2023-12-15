@@ -37,7 +37,12 @@ export const ProductModal: React.FC<ProductModalProps> = props => {
         >
           <View style={{ backgroundColor: palette.white, height: '100%', width: '100%' }}>
             {!isKeyboardOpen && (
-              <Header rightIcon='cross' onRightPress={closeModal} style={{ borderTopLeftRadius: 50 }} headerTx='invoiceFormScreen.invoiceForm.addItem' />
+              <Header
+                rightIcon='cross'
+                onRightPress={closeModal}
+                style={{ borderTopLeftRadius: 50 }}
+                headerTx={modal?.type === 'CREATION' ? 'invoiceFormScreen.productForm.addProduct' : 'invoiceFormScreen.productForm.editProduct'}
+              />
             )}
             <View style={{ width: '100%', height: '100%' }}>
               <ProductForm modal={modal} setModal={setModal} isKeyboardOpen={isKeyboardOpen} />

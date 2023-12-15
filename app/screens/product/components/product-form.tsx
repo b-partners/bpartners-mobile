@@ -71,6 +71,14 @@ export const ProductForm: FC<
                   numberOfLines={3}
                   inputStyle={[errors.description && INVALID_FORM_FIELD]}
                 />
+                <FormField
+                  testID='productVatPercent'
+                  name='vatPercent'
+                  labelTx='invoiceFormScreen.productCreationForm.tva'
+                  value={values.vatPercent}
+                  numberOfLines={3}
+                  inputStyle={[errors.vatPercent && INVALID_FORM_FIELD]}
+                />
               </View>
               <View style={{ height: '15%' }}>
                 <Button

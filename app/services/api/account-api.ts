@@ -44,11 +44,11 @@ export class AccountApi {
     return response.data;
   }
 
-  async getAccountHolders(user: string, account: string): Promise<GetAccountHolderResult> {
-    if (!user || !account) {
+  async getAccountHolders(userId: string, accountId: string): Promise<GetAccountHolderResult> {
+    if (!userId || !accountId) {
       return { kind: 'bad-data' };
     }
-    const response: ApiResponse<any> = await this.api.apisauce.get(`users/${user}/accounts/${account}/accountHolders`);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`users/${userId}/accounts/${accountId}/accountHolders`);
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);

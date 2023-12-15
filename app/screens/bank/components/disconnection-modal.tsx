@@ -4,7 +4,7 @@ import { Modal } from 'react-native-paper';
 import { Button, Loader, Text } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { color, spacing } from '../../../theme';
-import { AccountInfos } from '../../../models/entities/account/account';
+import { AccountInfos, Account } from '../../../models/entities/account/account';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 import { showMessage } from '../../../utils/snackbar';
 import { translate } from '../../../i18n';
@@ -14,11 +14,11 @@ type BankModalProps = {
   confirmationModal: boolean;
   setConfirmationModal: React.Dispatch<React.SetStateAction<boolean>>;
   setAccountInfo: React.Dispatch<React.SetStateAction<AccountInfos>>;
-  accountInfo: AccountInfos;
+  currentAccount: Account;
 };
 
 export const BankDisconnectionModal: React.FC<BankModalProps> = props => {
-  const { confirmationModal, setConfirmationModal, accountInfo, setAccountInfo } = props;
+  const { confirmationModal, setConfirmationModal, currentAccount, setAccountInfo } = props;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,8 +26,8 @@ export const BankDisconnectionModal: React.FC<BankModalProps> = props => {
   const disconnectBank = async () => {
     setIsLoading(true);
     try {
-      const currentAccount = await authStore.disconnectBank();
-      setAccountInfo(currentAccount);
+      const account = await authStore.disconnectBank();
+      setAccountInfo(account);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
@@ -87,7 +87,7 @@ export const BankDisconnectionModal: React.FC<BankModalProps> = props => {
               fontSize: 16,
               textAlign: 'center',
             }}
-            text={`${accountInfo?.name} ?`}
+            text={`${currentAccount?.bank?.name} ?`}
           />
         </View>
         <View

@@ -5,16 +5,17 @@ import { Text } from '../../../components';
 import { Product as IProduct } from '../../../models/entities/product/product';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { printCurrencyToMajors } from '../../../utils/money';
+import { printCurrencyToMajors, printVat } from '../../../utils/money';
 import { ProductModalType } from '../products-screen';
 
 type ProductProps = {
   item: IProduct;
   setModal: Dispatch<SetStateAction<ProductModalType>>;
+  isSubjectToVat: boolean;
 };
 
 export const Product: React.FC<ProductProps> = props => {
-  const { item, setModal } = props;
+  const { item, setModal, isSubjectToVat } = props;
 
   return (
     <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -29,17 +30,29 @@ export const Product: React.FC<ProductProps> = props => {
         }
       >
         <View style={{ display: 'flex', flexDirection: 'row', marginBottom: spacing[2], justifyContent: 'space-between' }}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ width: '40%', flexDirection: 'row' }}>
             <Text
               text={item.description}
-              style={{ width: 200, fontSize: 16, color: palette.textClassicColor, marginTop: spacing[4], marginHorizontal: spacing[1] }}
+              style={{ fontSize: 14, color: palette.textClassicColor, marginTop: spacing[4], marginHorizontal: spacing[1] }}
               numberOfLines={1}
             />
           </View>
           <Text
             text={printCurrencyToMajors(item.unitPrice)}
-            style={{ fontSize: 16, color: palette.textClassicColor, marginTop: spacing[4], marginRight: spacing[1] }}
+            style={{ width: '20%', fontSize: 14, color: palette.textClassicColor, marginTop: spacing[4], marginRight: spacing[1] }}
           />
+          {isSubjectToVat && (
+            <>
+              <Text
+                text={printVat(item.vatPercent)}
+                style={{ width: '20%', fontSize: 14, color: palette.textClassicColor, marginTop: spacing[4], marginRight: spacing[1] }}
+              />
+              <Text
+                text={printCurrencyToMajors(item.unitPriceWithVat)}
+                style={{ width: '20%', fontSize: 14, color: palette.textClassicColor, marginTop: spacing[4], marginRight: spacing[1] }}
+              />
+            </>
+          )}
         </View>
       </TouchableOpacity>
     </View>
