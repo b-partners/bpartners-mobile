@@ -52,7 +52,6 @@ export const CalendarStoreModel = types
         Log(getCalendarResult);
       } catch (e) {
         Log('Failed to get calendars');
-        self.catchOrThrow(e);
       }
     }),
   }));

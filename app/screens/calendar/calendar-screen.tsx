@@ -1,6 +1,10 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC,
+  /*useEffect,*/
+  useState,
+} from 'react';
 import { View } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 
@@ -19,6 +23,7 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
   const [currentDate, setCurrentDate] = useState<DateData>();
   const [isOpen, setOpen] = useState(false);
   const [isEventsModal, setEventsModal] = useState(false);
+  const [monthVisible, setMonthVisible] = useState(today.getMonth());
 
   /*useEffect(() => {
     (async () => {
@@ -33,6 +38,7 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
           <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('bp_home')} />
           <View style={styles.calendarContainer}>
             <Calendar
+              initialDate={currentDate?.dateString ?? today.toISOString().split('T')[0]}
               onDayPress={date => {
                 setCurrentDate(prevDate => ({
                   ...prevDate,
