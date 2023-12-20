@@ -1,8 +1,3 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import { Observer } from 'mobx-react-lite';
-import React from 'react';
-import { View } from 'react-native';
-
 import {
   Button,
   Icon,
@@ -14,6 +9,10 @@ import { PaymentRegulation } from '../../../../models/entities/payment-regulatio
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { amountToMajors } from '../../../../utils/money';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Observer } from 'mobx-react-lite';
+import React from 'react';
+import { View } from 'react-native';
 
 type PaymentRegulationFormFieldProps = {
   index: number;

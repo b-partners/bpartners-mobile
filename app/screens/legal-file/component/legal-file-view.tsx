@@ -1,14 +1,13 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
-
 import { Button, Checkbox, PDFView, Text } from '../../../components';
 import { CheckboxProps } from '../../../components/checkbox/checkbox.props';
 import { useStores } from '../../../models';
 import { LegalFile } from '../../../models/entities/legal-file/legal-file';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { observer } from 'mobx-react-lite';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
 
 interface ILegalFileView {
   legalFile: LegalFile;

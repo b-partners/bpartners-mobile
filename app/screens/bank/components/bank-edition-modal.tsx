@@ -1,8 +1,3 @@
-import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Platform, View } from 'react-native';
-import { Modal } from 'react-native-paper';
-
 import { Button, InputField, Loader } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { useStores } from '../../../models';
@@ -11,6 +6,10 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Platform, View } from 'react-native';
+import { Modal } from 'react-native-paper';
 
 type BankModalProps = {
   showModal: boolean;

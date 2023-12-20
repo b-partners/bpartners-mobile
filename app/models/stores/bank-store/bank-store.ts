@@ -1,10 +1,9 @@
-import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
-
 import { BankConnection } from '../../../services/api';
 import { BankApi } from '../../../services/api/bank-api';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
+import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 export const BankStoreModel = types
   .model('Bank')

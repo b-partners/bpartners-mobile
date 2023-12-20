@@ -1,14 +1,3 @@
-import { Auth } from '@aws-amplify/auth';
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { Amplify } from 'aws-amplify';
-import * as WebBrowser from 'expo-web-browser';
-import { Formik } from 'formik';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
-import { TextInput, TouchableOpacity, View } from 'react-native';
-import * as Keychain from 'react-native-keychain';
-import IoniconIcon from 'react-native-vector-icons/Ionicons';
-
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, Icon, Loader, Text } from '../../components';
 import env from '../../config/env';
@@ -22,6 +11,16 @@ import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from './components/underline-text';
 import { normalText, styles, underlinedText } from './utils/styles';
 import { Error, IdentityState, Log, LoginFormSchema, UserCredentials } from './utils/utils';
+import { Auth } from '@aws-amplify/auth';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { Amplify } from 'aws-amplify';
+import * as WebBrowser from 'expo-web-browser';
+import { Formik } from 'formik';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
+import { TextInput, TouchableOpacity, View } from 'react-native';
+import * as Keychain from 'react-native-keychain';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
 
 WebBrowser.maybeCompleteAuthSession();
 

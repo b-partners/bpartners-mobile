@@ -1,8 +1,7 @@
+import { palette } from '../../theme/palette';
 import React from 'react';
 import { Modal, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import { palette } from '../../theme/palette';
 
 export interface ReloadModalProps {
   isOpen: boolean;

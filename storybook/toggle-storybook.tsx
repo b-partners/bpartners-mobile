@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { DevSettings } from 'react-native';
-
 import { DEFAULT_REACTOTRON_WS_URI } from '../app/services/reactotron/reactotron-config';
 import { loadString, saveString } from '../app/utils/storage';
+import React, { useEffect, useRef, useState } from 'react';
+import { DevSettings } from 'react-native';
 
 /**
  * Toggle Storybook mode, in __DEV__ mode only.

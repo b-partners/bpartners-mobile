@@ -1,7 +1,6 @@
-import { StyleProp, TextStyle, ViewStyle } from 'react-native';
-
 import { TxKeyPath } from '../../i18n';
 import { IconTypes } from '../icon/icons';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 export interface HeaderProps {
   /**

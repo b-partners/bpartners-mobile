@@ -1,5 +1,3 @@
-import { ApiErrorResponse, ApiOkResponse, ApiResponse } from 'apisauce';
-
 import env from '../../config/env';
 import { Criteria, PageCriteria } from '../../models/entities/criteria/criteria';
 import { Invoice, MethodModel } from '../../models/entities/invoice/invoice';
@@ -7,6 +5,7 @@ import { PaymentInitiation } from '../../models/entities/payment-initiation/paym
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { CrupdateInvoiceResult, GetInvoiceRelaunchResult, GetInvoiceResult, GetInvoicesResult, InitPaymentResult, InvoiceRelaunchResult } from './api.types';
+import { ApiErrorResponse, ApiOkResponse, ApiResponse } from 'apisauce';
 
 export class PaymentApi {
   private api: Api;

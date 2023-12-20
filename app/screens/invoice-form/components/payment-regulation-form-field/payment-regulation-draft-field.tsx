@@ -1,11 +1,10 @@
-import { Observer } from 'mobx-react-lite';
-import React from 'react';
-import { View } from 'react-native';
-
 import { Text } from '../../../../components';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { amountToMajors } from '../../../../utils/money';
+import { Observer } from 'mobx-react-lite';
+import React from 'react';
+import { View } from 'react-native';
 
 type PaymentRegulationDraftFieldProps = {
   percent: number;

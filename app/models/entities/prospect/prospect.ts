@@ -1,6 +1,5 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-
 import { LocationModel } from '../location/location';
+import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export enum ProspectStatus {
   TO_CONTACT = 'TO_CONTACT',

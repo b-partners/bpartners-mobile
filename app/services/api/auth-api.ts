@@ -1,11 +1,10 @@
-import { ApiResponse } from 'apisauce';
-import { v4 as uuid } from 'uuid';
-
 import env from '../../config/env';
 import { User } from '../../models/entities/user/user';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetTokenRegistrationResult, GetTokenResult, GetWhoAmIResult, SignInResult } from './api.types';
+import { ApiResponse } from 'apisauce';
+import { v4 as uuid } from 'uuid';
 
 export class AuthApi {
   private api: Api;

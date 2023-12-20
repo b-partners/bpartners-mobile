@@ -1,11 +1,10 @@
-import React, { FC } from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-
 import { Text } from '../../../components';
 import RadioButton from '../../../components/radio-button/radio-button';
 import { Account } from '../../../models/entities/account/account';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import React, { FC } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 type TAccountRow = {
   account: Account;

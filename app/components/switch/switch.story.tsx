@@ -1,10 +1,9 @@
-import { storiesOf } from '@storybook/react-native';
-import * as React from 'react';
-import { View, ViewStyle } from 'react-native';
-
 import { Story, StoryScreen, UseCase } from '../../../storybook/views';
 import { Toggle } from '../../utils/react-powerplug';
 import { Switch } from './switch';
+import { storiesOf } from '@storybook/react-native';
+import * as React from 'react';
+import { View, ViewStyle } from 'react-native';
 
 declare let module;
 

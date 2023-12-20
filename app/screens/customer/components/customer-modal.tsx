@@ -1,11 +1,10 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Modal, View } from 'react-native';
-
 import { Header } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { palette } from '../../../theme/palette';
 import { CustomerModalType } from '../customers-screen';
 import { CustomerForm } from './customer-form';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Modal, View } from 'react-native';
 
 type CustomerModalProps = {
   modal: CustomerModalType;

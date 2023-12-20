@@ -1,11 +1,10 @@
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-
 import { Text } from '../../../components';
 import { TxKeyPath } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
 
 type UnderlineTextProps = {
   navigation: DrawerNavigationProp<any>;

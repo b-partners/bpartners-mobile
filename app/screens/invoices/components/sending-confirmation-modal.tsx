@@ -1,9 +1,3 @@
-import React from 'react';
-import { Modal, View } from 'react-native';
-import Mailer from 'react-native-mail';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
 import { Button, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { AccountHolder } from '../../../models/entities/account-holder/account-holder';
@@ -20,6 +14,11 @@ import {
   MODAL_STYLE,
   sendingConfirmationModalStyles as styles,
 } from '../utils/styles';
+import React from 'react';
+import { Modal, View } from 'react-native';
+import Mailer from 'react-native-mail';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 type InvoiceCreationModalProps = {
   confirmationModal: boolean;

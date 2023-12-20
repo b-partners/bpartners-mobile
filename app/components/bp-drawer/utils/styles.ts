@@ -1,7 +1,6 @@
-import { TextStyle, ViewStyle } from 'react-native';
-
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { TextStyle, ViewStyle } from 'react-native';
 
 export const LOGOUT_CONTAINER_STYLE: ViewStyle = {
   position: 'absolute',

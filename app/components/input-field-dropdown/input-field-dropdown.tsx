@@ -1,11 +1,10 @@
-import React from 'react';
-import { GestureResponderEvent, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
-
 import { TxKeyPath, translate } from '../../i18n';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import ErrorMessage from '../forms/error-message';
+import React from 'react';
+import { GestureResponderEvent, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 interface InputFieldDropdownProps {
   labelTx: TxKeyPath;

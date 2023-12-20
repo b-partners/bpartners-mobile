@@ -1,7 +1,6 @@
+import { TRootStoreModelKey, useStores } from '../models';
 import { onSnapshot } from 'mobx-state-tree';
 import { useEffect, useState } from 'react';
-
-import { TRootStoreModelKey, useStores } from '../models';
 
 /**
  * A hook for fetching data

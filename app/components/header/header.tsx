@@ -1,7 +1,3 @@
-import React from 'react';
-import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { translate } from '../../i18n';
 import { color, spacing } from '../../theme';
 import { AutoImage } from '../auto-image/auto-image';
@@ -9,6 +5,9 @@ import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 import { Text } from '../text/text';
 import { HeaderProps } from './header.props';
+import React from 'react';
+import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // static styles
 const ROOT: ViewStyle = {

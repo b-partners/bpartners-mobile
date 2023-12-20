@@ -1,8 +1,7 @@
-import * as MailCompose from 'expo-mail-composer';
-import { Alert, Platform } from 'react-native';
-
 import { translate } from '../i18n';
 import { sendError } from '../services/logs/logs';
+import * as MailCompose from 'expo-mail-composer';
+import { Alert, Platform } from 'react-native';
 
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

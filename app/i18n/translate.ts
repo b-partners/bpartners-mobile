@@ -1,6 +1,5 @@
-import i18n from 'i18n-js';
-
 import { TxKeyPath } from './i18n';
+import i18n from 'i18n-js';
 
 /**
  * Translates text.

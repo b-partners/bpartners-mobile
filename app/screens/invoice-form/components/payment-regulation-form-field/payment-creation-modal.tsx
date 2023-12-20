@@ -1,9 +1,3 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, Modal, Platform, ScrollView, View } from 'react-native';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
-
 import { Button, Text } from '../../../../components';
 import { DatePickerField } from '../../../../components/date-picker-field/date-picker-field';
 import InputField from '../../../../components/input-field/input-field';
@@ -14,6 +8,11 @@ import { palette } from '../../../../theme/palette';
 import { amountToMajors, amountToMinors } from '../../../../utils/money';
 import { showMessage } from '../../../../utils/snackbar';
 import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, dateConversion } from '../utils';
+import { MaterialIcons } from '@expo/vector-icons';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { KeyboardAvoidingView, Modal, Platform, ScrollView, View } from 'react-native';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 type PaymentCreationModalProps = {
   open: boolean;

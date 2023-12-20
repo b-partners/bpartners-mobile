@@ -1,9 +1,3 @@
-import React, { useState } from 'react';
-import { Modal, ScrollView, View } from 'react-native';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import SimpleLineIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { Button, Dropdown, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { PaymentMethodModel } from '../../../models/entities/invoice/invoice';
@@ -22,6 +16,11 @@ import {
   partialPaymentStyles as styles,
 } from '../utils/styles';
 import { PartialPaymentProps, paymentMethods } from '../utils/utils';
+import React, { useState } from 'react';
+import { Modal, ScrollView, View } from 'react-native';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import SimpleLineIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const PartialPaymentModal = (props: PartialPaymentProps) => {
   const { isOpen, setOpen, updateStatus, isLoading, item } = props;

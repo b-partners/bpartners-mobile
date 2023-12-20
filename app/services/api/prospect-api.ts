@@ -1,10 +1,9 @@
-import { ApiResponse } from 'apisauce';
-
 import { ProspectFilter } from '../../models/entities/filter/filter';
 import { Prospect } from '../../models/entities/prospect/prospect';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetProspectResult, UpdateProspectResult } from './api.types';
+import { ApiResponse } from 'apisauce';
 
 export class ProspectApi {
   private api: Api;

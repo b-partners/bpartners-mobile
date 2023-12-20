@@ -1,11 +1,3 @@
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { Amplify } from 'aws-amplify';
-import * as WebBrowser from 'expo-web-browser';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { View } from 'react-native';
-
 import awsExports from '../../../src/aws-exports';
 import { AutoImage, Button, CheckEmailModal, Icon, InputField, Loader, Text } from '../../components';
 import { translate } from '../../i18n';
@@ -17,6 +9,13 @@ import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from '../welcome/components/underline-text';
 import { styles } from './utils/styles';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { Amplify } from 'aws-amplify';
+import * as WebBrowser from 'expo-web-browser';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { View } from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession();
 

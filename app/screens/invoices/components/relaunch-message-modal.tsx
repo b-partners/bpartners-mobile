@@ -1,7 +1,3 @@
-import React from 'react';
-import { Modal, ScrollView, View } from 'react-native';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
-
 import { Button, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { InvoiceStatus } from '../../../models/entities/invoice/invoice';
@@ -17,6 +13,9 @@ import {
   relaunchMessageModalStyles as styles,
 } from '../utils/styles';
 import { RelaunchMessageProps } from '../utils/utils';
+import React from 'react';
+import { Modal, ScrollView, View } from 'react-native';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 export const RelaunchMessageModal = (props: RelaunchMessageProps) => {
   const { isOpen, setOpen, item, invoice, setCurrentRelaunch } = props;

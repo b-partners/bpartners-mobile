@@ -1,10 +1,3 @@
-import { cloneDeep } from 'lodash';
-import React, { PropsWithoutRef, useState } from 'react';
-import { Platform, TouchableOpacity, View } from 'react-native';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
 import { Dropdown, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -19,6 +12,12 @@ import { showMessage } from '../../../utils/snackbar';
 import { invoicePageSize } from '../../invoice-form/components/utils';
 import { ICON_CONTAINER_STYLE, TRANSACTION_BOTTOM_SIDE, transactionStyles as styles } from '../utils/styles';
 import { TransactionStatusColor, TransactionStatusLabel } from '../utils/utils';
+import { cloneDeep } from 'lodash';
+import React, { PropsWithoutRef, useState } from 'react';
+import { Platform, TouchableOpacity, View } from 'react-native';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export const Transaction = (
   props: PropsWithoutRef<{

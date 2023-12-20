@@ -1,5 +1,3 @@
-import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-
 import { AccountHolder } from '../../entities/account-holder/account-holder';
 import { Account } from '../../entities/account/account';
 import { User } from '../../entities/user/user';
@@ -18,6 +16,7 @@ import { ProductStoreModel } from '../product-store/product-store';
 import { ProspectStoreModel } from '../prospect-store/prospect-store';
 import { QuotationStoreModel } from '../quotation-store/quotation-store';
 import { TransactionStoreModel } from '../transaction-store/transaction-store';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 
 /**
  * A RootStore model.

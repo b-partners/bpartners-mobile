@@ -1,12 +1,11 @@
-import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
-import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 type TabNameProps = {
   globalInfo: string;

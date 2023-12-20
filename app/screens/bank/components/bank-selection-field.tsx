@@ -1,8 +1,3 @@
-import { Observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
-import { FlatList, Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle, useWindowDimensions } from 'react-native';
-import RNVIcon from 'react-native-vector-icons/AntDesign';
-
 import { BpPagination, Button, Icon, Separator, Text, TextField, TextFieldProps } from '../../../components';
 import { TxKeyPath } from '../../../i18n';
 import { Account } from '../../../models/entities/account/account';
@@ -10,6 +5,10 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoices/utils/styles';
 import BankRow from './bank-row';
+import { Observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
+import { FlatList, Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle, useWindowDimensions } from 'react-native';
+import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 type SelectFormFieldProps = TextFieldProps & {
   onValueChange: (value: any) => void;

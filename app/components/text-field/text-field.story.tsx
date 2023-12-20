@@ -1,10 +1,9 @@
-import { storiesOf } from '@storybook/react-native';
-import React from 'react';
-import { Alert, TextStyle, ViewStyle } from 'react-native';
-
 import { Text, TextField } from '..';
 import { Story, StoryScreen, UseCase } from '../../../storybook/views';
 import { State } from '../../utils/react-powerplug';
+import { storiesOf } from '@storybook/react-native';
+import React from 'react';
+import { Alert, TextStyle, ViewStyle } from 'react-native';
 
 declare let module;
 

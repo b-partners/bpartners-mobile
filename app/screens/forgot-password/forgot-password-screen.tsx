@@ -1,10 +1,3 @@
-import { StackScreenProps } from '@react-navigation/stack';
-import { Auth } from 'aws-amplify';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Dimensions, StyleSheet, View } from 'react-native';
-
 import { Button, CheckEmailModal, Header, Loader, Screen, Text } from '../../components';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
@@ -13,6 +6,12 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
+import { StackScreenProps } from '@react-navigation/stack';
+import { Auth } from 'aws-amplify';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Dimensions, StyleSheet, View } from 'react-native';
 
 export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forgotPassword'>> = observer(function ForgotPasswordScreen({ navigation }) {
   const [loading, setLoading] = useState(false);

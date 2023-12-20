@@ -1,6 +1,5 @@
-import { ViewStyle } from 'react-native';
-
 import { color } from '../../theme';
+import { ViewStyle } from 'react-native';
 
 /**
  * All screen keyboard offsets.

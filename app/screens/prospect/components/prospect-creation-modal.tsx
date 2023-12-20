@@ -1,12 +1,3 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Platform, TouchableOpacity, View } from 'react-native';
-import { Modal } from 'react-native-paper';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import { v4 as uuidv4 } from 'uuid';
-import * as yup from 'yup';
-
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
@@ -16,6 +7,14 @@ import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { ProspectCreationModalProps, ProspectFeedback } from '../utils/utils';
 import { ButtonActions } from './button-action';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Platform, TouchableOpacity, View } from 'react-native';
+import { Modal } from 'react-native-paper';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import { v4 as uuidv4 } from 'uuid';
+import * as yup from 'yup';
 
 export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props => {
   const { showModal, setShowModal, status, setStatus } = props;

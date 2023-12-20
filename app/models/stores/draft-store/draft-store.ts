@@ -1,11 +1,10 @@
-import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
-
 import { PaymentApi } from '../../../services/api/payment-api';
 import { Criteria } from '../../entities/criteria/criteria';
 import { Invoice, InvoiceModel } from '../../entities/invoice/invoice';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
+import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
 
 export const DraftStoreModel = types
   .model('DraftStore')

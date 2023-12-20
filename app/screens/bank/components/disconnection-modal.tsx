@@ -1,14 +1,14 @@
+import { Button, Loader, Text } from '../../../components';
+import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
+import { AccountInfos, Account } from '../../../models/entities/account/account';
+import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
+import { showMessage } from '../../../utils/snackbar';
+import { SHADOW_STYLE } from '../../invoices/utils/styles';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Modal } from 'react-native-paper';
-import { Button, Loader, Text } from '../../../components';
-import { palette } from '../../../theme/palette';
-import { color, spacing } from '../../../theme';
-import { AccountInfos, Account } from '../../../models/entities/account/account';
-import { SHADOW_STYLE } from '../../invoices/utils/styles';
-import { showMessage } from '../../../utils/snackbar';
-import { translate } from '../../../i18n';
-import { useStores } from '../../../models';
 
 type BankModalProps = {
   confirmationModal: boolean;

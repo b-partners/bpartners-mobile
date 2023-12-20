@@ -1,10 +1,3 @@
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
-import { Linking, TouchableOpacity, View } from 'react-native';
-import PhoneIcon from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { AutoImage, Button, GradientBackground, Header, LabelWithTextRow, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
@@ -16,6 +9,12 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
 import { AccountDeletionModal } from './components/account-deletion-modal';
 import { profileStyles as styles } from './utils/styles';
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
+import { Linking, TouchableOpacity, View } from 'react-native';
+import PhoneIcon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function PaymentInitiationScreen({ navigation }) {
   const { authStore, businessActivityStore } = useStores();

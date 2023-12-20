@@ -1,10 +1,3 @@
-import { Formik } from 'formik';
-import { observer } from 'mobx-react-lite';
-import React, { FC, PropsWithoutRef } from 'react';
-import { View } from 'react-native';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import * as yup from 'yup';
-
 import { Button, Loader, Text } from '../../../../components';
 import FormField from '../../../../components/forms/form-field';
 import { translate } from '../../../../i18n';
@@ -13,6 +6,12 @@ import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import emptyToNull from '../../../../utils/empty-to-null';
 import { INVALID_FORM_FIELD } from '../../styles';
+import { Formik } from 'formik';
+import { observer } from 'mobx-react-lite';
+import React, { FC, PropsWithoutRef } from 'react';
+import { View } from 'react-native';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import * as yup from 'yup';
 
 export const CustomerCreationForm: FC<
   PropsWithoutRef<{

@@ -1,6 +1,3 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-
 import { BulletSeparator, Text } from '../../../components';
 import { Customer as ICustomer } from '../../../models/entities/customer/customer';
 import { spacing } from '../../../theme';
@@ -8,6 +5,8 @@ import { palette } from '../../../theme/palette';
 import { BODY_TEXT_STYLE, DATE_CONTAINER, DATE_TEXT_STYLE } from '../../invoices/utils/styles';
 import { CustomerModalType } from '../customers-screen';
 import { customerStyles as styles } from '../utils/styles';
+import React, { Dispatch, SetStateAction } from 'react';
+import { TouchableOpacity, View } from 'react-native';
 
 type CustomerProps = { item: ICustomer; setCreationModal: Dispatch<SetStateAction<CustomerModalType>> };
 

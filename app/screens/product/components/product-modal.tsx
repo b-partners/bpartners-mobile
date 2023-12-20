@@ -1,18 +1,18 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Modal, View } from 'react-native';
-
 import { Header } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { palette } from '../../../theme/palette';
 import { ProductModalType } from '../products-screen';
 import { ProductForm } from './product-form';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Modal, View } from 'react-native';
 
 type ProductModalProps = {
   modal: ProductModalType;
   setModal: Dispatch<SetStateAction<ProductModalType>>;
+  isSubjectToVat: boolean;
 };
 export const ProductModal: React.FC<ProductModalProps> = props => {
-  const { modal, setModal } = props;
+  const { modal, setModal, isSubjectToVat } = props;
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   const closeModal = () => {
@@ -45,7 +45,7 @@ export const ProductModal: React.FC<ProductModalProps> = props => {
               />
             )}
             <View style={{ width: '100%', height: '100%' }}>
-              <ProductForm modal={modal} setModal={setModal} isKeyboardOpen={isKeyboardOpen} />
+              <ProductForm modal={modal} setModal={setModal} isKeyboardOpen={isKeyboardOpen} isSubjectToVat={isSubjectToVat} />
             </View>
           </View>
         </View>

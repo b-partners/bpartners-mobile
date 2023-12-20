@@ -1,7 +1,6 @@
+import { palette } from '../../theme/palette';
 import React from 'react';
 import { View, ViewStyle } from 'react-native';
-
-import { palette } from '../../theme/palette';
 
 type SeparatorProps = { style?: ViewStyle };
 

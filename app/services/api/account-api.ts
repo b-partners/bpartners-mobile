@@ -1,5 +1,3 @@
-import { ApiResponse } from 'apisauce';
-
 import { BusinessActivity } from '../../models/entities/business-activity/business-activity';
 import { CompanyInfo } from '../../models/entities/company-info/company-info';
 import { Feedback } from '../../models/entities/feedback/feedback';
@@ -7,6 +5,7 @@ import { GlobalInfo } from '../../models/entities/global-info/global-info';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetAccountHolderResult, GetUserAccount, GetWhoAmIResult, UpdateAccountHodlerInfo } from './api.types';
+import { ApiResponse } from 'apisauce';
 
 export class AccountApi {
   private api: Api;

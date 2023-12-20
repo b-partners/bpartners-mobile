@@ -1,7 +1,3 @@
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
-
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { AutoImage } from '../auto-image/auto-image';
@@ -9,6 +5,9 @@ import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
 import { BottomTab } from './components/bottom-tab';
 import { tabNavigationStyles as styles } from './utils/styles';
 import { BOTTOM_TAB_ROUTES, IconProps, IconRouteProps } from './utils/utils';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import React, { useCallback, useState } from 'react';
+import { View } from 'react-native';
 
 export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   const {

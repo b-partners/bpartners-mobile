@@ -1,9 +1,8 @@
+import { spacing } from '../../theme';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-
-import { spacing } from '../../theme';
 
 export interface AutocompletionFormFieldProps<T> {
   data: T[];

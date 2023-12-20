@@ -1,8 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, ScrollView, View } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
-
 import { Button, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -19,6 +14,10 @@ import {
 } from '../utils/styles';
 import { RelaunchHistoryProps } from '../utils/utils';
 import { RelaunchItem } from './relaunch-item';
+import React, { useEffect, useState } from 'react';
+import { Modal, ScrollView, View } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 export const RelaunchHistoryModal = (props: RelaunchHistoryProps) => {
   const { isOpen, setOpen, item, setCurrentRelaunch } = props;

@@ -1,7 +1,3 @@
-import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { View } from 'react-native';
-
 // import { Button } from '../../../components';
 import { AccountHolder as IAccountHolder } from '../../../models/entities/account-holder/account-holder';
 import { RevenueTarget } from '../../../models/entities/revenue-target/revenue-target';
@@ -9,6 +5,9 @@ import { TransactionSummary as ITransactionSummary, Summary } from '../../../mod
 // import { color, spacing } from '../../../theme';
 import { DonutChart } from './donut-chart';
 import { GoalProgressBar } from './goal-progress-bar';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
+import { View } from 'react-native';
 
 interface TransactionSummaryProps {
   currentMonthSummary: Summary;

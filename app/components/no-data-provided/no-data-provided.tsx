@@ -1,9 +1,8 @@
+import { Text } from '../text/text';
+import { noDataProvidedStyles as styles } from './utils/styles';
 import React from 'react';
 import { View } from 'react-native';
 import FileIcon from 'react-native-vector-icons/FontAwesome5';
-
-import { Text } from '../text/text';
-import { noDataProvidedStyles as styles } from './utils/styles';
 
 export function NoDataProvided() {
   return (

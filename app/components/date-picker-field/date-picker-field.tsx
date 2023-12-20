@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import DatePickerInput from 'react-native-date-picker';
-
 import { TxKeyPath, translate } from '../../i18n';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { Button } from '../button/button';
 import { Text } from '../text/text';
+import React, { useState } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import DatePickerInput from 'react-native-date-picker';
 
 type DatePickerProps = {
   value: Date;

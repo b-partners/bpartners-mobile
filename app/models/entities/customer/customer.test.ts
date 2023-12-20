@@ -1,6 +1,5 @@
-import uuid from 'react-native-uuid';
-
 import { CustomerModel } from './customer';
+import uuid from 'react-native-uuid';
 
 test('can be created', () => {
   const instance = CustomerModel.create({

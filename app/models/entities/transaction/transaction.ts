@@ -1,6 +1,5 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-
 import { TransactionCategoryModel } from '../transaction-category/transaction-category';
+import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 export enum TransactionStatus {
   PENDING = 'PENDING',

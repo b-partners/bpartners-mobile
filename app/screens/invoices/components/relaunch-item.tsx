@@ -1,13 +1,12 @@
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import IoniconIcon from 'react-native-vector-icons/Ionicons';
-
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { palette } from '../../../theme/palette';
 import { formatDate } from '../../../utils/format-date';
 import { relaunchItemStyles as styles } from '../utils/styles';
 import { RelaunchItemProps } from '../utils/utils';
+import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
 
 export const RelaunchItem: React.FC<RelaunchItemProps> = props => {
   const { item, index, setCurrentRelaunch } = props;

@@ -1,9 +1,3 @@
-import { Formik } from 'formik';
-import { observer } from 'mobx-react-lite';
-import React, { Dispatch, FC, PropsWithoutRef, SetStateAction } from 'react';
-import { View } from 'react-native';
-import * as yup from 'yup';
-
 import { Button, Loader, Text } from '../../../components';
 import FormField from '../../../components/forms/form-field';
 import { translate } from '../../../i18n';
@@ -14,15 +8,21 @@ import { commaValidation } from '../../../utils/comma-to-dot';
 import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
 import { ProductModalType } from '../products-screen';
 import { intiaValueRenderer, saveOrUpdate } from '../utils/utils';
+import { Formik } from 'formik';
+import { observer } from 'mobx-react-lite';
+import React, { Dispatch, FC, PropsWithoutRef, SetStateAction } from 'react';
+import { View } from 'react-native';
+import * as yup from 'yup';
 
 export const ProductForm: FC<
   PropsWithoutRef<{
     modal: ProductModalType;
     setModal: Dispatch<SetStateAction<ProductModalType>>;
     isKeyboardOpen: boolean;
+    isSubjectToVat: boolean;
   }>
 > = observer(props => {
-  const { modal, setModal, isKeyboardOpen } = props;
+  const { modal, setModal, isKeyboardOpen, isSubjectToVat } = props;
 
   const { product, type } = modal;
 
@@ -71,14 +71,16 @@ export const ProductForm: FC<
                   numberOfLines={3}
                   inputStyle={[errors.description && INVALID_FORM_FIELD]}
                 />
-                <FormField
-                  testID='productVatPercent'
-                  name='vatPercent'
-                  labelTx='invoiceFormScreen.productCreationForm.tva'
-                  value={values.vatPercent}
-                  numberOfLines={3}
-                  inputStyle={[errors.vatPercent && INVALID_FORM_FIELD]}
-                />
+                {isSubjectToVat && (
+                  <FormField
+                    testID='productVatPercent'
+                    name='vatPercent'
+                    labelTx='invoiceFormScreen.productCreationForm.tva'
+                    value={values.vatPercent}
+                    numberOfLines={3}
+                    inputStyle={[errors.vatPercent && INVALID_FORM_FIELD]}
+                  />
+                )}
               </View>
               <View style={{ height: '15%' }}>
                 <Button
