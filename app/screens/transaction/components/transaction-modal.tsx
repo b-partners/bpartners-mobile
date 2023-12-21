@@ -1,3 +1,10 @@
+import React, { useState } from 'react';
+import { Modal, TouchableOpacity, View } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 import { AutoImage, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -12,12 +19,6 @@ import { transactionModalStyles as styles } from '../utils/styles';
 import { PaymentModalProps } from '../utils/utils';
 import { InvoiceSelectionModal } from './invoice-selection-modal';
 import { TransactionField } from './transaction-field';
-import React, { useState } from 'react';
-import { Modal, TouchableOpacity, View } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 export const TransactionModal: React.FC<PaymentModalProps> = props => {
   const { currentTransaction, showModal, setShowModal, invoice, loading, invoices, loadingInvoice } = props;

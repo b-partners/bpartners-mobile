@@ -1,8 +1,9 @@
-import { Loader } from '../../../components';
-import { color } from '../../../theme';
 import { AntDesign, Ionicons, Octicons } from '@expo/vector-icons';
 import React from 'react';
 import { TouchableOpacity, ViewStyle } from 'react-native';
+
+import { Loader } from '../../../components';
+import { color } from '../../../theme';
 
 const DOWNLOAD_BUTTON_STYLE: ViewStyle = {
   borderWidth: 1,

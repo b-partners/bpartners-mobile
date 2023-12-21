@@ -1,3 +1,8 @@
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
+import { SectionList, View } from 'react-native';
+
 import { BpPagination, Button, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 import { ReloadModal } from '../../components/reload-modal/reload-modal';
 // import env from '../../config/env';
@@ -36,10 +41,6 @@ import {
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
 } from './utils/styles';
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
-import { SectionList, View } from 'react-native';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();

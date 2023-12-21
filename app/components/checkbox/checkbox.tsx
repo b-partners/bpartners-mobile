@@ -1,8 +1,9 @@
+import * as React from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+
 import { color, spacing } from '../../theme';
 import { Text } from '../text/text';
 import { CheckboxProps } from './checkbox.props';
-import * as React from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 const ROOT: ViewStyle = {
   flexDirection: 'row',

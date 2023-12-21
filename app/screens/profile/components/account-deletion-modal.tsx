@@ -1,12 +1,13 @@
+import React from 'react';
+import { Linking, Modal, View } from 'react-native';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 import { Button, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
-import React from 'react';
-import { Linking, Modal, View } from 'react-native';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 type InvoiceCreationModalProps = {
   confirmationModal: boolean;

@@ -1,6 +1,7 @@
-import env from '../config/env';
 import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
 import RNFS from 'react-native-fs';
+
+import env from '../config/env';
 
 type DownloadOptions = { url: string; accessToken?: string; fileName: string };
 

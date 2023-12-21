@@ -1,10 +1,11 @@
+import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
+
 import { MarketplaceApi } from '../../../services/api/marketplace-api';
 import { PageCriteria } from '../../entities/criteria/criteria';
 import { MarketplaceModel, MarketplaceSnapshotOut } from '../../entities/marketplace/marketplace';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
-import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 export const MarketplaceStoreModel = types
   .model('Marketplace')

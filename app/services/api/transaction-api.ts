@@ -1,3 +1,5 @@
+import { ApiResponse } from 'apisauce';
+
 import { TransactionFilter } from '../../models/entities/filter/filter';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { Api } from './api';
@@ -9,7 +11,6 @@ import {
   GetTransactionsSummaryResult,
   UpdateTransactionCategoriesResult,
 } from './api.types';
-import { ApiResponse } from 'apisauce';
 
 export class TransactionApi {
   private api: Api;

@@ -1,7 +1,8 @@
-import { color, spacing } from '../../../theme';
 import React from 'react';
 import { Dimensions, View, ViewStyle } from 'react-native';
 import ActionButton from 'react-native-action-button';
+
+import { color, spacing } from '../../../theme';
 
 const ACTION_BUTTON_STYLE: ViewStyle = {
   position: 'absolute',

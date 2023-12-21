@@ -1,9 +1,10 @@
-import { FormRow, Text } from '..';
-import { Story, StoryScreen, UseCase } from '../../../storybook/views';
-import { color } from '../../theme/color';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { ViewStyle } from 'react-native';
+
+import { FormRow, Text } from '..';
+import { Story, StoryScreen, UseCase } from '../../../storybook/views';
+import { color } from '../../theme/color';
 
 declare let module;
 

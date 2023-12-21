@@ -1,9 +1,10 @@
-import { Text as SolidText } from '../../../components/text/text';
-import { color } from '../../../theme';
-import { palette } from '../../../theme/palette';
 import React from 'react';
 import { View } from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { Text as SolidText } from '../../../components/text/text';
+import { color } from '../../../theme';
+import { palette } from '../../../theme/palette';
 
 export const NoBank = () => {
   //const { bankStore, authStore } = useStores();

@@ -1,8 +1,9 @@
+import * as React from 'react';
+import { TouchableOpacity } from 'react-native';
+
 import { Text } from '../text/text';
 import { textPresets, viewPresets } from './button.presets';
 import { ButtonProps } from './button.props';
-import * as React from 'react';
-import { TouchableOpacity } from 'react-native';
 
 /**
  * For your text displaying needs.

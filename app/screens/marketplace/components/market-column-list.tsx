@@ -1,3 +1,7 @@
+import React, { useCallback } from 'react';
+import { Alert, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Market from 'react-native-vector-icons/Entypo';
+
 import { AutoImage } from '../../../components';
 import { translate } from '../../../i18n';
 import { Marketplace } from '../../../models/entities/marketplace/marketplace';
@@ -14,9 +18,6 @@ import {
   SCROLLVIEW_STYLE,
   TEXT_STYLE,
 } from '../styles';
-import React, { useCallback } from 'react';
-import { Alert, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import Market from 'react-native-vector-icons/Entypo';
 
 export function ColumnList(props: { marketplaces: Marketplace[] }) {
   const { marketplaces } = props;

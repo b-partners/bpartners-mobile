@@ -1,11 +1,12 @@
-import { Button, Text } from '../../../components';
-import { palette } from '../../../theme/palette';
 import React from 'react';
 import { Clipboard, Linking, Modal, Platform, View } from 'react-native';
 import RNAntDesign from 'react-native-vector-icons/AntDesign';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import RNFontAwesome from 'react-native-vector-icons/FontAwesome';
 import CopyContentIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { Button, Text } from '../../../components';
+import { palette } from '../../../theme/palette';
 
 type ShareModalProps = {
   paymentUrl: string;

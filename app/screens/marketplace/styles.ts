@@ -1,6 +1,7 @@
+import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
+
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
-import { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 
 export const SCREEN_STYLE: ViewStyle = {
   flex: 1,

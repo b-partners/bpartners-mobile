@@ -1,5 +1,6 @@
-import { LocationModel } from '../location/location';
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+
+import { LocationModel } from '../location/location';
 
 export const CompanyInfoModel = types.model('CompanyInfo').props({
   phone: types.maybeNull(types.string),

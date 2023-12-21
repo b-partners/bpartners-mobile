@@ -1,3 +1,8 @@
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useState } from 'react';
+import { SectionList, View } from 'react-native';
+
 import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -23,10 +28,6 @@ import {
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
 } from './utils/styles';
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
-import { SectionList, View } from 'react-native';
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, draftStore, quotationStore } = useStores();

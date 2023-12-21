@@ -1,6 +1,7 @@
-import { Log } from '../../screens/welcome/utils/utils';
 import React, { useLayoutEffect, useState } from 'react';
 import { ImageProps as DefaultImageProps, ImageURISource, Platform, Image as RNImage } from 'react-native';
+
+import { Log } from '../../screens/welcome/utils/utils';
 
 type ImageProps = DefaultImageProps & {
   source: ImageURISource;

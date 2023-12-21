@@ -1,11 +1,12 @@
+import React from 'react';
+import { Linking, TouchableOpacity, View } from 'react-native';
+
 import { AutoImage, Text } from '../../../components';
 import { CENTER_CONTAINER_STYLE, TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { PartnersCardProps, bredUrl, insuranceUrl } from '../utils/utils';
-import React from 'react';
-import { Linking, TouchableOpacity, View } from 'react-native';
 
 export const PartnersCard: React.FC<PartnersCardProps> = props => {
   const { firstLabel, secondLabel, firstText, secondText, buttonText, isInsurance } = props;

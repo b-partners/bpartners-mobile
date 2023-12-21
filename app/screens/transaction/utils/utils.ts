@@ -1,8 +1,9 @@
+import React from 'react';
+
 import { translate } from '../../../i18n';
 import { Invoice, SearchInvoice } from '../../../models/entities/invoice/invoice';
 import { Transaction } from '../../../models/entities/transaction/transaction';
 import { palette } from '../../../theme/palette';
-import React from 'react';
 
 export type InvoiceRowProps = {
   invoice: Invoice | SearchInvoice;

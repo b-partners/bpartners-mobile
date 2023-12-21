@@ -1,8 +1,9 @@
+import { ApiResponse } from 'apisauce';
+
 import { PageCriteria } from '../../models/entities/criteria/criteria';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetMarketplaceResult } from './api.types';
-import { ApiResponse } from 'apisauce';
 
 export class MarketplaceApi {
   private api: Api;

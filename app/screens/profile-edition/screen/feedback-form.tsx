@@ -1,3 +1,9 @@
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+
 import { Button, InputField, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -8,11 +14,6 @@ import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 
 export const FeedbackForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'profileEdition'>> = observer(function FeedBackForm() {
   const { authStore } = useStores();

@@ -1,12 +1,13 @@
+import React, { useState } from 'react';
+import { FlatList, Modal, Platform, TouchableOpacity, View } from 'react-native';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+
 import { Separator, Text } from '../../../components';
 import KeyboardAvoidingWrapper from '../../../components/keyboard-avoiding-wrapper/keyboard-avoiding-wrapper';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { BusinessActivityItem } from '../../../models/entities/business-activity/business-activity';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import React, { useState } from 'react';
-import { FlatList, Modal, Platform, TouchableOpacity, View } from 'react-native';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 export type BusinessActivityModalProps = {
   showModal: boolean;

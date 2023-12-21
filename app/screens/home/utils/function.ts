@@ -1,5 +1,6 @@
-import { RTLog } from '../../../utils/reactotron-log';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
+
+import { RTLog } from '../../../utils/reactotron-log';
 
 export const getAttributesAsync = params =>
   new Promise((resolve, reject) => {

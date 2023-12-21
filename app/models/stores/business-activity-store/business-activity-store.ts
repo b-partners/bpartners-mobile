@@ -1,9 +1,10 @@
+import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
+
 import { BusinessActivityApi } from '../../../services/api/business-activity-api';
 import { BusinessActivityItem, BusinessActivityItemModel } from '../../entities/business-activity/business-activity';
 import { PageCriteria } from '../../entities/criteria/criteria';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
-import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 export const BusinessActivityStoreModel = types
   .model('SignIn')

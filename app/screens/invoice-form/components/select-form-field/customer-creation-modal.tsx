@@ -1,9 +1,10 @@
+import React from 'react';
+import { Modal, View } from 'react-native';
+
 import { Header } from '../../../../components';
 import { palette } from '../../../../theme/palette';
 import { ModalProps } from '../utils';
 import { CustomerCreationForm } from './customer-creation-form';
-import React from 'react';
-import { Modal, View } from 'react-native';
 
 export const CustomerCreationModal: React.FC<ModalProps> = props => {
   const { visibleModal, setVisibleModal } = props;

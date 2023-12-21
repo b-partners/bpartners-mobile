@@ -1,5 +1,6 @@
-import { AccountModel } from '../account/account';
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+
+import { AccountModel } from '../account/account';
 
 export const UserModel = types.model('User').props({
   id: types.maybeNull(types.string),

@@ -1,5 +1,6 @@
-import { clear, load, loadString, remove, save, saveString } from './storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { clear, load, loadString, remove, save, saveString } from './storage';
 
 // fixtures
 const VALUE_OBJECT = { x: 1 };

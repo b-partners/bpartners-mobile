@@ -1,7 +1,8 @@
-import { Button, Icon } from '../../../components';
-import { BULLET_BUTTON, BULLET_BUTTON_STYLE, BUTTON_CONTAINER_STYLE, BUTTON_STYLE, BUTTON_STYLE_NO_MARGIN_STYLE, BUTTON_TEXT_STYLE } from '../utils/styles';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
+
+import { Button, Icon } from '../../../components';
+import { BULLET_BUTTON, BULLET_BUTTON_STYLE, BUTTON_CONTAINER_STYLE, BUTTON_STYLE, BUTTON_STYLE_NO_MARGIN_STYLE, BUTTON_TEXT_STYLE } from '../utils/styles';
 
 type HomeNavbarProps = { goToInvoices: () => void };
 

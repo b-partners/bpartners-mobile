@@ -4,6 +4,14 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
+import { Dimensions, useColorScheme } from 'react-native';
+
 import { BPDrawer, BpTabNavigation, Text } from '../components';
 // import { useError } from '../hook';
 import { translate } from '../i18n';
@@ -36,13 +44,6 @@ import { ProductScreen } from '../screens/product/products-screen';
 import { ProfileEditionScreen } from '../screens/profile-edition/profile-edition-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { NavigatorParamList, TabNavigatorParamList } from './utils/utils';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { DarkTheme, DefaultTheme, NavigationContainer, NavigationState } from '@react-navigation/native';
-import * as Linking from 'expo-linking';
-import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { Dimensions, useColorScheme } from 'react-native';
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator

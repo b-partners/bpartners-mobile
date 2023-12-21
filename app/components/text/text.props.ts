@@ -1,7 +1,8 @@
-import { TxKeyPath } from '../../i18n';
-import { TextPresets } from './text.presets';
 import i18n from 'i18n-js';
 import { StyleProp, TextProps as TextProperties, TextStyle } from 'react-native';
+
+import { TxKeyPath } from '../../i18n';
+import { TextPresets } from './text.presets';
 
 export interface TextProps extends TextProperties {
   /**

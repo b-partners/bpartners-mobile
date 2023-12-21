@@ -1,5 +1,6 @@
-import { CriteriaModel } from '../criteria/criteria';
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
+
+import { CriteriaModel } from '../criteria/criteria';
 
 export const FilterModel = types.model('Filter').props({
   filters: types.maybeNull(types.array(types.string)),

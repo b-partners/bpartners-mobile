@@ -1,6 +1,7 @@
+import { StyleSheet } from 'react-native';
+
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { StyleSheet } from 'react-native';
 
 export const profileStyles = StyleSheet.create({
   container: {

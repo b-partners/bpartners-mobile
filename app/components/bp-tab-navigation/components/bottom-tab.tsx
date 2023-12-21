@@ -1,8 +1,9 @@
+import React, { useEffect, useState } from 'react';
+import { ImageSourcePropType, ImageStyle, ImageURISource, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+
 import { translate } from '../../../i18n';
 import { palette } from '../../../theme/palette';
 import { AutoImage } from '../../auto-image/auto-image';
-import React, { useEffect, useState } from 'react';
-import { ImageSourcePropType, ImageStyle, ImageURISource, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 interface BottomTabProps {
   onPress: () => void;

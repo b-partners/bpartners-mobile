@@ -1,6 +1,7 @@
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
+
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 export const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' };
 export const CENTERED_ROW: ViewStyle = { justifyContent: 'flex-start', alignItems: 'center' };

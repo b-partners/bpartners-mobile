@@ -1,6 +1,7 @@
-import { palette } from '../../../../theme/palette';
 import React, { FC } from 'react';
 import { View, ViewStyle } from 'react-native';
+
+import { palette } from '../../../../theme/palette';
 
 interface TCircleOutline {
   // Icon size value is 20 by default

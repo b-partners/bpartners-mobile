@@ -1,3 +1,9 @@
+import React, { useEffect, useState } from 'react';
+import { ScrollView, TextStyle, TouchableOpacity, View } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { LabelWithTextColumn, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -11,11 +17,6 @@ import { getCurrentAccount, getCurrentAccountInfo } from '../utils/get-current-a
 import AccountConfig from './account-config';
 import { BankEditionModal } from './bank-edition-modal';
 import { BankDisconnectionModal } from './disconnection-modal';
-import React, { useEffect, useState } from 'react';
-import { ScrollView, TextStyle, TouchableOpacity, View } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
-import IoniconIcon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const Bank: React.FC = () => {
   const { authStore } = useStores();

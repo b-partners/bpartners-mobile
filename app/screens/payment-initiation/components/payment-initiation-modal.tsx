@@ -1,13 +1,14 @@
+import React, { useState } from 'react';
+import { Linking, Modal, TouchableOpacity, View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import RNEntypo from 'react-native-vector-icons/Entypo';
+
 import { Button, Header, Text } from '../../../components';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { commaToDot } from '../../../utils/comma-to-dot';
 import { printCurrency } from '../../../utils/money';
 import { ShareModal } from './share-modal';
-import React, { useState } from 'react';
-import { Linking, Modal, TouchableOpacity, View } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
-import RNEntypo from 'react-native-vector-icons/Entypo';
 
 type PaymentModalProps = {
   paymentUrl: string;

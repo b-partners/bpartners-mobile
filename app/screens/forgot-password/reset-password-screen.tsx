@@ -1,3 +1,10 @@
+import { StackScreenProps } from '@react-navigation/stack';
+import { Auth } from 'aws-amplify';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Dimensions, StyleSheet, View } from 'react-native';
+
 import { Button, Header, Loader, Screen, Text } from '../../components';
 import InputFieldPassword from '../../components/input-field-password/input-field-password';
 import InputField from '../../components/input-field/input-field';
@@ -7,12 +14,6 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { StackScreenProps } from '@react-navigation/stack';
-import { Auth } from 'aws-amplify';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Dimensions, StyleSheet, View } from 'react-native';
 
 export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'resetPassword'>> = observer(function ResetPasswordScreen({ navigation, route }) {
   const email = route.params?.email;

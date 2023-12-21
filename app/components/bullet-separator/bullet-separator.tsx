@@ -1,8 +1,9 @@
+import React, { FC } from 'react';
+import { TextStyle, View, ViewStyle } from 'react-native';
+
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { Text } from '../text/text';
-import React, { FC } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
 
 type TBulletSeparator = {
   style?: TextStyle;

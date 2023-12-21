@@ -1,12 +1,13 @@
+import React from 'react';
+import { View } from 'react-native';
+import { Snackbar } from 'react-native-paper';
+
 import { Button } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { InvoiceStatus } from '../../../models/entities/invoice/invoice';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE, invoiceCreationButtonStyles as styles } from '../utils/styles';
 import { InvoiceCreationProps } from '../utils/utils';
-import React from 'react';
-import { View } from 'react-native';
-import { Snackbar } from 'react-native-paper';
 
 export const InvoiceCreationButton: React.FC<InvoiceCreationProps> = props => {
   const { navigationState, setNavigationState, navigation, invoiceStatus } = props;

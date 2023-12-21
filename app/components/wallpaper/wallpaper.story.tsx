@@ -1,7 +1,8 @@
-import { Story, StoryScreen, UseCase } from '../../../storybook/views';
-import { Wallpaper } from './wallpaper';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
+
+import { Story, StoryScreen, UseCase } from '../../../storybook/views';
+import { Wallpaper } from './wallpaper';
 
 declare let module;
 

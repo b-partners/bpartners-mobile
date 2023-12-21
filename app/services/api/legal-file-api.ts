@@ -1,7 +1,8 @@
+import { ApiResponse } from 'apisauce';
+
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { ApproveLegalFileResult, GetLegalFilesResult } from './api.types';
-import { ApiResponse } from 'apisauce';
 
 export class LegalFileApi {
   private api: Api;

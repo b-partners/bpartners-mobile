@@ -1,11 +1,12 @@
 // import { Octicons as Icon } from '@expo/vector-icons';
+import React, { FC } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+
 import RadioButton from '../../../../components/radio-button/radio-button';
 import { Text } from '../../../../components/text/text';
 import { Customer } from '../../../../models/entities/customer/customer';
 import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
-import React, { FC } from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 type TCustomerRow = {
   customer: Customer;

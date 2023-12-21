@@ -1,10 +1,11 @@
+import React, { useState } from 'react';
+import { View, ViewStyle } from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
+
 import { TxKeyPath } from '../../i18n';
 import { useStores } from '../../models';
 import { color } from '../../theme';
 import { Button } from '../button/button';
-import React, { useState } from 'react';
-import { View, ViewStyle } from 'react-native';
-import DocumentPicker from 'react-native-document-picker';
 
 type FileUploadProps = {
   selectFileTx: TxKeyPath;

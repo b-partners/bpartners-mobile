@@ -1,11 +1,12 @@
+import React from 'react';
+import { TextStyle, View, ViewStyle } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { spacing } from '../../theme';
 import { printCurrencyToMajors } from '../../utils/money';
 import { AutoImage } from '../auto-image/auto-image';
 import { Text } from '../text/text';
 import { HEADER_STYLE } from './style';
-import React from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const CONTAINER_STYLE: ViewStyle = {
   paddingVertical: spacing[2],

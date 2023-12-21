@@ -1,7 +1,8 @@
-import { color } from '../../theme';
-import { SwitchProps } from './switch.props';
 import React from 'react';
 import { Animated, Easing, TouchableWithoutFeedback, ViewStyle } from 'react-native';
+
+import { color } from '../../theme';
+import { SwitchProps } from './switch.props';
 
 // dimensions
 const THUMB_SIZE = 30;

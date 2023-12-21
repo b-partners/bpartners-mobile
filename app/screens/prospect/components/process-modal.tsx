@@ -1,3 +1,12 @@
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Modal } from 'react-native-paper';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import RadioButton from '../../../components/radio-button/radio-button';
@@ -17,14 +26,6 @@ import { transactionModalStyles as styles } from '../../transaction/utils/styles
 import { CHECKED, CHECKED_TEXT, UNCHECKED, UNCHECKED_TEXT } from '../utils/styles';
 import { ProcessModalProps, ProspectFeedback } from '../utils/utils';
 import { ButtonActions } from './button-action';
-import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
-import { Modal } from 'react-native-paper';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import IoniconIcon from 'react-native-vector-icons/Ionicons';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 export const ProcessModal: React.FC<ProcessModalProps> = props => {
   const { showModal, setShowModal, prospect, setCurrentStatus, status, setStatus, isEditing, setIsEditing } = props;

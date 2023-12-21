@@ -1,3 +1,11 @@
+import { DrawerScreenProps } from '@react-navigation/drawer';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { FlatList, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import { Searchbar } from 'react-native-paper';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+
 import { BpPagination, HeaderWithBalance, Icon, Loader, NoDataProvided, Screen, Separator } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -10,13 +18,6 @@ import { invoicePageSize } from '../invoice-form/components/utils';
 import { LOADER_STYLE, SCREEN_STYLE } from '../invoices/utils/styles';
 import { Transaction } from './components/transaction';
 import { TransactionModal } from './components/transaction-modal';
-import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
-import { Searchbar } from 'react-native-paper';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 const FULL: ViewStyle = {
   flex: 1,

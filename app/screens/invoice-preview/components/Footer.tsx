@@ -1,3 +1,8 @@
+import { FontAwesome, Octicons } from '@expo/vector-icons';
+import React, { FC, useEffect, useState } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -9,10 +14,6 @@ import { sendEmail } from '../../../utils/core/invoicing-utils';
 import { fetchBinaryFiles } from '../../../utils/file-utils';
 import { showMessage } from '../../../utils/snackbar';
 import { DownloadButton } from './DownloadButton';
-import { FontAwesome, Octicons } from '@expo/vector-icons';
-import React, { FC, useEffect, useState } from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import ReactNativeBlobUtil from 'react-native-blob-util';
 
 const ACTION_CONTAINER: ViewStyle = { flexDirection: 'row' };
 // @ts-ignore

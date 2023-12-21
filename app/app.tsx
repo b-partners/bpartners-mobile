@@ -9,6 +9,11 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
+import * as Sentry from '@sentry/react-native';
+import React, { useEffect, useState } from 'react';
+import { LogBox } from 'react-native';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+
 import { ToggleStorybook } from '../storybook/toggle-storybook';
 import env from './config/env';
 import './i18n';
@@ -20,10 +25,6 @@ import { initFonts } from './theme/fonts';
 import './utils/ignore-warnings';
 // expo
 import * as storage from './utils/storage';
-import * as Sentry from '@sentry/react-native';
-import React, { useEffect, useState } from 'react';
-import { LogBox } from 'react-native';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:

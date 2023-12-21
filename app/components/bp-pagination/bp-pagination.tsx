@@ -1,9 +1,10 @@
-import { palette } from '../../theme/palette';
-import { Text } from '../text/text';
-import { paginationStyles as styles } from './utils/styles';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+
+import { palette } from '../../theme/palette';
+import { Text } from '../text/text';
+import { paginationStyles as styles } from './utils/styles';
 
 type InvoicePaginationProps = {
   maxPage: number;

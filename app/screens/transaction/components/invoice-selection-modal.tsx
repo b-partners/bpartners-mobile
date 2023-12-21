@@ -1,3 +1,8 @@
+import React, { useRef, useState } from 'react';
+import { FlatList, Modal, Platform, TouchableOpacity, View } from 'react-native';
+import { ProgressBar, Searchbar } from 'react-native-paper';
+import RNVIcon from 'react-native-vector-icons/AntDesign';
+
 import { BpPagination, Button, Loader, Separator, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
@@ -9,10 +14,6 @@ import { showMessage } from '../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../invoices/utils/styles';
 import { InvoiceSelectionModalProps } from '../utils/utils';
 import { InvoiceRow } from './invoice-row';
-import React, { useRef, useState } from 'react';
-import { FlatList, Modal, Platform, TouchableOpacity, View } from 'react-native';
-import { ProgressBar, Searchbar } from 'react-native-paper';
-import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props => {
   const { showModal, setShowModal, invoices, loading, transaction, setTransactionModal, getSelectedInvoice } = props;

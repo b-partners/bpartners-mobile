@@ -1,12 +1,3 @@
-import { Text } from '../../../components';
-import { translate } from '../../../i18n';
-import { ProspectStatus } from '../../../models/entities/prospect/prospect';
-import { color, spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
-import { datePipe } from '../../../utils/pipes';
-import { prospectItemStyles as styles } from '../utils/styles';
-import { ProspectItemProps } from '../utils/utils';
-import { ProcessModal } from './process-modal';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
@@ -16,6 +7,16 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
+
+import { Text } from '../../../components';
+import { translate } from '../../../i18n';
+import { ProspectStatus } from '../../../models/entities/prospect/prospect';
+import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
+import { datePipe } from '../../../utils/pipes';
+import { prospectItemStyles as styles } from '../utils/styles';
+import { ProspectItemProps } from '../utils/utils';
+import { ProcessModal } from './process-modal';
 
 const IconGroup = {
   email: <MaterialCommunity name='email' size={18} color={color.palette.secondaryColor} />,

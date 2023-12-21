@@ -1,13 +1,14 @@
-import { RootStore } from '../../models/stores/root-store/root-store';
-import { goBack, navigate, resetRoot } from '../../navigators/navigation-utilities';
-import { clear } from '../../utils/storage';
-import { DEFAULT_REACTOTRON_CONFIG, ReactotronConfig } from './reactotron-config';
-import { Tron } from './tron';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { onSnapshot } from 'mobx-state-tree';
 import { Platform } from 'react-native';
 import { ArgType } from 'reactotron-core-client';
 import { mst } from 'reactotron-mst';
+
+import { RootStore } from '../../models/stores/root-store/root-store';
+import { goBack, navigate, resetRoot } from '../../navigators/navigation-utilities';
+import { clear } from '../../utils/storage';
+import { DEFAULT_REACTOTRON_CONFIG, ReactotronConfig } from './reactotron-config';
+import { Tron } from './tron';
 
 // Teach TypeScript about the bad things we want to do.
 declare global {

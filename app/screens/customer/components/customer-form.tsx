@@ -1,3 +1,9 @@
+import { Formik } from 'formik';
+import { observer } from 'mobx-react-lite';
+import React, { Dispatch, FC, PropsWithoutRef, SetStateAction } from 'react';
+import { ScrollView, View } from 'react-native';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 import { Button, Loader, Text } from '../../../components';
 import FormField from '../../../components/forms/form-field';
 import { useStores } from '../../../models';
@@ -7,11 +13,6 @@ import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
 import { CustomerModalType } from '../customers-screen';
 import { CustomerValidationSchema } from '../utils/customer-validator';
 import { intiaValueRenderer, saveOrUpdate } from '../utils/utils';
-import { Formik } from 'formik';
-import { observer } from 'mobx-react-lite';
-import React, { Dispatch, FC, PropsWithoutRef, SetStateAction } from 'react';
-import { ScrollView, View } from 'react-native';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 export const CustomerForm: FC<
   PropsWithoutRef<{

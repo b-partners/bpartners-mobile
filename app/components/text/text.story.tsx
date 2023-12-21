@@ -1,9 +1,10 @@
-import { Story, StoryScreen, UseCase } from '../../../storybook/views';
-import { color } from '../../theme';
-import { Text } from './text';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
+
+import { Story, StoryScreen, UseCase } from '../../../storybook/views';
+import { color } from '../../theme';
+import { Text } from './text';
 
 declare let module;
 

@@ -1,14 +1,15 @@
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Modal } from 'react-native-paper';
+
 import { Button, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { AccountInfos, Account } from '../../../models/entities/account/account';
+import { Account, AccountInfos } from '../../../models/entities/account/account';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Modal } from 'react-native-paper';
 
 type BankModalProps = {
   confirmationModal: boolean;

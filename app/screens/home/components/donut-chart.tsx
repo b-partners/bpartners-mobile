@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { PieChart } from 'react-native-gifted-charts';
+
 import { Icon, Text } from '../../../components';
 import { Menu, MenuItem } from '../../../components/menu/menu';
 import { TxKeyPath, translate } from '../../../i18n';
@@ -6,9 +10,6 @@ import { TransactionSummary as ITransactionSummary, Summary } from '../../../mod
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { printCurrency } from '../../../utils/money';
-import React, { useState } from 'react';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { PieChart } from 'react-native-gifted-charts';
 
 const CHART_CONTAINER: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%', height: 150 };
 const LABEL_CONTAINER_STYLE: ViewStyle = {

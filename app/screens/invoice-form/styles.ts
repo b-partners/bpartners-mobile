@@ -1,6 +1,7 @@
+import { TextStyle, ViewStyle } from 'react-native';
+
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
-import { TextStyle, ViewStyle } from 'react-native';
 
 export const SHADOW_STYLE: ViewStyle = {
   shadowOffset: { height: 10, width: 0 },

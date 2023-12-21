@@ -1,3 +1,17 @@
+import { Auth } from '@aws-amplify/auth';
+import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
+import { Amplify } from 'aws-amplify';
+import React, { useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import * as Keychain from 'react-native-keychain';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import IoniconIcon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import OcticonsIcon from 'react-native-vector-icons/Octicons';
+
 import awsExports from '../../../src/aws-exports';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -20,19 +34,6 @@ import {
   TEXT_STYLE,
 } from './utils/styles';
 import { RouteNameProps } from './utils/utils';
-import { Auth } from '@aws-amplify/auth';
-import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
-import { Amplify } from 'aws-amplify';
-import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import * as Keychain from 'react-native-keychain';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import IoniconIcon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import OcticonsIcon from 'react-native-vector-icons/Octicons';
 
 Amplify.configure(awsExports);
 

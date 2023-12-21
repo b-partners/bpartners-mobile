@@ -1,8 +1,9 @@
+import { ApiResponse } from 'apisauce';
+
 import { Customer } from '../../models/entities/customer/customer';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetCustomersResult } from './api.types';
-import { ApiResponse } from 'apisauce';
 
 export class CustomerApi {
   private api: Api;

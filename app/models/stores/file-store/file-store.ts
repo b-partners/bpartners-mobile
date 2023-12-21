@@ -1,7 +1,8 @@
+import { types } from 'mobx-state-tree';
+
 import { AuthApi } from '../../../services/api/auth-api';
 import { FileApi } from '../../../services/api/file-api';
 import { withEnvironment } from '../../extensions/with-environment';
-import { types } from 'mobx-state-tree';
 
 export const FileStoreModel = types
   .model('File')

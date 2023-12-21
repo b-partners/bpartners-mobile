@@ -1,8 +1,9 @@
+import * as React from 'react';
+import { Text as ReactNativeText } from 'react-native';
+
 import { translate } from '../../i18n';
 import { presets } from './text.presets';
 import { TextProps } from './text.props';
-import * as React from 'react';
-import { Text as ReactNativeText } from 'react-native';
 
 /**
  * For your text displaying needs.

@@ -1,3 +1,7 @@
+import React, { FC, useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { Icon, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -7,9 +11,6 @@ import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { CustomerFormFieldFooter } from '../../invoice-form/components/customer/customer-form-field-footer';
 import { BankSelectionField } from './bank-selection-field';
-import React, { FC, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type TAccountConfigProps = {
   accountList: Account[];

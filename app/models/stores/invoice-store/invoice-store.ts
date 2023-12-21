@@ -1,3 +1,6 @@
+import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
+import uuid from 'react-native-uuid';
+
 import { PaymentApi } from '../../../services/api/payment-api';
 import { RTLog } from '../../../utils/reactotron-log';
 import { Criteria, PageCriteria } from '../../entities/criteria/criteria';
@@ -5,8 +8,6 @@ import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, MethodModel, Searc
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
-import { Instance, SnapshotIn, SnapshotOut, detach, flow, types } from 'mobx-state-tree';
-import uuid from 'react-native-uuid';
 
 export const InvoiceStoreModel = types
   .model('InvoiceStore')

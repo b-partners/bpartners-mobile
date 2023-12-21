@@ -1,5 +1,6 @@
-import { translate } from '../../../i18n';
 import * as yup from 'yup';
+
+import { translate } from '../../../i18n';
 
 export interface IdentityState {
   accessToken: string;

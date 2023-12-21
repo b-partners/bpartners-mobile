@@ -1,3 +1,7 @@
+import React, { useCallback } from 'react';
+import { Alert, FlatList, Linking, Text, TouchableOpacity, View } from 'react-native';
+import Market from 'react-native-vector-icons/Entypo';
+
 import { AutoImage } from '../../../components';
 import { translate } from '../../../i18n';
 import { Marketplace } from '../../../models/entities/marketplace/marketplace';
@@ -14,9 +18,6 @@ import {
   ROW_LOGO_STYLE,
   TEXT_ROW_STYLE,
 } from '../styles';
-import React, { useCallback } from 'react';
-import { Alert, FlatList, Linking, Text, TouchableOpacity, View } from 'react-native';
-import Market from 'react-native-vector-icons/Entypo';
 
 export function RowList(props: { marketplaces: Marketplace[] }) {
   const { marketplaces } = props;

@@ -1,8 +1,9 @@
-import { Button, TextField } from '../../../components';
-import { color, spacing } from '../../../theme';
 import { Formik } from 'formik';
 import React from 'react';
 import { View, ViewStyle } from 'react-native';
+
+import { Button, TextField } from '../../../components';
+import { color, spacing } from '../../../theme';
 
 const TEXT_FIELD_CONTAINER_STYLE = { paddingVertical: 0, margin: 0 };
 const TEXT_FIELD_INPUT_STYLE = {

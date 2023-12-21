@@ -1,3 +1,10 @@
+import { Formik } from 'formik';
+import { observer } from 'mobx-react-lite';
+import React, { FC, PropsWithoutRef, useState } from 'react';
+import { StyleProp, TextStyle, View } from 'react-native';
+import uuid from 'react-native-uuid';
+import * as yup from 'yup';
+
 import { Button, Loader, Text } from '../../../components';
 import FormField from '../../../components/forms/form-field';
 import { translate } from '../../../i18n';
@@ -6,12 +13,6 @@ import { color, spacing } from '../../../theme';
 import { commaToDot, commaValidation } from '../../../utils/comma-to-dot';
 import { amountToMinors } from '../../../utils/money';
 import { PaymentModal } from './payment-initiation-modal';
-import { Formik } from 'formik';
-import { observer } from 'mobx-react-lite';
-import React, { FC, PropsWithoutRef, useState } from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
-import uuid from 'react-native-uuid';
-import * as yup from 'yup';
 
 const INVALID_FORM_FIELD: StyleProp<TextStyle> = {
   borderBottomColor: '#FF5983',

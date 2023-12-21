@@ -1,6 +1,7 @@
+import { StyleSheet, TextStyle } from 'react-native';
+
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { StyleSheet, TextStyle } from 'react-native';
 
 export const normalText: TextStyle = {
   textDecorationLine: 'none',

@@ -1,3 +1,10 @@
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { cloneDeep } from 'lodash';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { View } from 'react-native';
+
 import { Button, Loader, Screen } from '../../../components';
 import { InputFieldDropdown } from '../../../components/input-field-dropdown/input-field-dropdown';
 import { translate } from '../../../i18n';
@@ -10,12 +17,6 @@ import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 import { BusinessActivityModal } from '../components/business-activity-modal';
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { cloneDeep } from 'lodash';
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { View } from 'react-native';
 
 enum ActivityStatus {
   PRIMARY = 'PRIMARY',

@@ -1,6 +1,7 @@
-import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApisauceInstance, create } from 'apisauce';
+
+import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
 
 /**
  * Manages all requests to the API.

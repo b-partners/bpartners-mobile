@@ -1,9 +1,10 @@
+import React from 'react';
+import { StyleProp, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
+
 import { TxKeyPath, translate } from '../../i18n';
 import { color, spacing, typography } from '../../theme';
 import { palette } from '../../theme/palette';
 import { Text } from '../text/text';
-import React from 'react';
-import { StyleProp, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
 // the base styling for the container
 const CONTAINER: ViewStyle = {

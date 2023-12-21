@@ -1,5 +1,6 @@
-import { palette } from '../../../theme/palette';
 import { StyleSheet } from 'react-native';
+
+import { palette } from '../../../theme/palette';
 
 export const noDataProvidedStyles = StyleSheet.create({
   container: {
