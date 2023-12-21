@@ -6,6 +6,7 @@ import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Button, Icon, Separator, Text, TextField } from '../../../../components';
+import RadioButton from '../../../../components/radio-button/radio-button';
 import { useStores } from '../../../../models';
 import { Product } from '../../../../models/entities/product/product';
 import { color, spacing } from '../../../../theme';
@@ -15,7 +16,6 @@ import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils
 import { ProductModal } from '../../../product/components/product-modal';
 import { ProductModalType } from '../../../product/products-screen';
 import { InvoiceFormField } from '../../invoice-form-field';
-import RadioButton from '../select-form-field/radio-button';
 
 type ProductFormFieldProps = {
   index: number;
@@ -38,7 +38,9 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const [quantityValue, setQuantityValue] = useState(temp?.quantity?.toString());
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
-  const { productStore } = useStores();
+  const { productStore, authStore } = useStores();
+
+  const isSubjectToVat = authStore?.currentAccountHolder?.companyInfo?.isSubjectToVat;
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -150,7 +152,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                         <EntypoIcon name='chevron-thin-down' size={18} color='#000' />
                       </View>
                     </TouchableOpacity>
-                    <ProductModal modal={modal} setModal={setModal} />
+                    <ProductModal modal={modal} setModal={setModal} isSubjectToVat={isSubjectToVat} />
                     <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
                       <View>
                         <View
@@ -219,7 +221,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                               ...product,
                                               quantity: 1,
                                             });
-                                            setTotalPrice(product.unitPrice * 1);
+                                            setTotalPrice(product.unitPriceWithVat * 1);
                                           }}
                                         >
                                           <>

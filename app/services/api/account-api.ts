@@ -6,7 +6,7 @@ import { Feedback } from '../../models/entities/feedback/feedback';
 import { GlobalInfo } from '../../models/entities/global-info/global-info';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetAccountHolderResult, GetUserAccount, UpdateAccountHodlerInfo } from './api.types';
+import { GetAccountHolderResult, GetUserAccount, GetWhoAmIResult, UpdateAccountHodlerInfo } from './api.types';
 
 export class AccountApi {
   private api: Api;
@@ -15,7 +15,7 @@ export class AccountApi {
     this.api = api;
   }
 
-  async getAccounts(userId: string): Promise<GetUserAccount> {
+  async getAccount(userId: string): Promise<GetUserAccount> {
     // make the api call
     const response: ApiResponse<any> = await this.api.apisauce.get(`users/${userId}/accounts`);
     // the typical ways to die when calling an api
@@ -30,11 +30,25 @@ export class AccountApi {
     return { kind: 'ok', account: fetchedAccount };
   }
 
-  async getAccountHolders(user: string, account: string): Promise<GetAccountHolderResult> {
-    if (!user || !account) {
+  async getAccounts(userId: string): Promise<GetUserAccount> {
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.get(`users/${userId}/accounts`);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) {
+        __DEV__ && console.tron.log(problem.kind);
+        throw new Error(problem.kind);
+      }
+    }
+    return response.data;
+  }
+
+  async getAccountHolders(userId: string, accountId: string): Promise<GetAccountHolderResult> {
+    if (!userId || !accountId) {
       return { kind: 'bad-data' };
     }
-    const response: ApiResponse<any> = await this.api.apisauce.get(`users/${user}/accounts/${account}/accountHolders`);
+    const response: ApiResponse<any> = await this.api.apisauce.get(`users/${userId}/accounts/${accountId}/accountHolders`);
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);
@@ -52,6 +66,17 @@ export class AccountApi {
     }
     const accountHolder = response.data;
     return { kind: 'ok', accountHolder };
+  }
+
+  async setActiveAccount(userId: string, accountId: string): Promise<GetWhoAmIResult> {
+    const response: ApiResponse<any> = await this.api.apisauce.post(`users/${userId}/accounts/${accountId}/active`);
+    __DEV__ && console.tron.log(response);
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const user = response.data;
+    return { kind: 'ok', user };
   }
 
   async updateFeedbackLink(userId: string, ahId: string, feedback: Feedback): Promise<UpdateAccountHodlerInfo> {

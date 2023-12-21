@@ -439,11 +439,13 @@
     "productCreationForm": {
       "unitPrice": "Prix unitaire HT (en €)",
       "description": "Description",
+      "tva": "TVA (en %)",
       "add": "Ajouter ce produit",
       "edit": "Modifier ce produit"
     },
     "productForm": {
       "addProduct": "Ajouter un produit",
+      "editProduct": "Modifier un produit",
       "title": "Produit",
       "placeholder": "Sélectionner un produit",
       "unitPrice": "Prix Unit.",
@@ -526,7 +528,16 @@
     "iban": "IBAN",
     "logout": "Déconnecter Ma Banque",
     "noBank": "Aucune banque associé",
-    "associate": "Associer une banque"
+    "associate": "Associer une banque",
+    "myAccount": "Mon compte",
+    "accountSelection": "Sélection du compte",
+    "changeIncomingAccount": "Changer de compte d’encaissement.",
+    "disconnectionModal": {
+      "confirm": "Confirmation",
+      "confirmationPhrase": "Voulez-vous déconnecter la banque",
+      "disconnect": "Déconnecter",
+      "disconnected": "Déconnecté"
+    }
   },
   "forgotPasswordScreen": {
     "title": "Mot de passe oublié ?",
@@ -575,6 +586,10 @@
   "productScreen": {
     "title": "Mes produits",
     "export": "Exporter",
+    "description": "Description",
+    "unitPriceExclTax": "Prix unitaire HT",
+    "tva": "TVA",
+    "unitPriceInclTax": "Prix unitaire TTC",
     "price": "Prix"
   },
   "relaunchHistoryModal": {

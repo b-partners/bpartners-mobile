@@ -33,7 +33,7 @@ export const BankScreen: FC<DrawerScreenProps<NavigatorParamList, 'bank'>> = obs
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='logoutScreen.swan' style={HEADER} titleStyle={HEADER_TITLE} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
       <Screen style={CONTAINER} preset='auto'>
-        {currentAccount.bank ? <Bank currentAccount={currentAccount} /> : <NoBank />}
+        {currentAccount.bank ? <Bank /> : <NoBank />}
       </Screen>
     </ErrorBoundary>
   );

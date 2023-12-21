@@ -9,6 +9,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
+import RadioButton from '../../../components/radio-button/radio-button';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { Invoice, InvoiceStatus, SearchInvoice } from '../../../models/entities/invoice/invoice';
@@ -18,7 +19,6 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
-import RadioButton from '../../invoice-form/components/select-form-field/radio-button';
 import { invoicePageSize } from '../../invoice-form/components/utils';
 import { InvoiceSelectionModal } from '../../transaction/components/invoice-selection-modal';
 import { TransactionField } from '../../transaction/components/transaction-field';
