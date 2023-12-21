@@ -11,16 +11,14 @@ export const NoBank = () => {
 
   // const { currentUser, currentAccount } = authStore;
 
-  {
-    /*
+  /*{
     const initiateBankConnection = () => {
       const fetch = async () => {
         await bankStore.connectToBank(currentUser.id, currentAccount.id);
       };
       fetch().catch();
     };
-  */
-  }
+  }*/
 
   return (
     <View style={{ width: '100%', height: '100%', flexDirection: 'column' }}>
