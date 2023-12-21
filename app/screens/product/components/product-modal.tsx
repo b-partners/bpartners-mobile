@@ -10,9 +10,10 @@ import { ProductForm } from './product-form';
 type ProductModalProps = {
   modal: ProductModalType;
   setModal: Dispatch<SetStateAction<ProductModalType>>;
+  isSubjectToVat: boolean;
 };
 export const ProductModal: React.FC<ProductModalProps> = props => {
-  const { modal, setModal } = props;
+  const { modal, setModal, isSubjectToVat } = props;
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   const closeModal = () => {
@@ -37,10 +38,15 @@ export const ProductModal: React.FC<ProductModalProps> = props => {
         >
           <View style={{ backgroundColor: palette.white, height: '100%', width: '100%' }}>
             {!isKeyboardOpen && (
-              <Header rightIcon='cross' onRightPress={closeModal} style={{ borderTopLeftRadius: 50 }} headerTx='invoiceFormScreen.invoiceForm.addItem' />
+              <Header
+                rightIcon='cross'
+                onRightPress={closeModal}
+                style={{ borderTopLeftRadius: 50 }}
+                headerTx={modal?.type === 'CREATION' ? 'invoiceFormScreen.productForm.addProduct' : 'invoiceFormScreen.productForm.editProduct'}
+              />
             )}
             <View style={{ width: '100%', height: '100%' }}>
-              <ProductForm modal={modal} setModal={setModal} isKeyboardOpen={isKeyboardOpen} />
+              <ProductForm modal={modal} setModal={setModal} isKeyboardOpen={isKeyboardOpen} isSubjectToVat={isSubjectToVat} />
             </View>
           </View>
         </View>

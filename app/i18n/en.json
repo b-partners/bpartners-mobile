@@ -453,13 +453,15 @@
       }
     },
     "productCreationForm": {
-      "unitPrice": "Unit price before tax (in €)",
+      "unitPrice": "Unit price excluding tax (in €)",
       "description": "Description",
+      "tva": "TVA (en %)",
       "add": "Add this product",
       "edit": "Edit this product"
     },
     "productForm": {
       "addProduct": "Add a product",
+      "editProduct": "Edit a produit",
       "placeholder": "Choose a product",
       "title": "Product",
       "unitPrice": "Unit price",
@@ -543,7 +545,16 @@
     "iban": "IBAN",
     "logout": "Disconnect my Bank",
     "noBank": "No associated bank",
-    "associate": "Associate a bank"
+    "associate": "Associate a bank",
+    "myAccount": "My account",
+    "accountSelection": "Account selection",
+    "changeIncomingAccount": "Change your incoming payment account.",
+    "disconnectionModal": {
+      "confirm": "Confirmation",
+      "confirmationPhrase": "Do you want to disconnect the bank",
+      "disconnect": "Disconnect",
+      "disconnected": "Disconnected"
+    }
   },
   "forgotPasswordScreen": {
     "title": "Forgot your password ?",
@@ -592,7 +603,11 @@
   "productScreen": {
     "title": "My products",
     "export": "Exporter",
-    "price": "Price"
+    "price": "Price",
+    "description": "Description",
+    "unitPriceExclTax": "Unit price excluding tax",
+    "tva": "TVA",
+    "unitPriceInclTax": "Unit price including tax"
   },
   "relaunchHistoryModal": {
     "title": "Relaunch history",
