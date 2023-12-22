@@ -10,7 +10,7 @@ import { RTLog } from '../../../utils/reactotron-log';
 import { showMessage } from '../../../utils/snackbar';
 import { clear, save } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
-import { Account, AccountInfos, AccountModel } from '../../entities/account/account';
+import { Account, AccountInfos, AccountInfosModel, AccountModel } from '../../entities/account/account';
 import { BusinessActivity } from '../../entities/business-activity/business-activity';
 import { CompanyInfo } from '../../entities/company-info/company-info';
 import { Feedback } from '../../entities/feedback/feedback';
@@ -30,9 +30,11 @@ export const AuthStoreModel = types
     accessToken: types.maybeNull(types.string),
     currentUser: types.maybeNull(UserModel),
     currentAccount: types.maybeNull(AccountModel),
+    accountList: types.optional(types.array(AccountModel), []),
     currentAccountHolder: types.maybeNull(AccountHolderModel),
     loadingUpdateInfos: types.optional(types.boolean, false),
     userAuth: types.maybeNull(AuthUserModel),
+    accountInfo: types.maybeNull(AccountInfosModel),
   })
   .extend(withEnvironment)
   .extend(withRootStore)
@@ -171,6 +173,7 @@ export const AuthStoreModel = types
     getAccountSuccess: async (currentUser: User, currentAccount: Account, currentAccountHolder: AccountHolder) => {
       self.currentAccount = { ...currentAccount };
       self.currentAccountHolder = { ...currentAccountHolder };
+      self.accountInfo = { ...currentAccount };
 
       await save('currentUser', currentUser);
       await save('currentAccount', currentAccount);
@@ -187,7 +190,7 @@ export const AuthStoreModel = types
     getAccounts: flow(function* () {
       const accountApi = new AccountApi(self.environment.api);
       try {
-        const getAccountResult = yield accountApi.getAccounts(self.currentUser.id);
+        const getAccountResult = yield accountApi.getAccount(self.currentUser.id);
         const getAccountHolderResult = yield accountApi.getAccountHolders(self.currentUser.id, getAccountResult.account.id);
         self.getAccountSuccess(self.currentUser, getAccountResult.account, getAccountHolderResult.accountHolder);
       } catch (e) {
@@ -197,8 +200,34 @@ export const AuthStoreModel = types
     }),
   }))
   .actions(self => ({
-    updateAccountInfosSuccess: (account: Account) => {
-      self.currentAccount = account;
+    getAccountListSuccess: (accountList: Account[]) => {
+      const accountModels = accountList.map(account => AccountModel.create(account));
+      self.accountList.replace(accountModels);
+    },
+  }))
+  .actions(self => ({
+    getAccountListFail: error => {
+      __DEV__ && console.tron.log(error.message);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    // @ts-ignore
+    getAccountList: flow(function* () {
+      const accountApi = new AccountApi(self.environment.api);
+      try {
+        const getAccountListResult = yield accountApi.getAccounts(self.currentUser.id);
+        self.getAccountListSuccess(getAccountListResult);
+        return getAccountListResult;
+      } catch (e) {
+        self.getAccountFail(e);
+        __DEV__ && console.tron.log('Handle who am I error here');
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateAccountInfosSuccess: (accountInfo: AccountInfos) => {
+      self.accountInfo = accountInfo;
     },
   }))
   .actions(self => ({
@@ -208,18 +237,76 @@ export const AuthStoreModel = types
     },
   }))
   .actions(self => ({
+    // @ts-ignore
     updateAccountInfos: flow(function* (infos: AccountInfos) {
-      self.loadingUpdateInfos = true;
       const bankApi = new BankApi(self.environment.api);
       const successMessageOption = { backgroundColor: palette.green };
       try {
-        const updateAccountResult = yield bankApi.updateAccountInfos(self.currentUser.id, self.currentAccount.id, infos);
-        self.updateAccountInfosSuccess(updateAccountResult.account);
-        showMessage(translate('common.added'), successMessageOption);
+        const { name, iban, bic } = yield bankApi.updateAccountInfos(self.currentUser.id, self.currentAccount.id, infos);
+        const accountInfoResult = { name, iban, bic };
+        self.updateAccountInfosSuccess(accountInfoResult);
+        showMessage(translate('common.registered'), successMessageOption);
+        return accountInfoResult;
       } catch (e) {
         self.updateAccountInfosFail(e);
       } finally {
         self.loadingUpdateInfos = false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    disconnectBankSuccess: (accountInfo: AccountInfos) => {
+      self.accountInfo = accountInfo;
+    },
+  }))
+  .actions(self => ({
+    disconnectBankFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    // @ts-ignore
+    disconnectBank: flow(function* () {
+      const bankApi = new BankApi(self.environment.api);
+      const successMessageOption = { backgroundColor: palette.green };
+      try {
+        const { name, iban, bic } = yield bankApi.disconnectBank(self.currentUser.id);
+        const accountInfoResult = { name, iban, bic };
+        self.updateAccountInfosSuccess(accountInfoResult);
+        showMessage(translate('bankScreen.disconnectionModal.disconnected'), successMessageOption);
+        return accountInfoResult;
+      } catch (e) {
+        self.updateAccountInfosFail(e);
+      } finally {
+        self.loadingUpdateInfos = false;
+      }
+    }),
+  }))
+  .actions(() => ({
+    setActiveAccountSuccess: () => {
+      __DEV__ && console.tron.log('Account activated successfully !');
+      // self.currentUser = updatedUser;
+    },
+  }))
+  .actions(self => ({
+    setActiveAccountFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    // @ts-ignore
+    setActiveAccount: flow(function* (accountID: string) {
+      const successMessageOption = { backgroundColor: palette.green };
+      const accountApi = new AccountApi(self.environment.api);
+      try {
+        const updatedUser = yield accountApi.setActiveAccount(self.currentUser.id, accountID);
+        self.setActiveAccountSuccess();
+        showMessage(translate('common.addedOrUpdated'), successMessageOption);
+        return updatedUser;
+      } catch (e) {
+        self.setActiveAccountFail(e);
       }
     }),
   }))

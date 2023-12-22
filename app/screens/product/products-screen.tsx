@@ -32,8 +32,11 @@ export type ProductModalType = {
   product: IProduct;
 };
 export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
-  const { productStore } = useStores();
+  const { productStore, authStore } = useStores();
   const { products, loadingProduct } = productStore;
+
+  const isSubjectToVat = authStore?.currentAccountHolder?.companyInfo?.isSubjectToVat;
+
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(products.length / itemsPerPage));
   const [modal, setModal] = useState<ProductModalType>({
@@ -281,10 +284,69 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             backgroundColor={palette.white}
           >
             <View>
+              <View
+                style={{
+                  backgroundColor: palette.secondaryColor,
+                  width: '100%',
+                  paddingHorizontal: spacing[2],
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 48,
+                }}
+              >
+                <Text
+                  tx={'productScreen.description'}
+                  style={{
+                    color: palette.white,
+                    paddingLeft: spacing[3],
+                    width: '40%',
+                    fontSize: 14,
+                  }}
+                />
+                <View
+                  style={{
+                    width: '40%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                  }}
+                >
+                  {isSubjectToVat && (
+                    <>
+                      <Text
+                        tx={'productScreen.unitPriceExclTax'}
+                        style={{
+                          color: palette.white,
+                          width: '50%',
+                          fontSize: 14,
+                        }}
+                      />
+                      <Text
+                        tx={'productScreen.tva'}
+                        style={{
+                          color: palette.white,
+                          width: '50%',
+                          fontSize: 14,
+                          paddingLeft: spacing[4],
+                        }}
+                      />
+                    </>
+                  )}
+                </View>
+                <Text
+                  tx={'productScreen.unitPriceInclTax'}
+                  style={{
+                    color: palette.white,
+                    width: '20%',
+                    fontSize: 14,
+                  }}
+                />
+              </View>
               <FlatList<IProduct>
                 data={displayedItems}
                 style={SECTION_LIST_CONTAINER_STYLE}
-                renderItem={({ item }) => <Product item={item} setModal={setModal} />}
+                renderItem={({ item }) => <Product item={item} setModal={setModal} isSubjectToVat={isSubjectToVat} />}
                 keyExtractor={item => item.id}
                 refreshing={loadingProduct}
                 onRefresh={handleRefresh}
@@ -361,7 +423,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
             </IButton>
           </View>
         </KeyboardAvoidingView>
-        <ProductModal modal={modal} setModal={setModal} />
+        <ProductModal modal={modal} setModal={setModal} isSubjectToVat={isSubjectToVat} />
       </View>
     </ErrorBoundary>
   );
