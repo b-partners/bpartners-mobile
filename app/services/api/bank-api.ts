@@ -23,6 +23,17 @@ export class BankApi {
     return response.data;
   }
 
+  async disconnectBank(userId: string): Promise<Account> {
+    const response: ApiResponse<Account> = await this.api.apisauce.post(`users/${userId}/disconnectBank`);
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+
+    return response.data;
+  }
+
   async updateAccountInfos(userId: string, accountId: string, infos: AccountInfos): Promise<Account> {
     const response: ApiResponse<Account> = await this.api.apisauce.put(`users/${userId}/accounts/${accountId}/identity`, infos);
 
