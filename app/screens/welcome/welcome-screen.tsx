@@ -83,19 +83,22 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           refreshToken: user.signInUserSession.refreshToken.token,
         };
         await Keychain.setGenericPassword(inputUsername, inputPassword);
-        await authStore.whoami(newIdentity.accessToken);
-        await legalFilesStore.getLegalFiles();
-        const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
-        if (!hasApprovedLegalFiles) {
-          navigation.navigate('legalFile');
-        } else {
-          await authStore.getAccounts();
-          navigation.navigate('oauth');
+        try {
+          await authStore.whoami(newIdentity.accessToken);
+          await legalFilesStore.getLegalFiles();
+          const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
+          if (!hasApprovedLegalFiles) {
+            navigation.navigate('legalFile');
+          } else {
+            await authStore.getAccounts();
+            navigation.navigate('oauth');
+          }
+        } catch (e) {
+          showMessage(translate('errors.verifyConnection', errorMessageStyles));
         }
       }
     } catch (error) {
       showMessage(translate('errors.credentials'), errorMessageStyles);
-      navigation.navigate('welcome');
     } finally {
       setLoading(false);
     }
