@@ -27,4 +27,5 @@ jobs:
           node-version: 17.x
 
       - run: npm install --location=global prettier
+      - run: npm install --no-save @trivago/prettier-plugin-sort-imports@^4.3.0
       - run: prettier --check "app/**/*.{js,ts,tsx}" "./**/*.{json,yml,yaml}"

@@ -87,6 +87,10 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
               <Paragraph style={{ color: palette.black }}>{prospect.comment ? <>{prospect.comment}</> : translate('common.noData')}</Paragraph>
             </View>
             <View style={styles.rowDirection}>
+              <Paragraph style={{ marginRight: 5 }}>{IconGroup.comment}</Paragraph>
+              <Paragraph>{prospect.comment ? <>{prospect.comment}</> : translate('common.noData')}</Paragraph>
+            </View>
+            <View style={styles.rowDirection}>
               <Paragraph style={{ marginRight: 5 }}>{IconGroup.rating}</Paragraph>
               <Paragraph style={{ color: palette.black }}>
                 {prospect.rating && prospect.rating.value > 0 ? <>{prospect.rating.value.toFixed()}</> : translate('common.noData')}

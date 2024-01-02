@@ -2,22 +2,24 @@ import { translate } from '../../../i18n';
 import { palette } from '../../../theme/palette';
 import { commaToDot } from '../../../utils/comma-to-dot';
 import emptyToNull from '../../../utils/empty-to-null';
-import { amountToMajors, vatToMinors } from '../../../utils/money';
+import { amountToMajors, printVat, vatToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
 
 export const intiaValueRenderer = product => {
   if (product) {
-    const { id, unitPrice, description } = product;
+    const { id, unitPrice, description, vatPercent } = product;
 
     return {
       id: id,
       unitPrice: amountToMajors(unitPrice).toString(),
       description: description,
+      vatPercent: printVat(vatPercent),
     };
   } else {
     return {
       unitPrice: '',
       description: '',
+      vatPercent: '',
     };
   }
 };
@@ -29,6 +31,7 @@ export const saveOrUpdate = async (visibleModal, setVisibleModal, productStore, 
           ...emptyToNull({
             description: values.description,
             unitPrice: vatToMinors(commaToDot(values.unitPrice)),
+            vatPercent: vatToMinors(values.vatPercent),
             createdAt: new Date(),
           }),
         })
@@ -37,10 +40,11 @@ export const saveOrUpdate = async (visibleModal, setVisibleModal, productStore, 
             id: values.id,
             description: values.description,
             unitPrice: vatToMinors(commaToDot(values.unitPrice)),
+            vatPercent: parseFloat(values.vatPercent.replace(/\D/g, '')),
           }),
         });
     setTimeout(() => {
-      showMessage(translate('common.addedOrUpdated'), { backgroundColor: palette.green });
+      showMessage(translate(visibleModal.type === 'CREATION' ? 'common.added' : 'common.addedOrUpdated'), { backgroundColor: palette.green });
     }, 1500);
   } catch (e) {
     __DEV__ && console.tron.log(e);
