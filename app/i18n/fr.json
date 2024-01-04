@@ -36,6 +36,8 @@
     "search": "Rechercher",
     "open": "Ouvrir",
     "addedOrUpdated": "Mis à jour avec succès !",
+    "yes": "Oui",
+    "no": "Non",
     "reload": "Rafraichir"
   },
   "errors": {
@@ -235,6 +237,7 @@
         "section": "Ma société: ",
         "name": "Raison sociale: ",
         "siren": "Siren: ",
+        "tva": "Micro-entreprise exonérée de TVA: ",
         "officialActivityName": "Activité officielle: ",
         "contactAddress": {
           "address": "Adresse: ",
