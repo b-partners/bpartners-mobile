@@ -39,7 +39,7 @@
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
-    "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
+    "somethingWentWrong": "Un problème s'est produit. Veuillez réessayer plus tard.",
     "paymentInitiation": "Il semblerait que votre banque ne soit pas synchronisée pour supporter la collecte de paiement",
     "paymentInitM1": "Connectez-vous sur BPartners.app depuis un ordinateur / banque  puis synchroniser.",
     "paymentInitM2": "En cas de difficulté, contactez le support par mail : contact@bpartners.app ou par téléphone au:",
