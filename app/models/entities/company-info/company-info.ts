@@ -10,6 +10,7 @@ export const CompanyInfoModel = types.model('CompanyInfo').props({
   location: types.maybeNull(LocationModel),
   email: types.maybeNull(types.string),
   tvaNumber: types.maybeNull(types.string),
+  website: types.maybeNull(types.string),
 });
 
 export interface CompanyInfo extends Instance<typeof CompanyInfoModel> {}

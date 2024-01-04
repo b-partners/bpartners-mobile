@@ -5,13 +5,28 @@ import {Switch} from 'react-native-paper';
 
 import {palette} from '../../theme/palette';
 import {Text} from '../text/text';
+import {useStores} from "../../models";
+import {translate} from "../../i18n";
+import {showMessage} from "../../utils/snackbar";
+import {Log} from "../../screens/welcome/utils/utils";
 
 export function LabelWithTextRow(props) {
-    const [isSwitchOn, setIsSwitchOn] = useState(false);
-
-    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-
     const {label, text, switchTVA, countryFlag} = props;
+    const { authStore } = useStores();
+    const { currentAccountHolder } = authStore;
+    const [isSwitchOn, setIsSwitchOn] = useState(currentAccountHolder?.companyInfo?.isSubjectToVat);
+
+    const onToggleSwitch = async () => {
+        try {
+            setIsSwitchOn(!isSwitchOn);
+            Log(currentAccountHolder);
+            // await authStore.updateCompanyInfos(currentAccountHolder);
+        } catch (e) {
+            showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+            throw e;
+        }
+    };
+
     return (
         <View
             style={{
