@@ -24,7 +24,7 @@
     "next": "Next",
     "cancel": "Cancel",
     "back": "Back",
-    "noDataProvided": "No records to display",
+    "noDataProvided": "Oops! No data found",
     "loading": "Loading in progress ...",
     "added": "Successfully added",
     "registered": "Registered",
@@ -35,7 +35,8 @@
     "noData": "Unknown",
     "search": "Search",
     "open": "Open",
-    "addedOrUpdated": "Updated successfully !"
+    "addedOrUpdated": "Updated successfully !",
+    "reload": "Reload"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",

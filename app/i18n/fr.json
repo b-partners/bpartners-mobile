@@ -24,7 +24,7 @@
     "next": "Suivant",
     "cancel": "Annuler",
     "back": "Précédent",
-    "noDataProvided": "Aucun enregistrement à afficher",
+    "noDataProvided": "Oops ! Aucun élément à afficher",
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
     "registered": "Enregistré",
@@ -35,7 +35,8 @@
     "noData": "Non renseigné",
     "search": "Rechercher",
     "open": "Ouvrir",
-    "addedOrUpdated": "Mis à jour avec succès !"
+    "addedOrUpdated": "Mis à jour avec succès !",
+    "reload": "Rafraichir"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",

@@ -117,7 +117,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
                 return <ProspectItem key={index} menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} />;
               })
             ) : (
-              <NoDataProvided />
+              <NoDataProvided reload={handleRefresh} />
             )}
           </ScrollView>
         </View>
