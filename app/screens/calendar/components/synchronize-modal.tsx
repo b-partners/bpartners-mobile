@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Linking, Modal, TouchableOpacity, View } from 'react-native';
+import { Checkbox } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -15,12 +16,12 @@ import { ScrollingText } from './scrolling-text';
 export const SynchronizeModal = (props: SynchronizeModalProps) => {
   const { isOpen, setOpen } = props;
   const { calendarStore } = useStores();
+  const [isChecked, setChecked] = useState(false);
 
   const onClose = () => {
     setOpen(false);
   };
 
-  const containerWidth = 1300;
   return (
     <Modal visible={isOpen} transparent={true} onDismiss={onClose}>
       <View
@@ -61,8 +62,26 @@ export const SynchronizeModal = (props: SynchronizeModalProps) => {
             <Text style={{ fontSize: 15, fontFamily: 'Geometria', color: palette.textClassicColor }} tx={'calendarScreen.firstLabel'} />
             <Text style={{ fontSize: 15, fontFamily: 'Geometria', color: palette.textClassicColor }} tx={'calendarScreen.secondLabel'} />
             <Text style={{ fontSize: 15, fontFamily: 'Geometria', color: palette.textClassicColor }} tx={'calendarScreen.thirdLabel'} />
-            <View style={{ marginTop: spacing[4], marginBottom: spacing[2] }}>
-              <ScrollingText text={translate('calendarScreen.firstText')} containerWidth={containerWidth} />
+            <View
+              style={{
+                marginTop: spacing[4],
+                marginBottom: spacing[2],
+                flexDirection: 'row',
+                width: '100%',
+                alignItems: 'center',
+              }}
+            >
+              <View style={{ marginHorizontal: spacing[1] }}>
+                <Checkbox
+                  status={isChecked ? 'checked' : 'unchecked'}
+                  onPress={() => {
+                    setChecked(!isChecked);
+                  }}
+                  color={palette.secondaryColor}
+                  uncheckedColor={palette.greyDarker}
+                />
+              </View>
+              <ScrollingText text={translate('calendarScreen.firstText')} containerWidth={1500} />
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontSize: 12, fontFamily: 'Geometria', color: palette.greyDarker }} tx={'calendarScreen.secondText'} />
@@ -73,31 +92,58 @@ export const SynchronizeModal = (props: SynchronizeModalProps) => {
               />
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: spacing[6] }}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: palette.secondaryColor,
-                  width: 200,
-                  height: 35,
-                  bottom: '3%',
-                  alignSelf: 'center',
-                  borderRadius: 5,
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}
-                onPress={() => calendarStore.initiateConsent()}
-              >
-                <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
-                  <Text
-                    tx={'calendarScreen.sync'}
-                    style={{
-                      ...TEXT_STYLE,
-                      color: palette.white,
-                      fontFamily: 'Geometria',
-                    }}
-                  />
-                  <MaterialIcon name='sync' size={22} color={palette.white} />
+              {isChecked ? (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: palette.secondaryColor,
+                    width: 200,
+                    height: 35,
+                    bottom: '3%',
+                    alignSelf: 'center',
+                    borderRadius: 5,
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}
+                  onPress={() => calendarStore.initiateConsent()}
+                >
+                  <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
+                    <Text
+                      tx={'calendarScreen.sync'}
+                      style={{
+                        ...TEXT_STYLE,
+                        color: palette.white,
+                        fontFamily: 'Geometria',
+                      }}
+                    />
+                    <MaterialIcon name='sync' size={22} color={palette.white} />
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <View
+                  style={{
+                    backgroundColor: palette.lighterGrey,
+                    width: 200,
+                    height: 35,
+                    bottom: '3%',
+                    alignSelf: 'center',
+                    borderRadius: 5,
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
+                    <Text
+                      tx={'calendarScreen.sync'}
+                      style={{
+                        ...TEXT_STYLE,
+                        color: palette.white,
+                        fontFamily: 'Geometria',
+                      }}
+                    />
+                    <MaterialIcon name='sync' size={22} color={palette.white} />
+                  </View>
                 </View>
-              </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>

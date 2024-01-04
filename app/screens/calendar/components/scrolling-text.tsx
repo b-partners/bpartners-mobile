@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, Easing, View } from 'react-native';
 
 import { Text } from '../../../components';
+import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
 export const ScrollingText = ({ text, containerWidth }) => {
@@ -37,7 +38,7 @@ export const ScrollingText = ({ text, containerWidth }) => {
   };
 
   return (
-    <View style={{ overflow: 'hidden', width: containerWidth }}>
+    <View style={{ overflow: 'hidden', width: containerWidth, marginLeft: spacing[1] }}>
       <Animated.View style={{ flexDirection: 'row', transform: [{ translateX }] }} onLayout={() => measureTextWidth(text)}>
         <Text text={text} style={{ fontSize: 14, fontFamily: 'Geometria', color: palette.greyDarker }} />
       </Animated.View>

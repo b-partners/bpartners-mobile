@@ -602,7 +602,7 @@
     "firstLabel": "Votre session Google Agenda a expiré,",
     "secondLabel": "veuillez synchroniser votre agenda pour obtenir",
     "thirdLabel": "de nouveaux à proximité de vos prochains RDV.",
-    "firstText": "En continuant, vous acceptez que BPartners transmette les adresses récoltées depuis vos agendas à des services tiers sécurisés, de façon anonyme, pour générer des nouveaux prospects.",
+    "firstText": "En continuant, vous acceptez que BPartners transmette anonymement vos informations à la Base Adresse Nationale afin de générer des nouveaux prospects.",
     "secondText": "Pour plus d'infos, consultez: ",
     "sync": "Synchroniser"
   }

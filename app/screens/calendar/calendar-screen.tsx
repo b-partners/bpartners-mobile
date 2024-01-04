@@ -9,7 +9,7 @@ import { View } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 
 import { Header, Screen } from '../../components';
-import { useStores } from '../../models';
+//import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
@@ -19,11 +19,11 @@ import { calendarScreenStyles as styles } from './utils/styles';
 
 export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
   const today = new Date();
-  const { calendarStore } = useStores();
+  // const { calendarStore } = useStores();
   const [currentDate, setCurrentDate] = useState<DateData>();
-  const [isOpen, setOpen] = useState(false);
+  const [, /*isOpen*/ setOpen] = useState(false);
   const [isEventsModal, setEventsModal] = useState(false);
-  const [monthVisible, setMonthVisible] = useState(today.getMonth());
+  //const [monthVisible, setMonthVisible] = useState(today.getMonth());
 
   /*useEffect(() => {
     (async () => {
@@ -70,7 +70,7 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
             />
           </View>
         </Screen>
-        <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />
+        <SynchronizeModal isOpen={true} setOpen={setOpen} />
         <EventsModal isOpen={isEventsModal} setOpen={setEventsModal} />
       </View>
     </ErrorBoundary>
