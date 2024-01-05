@@ -29,8 +29,8 @@ export const CalendarStoreModel = types
       try {
         const payload: RedirectionStatusUrls = {
           redirectionStatusUrls: {
-            successUrl: 'bpartners://',
-            failureUrl: 'bpartners://',
+            successUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+            failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
           },
         };
         const calendarConsentResult = yield calendarApi.initiateConsent(self.currentUser.id, payload);
@@ -50,8 +50,10 @@ export const CalendarStoreModel = types
       try {
         const getCalendarResult = yield calendarApi.getCalendars(self.currentUser.id);
         Log(getCalendarResult);
+        return true;
       } catch (e) {
         Log('Failed to get calendars');
+        return false;
       }
     }),
   }));
