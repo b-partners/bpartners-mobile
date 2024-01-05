@@ -1,6 +1,6 @@
 import { StyleSheet, TextStyle } from 'react-native';
 
-import { color, spacing } from '../../../theme';
+import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
 export const normalText: TextStyle = {
@@ -11,11 +11,28 @@ export const underlinedText: TextStyle = {
   textDecorationLine: 'underline',
 };
 
-export const styles = StyleSheet.create({
+export const forgotPasswordStyles = StyleSheet.create({
   container: {
-    paddingHorizontal: spacing[8],
-    height: '100%',
-    marginBottom: spacing[8],
+    paddingVertical: spacing[8],
+    paddingHorizontal: spacing[4],
+    marginTop: spacing[8],
+    height: 350,
+    backgroundColor: palette.solidYellow,
+    marginHorizontal: spacing[4],
+    borderRadius: 20,
+    justifyContent: 'center',
+  },
+  inputContainer: {
+    padding: 15,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    width: '100%',
   },
   form: {
     marginTop: '5%',
@@ -75,7 +92,7 @@ export const styles = StyleSheet.create({
     color: 'red',
   },
   textButton: {
-    color: color.palette.secondaryColor,
+    color: palette.secondaryColor,
     fontFamily: 'Geometria-Bold',
     marginRight: spacing[2],
   },
@@ -92,6 +109,16 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginTop: spacing[4],
+  },
+  buttonPlaceHolder: {
+    borderRadius: 50,
+    paddingVertical: spacing[3],
+    backgroundColor: palette.solidGrey,
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: spacing[4],
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   forgotPassword: {
     flexDirection: 'row',

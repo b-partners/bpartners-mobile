@@ -24,7 +24,7 @@
     "next": "Suivant",
     "cancel": "Annuler",
     "back": "Précédent",
-    "noDataProvided": "Aucun enregistrement à afficher",
+    "noDataProvided": "Oops ! Aucun élément à afficher",
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
     "registered": "Enregistré",
@@ -35,7 +35,8 @@
     "noData": "Non renseigné",
     "search": "Rechercher",
     "open": "Ouvrir",
-    "addedOrUpdated": "Mis à jour avec succès !"
+    "addedOrUpdated": "Mis à jour avec succès !",
+    "reload": "Rafraichir"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -542,6 +543,7 @@
   "forgotPasswordScreen": {
     "title": "Mot de passe oublié ?",
     "sentTitle": "Code envoyé",
+    "email": "Veuillez informer votre email",
     "checkEmail": "Vérifier votre e-mail, votre code de validation à été envoyé au",
     "success": "Modifié avec succès",
     "resetTitle": "Changer le mot de passe",
