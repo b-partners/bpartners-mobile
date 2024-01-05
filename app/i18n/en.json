@@ -560,6 +560,7 @@
   "forgotPasswordScreen": {
     "title": "Forgot your password ?",
     "sentTitle": "Code sent",
+    "email": "Please, enter your email",
     "checkEmail": "Check your e-mail, your validation code has been sent to",
     "success": "Successfully modified",
     "resetTitle": "Change password",

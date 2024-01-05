@@ -12,7 +12,8 @@ Project currently based on:
 - And more!
 
 ## Preview
-* [Play Store](https://play.google.com/store/apps/details?id=com.bpartnersmobile&hl=fr)
+
+- [Play Store](https://play.google.com/store/apps/details?id=com.bpartnersmobile&hl=fr)
 
 ## Project structure
 

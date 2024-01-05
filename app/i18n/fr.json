@@ -543,6 +543,7 @@
   "forgotPasswordScreen": {
     "title": "Mot de passe oublié ?",
     "sentTitle": "Code envoyé",
+    "email": "Veuillez informer votre email",
     "checkEmail": "Vérifier votre e-mail, votre code de validation à été envoyé au",
     "success": "Modifié avec succès",
     "resetTitle": "Changer le mot de passe",
