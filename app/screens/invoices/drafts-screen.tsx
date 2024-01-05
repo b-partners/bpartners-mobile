@@ -147,7 +147,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
           </Screen>
         ) : (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
-            <NoDataProvided />
+            <NoDataProvided reload={handleRefresh} />
           </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>

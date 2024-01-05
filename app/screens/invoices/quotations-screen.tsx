@@ -194,7 +194,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
           </Screen>
         ) : (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
-            <NoDataProvided />
+            <NoDataProvided reload={handleRefresh} />
           </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>
