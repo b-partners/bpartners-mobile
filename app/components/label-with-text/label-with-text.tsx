@@ -5,7 +5,6 @@ import { Switch } from 'react-native-paper';
 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Log } from '../../screens/welcome/utils/utils';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { Text } from '../text/text';
@@ -13,52 +12,17 @@ import { Text } from '../text/text';
 export function LabelWithTextRow(props) {
   const { label, text, switchTVA, countryFlag } = props;
   const { authStore } = useStores();
-  //  const { currentAccountHolder } = authStore;
+  const { currentAccountHolder } = authStore;
 
-  const mockAccountHolder = {
-    name: '',
-    siren: '',
-    officialActivityName: '',
-    contactAddress: {
-      address: '',
-      city: '',
-      country: '',
-      postalCode: '',
-      prospectingPerimeter: null,
-    },
-    businessActivities: {
-      primary: '',
-      secondary: '',
-    },
-    companyInfo: {
-      phone: '',
-      townCode: null,
-      isSubjectToVat: false,
-      socialCapital: null,
-      location: null,
-      email: '',
-      tvaNumber: '',
-      website: '',
-    },
-    revenueTargets: {
-      // @ts-ignore
-      year: 0,
-      amountTarget: null,
-      amountAttempted: null,
-      amountAttemptedPercent: null,
-      updatedAt: null,
-    },
-  };
+  const companyInfo = currentAccountHolder?.companyInfo;
 
-  const [isSwitchOn, setIsSwitchOn] = useState(mockAccountHolder?.companyInfo?.isSubjectToVat);
-
-  const companyInfo = mockAccountHolder.companyInfo;
+  const [isSwitchOn, setIsSwitchOn] = useState(companyInfo?.isSubjectToVat);
 
   const onToggleSwitch = async () => {
     setIsSwitchOn(!isSwitchOn);
     try {
-      Log({ ...companyInfo, isSubjectToVat: isSwitchOn });
-      await authStore.updateCompanyInfos({ ...companyInfo, isSubjectToVat: isSwitchOn });
+      const updatedCompanyInfo = { ...companyInfo, isSubjectToVat: !isSwitchOn };
+      await authStore.updateCompanyInfos(updatedCompanyInfo);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       throw e;
