@@ -61,9 +61,9 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
           style={{
             paddingTop: spacing[6],
             paddingHorizontal: spacing[6],
-            marginTop: spacing[4],
-            height: 400,
-            backgroundColor: palette.solidGrey,
+            marginTop: spacing[8],
+            height: 350,
+            backgroundColor: palette.solidYellow,
             marginHorizontal: spacing[4],
             borderRadius: 20,
           }}

@@ -3,16 +3,18 @@ import { Auth } from 'aws-amplify';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, View } from 'react-native';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Button, CheckEmailModal, Header, Loader, Screen, Text } from '../../components';
 import InputField from '../../components/input-field/input-field';
 import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators/utils/utils';
-import { color, spacing } from '../../theme';
+import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
+import { forgotPasswordStyles as styles } from './utils/styles';
 
 export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forgotPassword'>> = observer(function ForgotPasswordScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
@@ -68,17 +70,19 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
     <ErrorBoundary catchErrors='always'>
       <Header headerTx='forgotPasswordScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} />
       <Screen backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
-        <View
-          style={{
-            padding: spacing[8],
-            marginTop: spacing[4],
-            height: 400,
-            backgroundColor: palette.solidGrey,
-            marginHorizontal: spacing[4],
-            borderRadius: 20,
-          }}
-        >
-          <View style={styles.container}>
+        <View style={styles.container}>
+          <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: spacing[4], flexDirection: 'column' }}>
+            <MaterialCommunityIcon name='email-send' size={100} color={palette.orange} />
+            <Text
+              tx={'forgotPasswordScreen.email'}
+              style={{
+                color: palette.greyDarker,
+                fontFamily: 'Geometria-Bold',
+                marginRight: spacing[2],
+              }}
+            />
+          </View>
+          <View style={styles.inputContainer}>
             <View style={styles.field}>
               <Controller
                 control={control}
@@ -104,51 +108,12 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
               />
             </View>
             {errors.email ? (
-              <View
-                style={{
-                  borderRadius: 50,
-                  paddingVertical: spacing[3],
-                  backgroundColor: palette.solidGrey,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  marginTop: spacing[4],
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Text
-                  tx={'common.submit'}
-                  style={{
-                    color: color.palette.secondaryColor,
-                    fontFamily: 'Geometria-Bold',
-                    marginRight: spacing[2],
-                  }}
-                />
+              <View style={styles.buttonPlaceHolder}>
+                <Text tx={'common.submit'} style={styles.textButton} />
               </View>
             ) : (
-              <Button
-                onPress={handleSubmit(onSubmit)}
-                style={{
-                  borderRadius: 50,
-                  paddingVertical: spacing[3],
-                  backgroundColor: '#fff',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  marginTop: spacing[4],
-                }}
-              >
-                {loading ? (
-                  <Loader size={25} />
-                ) : (
-                  <Text
-                    tx={'common.submit'}
-                    style={{
-                      color: color.palette.secondaryColor,
-                      fontFamily: 'Geometria-Bold',
-                      marginRight: spacing[2],
-                    }}
-                  />
-                )}
+              <Button onPress={handleSubmit(onSubmit)} style={styles.button}>
+                {loading ? <Loader size={25} /> : <Text tx={'common.submit'} style={styles.textButton} />}
               </Button>
             )}
           </View>
@@ -163,48 +128,4 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
       />
     </ErrorBoundary>
   );
-});
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: '5%',
-    padding: 15,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  field: {
-    marginBottom: 10,
-  },
-  label: {
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: color.primary,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    color: palette.secondaryColor,
-  },
-  error: {
-    color: 'red',
-    marginTop: 5,
-  },
-  danger: {
-    color: 'red',
-  },
-  signup: {
-    textAlign: 'center',
-    color: palette.lightGrey,
-    fontSize: 20,
-    fontWeight: '700',
-  },
 });

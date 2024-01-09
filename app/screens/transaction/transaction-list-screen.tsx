@@ -141,7 +141,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           </ScrollView>
         ) : (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
-            <NoDataProvided />
+            <NoDataProvided reload={handleRefresh} />
           </Screen>
         )}
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
