@@ -223,6 +223,16 @@
       "service": "All the essential services to manage your business as a craftsman or freelancer",
       "modifyInformations": "To modify your profile information, go to the web version of BPartners at the following address:"
     },
+    "tabs": {
+      "company": "My company",
+      "subscription": "My subscription"
+    },
+    "subscription": {
+      "ai": "Activate our Artificial Intelligence, which generates leads in real time to develop your business and win new customers.",
+      "tools": "Access to customized quotation/billing tools, down-payment management, CRM reminders, product management, bank synchronization and cash-flow monitoring.",
+      "code": "Start collecting cash instantly by QR code, e-mail or SMS in just 1 click. Invoice-integrated payment link for only 0.99%",
+      "support": "Support 7/7"
+    },
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",
