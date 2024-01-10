@@ -223,6 +223,10 @@
       "service": "All the essential services to manage your business as a craftsman or freelancer",
       "modifyInformations": "To modify your profile information, go to the web version of BPartners at the following address:"
     },
+    "tabs": {
+      "company": "My company",
+      "subscription": "My subscription"
+    },
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",

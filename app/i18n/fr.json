@@ -206,6 +206,10 @@
       "service": "Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant",
       "modifyInformations": "Pour modifier vos informations de profil; rendez-vous sur la version web de BPartners à l’adresse:"
     },
+    "tabs": {
+      "company": "Ma société",
+      "subscription": "Mon abonnement"
+    },
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Sélectionner un fichier",
