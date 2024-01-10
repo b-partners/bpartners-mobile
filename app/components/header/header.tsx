@@ -9,6 +9,7 @@ import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 import { Text } from '../text/text';
 import { HeaderProps } from './header.props';
+import {palette} from "../../theme/palette";
 
 // static styles
 const ROOT: ViewStyle = {
@@ -53,7 +54,7 @@ export function Header(props: HeaderProps) {
         </View>
         {rightIcon ? (
           <Button preset='link' onPress={onRightPress} testID='header-right-button'>
-            <Icon icon={rightIcon} />
+            <Icon icon={rightIcon} style={{tintColor: palette.white}}/>
           </Button>
         ) : (
           <View style={RIGHT} />
