@@ -33,6 +33,7 @@ export type NavigatorParamList = {
 
 export type TabNavigatorParamList = {
   prospect: undefined;
+  prospectConfiguration: undefined;
   forgotPassword: undefined;
   bp_home: undefined;
   marketplace: undefined;

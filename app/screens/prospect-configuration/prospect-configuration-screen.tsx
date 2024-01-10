@@ -18,7 +18,7 @@ import { CreationPortal } from './components/portal-creation';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
 
-export const ProspectConfigurationScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectConfigurationScreen({ navigation }) {
+export const ProspectConfigurationScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectConfiguration'>> = observer(function ProspectConfigurationScreen({ navigation }) {
   const { prospectStore } = useStores();
   const { prospects, loadingProspect } = prospectStore;
 
