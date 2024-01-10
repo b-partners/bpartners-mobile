@@ -5,9 +5,10 @@ import { showMessage } from '../../../utils/snackbar';
 
 export const intiaValueRenderer = customer => {
   if (customer) {
-    const { id, firstName, lastName, address, email, phone, comment } = customer;
+    const { id, name, firstName, lastName, address, email, phone, comment } = customer;
     return {
       customerId: id,
+      customerCompanyName: name,
       customerFirstName: firstName,
       customerLastName: lastName,
       customerAddress: address,
@@ -17,6 +18,7 @@ export const intiaValueRenderer = customer => {
     };
   } else {
     return {
+      customerCompanyName: '',
       customerFirstName: '',
       customerLastName: '',
       customerAddress: '',
@@ -32,30 +34,34 @@ export const saveOrUpdate = async (visibleModal, setVisibleModal, customerStore,
     visibleModal.type === 'CREATION'
       ? await customerStore.saveCustomer({
           ...emptyToNull({
+            name: values.customerCompanyName,
             firstName: values.customerFirstName,
             lastName: values.customerLastName,
             email: values.customerEmail,
             phone: values.customerPhoneNumber,
             address: values.customerAddress,
+            comment: values.customerComment,
+            customerType: values.customerType,
             website: null,
             city: null,
             country: null,
-            comment: null,
           }),
           zipCode: 0,
         })
       : await customerStore.updateCustomer({
           ...emptyToNull({
             id: values.customerId,
+            name: values.customerCompanyName,
             firstName: values.customerFirstName,
             lastName: values.customerLastName,
             email: values.customerEmail,
             phone: values.customerPhoneNumber,
             address: values.customerAddress,
+            comment: values.customerComment,
+            customerType: values.customerType,
             website: null,
             city: null,
             country: null,
-            comment: null,
           }),
           zipCode: 0,
         });

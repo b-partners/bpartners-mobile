@@ -439,7 +439,12 @@
       "addClient": "Add a customer",
       "editClient": "Edit a customer",
       "validate": "Validate",
+      "customerType": {
+        "professional": "Professional",
+        "individual": "Individual"
+      },
       "customerCreationForm": {
+        "companyName": "Company Name",
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email",
