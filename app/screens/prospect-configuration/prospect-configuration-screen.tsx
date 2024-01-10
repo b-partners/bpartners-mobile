@@ -18,7 +18,7 @@ import { CreationPortal } from './components/portal-creation';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
 
-export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
+export const ProspectConfigurationScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectConfigurationScreen({ navigation }) {
   const { prospectStore } = useStores();
   const { prospects, loadingProspect } = prospectStore;
 
@@ -79,7 +79,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
     <Provider>
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='prospectScreen.title' leftIcon={'back'} rightIcon={'back'} onLeftPress={() => navigation.navigate('bp_home')} onRightPress={() => navigation.navigate('bp_home')} style={HEADER} titleStyle={HEADER_TITLE} />
-        <View testID='ProspectScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+        <View testID='ProspectConfigurationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             <Searchbar
               placeholder={translate('common.search')}
