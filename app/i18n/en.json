@@ -227,6 +227,12 @@
       "company": "My company",
       "subscription": "My subscription"
     },
+    "subscription": {
+      "ai": "Activate our Artificial Intelligence, which generates leads in real time to develop your business and win new customers.",
+      "tools": "Access to customized quotation/billing tools, down-payment management, CRM reminders, product management, bank synchronization and cash-flow monitoring.",
+      "code": "Start collecting cash instantly by QR code, e-mail or SMS in just 1 click. Invoice-integrated payment link for only 0.99%",
+      "support": "Support 7/7"
+    },
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",

@@ -11,6 +11,7 @@ import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { CompanyScreen } from './screens/company-screen';
+import { SubscriptionScreen } from './screens/subscription-screen';
 import { profileStyles as styles } from './utils/styles';
 
 const NO_SHADOW: ViewStyle = { elevation: 0, shadowRadius: 0, shadowOpacity: 0, shadowOffset: { width: 0, height: 0 } };
@@ -40,7 +41,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             tabBarIndicatorStyle: { backgroundColor: color.primary },
             tabBarActiveTintColor: color.primary,
             tabBarLabel: ({ focused }) => {
-              const activeLabelStyle: TextStyle = { width: 75, color: color.primary, fontWeight: '900' };
+              const activeLabelStyle: TextStyle = { width: 150, color: color.primary, fontWeight: '900' };
 
               let labelStyle: TextStyle = { color: palette.textClassicColor };
               labelStyle = focused ? { ...labelStyle, ...activeLabelStyle } : { ...labelStyle };
@@ -71,7 +72,7 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           />
           <Tab.Screen
             name={'subscription'}
-            component={CompanyScreen}
+            component={SubscriptionScreen}
             navigationKey='subscription'
             listeners={{
               tabPress: () => {
