@@ -104,7 +104,10 @@ export const SynchronizeModal = (props: SynchronizeModalProps) => {
                     justifyContent: 'center',
                     flexDirection: 'row',
                   }}
-                  onPress={() => calendarStore.initiateConsent()}
+                  onPress={async () => {
+                    await calendarStore.initiateConsent();
+                    onClose();
+                  }}
                 >
                   <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
                     <Text

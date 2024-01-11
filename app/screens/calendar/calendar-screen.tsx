@@ -21,12 +21,16 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
   const [isEventsModal, setEventsModal] = useState(false);
   //const [monthVisible, setMonthVisible] = useState(today.getMonth());
 
+  const getCalendars = async () => {
+    const response = await calendarStore.getCalendars();
+    if (response === false) {
+      setOpen(true);
+    }
+  };
+
   useEffect(() => {
     (async () => {
-      const response = await calendarStore.getCalendars();
-      if (response === false) {
-        setOpen(true);
-      }
+      await getCalendars();
     })();
   }, []);
 
@@ -38,7 +42,8 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
           <View style={styles.calendarContainer}>
             <Calendar
               initialDate={currentDate?.dateString ?? today.toISOString().split('T')[0]}
-              onDayPress={date => {
+              onDayPress={async date => {
+                getCalendars();
                 setCurrentDate(prevDate => ({
                   ...prevDate,
                   dateString: date.dateString,
