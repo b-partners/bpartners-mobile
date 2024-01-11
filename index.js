@@ -8,7 +8,7 @@
 //
 // It's easier just to leave it here.
 import notifee from '@notifee/react-native';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, Linking } from 'react-native';
 
 import App from './app/app.tsx';
 
@@ -17,6 +17,15 @@ notifee.onBackgroundEvent(async ({ detail }) => {
 
   await notifee.cancelNotification(notification.id);
 });
+
+const handleDeepLink = ({ url }) => {
+  console.log('Link received:', { url });
+  const params = new URLSearchParams(url.split('?')[1]);
+  const code = params.get('code');
+  console.log('Deep link params:', { code });
+};
+
+Linking.addEventListener('url', handleDeepLink);
 
 AppRegistry.registerComponent('BpartnersMobile', () => App);
 export default App;
