@@ -29,6 +29,8 @@ export type RedirectionUrlsStatus = {
 
 export type RedirectionStatusUrls = { redirectionStatusUrls: { successUrl: string; failureUrl: string } };
 
+export type RedirectUrls = { redirectUrls: { successUrl: string; failureUrl: string } };
+
 export type GetUsersResult = { kind: 'ok'; users: User[] } | GeneralApiProblem;
 export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
@@ -47,6 +49,8 @@ export type GetBusinessActivitiesResult = { kind: 'ok'; businessActivities: Busi
 export type SignInResult = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
 
 export type InitiateConsentResult = { kind: 'ok'; redirectionStatusUrls: RedirectionUrlsStatus } | GeneralApiProblem;
+
+export type InitiateTokenResult = { kind: 'ok' } | GeneralApiProblem;
 
 export type GetCalendarsResult = { kind: 'ok'; calendars: Calendar[] } | GeneralApiProblem;
 
