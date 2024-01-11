@@ -57,6 +57,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     marketplace: translate('marketPlaceScreen.title'),
     supportContact: translate('supportContactScreen.title'),
     bank: translate('logoutScreen.swan'),
+      configuration: translate('configurationScreen.title'),
     partners: translate('partnersScreen.title'),
   };
 
@@ -64,8 +65,8 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     home: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
     profile: <IoniconIcon name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
     transactionList: <OcticonsIcon name='checklist' size={22} color={color.palette.secondaryColor} />,
-    customer: <MaterialIcon name='group' size={22} color={color.palette.secondaryColor} />,
-    product: <MaterialIcon name='category' size={22} color={color.palette.secondaryColor} />,
+    customer: <IoniconIcon name='people-outline' size={22} color={color.palette.secondaryColor} />,
+    product: <IoniconIcon name='shapes-outline' size={22} color={color.palette.secondaryColor} />,
     paymentInitiation: <MaterialCommunityIcon name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
     paymentList: <MaterialIcon name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
     welcome: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
@@ -73,7 +74,8 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     marketplace: <IoniconIcon name='md-map-outline' size={22} color={color.palette.secondaryColor} />,
     supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
     bank: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
-    partners: <FontAwesomeIcon name='handshake-o' size={22} color={color.palette.secondaryColor} />,
+    configuration: <IoniconIcon name='settings-outline' size={21} color={color.palette.secondaryColor} />,
+    partners: <FontAwesomeIcon name='handshake-o' size={17} color={color.palette.secondaryColor} />,
   };
 
   return (

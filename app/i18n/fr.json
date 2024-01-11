@@ -525,6 +525,12 @@
     "title": "Déconnexion",
     "swan": "Ma Banque"
   },
+  "configurationScreen": {
+    "title": "Configuration",
+    "RelaunchFrequency": "Fréquence de relance",
+    "UnconfirmedQuotation": "Devis non confirmé (en jour)",
+    "LateInvoice": "Facture en retard (en jour)"
+  },
   "legalFileScreen": {
     "condition": "Conditions générales d'utilisation",
     "accept": "Accepter",

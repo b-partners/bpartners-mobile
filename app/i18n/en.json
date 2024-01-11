@@ -541,6 +541,12 @@
     "title": "Logout",
     "swan": "My Bank"
   },
+  "configurationScreen": {
+    "title": "Configuration",
+    "RelaunchFrequency": "Relaunch frequency",
+    "UnconfirmedQuotation": "Unconfirmed quotation (in days)",
+    "LateInvoice": "Late invoice (in days)"
+  },
   "legalFileScreen": {
     "condition": "General User Condition",
     "accept": "Accept",
