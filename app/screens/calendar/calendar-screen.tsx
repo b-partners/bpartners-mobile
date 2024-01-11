@@ -6,14 +6,14 @@ import { Calendar, DateData } from 'react-native-calendars';
 
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
-import { TabNavigatorParamList } from '../../navigators/utils/utils';
+import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { EventsModal } from './components/events-modal';
 import { SynchronizeModal } from './components/synchronize-modal';
 import { calendarScreenStyles as styles } from './utils/styles';
 
-export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'marketplace'>> = observer(function MarketPlaceScreen({ navigation }) {
+export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'>> = observer(function CalendarScreen({ navigation }) {
   const today = new Date();
   const { calendarStore } = useStores();
   const [currentDate, setCurrentDate] = useState<DateData>();
@@ -38,12 +38,12 @@ export const CalendarScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'market
     <ErrorBoundary catchErrors='always'>
       <View testID='marketplaceScreen' style={styles.screenContainer}>
         <Screen preset='scroll' backgroundColor={palette.white} style={styles.screen}>
-          <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('bp_home')} />
+          <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           <View style={styles.calendarContainer}>
             <Calendar
               initialDate={currentDate?.dateString ?? today.toISOString().split('T')[0]}
               onDayPress={async date => {
-                getCalendars();
+                await getCalendars();
                 setCurrentDate(prevDate => ({
                   ...prevDate,
                   dateString: date.dateString,

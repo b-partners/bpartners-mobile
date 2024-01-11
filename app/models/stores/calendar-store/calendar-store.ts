@@ -1,8 +1,12 @@
+import { translate } from 'i18n-js';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
+import { Linking } from 'react-native';
 
 import { Log } from '../../../screens/welcome/utils/utils';
 import { RedirectUrls, RedirectionStatusUrls } from '../../../services/api';
 import { CalendarApi } from '../../../services/api/calendar-api';
+import { palette } from '../../../theme/palette';
+import { showMessage } from '../../../utils/snackbar';
 import { CalendarModel } from '../../entities/calendar/calendar';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -29,7 +33,24 @@ export const CalendarStoreModel = types
             failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
           },
         };
-        yield calendarApi.initiateConsent(self.currentUser.id, payload);
+        const calendarConsentResult = yield calendarApi.initiateConsent(self.currentUser.id, payload);
+        Linking.openURL(calendarConsentResult.redirectionUrl)
+          .then(() => {
+            Linking.addEventListener('url', async ({ url }) => {
+              const params = new URLSearchParams(url.split('?')[1]);
+              const code = params.get('code');
+              Log('Deep link param:' + code);
+              const redirectUrls: RedirectUrls = {
+                successUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+                failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+              };
+              await calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
+            });
+          })
+          .catch(err => {
+            Log("Erreur lors de l'ouverture du lien :", err);
+            showMessage(translate('errors.openBrowser'), { backgroundColor: palette.yellow });
+          });
       } catch (e) {
         Log('Failed to init calendar consent');
         self.catchOrThrow(e);
@@ -41,10 +62,8 @@ export const CalendarStoreModel = types
       const calendarApi = new CalendarApi(self.environment.api);
       try {
         const redirectUrls: RedirectUrls = {
-          redirectUrls: {
-            successUrl: 'https://dashboard.preprod.bpartners.app/redirection',
-            failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
-          },
+          successUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+          failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
         };
         yield calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
       } catch (e) {
