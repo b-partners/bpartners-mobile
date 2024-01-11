@@ -1,12 +1,8 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
-import { Linking } from 'react-native';
 
-import { translate } from '../../../i18n';
 import { Log } from '../../../screens/welcome/utils/utils';
-import { RedirectionStatusUrls } from '../../../services/api';
+import { RedirectUrls, RedirectionStatusUrls } from '../../../services/api';
 import { CalendarApi } from '../../../services/api/calendar-api';
-import { palette } from '../../../theme/palette';
-import { showMessage } from '../../../utils/snackbar';
 import { CalendarModel } from '../../entities/calendar/calendar';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -33,13 +29,26 @@ export const CalendarStoreModel = types
             failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
           },
         };
-        const calendarConsentResult = yield calendarApi.initiateConsent(self.currentUser.id, payload);
-        Linking.openURL(calendarConsentResult.redirectionUrl).catch(err => {
-          Log("Erreur lors de l'ouverture du lien :", err);
-          showMessage(translate('errors.openBrowser'), { backgroundColor: palette.yellow });
-        });
+        yield calendarApi.initiateConsent(self.currentUser.id, payload);
       } catch (e) {
         Log('Failed to init calendar consent');
+        self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    initiateToken: flow(function* (code: string) {
+      const calendarApi = new CalendarApi(self.environment.api);
+      try {
+        const redirectUrls: RedirectUrls = {
+          redirectUrls: {
+            successUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+            failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+          },
+        };
+        yield calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
+      } catch (e) {
+        Log('Failed to init calendar token');
         self.catchOrThrow(e);
       }
     }),
