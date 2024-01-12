@@ -9,6 +9,7 @@ import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Marketplace } from '../../models/entities/marketplace/marketplace';
 import { Product } from '../../models/entities/product/product';
 import { Prospect } from '../../models/entities/prospect/prospect';
+import { RelaunchConfiguration } from '../../models/entities/relaunch-configuration/relaunch-configuration';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { TransactionSummary } from '../../models/entities/transaction-summary/transaction-summary';
 import { Transaction } from '../../models/entities/transaction/transaction';
@@ -88,6 +89,10 @@ export type GetInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProb
 export type InvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch } | GeneralApiProblem;
 
 export type GetInvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch[] } | GeneralApiProblem;
+
+export type GetInvoiceRelaunchConfResult = { kind: 'ok'; RelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
+
+export type UpdateInvoiceRelaunchConfResult = { kind: 'ok'; updatedRelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
 
 export type CrupdateInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
 

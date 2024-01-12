@@ -20,6 +20,7 @@ import {
   BankScreen,
   ChangePasswordScreen,
   CodeExchangeScreen,
+  ConfigurationScreen,
   ErrorBoundary,
   ForgotPasswordScreen,
   HomeScreen,
@@ -32,6 +33,7 @@ import {
   PaymentInitiationScreen,
   PaymentListScreen,
   ProfileScreen,
+  ProspectConfigurationScreen,
   ProspectScreen,
   RegistrationScreen,
   ResetPasswordScreen,
@@ -105,6 +107,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='bank' component={BankScreen} />
+          <Drawer.Screen name='configuration' component={ConfigurationScreen} />
           <Drawer.Screen name='partners' component={PartnersScreen} />
           <Drawer.Screen name='profileEdition' component={ProfileEditionScreen} />
           <Drawer.Screen name='calendar' component={CalendarScreen} />
@@ -137,6 +140,7 @@ const AppTabStack = observer(function () {
         <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
         <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
         <Tab.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />
+        <Tab.Screen name='prospectConfiguration' component={ProspectConfigurationScreen} options={{ title: translate('homeScreen.title') }} />
         <Tab.Screen name='paymentList' component={PaymentListScreen} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
