@@ -59,6 +59,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     bank: translate('logoutScreen.swan'),
     configuration: translate('configurationScreen.title'),
     partners: translate('partnersScreen.title'),
+    calendar: translate('calendarScreen.title'),
   };
 
   const IconRoute: RouteNameProps = {
@@ -76,6 +77,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     bank: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
     configuration: <IoniconIcon name='settings-outline' size={21} color={color.palette.secondaryColor} />,
     partners: <FontAwesomeIcon name='handshake-o' size={17} color={color.palette.secondaryColor} />,
+    calendar: <IoniconIcon name='calendar' size={22} color={color.palette.secondaryColor} />,
   };
 
   return (

@@ -58,7 +58,8 @@
     "invalidConfirmPassword": "The passwords don't match !",
     "changePassword": "New password",
     "oops": "Oops !",
-    "sendDraft": "A draft cannot be sent"
+    "sendDraft": "A draft cannot be sent",
+    "openBrowser": "Unable to open your browser"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -640,5 +641,14 @@
   "relaunchHistoryModal": {
     "title": "Relaunch history",
     "quotationRelaunchedAt": "Quotation relaunched at"
+  },
+  "calendarScreen": {
+    "title": "Mon calendar",
+    "firstLabel": "Your Google Calendar session has expired,",
+    "secondLabel": "synchronize your calendar to get ",
+    "thirdLabel": "new prospects close to your next appointments.",
+    "firstText": "By continuing, you agree that BPartners may anonymously transmit your information to the National Address Base in order to generate new leads.",
+    "secondText": "For more information, visit: ",
+    "sync": "Synchronize"
   }
 }

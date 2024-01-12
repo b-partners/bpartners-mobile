@@ -86,6 +86,7 @@ export class AuthApi {
       if (problem) throw new Error(problem.kind);
     }
     const user = this.mapUser(response.data);
+    // @ts-ignore
     return { kind: 'ok', user };
   }
 }

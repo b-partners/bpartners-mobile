@@ -41,6 +41,7 @@ import {
   TransactionListScreen,
   WelcomeScreen,
 } from '../screens';
+import { CalendarScreen } from '../screens/calendar/calendar-screen';
 import { CustomersScreen } from '../screens/customer/customers-screen';
 import { ProductScreen } from '../screens/product/products-screen';
 import { ProfileEditionScreen } from '../screens/profile-edition/profile-edition-screen';
@@ -109,6 +110,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='configuration' component={ConfigurationScreen} />
           <Drawer.Screen name='partners' component={PartnersScreen} />
           <Drawer.Screen name='profileEdition' component={ProfileEditionScreen} />
+          <Drawer.Screen name='calendar' component={CalendarScreen} />
         </>
       ) : (
         <>
