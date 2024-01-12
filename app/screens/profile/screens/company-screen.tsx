@@ -57,6 +57,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           location: null,
           email: '',
           tvaNumber: '',
+          website: '',
         },
         revenueTargets: {
           // @ts-ignore
@@ -144,6 +145,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             text={accountHolder?.contactAddress?.postalCode ?? 'Aucune information'}
           />
           <LabelWithTextRow label='profileScreen.fields.accountHolder.siren' text={accountHolder?.siren ?? 'Aucune information'} />
+          <LabelWithTextRow label='profileScreen.fields.accountHolder.tva' switchTVA />
           <Button
             tx='profileScreen.delete'
             style={styles.button}
