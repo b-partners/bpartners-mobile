@@ -8,6 +8,8 @@ export interface SynchronizeModalProps {
 export interface EventsModalProps {
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  currentDate: string;
+  events: Event[];
 }
 
 export interface EventCardProps {
