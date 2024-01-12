@@ -35,4 +35,5 @@ export const createCustomerDefaultModel = () =>
     city: null,
     country: null,
     comment: null,
+    customerType: null,
   });

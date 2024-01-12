@@ -6,6 +6,7 @@ export * from './profile/profile-screen';
 export * from './home/home-screen';
 export * from './legal-file/legal-file-screen';
 export * from './bank/bank-screen';
+export * from './configuration/configuration-screen';
 export * from './partners/partners-screen';
 export * from './change-password/change-password-screen';
 export * from './code-exchange/code-exchange-screen';

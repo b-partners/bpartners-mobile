@@ -3,7 +3,7 @@ import { KeyboardTypeOptions, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 import { TxKeyPath } from '../../i18n';
-import { color } from '../../theme';
+import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import ErrorMessage from '../forms/error-message';
 import { Text } from '../text/text';
@@ -56,10 +56,12 @@ export const InputField = ({
           )
         }
         style={{
-          backgroundColor: error ? palette.pastelRed : backgroundColor,
+          backgroundColor: backgroundColor,
           borderRadius: 5,
           width: width,
           elevation: 10,
+          borderBottomWidth: error ? 2 : 0,
+          borderBottomColor: error ? palette.pastelRed : palette.greyDarker,
         }}
         theme={{
           colors: {
@@ -67,7 +69,7 @@ export const InputField = ({
           },
         }}
       />
-      <ErrorMessage name={'error'} error={errorMessage} visible={error} style={{ color: color.error }} />
+      <ErrorMessage name={'error'} error={errorMessage} visible={error} style={{ color: color.error, marginVertical: spacing[2] }} />
     </View>
   );
 };
