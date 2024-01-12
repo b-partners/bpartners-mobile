@@ -23,6 +23,7 @@ export type NavigatorParamList = {
     invoice: Invoice;
   };
   bank: undefined;
+  configuration: undefined;
   partners: undefined;
   changePassword: {
     userName: string;

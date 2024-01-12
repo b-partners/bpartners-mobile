@@ -20,6 +20,7 @@ import {
   BankScreen,
   ChangePasswordScreen,
   CodeExchangeScreen,
+  ConfigurationScreen,
   ErrorBoundary,
   ForgotPasswordScreen,
   HomeScreen,
@@ -104,6 +105,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='invoiceForm' component={InvoiceFormScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='invoicePreview' component={InvoicePreviewScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='bank' component={BankScreen} />
+          <Drawer.Screen name='configuration' component={ConfigurationScreen} />
           <Drawer.Screen name='partners' component={PartnersScreen} />
           <Drawer.Screen name='profileEdition' component={ProfileEditionScreen} />
         </>
