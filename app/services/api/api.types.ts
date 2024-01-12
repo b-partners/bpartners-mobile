@@ -54,6 +54,8 @@ export type InitiateTokenResult = { kind: 'ok' } | GeneralApiProblem;
 
 export type GetCalendarResult = { kind: 'ok'; calendar: Calendar[] } | GeneralApiProblem;
 
+export type GetEventResult = { kind: 'ok'; events: Event[] } | GeneralApiProblem;
+
 export type BankConnection =
   | {
       kind: 'ok';
