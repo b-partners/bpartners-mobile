@@ -16,7 +16,8 @@ import {withCredentials} from '../../extensions/with-credentials';
 import {withEnvironment} from '../../extensions/with-environment';
 import {withRootStore} from '../../extensions/with-root-store';
 import {
-  RelaunchConfigurationModel
+    RelaunchConfiguration,
+    RelaunchConfigurationModel
 } from "../../entities/relaunch-configuration/relaunch-configuration";
 
 export const InvoiceStoreModel = types
@@ -210,13 +211,24 @@ export const InvoiceStoreModel = types
         }),
     }))
     .actions(self => ({
+        saveInvoiceRelaunchConfSuccess: (relaunchConf: RelaunchConfiguration) => {
+            self.invoiceRelaunchConf = relaunchConf;
+        },
+    }))
+    .actions(() => ({
+        saveInvoiceRelaunchConfFail: error => {
+            __DEV__ && console.tron.log(error);
+        },
+    }))
+    .actions(self => ({
         getInvoiceRelaunchConf: flow(function* () {
             const paymentApi = new PaymentApi(self.environment.api);
             try {
-                return yield paymentApi.getInvoiceRelaunchConf(self.currentAccount.id);
+                const relaunchConf = yield paymentApi.getInvoiceRelaunchConf(self.currentAccount.id);
+                self.saveInvoiceRelaunchConfSuccess(relaunchConf.RelaunchConfiguration);
+                return relaunchConf.RelaunchConfiguration;
             } catch (e) {
-                RTLog(e.message);
-                self.catchOrThrow(e);
+                self.saveInvoiceRelaunchConfFail(e);
             }
         }),
     }))
