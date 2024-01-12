@@ -7,7 +7,7 @@ import { RedirectUrls, RedirectionStatusUrls } from '../../../services/api';
 import { CalendarApi } from '../../../services/api/calendar-api';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
-import { CalendarModel } from '../../entities/calendar/calendar';
+import { CalendarModel, EventModel } from '../../entities/calendar/calendar';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -17,6 +17,7 @@ export const CalendarStoreModel = types
   .props({
     calendars: types.optional(types.array(CalendarModel), []),
     currentCalendar: types.maybeNull(CalendarModel),
+    events: types.optional(types.array(EventModel), []),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -80,6 +81,19 @@ export const CalendarStoreModel = types
         const getCalendarResult = yield calendarApi.getCalendars(self.currentUser.id);
         self.calendars.replace(getCalendarResult.calendar);
         self.currentCalendar = getCalendarResult.calendar[0];
+        return true;
+      } catch (e) {
+        Log(e.message);
+        return false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    getEvents: flow(function* (from: string, to: string) {
+      const calendarApi = new CalendarApi(self.environment.api);
+      try {
+        const getCalendarsEventsResult = yield calendarApi.getCalendarsEvents(self.currentUser.id, self.currentCalendar.id, 'GOOGLE_CALENDAR', from, to);
+        self.events.replace(getCalendarsEventsResult.events);
         return true;
       } catch (e) {
         Log(e.message);
