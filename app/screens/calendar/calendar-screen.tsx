@@ -16,7 +16,7 @@ import { calendarScreenStyles as styles } from './utils/styles';
 export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'>> = observer(function CalendarScreen({ navigation }) {
   const today = new Date();
   const { calendarStore } = useStores();
-  const { currentSummary } = calendarStore;
+  const { currentCalendar } = calendarStore;
   const [currentDate, setCurrentDate] = useState<DateData>();
   const [isOpen, setOpen] = useState(false);
   const [isEventsModal, setEventsModal] = useState(false);
@@ -41,9 +41,9 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
         <Screen preset='scroll' backgroundColor={palette.white} style={styles.screen}>
           <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
           <View style={styles.summaryContainer}>
-            {currentSummary && (
+            {currentCalendar && (
               <View style={styles.summary}>
-                <Text style={styles.summaryText} text={currentSummary.summary} />
+                <Text style={styles.summaryText} text={currentCalendar.summary} />
               </View>
             )}
           </View>

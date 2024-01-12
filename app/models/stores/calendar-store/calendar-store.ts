@@ -7,7 +7,7 @@ import { RedirectUrls, RedirectionStatusUrls } from '../../../services/api';
 import { CalendarApi } from '../../../services/api/calendar-api';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
-import { SummaryModel } from '../../entities/calendar/calendar';
+import { CalendarModel } from '../../entities/calendar/calendar';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -15,8 +15,8 @@ import { withRootStore } from '../../extensions/with-root-store';
 export const CalendarStoreModel = types
   .model('Calendar')
   .props({
-    summary: types.optional(types.array(SummaryModel), []),
-    currentSummary: types.maybeNull(SummaryModel),
+    calendars: types.optional(types.array(CalendarModel), []),
+    currentCalendar: types.maybeNull(CalendarModel),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -77,9 +77,9 @@ export const CalendarStoreModel = types
     getCalendars: flow(function* () {
       const calendarApi = new CalendarApi(self.environment.api);
       try {
-        const getSummaryResult = yield calendarApi.getSummary(self.currentUser.id);
-        self.summary.replace(getSummaryResult.summary);
-        self.currentSummary = getSummaryResult.summary[0];
+        const getCalendarResult = yield calendarApi.getCalendars(self.currentUser.id);
+        self.calendars.replace(getCalendarResult.calendar);
+        self.currentCalendar = getCalendarResult.calendar[0];
         return true;
       } catch (e) {
         Log(e.message);

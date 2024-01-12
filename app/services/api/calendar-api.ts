@@ -2,7 +2,7 @@ import { ApiResponse } from 'apisauce';
 
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetSummaryResult, InitiateConsentResult, InitiateTokenResult, RedirectUrls, RedirectionStatusUrls } from './api.types';
+import { GetCalendarResult, InitiateConsentResult, InitiateTokenResult, RedirectUrls, RedirectionStatusUrls } from './api.types';
 
 export class CalendarApi {
   private api: Api;
@@ -37,8 +37,21 @@ export class CalendarApi {
     return response.data;
   }
 
-  async getSummary(userId: string): Promise<GetSummaryResult> {
-    const response: ApiResponse<GetSummaryResult> = await this.api.apisauce.get(`users/${userId}/calendars`);
+  async getCalendars(userId: string): Promise<GetCalendarResult> {
+    const response: ApiResponse<GetCalendarResult> = await this.api.apisauce.get(`users/${userId}/calendars`);
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+
+    const calendar = response.data;
+    // @ts-ignore
+    return { kind: 'ok', calendar: calendar };
+  }
+
+  async getCalendarsEvents(userId: string): Promise<GetCalendarResult> {
+    const response: ApiResponse<GetCalendarResult> = await this.api.apisauce.get(`users/${userId}/calendars`);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

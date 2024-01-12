@@ -1,7 +1,7 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
 import { BusinessActivityItem } from '../../models/entities/business-activity/business-activity';
-import { Summary } from '../../models/entities/calendar/calendar';
+import { Calendar } from '../../models/entities/calendar/calendar';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
 import { Invoice, InvoiceRelaunch } from '../../models/entities/invoice/invoice';
@@ -52,7 +52,7 @@ export type InitiateConsentResult = { kind: 'ok'; redirectionStatusUrls: Redirec
 
 export type InitiateTokenResult = { kind: 'ok' } | GeneralApiProblem;
 
-export type GetSummaryResult = { kind: 'ok'; summary: Summary[] } | GeneralApiProblem;
+export type GetCalendarResult = { kind: 'ok'; calendar: Calendar[] } | GeneralApiProblem;
 
 export type BankConnection =
   | {
