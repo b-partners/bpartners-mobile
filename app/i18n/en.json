@@ -36,6 +36,8 @@
     "search": "Search",
     "open": "Open",
     "addedOrUpdated": "Updated successfully !",
+    "yes": "Yes",
+    "no": "No",
     "reload": "Reload"
   },
   "errors": {
@@ -253,6 +255,7 @@
         "section": "My society: ",
         "name": "Company Name: ",
         "siren": "Siren: ",
+        "tva": "VAT-exempt micro-business: ",
         "officialActivityName": "Official activity: ",
         "contactAddress": {
           "address": "Address: ",

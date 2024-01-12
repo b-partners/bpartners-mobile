@@ -52,6 +52,7 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
       townCode: parseInt(companyInfos.townCode, 10),
       tvaNumber: companyInfos.tvaNumber,
       isSubjectToVat: currentAccountHolder.companyInfo.isSubjectToVat,
+      website: currentAccountHolder.companyInfo.website,
       location: currentAccountHolder.companyInfo.location,
     };
     try {
