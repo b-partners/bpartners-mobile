@@ -50,7 +50,7 @@ export class CalendarApi {
     return { kind: 'ok', calendar: calendar };
   }
 
-  async getCalendarsEvents(userId: string): Promise<GetCalendarResult> {
+  async getCalendarsEvents(userId: string, calendarId: string, provider: string, from: string, to: string): Promise<GetCalendarResult> {
     const response: ApiResponse<GetCalendarResult> = await this.api.apisauce.get(`users/${userId}/calendars`);
 
     if (!response.ok) {
