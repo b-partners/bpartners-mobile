@@ -40,7 +40,7 @@
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
-    "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
+    "somethingWentWrong": "Un problème s'est produit. Veuillez réessayer plus tard.",
     "paymentInitiation": "Il semblerait que votre banque ne soit pas synchronisée pour supporter la collecte de paiement",
     "paymentInitM1": "Connectez-vous sur BPartners.app depuis un ordinateur / banque  puis synchroniser.",
     "paymentInitM2": "En cas de difficulté, contactez le support par mail : contact@bpartners.app ou par téléphone au:",
@@ -58,7 +58,8 @@
     "invalidConfirmPassword": "Les mots de passe ne correspondent pas !",
     "changePassword": "Nouveau mot de passe",
     "oops": "Oups !",
-    "sendDraft": "Un brouillon ne peut pas être envoyé"
+    "sendDraft": "Un brouillon ne peut pas être envoyé",
+    "openBrowser": "Impossible d'ouvrir votre navigateur"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
@@ -623,5 +624,14 @@
   "relaunchHistoryModal": {
     "title": "Historique de relance",
     "quotationRelaunchedAt": "Devis relancé le"
+  },
+  "calendarScreen": {
+    "title": "Mon agenda",
+    "firstLabel": "Votre session Google Agenda a expiré,",
+    "secondLabel": "veuillez synchroniser votre agenda pour obtenir",
+    "thirdLabel": "de nouveaux à proximité de vos prochains RDV.",
+    "firstText": "En continuant, vous acceptez que BPartners transmette anonymement vos informations à la Base Adresse Nationale afin de générer des nouveaux prospects.",
+    "secondText": "Pour plus d'infos, consultez: ",
+    "sync": "Synchroniser"
   }
 }
