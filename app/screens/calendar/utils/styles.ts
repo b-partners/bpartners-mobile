@@ -12,9 +12,29 @@ export const calendarScreenStyles = StyleSheet.create({
   screen: {
     height: '100%',
   },
+  summaryContainer: {
+    height: 40,
+    width: '100%',
+    marginVertical: spacing[4],
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingRight: spacing[4],
+  },
+  summary: {
+    width: 250,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderColor: palette.blue,
+  },
+  summaryText: {
+    fontSize: 15,
+    fontFamily: 'Geometria',
+    color: palette.textClassicColor,
+  },
   calendarContainer: {
     width: '100%',
-    height: '100%',
     marginVertical: spacing[2],
     marginHorizontal: spacing[1],
   },

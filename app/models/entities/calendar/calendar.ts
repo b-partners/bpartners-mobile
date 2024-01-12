@@ -1,12 +1,13 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
-export const CalendarModel = types.model('Calendar').props({
+export const SummaryModel = types.model('Calendar').props({
   id: types.maybeNull(types.string),
   summary: types.maybeNull(types.string),
+  permission: types.maybeNull(types.string),
 });
 
-export interface Calendar extends Instance<typeof CalendarModel> {}
+export interface Summary extends Instance<typeof SummaryModel> {}
 
-export interface CalendarSnapshotOut extends SnapshotOut<typeof CalendarModel> {}
+export interface SummarySnapshotOut extends SnapshotOut<typeof SummaryModel> {}
 
-export interface CalendarSnapshotIn extends SnapshotIn<typeof CalendarModel> {}
+export interface SummarySnapshotIn extends SnapshotIn<typeof SummaryModel> {}

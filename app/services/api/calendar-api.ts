@@ -2,7 +2,7 @@ import { ApiResponse } from 'apisauce';
 
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetCalendarsResult, InitiateConsentResult, InitiateTokenResult, RedirectUrls, RedirectionStatusUrls } from './api.types';
+import { GetSummaryResult, InitiateConsentResult, InitiateTokenResult, RedirectUrls, RedirectionStatusUrls } from './api.types';
 
 export class CalendarApi {
   private api: Api;
@@ -37,14 +37,16 @@ export class CalendarApi {
     return response.data;
   }
 
-  async getCalendars(userId: string): Promise<GetCalendarsResult> {
-    const response: ApiResponse<GetCalendarsResult> = await this.api.apisauce.post(`users/${userId}/calendars`);
+  async getSummary(userId: string): Promise<GetSummaryResult> {
+    const response: ApiResponse<GetSummaryResult> = await this.api.apisauce.get(`users/${userId}/calendars`);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);
     }
 
-    return response.data;
+    const summary = response.data;
+    // @ts-ignore
+    return { kind: 'ok', summary: summary };
   }
 }

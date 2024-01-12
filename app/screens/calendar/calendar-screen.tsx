@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
 
-import { Header, Screen } from '../../components';
+import { Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
@@ -16,6 +16,7 @@ import { calendarScreenStyles as styles } from './utils/styles';
 export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'>> = observer(function CalendarScreen({ navigation }) {
   const today = new Date();
   const { calendarStore } = useStores();
+  const { currentSummary } = calendarStore;
   const [currentDate, setCurrentDate] = useState<DateData>();
   const [isOpen, setOpen] = useState(false);
   const [isEventsModal, setEventsModal] = useState(false);
@@ -39,11 +40,17 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
       <View testID='marketplaceScreen' style={styles.screenContainer}>
         <Screen preset='scroll' backgroundColor={palette.white} style={styles.screen}>
           <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
+          <View style={styles.summaryContainer}>
+            {currentSummary && (
+              <View style={styles.summary}>
+                <Text style={styles.summaryText} text={currentSummary.summary} />
+              </View>
+            )}
+          </View>
           <View style={styles.calendarContainer}>
             <Calendar
               initialDate={currentDate?.dateString ?? today.toISOString().split('T')[0]}
               onDayPress={async date => {
-                await getCalendars();
                 setCurrentDate(prevDate => ({
                   ...prevDate,
                   dateString: date.dateString,

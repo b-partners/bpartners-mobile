@@ -7,7 +7,7 @@ import { RedirectUrls, RedirectionStatusUrls } from '../../../services/api';
 import { CalendarApi } from '../../../services/api/calendar-api';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
-import { CalendarModel } from '../../entities/calendar/calendar';
+import { SummaryModel } from '../../entities/calendar/calendar';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -15,7 +15,8 @@ import { withRootStore } from '../../extensions/with-root-store';
 export const CalendarStoreModel = types
   .model('Calendar')
   .props({
-    calendars: types.maybeNull(types.array(CalendarModel)),
+    summary: types.optional(types.array(SummaryModel), []),
+    currentSummary: types.maybeNull(SummaryModel),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -76,11 +77,12 @@ export const CalendarStoreModel = types
     getCalendars: flow(function* () {
       const calendarApi = new CalendarApi(self.environment.api);
       try {
-        const getCalendarResult = yield calendarApi.getCalendars(self.currentUser.id);
-        Log(getCalendarResult);
+        const getSummaryResult = yield calendarApi.getSummary(self.currentUser.id);
+        self.summary.replace(getSummaryResult.summary);
+        self.currentSummary = getSummaryResult.summary[0];
         return true;
       } catch (e) {
-        Log('Failed to get calendars');
+        Log(e.message);
         return false;
       }
     }),
