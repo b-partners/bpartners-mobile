@@ -1,11 +1,34 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { Image, View } from 'react-native';
+import { Switch } from 'react-native-paper';
 
+import { translate } from '../../i18n';
+import { useStores } from '../../models';
 import { palette } from '../../theme/palette';
+import { showMessage } from '../../utils/snackbar';
 import { Text } from '../text/text';
 
 export function LabelWithTextRow(props) {
-  const { label, text, countryFlag } = props;
+  const { label, text, switchTVA, countryFlag } = props;
+  const { authStore } = useStores();
+  const { currentAccountHolder } = authStore;
+
+  const companyInfo = currentAccountHolder?.companyInfo;
+
+  const [isSwitchOn, setIsSwitchOn] = useState(companyInfo?.isSubjectToVat);
+
+  const onToggleSwitch = async () => {
+    setIsSwitchOn(!isSwitchOn);
+    try {
+      const updatedCompanyInfo = { ...companyInfo, isSubjectToVat: !isSwitchOn };
+      await authStore.updateCompanyInfos(updatedCompanyInfo);
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      throw e;
+    }
+  };
+
   return (
     <View
       style={{
@@ -42,6 +65,19 @@ export function LabelWithTextRow(props) {
             marginLeft: 30,
           }}
         />
+      )}
+      {switchTVA && (
+        <>
+          <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+          <Text
+            tx={isSwitchOn ? 'common.yes' : 'common.no'}
+            style={{
+              fontSize: 15,
+              color: palette.darkBlack,
+              fontFamily: 'Geometria',
+            }}
+          />
+        </>
       )}
     </View>
   );
