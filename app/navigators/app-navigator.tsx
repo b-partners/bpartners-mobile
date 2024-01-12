@@ -33,6 +33,7 @@ import {
   PaymentInitiationScreen,
   PaymentListScreen,
   ProfileScreen,
+  ProspectConfigurationScreen,
   ProspectScreen,
   RegistrationScreen,
   ResetPasswordScreen,
@@ -137,6 +138,7 @@ const AppTabStack = observer(function () {
         <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
         <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
         <Tab.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />
+        <Tab.Screen name='prospectConfiguration' component={ProspectConfigurationScreen} options={{ title: translate('homeScreen.title') }} />
         <Tab.Screen name='paymentList' component={PaymentListScreen} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
