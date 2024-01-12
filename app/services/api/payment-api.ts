@@ -4,6 +4,7 @@ import env from '../../config/env';
 import { Criteria, PageCriteria } from '../../models/entities/criteria/criteria';
 import { Invoice, MethodModel } from '../../models/entities/invoice/invoice';
 import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
+import { RelaunchConfiguration } from '../../models/entities/relaunch-configuration/relaunch-configuration';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import {
@@ -13,7 +14,8 @@ import {
   GetInvoiceResult,
   GetInvoicesResult,
   InitPaymentResult,
-  InvoiceRelaunchResult
+  InvoiceRelaunchResult,
+  UpdateInvoiceRelaunchConfResult,
 } from './api.types';
 
 export class PaymentApi {
@@ -152,7 +154,18 @@ export class PaymentApi {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);
     }
-    const RelaunchConfiguration = response.data;
-    return { kind: 'ok', RelaunchConfiguration };
+    const RelaunchConf = response.data;
+    return { kind: 'ok', RelaunchConf };
+  }
+
+  async updateInvoiceRelaunchConf(accountId: string, relaunchConf: RelaunchConfiguration): Promise<UpdateInvoiceRelaunchConfResult> {
+    const response: ApiResponse<any> = await this.api.apisauce.put(`accounts/${accountId}/invoiceRelaunchConf`, relaunchConf);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const updatedRelaunchConf = response.data;
+    return { kind: 'ok', updatedRelaunchConf };
   }
 }

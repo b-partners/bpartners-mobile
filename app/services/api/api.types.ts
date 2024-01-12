@@ -8,12 +8,12 @@ import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Marketplace } from '../../models/entities/marketplace/marketplace';
 import { Product } from '../../models/entities/product/product';
 import { Prospect } from '../../models/entities/prospect/prospect';
+import { RelaunchConfiguration } from '../../models/entities/relaunch-configuration/relaunch-configuration';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { TransactionSummary } from '../../models/entities/transaction-summary/transaction-summary';
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
 import { GeneralApiProblem } from './api-problem';
-import {RelaunchConfiguration} from "../../models/entities/relaunch-configuration/relaunch-configuration";
 
 export interface Whoami {
   user: any;
@@ -77,7 +77,9 @@ export type InvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaun
 
 export type GetInvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch[] } | GeneralApiProblem;
 
-export type GetInvoiceRelaunchConfResult = { kind: 'ok'; RelaunchConfiguration: RelaunchConfiguration } | GeneralApiProblem;
+export type GetInvoiceRelaunchConfResult = { kind: 'ok'; RelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
+
+export type UpdateInvoiceRelaunchConfResult = { kind: 'ok'; updatedRelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
 
 export type CrupdateInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
 
