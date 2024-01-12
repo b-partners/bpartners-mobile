@@ -13,6 +13,7 @@ import { TransactionSummary } from '../../models/entities/transaction-summary/tr
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
 import { GeneralApiProblem } from './api-problem';
+import {RelaunchConfiguration} from "../../models/entities/relaunch-configuration/relaunch-configuration";
 
 export interface Whoami {
   user: any;
@@ -75,6 +76,8 @@ export type GetInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProb
 export type InvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch } | GeneralApiProblem;
 
 export type GetInvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch[] } | GeneralApiProblem;
+
+export type GetInvoiceRelaunchConfResult = { kind: 'ok'; RelaunchConfiguration: RelaunchConfiguration } | GeneralApiProblem;
 
 export type CrupdateInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
 

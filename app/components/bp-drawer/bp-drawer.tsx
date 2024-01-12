@@ -57,7 +57,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     marketplace: translate('marketPlaceScreen.title'),
     supportContact: translate('supportContactScreen.title'),
     bank: translate('logoutScreen.swan'),
-      configuration: translate('configurationScreen.title'),
+    configuration: translate('configurationScreen.title'),
     partners: translate('partnersScreen.title'),
   };
 

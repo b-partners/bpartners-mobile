@@ -6,7 +6,15 @@ import { Invoice, MethodModel } from '../../models/entities/invoice/invoice';
 import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { CrupdateInvoiceResult, GetInvoiceRelaunchResult, GetInvoiceResult, GetInvoicesResult, InitPaymentResult, InvoiceRelaunchResult } from './api.types';
+import {
+  CrupdateInvoiceResult,
+  GetInvoiceRelaunchConfResult,
+  GetInvoiceRelaunchResult,
+  GetInvoiceResult,
+  GetInvoicesResult,
+  InitPaymentResult,
+  InvoiceRelaunchResult
+} from './api.types';
 
 export class PaymentApi {
   private api: Api;
@@ -28,6 +36,7 @@ export class PaymentApi {
       },
       customer: {
         id: item.customer ? item.customer.id : null,
+        name: item.customer ? item.customer.name : null,
         firstName: item.customer ? item.customer.firstName : null,
         lastName: item.customer ? item.customer.lastName : null,
         address: item.customer ? item.customer.address : null,
@@ -38,6 +47,7 @@ export class PaymentApi {
         website: item.customer ? item.customer.website : null,
         zipCode: item.customer ? item.customer.zipCode : null,
         comment: item.comment ? item.comment : null,
+        customerType: item.customer ? item.customer.customerType : null,
       },
     };
   }
@@ -133,5 +143,16 @@ export class PaymentApi {
     }
     const invoiceRelaunch = response.data;
     return { kind: 'ok', invoiceRelaunch };
+  }
+
+  async getInvoiceRelaunchConf(accountId: string): Promise<GetInvoiceRelaunchConfResult> {
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoiceRelaunchConf`);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const RelaunchConfiguration = response.data;
+    return { kind: 'ok', RelaunchConfiguration };
   }
 }
