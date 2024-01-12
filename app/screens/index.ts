@@ -20,6 +20,7 @@ export * from './invoices/invoices-screen';
 export * from './marketplace/marketplace-screen';
 export * from './payment-list/payment-list-screen';
 export * from './prospect/prospect-screen';
+export * from './prospect-configuration/prospect-configuration-screen';
 export * from './registration/registration-screen';
 export * from './support-contact/support-contact-screen';
 export { TRANSACTION_BUTTONS_STYLE } from './home/utils/styles';

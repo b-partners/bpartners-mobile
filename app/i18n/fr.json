@@ -125,6 +125,10 @@
       "convertCustomerIntoProspect": "Remettre en prospect"
     }
   },
+  "prospectConfigurationScreen": {
+    "title": "Configuration du prospect",
+    "setUpPerimeter": "Configurer le périmètre de prospection."
+  },
   "onboardingScreen": {
     "title": "Créer un compte"
   },
