@@ -1,23 +1,33 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Alert, Button, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { AgendaList, CalendarProvider, DateData, ExpandableCalendar } from 'react-native-calendars';
+import { ScrollView, View } from 'react-native';
+import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 
 import { Header, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { Event } from '../../models/entities/calendar/calendar';
 import { NavigatorParamList } from '../../navigators/utils/utils';
+import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { EventsModal } from './components/events-modal';
+import { AgendaItem } from './components/agenda-item';
 import { SynchronizeModal } from './components/synchronize-modal';
 import { calendarScreenStyles as styles } from './utils/styles';
 
-export const agendaItems = [
+type AgendaItem = {
+  title: string;
+  data: any[];
+};
+
+export const agendaItems: AgendaItem[] = [
   {
     title: '2024-01-01',
-    data: [{ summary: 'Daily Expressif' }],
+    data: [{ summary: 'Daily Expressif', from: '2024-01-01T11:00:00Z', to: '2024-01-01T11:30:00Z' }],
+  },
+  {
+    title: '2024-01-01',
+    data: [{ summary: 'Gouté', from: '2024-01-02T16:00:00Z', to: '2024-01-02T16:30:00Z' }],
   },
 ];
 
@@ -27,9 +37,9 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
   const today = new Date();
   const { calendarStore } = useStores();
   const { currentCalendar, events } = calendarStore;
-  const [currentDate, setCurrentDate] = useState<DateData>();
+  //const [currentDate, setCurrentDate] = useState<DateData>();
   const [isOpen, setOpen] = useState(false);
-  const [isEventsModal, setEventsModal] = useState(false);
+  //const [isEventsModal, setEventsModal] = useState(false);
   const [marked, setMarked] = useState({});
 
   const fetchData = async (fetchDate: Date) => {
@@ -93,106 +103,21 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
             </View>
             <View style={styles.calendarContainer}>
               <ExpandableCalendar
-                // horizontal={false}
-                // hideArrows
-                // disablePan
-                // hideKnob
-                // initialPosition={ExpandableCalendar.positions.OPEN}
                 // calendarStyle={styles.calendar}
-                // headerStyle={styles.header} // for horizontal only
-                // disableWeekScroll
                 // theme={theme.current}
-                // disableAllTouchEventsForDisabledDays
+                disableAllTouchEventsForDisabledDays
                 firstDay={1}
                 markedDates={marked}
-                // leftArrowImageSource={leftArrowIcon}
-                // rightArrowImageSource={rightArrowIcon}
                 animateScroll
-                // closeOnDayPress={false}
               />
-              <AgendaList
-                sections={ITEMS}
-                renderItem={renderItem}
-                // scrollToNextEvent
-                // dayFormat={'yyyy-MM-dd'}
-              />
+              <ScrollView style={{ paddingVertical: spacing[2], height: 400 }}>
+                <AgendaList sections={ITEMS} renderItem={renderItem} markToday={true} />
+              </ScrollView>
             </View>
           </Screen>
           <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />
-          {currentDate && <EventsModal isOpen={isEventsModal} setOpen={setEventsModal} currentDate={currentDate.dateString} events={events} />}
         </View>
       </CalendarProvider>
     </ErrorBoundary>
   );
-});
-
-interface ItemProps {
-  item: any;
-}
-
-const AgendaItem = (props: ItemProps) => {
-  const { item } = props;
-
-  const buttonPressed = useCallback(() => {
-    Alert.alert('Show me more');
-  }, []);
-
-  const itemPressed = useCallback(() => {
-    Alert.alert(item.summary);
-  }, []);
-
-  return (
-    <TouchableOpacity onPress={itemPressed} style={agendaStyles.item}>
-      {/*<View>
-        <Text style={agendaStyles.itemHourText}>{item.hour}</Text>
-        <Text style={agendaStyles.itemDurationText}>{item.duration}</Text>
-      </View>*/}
-      <Text style={agendaStyles.itemTitleText}>{item.summary}</Text>
-      <View style={agendaStyles.itemButtonContainer}>
-        <Button color={'grey'} title={'Info'} onPress={buttonPressed} />
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-export default React.memo(AgendaItem);
-
-const agendaStyles = StyleSheet.create({
-  item: {
-    padding: 20,
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
-    flexDirection: 'row',
-  },
-  itemHourText: {
-    color: 'black',
-  },
-  itemDurationText: {
-    color: 'grey',
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 4,
-  },
-  itemTitleText: {
-    color: palette.secondaryColor,
-    marginLeft: 16,
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  itemButtonContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  emptyItem: {
-    paddingLeft: 20,
-    height: 52,
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgrey',
-  },
-  emptyItemText: {
-    color: 'lightgrey',
-    fontSize: 14,
-  },
 });
