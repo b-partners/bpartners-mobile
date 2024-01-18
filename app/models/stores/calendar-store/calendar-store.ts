@@ -32,8 +32,8 @@ export const CalendarStoreModel = types
       try {
         const payload: RedirectionStatusUrls = {
           redirectionStatusUrls: {
-            successUrl: 'https://dashboard.preprod.bpartners.app/redirection',
-            failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+            successUrl: 'https://dashboard.bpartners.app/redirection',
+            failureUrl: 'https://dashboard.bpartners.app/redirection',
           },
         };
         const calendarConsentResult = yield calendarApi.initiateConsent(self.currentUser.id, payload);
@@ -44,8 +44,8 @@ export const CalendarStoreModel = types
               const code = params.get('code');
               Log('Deep link param:' + code);
               const redirectUrls: RedirectUrls = {
-                successUrl: 'https://dashboard.preprod.bpartners.app/redirection',
-                failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+                successUrl: 'https://dashboard.bpartners.app/redirection',
+                failureUrl: 'https://dashboard.bpartners.app/redirection',
               };
               await calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
             });
@@ -65,8 +65,8 @@ export const CalendarStoreModel = types
       const calendarApi = new CalendarApi(self.environment.api);
       try {
         const redirectUrls: RedirectUrls = {
-          successUrl: 'https://dashboard.preprod.bpartners.app/redirection',
-          failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
+          successUrl: 'https://dashboard.bpartners.app/redirection',
+          failureUrl: 'https://dashboard.bpartners.app/redirection',
         };
         yield calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
         navigate('welcome');
