@@ -1,18 +1,16 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { endOfWeek, startOfWeek } from 'date-fns';
+import { add, endOfWeek, startOfWeek, sub } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 
 import { Header, Loader, Screen, Text } from '../../components';
 import { useStores } from '../../models';
 import { Event } from '../../models/entities/calendar/calendar';
 import { NavigatorParamList } from '../../navigators/utils/utils';
-import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { Log } from '../welcome/utils/utils';
 import { AgendaItem } from './components/agenda-item';
 import { SynchronizeModal } from './components/synchronize-modal';
 import { calendarScreenStyles as styles } from './utils/styles';
@@ -31,6 +29,7 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
   const [items, setItems] = useState<AgendaItem[]>([]);
   const [loading, setLoading] = useState(false);
   const firstDay = startOfWeek(today, { weekStartsOn: 1 });
+  const [currentWeek, setCurrentWeek] = useState(firstDay);
 
   const fetchData = async (fetchDate: Date) => {
     setLoading(true);
@@ -93,7 +92,6 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
           });
           setMarked(newMarkedDates);
           setItems(newItems);
-          Log(newItems);
         }
       }
     } catch (error) {
@@ -118,7 +116,7 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
     <ErrorBoundary catchErrors='always'>
       <CalendarProvider date={today.toDateString()}>
         <View testID='marketplaceScreen' style={styles.screenContainer}>
-          <Screen preset='scroll' backgroundColor={palette.white} style={styles.screen}>
+          <Screen backgroundColor={palette.white} style={styles.screen}>
             <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
             <View style={styles.summaryContainer}>
               {currentCalendar && (
@@ -127,36 +125,45 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
                 </View>
               )}
             </View>
-            {loading ? (
-              <View style={{ width: '100%', height: 300, justifyContent: 'center', alignItems: 'center' }}>
-                <Loader size={'large'} color={palette.secondaryColor} />
-              </View>
-            ) : (
-              <View style={styles.calendarContainer}>
-                <ExpandableCalendar
-                  disableAllTouchEventsForDisabledDays
-                  firstDay={firstDay.getDay()}
-                  markedDates={marked}
-                  animateScroll
-                  onPressArrowLeft={(method, month) => Log(month)}
-                  onPressArrowRight={(method, month) => Log(month)}
-                  theme={{
-                    backgroundColor: palette.white,
-                    calendarBackground: palette.white,
-                    textSectionTitleColor: palette.textClassicColor,
-                    selectedDayBackgroundColor: palette.white,
-                    selectedDayTextColor: palette.textClassicColor,
-                    todayTextColor: palette.white,
-                    todayBackgroundColor: palette.blue,
-                    dayTextColor: palette.textClassicColor,
-                    textDisabledColor: palette.lightGrey,
-                  }}
-                />
+
+            <View style={styles.calendarContainer}>
+              <ExpandableCalendar
+                disableAllTouchEventsForDisabledDays
+                firstDay={firstDay.getDay()}
+                markedDates={marked}
+                animateScroll
+                onPressArrowLeft={async () => {
+                  const oneWeekBefore = sub(currentWeek, { weeks: 1 });
+                  setCurrentWeek(oneWeekBefore);
+                  await fetchData(oneWeekBefore);
+                }}
+                onPressArrowRight={async () => {
+                  const oneWeekAfter = add(currentWeek, { weeks: 1 });
+                  setCurrentWeek(oneWeekAfter);
+                  await fetchData(oneWeekAfter);
+                }}
+                theme={{
+                  backgroundColor: palette.white,
+                  calendarBackground: palette.white,
+                  textSectionTitleColor: palette.textClassicColor,
+                  selectedDayBackgroundColor: palette.white,
+                  selectedDayTextColor: palette.textClassicColor,
+                  todayTextColor: palette.white,
+                  todayBackgroundColor: palette.blue,
+                  dayTextColor: palette.textClassicColor,
+                  textDisabledColor: palette.lightGrey,
+                }}
+              />
+              {loading ? (
+                <View style={{ width: '100%', height: 300, justifyContent: 'center', alignItems: 'center' }}>
+                  <Loader size={'large'} color={palette.secondaryColor} />
+                </View>
+              ) : (
                 <View>
                   <AgendaList sections={items} renderItem={renderItem} markToday={true} />
                 </View>
-              </View>
-            )}
+              )}
+            </View>
           </Screen>
           <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />
         </View>

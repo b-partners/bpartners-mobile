@@ -1,6 +1,7 @@
 import { translate } from 'i18n-js';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 import { Linking } from 'react-native';
+import RNRestart from 'react-native-restart';
 
 import { Log } from '../../../screens/welcome/utils/utils';
 import { RedirectUrls, RedirectionStatusUrls } from '../../../services/api';
@@ -68,6 +69,7 @@ export const CalendarStoreModel = types
           failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
         };
         yield calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
+        RNRestart.Restart();
       } catch (e) {
         Log('Failed to init calendar token');
         self.catchOrThrow(e);
