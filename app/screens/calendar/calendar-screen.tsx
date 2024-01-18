@@ -2,7 +2,7 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { add, endOfWeek, startOfWeek, sub } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 
 import { Header, Loader, Screen, Text } from '../../components';
@@ -159,9 +159,9 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
                   <Loader size={'large'} color={palette.secondaryColor} />
                 </View>
               ) : (
-                <View>
-                  <AgendaList sections={items} renderItem={renderItem} markToday={true} />
-                </View>
+                <ScrollView style={{ height: 500, width: '100%', paddingBottom: 100 }}>
+                  <AgendaList sections={items} renderItem={renderItem} markToday={true} style={{ maxHeight: 400 }} />
+                </ScrollView>
               )}
             </View>
           </Screen>
