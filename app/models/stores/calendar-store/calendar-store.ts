@@ -1,7 +1,6 @@
 import { translate } from 'i18n-js';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 import { Linking } from 'react-native';
-import RNRestart from 'react-native-restart';
 
 import { navigate, navigationRef } from '../../../navigators/navigation-utilities';
 import { Log } from '../../../screens/welcome/utils/utils';
@@ -49,13 +48,6 @@ export const CalendarStoreModel = types
                 failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
               };
               await calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
-              RNRestart.Restart();
-              navigate('welcome');
-              navigationRef.current.reset({
-                index: 0,
-                routes: [{ name: 'calendar' }],
-              });
-              setTimeout(() => navigate('calendar'), 1000);
             });
           })
           .catch(err => {
@@ -77,6 +69,12 @@ export const CalendarStoreModel = types
           failureUrl: 'https://dashboard.preprod.bpartners.app/redirection',
         };
         yield calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
+        navigate('welcome');
+        navigationRef.current.reset({
+          index: 0,
+          routes: [{ name: 'calendar' }],
+        });
+        setTimeout(() => navigate('calendar'), 2000);
       } catch (e) {
         Log('Failed to init calendar token');
         self.catchOrThrow(e);
