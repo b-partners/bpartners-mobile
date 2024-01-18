@@ -35,49 +35,30 @@ export const calendarScreenStyles = StyleSheet.create({
   },
   calendarContainer: {
     width: '100%',
+    height: '100%',
     marginVertical: spacing[2],
     marginHorizontal: spacing[1],
   },
 });
 
-export const eventCardStyles = StyleSheet.create({
+export const agendaItemStyles = StyleSheet.create({
   container: {
-    width: '96%',
-    height: 80,
-    borderRadius: 5,
-    borderBottomWidth: 2,
-    backgroundColor: palette.blue,
-    borderColor: palette.lighterGrey,
-    flexDirection: 'row',
-    marginVertical: spacing[1],
-  },
-  dateContainer: {
-    height: '100%',
-    width: '30%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  date: {
-    color: palette.white,
-    fontSize: 34,
-  },
-  dateName: {
-    color: palette.white,
-    fontSize: 13,
-  },
-  infosContainer: {
-    height: '100%',
-    width: '70%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 15,
+    backgroundColor: palette.white,
     flexDirection: 'column',
+    marginVertical: 5,
+    marginRight: 8,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: palette.oceanBoatBlue,
   },
-  time: {
-    color: palette.white,
-    fontSize: 13,
+  hours: {
+    color: palette.oceanBoatBlue,
+    fontSize: 14,
   },
-  title: {
-    color: palette.white,
-    fontSize: 16,
+  summary: {
+    color: palette.oceanBoatBlue,
+    fontWeight: 'bold',
+    fontSize: 14,
   },
 });
