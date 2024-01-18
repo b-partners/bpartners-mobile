@@ -5,7 +5,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 
-import { Header, Loader, Screen, Text } from '../../components';
+import { Header, Loader, Text } from '../../components';
 import { useStores } from '../../models';
 import { Event } from '../../models/entities/calendar/calendar';
 import { NavigatorParamList } from '../../navigators/utils/utils';
@@ -116,63 +116,61 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
   return (
     <ErrorBoundary catchErrors='always'>
       <CalendarProvider date={today.toDateString()}>
+        <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
         <View testID='marketplaceScreen' style={styles.screenContainer}>
-          <Screen backgroundColor={palette.white} style={styles.screen}>
-            <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
-            <View style={styles.summaryContainer}>
-              {currentCalendar && (
-                <View style={styles.summary}>
-                  <Text style={styles.summaryText} text={currentCalendar.summary} />
-                </View>
-              )}
-            </View>
+          <View style={styles.summaryContainer}>
+            {currentCalendar && (
+              <View style={styles.summary}>
+                <Text style={styles.summaryText} text={currentCalendar.summary} />
+              </View>
+            )}
+          </View>
 
-            <View style={styles.calendarContainer}>
-              <ExpandableCalendar
-                disableAllTouchEventsForDisabledDays
-                firstDay={firstDay.getDay()}
-                markedDates={marked}
-                animateScroll
-                onPressArrowLeft={async () => {
-                  const oneWeekBefore = sub(currentWeek, { weeks: 1 });
-                  setCurrentWeek(oneWeekBefore);
-                  await fetchData(oneWeekBefore);
-                }}
-                onPressArrowRight={async () => {
-                  const oneWeekAfter = add(currentWeek, { weeks: 1 });
-                  setCurrentWeek(oneWeekAfter);
-                  await fetchData(oneWeekAfter);
-                }}
-                theme={{
-                  backgroundColor: palette.white,
-                  calendarBackground: palette.white,
-                  textSectionTitleColor: palette.textClassicColor,
-                  selectedDayBackgroundColor: palette.white,
-                  selectedDayTextColor: palette.textClassicColor,
-                  todayTextColor: palette.white,
-                  todayBackgroundColor: palette.blue,
-                  dayTextColor: palette.textClassicColor,
-                  textDisabledColor: palette.lightGrey,
-                }}
-              />
-              {loading ? (
-                <View style={{ width: '100%', height: 300, justifyContent: 'center', alignItems: 'center' }}>
-                  <Loader size={'large'} color={palette.secondaryColor} />
-                </View>
-              ) : (
-                <ScrollView style={{ height: 500, width: '100%', paddingBottom: 100 }}>
-                  <AgendaList
-                    sections={items}
-                    renderItem={renderItem}
-                    markToday={true}
-                    style={{ maxHeight: 400 }}
-                    // @ts-ignore
-                    sectionStyle={{ color: palette.secondaryColor }}
-                  />
-                </ScrollView>
-              )}
-            </View>
-          </Screen>
+          <View style={styles.calendarContainer}>
+            <ExpandableCalendar
+              disableAllTouchEventsForDisabledDays
+              firstDay={firstDay.getDay()}
+              markedDates={marked}
+              animateScroll
+              onPressArrowLeft={async () => {
+                const oneWeekBefore = sub(currentWeek, { weeks: 1 });
+                setCurrentWeek(oneWeekBefore);
+                await fetchData(oneWeekBefore);
+              }}
+              onPressArrowRight={async () => {
+                const oneWeekAfter = add(currentWeek, { weeks: 1 });
+                setCurrentWeek(oneWeekAfter);
+                await fetchData(oneWeekAfter);
+              }}
+              theme={{
+                backgroundColor: palette.white,
+                calendarBackground: palette.white,
+                textSectionTitleColor: palette.textClassicColor,
+                selectedDayBackgroundColor: palette.white,
+                selectedDayTextColor: palette.textClassicColor,
+                todayTextColor: palette.white,
+                todayBackgroundColor: palette.blue,
+                dayTextColor: palette.textClassicColor,
+                textDisabledColor: palette.lightGrey,
+              }}
+            />
+            {loading ? (
+              <View style={{ width: '100%', height: 300, justifyContent: 'center', alignItems: 'center' }}>
+                <Loader size={'large'} color={palette.secondaryColor} />
+              </View>
+            ) : (
+              <ScrollView style={{ height: 500, width: '100%', paddingBottom: 100 }}>
+                <AgendaList
+                  sections={items}
+                  renderItem={renderItem}
+                  markToday={true}
+                  style={{ maxHeight: 400 }}
+                  // @ts-ignore
+                  sectionStyle={{ color: palette.secondaryColor }}
+                />
+              </ScrollView>
+            )}
+          </View>
           <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />
         </View>
       </CalendarProvider>
