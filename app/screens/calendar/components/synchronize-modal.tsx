@@ -72,7 +72,7 @@ export const SynchronizeModal = (props: SynchronizeModalProps) => {
               }}
             >
               <View style={{ marginHorizontal: spacing[1] }}>
-                <Checkbox
+                <Checkbox.Android
                   status={isChecked ? 'checked' : 'unchecked'}
                   onPress={() => {
                     setChecked(!isChecked);
