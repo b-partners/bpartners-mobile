@@ -43,19 +43,22 @@ export const calendarScreenStyles = StyleSheet.create({
 
 export const agendaItemStyles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 15,
     backgroundColor: palette.white,
-    borderBottomWidth: 1,
-    borderBottomColor: palette.lighterGrey,
     flexDirection: 'column',
+    marginVertical: 5,
+    marginRight: 8,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: palette.oceanBoatBlue,
   },
   hours: {
-    color: palette.greyDarker,
+    color: palette.oceanBoatBlue,
     fontSize: 14,
   },
   summary: {
-    color: palette.greyDarker,
+    color: palette.oceanBoatBlue,
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
 });

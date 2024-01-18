@@ -13,6 +13,7 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { AgendaItem } from './components/agenda-item';
 import { SynchronizeModal } from './components/synchronize-modal';
+import './utils/calendar-config';
 import { calendarScreenStyles as styles } from './utils/styles';
 
 interface AgendaItem {
@@ -160,7 +161,14 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
                 </View>
               ) : (
                 <ScrollView style={{ height: 500, width: '100%', paddingBottom: 100 }}>
-                  <AgendaList sections={items} renderItem={renderItem} markToday={true} style={{ maxHeight: 400 }} />
+                  <AgendaList
+                    sections={items}
+                    renderItem={renderItem}
+                    markToday={true}
+                    style={{ maxHeight: 400 }}
+                    // @ts-ignore
+                    sectionStyle={{ color: palette.secondaryColor }}
+                  />
                 </ScrollView>
               )}
             </View>
