@@ -1,58 +1,21 @@
 import { translate } from '../../../i18n';
-import { palette } from '../../../theme/palette';
-import { commaToDot } from '../../../utils/comma-to-dot';
-import emptyToNull from '../../../utils/empty-to-null';
-import { amountToMajors, printVat, vatToMinors } from '../../../utils/money';
-import { showMessage } from '../../../utils/snackbar';
 
-export const intiaValueRenderer = product => {
-  if (product) {
-    const { id, unitPrice, description, vatPercent } = product;
-
-    return {
-      id: id,
-      unitPrice: amountToMajors(unitPrice).toString(),
-      description: description,
-      vatPercent: printVat(vatPercent),
-    };
-  } else {
-    return {
-      unitPrice: '',
-      description: '',
-      vatPercent: '',
-    };
-  }
-};
-
-export const saveOrUpdate = async (visibleModal, setVisibleModal, productStore, values) => {
-  try {
-    visibleModal.type === 'CREATION'
-      ? await productStore.saveProduct({
-          ...emptyToNull({
-            description: values.description,
-            unitPrice: vatToMinors(commaToDot(values.unitPrice)),
-            vatPercent: vatToMinors(values.vatPercent),
-            createdAt: new Date(),
-          }),
-        })
-      : await productStore.updateProduct({
-          ...emptyToNull({
-            id: values.id,
-            description: values.description,
-            unitPrice: vatToMinors(commaToDot(values.unitPrice)),
-            vatPercent: parseFloat(values.vatPercent.replace(/\D/g, '')),
-          }),
-        });
-    setTimeout(() => {
-      showMessage(translate(visibleModal.type === 'CREATION' ? 'common.added' : 'common.addedOrUpdated'), { backgroundColor: palette.green });
-    }, 1500);
-  } catch (e) {
-    __DEV__ && console.tron.log(e);
-  } finally {
-    setVisibleModal({
-      type: 'CREATION',
-      state: false,
-      product: null,
-    });
-  }
+export const productFormSchema = {
+  unitPrice: {
+    required: translate('errors.required'),
+    pattern: {
+      value: /^[0-9]+(?:\.[0-9]+)?$/,
+      message: translate('errors.invalidPrice'),
+    },
+  },
+  description: {
+    required: translate('errors.required'),
+  },
+  vatPercent: {
+    required: translate('errors.required'),
+    pattern: {
+      value: /^[0-9]+(?:\.[0-9]+)?$/,
+      message: translate('errors.invalidPercent'),
+    },
+  },
 };

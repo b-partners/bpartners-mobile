@@ -461,9 +461,9 @@
       }
     },
     "productCreationForm": {
-      "unitPrice": "Prix unitaire HT (en €)",
-      "description": "Description",
-      "tva": "TVA (en %)",
+      "unitPrice": "Prix unitaire HT (en €) *",
+      "description": "Description *",
+      "tva": "TVA (en %) *",
       "add": "Ajouter ce produit",
       "edit": "Modifier ce produit"
     },
