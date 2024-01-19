@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { translate } from '../../i18n';
 import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
@@ -53,7 +54,7 @@ export function Header(props: HeaderProps) {
         </View>
         {rightIcon ? (
           <Button preset='link' onPress={onRightPress} testID='header-right-button'>
-            <Icon icon={rightIcon} />
+            <Icon icon={rightIcon} style={{ tintColor: palette.white }} />
           </Button>
         ) : (
           <View style={RIGHT} />

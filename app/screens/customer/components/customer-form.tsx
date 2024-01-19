@@ -1,11 +1,12 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { Dispatch, FC, PropsWithoutRef, SetStateAction } from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { Dispatch, FC, PropsWithoutRef, SetStateAction, useState } from 'react';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { Button, Loader, Text } from '../../../components';
 import FormField from '../../../components/forms/form-field';
+import RadioButton from '../../../components/radio-button/radio-button';
 import { useStores } from '../../../models';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -13,6 +14,11 @@ import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
 import { CustomerModalType } from '../customers-screen';
 import { CustomerValidationSchema } from '../utils/customer-validator';
 import { intiaValueRenderer, saveOrUpdate } from '../utils/utils';
+
+enum CustomerType {
+  PROFESSIONAL = 'PROFESSIONAL',
+  INDIVIDUAL = 'INDIVIDUAL',
+}
 
 export const CustomerForm: FC<
   PropsWithoutRef<{
@@ -26,6 +32,7 @@ export const CustomerForm: FC<
 
   const { customerStore } = useStores();
   const { checkCustomer, loadingCustomerCreation } = customerStore;
+  const [current, setCurrent] = useState(customer?.customerType || CustomerType.INDIVIDUAL);
 
   return (
     <View testID='customerCreationForm' style={{ height: '100%', width: '100%' }}>
@@ -45,6 +52,46 @@ export const CustomerForm: FC<
           return (
             <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '100%' }}>
               <ScrollView style={{ height: 10 }}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginBottom: spacing[4],
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                    onPress={() => setCurrent(CustomerType.INDIVIDUAL)}
+                  >
+                    <RadioButton isActive={current === CustomerType.INDIVIDUAL} />
+                    <Text style={{ color: palette.black, marginLeft: spacing[1] }} tx={'invoiceFormScreen.customerSelectionForm.customerType.individual'} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginLeft: spacing[5],
+                    }}
+                    onPress={() => setCurrent(CustomerType.PROFESSIONAL)}
+                  >
+                    <RadioButton isActive={current === CustomerType.PROFESSIONAL} />
+                    <Text style={{ color: palette.black, marginLeft: spacing[1] }} tx={'invoiceFormScreen.customerSelectionForm.customerType.professional'} />
+                  </TouchableOpacity>
+                </View>
+                {current === CustomerType.PROFESSIONAL && (
+                  <FormField
+                    testID='customerCompanyName'
+                    name='customerCompanyName'
+                    labelTx='invoiceFormScreen.customerSelectionForm.customerCreationForm.companyName'
+                    value={values.customerCompanyName}
+                    inputStyle={[errors.customerCompanyName && INVALID_FORM_FIELD]}
+                  />
+                )}
                 <FormField
                   testID='customerFirstName'
                   name='customerFirstName'
@@ -88,7 +135,7 @@ export const CustomerForm: FC<
                   value={values.customerComment}
                 />
               </ScrollView>
-              <View style={{ height: '30%' }}>
+              <View style={{ height: '25%' }}>
                 {checkCustomer === true ? (
                   <Button
                     testID='submit'
@@ -141,7 +188,12 @@ export const CustomerForm: FC<
                 ) : (
                   <Button
                     testID='submit'
-                    onPress={() => saveOrUpdate(modal, setModal, customerStore, values)}
+                    onPress={() =>
+                      saveOrUpdate(modal, setModal, customerStore, {
+                        ...values,
+                        customerType: current,
+                      })
+                    }
                     style={{
                       backgroundColor: color.palette.secondaryColor,
                       height: 45,

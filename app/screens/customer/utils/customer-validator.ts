@@ -4,6 +4,10 @@ import { translate } from '../../../i18n';
 
 export const CustomerValidationSchema = yup.object().shape({
   customerId: yup.string(),
+  customerCompanyName: yup
+    .string()
+    .required(translate('errors.required'))
+    .label(translate('invoiceFormScreen.customerSelectionForm.customerCreationForm.companyName')),
   customerFirstName: yup
     .string()
     .required(translate('errors.required'))

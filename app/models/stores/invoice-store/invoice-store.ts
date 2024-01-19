@@ -5,6 +5,7 @@ import { PaymentApi } from '../../../services/api/payment-api';
 import { RTLog } from '../../../utils/reactotron-log';
 import { Criteria, PageCriteria } from '../../entities/criteria/criteria';
 import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, MethodModel, SearchInvoiceModel } from '../../entities/invoice/invoice';
+import { RelaunchConfiguration, RelaunchConfigurationModel } from '../../entities/relaunch-configuration/relaunch-configuration';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -15,6 +16,7 @@ export const InvoiceStoreModel = types
     invoices: types.optional(types.array(InvoiceModel), []),
     paidInvoices: types.optional(types.array(InvoiceModel), []),
     searchInvoices: types.optional(types.array(SearchInvoiceModel), []),
+    invoiceRelaunchConf: types.optional(RelaunchConfigurationModel, {}),
     invoice: types.optional(InvoiceModel, {}),
     loadingCreation: types.optional(types.boolean, false),
     loadingInvoice: types.optional(types.boolean, false),
@@ -195,6 +197,40 @@ export const InvoiceStoreModel = types
       } catch (e) {
         RTLog(e.message);
         self.catchOrThrow(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    saveInvoiceRelaunchConfSuccess: (relaunchConf: RelaunchConfiguration) => {
+      self.invoiceRelaunchConf = relaunchConf;
+    },
+  }))
+  .actions(() => ({
+    saveInvoiceRelaunchConfFail: error => {
+      __DEV__ && console.tron.log(error);
+    },
+  }))
+  .actions(self => ({
+    getInvoiceRelaunchConf: flow(function* () {
+      const paymentApi = new PaymentApi(self.environment.api);
+      try {
+        const getRelaunchConfResult = yield paymentApi.getInvoiceRelaunchConf(self.currentAccount.id);
+        self.saveInvoiceRelaunchConfSuccess(getRelaunchConfResult.RelaunchConf);
+        return getRelaunchConfResult.RelaunchConf;
+      } catch (e) {
+        self.saveInvoiceRelaunchConfFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateInvoiceRelaunchConf: flow(function* (relaunchConf: RelaunchConfiguration) {
+      const paymentApi = new PaymentApi(self.environment.api);
+      try {
+        const updateRelaunchConfResult = yield paymentApi.updateInvoiceRelaunchConf(self.currentAccount.id, relaunchConf);
+        self.saveInvoiceRelaunchConfSuccess(updateRelaunchConfResult.updatedRelaunchConf);
+        return updateRelaunchConfResult.updatedRelaunchConf;
+      } catch (e) {
+        self.saveInvoiceRelaunchConfFail(e);
       }
     }),
   }))

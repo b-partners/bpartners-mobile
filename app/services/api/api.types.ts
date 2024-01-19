@@ -1,6 +1,7 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
 import { BusinessActivityItem } from '../../models/entities/business-activity/business-activity';
+import { Calendar } from '../../models/entities/calendar/calendar';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
 import { Invoice, InvoiceRelaunch } from '../../models/entities/invoice/invoice';
@@ -8,6 +9,7 @@ import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Marketplace } from '../../models/entities/marketplace/marketplace';
 import { Product } from '../../models/entities/product/product';
 import { Prospect } from '../../models/entities/prospect/prospect';
+import { RelaunchConfiguration } from '../../models/entities/relaunch-configuration/relaunch-configuration';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
 import { TransactionSummary } from '../../models/entities/transaction-summary/transaction-summary';
 import { Transaction } from '../../models/entities/transaction/transaction';
@@ -26,6 +28,10 @@ export type RedirectionUrlsStatus = {
   };
 };
 
+export type RedirectionStatusUrls = { redirectionStatusUrls: { successUrl: string; failureUrl: string } };
+
+export type RedirectUrls = { successUrl: string; failureUrl: string };
+
 export type GetUsersResult = { kind: 'ok'; users: User[] } | GeneralApiProblem;
 export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
@@ -42,6 +48,14 @@ export type GetOnboardingURL = { kind: 'ok'; redirectionUrl: string; successUrl:
 export type GetBusinessActivitiesResult = { kind: 'ok'; businessActivities: BusinessActivityItem[] } | GeneralApiProblem;
 
 export type SignInResult = { kind: 'ok'; redirectionUrl: string; successUrl: string; failureUrl: string } | GeneralApiProblem;
+
+export type InitiateConsentResult = { kind: 'ok'; redirectionStatusUrls: RedirectionUrlsStatus } | GeneralApiProblem;
+
+export type InitiateTokenResult = { kind: 'ok' } | GeneralApiProblem;
+
+export type GetCalendarResult = { kind: 'ok'; calendar: Calendar[] } | GeneralApiProblem;
+
+export type GetEventResult = { kind: 'ok'; events: Event[] } | GeneralApiProblem;
 
 export type BankConnection =
   | {
@@ -64,7 +78,7 @@ export type CreateUserResult = { kind: 'ok'; newUser: User } | GeneralApiProblem
 
 export type GetUserAccount = { kind: 'ok'; account: Account } | GeneralApiProblem;
 
-export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem | void;
+export type GetCustomersResult = { kind: 'ok'; customers: Customer[] } | GeneralApiProblem;
 
 export type GetProductsResult = { kind: 'ok'; products: Product[] } | GeneralApiProblem;
 
@@ -75,6 +89,10 @@ export type GetInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProb
 export type InvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch } | GeneralApiProblem;
 
 export type GetInvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch[] } | GeneralApiProblem;
+
+export type GetInvoiceRelaunchConfResult = { kind: 'ok'; RelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
+
+export type UpdateInvoiceRelaunchConfResult = { kind: 'ok'; updatedRelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
 
 export type CrupdateInvoiceResult = { kind: 'ok'; invoice: Invoice } | GeneralApiProblem;
 

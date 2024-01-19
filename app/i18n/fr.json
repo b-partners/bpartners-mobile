@@ -24,7 +24,7 @@
     "next": "Suivant",
     "cancel": "Annuler",
     "back": "Précédent",
-    "noDataProvided": "Aucun enregistrement à afficher",
+    "noDataProvided": "Oops ! Aucun élément à afficher",
     "loading": "Chargement en cours ...",
     "added": "Ajouté avec succès",
     "registered": "Enregistré",
@@ -35,11 +35,14 @@
     "noData": "Non renseigné",
     "search": "Rechercher",
     "open": "Ouvrir",
-    "addedOrUpdated": "Mis à jour avec succès !"
+    "addedOrUpdated": "Mis à jour avec succès !",
+    "yes": "Oui",
+    "no": "Non",
+    "reload": "Rafraichir"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
-    "somethingWentWrong": "Une erreur s'est produite lors de l'exécution de cette opération. Merci d'essayer plus tard.",
+    "somethingWentWrong": "Un problème s'est produit. Veuillez réessayer plus tard.",
     "paymentInitiation": "Il semblerait que votre banque ne soit pas synchronisée pour supporter la collecte de paiement",
     "paymentInitM1": "Connectez-vous sur BPartners.app depuis un ordinateur / banque  puis synchroniser.",
     "paymentInitM2": "En cas de difficulté, contactez le support par mail : contact@bpartners.app ou par téléphone au:",
@@ -57,7 +60,8 @@
     "invalidConfirmPassword": "Les mots de passe ne correspondent pas !",
     "changePassword": "Nouveau mot de passe",
     "oops": "Oups !",
-    "sendDraft": "Un brouillon ne peut pas être envoyé"
+    "sendDraft": "Un brouillon ne peut pas être envoyé",
+    "openBrowser": "Impossible d'ouvrir votre navigateur"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
@@ -123,6 +127,10 @@
       "freeUpProspect": "Libérer ce prospect",
       "convertCustomerIntoProspect": "Remettre en prospect"
     }
+  },
+  "prospectConfigurationScreen": {
+    "title": "Configuration du prospect",
+    "setUpPerimeter": "Configurer le périmètre de prospection."
   },
   "onboardingScreen": {
     "title": "Créer un compte"
@@ -205,6 +213,16 @@
       "service": "Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant",
       "modifyInformations": "Pour modifier vos informations de profil; rendez-vous sur la version web de BPartners à l’adresse:"
     },
+    "tabs": {
+      "company": "Ma société",
+      "subscription": "Mon abonnement"
+    },
+    "subscription": {
+      "ai": "Activation de notre Intelligence artificielle qui génère des prospects en temps réel pour développer votre activité et obtenir de nouveaux clients.",
+      "tools": "Accès aux outils de devis/facturation personnalisé, gestion des acomptes, relance impayés CRM, gestion des produits, synchronisation bancaire et suivi de trésorerie.",
+      "code": "Initiez la collecte de vos encaissements instantanément par QR code, Mails ou SMS en 1 clic. Lien de paiement intégré à la facture pour seulement 0,99%",
+      "support": "Support 7/7"
+    },
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Sélectionner un fichier",
@@ -220,6 +238,7 @@
         "section": "Ma société: ",
         "name": "Raison sociale: ",
         "siren": "Siren: ",
+        "tva": "Micro-entreprise exonérée de TVA: ",
         "officialActivityName": "Activité officielle: ",
         "contactAddress": {
           "address": "Adresse: ",
@@ -422,7 +441,12 @@
       "addClient": "Ajouter un client",
       "editClient": "Editer un client",
       "validate": "Valider",
+      "customerType": {
+        "professional": "Professionnel",
+        "individual": "Particulier"
+      },
       "customerCreationForm": {
+        "companyName": "Nom de la société",
         "firstName": "Prénom",
         "lastName": "Nom de Famille",
         "email": "Email",
@@ -509,6 +533,13 @@
     "title": "Déconnexion",
     "swan": "Ma Banque"
   },
+  "configurationScreen": {
+    "title": "Configuration",
+    "RelaunchFrequency": "Fréquence de relance",
+    "UnconfirmedQuotation": "Devis non confirmé (en jour)",
+    "LateInvoice": "Facture en retard (en jour)",
+    "DayNumber": "Nombre de jour"
+  },
   "legalFileScreen": {
     "condition": "Conditions générales d'utilisation",
     "accept": "Accepter",
@@ -542,6 +573,7 @@
   "forgotPasswordScreen": {
     "title": "Mot de passe oublié ?",
     "sentTitle": "Code envoyé",
+    "email": "Veuillez informer votre email",
     "checkEmail": "Vérifier votre e-mail, votre code de validation à été envoyé au",
     "success": "Modifié avec succès",
     "resetTitle": "Changer le mot de passe",
@@ -595,5 +627,14 @@
   "relaunchHistoryModal": {
     "title": "Historique de relance",
     "quotationRelaunchedAt": "Devis relancé le"
+  },
+  "calendarScreen": {
+    "title": "Mon agenda",
+    "firstLabel": "Votre session Google Agenda a expiré,",
+    "secondLabel": "veuillez synchroniser votre agenda pour obtenir",
+    "thirdLabel": "de nouveaux à proximité de vos prochains RDV.",
+    "firstText": "En continuant, vous acceptez que BPartners transmette anonymement vos informations à la Base Adresse Nationale afin de générer des nouveaux prospects.",
+    "secondText": "Pour plus d'infos, consultez: ",
+    "sync": "Synchroniser"
   }
 }

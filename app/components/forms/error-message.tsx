@@ -2,11 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
 
-import { color } from '../../theme';
+import { color, spacing } from '../../theme';
 
 const ERROR_TEXT: TextStyle = {
   color: color.error,
   fontFamily: 'Geometria-Bold',
+  marginLeft: spacing[1],
 };
 const ERROR_MESSAGE_CONTAINER: ViewStyle = {
   display: 'flex',
