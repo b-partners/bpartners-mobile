@@ -130,7 +130,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
       debounceTimeoutRef.current = setTimeout(async () => {
         await searchCustomer();
         setMaxPage(Math.ceil(customers.length / itemsPerPage));
-      }, 1000);
+      }, 1500);
     }
   };
 

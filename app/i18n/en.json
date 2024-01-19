@@ -477,9 +477,9 @@
       }
     },
     "productCreationForm": {
-      "unitPrice": "Unit price excluding tax (in €)",
-      "description": "Description",
-      "tva": "TVA (en %)",
+      "unitPrice": "Unit price excluding tax (in €) *",
+      "description": "Description *",
+      "tva": "TVA (en %) *",
       "add": "Add this product",
       "edit": "Edit this product"
     },
