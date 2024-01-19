@@ -22,7 +22,7 @@ export const AccountHolderModel = types.model('AccountHolder').props({
   contactAddress: types.maybeNull(ContactAddressModel),
   companyInfo: types.maybeNull(CompanyInfoModel),
   businessActivities: types.maybeNull(BusinessActivityModel),
-  initialCashflow: types.maybeNull(types.number),
+  initialCashFlow: types.maybeNull(types.number),
   verificationStatus: types.maybeNull(types.enumeration(Object.values(VerificationStatus))),
   revenueTargets: types.maybeNull(types.array(RevenueTargetModel)),
 });

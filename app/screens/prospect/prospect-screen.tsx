@@ -78,7 +78,15 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('bp_home')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header
+          headerTx='prospectScreen.title'
+          leftIcon={'back'}
+          rightIcon={'settings'}
+          onLeftPress={() => navigation.navigate('bp_home')}
+          onRightPress={() => navigation.navigate('prospectConfiguration')}
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+        />
         <View testID='ProspectScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             <Searchbar
@@ -117,7 +125,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
                 return <ProspectItem key={index} menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} />;
               })
             ) : (
-              <NoDataProvided />
+              <NoDataProvided reload={handleRefresh} />
             )}
           </ScrollView>
         </View>

@@ -9,7 +9,10 @@ export type NavigatorParamList = {
   transactionList: undefined;
   customer: undefined;
   product: undefined;
-  oauth: { code: string; state: string };
+  oauth: {
+    code: string;
+    state: string;
+  };
   profile: undefined;
   legalFile: undefined;
   invoices: undefined;
@@ -23,16 +26,19 @@ export type NavigatorParamList = {
     invoice: Invoice;
   };
   bank: undefined;
+  configuration: undefined;
   partners: undefined;
   changePassword: {
     userName: string;
     password: string;
   };
   profileEdition: undefined;
+  calendar: undefined;
 };
 
 export type TabNavigatorParamList = {
   prospect: undefined;
+  prospectConfiguration: undefined;
   forgotPassword: undefined;
   bp_home: undefined;
   marketplace: undefined;

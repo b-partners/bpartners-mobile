@@ -13,5 +13,7 @@ export type RouteNameProps = {
   marketplace: string | React.ReactElement;
   supportContact: string | React.ReactElement;
   bank: string | React.ReactElement;
+  configuration: string | React.ReactElement;
   partners: string | React.ReactElement;
+  calendar: string | React.ReactElement;
 };

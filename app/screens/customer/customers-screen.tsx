@@ -241,7 +241,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
               }}
             >
               <MaterialCommunityIcons name='download' size={22} color={palette.white} />
-              <Text tx={'customerScreen.export'} style={{ fontSize: 14 }} />
+              <Text tx={'customerScreen.export'} style={{ fontSize: 14, height: '100%' }} />
             </IButton>
           </View>
         </KeyboardAvoidingView>

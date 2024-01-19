@@ -24,7 +24,7 @@
     "next": "Next",
     "cancel": "Cancel",
     "back": "Back",
-    "noDataProvided": "No records to display",
+    "noDataProvided": "Oops! No data found",
     "loading": "Loading in progress ...",
     "added": "Successfully added",
     "registered": "Registered",
@@ -35,7 +35,10 @@
     "noData": "Unknown",
     "search": "Search",
     "open": "Open",
-    "addedOrUpdated": "Updated successfully !"
+    "addedOrUpdated": "Updated successfully !",
+    "yes": "Yes",
+    "no": "No",
+    "reload": "Reload"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -57,7 +60,8 @@
     "invalidConfirmPassword": "The passwords don't match !",
     "changePassword": "New password",
     "oops": "Oops !",
-    "sendDraft": "A draft cannot be sent"
+    "sendDraft": "A draft cannot be sent",
+    "openBrowser": "Unable to open your browser"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -169,6 +173,10 @@
       "convertCustomerIntoProspect": "Turn into prospect"
     }
   },
+  "prospectConfigurationScreen": {
+    "title": "Prospect configuration",
+    "setUpPerimeter": "Configure the prospecting perimeter."
+  },
   "onboardingScreen": {
     "title": "Onboarding"
   },
@@ -222,6 +230,16 @@
       "service": "All the essential services to manage your business as a craftsman or freelancer",
       "modifyInformations": "To modify your profile information, go to the web version of BPartners at the following address:"
     },
+    "tabs": {
+      "company": "My company",
+      "subscription": "My subscription"
+    },
+    "subscription": {
+      "ai": "Activate our Artificial Intelligence, which generates leads in real time to develop your business and win new customers.",
+      "tools": "Access to customized quotation/billing tools, down-payment management, CRM reminders, product management, bank synchronization and cash-flow monitoring.",
+      "code": "Start collecting cash instantly by QR code, e-mail or SMS in just 1 click. Invoice-integrated payment link for only 0.99%",
+      "support": "Support 7/7"
+    },
     "fields": {
       "logo": "Logo",
       "selectFileButton": "Select file",
@@ -237,6 +255,7 @@
         "section": "My society: ",
         "name": "Company Name: ",
         "siren": "Siren: ",
+        "tva": "VAT-exempt micro-business: ",
         "officialActivityName": "Official activity: ",
         "contactAddress": {
           "address": "Address: ",
@@ -438,7 +457,12 @@
       "addClient": "Add a customer",
       "editClient": "Edit a customer",
       "validate": "Validate",
+      "customerType": {
+        "professional": "Professional",
+        "individual": "Individual"
+      },
       "customerCreationForm": {
+        "companyName": "Company Name",
         "firstName": "First name",
         "lastName": "Last name",
         "email": "Email",
@@ -525,6 +549,13 @@
     "title": "Logout",
     "swan": "My Bank"
   },
+  "configurationScreen": {
+    "title": "Configuration",
+    "RelaunchFrequency": "Relaunch frequency",
+    "UnconfirmedQuotation": "Unconfirmed quotation (in days)",
+    "LateInvoice": "Late invoice (in days)",
+    "DayNumber": "Number of day"
+  },
   "legalFileScreen": {
     "condition": "General User Condition",
     "accept": "Accept",
@@ -559,6 +590,7 @@
   "forgotPasswordScreen": {
     "title": "Forgot your password ?",
     "sentTitle": "Code sent",
+    "email": "Please, enter your email",
     "checkEmail": "Check your e-mail, your validation code has been sent to",
     "success": "Successfully modified",
     "resetTitle": "Change password",
@@ -612,5 +644,14 @@
   "relaunchHistoryModal": {
     "title": "Relaunch history",
     "quotationRelaunchedAt": "Quotation relaunched at"
+  },
+  "calendarScreen": {
+    "title": "Mon calendar",
+    "firstLabel": "Your Google Calendar session has expired,",
+    "secondLabel": "synchronize your calendar to get ",
+    "thirdLabel": "new prospects close to your next appointments.",
+    "firstText": "By continuing, you agree that BPartners may anonymously transmit your information to the National Address Base in order to generate new leads.",
+    "secondText": "For more information, visit: ",
+    "sync": "Synchronize"
   }
 }
