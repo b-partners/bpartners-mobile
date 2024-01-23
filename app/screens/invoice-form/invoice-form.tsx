@@ -364,6 +364,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 dateSeparator='/'
                 value={value}
                 onDateChange={onChange}
+                type={'date'}
               />
             );
           }}
@@ -382,6 +383,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 dateSeparator='/'
                 value={value}
                 onDateChange={onChange}
+                type={'date'}
               />
             );
           }}

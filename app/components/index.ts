@@ -6,7 +6,6 @@ export * from './bullet-separator/bullet-separator';
 export * from './checkbox/checkbox';
 export * from './check-email/check-email-modal';
 export * from './date-picker-field/date-picker-field';
-export * from './datetime-picker-field/date-picker-field';
 export * from './dropdown/dropdown';
 export * from './form-row/form-row';
 export * from './file-upload/file-upload';

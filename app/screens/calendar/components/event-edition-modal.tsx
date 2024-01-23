@@ -3,11 +3,12 @@ import { Controller, useForm } from 'react-hook-form';
 import { Modal, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, DateTimePickerField, InputField, Text } from '../../../components';
+import { Button, DatePickerField, InputField, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/components/utils';
+import { Log } from '../../welcome/utils/utils';
 import { EventEditionModalProps } from '../utils/utils';
 
 interface EventData {
@@ -21,9 +22,9 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
   const { isEditionOpen, setEditionOpen, currentEvent } = props;
 
   const {
-    handleSubmit,
+    // handleSubmit,
     control,
-    reset,
+    // reset,
     formState: { errors },
   } = useForm<EventData>({
     mode: 'all',
@@ -97,8 +98,9 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 name='from'
                 control={control}
                 render={({ field: { value, onChange } }) => {
+                  Log(value);
                   return (
-                    <DateTimePickerField
+                    <DatePickerField
                       labelTx='invoiceFormScreen.invoiceForm.sendingDate'
                       isButtonPreset={false}
                       labelStyle={DATE_PICKER_LABEL_STYLE}
@@ -107,6 +109,7 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                       dateSeparator='/'
                       value={value}
                       onDateChange={onChange}
+                      type={'datetime'}
                     />
                   );
                 }}
