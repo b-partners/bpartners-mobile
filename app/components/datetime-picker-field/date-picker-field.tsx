@@ -32,7 +32,7 @@ const DATE_PICKER_CONTAINER_STYLE = { flex: 1 };
 const BUTTON_TEXT_STYLE: TextStyle = { fontSize: 14 };
 const BUTTON_STYLE: ViewStyle = { marginTop: spacing[2] };
 
-export function DatePickerField(props: DatePickerProps) {
+export function DateTimePickerField(props: DatePickerProps) {
   const {
     value,
     labelTx,
@@ -85,7 +85,7 @@ export function DatePickerField(props: DatePickerProps) {
         }}
         onCancel={() => setOpen(false)}
         textColor={palette.textClassicColor}
-        mode='date'
+        mode='datetime'
         style={[datePickerStyle]}
         {...rest}
       />

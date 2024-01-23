@@ -635,6 +635,9 @@
     "thirdLabel": "de nouveaux à proximité de vos prochains RDV.",
     "firstText": "En continuant, vous acceptez que BPartners transmette anonymement vos informations à la Base Adresse Nationale afin de générer des nouveaux prospects.",
     "secondText": "Pour plus d'infos, consultez: ",
-    "sync": "Synchroniser"
+    "sync": "Synchroniser",
+    "eventEditionModal": {
+      "label": "Édition"
+    }
   }
 }

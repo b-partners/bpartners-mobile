@@ -6,7 +6,7 @@ import { agendaItemStyles as styles } from '../utils/styles';
 import { AgendaItemProps } from '../utils/utils';
 
 export const AgendaItem = (props: AgendaItemProps) => {
-  const { item } = props;
+  const { item, onSelectEvent } = props;
   const from = new Date(item.from);
   const fromHours = from.getHours();
   const fromMinutes = from.getMinutes();
@@ -15,7 +15,7 @@ export const AgendaItem = (props: AgendaItemProps) => {
   const toMinutes = to.getMinutes();
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => onSelectEvent(item)}>
       <View>
         <Text style={styles.hours}>{`${fromHours}:${fromMinutes < 10 ? '0' : ''}${fromMinutes} - ${toHours}:${toMinutes < 10 ? '0' : ''}${toMinutes}`}</Text>
       </View>
