@@ -129,7 +129,7 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
           <View style={styles.calendarContainer}>
             <ExpandableCalendar
               disableAllTouchEventsForDisabledDays
-              firstDay={firstDay.getDay()}
+              initialDate={firstDay.toDateString()}
               markedDates={marked}
               animateScroll
               onPressArrowLeft={async () => {
