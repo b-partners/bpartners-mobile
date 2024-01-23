@@ -173,7 +173,6 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
                         dateSeparator='/'
                         value={value}
                         onDateChange={onChange}
-                        type={'date'}
                       />
                     )}
                   />

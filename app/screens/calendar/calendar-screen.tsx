@@ -12,7 +12,7 @@ import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { AgendaItem } from './components/agenda-item';
-// import { EventEditionModal } from './components/event-edition-modal';
+import { EventEditionModal } from './components/event-edition-modal';
 import { SynchronizeModal } from './components/synchronize-modal';
 import './utils/calendar-config';
 import { calendarScreenStyles as styles } from './utils/styles';
@@ -27,13 +27,13 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
   const { calendarStore } = useStores();
   const { currentCalendar, events } = calendarStore;
   const [isOpen, setOpen] = useState(false);
-  const [, /*isEditionOpen*/ setEditionOpen] = useState(false);
+  const [isEditionOpen, setEditionOpen] = useState(false);
   const [marked, setMarked] = useState({});
   const [items, setItems] = useState<AgendaItem[]>([]);
   const [loading, setLoading] = useState(false);
   const firstDay = startOfWeek(today, { weekStartsOn: 1 });
   const [currentWeek, setCurrentWeek] = useState(firstDay);
-  const [, /*currentEvent*/ setCurrentEvent] = useState<Event>();
+  const [currentEvent, setCurrentEvent] = useState<Event>();
 
   const fetchData = async (fetchDate: Date) => {
     setLoading(true);
@@ -181,7 +181,7 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
             )}
           </View>
           <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />
-          {/*currentEvent && <EventEditionModal isEditionOpen={isEditionOpen} setEditionOpen={setEditionOpen} currentEvent={currentEvent} />*/}
+          {currentEvent && <EventEditionModal isEditionOpen={isEditionOpen} setEditionOpen={setEditionOpen} currentEvent={currentEvent} />}
         </View>
       </CalendarProvider>
     </ErrorBoundary>
