@@ -10,6 +10,7 @@ export default {
   successUrl: config.SUCCESS_URL || '',
   failureUrl: config.FAILURE_URL || '',
   swanUrl: config.SWAN_URL || '',
+  calendarRedirectionUrl: config.CALENDAR_REDIRECTION_URL || '',
   endpointWhiteList: ['auth', 'token'],
   sentryDSN: config.SENTRY_DSN || '',
   sentryENV: config.SENTRY_ENV || '',

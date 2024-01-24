@@ -21,6 +21,8 @@ export const RevenueTargetsForm: FC<MaterialTopTabScreenProps<NavigatorParamList
   const { currentAccountHolder } = authStore;
   const [loading, setLoading] = useState(false);
 
+  const target = currentAccountHolder?.revenueTargets[0]?.amountTarget ?? 10000;
+
   const {
     handleSubmit,
     control,
@@ -28,7 +30,7 @@ export const RevenueTargetsForm: FC<MaterialTopTabScreenProps<NavigatorParamList
     formState: { errors },
   } = useForm({
     mode: 'all',
-    defaultValues: { revenueTargets: amountToMajors(currentAccountHolder?.revenueTargets[0].amountTarget ?? 10000).toString() },
+    defaultValues: { revenueTargets: amountToMajors(target).toString() },
   });
 
   useEffect(() => {

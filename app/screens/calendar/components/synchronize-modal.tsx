@@ -8,7 +8,6 @@ import { AutoImage, Button, Text } from '../../../components';
 import { TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { navigate, navigationRef } from '../../../navigators/navigation-utilities';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SynchronizeModalProps } from '../utils/utils';
@@ -106,14 +105,8 @@ export const SynchronizeModal = (props: SynchronizeModalProps) => {
                     flexDirection: 'row',
                   }}
                   onPress={async () => {
-                    await calendarStore.initiateConsent();
                     onClose();
-                    navigate('welcome');
-                    navigationRef.current.reset({
-                      index: 0,
-                      routes: [{ name: 'calendar' }],
-                    });
-                    setTimeout(() => navigate('calendar'), 2000);
+                    await calendarStore.initiateConsent();
                   }}
                 >
                   <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
