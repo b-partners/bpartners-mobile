@@ -7,6 +7,12 @@ export interface SynchronizeModalProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface EventEditionModalProps {
+  isEditionOpen: boolean;
+  setEditionOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  currentEvent: Event;
+}
+
 export interface EventsModalProps {
   isOpen: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,4 +29,5 @@ export interface EventCardProps {
 
 export interface AgendaItemProps {
   item: Event;
+  onSelectEvent: (item: Event) => void;
 }

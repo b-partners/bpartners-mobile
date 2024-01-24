@@ -477,9 +477,9 @@
       }
     },
     "productCreationForm": {
-      "unitPrice": "Unit price excluding tax (in €)",
-      "description": "Description",
-      "tva": "TVA (en %)",
+      "unitPrice": "Unit price excluding tax (in €) *",
+      "description": "Description *",
+      "tva": "TVA (en %) *",
       "add": "Add this product",
       "edit": "Edit this product"
     },
@@ -652,6 +652,9 @@
     "thirdLabel": "new prospects close to your next appointments.",
     "firstText": "By continuing, you agree that BPartners may anonymously transmit your information to the National Address Base in order to generate new leads.",
     "secondText": "For more information, visit: ",
-    "sync": "Synchronize"
+    "sync": "Synchronize",
+    "eventEditionModal": {
+      "label": "Edition"
+    }
   }
 }

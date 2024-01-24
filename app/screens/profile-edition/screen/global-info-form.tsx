@@ -22,6 +22,8 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
   const { currentAccountHolder } = authStore;
   const [loading, setLoading] = useState(false);
 
+  const initialCashFlow = currentAccountHolder?.initialCashFlow ?? 0;
+
   const {
     handleSubmit,
     control,
@@ -30,10 +32,10 @@ export const GlobalInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'p
   } = useForm({
     mode: 'all',
     defaultValues: {
-      name: currentAccountHolder?.name,
-      siren: currentAccountHolder?.siren,
-      officialActivityName: currentAccountHolder?.officialActivityName,
-      initialCashFlow: amountToMajors(currentAccountHolder?.initialCashflow).toString(),
+      name: currentAccountHolder?.name ?? '',
+      siren: currentAccountHolder?.siren ?? '',
+      officialActivityName: currentAccountHolder?.officialActivityName ?? '',
+      initialCashFlow: amountToMajors(initialCashFlow).toString(),
       address: currentAccountHolder?.contactAddress.address ?? '',
       city: currentAccountHolder?.contactAddress.city ?? '',
       country: currentAccountHolder?.contactAddress.country ?? '',

@@ -2,6 +2,7 @@ import { translate } from 'i18n-js';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 import { Linking } from 'react-native';
 
+import env from '../../../config/env';
 import { navigate, navigationRef } from '../../../navigators/navigation-utilities';
 import { Log } from '../../../screens/welcome/utils/utils';
 import { RedirectUrls, RedirectionStatusUrls } from '../../../services/api';
@@ -32,8 +33,8 @@ export const CalendarStoreModel = types
       try {
         const payload: RedirectionStatusUrls = {
           redirectionStatusUrls: {
-            successUrl: 'https://dashboard.bpartners.app/redirection',
-            failureUrl: 'https://dashboard.bpartners.app/redirection',
+            successUrl: env.calendarRedirectionUrl,
+            failureUrl: env.calendarRedirectionUrl,
           },
         };
         const calendarConsentResult = yield calendarApi.initiateConsent(self.currentUser.id, payload);
@@ -44,10 +45,16 @@ export const CalendarStoreModel = types
               const code = params.get('code');
               Log('Deep link param:' + code);
               const redirectUrls: RedirectUrls = {
-                successUrl: 'https://dashboard.bpartners.app/redirection',
-                failureUrl: 'https://dashboard.bpartners.app/redirection',
+                successUrl: env.calendarRedirectionUrl,
+                failureUrl: env.calendarRedirectionUrl,
               };
               await calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
+              navigate('welcome');
+              navigationRef.current.reset({
+                index: 0,
+                routes: [{ name: 'calendar' }],
+              });
+              setTimeout(() => navigate('calendar'), 2000);
             });
           })
           .catch(err => {
@@ -56,27 +63,6 @@ export const CalendarStoreModel = types
           });
       } catch (e) {
         Log('Failed to init calendar consent');
-        self.catchOrThrow(e);
-      }
-    }),
-  }))
-  .actions(self => ({
-    initiateToken: flow(function* (code: string) {
-      const calendarApi = new CalendarApi(self.environment.api);
-      try {
-        const redirectUrls: RedirectUrls = {
-          successUrl: 'https://dashboard.bpartners.app/redirection',
-          failureUrl: 'https://dashboard.bpartners.app/redirection',
-        };
-        yield calendarApi.initiateToken(self.currentUser.id, code, redirectUrls);
-        navigate('welcome');
-        navigationRef.current.reset({
-          index: 0,
-          routes: [{ name: 'calendar' }],
-        });
-        setTimeout(() => navigate('calendar'), 2000);
-      } catch (e) {
-        Log('Failed to init calendar token');
         self.catchOrThrow(e);
       }
     }),

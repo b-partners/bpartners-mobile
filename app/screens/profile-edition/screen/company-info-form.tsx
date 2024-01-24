@@ -21,6 +21,8 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
   const { currentAccountHolder } = authStore;
   const [loading, setLoading] = useState(false);
 
+  const capital = currentAccountHolder?.companyInfo?.socialCapital ?? 0;
+
   const {
     handleSubmit,
     control,
@@ -29,11 +31,11 @@ export const CompanyInfoForm: FC<MaterialTopTabScreenProps<NavigatorParamList, '
   } = useForm({
     mode: 'all',
     defaultValues: {
-      socialCapital: amountToMajors(currentAccountHolder?.companyInfo.socialCapital).toString(),
-      phone: currentAccountHolder?.companyInfo.phone ?? '',
-      email: currentAccountHolder?.companyInfo.email ?? '',
-      townCode: currentAccountHolder?.companyInfo.townCode.toString() ?? '',
-      tvaNumber: currentAccountHolder?.companyInfo.tvaNumber ?? '',
+      socialCapital: amountToMajors(capital).toString(),
+      phone: currentAccountHolder?.companyInfo?.phone ?? '',
+      email: currentAccountHolder?.companyInfo?.email ?? '',
+      townCode: currentAccountHolder?.companyInfo?.townCode?.toString() ?? '',
+      tvaNumber: currentAccountHolder?.companyInfo?.tvaNumber ?? '',
     },
   });
 
