@@ -104,10 +104,10 @@ ${currentAccountHolder.companyInfo.phone}`;
     !isRelaunch && invoice.status === InvoiceStatus.PROPOSAL
       ? bodyQuotationMessage
       : isRelaunch && invoice.status === InvoiceStatus.PROPOSAL
-        ? bodyQuotationRelaunchMessage
-        : isRelaunch === false && invoice.status !== InvoiceStatus.PROPOSAL
-          ? bodyInvoiceMessage
-          : bodyInvoiceRelaunchMessage
+      ? bodyQuotationRelaunchMessage
+      : isRelaunch === false && invoice.status !== InvoiceStatus.PROPOSAL
+      ? bodyInvoiceMessage
+      : bodyInvoiceRelaunchMessage
   );
   const emailToSend = {
     subject: `[${currentAccountHolder.name}] - ${title} - ${customer.lastName}`,
