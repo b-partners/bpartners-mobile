@@ -59,7 +59,7 @@ export const InputField = ({
           backgroundColor: backgroundColor,
           borderRadius: 5,
           width: width,
-          elevation: 10,
+          elevation: 5,
           borderBottomWidth: error ? 2 : 0,
           borderBottomColor: error ? palette.pastelRed : palette.greyDarker,
         }}

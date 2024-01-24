@@ -1,19 +1,19 @@
-import { Formik } from 'formik';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
-import React, { Dispatch, FC, PropsWithoutRef, SetStateAction } from 'react';
-import { View } from 'react-native';
-import * as yup from 'yup';
+import React, { Dispatch, FC, PropsWithoutRef, SetStateAction, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { TouchableOpacity, View } from 'react-native';
 
-import { Button, Loader, Text } from '../../../components';
-import FormField from '../../../components/forms/form-field';
+import { InputField, Loader, Text } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { commaValidation } from '../../../utils/comma-to-dot';
-import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
+import { commaToDot } from '../../../utils/comma-to-dot';
+import { amountToMajors, vatToMinors } from '../../../utils/money';
+import { showMessage } from '../../../utils/snackbar';
 import { ProductModalType } from '../products-screen';
-import { intiaValueRenderer, saveOrUpdate } from '../utils/utils';
+import { productFormSchema } from '../utils/utils';
 
 export const ProductForm: FC<
   PropsWithoutRef<{
@@ -27,85 +27,169 @@ export const ProductForm: FC<
 
   const { product, type } = modal;
 
-  const validationSchema = yup.object().shape({
-    unitPrice: yup
-      .string()
-      .required(translate('errors.required'))
-      .test('unit-price-validation', translate('errors.invalidPrice'), commaValidation)
-      .label(translate('paymentInitiationScreen.fields.amount')),
-    description: yup.string().required(translate('errors.required')).label(translate('paymentInitiationScreen.fields.amount')),
-  });
-
   const { productStore } = useStores();
   const { loadingProductCreation } = productStore;
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    mode: 'all',
+    defaultValues: product,
+  });
+
+  const hasErrors = errors.unitPrice || errors.vatPercent || errors.description;
+
+  const onSubmit = async formData => {
+    const formattedProduct = {
+      ...formData,
+      unitPrice: vatToMinors(commaToDot(formData.unitPrice.toString())),
+      vatPercent: vatToMinors(formData.vatPercent),
+    };
+    try {
+      type === 'CREATION' ? await productStore.saveProduct(formattedProduct) : await productStore.updateProduct(formattedProduct);
+      setTimeout(() => {
+        showMessage(translate(type === 'CREATION' ? 'common.added' : 'common.addedOrUpdated'), { backgroundColor: palette.green });
+      }, 1000);
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+      throw e;
+    } finally {
+      setModal({
+        type: 'CREATION',
+        state: false,
+        product: null,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (product) {
+      setValue('unitPrice', amountToMajors(product?.unitPrice));
+      setValue('vatPercent', amountToMajors(product?.vatPercent));
+    }
+  }, [product, setValue]);
 
   return (
     <View testID='paymentInitiationScreen' style={{ height: '100%', width: '100%' }}>
       {isKeyboardOpen && <View style={{ width: '100%', height: 50, backgroundColor: palette.secondaryColor }} />}
-      <Formik
-        initialValues={intiaValueRenderer(product)}
-        validationSchema={validationSchema}
-        onSubmit={async values => {
-          __DEV__ && console.tron.log({ values });
-          try {
-          } catch (e) {
-            __DEV__ && console.tron.log(e);
-          }
+      <View
+        style={{
+          marginVertical: spacing[5],
+          paddingHorizontal: spacing[3],
         }}
       >
-        {({ values, errors }) => {
-          return (
-            <View style={{ paddingVertical: spacing[6], paddingHorizontal: spacing[3], height: '100%' }}>
-              <View style={{ height: 480 }}>
-                <FormField
-                  testID='productUnitPrice'
-                  name='unitPrice'
-                  labelTx='invoiceFormScreen.productCreationForm.unitPrice'
-                  value={values.unitPrice}
-                  inputStyle={[errors.unitPrice && INVALID_FORM_FIELD]}
+        <View style={{ marginBottom: spacing[4] }}>
+          <Controller
+            control={control}
+            name='unitPrice'
+            rules={productFormSchema.unitPrice}
+            render={({ field: { onChange, value } }) => (
+              <InputField
+                labelTx={'invoiceFormScreen.productCreationForm.unitPrice'}
+                keyboardType={'numeric'}
+                error={!!errors.unitPrice}
+                value={value?.toString()}
+                onChange={onChange}
+                errorMessage={errors.unitPrice?.message as string}
+                backgroundColor={palette.white}
+              />
+            )}
+          />
+        </View>
+        <View style={{ marginBottom: spacing[4] }}>
+          <Controller
+            control={control}
+            name='description'
+            rules={productFormSchema.description}
+            render={({ field: { onChange, value } }) => (
+              <InputField
+                labelTx={'invoiceFormScreen.productCreationForm.description'}
+                error={!!errors.description}
+                value={value}
+                onChange={onChange}
+                errorMessage={errors.description?.message as string}
+                backgroundColor={palette.white}
+              />
+            )}
+          />
+        </View>
+        {isSubjectToVat && (
+          <View style={{ marginBottom: spacing[4] }}>
+            <Controller
+              control={control}
+              name='vatPercent'
+              rules={productFormSchema.vatPercent}
+              render={({ field: { onChange, value } }) => (
+                <InputField
+                  labelTx={'invoiceFormScreen.productCreationForm.tva'}
+                  keyboardType={'numeric'}
+                  error={!!errors.vatPercent}
+                  value={value?.toString()}
+                  onChange={onChange}
+                  errorMessage={errors.vatPercent?.message as string}
+                  backgroundColor={palette.white}
                 />
-                <FormField
-                  testID='productDescription'
-                  name='description'
-                  labelTx='invoiceFormScreen.productCreationForm.description'
-                  value={values.description}
-                  numberOfLines={3}
-                  inputStyle={[errors.description && INVALID_FORM_FIELD]}
-                />
-                {isSubjectToVat && (
-                  <FormField
-                    testID='productVatPercent'
-                    name='vatPercent'
-                    labelTx='invoiceFormScreen.productCreationForm.tva'
-                    value={values.vatPercent}
-                    numberOfLines={3}
-                    inputStyle={[errors.vatPercent && INVALID_FORM_FIELD]}
-                  />
-                )}
-              </View>
-              <View style={{ height: '15%' }}>
-                <Button
-                  testID='submit'
-                  onPress={() => saveOrUpdate(modal, setModal, productStore, values)}
-                  style={{
-                    backgroundColor: color.palette.secondaryColor,
-                    height: 45,
-                    borderRadius: 25,
-                    marginBottom: spacing[6],
-                  }}
-                  textStyle={{ fontSize: 14, fontFamily: 'Geometria-Bold' }}
-                >
-                  {loadingProductCreation === true ? (
-                    <Loader />
-                  ) : (
-                    <Text tx={type === 'CREATION' ? 'invoiceFormScreen.productCreationForm.add' : 'invoiceFormScreen.productCreationForm.edit'} />
-                  )}
-                </Button>
-              </View>
+              )}
+            />
+          </View>
+        )}
+      </View>
+      <View style={{ height: '15%', marginHorizontal: spacing[3] }}>
+        {hasErrors ? (
+          <TouchableOpacity
+            style={{
+              position: 'relative',
+              backgroundColor: palette.lighterGrey,
+              width: '100%',
+              height: 40,
+              alignSelf: 'center',
+              borderRadius: 5,
+              justifyContent: 'center',
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderColor: palette.lighterGrey,
+            }}
+            onPress={() => {}}
+          >
+            <View style={{ justifyContent: 'center', marginRight: 8 }}>
+              <MaterialCommunityIcons name={type === 'CREATE' ? 'plus' : 'pencil'} size={22} color={color.palette.white} />
             </View>
-          );
-        }}
-      </Formik>
+            <View style={{ justifyContent: 'center' }}>
+              <Text tx={type === 'CREATION' ? 'invoiceFormScreen.productCreationForm.add' : 'invoiceFormScreen.productCreationForm.edit'} />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={{
+              position: 'relative',
+              backgroundColor: palette.secondaryColor,
+              width: '100%',
+              height: 40,
+              alignSelf: 'center',
+              borderRadius: 5,
+              justifyContent: 'center',
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderColor: palette.secondaryColor,
+            }}
+            onPress={handleSubmit(onSubmit)}
+          >
+            <View style={{ justifyContent: 'center', marginRight: 8 }}>
+              {loadingProductCreation ? (
+                <Loader size={22} color={palette.white} />
+              ) : (
+                <MaterialCommunityIcons name={type === 'CREATION' ? 'plus' : 'pencil'} size={22} color={color.palette.white} />
+              )}
+            </View>
+            <View style={{ justifyContent: 'center' }}>
+              <Text tx={type === 'CREATION' ? 'invoiceFormScreen.productCreationForm.add' : 'invoiceFormScreen.productCreationForm.edit'} />
+            </View>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 });
