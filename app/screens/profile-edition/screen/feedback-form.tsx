@@ -20,6 +20,8 @@ export const FeedbackForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
   const { currentAccountHolder } = authStore;
   const [loading, setLoading] = useState(false);
 
+  const initialFeedback = currentAccountHolder?.feedback?.feedbackLink ?? '';
+
   const {
     handleSubmit,
     control,
@@ -27,7 +29,7 @@ export const FeedbackForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
     formState: { errors },
   } = useForm({
     mode: 'all',
-    defaultValues: { feedbackLink: currentAccountHolder?.feedback.feedbackLink ?? '' },
+    defaultValues: { feedbackLink: initialFeedback },
   });
 
   useEffect(() => {

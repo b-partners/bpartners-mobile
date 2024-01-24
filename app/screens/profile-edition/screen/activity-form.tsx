@@ -33,6 +33,9 @@ export const ActivityForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
   const [current, setCurrent] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const primary = currentAccountHolder?.businessActivities?.primary ?? '';
+  const secondary = currentAccountHolder?.businessActivities?.secondary ?? '';
+
   useEffect(() => {
     reset();
   }, []);
@@ -53,7 +56,7 @@ export const ActivityForm: FC<MaterialTopTabScreenProps<NavigatorParamList, 'pro
     formState: { errors },
   } = useForm({
     mode: 'all',
-    defaultValues: { primary: currentAccountHolder?.businessActivities.primary ?? '', secondary: currentAccountHolder?.businessActivities.secondary ?? '' },
+    defaultValues: { primary: primary, secondary: secondary },
   });
 
   const hasErrors = errors.primary || errors.secondary;
