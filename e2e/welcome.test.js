@@ -1,3 +1,5 @@
+import { by, device, element, waitFor } from 'detox';
+
 describe('App', () => {
   beforeAll(async () => {
     await device.launchApp();
@@ -8,8 +10,6 @@ describe('App', () => {
   });
 
   it('can view balance', async () => {
-    await waitFor(element(by.id('balance-view')))
-      .toBeVisible()
-      .withTimeout(5_000);
+    await waitFor(element(by.id('balance-view'))).toBeVisible();
   });
 });
