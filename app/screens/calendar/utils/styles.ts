@@ -62,3 +62,21 @@ export const agendaItemStyles = StyleSheet.create({
     fontSize: 14,
   },
 });
+
+export const participantItemStyles = StyleSheet.create({
+  container: {
+    width: '90%',
+    height: 40,
+    backgroundColor: palette.white,
+    marginVertical: spacing[2],
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  text: {
+    color: palette.textClassicColor,
+    fontFamily: 'Geometria',
+    fontSize: 20,
+    marginLeft: spacing[6],
+    marginRight: spacing[4],
+  },
+});

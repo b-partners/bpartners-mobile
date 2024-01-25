@@ -31,3 +31,7 @@ export interface AgendaItemProps {
   item: Event;
   onSelectEvent: (item: Event) => void;
 }
+
+export interface ParticipantItemProps {
+  email: string;
+}

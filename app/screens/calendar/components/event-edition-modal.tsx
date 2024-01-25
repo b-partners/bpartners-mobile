@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Modal, View } from 'react-native';
+import { Modal, ScrollView, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, DatePickerField, InputField, Text } from '../../../components';
@@ -10,6 +10,7 @@ import { palette } from '../../../theme/palette';
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/components/utils';
 import { Log } from '../../welcome/utils/utils';
 import { EventEditionModalProps } from '../utils/utils';
+import { ParticipantItem } from './participant-item';
 
 interface EventData {
   summary: string;
@@ -137,7 +138,7 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 }}
               />
             </View>
-            <View style={{ marginBottom: 10, width: '90%' }}>
+            <View style={{ marginBottom: 20, width: '90%' }}>
               <Controller
                 control={control}
                 name='location'
@@ -154,7 +155,11 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 )}
               />
             </View>
-            <View></View>
+            <ScrollView style={{ marginBottom: 10, width: '90%' }} contentContainerStyle={{ alignItems: 'center' }} indicatorStyle={'white'}>
+              {currentEvent.participants.map((item, index) => (
+                <ParticipantItem key={index} email={item} />
+              ))}
+            </ScrollView>
           </View>
         </View>
       </View>
