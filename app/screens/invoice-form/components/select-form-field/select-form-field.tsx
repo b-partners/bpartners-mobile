@@ -1,7 +1,7 @@
 import { Observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, Modal, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle, useWindowDimensions } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { ProgressBar, Searchbar } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 
 import { BpPagination, Button, Icon, Separator, Text, TextField, TextFieldProps } from '../../../../components';
@@ -57,11 +57,11 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
 
   const { customerStore } = useStores();
   const { height } = useWindowDimensions();
-  const MAX_HEIGHT = (6 * height) / 10;
+  const MAX_HEIGHT = (6.5 * height) / 10;
   const itemsPerPage = 10;
 
   const [visible, setVisible] = useState(false);
-  const [_isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [customers, setCustomers] = useState<Customer[]>();
@@ -77,38 +77,39 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
     }
   }, [value]);
 
-  // useEffect(() => {
-  //     let isCancelled = false;
-  //     const fetchData = async () => {
-  //         setIsFetching(true);
-  //         try {
-  //             const data = await customerStore.getCustomers();
-  //             if (!isCancelled) {
-  //                 setCustomers(data);
-  //             }
-  //         } catch (e) {
-  //             if (!isCancelled) {
-  //                 showMessage(translate('errors.somethingWentWrong'), {backgroundColor: palette.pastelRed});
-  //             }
-  //         } finally {
-  //             if (!isCancelled) {
-  //                 setIsFetching(false);
-  //             }
-  //         }
-  //     };
-  //
-  //     fetchData();
-  //
-  //     return () => {
-  //         isCancelled = true;
-  //     };
-  // }, []);
+  useEffect(() => {
+    let isCancelled = false;
+    const fetchData = async () => {
+      setIsFetching(true);
+      try {
+        const data = await customerStore.getCustomers();
+        if (!isCancelled) {
+          setCustomers(data);
+        }
+      } catch (e) {
+        if (!isCancelled) {
+          showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsFetching(false);
+        }
+      }
+    };
 
-  const searchCustomer = async searchQuery => {
+    fetchData();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
+  const searchCustomer = async filter => {
     setIsFetching(true);
     try {
-      const data = await customerStore.getCustomers(searchQuery);
+      const data = await customerStore.getCustomers(filter);
       setCustomers(data);
+      setCurrentPage(1);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
@@ -129,7 +130,6 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
     }, 1000);
   };
 
-  // Log(customers);
   return (
     <Observer>
       {() => (
@@ -155,10 +155,15 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                 height: '100%',
               }}
             >
+              {isFetching && (
+                <View style={{ width: '100%' }}>
+                  <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} style={{ marginTop: spacing[2] }} />
+                </View>
+              )}
               <View
                 style={[
                   {
-                    padding: spacing[4],
+                    paddingHorizontal: spacing[4],
                     backgroundColor: palette.white,
                     width: '100%',
                     height: MAX_HEIGHT,
@@ -170,6 +175,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     marginVertical: spacing[1],
+                    paddingTop: spacing[1],
                     paddingHorizontal: spacing[2],
                     height: '5%',
                   }}
@@ -203,7 +209,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                   inputStyle={{ color: palette.black, alignSelf: 'center' }}
                   placeholderTextColor={palette.lightGrey}
                 />
-                <View style={{ paddingVertical: spacing[2], height: '70%' }}>
+                <View style={{ paddingVertical: spacing[2], height: '73%' }}>
                   <FlatList
                     data={displayedCustomers}
                     keyExtractor={item => item.id}
@@ -215,7 +221,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                     ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
                   />
                 </View>
-                <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 80 }}>
+                <View style={{ flexDirection: 'row', marginTop: spacing[2], height: 50 }}>
                   <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
                   <View style={{ width: '75%', justifyContent: 'center' }}>
                     <Button
