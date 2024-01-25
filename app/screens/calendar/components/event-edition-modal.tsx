@@ -22,7 +22,7 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
   const { isEditionOpen, setEditionOpen, currentEvent } = props;
 
   useEffect(() => {
-    Log(currentEvent);
+    Log(new Date(currentEvent.from));
   }, []);
 
   const {
@@ -87,7 +87,7 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 defaultValue=''
                 render={({ field: { onChange, value } }) => (
                   <InputField
-                    labelTx={'registrationScreen.lastname'}
+                    labelTx={'calendarScreen.eventEditionModal.title'}
                     error={!!errors.summary}
                     value={value}
                     onChange={onChange}
@@ -97,14 +97,33 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 )}
               />
             </View>
-            <View style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+            <View style={{ display: 'flex', flexDirection: 'row', width: '90%' }}>
               <Controller
                 name='from'
                 control={control}
                 render={({ field: { value, onChange } }) => {
                   return (
                     <DatePickerField
-                      labelTx='invoiceFormScreen.invoiceForm.sendingDate'
+                      labelTx='calendarScreen.eventEditionModal.from'
+                      isButtonPreset={false}
+                      labelStyle={DATE_PICKER_LABEL_STYLE}
+                      containerStyle={DATE_PICKER_CONTAINER_STYLE}
+                      textStyle={DATE_PICKER_TEXT_STYLE}
+                      dateSeparator='/'
+                      value={value}
+                      onDateChange={onChange}
+                      type={'datetime'}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                name='to'
+                control={control}
+                render={({ field: { value, onChange } }) => {
+                  return (
+                    <DatePickerField
+                      labelTx='calendarScreen.eventEditionModal.to'
                       isButtonPreset={false}
                       labelStyle={DATE_PICKER_LABEL_STYLE}
                       containerStyle={DATE_PICKER_CONTAINER_STYLE}
@@ -118,6 +137,24 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 }}
               />
             </View>
+            <View style={{ marginBottom: 10, width: '90%' }}>
+              <Controller
+                control={control}
+                name='location'
+                defaultValue=''
+                render={({ field: { onChange, value } }) => (
+                  <InputField
+                    labelTx={'calendarScreen.eventEditionModal.location'}
+                    error={!!errors.summary}
+                    value={value}
+                    onChange={onChange}
+                    errorMessage={errors.summary?.message}
+                    backgroundColor={palette.white}
+                  />
+                )}
+              />
+            </View>
+            <View></View>
           </View>
         </View>
       </View>

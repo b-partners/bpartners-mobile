@@ -654,7 +654,12 @@
     "secondText": "For more information, visit: ",
     "sync": "Synchronize",
     "eventEditionModal": {
-      "label": "Edition"
+      "label": "Edition",
+      "title": "Title",
+      "from": "Start date",
+      "to": "End date",
+      "location": "Address",
+      "participants": "Participants"
     }
   }
 }

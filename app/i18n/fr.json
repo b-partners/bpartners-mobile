@@ -637,7 +637,12 @@
     "secondText": "Pour plus d'infos, consultez: ",
     "sync": "Synchroniser",
     "eventEditionModal": {
-      "label": "Édition"
+      "label": "Édition",
+      "title": "Titre",
+      "from": "Date de début",
+      "to": "Date de fin",
+      "location": "Adresse",
+      "participants": "Participants"
     }
   }
 }
