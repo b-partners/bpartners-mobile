@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Modal, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
@@ -20,6 +20,10 @@ interface EventData {
 }
 export const EventEditionModal = (props: EventEditionModalProps) => {
   const { isEditionOpen, setEditionOpen, currentEvent } = props;
+
+  useEffect(() => {
+    Log(currentEvent);
+  }, []);
 
   const {
     // handleSubmit,
@@ -98,7 +102,6 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 name='from'
                 control={control}
                 render={({ field: { value, onChange } }) => {
-                  Log(value);
                   return (
                     <DatePickerField
                       labelTx='invoiceFormScreen.invoiceForm.sendingDate'
