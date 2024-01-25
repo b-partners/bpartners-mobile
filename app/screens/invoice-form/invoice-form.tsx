@@ -482,7 +482,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             return (
               // @ts-ignore
               <SelectFormField
-                customers={customers}
                 selectedCustomer={selectedCustomer}
                 setSelectedCustomer={setSelectedCustomer}
                 value={value}
@@ -493,7 +492,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 labelTx='invoiceScreen.labels.customerSection'
                 modalTx='invoiceFormScreen.customerSelectionForm.title'
                 placeholderTx='invoiceScreen.labels.customerSectionPlaceholder'
-                items={customers}
                 itemLabel='name'
                 itemValue='id'
                 itemSuffix={<Icon icon='edit' />}
