@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Modal, ScrollView, View } from 'react-native';
+import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { Button, DatePickerField, InputField, Text } from '../../../components';
 import { translate } from '../../../i18n';
-import { spacing } from '../../../theme';
+import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/components/utils';
 import { Log } from '../../welcome/utils/utils';
@@ -39,6 +40,17 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
       from: new Date(currentEvent.from),
       to: new Date(currentEvent.to),
       participants: currentEvent.participants,
+    },
+  });
+
+  const {
+    control: participantControl,
+    // reset,
+    formState: { errors: participantError },
+  } = useForm({
+    mode: 'all',
+    defaultValues: {
+      participant: '',
     },
   });
 
@@ -160,6 +172,35 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 <ParticipantItem key={index} email={item} />
               ))}
             </ScrollView>
+            <View style={{ marginBottom: 20, width: '90%', flexDirection: 'row' }}>
+              <View style={{ width: '85%' }}>
+                <Controller
+                  control={participantControl}
+                  name='participant'
+                  defaultValue=''
+                  rules={{
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: translate('errors.invalidEmail'),
+                    },
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <InputField
+                      labelTx={'calendarScreen.eventEditionModal.participants'}
+                      error={!!participantError.participant}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={participantError.participant?.message}
+                      backgroundColor={palette.white}
+                    />
+                  )}
+                />
+              </View>
+
+              <TouchableOpacity style={{ width: '15%', height: 55, justifyContent: 'center', alignItems: 'center' }}>
+                <AntDesignIcon name='adduser' size={28} color={color.palette.secondaryColor} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>

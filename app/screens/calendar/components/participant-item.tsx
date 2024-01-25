@@ -13,7 +13,7 @@ export const ParticipantItem = (props: ParticipantItemProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text} text={email} />
-      <MaterialCommunityIcons name='close-circle' size={28} color={color.palette.secondaryColor} />
+      <MaterialCommunityIcons name='close-circle' size={26} color={color.palette.secondaryColor} />
     </View>
   );
 };

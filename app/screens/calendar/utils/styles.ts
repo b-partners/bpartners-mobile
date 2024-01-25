@@ -75,7 +75,7 @@ export const participantItemStyles = StyleSheet.create({
   text: {
     color: palette.textClassicColor,
     fontFamily: 'Geometria',
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: spacing[6],
     marginRight: spacing[4],
   },
