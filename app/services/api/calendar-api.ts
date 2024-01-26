@@ -69,7 +69,7 @@ export class CalendarApi {
     return { kind: 'ok', events: events };
   }
 
-  async updateCalendarsEvent(userId: string, calendarId: string, event: Event): Promise<GetEventResult> {
+  async createOrUpdateCalendarsEvent(userId: string, calendarId: string, event: Event): Promise<GetEventResult> {
     const payload = [event];
     const response: ApiResponse<GetCalendarResult> = await this.api.apisauce.put(`users/${userId}/calendars/${calendarId}/events`, payload);
 

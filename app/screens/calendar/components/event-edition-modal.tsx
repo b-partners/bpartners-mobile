@@ -6,23 +6,27 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { DatePickerField, InputField, Text } from '../../../components';
 import { CENTER_CONTAINER_STYLE, TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
+import { useStores } from '../../../models';
+import { navigate, navigationRef } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/components/utils';
-import { Log } from '../../welcome/utils/utils';
 import { EventEditionModalProps } from '../utils/utils';
 import { ParticipantItem } from './participant-item';
 
 interface EventData {
   summary: string;
+  organizer: string;
   location: string;
   from: Date;
   to: Date;
+  id: string;
   participants: string[];
 }
 export const EventEditionModal = (props: EventEditionModalProps) => {
   const { isEditionOpen, setEditionOpen, currentEvent } = props;
   const [participants, setParticipants] = useState([]);
+  const { calendarStore } = useStores();
 
   useEffect(() => {
     if (currentEvent.participants) {
@@ -46,6 +50,8 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
       location: currentEvent.location,
       from: new Date(currentEvent.from),
       to: new Date(currentEvent.to),
+      id: currentEvent.id,
+      organizer: currentEvent.organizer,
     },
   });
 
@@ -61,17 +67,24 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
     },
   });
 
-  const onSubmit = (eventData: EventData) => {
-    const fromGMT = new Date(eventData.from).toLocaleString('en-US', { timeZone: 'UTC', hour12: false });
-    const toGMT = new Date(eventData.to).toLocaleString('en-US', { timeZone: 'UTC', hour12: false });
-    Log({
+  const onSubmit = async (eventData: EventData) => {
+    await calendarStore.createOrUpdateEvents({
       summary: eventData.summary,
       location: eventData.location,
-      from: fromGMT,
-      to: toGMT,
+      from: eventData.from,
+      to: eventData.to,
       participants: participants,
+      id: eventData.id,
+      organizer: eventData.organizer,
     });
     reset();
+    onClose();
+    navigate('welcome');
+    navigationRef.current.reset({
+      index: 0,
+      routes: [{ name: 'calendar' }],
+    });
+    setTimeout(() => navigate('calendar'), 1000);
   };
 
   const addParticipant = () => {

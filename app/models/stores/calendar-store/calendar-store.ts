@@ -55,7 +55,7 @@ export const CalendarStoreModel = types
                 index: 0,
                 routes: [{ name: 'calendar' }],
               });
-              setTimeout(() => navigate('calendar'), 2000);
+              setTimeout(() => navigate('calendar'), 1000);
             });
           })
           .catch(err => {
@@ -96,10 +96,10 @@ export const CalendarStoreModel = types
     }),
   }))
   .actions(self => ({
-    updateEvents: flow(function* (event: Event) {
+    createOrUpdateEvents: flow(function* (event: Event) {
       const calendarApi = new CalendarApi(self.environment.api);
       try {
-        const updateCalendarsEventsResult = yield calendarApi.updateCalendarsEvent(self.currentUser.id, self.currentCalendar.id, event);
+        const updateCalendarsEventsResult = yield calendarApi.createOrUpdateCalendarsEvent(self.currentUser.id, self.currentCalendar.id, event);
         self.events.replace(updateCalendarsEventsResult.events);
         return true;
       } catch (e) {

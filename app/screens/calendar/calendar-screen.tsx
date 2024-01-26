@@ -174,11 +174,11 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
               }}
             />
             {loading ? (
-              <View style={{ width: '100%', height: 300, justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ width: '100%', height: 500, justifyContent: 'center', alignItems: 'center' }}>
                 <Loader size={'large'} color={palette.secondaryColor} />
               </View>
             ) : (
-              <ScrollView style={{ height: 500, width: '100%', paddingBottom: 100 }}>
+              <ScrollView style={{ height: 500, width: '100%', paddingBottom: 50 }}>
                 <AgendaList
                   sections={items}
                   renderItem={renderItem}
