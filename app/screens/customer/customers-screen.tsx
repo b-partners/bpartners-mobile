@@ -47,19 +47,16 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = customers.slice(startItemIndex, endItemIndex);
 
-
   useEffect(() => {
-
     const fetchData = async () => {
       try {
-          await customerStore.getCustomers();
+        await customerStore.getCustomers();
       } catch (error) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
-    }
+    };
 
-  fetchData();
-
+    fetchData();
   }, [modal]);
 
   const handleRefresh = async () => {
@@ -118,27 +115,27 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     }
   }
 
-    const searchCustomer = async filter => {
-        try {
-            await customerStore.getCustomers(filter);
-            setCurrentPage(1);
-        } catch (e) {
-            showMessage(translate('errors.somethingWentWrong'), {backgroundColor: palette.pastelRed});
-        }
-    };
+  const searchCustomer = async filter => {
+    try {
+      await customerStore.getCustomers(filter);
+      setCurrentPage(1);
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    }
+  };
 
-    const debounceTimeoutRef = useRef(null);
+  const debounceTimeoutRef = useRef(null);
 
-    const handleInputChange = query => {
-        setSearchQuery(query);
-        if (debounceTimeoutRef.current) {
-            clearTimeout(debounceTimeoutRef.current);
-        }
+  const handleInputChange = query => {
+    setSearchQuery(query);
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
 
-        debounceTimeoutRef.current = setTimeout(async () => {
-            await searchCustomer(query);
-        }, 1000);
-    };
+    debounceTimeoutRef.current = setTimeout(async () => {
+      await searchCustomer(query);
+    }, 1000);
+  };
 
   return (
     <ErrorBoundary catchErrors='always'>

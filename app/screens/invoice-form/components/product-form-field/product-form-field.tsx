@@ -19,6 +19,7 @@ import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils
 import { ProductModal } from '../../../product/components/product-modal';
 import { ProductModalType } from '../../../product/products-screen';
 import { InvoiceFormField } from '../../invoice-form-field';
+import { invoicePageSize } from '../utils';
 
 type ProductFormFieldProps = {
   index: number;
@@ -66,7 +67,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
       try {
         await productStore.getProducts();
       } catch (e) {
-        showMessage(translate('errors.somethingWentWrong'), {backgroundColor: palette.pastelRed});
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       } finally {
         if (!isCancelled) {
           setIsFetching(false);
@@ -84,7 +85,11 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   const searchCustomer = async filter => {
     setIsFetching(true);
     try {
-      await productStore.getProducts(filter);
+      await productStore.getProducts({
+        descriptionFilter: filter,
+        page: 1,
+        pageSize: invoicePageSize,
+      });
       setCurrentPage(1);
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
