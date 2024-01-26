@@ -33,12 +33,13 @@ export const CustomerStoreModel = types
     },
   }))
   .actions(self => ({
-    getCustomers: flow(function* (filter: Filter) {
+    getCustomers: flow(function* (filters: Filter) {
       self.loadingCustomer = true;
       const customerApi = new CustomerApi(self.environment.api);
       try {
-        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, filter as any);
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, { filters } as any);
         self.getCustomersSuccess(getCustomersResult.customers);
+        return getCustomersResult.customers;
       } catch (e) {
         self.getCustomersFail(e);
       } finally {
