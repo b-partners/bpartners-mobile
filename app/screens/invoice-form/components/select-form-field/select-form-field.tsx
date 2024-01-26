@@ -202,8 +202,6 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
                                     placeholder={translate('common.search')}
                                     onChangeText={handleInputChange}
                                     value={searchQuery}
-                                    onClearIconPress={() => {
-                                    }}
                                     style={{
                                         backgroundColor: palette.solidGrey,
                                         height: 40,
