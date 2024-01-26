@@ -4,7 +4,7 @@ export const productFormSchema = {
   unitPrice: {
     required: translate('errors.required'),
     pattern: {
-      value: /^[0-9]+(?:\.[0-9]+)?$/,
+      value: /^[0-9]+(?:[.,][0-9]+)?$/,
       message: translate('errors.invalidPrice'),
     },
   },
@@ -14,7 +14,7 @@ export const productFormSchema = {
   vatPercent: {
     required: translate('errors.required'),
     pattern: {
-      value: /^[0-9]+(?:\.[0-9]+)?$/,
+      value: /^[0-9]+(?:[.,][0-9]+)?$/,
       message: translate('errors.invalidPercent'),
     },
   },
