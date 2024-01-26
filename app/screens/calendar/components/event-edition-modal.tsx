@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
-import CloseIcon from 'react-native-vector-icons/AntDesign';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { Button, DatePickerField, InputField, Text } from '../../../components';
+import { DatePickerField, InputField, Text } from '../../../components';
+import { CENTER_CONTAINER_STYLE, TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/components/utils';
+import { Log } from '../../welcome/utils/utils';
 import { EventEditionModalProps } from '../utils/utils';
 import { ParticipantItem } from './participant-item';
 
@@ -34,9 +35,9 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
   }, [currentEvent.participants]);
 
   const {
-    // handleSubmit,
+    handleSubmit,
     control,
-    // reset,
+    reset,
     formState: { errors },
   } = useForm<EventData>({
     mode: 'all',
@@ -59,6 +60,17 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
       participant: '',
     },
   });
+
+  const onSubmit = (eventData: EventData) => {
+    Log({
+      summary: eventData.summary,
+      location: eventData.location,
+      from: eventData.from,
+      to: eventData.to,
+      participants: participants,
+    });
+    reset();
+  };
 
   const addParticipant = () => {
     const newParticipant = participantWatch('participant');
@@ -91,26 +103,7 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
         }}
       >
         <View style={{ width: '96%', height: '70%', backgroundColor: palette.white, borderRadius: 10 }}>
-          <View style={{ width: '100%', height: 70, justifyContent: 'center', alignItems: 'center', borderBottomWidth: 2, borderColor: palette.lighterGrey }}>
-            <Text
-              tx={'calendarScreen.eventEditionModal.label'}
-              style={{ fontSize: 24, fontFamily: 'Geometria', fontWeight: 'bold', color: palette.secondaryColor }}
-            />
-            <Button
-              onPress={() => {
-                setEditionOpen(false);
-              }}
-              style={{
-                backgroundColor: palette.white,
-                position: 'absolute',
-                right: 10,
-                top: 12,
-              }}
-            >
-              <CloseIcon name='close' size={26} color={palette.secondaryColor} />
-            </Button>
-          </View>
-          <View style={{ flex: 1, margin: spacing[2], alignItems: 'center' }}>
+          <View style={{ flex: 1, margin: spacing[2], alignItems: 'center', marginTop: spacing[6] }}>
             <View style={{ marginBottom: 10, width: '90%' }}>
               <Controller
                 control={control}
@@ -193,7 +186,7 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                 <ParticipantItem key={index} email={item} onDelete={onDelete} />
               ))}
             </ScrollView>
-            <View style={{ marginBottom: 20, width: '90%', flexDirection: 'row' }}>
+            <View style={{ marginBottom: 10, width: '90%', flexDirection: 'row' }}>
               <View style={{ width: '85%' }}>
                 <Controller
                   control={participantControl}
@@ -219,6 +212,64 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
               </View>
               <TouchableOpacity style={{ width: '15%', height: 55, justifyContent: 'center', alignItems: 'center' }} onPress={addParticipant}>
                 <AntDesignIcon name='adduser' size={28} color={color.palette.secondaryColor} />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                width: '100%',
+                height: 60,
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                borderBottomWidth: 2,
+                borderColor: palette.lighterGrey,
+                flexDirection: 'row',
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: palette.secondaryColor,
+                  width: 150,
+                  height: 40,
+                  borderRadius: 5,
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                }}
+                onPress={() => {
+                  setEditionOpen(false);
+                }}
+              >
+                <View style={CENTER_CONTAINER_STYLE}>
+                  <Text
+                    style={{
+                      ...TEXT_STYLE,
+                      color: palette.white,
+                      fontFamily: 'Geometria',
+                    }}
+                    tx={'common.cancel'}
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: palette.secondaryColor,
+                  width: 150,
+                  height: 40,
+                  borderRadius: 5,
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                }}
+                onPress={handleSubmit(onSubmit)}
+              >
+                <View style={CENTER_CONTAINER_STYLE}>
+                  <Text
+                    style={{
+                      ...TEXT_STYLE,
+                      color: palette.white,
+                      fontFamily: 'Geometria',
+                    }}
+                    tx={'common.save'}
+                  />
+                </View>
               </TouchableOpacity>
             </View>
           </View>
