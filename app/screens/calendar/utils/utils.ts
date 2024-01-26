@@ -34,4 +34,5 @@ export interface AgendaItemProps {
 
 export interface ParticipantItemProps {
   email: string;
+  onDelete: (item: string) => void;
 }

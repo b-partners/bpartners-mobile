@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
@@ -9,7 +9,6 @@ import { translate } from '../../../i18n';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/components/utils';
-import { Log } from '../../welcome/utils/utils';
 import { EventEditionModalProps } from '../utils/utils';
 import { ParticipantItem } from './participant-item';
 
@@ -22,10 +21,17 @@ interface EventData {
 }
 export const EventEditionModal = (props: EventEditionModalProps) => {
   const { isEditionOpen, setEditionOpen, currentEvent } = props;
+  const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
-    Log(new Date(currentEvent.from));
-  }, []);
+    if (currentEvent.participants) {
+      const initialParticipants = [];
+      {
+        currentEvent.participants.map(item => initialParticipants.push(item));
+      }
+      setParticipants(initialParticipants);
+    }
+  }, [currentEvent.participants]);
 
   const {
     // handleSubmit,
@@ -39,13 +45,13 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
       location: currentEvent.location,
       from: new Date(currentEvent.from),
       to: new Date(currentEvent.to),
-      participants: currentEvent.participants,
     },
   });
 
   const {
     control: participantControl,
-    // reset,
+    reset: participantReset,
+    watch: participantWatch,
     formState: { errors: participantError },
   } = useForm({
     mode: 'all',
@@ -53,6 +59,21 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
       participant: '',
     },
   });
+
+  const addParticipant = () => {
+    const newParticipant = participantWatch('participant');
+    const updateParticipants = participants;
+    updateParticipants.push(newParticipant);
+    setParticipants(updateParticipants);
+    participantReset({
+      participant: '',
+    });
+  };
+
+  const onDelete = (item: string) => {
+    const updatedParticipants = participants.filter(participant => participant !== item);
+    setParticipants(updatedParticipants);
+  };
 
   const onClose = () => {
     setEditionOpen(false);
@@ -168,8 +189,8 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
               />
             </View>
             <ScrollView style={{ marginBottom: 10, width: '90%' }} contentContainerStyle={{ alignItems: 'center' }} indicatorStyle={'white'}>
-              {currentEvent.participants.map((item, index) => (
-                <ParticipantItem key={index} email={item} />
+              {participants.map((item, index) => (
+                <ParticipantItem key={index} email={item} onDelete={onDelete} />
               ))}
             </ScrollView>
             <View style={{ marginBottom: 20, width: '90%', flexDirection: 'row' }}>
@@ -196,8 +217,7 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
                   )}
                 />
               </View>
-
-              <TouchableOpacity style={{ width: '15%', height: 55, justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableOpacity style={{ width: '15%', height: 55, justifyContent: 'center', alignItems: 'center' }} onPress={addParticipant}>
                 <AntDesignIcon name='adduser' size={28} color={color.palette.secondaryColor} />
               </TouchableOpacity>
             </View>
