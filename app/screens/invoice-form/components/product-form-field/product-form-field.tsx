@@ -1,7 +1,7 @@
 // *import { Octicons } from '@expo/vector-icons';
 import { Observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
-import { FlatList, Modal, TouchableOpacity, View } from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {FlatList, Modal, TouchableOpacity, useWindowDimensions, View} from 'react-native';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
@@ -16,6 +16,9 @@ import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils
 import { ProductModal } from '../../../product/components/product-modal';
 import { ProductModalType } from '../../../product/products-screen';
 import { InvoiceFormField } from '../../invoice-form-field';
+import {translate} from "../../../../i18n";
+import {ProgressBar, Searchbar} from "react-native-paper";
+import {showMessage} from "../../../../utils/snackbar";
 
 type ProductFormFieldProps = {
   index: number;
@@ -35,14 +38,17 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
     product: null,
   });
   const [visible, setVisible] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [quantityValue, setQuantityValue] = useState(temp?.quantity?.toString());
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { productStore, authStore } = useStores();
+  const { height } = useWindowDimensions();
+  const MAX_HEIGHT = (7 * height) / 10;
 
   const isSubjectToVat = authStore?.currentAccountHolder?.companyInfo?.isSubjectToVat;
-
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const startItemIndex = (currentPage - 1) * itemsPerPage;
@@ -52,6 +58,31 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   useEffect(() => {
     onValueChange && onValueChange(currentProduct);
   }, [currentProduct]);
+
+  const searchCustomer = async filter => {
+    setIsFetching(true);
+    try {
+      await productStore.getProducts(filter);
+      setCurrentPage(1);
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const debounceTimeoutRef = useRef(null);
+
+  const handleInputChange = query => {
+    setSearchQuery(query);
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    debounceTimeoutRef.current = setTimeout(async () => {
+      await searchCustomer(query);
+    }, 1000);
+  };
 
   return (
     <Observer>
@@ -154,50 +185,71 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                     </TouchableOpacity>
                     <ProductModal modal={modal} setModal={setModal} isSubjectToVat={isSubjectToVat} />
                     <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
-                      <View>
-                        <View
+                      <View
                           style={{
+                            flex: 1,
+                            justifyContent: 'center',
                             backgroundColor: 'rgba(10, 16, 69, 0.5)',
                             alignItems: 'center',
-                            justifyContent: 'center',
                             width: '100%',
                             height: '100%',
                           }}
-                        >
-                          <View
+                      >
+                        {isFetching && (
+                            <View style={{ width: '100%' }}>
+                              <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} style={{ marginTop: spacing[2] }} />
+                            </View>
+                        )}
+                        <View
                             style={[
                               {
-                                padding: spacing[3],
-                                backgroundColor: color.palette.white,
+                                paddingHorizontal: spacing[4],
+                                backgroundColor: palette.white,
                                 width: '100%',
+                                height: MAX_HEIGHT,
                               },
                             ]}
-                          >
-                            <View
+                        >
+                          <View
                               style={{
-                                paddingVertical: spacing[4],
-                                paddingHorizontal: spacing[3],
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginVertical: spacing[1],
+                                paddingTop: spacing[1],
+                                paddingHorizontal: spacing[2],
+                                height: '5%',
                               }}
-                            >
-                              <View
+                          >
+                            <Text
+                                tx={'invoiceFormScreen.productForm.placeholder'}
                                 style={{
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
+                                  color: color.palette.lightGrey,
+                                  fontFamily: 'Geometria',
+                                  fontSize: 15,
                                 }}
-                              >
-                                <Text
-                                  tx={'invoiceFormScreen.productForm.placeholder'}
-                                  style={{
-                                    color: color.palette.lightGrey,
-                                    fontFamily: 'Geometria',
-                                    fontSize: 13,
-                                  }}
-                                />
+                            />
                                 <TouchableOpacity onPress={() => setVisible(false)}>
                                   <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
                                 </TouchableOpacity>
                               </View>
-                              <View style={{ paddingVertical: spacing[2] }}>
+                              <Searchbar
+                                  placeholder={translate('common.search')}
+                                  onChangeText={handleInputChange}
+                                  value={searchQuery}
+                                  onClearIconPress={() => {}}
+                                  style={{
+                                    backgroundColor: palette.solidGrey,
+                                    height: 40,
+                                    borderRadius: 10,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}
+                                  iconColor={palette.lightGrey}
+                                  clearIcon='close-circle'
+                                  inputStyle={{ color: palette.black, alignSelf: 'center' }}
+                                  placeholderTextColor={palette.lightGrey}
+                              />
+                              <View style={{ paddingVertical: spacing[2], height: '73%' }}>
                                 <FlatList
                                   data={displayedItems}
                                   keyExtractor={item => item.id}
@@ -210,6 +262,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                           paddingVertical: spacing[2],
                                         }}
                                       >
+
                                         <TouchableOpacity
                                           style={{
                                             flex: 1,
@@ -321,7 +374,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                     <TouchableOpacity
                                       style={{
                                         width: '35%',
-                                        height: '80%',
+                                        height: 50,
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                       }}
@@ -342,8 +395,6 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                                   />
                                 </View>
                               </View>
-                            </View>
-                          </View>
                         </View>
                       </View>
                     </Modal>
