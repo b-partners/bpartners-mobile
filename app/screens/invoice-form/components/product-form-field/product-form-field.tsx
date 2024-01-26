@@ -1,24 +1,24 @@
 // *import { Octicons } from '@expo/vector-icons';
 import { Observer } from 'mobx-react-lite';
-import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, Modal, TouchableOpacity, useWindowDimensions, View} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Modal, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { ProgressBar, Searchbar } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import { Button, Icon, Separator, Text, TextField } from '../../../../components';
 import RadioButton from '../../../../components/radio-button/radio-button';
+import { translate } from '../../../../i18n';
 import { useStores } from '../../../../models';
 import { Product } from '../../../../models/entities/product/product';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { printCurrencyToMajors, printVat } from '../../../../utils/money';
+import { showMessage } from '../../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils/styles';
 import { ProductModal } from '../../../product/components/product-modal';
 import { ProductModalType } from '../../../product/products-screen';
 import { InvoiceFormField } from '../../invoice-form-field';
-import {translate} from "../../../../i18n";
-import {ProgressBar, Searchbar} from "react-native-paper";
-import {showMessage} from "../../../../utils/snackbar";
 
 type ProductFormFieldProps = {
   index: number;
@@ -58,6 +58,28 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
   useEffect(() => {
     onValueChange && onValueChange(currentProduct);
   }, [currentProduct]);
+
+  useEffect(() => {
+    let isCancelled = false;
+    const fetchData = async () => {
+      setIsFetching(true);
+      try {
+        await productStore.getProducts();
+      } catch (e) {
+        showMessage(translate('errors.somethingWentWrong'), {backgroundColor: palette.pastelRed});
+      } finally {
+        if (!isCancelled) {
+          setIsFetching(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   const searchCustomer = async filter => {
     setIsFetching(true);
@@ -186,215 +208,214 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
                     <ProductModal modal={modal} setModal={setModal} isSubjectToVat={isSubjectToVat} />
                     <Modal visible={visible} animationType='fade' transparent={true} onRequestClose={() => setVisible(false)}>
                       <View
-                          style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            backgroundColor: 'rgba(10, 16, 69, 0.5)',
-                            alignItems: 'center',
-                            width: '100%',
-                            height: '100%',
-                          }}
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          backgroundColor: 'rgba(10, 16, 69, 0.5)',
+                          alignItems: 'center',
+                          width: '100%',
+                          height: '100%',
+                        }}
                       >
                         {isFetching && (
-                            <View style={{ width: '100%' }}>
-                              <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} style={{ marginTop: spacing[2] }} />
-                            </View>
+                          <View style={{ width: '100%' }}>
+                            <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} style={{ marginTop: spacing[2] }} />
+                          </View>
                         )}
                         <View
-                            style={[
-                              {
-                                paddingHorizontal: spacing[4],
-                                backgroundColor: palette.white,
-                                width: '100%',
-                                height: MAX_HEIGHT,
-                              },
-                            ]}
+                          style={[
+                            {
+                              paddingHorizontal: spacing[4],
+                              backgroundColor: palette.white,
+                              width: '100%',
+                              height: MAX_HEIGHT,
+                            },
+                          ]}
                         >
                           <View
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginVertical: spacing[1],
-                                paddingTop: spacing[1],
-                                paddingHorizontal: spacing[2],
-                                height: '5%',
-                              }}
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginVertical: spacing[1],
+                              paddingTop: spacing[1],
+                              paddingHorizontal: spacing[2],
+                              height: '5%',
+                            }}
                           >
                             <Text
-                                tx={'invoiceFormScreen.productForm.placeholder'}
-                                style={{
-                                  color: color.palette.lightGrey,
-                                  fontFamily: 'Geometria',
-                                  fontSize: 15,
-                                }}
+                              tx={'invoiceFormScreen.productForm.placeholder'}
+                              style={{
+                                color: color.palette.lightGrey,
+                                fontFamily: 'Geometria',
+                                fontSize: 15,
+                              }}
                             />
-                                <TouchableOpacity onPress={() => setVisible(false)}>
-                                  <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
-                                </TouchableOpacity>
-                              </View>
-                              <Searchbar
-                                  placeholder={translate('common.search')}
-                                  onChangeText={handleInputChange}
-                                  value={searchQuery}
-                                  onClearIconPress={() => {}}
-                                  style={{
-                                    backgroundColor: palette.solidGrey,
-                                    height: 40,
-                                    borderRadius: 10,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                  }}
-                                  iconColor={palette.lightGrey}
-                                  clearIcon='close-circle'
-                                  inputStyle={{ color: palette.black, alignSelf: 'center' }}
-                                  placeholderTextColor={palette.lightGrey}
-                              />
-                              <View style={{ paddingVertical: spacing[2], height: '73%' }}>
-                                <FlatList
-                                  data={displayedItems}
-                                  keyExtractor={item => item.id}
-                                  renderItem={({ item: product }) => {
-                                    return (
-                                      <View
-                                        style={{
-                                          flex: 1,
-                                          flexDirection: 'row',
-                                          paddingVertical: spacing[2],
-                                        }}
-                                      >
-
-                                        <TouchableOpacity
-                                          style={{
-                                            flex: 1,
-                                            flexDirection: 'row',
-                                          }}
-                                          onPress={() => {
-                                            setQuantityValue('1');
-                                            setCurrentProduct({
-                                              ...product,
-                                              quantity: 1,
-                                            });
-                                            setTotalPrice(product.unitPriceWithVat * 1);
-                                          }}
-                                        >
-                                          <>
-                                            <RadioButton isActive={product.id === currentProduct?.id} />
-                                            <Text
-                                              text={product.description}
-                                              style={{
-                                                color: palette.textClassicColor,
-                                                fontWeight: 'bold',
-                                                fontSize: 18,
-                                                marginLeft: spacing[2],
-                                              }}
-                                              numberOfLines={2}
-                                            />
-                                          </>
-                                        </TouchableOpacity>
-                                        {/*<TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
-                                          <Octicons name={'pencil'} color={palette.greyDarker} size={20} />
-                                        </TouchableOpacity>*/}
-                                      </View>
-                                    );
-                                  }}
-                                  ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
-                                />
-                              </View>
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  marginTop: spacing[2],
-                                  height: 80,
-                                }}
-                              >
-                                <View
-                                  style={{
-                                    width: '25%',
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    height: '100%',
-                                    justifyContent: 'space-evenly',
-                                  }}
-                                >
-                                  {currentPage === 1 ? (
-                                    <View
-                                      style={{
-                                        width: '35%',
-                                        height: '80%',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                      }}
-                                    >
-                                      <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
-                                    </View>
-                                  ) : (
-                                    <TouchableOpacity
-                                      style={{
-                                        width: '35%',
-                                        height: '80%',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                      }}
-                                      onPress={() => {
-                                        setCurrentPage(currentPage - 1);
-                                      }}
-                                    >
-                                      <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
-                                    </TouchableOpacity>
-                                  )}
+                            <TouchableOpacity onPress={() => setVisible(false)}>
+                              <RNVIcon name='close' color={color.palette.lightGrey} size={14} />
+                            </TouchableOpacity>
+                          </View>
+                          <Searchbar
+                            placeholder={translate('common.search')}
+                            onChangeText={handleInputChange}
+                            value={searchQuery}
+                            onClearIconPress={() => {}}
+                            style={{
+                              backgroundColor: palette.solidGrey,
+                              height: 40,
+                              borderRadius: 10,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                            iconColor={palette.lightGrey}
+                            clearIcon='close-circle'
+                            inputStyle={{ color: palette.black, alignSelf: 'center' }}
+                            placeholderTextColor={palette.lightGrey}
+                          />
+                          <View style={{ paddingVertical: spacing[2], height: '73%' }}>
+                            <FlatList
+                              data={displayedItems}
+                              keyExtractor={item => item.id}
+                              renderItem={({ item: product }) => {
+                                return (
                                   <View
                                     style={{
-                                      width: '30%',
-                                      height: '80%',
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
+                                      flex: 1,
+                                      flexDirection: 'row',
+                                      paddingVertical: spacing[2],
                                     }}
                                   >
-                                    <Text
-                                      text={currentPage.toString()}
-                                      style={{
-                                        fontSize: 20,
-                                        fontWeight: '600',
-                                        color: palette.textClassicColor,
-                                      }}
-                                    />
-                                  </View>
-                                  {currentPage === items.length ? (
-                                    <View
-                                      style={{
-                                        width: '35%',
-                                        height: '80%',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                      }}
-                                    >
-                                      <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
-                                    </View>
-                                  ) : (
                                     <TouchableOpacity
                                       style={{
-                                        width: '35%',
-                                        height: 50,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
+                                        flex: 1,
+                                        flexDirection: 'row',
                                       }}
                                       onPress={() => {
-                                        setCurrentPage(currentPage + 1);
+                                        setQuantityValue('1');
+                                        setCurrentProduct({
+                                          ...product,
+                                          quantity: 1,
+                                        });
+                                        setTotalPrice(product.unitPriceWithVat * 1);
                                       }}
                                     >
-                                      <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
+                                      <>
+                                        <RadioButton isActive={product.id === currentProduct?.id} />
+                                        <Text
+                                          text={product.description}
+                                          style={{
+                                            color: palette.textClassicColor,
+                                            fontWeight: 'bold',
+                                            fontSize: 18,
+                                            marginLeft: spacing[2],
+                                          }}
+                                          numberOfLines={2}
+                                        />
+                                      </>
                                     </TouchableOpacity>
-                                  )}
+                                    {/*<TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
+                                          <Octicons name={'pencil'} color={palette.greyDarker} size={20} />
+                                        </TouchableOpacity>*/}
+                                  </View>
+                                );
+                              }}
+                              ItemSeparatorComponent={() => <Separator style={{ borderColor: palette.lighterGrey }} />}
+                            />
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              marginTop: spacing[2],
+                              height: 80,
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: '25%',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                                height: '100%',
+                                justifyContent: 'space-evenly',
+                              }}
+                            >
+                              {currentPage === 1 ? (
+                                <View
+                                  style={{
+                                    width: '35%',
+                                    height: '80%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <EntypoIcon name='chevron-thin-left' size={27} color={palette.lighterGrey} />
                                 </View>
-                                <View style={{ width: '75%', justifyContent: 'center' }}>
-                                  <Button
-                                    tx='invoiceFormScreen.customerSelectionForm.validate'
-                                    style={BUTTON_INVOICE_STYLE}
-                                    textStyle={BUTTON_TEXT_STYLE}
-                                    onPress={() => setVisible(false)}
-                                  />
-                                </View>
+                              ) : (
+                                <TouchableOpacity
+                                  style={{
+                                    width: '35%',
+                                    height: '80%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}
+                                  onPress={() => {
+                                    setCurrentPage(currentPage - 1);
+                                  }}
+                                >
+                                  <EntypoIcon name='chevron-thin-left' size={25} color='#000' />
+                                </TouchableOpacity>
+                              )}
+                              <View
+                                style={{
+                                  width: '30%',
+                                  height: '80%',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <Text
+                                  text={currentPage.toString()}
+                                  style={{
+                                    fontSize: 20,
+                                    fontWeight: '600',
+                                    color: palette.textClassicColor,
+                                  }}
+                                />
                               </View>
+                              {currentPage === items.length ? (
+                                <View
+                                  style={{
+                                    width: '35%',
+                                    height: '80%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <EntypoIcon name='chevron-thin-right' size={27} color={palette.lighterGrey} />
+                                </View>
+                              ) : (
+                                <TouchableOpacity
+                                  style={{
+                                    width: '35%',
+                                    height: 50,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}
+                                  onPress={() => {
+                                    setCurrentPage(currentPage + 1);
+                                  }}
+                                >
+                                  <EntypoIcon name='chevron-thin-right' size={25} color='#000' />
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                            <View style={{ width: '75%', justifyContent: 'center' }}>
+                              <Button
+                                tx='invoiceFormScreen.customerSelectionForm.validate'
+                                style={BUTTON_INVOICE_STYLE}
+                                textStyle={BUTTON_TEXT_STYLE}
+                                onPress={() => setVisible(false)}
+                              />
+                            </View>
+                          </View>
                         </View>
                       </View>
                     </Modal>

@@ -1,10 +1,10 @@
 import { ApiResponse } from 'apisauce';
 
+import { Customer } from '../../models/entities/customer/customer';
+import formatQuery from '../../utils/format-query-filter';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetCustomersResult } from './api.types';
-import formatQuery from '../../utils/format-query-filter';
-import { Customer } from '../../models/entities/customer/customer';
 
 export class CustomerApi {
   private api: Api;
