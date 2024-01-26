@@ -16,9 +16,9 @@ export const calendarScreenStyles = StyleSheet.create({
     height: 40,
     width: '100%',
     marginVertical: spacing[4],
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    paddingRight: spacing[4],
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   summary: {
     width: 250,

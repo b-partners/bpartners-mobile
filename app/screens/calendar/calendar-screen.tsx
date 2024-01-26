@@ -2,17 +2,20 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { add, endOfWeek, startOfWeek, sub } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { AgendaList, CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { Header, Loader, Text } from '../../components';
+import { TEXT_STYLE } from '../../components/bp-drawer/utils/styles';
 import { useStores } from '../../models';
 import { Event } from '../../models/entities/calendar/calendar';
 import { NavigatorParamList } from '../../navigators/utils/utils';
+import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { AgendaItem } from './components/agenda-item';
-import { EventEditionModal } from './components/event-edition-modal';
+import { EventModal } from './components/event-modal';
 import { SynchronizeModal } from './components/synchronize-modal';
 import './utils/calendar-config';
 import { calendarScreenStyles as styles } from './utils/styles';
@@ -28,6 +31,7 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
   const { currentCalendar, events } = calendarStore;
   const [isOpen, setOpen] = useState(false);
   const [isEditionOpen, setEditionOpen] = useState(false);
+  const [isCreationgOpen, setCreatingOpen] = useState(false);
   const [marked, setMarked] = useState({});
   const [items, setItems] = useState<AgendaItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -137,6 +141,30 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
         <Header headerTx='calendarScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
         <View testID='marketplaceScreen' style={styles.screenContainer}>
           <View style={styles.summaryContainer}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: palette.secondaryColor,
+                width: 100,
+                height: 40,
+                borderRadius: 5,
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}
+              onPress={() => setCreatingOpen(true)}
+            >
+              <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                <Text
+                  style={{
+                    ...TEXT_STYLE,
+                    color: palette.white,
+                    fontFamily: 'Geometria',
+                    marginRight: spacing[1],
+                  }}
+                  tx={'common.create'}
+                />
+                <AntDesignIcon name='plus' size={16} color={palette.white} />
+              </View>
+            </TouchableOpacity>
             {currentCalendar && (
               <View style={styles.summary}>
                 <Text style={styles.summaryText} text={currentCalendar.summary} />
@@ -191,7 +219,8 @@ export const CalendarScreen: FC<DrawerScreenProps<NavigatorParamList, 'calendar'
             )}
           </View>
           <SynchronizeModal isOpen={isOpen} setOpen={setOpen} />
-          {isEditionOpen && <EventEditionModal isEditionOpen={isEditionOpen} setEditionOpen={setEditionOpen} currentEvent={currentEvent} />}
+          {isEditionOpen && <EventModal isOpen={isEditionOpen} setOpen={setEditionOpen} currentEvent={currentEvent} isEditing={true} />}
+          {isCreationgOpen && <EventModal isOpen={isCreationgOpen} setOpen={setCreatingOpen} currentEvent={currentEvent} isEditing={false} />}
         </View>
       </CalendarProvider>
     </ErrorBoundary>
