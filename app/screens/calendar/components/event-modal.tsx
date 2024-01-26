@@ -2,6 +2,7 @@ import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import uuid from 'react-native-uuid';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import { DatePickerField, InputField, Text } from '../../../components';
@@ -13,6 +14,7 @@ import { navigate, navigationRef } from '../../../navigators/navigation-utilitie
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/components/utils';
+import { Log } from '../../welcome/utils/utils';
 import { EventModalProps } from '../utils/utils';
 import { ParticipantItem } from './participant-item';
 
@@ -80,6 +82,7 @@ export const EventModal = (props: EventModalProps) => {
   });
 
   const onSubmit = async (eventData: EventData) => {
+    Log(participants);
     if (isEditing) {
       await calendarStore.createOrUpdateEvents({
         summary: eventData.summary,
@@ -97,6 +100,7 @@ export const EventModal = (props: EventModalProps) => {
         from: eventData.from,
         to: eventData.to,
         participants: participants,
+        id: uuid.v4().toString(),
         organizer: eventData.organizer,
       });
     }
