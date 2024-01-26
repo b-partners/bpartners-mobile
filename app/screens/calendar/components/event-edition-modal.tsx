@@ -62,11 +62,13 @@ export const EventEditionModal = (props: EventEditionModalProps) => {
   });
 
   const onSubmit = (eventData: EventData) => {
+    const fromGMT = new Date(eventData.from).toLocaleString('en-US', { timeZone: 'UTC', hour12: false });
+    const toGMT = new Date(eventData.to).toLocaleString('en-US', { timeZone: 'UTC', hour12: false });
     Log({
       summary: eventData.summary,
       location: eventData.location,
-      from: eventData.from,
-      to: eventData.to,
+      from: fromGMT,
+      to: toGMT,
       participants: participants,
     });
     reset();
