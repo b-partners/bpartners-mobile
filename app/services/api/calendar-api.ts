@@ -1,5 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
+import { Event } from '../../models/entities/calendar/calendar';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetCalendarResult, GetEventResult, InitiateConsentResult, InitiateTokenResult, RedirectUrls, RedirectionStatusUrls } from './api.types';
@@ -57,6 +58,20 @@ export class CalendarApi {
       to: to,
     };
     const response: ApiResponse<GetCalendarResult> = await this.api.apisauce.get(`users/${userId}/calendars/${calendarId}/events`, payload);
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+
+    const events = response.data;
+    // @ts-ignore
+    return { kind: 'ok', events: events };
+  }
+
+  async createOrUpdateCalendarsEvent(userId: string, calendarId: string, event: Event): Promise<GetEventResult> {
+    const payload = [event];
+    const response: ApiResponse<GetCalendarResult> = await this.api.apisauce.put(`users/${userId}/calendars/${calendarId}/events`, payload);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

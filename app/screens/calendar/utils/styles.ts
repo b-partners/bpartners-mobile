@@ -16,9 +16,9 @@ export const calendarScreenStyles = StyleSheet.create({
     height: 40,
     width: '100%',
     marginVertical: spacing[4],
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    paddingRight: spacing[4],
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   summary: {
     width: 250,
@@ -60,5 +60,23 @@ export const agendaItemStyles = StyleSheet.create({
     color: palette.oceanBoatBlue,
     fontWeight: 'bold',
     fontSize: 14,
+  },
+});
+
+export const participantItemStyles = StyleSheet.create({
+  container: {
+    width: '90%',
+    height: 40,
+    backgroundColor: palette.white,
+    marginVertical: spacing[2],
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  text: {
+    color: palette.textClassicColor,
+    fontFamily: 'Geometria',
+    fontSize: 18,
+    marginLeft: spacing[6],
+    marginRight: spacing[4],
   },
 });

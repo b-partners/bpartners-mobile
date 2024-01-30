@@ -46,7 +46,7 @@ export const ProductForm: FC<
     const formattedProduct = {
       ...formData,
       unitPrice: vatToMinors(commaToDot(formData.unitPrice.toString())),
-      vatPercent: vatToMinors(formData.vatPercent),
+      vatPercent: vatToMinors(commaToDot(formData.vatPercent)),
     };
     try {
       type === 'CREATION' ? await productStore.saveProduct(formattedProduct) : await productStore.updateProduct(formattedProduct);
