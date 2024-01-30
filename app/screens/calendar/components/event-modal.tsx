@@ -5,7 +5,7 @@ import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { DatePickerField, InputField, Text } from '../../../components';
+import { DatePickerField, InputField, Loader, Text } from '../../../components';
 import { CENTER_CONTAINER_STYLE, TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
@@ -14,7 +14,6 @@ import { navigate, navigationRef } from '../../../navigators/navigation-utilitie
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/components/utils';
-import { Log } from '../../welcome/utils/utils';
 import { EventModalProps } from '../utils/utils';
 import { ParticipantItem } from './participant-item';
 
@@ -31,6 +30,7 @@ export const EventModal = (props: EventModalProps) => {
   const { isOpen, setOpen, currentEvent, isEditing } = props;
   const [participants, setParticipants] = useState([]);
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const { calendarStore } = useStores();
   const { currentCalendar } = calendarStore;
   const today = new Date();
@@ -82,7 +82,7 @@ export const EventModal = (props: EventModalProps) => {
   });
 
   const onSubmit = async (eventData: EventData) => {
-    Log(participants);
+    setLoading(true);
     if (isEditing) {
       await calendarStore.createOrUpdateEvents({
         summary: eventData.summary,
@@ -104,6 +104,7 @@ export const EventModal = (props: EventModalProps) => {
         organizer: eventData.organizer,
       });
     }
+    setLoading(false);
     reset();
     onClose();
     navigate('welcome');
@@ -300,14 +301,18 @@ export const EventModal = (props: EventModalProps) => {
                   onPress={handleSubmit(onSubmit)}
                 >
                   <View style={CENTER_CONTAINER_STYLE}>
-                    <Text
-                      style={{
-                        ...TEXT_STYLE,
-                        color: palette.white,
-                        fontFamily: 'Geometria',
-                      }}
-                      tx={'common.save'}
-                    />
+                    {isLoading ? (
+                      <Loader size={'small'} animating={true} color={palette.white} />
+                    ) : (
+                      <Text
+                        style={{
+                          ...TEXT_STYLE,
+                          color: palette.white,
+                          fontFamily: 'Geometria',
+                        }}
+                        tx={'common.save'}
+                      />
+                    )}
                   </View>
                 </TouchableOpacity>
               </View>
