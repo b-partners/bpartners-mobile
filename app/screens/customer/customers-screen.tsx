@@ -31,28 +31,32 @@ export type CustomerModalType = {
 export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>> = observer(({ navigation }) => {
   const { customerStore } = useStores();
   const { customers, loadingCustomer } = customerStore;
-  const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 10;
+
+  const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(Math.ceil(customers.length / itemsPerPage));
+  const [searchQuery, setSearchQuery] = useState('');
   const [modal, setModal] = useState<CustomerModalType>({
     type: 'CREATION',
     state: false,
     customer: null,
   });
+
   const startItemIndex = (currentPage - 1) * itemsPerPage;
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = customers.slice(startItemIndex, endItemIndex);
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const onChangeSearch = query => setSearchQuery(query);
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        await handleRefresh();
+        await customerStore.getCustomers();
       } catch (error) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
-    })();
+    };
+
+    fetchData();
   }, [modal]);
 
   const handleRefresh = async () => {
@@ -87,13 +91,6 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     return csvHeader + csvRows;
   };
 
-  const searchCustomer = async () => {
-    setCurrentPage(1);
-    Platform.OS === 'ios'
-      ? await customerStore.getCustomers({ filters: searchQuery.replaceAll(' ', '%2C'), page: 1, pageSize: invoicePageSize })
-      : await customerStore.getCustomers({ filters: searchQuery, page: 1, pageSize: invoicePageSize });
-  };
-
   async function saveCSVToFile(csvString) {
     const filePath = RNFS.DocumentDirectoryPath + `/customers.csv`;
 
@@ -118,20 +115,26 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     }
   }
 
+  const searchCustomer = async filter => {
+    try {
+      await customerStore.getCustomers(filter);
+      setCurrentPage(1);
+    } catch (e) {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+    }
+  };
+
   const debounceTimeoutRef = useRef(null);
 
   const handleInputChange = query => {
-    onChangeSearch(query);
-    if (query) {
-      if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current);
-      }
-
-      debounceTimeoutRef.current = setTimeout(async () => {
-        await searchCustomer();
-        setMaxPage(Math.ceil(customers.length / itemsPerPage));
-      }, 1500);
+    setSearchQuery(query);
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
     }
+
+    debounceTimeoutRef.current = setTimeout(async () => {
+      await searchCustomer(query);
+    }, 1000);
   };
 
   return (
@@ -154,7 +157,6 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
           }}
           iconColor={palette.lightGrey}
           clearIcon='close-circle'
-          onClearIconPress={handleRefresh}
           inputStyle={{ color: palette.black, alignSelf: 'center' }}
           placeholderTextColor={palette.lightGrey}
         />

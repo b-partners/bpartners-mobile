@@ -568,7 +568,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                   key={i}
                   index={i}
                   // @ts-ignore
-                  // @ts-ignore
                   temp={item}
                   items={products}
                   onDeleteItem={async (__, index) => {

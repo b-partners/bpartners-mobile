@@ -9,6 +9,7 @@ import { RedirectUrls, RedirectionStatusUrls } from '../../../services/api';
 import { CalendarApi } from '../../../services/api/calendar-api';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
+import { Event } from '../../entities/calendar/calendar';
 import { CalendarModel, EventModel } from '../../entities/calendar/calendar';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -54,7 +55,7 @@ export const CalendarStoreModel = types
                 index: 0,
                 routes: [{ name: 'calendar' }],
               });
-              setTimeout(() => navigate('calendar'), 2000);
+              setTimeout(() => navigate('calendar'), 1000);
             });
           })
           .catch(err => {
@@ -87,6 +88,19 @@ export const CalendarStoreModel = types
       try {
         const getCalendarsEventsResult = yield calendarApi.getCalendarsEvents(self.currentUser.id, self.currentCalendar.id, 'GOOGLE_CALENDAR', from, to);
         self.events.replace(getCalendarsEventsResult.events);
+        return true;
+      } catch (e) {
+        Log(e.message);
+        return false;
+      }
+    }),
+  }))
+  .actions(self => ({
+    createOrUpdateEvents: flow(function* (event: Event) {
+      const calendarApi = new CalendarApi(self.environment.api);
+      try {
+        const updateCalendarsEventsResult = yield calendarApi.createOrUpdateCalendarsEvent(self.currentUser.id, self.currentCalendar.id, event);
+        self.events.replace(updateCalendarsEventsResult.events);
         return true;
       } catch (e) {
         Log(e.message);

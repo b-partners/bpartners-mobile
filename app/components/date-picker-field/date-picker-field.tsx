@@ -52,8 +52,10 @@ export function DatePickerField(props: DatePickerProps) {
   } = props;
   const [open, setOpen] = useState(false);
   const isoDate = value && value.toISOString();
+
   const dateParts = isoDate.split('T')[0].split('-');
   const timeParts = isoDate.split('T')[1].split(':');
+
   let date =
     type === 'date' ? `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}` : `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}, ${timeParts[0]}:${timeParts[1]}`;
 

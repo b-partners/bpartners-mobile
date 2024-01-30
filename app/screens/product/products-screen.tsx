@@ -48,7 +48,6 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
   const endItemIndex = currentPage * itemsPerPage;
   const displayedItems = products.slice(startItemIndex, endItemIndex);
   const [searchDescription, setSearchDescription] = useState<string>(null);
-  const onChangeSearch = query => setSearchDescription(query);
   const updateMaxPage = () => setMaxPage(Math.ceil(products.length / itemsPerPage));
 
   const { control, watch } = useForm({
@@ -57,13 +56,15 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
   });
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        await handleRefresh();
+        await productStore.getProducts();
       } catch (error) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
-    })();
+    };
+
+    fetchData();
   }, [modal]);
 
   const handleRefresh = async () => {
@@ -122,18 +123,18 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
     }
   }
 
-  const searchProduct = async () => {
+  const searchProduct = async (description: string) => {
     setCurrentPage(1);
     const searchPrice = watch('price');
     searchPrice
       ? await productStore.getProducts({
-          descriptionFilter: searchDescription,
+          descriptionFilter: description,
           priceFilter: vatToMinors(commaToDot(searchPrice.toString())),
           page: 1,
           pageSize: invoicePageSize,
         })
       : await productStore.getProducts({
-          descriptionFilter: searchDescription,
+          descriptionFilter: description,
           page: 1,
           pageSize: invoicePageSize,
         });
@@ -158,17 +159,15 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
   const priceTimeout = useRef(null);
 
   const handleInputChange = query => {
-    onChangeSearch(query);
-    if (query) {
-      if (descriptionTimeout.current) {
-        clearTimeout(descriptionTimeout.current);
-      }
-
-      descriptionTimeout.current = setTimeout(async () => {
-        await searchProduct();
-        updateMaxPage();
-      }, 1000);
+    setSearchDescription(query);
+    if (descriptionTimeout.current) {
+      clearTimeout(descriptionTimeout.current);
     }
+
+    descriptionTimeout.current = setTimeout(async () => {
+      await searchProduct(query);
+      updateMaxPage();
+    }, 1000);
   };
 
   useEffect(() => {
