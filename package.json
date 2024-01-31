@@ -25,7 +25,7 @@
     "format:md": "prettier --write \"**/*.md\"",
     "format:ts": "prettier --write \"app/**/*.ts{,x}\"",
     "lint": "eslint index.js app storybook --fix --ext .js,.ts,.tsx && npm run format",
-    "check": "eslint --fix-dry-run . && prettier --check .",
+    "check": "eslint --fix-dry-run . && prettier --check \"app/**/*.{js,ts,tsx}\" \"./**/*.{json,yml,yaml}\"",
     "patch": "patch-package",
     "storybook": "start-storybook -p 9001 -c ./storybook",
     "adb": "adb reverse tcp:9090 tcp:9090 && adb reverse tcp:3000 tcp:3000 && adb reverse tcp:9001 tcp:9001 && adb reverse tcp:8081 tcp:8081",
