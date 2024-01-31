@@ -20,7 +20,7 @@
     "test:android:device:release:e2e": "detox test --configuration android.att.release",
     "compile": "tsc --noEmit -p . --pretty",
     "format": "npm run format:json && npm run format:md && npm run format:ts",
-    "format:js": "prettier --write \"app/**/*.js\"",
+    "format:js": "prettier --write \"app/**/*.js\" \"src/**/*.js\"",
     "format:json": "prettier --write \"app/**/*.json\"",
     "format:md": "prettier --write \"**/*.md\"",
     "format:ts": "prettier --write \"app/**/*.ts{,x}\"",
