@@ -21,6 +21,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
+import { InvoiceSummary } from './components/invoice-summary';
 import { RelaunchHistoryModal } from './components/relaunch-history-modal';
 import { RelaunchMessageModal } from './components/relaunch-message-modal';
 import { navigateToTab } from './utils/reset-tab-navigation';
@@ -38,6 +39,8 @@ import {
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore, quotationStore } = useStores();
+  const { invoicesSummary } = invoiceStore;
+  const [loadingSummary, setLoadingSummary] = useState(false);
   const { loadingQuotation, quotations } = quotationStore;
   const [navigationState, setNavigationState] = useState(false);
   const [relaunchHistory, setRelaunchHistory] = useState(false);
@@ -65,6 +68,14 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     }
     return () => {};
   }, [modalVisible]);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingSummary(true);
+      await invoiceStore.getInvoicesSummary();
+      setLoadingSummary(false);
+    })();
+  }, []);
 
   const handleRefresh = async () => {
     await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
@@ -160,6 +171,12 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+        <InvoiceSummary
+          quotation={invoicesSummary.proposal?.amount}
+          paid={invoicesSummary.paid?.amount}
+          unpaid={invoicesSummary.unpaid?.amount}
+          loading={loadingSummary}
+        />
         {loadingQuotation ? (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         ) : displayedItems.length > 0 ? (

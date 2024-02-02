@@ -12,6 +12,7 @@ import {
   GetInvoiceRelaunchConfResult,
   GetInvoiceRelaunchResult,
   GetInvoiceResult,
+  GetInvoiceSummaryResult,
   GetInvoicesResult,
   InitPaymentResult,
   InvoiceRelaunchResult,
@@ -167,5 +168,16 @@ export class PaymentApi {
     }
     const updatedRelaunchConf = response.data;
     return { kind: 'ok', updatedRelaunchConf };
+  }
+
+  async getInvoiceSummary(accountId: string): Promise<GetInvoiceSummaryResult> {
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoicesSummary`);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+    const Summaries = response.data;
+    return { kind: 'ok', invoiceSummary: Summaries };
   }
 }

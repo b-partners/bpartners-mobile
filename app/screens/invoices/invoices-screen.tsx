@@ -13,6 +13,7 @@ import { Invoice as IInvoice, InvoiceRelaunch, InvoiceStatus, PaymentMethod } fr
 import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { navigate } from '../../navigators/navigation-utilities';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
+import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
@@ -23,6 +24,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
+import { InvoiceSummary } from './components/invoice-summary';
 import { PartialPaymentModal } from './components/partial-payment-modal';
 import { PaymentMethodSelectionModal } from './components/payment-method-selection';
 import { RelaunchHistoryModal } from './components/relaunch-history-modal';
@@ -31,7 +33,6 @@ import { SendingConfirmationModal } from './components/sending-confirmation-moda
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
   BUTTON_CONTAINER_STYLE,
-  BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
   CONTAINER_STYLE,
   FOOTER_COMPONENT_STYLE,
@@ -40,10 +41,13 @@ import {
   SECTION_HEADER_TEXT_STYLE,
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
+  SHADOW_STYLE,
 } from './utils/styles';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
+  const { invoicesSummary } = invoiceStore;
+  const [loadingSummary, setLoadingSummary] = useState(false);
   const { invoices, loadingInvoice, paidInvoices } = invoiceStore;
   const combinedInvoices = invoices.concat(paidInvoices);
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,6 +81,14 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     }
     return () => {};
   }, [modalVisible]);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingSummary(true);
+      await invoiceStore.getInvoicesSummary();
+      setLoadingSummary(false);
+    })();
+  }, []);
 
   const handleRefresh = async () => {
     await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
@@ -213,6 +225,12 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
+        <InvoiceSummary
+          quotation={invoicesSummary.proposal?.amount}
+          paid={invoicesSummary.paid?.amount}
+          unpaid={invoicesSummary.unpaid?.amount}
+          loading={loadingSummary}
+        />
         {loadingInvoice ? (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         ) : displayedItems.length > 0 ? (
@@ -267,7 +285,15 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
           <View style={{ width: '75%', justifyContent: 'center' }}>
             <Button
               tx='quotationScreen.createInvoice'
-              style={BUTTON_INVOICE_STYLE}
+              style={{
+                ...SHADOW_STYLE,
+                backgroundColor: palette.secondaryColor,
+                marginVertical: spacing[1],
+                marginHorizontal: spacing[1],
+                borderRadius: 8,
+                paddingVertical: spacing[3],
+                paddingHorizontal: spacing[2],
+              }}
               textStyle={BUTTON_TEXT_STYLE}
               onPress={() => {
                 navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED });
