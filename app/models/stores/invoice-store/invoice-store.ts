@@ -4,7 +4,16 @@ import uuid from 'react-native-uuid';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { RTLog } from '../../../utils/reactotron-log';
 import { Criteria, PageCriteria } from '../../entities/criteria/criteria';
-import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, InvoiceSummaryModel, MethodModel, SearchInvoiceModel } from '../../entities/invoice/invoice';
+import {
+  EMPTY_INVOICE,
+  Invoice,
+  InvoiceModel,
+  InvoiceStatus,
+  InvoiceSummary,
+  InvoiceSummaryModel,
+  MethodModel,
+  SearchInvoiceModel,
+} from '../../entities/invoice/invoice';
 import { RelaunchConfiguration, RelaunchConfigurationModel } from '../../entities/relaunch-configuration/relaunch-configuration';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -22,7 +31,7 @@ export const InvoiceStoreModel = types
     loadingInvoice: types.optional(types.boolean, false),
     loading: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
-    invoiceSummary: types.optional(InvoiceSummaryModel, {}),
+    invoicesSummary: types.optional(InvoiceSummaryModel, {}),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -232,6 +241,29 @@ export const InvoiceStoreModel = types
         return updateRelaunchConfResult.updatedRelaunchConf;
       } catch (e) {
         self.saveInvoiceRelaunchConfFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getInvoicesSummarySuccess: (invoicesSummary: InvoiceSummary) => {
+      self.invoicesSummary = invoicesSummary;
+    },
+  }))
+  .actions(self => ({
+    getInvoicesSummaryFail: (error: Error) => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getInvoicesSummary: flow(function* () {
+      detach(self.invoicesSummary);
+      const paymentApi = new PaymentApi(self.environment.api);
+      try {
+        const getInvoicesSummaryResult = yield paymentApi.getInvoiceSummary(self.currentAccount.id);
+        self.getInvoicesSummarySuccess(getInvoicesSummaryResult.invoicesSummary);
+      } catch (e) {
+        self.getInvoicesSummaryFail(e);
       }
     }),
   }))
