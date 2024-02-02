@@ -4,7 +4,7 @@ import { BusinessActivityItem } from '../../models/entities/business-activity/bu
 import { Calendar } from '../../models/entities/calendar/calendar';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
-import { Invoice, InvoiceRelaunch } from '../../models/entities/invoice/invoice';
+import { Invoice, InvoiceRelaunch, InvoiceSummary } from '../../models/entities/invoice/invoice';
 import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Marketplace } from '../../models/entities/marketplace/marketplace';
 import { Product } from '../../models/entities/product/product';
@@ -91,6 +91,8 @@ export type InvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaun
 export type GetInvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch[] } | GeneralApiProblem;
 
 export type GetInvoiceRelaunchConfResult = { kind: 'ok'; RelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
+
+export type GetInvoiceSummaryResult = { kind: 'ok'; invoiceSummary: InvoiceSummary } | GeneralApiProblem;
 
 export type UpdateInvoiceRelaunchConfResult = { kind: 'ok'; updatedRelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
 

@@ -62,7 +62,8 @@
     "changePassword": "Nouveau mot de passe",
     "oops": "Oups !",
     "sendDraft": "Un brouillon ne peut pas être envoyé",
-    "openBrowser": "Impossible d'ouvrir votre navigateur"
+    "openBrowser": "Impossible d'ouvrir votre navigateur",
+    "unknown": "Inconnu"
   },
   "drawer": {
     "search": "Je recherche de l'aide, une valeur, etc"
@@ -330,6 +331,11 @@
   },
   "invoiceScreen": {
     "title": "Devis / Facturation",
+    "summary": {
+      "quotation": "Devis",
+      "paid": "Fact. payées",
+      "unpaid": "Fact. en attentes"
+    },
     "labels": {
       "customerSection": "Client",
       "customerSectionPlaceholder": "John Doe",

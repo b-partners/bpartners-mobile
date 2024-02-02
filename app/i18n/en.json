@@ -62,7 +62,8 @@
     "changePassword": "New password",
     "oops": "Oops !",
     "sendDraft": "A draft cannot be sent",
-    "openBrowser": "Unable to open your browser"
+    "openBrowser": "Unable to open your browser",
+    "unknown": "Unknown"
   },
   "drawer": {
     "search": "I am looking for help, value, etc"
@@ -347,6 +348,11 @@
   },
   "invoiceScreen": {
     "title": "Invoice",
+    "summary": {
+      "quotation": "Quotation",
+      "paid": "Paid invoices",
+      "unpaid": "Bills pending"
+    },
     "labels": {
       "customerSection": "Customer",
       "customerSectionPlaceholder": "John Doe",
