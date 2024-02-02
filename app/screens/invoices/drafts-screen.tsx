@@ -126,7 +126,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
             amount={30000}
           />
           <SummaryCard
-            colors={['#EAFDE7', '#B7E5A7', '#7FBD5F']}
+            colors={['#EAFDE7', '#B7E5A7', '#A2F78D']}
             space={'1.5%'}
             icon={<MaterialCommunityIcon name='text-box-check-outline' size={24} color={color.palette.secondaryColor} />}
             label={'invoiceScreen.summary.paid'}
