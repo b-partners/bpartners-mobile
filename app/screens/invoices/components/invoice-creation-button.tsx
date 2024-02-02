@@ -39,8 +39,8 @@ export const InvoiceCreationButton: React.FC<InvoiceCreationProps> = props => {
             invoiceStatus === InvoiceStatus.PROPOSAL
               ? navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.PROPOSAL })
               : invoiceStatus === InvoiceStatus.CONFIRMED
-              ? navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED })
-              : navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.DRAFT });
+                ? navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED })
+                : navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.DRAFT });
           }}
         />
       )}
