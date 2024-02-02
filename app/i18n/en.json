@@ -347,6 +347,11 @@
   },
   "invoiceScreen": {
     "title": "Invoice",
+    "summary": {
+      "quotation": "Quotation",
+      "paid": "Paid invoices",
+      "unpaid": "Bills pending"
+    },
     "labels": {
       "customerSection": "Customer",
       "customerSectionPlaceholder": "John Doe",

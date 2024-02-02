@@ -2,12 +2,14 @@ import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { SectionList, View } from 'react-native';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
+import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { getThreshold } from '../../utils/get-threshold';
@@ -16,6 +18,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
+import { SummaryCard } from './components/summary-card';
 import { navigateToTab } from './utils/reset-tab-navigation';
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
@@ -114,6 +117,29 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
+        <View style={{ width: '100%', height: 70, flexDirection: 'row', alignItems: 'center', marginTop: spacing[1] }}>
+          <SummaryCard
+            colors={[palette.solidGrey, palette.lighterGrey, '#A8B3C1']}
+            space={'1.5%'}
+            icon={<MaterialCommunityIcon name='file-multiple-outline' size={22} color={color.palette.secondaryColor} />}
+            label={'invoiceScreen.summary.quotation'}
+            amount={30000}
+          />
+          <SummaryCard
+            colors={['#EAFDE7', '#B7E5A7', '#7FBD5F']}
+            space={'1.5%'}
+            icon={<MaterialCommunityIcon name='text-box-check-outline' size={24} color={color.palette.secondaryColor} />}
+            label={'invoiceScreen.summary.paid'}
+            amount={30000}
+          />
+          <SummaryCard
+            colors={[palette.white, palette.Khaki, palette.lightYellow]}
+            space={'2%'}
+            icon={<MaterialCommunityIcon name='message-text-clock-outline' size={24} color={color.palette.secondaryColor} />}
+            label={'invoiceScreen.summary.unpaid'}
+            amount={30000}
+          />
+        </View>
         {loadingDraft ? (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         ) : displayedItems.length > 0 ? (

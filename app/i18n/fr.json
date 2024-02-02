@@ -330,6 +330,11 @@
   },
   "invoiceScreen": {
     "title": "Devis / Facturation",
+    "summary": {
+      "quotation": "Devis",
+      "paid": "Fact. payées",
+      "unpaid": "Fact. en attentes"
+    },
     "labels": {
       "customerSection": "Client",
       "customerSectionPlaceholder": "John Doe",

@@ -1,13 +1,15 @@
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 import { MenuAction, MenuItem } from '../../../components';
-import { translate } from '../../../i18n';
+import { TxKeyPath, translate } from '../../../i18n';
 import { Invoice as IInvoice, InvoiceRelaunch, InvoiceStatus, PaymentMethod } from '../../../models/entities/invoice/invoice';
 import { TabNavigatorParamList } from '../../../navigators/utils/utils';
 import { palette } from '../../../theme/palette';
 
 export type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction; invoiceAction?: (item: IInvoice) => Promise<void> };
+
+export type SummaryCardProps = { colors: string[]; space: string; icon: ReactElement<any, any>; label: TxKeyPath; amount: number };
 
 export type InvoiceCreationProps = {
   navigation: MaterialTopTabNavigationProp<TabNavigatorParamList, 'invoices', undefined>;
