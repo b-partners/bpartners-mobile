@@ -33,7 +33,6 @@ import { SendingConfirmationModal } from './components/sending-confirmation-moda
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
   BUTTON_CONTAINER_STYLE,
-  BUTTON_INVOICE_STYLE,
   BUTTON_TEXT_STYLE,
   CONTAINER_STYLE,
   FOOTER_COMPONENT_STYLE,
