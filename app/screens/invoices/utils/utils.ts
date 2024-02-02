@@ -10,6 +10,7 @@ import { palette } from '../../../theme/palette';
 export type InvoiceProps = { item: IInvoice; menuItems: MenuItem[]; menuAction: MenuAction; invoiceAction?: (item: IInvoice) => Promise<void> };
 
 export type SummaryCardProps = { colors: string[]; space: string; icon: ReactElement<any, any>; label: TxKeyPath; amount: number };
+export type InvoiceSummaryProps = { quotation: number; unpaid: number; paid: number };
 
 export type InvoiceCreationProps = {
   navigation: MaterialTopTabNavigationProp<TabNavigatorParamList, 'invoices', undefined>;

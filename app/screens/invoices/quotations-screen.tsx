@@ -21,6 +21,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
+import { InvoiceSummary } from './components/invoice-summary';
 import { RelaunchHistoryModal } from './components/relaunch-history-modal';
 import { RelaunchMessageModal } from './components/relaunch-message-modal';
 import { navigateToTab } from './utils/reset-tab-navigation';
@@ -160,6 +161,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+        <InvoiceSummary quotation={30000} paid={20000} unpaid={56900} />
         {loadingQuotation ? (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         ) : displayedItems.length > 0 ? (

@@ -23,6 +23,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
 import { Invoice } from './components/invoice';
+import { InvoiceSummary } from './components/invoice-summary';
 import { PartialPaymentModal } from './components/partial-payment-modal';
 import { PaymentMethodSelectionModal } from './components/payment-method-selection';
 import { RelaunchHistoryModal } from './components/relaunch-history-modal';
@@ -213,6 +214,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
+        <InvoiceSummary quotation={30000} paid={20000} unpaid={56900} />
         {loadingInvoice ? (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         ) : displayedItems.length > 0 ? (
