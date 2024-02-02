@@ -22,9 +22,7 @@ export const InvoiceStoreModel = types
     loadingInvoice: types.optional(types.boolean, false),
     loading: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
-    proposalSummary: types.optional(InvoiceSummaryModel, {}),
-    unpaidSummary: types.optional(InvoiceSummaryModel, {}),
-    paidSummary: types.optional(InvoiceSummaryModel, {}),
+    invoiceSummary: types.optional(InvoiceSummaryModel, {}),
   })
   .extend(withRootStore)
   .extend(withEnvironment)

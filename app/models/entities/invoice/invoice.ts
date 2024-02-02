@@ -38,9 +38,15 @@ export const PaymentMethodModel = types.model('PaymentMethodModel').props({
   value: types.maybeNull(types.enumeration(Object.values(PaymentMethod))),
 });
 
-export const InvoiceSummaryModel = types.model('InvoiceSummaryModel').props({
+export const SummaryModel = types.model('SummaryModel').props({
   amount: types.maybeNull(types.number),
   count: types.maybeNull(types.number),
+});
+
+export const InvoiceSummaryModel = types.model('InvoiceSummaryModel').props({
+  paid: types.maybeNull(SummaryModel),
+  unpaid: types.maybeNull(SummaryModel),
+  proposal: types.maybeNull(SummaryModel),
 });
 
 export const EmailInfoModel = types.model('EmailInfoModel').props({
@@ -92,6 +98,7 @@ export interface PaymentMethodModel extends Instance<typeof PaymentMethodModel> 
 export interface MethodModel extends Instance<typeof MethodModel> {}
 export interface InvoiceRelaunch extends Instance<typeof InvoiceRelaunchModel> {}
 export interface InvoiceSummary extends Instance<typeof InvoiceSummaryModel> {}
+export interface Summary extends Instance<typeof SummaryModel> {}
 
 export interface InvoiceSnapshotOut extends SnapshotOut<typeof InvoiceModel> {}
 
