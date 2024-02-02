@@ -2,13 +2,13 @@ import React from 'react';
 import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { Text } from '../../../components';
+import { Loader, Text } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { SummaryCardProps } from '../utils/utils';
 
 export const SummaryCard: React.FC<SummaryCardProps> = props => {
-  const { colors, space, icon, label, amount } = props;
+  const { colors, space, icon, label, amount, loading } = props;
 
   return (
     <LinearGradient
@@ -28,9 +28,17 @@ export const SummaryCard: React.FC<SummaryCardProps> = props => {
         <View style={{ width: '100%', height: '50%', justifyContent: 'center', paddingLeft: '5%' }}>
           <Text tx={label} style={{ fontFamily: 'Geometria', color: palette.secondaryColor, fontSize: 10, fontWeight: 'bold' }} />
         </View>
-        <View style={{ height: '50%', width: '100%', paddingLeft: '5%' }}>
-          <Text text={printCurrencyToMajors(amount)} style={{ fontFamily: 'Geometria', color: palette.secondaryColor, fontSize: 12 }} />
-        </View>
+        {loading ? (
+          <Loader size={15} color={palette.secondaryColor} />
+        ) : (
+          <View style={{ height: '50%', width: '100%', paddingLeft: '5%' }}>
+            {amount ? (
+              <Text text={printCurrencyToMajors(amount)} style={{ fontFamily: 'Geometria', color: palette.secondaryColor, fontSize: 12 }} />
+            ) : (
+              <Text tx={'errors.unknown'} style={{ fontFamily: 'Geometria', color: palette.secondaryColor, fontSize: 12 }} />
+            )}
+          </View>
+        )}
       </View>
     </LinearGradient>
   );

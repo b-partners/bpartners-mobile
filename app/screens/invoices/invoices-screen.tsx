@@ -45,6 +45,8 @@ import {
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, authStore } = useStores();
+  const { invoicesSummary } = invoiceStore;
+  const [loadingSummary, setLoadingSummary] = useState(false);
   const { invoices, loadingInvoice, paidInvoices } = invoiceStore;
   const combinedInvoices = invoices.concat(paidInvoices);
   const [currentPage, setCurrentPage] = useState(1);
@@ -78,6 +80,14 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     }
     return () => {};
   }, [modalVisible]);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingSummary(true);
+      await invoiceStore.getInvoicesSummary();
+      setLoadingSummary(false);
+    })();
+  }, []);
 
   const handleRefresh = async () => {
     await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
@@ -214,7 +224,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
-        <InvoiceSummary quotation={30000} paid={20000} unpaid={56900} />
+        <InvoiceSummary quotation={invoicesSummary.proposal} paid={invoicesSummary.paid} unpaid={invoicesSummary.unpaid} loading={loadingSummary} />
         {loadingInvoice ? (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         ) : displayedItems.length > 0 ? (

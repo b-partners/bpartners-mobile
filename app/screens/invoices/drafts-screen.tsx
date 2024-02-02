@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
 import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
@@ -32,6 +32,8 @@ import {
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
   const { invoiceStore, draftStore, quotationStore } = useStores();
+  const { invoicesSummary } = invoiceStore;
+  const [loadingSummary, setLoadingSummary] = useState(false);
   const { drafts, loadingDraft } = draftStore;
   const [navigationState, setNavigationState] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,6 +58,14 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
       }
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      setLoadingSummary(true);
+      await invoiceStore.getInvoicesSummary();
+      setLoadingSummary(false);
+    })();
+  }, []);
 
   const editInvoice = async (item: IInvoice) => {
     setNavigationState(true);
@@ -115,7 +125,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
-        <InvoiceSummary quotation={30000} paid={20000} unpaid={56900} />
+        <InvoiceSummary quotation={invoicesSummary.proposal} paid={invoicesSummary.paid} unpaid={invoicesSummary.unpaid} loading={loadingSummary} />
         {loadingDraft ? (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         ) : displayedItems.length > 0 ? (
