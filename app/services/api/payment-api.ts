@@ -177,7 +177,7 @@ export class PaymentApi {
       const problem = getGeneralApiProblem(response);
       if (problem) throw new Error(problem.kind);
     }
-    const summaries = response.data;
-    return { kind: 'ok', invoiceSummary: summaries };
+    const Summaries = response.data;
+    return { kind: 'ok', invoiceSummary: Summaries };
   }
 }

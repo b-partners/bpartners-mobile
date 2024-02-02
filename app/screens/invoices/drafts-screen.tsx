@@ -125,7 +125,12 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
   return (
     <ErrorBoundary catchErrors='always'>
       <View testID='PaymentInitiationScreen' style={CONTAINER_STYLE}>
-        <InvoiceSummary quotation={invoicesSummary.proposal} paid={invoicesSummary.paid} unpaid={invoicesSummary.unpaid} loading={loadingSummary} />
+        <InvoiceSummary
+          quotation={invoicesSummary.proposal?.amount}
+          paid={invoicesSummary.paid?.amount}
+          unpaid={invoicesSummary.unpaid?.amount}
+          loading={loadingSummary}
+        />
         {loadingDraft ? (
           <Loader size='large' containerStyle={LOADER_STYLE} />
         ) : displayedItems.length > 0 ? (

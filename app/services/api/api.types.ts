@@ -91,6 +91,7 @@ export type InvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaun
 export type GetInvoiceRelaunchResult = { kind: 'ok'; invoiceRelaunch: InvoiceRelaunch[] } | GeneralApiProblem;
 
 export type GetInvoiceRelaunchConfResult = { kind: 'ok'; RelaunchConf: RelaunchConfiguration } | GeneralApiProblem;
+
 export type GetInvoiceSummaryResult = { kind: 'ok'; invoiceSummary: InvoiceSummary } | GeneralApiProblem;
 
 export type UpdateInvoiceRelaunchConfResult = { kind: 'ok'; updatedRelaunchConf: RelaunchConfiguration } | GeneralApiProblem;

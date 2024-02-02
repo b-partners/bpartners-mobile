@@ -261,7 +261,7 @@ export const InvoiceStoreModel = types
       const paymentApi = new PaymentApi(self.environment.api);
       try {
         const getInvoicesSummaryResult = yield paymentApi.getInvoiceSummary(self.currentAccount.id);
-        self.getInvoicesSummarySuccess(getInvoicesSummaryResult.invoicesSummary);
+        self.getInvoicesSummarySuccess(getInvoicesSummaryResult.invoiceSummary);
       } catch (e) {
         self.getInvoicesSummaryFail(e);
       }
