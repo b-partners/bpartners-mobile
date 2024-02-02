@@ -4,7 +4,7 @@ import uuid from 'react-native-uuid';
 import { PaymentApi } from '../../../services/api/payment-api';
 import { RTLog } from '../../../utils/reactotron-log';
 import { Criteria, PageCriteria } from '../../entities/criteria/criteria';
-import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, MethodModel, SearchInvoiceModel } from '../../entities/invoice/invoice';
+import { EMPTY_INVOICE, Invoice, InvoiceModel, InvoiceStatus, InvoiceSummaryModel, MethodModel, SearchInvoiceModel } from '../../entities/invoice/invoice';
 import { RelaunchConfiguration, RelaunchConfigurationModel } from '../../entities/relaunch-configuration/relaunch-configuration';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -22,6 +22,9 @@ export const InvoiceStoreModel = types
     loadingInvoice: types.optional(types.boolean, false),
     loading: types.optional(types.boolean, false),
     checkInvoice: types.maybeNull(types.boolean),
+    proposalSummary: types.optional(InvoiceSummaryModel, {}),
+    unpaidSummary: types.optional(InvoiceSummaryModel, {}),
+    paidSummary: types.optional(InvoiceSummaryModel, {}),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
