@@ -1,30 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
+import uuid from 'react-native-uuid';
 
-import { TxKeyPath } from '../../i18n';
 import { useStores } from '../../models';
 import { palette } from '../../theme/palette';
 
-type FileUploadProps = {
-  selectFileTx: TxKeyPath;
-  uploadFileTx: TxKeyPath;
-  onUploadFile: () => void;
-  fileId?: string;
-};
-
-export function FileUpload(props: FileUploadProps) {
-  const [fileToUpload, setFileToUpload] = useState<File>(null);
+export function FileUpload() {
   const { fileStore } = useStores();
-
-  const uploadFile = () => {
-    if (!fileToUpload) {
-      __DEV__ && console.tron.log('Please select a file', fileToUpload);
-      return;
-    }
-
-    fileStore.upload(fileToUpload, props.fileId);
-  };
 
   const selectFile = async () => {
     try {
@@ -37,7 +20,7 @@ export function FileUpload(props: FileUploadProps) {
       const blob = await (await fetch(documentPickerResponse.uri)).blob();
       const file = new File([blob], documentPickerResponse.name);
 
-      setFileToUpload(file);
+      await fileStore.upload(uuid.v4().toString(), file);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         __DEV__ && console.tron.log(`Canceling upload`);
@@ -49,7 +32,7 @@ export function FileUpload(props: FileUploadProps) {
   };
 
   return (
-    <TouchableOpacity style={fileUploadStyles.container} onPress={fileToUpload ? uploadFile : selectFile}>
+    <TouchableOpacity style={fileUploadStyles.container} onPress={selectFile}>
       <View style={fileUploadStyles.round} />
     </TouchableOpacity>
   );

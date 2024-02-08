@@ -85,11 +85,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               <View style={styles.logoContainer}>
                 <AutoImage source={{ uri }} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
                 <View style={{ position: 'absolute', bottom: 5, right: 5 }}>
-                  <FileUpload
-                    uploadFileTx={'profileScreen.fields.uploadFileButton'}
-                    selectFileTx={'profileScreen.fields.selectFileButton'}
-                    onUploadFile={() => {}}
-                  />
+                  <FileUpload />
                 </View>
               </View>
             ) : (
