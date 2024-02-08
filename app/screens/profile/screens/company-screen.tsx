@@ -84,7 +84,13 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             {currentUser.logoFileId ? (
               <View style={styles.logoContainer}>
                 <AutoImage source={{ uri }} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
-                <View style={{ position: 'absolute', width: 20, height: 20, backgroundColor: palette.pastelRed, bottom: 0, right: 0 }}></View>
+                <View style={{ position: 'absolute', bottom: 5, right: 5 }}>
+                  <FileUpload
+                    uploadFileTx={'profileScreen.fields.uploadFileButton'}
+                    selectFileTx={'profileScreen.fields.selectFileButton'}
+                    onUploadFile={() => {}}
+                  />
+                </View>
               </View>
             ) : (
               <AutoImage
@@ -109,9 +115,6 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
-          <View>
-            <FileUpload uploadFileTx={'profileScreen.fields.uploadFileButton'} selectFileTx={'profileScreen.fields.selectFileButton'} onUploadFile={() => {}} />
           </View>
           <LabelWithTextRow label='profileScreen.fields.accountHolder.name' text={accountHolder?.name ?? 'Aucune information'} />
           <LabelWithTextRow
