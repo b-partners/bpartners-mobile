@@ -20,7 +20,7 @@ export function FileUpload() {
       const blob = await (await fetch(documentPickerResponse.uri)).blob();
       const file = new File([blob], documentPickerResponse.name);
 
-      await fileStore.upload(uuid.v4().toString(), file);
+      await fileStore.upload(uuid.v4().toString(), 'LOGO', file);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         __DEV__ && console.tron.log(`Canceling upload`);
