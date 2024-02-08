@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 
 import { TxKeyPath } from '../../i18n';
 import { useStores } from '../../models';
-import { color } from '../../theme';
-import { Button } from '../button/button';
+import { palette } from '../../theme/palette';
 
 type FileUploadProps = {
   selectFileTx: TxKeyPath;
@@ -13,14 +12,6 @@ type FileUploadProps = {
   onUploadFile: () => void;
   fileId?: string;
 };
-
-const BUTTON_STYLE = { backgroundColor: color.palette.lighterGrey, flex: 1 };
-
-const BUTTON_TEXT_STYLE = { fontSize: 16 };
-
-const CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
-
-const FLEX_ITEM_STYLE = {};
 
 export function FileUpload(props: FileUploadProps) {
   const [fileToUpload, setFileToUpload] = useState<File>(null);
@@ -43,7 +34,6 @@ export function FileUpload(props: FileUploadProps) {
       __DEV__ && console.tron.log(`Picking file`, result);
       const documentPickerResponse = result[0];
 
-      // get the file from the file system
       const blob = await (await fetch(documentPickerResponse.uri)).blob();
       const file = new File([blob], documentPickerResponse.name);
 
@@ -59,28 +49,26 @@ export function FileUpload(props: FileUploadProps) {
   };
 
   return (
-    <View style={CONTAINER_STYLE}>
-      <View style={FLEX_ITEM_STYLE}>
-        <Button
-          style={BUTTON_STYLE}
-          textStyle={BUTTON_TEXT_STYLE}
-          onPress={fileToUpload ? uploadFile : selectFile}
-          tx={fileToUpload ? props.uploadFileTx : props.selectFileTx}
-        />
-      </View>
-      <View style={FLEX_ITEM_STYLE}>
-        {fileToUpload && (
-          <Button
-            style={BUTTON_STYLE}
-            textStyle={BUTTON_TEXT_STYLE}
-            onPress={() => {
-              __DEV__ && console.tron.log(`Deleting file`);
-              setFileToUpload(null);
-            }}
-            tx={'profileScreen.fields.removeFileButton'}
-          />
-        )}
-      </View>
-    </View>
+    <TouchableOpacity style={fileUploadStyles.container} onPress={fileToUpload ? uploadFile : selectFile}>
+      <View style={fileUploadStyles.round} />
+    </TouchableOpacity>
   );
 }
+
+const fileUploadStyles = StyleSheet.create({
+  container: {
+    width: 20,
+    height: 20,
+    borderRadius: 20,
+    backgroundColor: palette.secondaryColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  round: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: palette.white,
+  },
+});

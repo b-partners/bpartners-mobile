@@ -5,7 +5,7 @@ import { Linking, TouchableOpacity, View } from 'react-native';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { AutoImage, Button, GradientBackground, LabelWithTextRow, Screen, Text } from '../../../components';
+import { AutoImage, Button, FileUpload, GradientBackground, LabelWithTextRow, Screen, Text } from '../../../components';
 import { useStores } from '../../../models';
 import { AccountHolder } from '../../../models/entities/account-holder/account-holder';
 import { NavigatorParamList } from '../../../navigators/utils/utils';
@@ -84,6 +84,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             {currentUser.logoFileId ? (
               <View style={styles.logoContainer}>
                 <AutoImage source={{ uri }} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
+                <View style={{ position: 'absolute', width: 20, height: 20, backgroundColor: palette.pastelRed, bottom: 0, right: 0 }}></View>
               </View>
             ) : (
               <AutoImage
@@ -108,6 +109,9 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
                 </TouchableOpacity>
               </View>
             </View>
+          </View>
+          <View>
+            <FileUpload uploadFileTx={'profileScreen.fields.uploadFileButton'} selectFileTx={'profileScreen.fields.selectFileButton'} onUploadFile={() => {}} />
           </View>
           <LabelWithTextRow label='profileScreen.fields.accountHolder.name' text={accountHolder?.name ?? 'Aucune information'} />
           <LabelWithTextRow
