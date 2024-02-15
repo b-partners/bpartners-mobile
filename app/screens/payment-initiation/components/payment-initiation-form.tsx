@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { FC, PropsWithoutRef, useState } from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
+import { Platform, StyleProp, TextStyle, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as yup from 'yup';
 
@@ -106,7 +106,7 @@ export const PaymentInitiationForm: FC<
                 name='amount'
                 inputStyle={[errors.amount && INVALID_FORM_FIELD]}
                 labelTx='paymentInitiationScreen.fields.amount'
-                keyboardType='numbers-and-punctuation'
+                keyboardType={Platform.OS === 'android' ? 'numeric' : 'numbers-and-punctuation'}
                 value={values.amount}
               />
               <FormField
