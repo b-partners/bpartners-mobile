@@ -18,10 +18,10 @@ export const FileStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    upload: async (fileId: string, fileType: string, payload: File) => {
+    upload: async (fileId: string, fileType: string, type: string, payload: ArrayBuffer) => {
       try {
         const fileApi = new FileApi(self.environment.api);
-        await fileApi.uploadFile(self.currentAccount.id, fileId, fileType, payload);
+        await fileApi.uploadFile(self.currentAccount.id, fileId, fileType, type, payload);
         showMessage(translate('common.registered'), { backgroundColor: palette.green });
       } catch (e) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });

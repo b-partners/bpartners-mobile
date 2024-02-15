@@ -1,9 +1,12 @@
+import { decode } from 'base64-arraybuffer';
+import { Base64 } from 'js-base64';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import uuid from 'react-native-uuid';
 
 import { useStores } from '../../models';
+// import { Log } from '../../screens/welcome/utils/utils';
 import { palette } from '../../theme/palette';
 
 export function FileUpload() {
@@ -14,13 +17,15 @@ export function FileUpload() {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      __DEV__ && console.tron.log(`Picking file`, result);
       const documentPickerResponse = result[0];
+      const type = documentPickerResponse.type;
 
-      const blob = await (await fetch(documentPickerResponse.uri)).blob();
-      const file = new File([blob], documentPickerResponse.name);
+      const base64 = Base64.encode(documentPickerResponse.uri);
+      const arrayBuffer = decode(base64);
+      //const blob = await (await fetch(documentPickerResponse.uri)).blob();
+      //const file = new File([blob], documentPickerResponse.name);
 
-      await fileStore.upload(uuid.v4().toString(), 'LOGO', file);
+      await fileStore.upload(`${uuid.v4()}.${type.split('/').pop()}`, 'LOGO', type, arrayBuffer);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         __DEV__ && console.tron.log(`Canceling upload`);

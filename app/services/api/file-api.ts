@@ -26,9 +26,17 @@ export class FileApi {
     }
   }
 
-  async uploadFile(accountId: string, fileId: string, fileType: string, payload: File): Promise<UploadFileResult> {
+  async uploadFile(accountId: string, fileId: string, fileType: string, type: string, payload: ArrayBuffer): Promise<UploadFileResult> {
     try {
-      const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/files/${fileId}/raw?fileType=${fileType}`, payload);
+      const config = {
+        headers: {
+          'Content-Type': type,
+        },
+        params: {
+          fileType: fileType,
+        },
+      };
+      const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/files/${fileId}/raw`, payload, config);
 
       if (!response.ok) {
         const problem = getGeneralApiProblem(response);
