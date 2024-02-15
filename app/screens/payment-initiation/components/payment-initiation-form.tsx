@@ -70,7 +70,7 @@ export const PaymentInitiationForm: FC<
                   amount: amountToMinors(commaToDot(values.amount)),
                   redirectionStatusUrls: { successUrl: '', failureUrl: '' },
                 });
-              await init({
+              init({
                 id: uuid.v4() as string,
                 ...values,
                 amount: amountToMinors(commaToDot(values.amount)),
@@ -106,7 +106,7 @@ export const PaymentInitiationForm: FC<
                 name='amount'
                 inputStyle={[errors.amount && INVALID_FORM_FIELD]}
                 labelTx='paymentInitiationScreen.fields.amount'
-                keyboardType='phone-pad'
+                keyboardType='numbers-and-punctuation'
                 value={values.amount}
               />
               <FormField
