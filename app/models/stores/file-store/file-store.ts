@@ -22,7 +22,6 @@ export const FileStoreModel = types
       try {
         const fileApi = new FileApi(self.environment.api);
         await fileApi.uploadFile(self.currentAccount.id, fileId, fileType, type, payload);
-        showMessage(translate('common.registered'), { backgroundColor: palette.green });
       } catch (e) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         self.catchOrThrow(e);
