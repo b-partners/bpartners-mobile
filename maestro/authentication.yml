@@ -1,0 +1,17 @@
+appId: com.bpartnersmobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "welcomeScreen"
+    timeout: 5000
+- assertVisible:
+    id: "loginButton"
+- tapOn:
+    id: "loginButton"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible:
+      id: "homeScreen"
+    timeout: 5000
+- stopApp
