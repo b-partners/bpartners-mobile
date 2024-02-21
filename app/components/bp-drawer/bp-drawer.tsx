@@ -79,12 +79,13 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
+    <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE} testID='drawer'>
       <AutoImage
         source={require('./utils/drawer-header-background.png')}
         resizeMode='stretch'
         resizeMethod='auto'
         style={{ position: 'absolute', zIndex: 1 }}
+        testID='drawerLogo'
       />
       <BPDrawerHeader
         onPress={() => {
