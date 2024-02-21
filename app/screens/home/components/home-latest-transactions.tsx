@@ -138,6 +138,7 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
           onPress={() => {
             navigation.navigate('transactionList');
           }}
+          testID='viewAllTransactionsButton'
         />
       </View>
     </View>

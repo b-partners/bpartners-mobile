@@ -1,0 +1,49 @@
+appId: com.bpartnersmobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+        id: "homeScreen"
+    timeout: 5000
+- assertVisible:
+    id: "homeCurrentBalance"
+- assertVisible:
+    id: "transactionSummaryChart"
+- assertVisible:
+    id: "homeMenuButton"
+- tapOn:
+    id: "homeMenuButton"
+    waitToSettleTimeoutMs: 500
+- assertVisible:
+    id: "drawer"
+- assertVisible:
+    id: "drawerLogo"
+- assertVisible:
+    id: "craftsmanFirstName"
+- assertVisible:
+    id: "craftsmanLastName"
+- back
+- tapOn:
+    id: "transactionSummarySettingsButton"
+    waitToSettleTimeoutMs: 500
+- tapOn:
+    id: "transactionSummarySettingsButton"
+    waitToSettleTimeoutMs: 1000
+- tapOn:
+    text: "Vue mensuelle"
+    waitToSettleTimeoutMs: 1000
+- assertVisible:
+    text: "(ce mois)"
+- assertVisible:
+      id: "craftsmanLogo"
+- scrollUntilVisible:
+    element:
+        id: "viewAllTransactionsButton"
+    direction: DOWN
+    timeout: 5000
+    speed: 40
+- tapOn:
+    id: "viewAllTransactionsButton"
+- assertVisible:
+    id: "transactionListScreen"
+- stopApp
