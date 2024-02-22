@@ -106,7 +106,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   return (
     <BgLayout>
-      <View style={styles.container}>
+      <View style={styles.container} testID='welcomeScreen'>
         <AutoImage source={require('./images/welcome.logo.png')} resizeMode='contain' resizeMethod='auto' style={styles.logo} />
         <Formik initialValues={userDetails} validationSchema={LoginFormSchema} onSubmit={values => Log(values)}>
           {({ handleChange, handleBlur, values, errors, touched }) => (
@@ -159,6 +159,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                   });
                 }}
                 style={styles.button}
+                testID='loginButton'
               >
                 {loading ? (
                   <Loader size={25} />

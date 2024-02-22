@@ -17,7 +17,6 @@ import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
-import { createFileUrl } from '../../utils/file-utils';
 import { AutoImage } from '../auto-image/auto-image';
 import { Loader } from '../loader/loader';
 import { BPDrawerHeader } from './components/bp-drawer-header';
@@ -38,11 +37,10 @@ import { RouteNameProps } from './utils/utils';
 Amplify.configure(awsExports);
 
 export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
-  const { authStore } = useStores();
-  const { currentUser, currentAccount, accessToken } = authStore;
+  const { authStore, fileStore } = useStores();
+  const { fileUrl } = fileStore;
+  const { currentUser } = authStore;
   const [isLoading, setIsLoading] = useState(false);
-
-  const uri = createFileUrl(currentUser?.logoFileId, currentAccount?.id, accessToken, 'LOGO');
 
   const TitleRoute: RouteNameProps = {
     home: translate('homeScreen.title'),
@@ -93,7 +91,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
           props.navigation.closeDrawer();
         }}
         currentUser={currentUser}
-        uri={uri}
+        uri={fileUrl}
         onChangeText={() => {}}
         navigation={props.navigation}
       />

@@ -2,7 +2,7 @@
  * Welcome to the main entry point of the app. In this file, we'll
  * be kicking off our app.
  *
- * Most of this file is boilerplate and you shouldn't need to modify
+ * Most of this file is boilerplate, and you shouldn't need to modify
  * it very often. But take some time to look through and understand
  * what is going on here.
  *
