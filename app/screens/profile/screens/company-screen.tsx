@@ -1,7 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { Linking, TouchableOpacity, View } from 'react-native';
+import { ImageURISource, Linking, TouchableOpacity, View } from 'react-native';
 import PhoneIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -10,7 +10,6 @@ import { useStores } from '../../../models';
 import { AccountHolder } from '../../../models/entities/account-holder/account-holder';
 import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { palette } from '../../../theme/palette';
-import { createFileUrl } from '../../../utils/file-utils';
 import { printCurrency } from '../../../utils/money';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { invoicePageSize } from '../../invoice-form/components/utils';
@@ -18,9 +17,10 @@ import { AccountDeletionModal } from '../components/account-deletion-modal';
 import { profileStyles as styles } from '../utils/styles';
 
 export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function CompanyScreen({ navigation }) {
-  const { authStore, businessActivityStore } = useStores();
-  const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
-  const uri = createFileUrl(currentUser?.logoFileId, currentAccount?.id, accessToken, 'LOGO');
+  const { authStore, businessActivityStore, fileStore } = useStores();
+  const { fileUrl } = fileStore;
+  const logoUri: ImageURISource = { uri: fileUrl };
+  const { currentAccountHolder, currentUser } = authStore;
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [accountHolder, setAccountHolder] = useState<AccountHolder>();
 
@@ -83,7 +83,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
           <View style={styles.viewContainer}>
             {currentUser.logoFileId ? (
               <View style={styles.logoContainer}>
-                <AutoImage source={{ uri }} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
+                <AutoImage source={logoUri} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
                 <View style={{ position: 'absolute', bottom: 5, right: 5 }}>
                   <FileUpload />
                 </View>
