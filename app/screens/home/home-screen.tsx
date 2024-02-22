@@ -152,7 +152,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       <View testID='homeScreen' style={FULL}>
         <HeaderWithBalance
           balance={availableBalance}
-          left={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} />}
+          left={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} testID={'craftsmanLogo'} />}
           right={<Menu navigation={navigation} />}
         />
         <Screen preset='scroll' backgroundColor={palette.white}>
