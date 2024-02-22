@@ -11,6 +11,9 @@ import { withRootStore } from '../../extensions/with-root-store';
 
 export const FileStoreModel = types
   .model('File')
+  .props({
+    fileUrl: types.maybeNull(types.string),
+  })
   .extend(withRootStore)
   .extend(withEnvironment)
   .extend(withCredentials)
@@ -18,10 +21,28 @@ export const FileStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
+    setCurrentFileUrl: (fileUrl: string) => {
+      self.fileUrl = fileUrl;
+    },
+  }))
+  .actions(self => ({
     upload: async (fileId: string, fileType: string, type: string, payload: FormData) => {
       try {
         const fileApi = new FileApi(self.environment.api);
         await fileApi.uploadFile(self.currentAccount.id, fileId, fileType, type, payload);
+      } catch (e) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+        self.catchOrThrow(e);
+      }
+    },
+  }))
+  .actions(self => ({
+    getFileUrl: async () => {
+      try {
+        const fileApi = new FileApi(self.environment.api);
+        const getFileUrlResult = await fileApi.getFileURL(self.currentUser.logoFileId, self.currentAccount.id, self.accessToken, 'LOGO');
+        // @ts-ignore
+        self.setCurrentFileUrl(getFileUrlResult.fileURL);
       } catch (e) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         self.catchOrThrow(e);

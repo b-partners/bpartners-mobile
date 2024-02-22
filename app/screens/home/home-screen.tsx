@@ -28,7 +28,7 @@ import { getAttributesAsync } from './utils/function';
 import { FULL } from './utils/styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, authStore } = useStores();
+  const { transactionStore, authStore, fileStore } = useStores();
   const { availableBalance } = authStore.currentAccount;
   const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
   const { loadingTransactions, currentMonthSummary, latestTransactions, transactionsSummary } = transactionStore;
@@ -39,6 +39,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     (async () => {
       const date = new Date();
       await authStore.whoami(accessToken);
+      await fileStore.getFileUrl();
       await transactionStore.getTransactionCategories();
       await transactionStore.getTransactionsSummary(date.getFullYear());
       await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });

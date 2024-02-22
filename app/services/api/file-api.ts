@@ -1,8 +1,9 @@
 import { ApiResponse } from 'apisauce';
 
+import env from '../../config/env';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetFileInformation, UploadFileResult } from './api.types';
+import { GetFileInformation, GetFileURLResult, UploadFileResult } from './api.types';
 
 export class FileApi {
   private api: Api;
@@ -20,6 +21,17 @@ export class FileApi {
       }
       const fileInfos = response.data;
       return { kind: 'ok', ...fileInfos };
+    } catch (e) {
+      __DEV__ && console.tron.log(e.message);
+      return { kind: 'bad-data' };
+    }
+  }
+
+  async getFileURL(fileId: string, accountId: string, accessToken: string, fileType: string): Promise<GetFileURLResult> {
+    try {
+      const baseUrl = env.apiBaseUrl;
+      const fileUrl = baseUrl + `accounts/${accountId}/files/${fileId}/raw?accessToken=${accessToken}&fileType=${fileType}`;
+      return { kind: 'ok', fileURL: fileUrl };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
       return { kind: 'bad-data' };
