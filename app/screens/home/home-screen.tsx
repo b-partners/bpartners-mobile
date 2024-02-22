@@ -37,7 +37,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     (async () => {
       const date = new Date();
       await authStore.whoami(accessToken);
-      await fileStore.getFileUrl();
+      await fileStore.getFileUrl(currentUser.logoFileId);
       await transactionStore.getTransactionCategories();
       await transactionStore.getTransactionsSummary(date.getFullYear());
       await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });

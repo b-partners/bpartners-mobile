@@ -3,10 +3,10 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import uuid from 'react-native-uuid';
 
+import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Log } from '../../screens/welcome/utils/utils';
-// import { Log } from '../../screens/welcome/utils/utils';
 import { palette } from '../../theme/palette';
+import { showMessage } from '../../utils/snackbar';
 
 export function FileUpload() {
   const { fileStore } = useStores();
@@ -28,13 +28,16 @@ export function FileUpload() {
         name: 'file',
       });
 
-      Log(formData);
-      await fileStore.upload(`${uuid.v4()}.${type.split('/').pop()}`, 'LOGO', type, formData);
+      const logoFileId = `${uuid.v4()}.${type.split('/').pop()}`;
+      await fileStore.upload(logoFileId, 'LOGO', type, formData);
+      await fileStore.getFileUrl(logoFileId);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         __DEV__ && console.tron.log(`Canceling upload`);
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       } else {
         __DEV__ && console.tron.log(`Error while uploading file, ${err}`);
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         throw err;
       }
     }

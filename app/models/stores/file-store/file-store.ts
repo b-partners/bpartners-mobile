@@ -31,16 +31,15 @@ export const FileStoreModel = types
         const fileApi = new FileApi(self.environment.api);
         await fileApi.uploadFile(self.currentAccount.id, fileId, fileType, type, payload);
       } catch (e) {
-        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         self.catchOrThrow(e);
       }
     },
   }))
   .actions(self => ({
-    getFileUrl: async () => {
+    getFileUrl: async (logoFileId: string) => {
       try {
         const fileApi = new FileApi(self.environment.api);
-        const getFileUrlResult = await fileApi.getFileURL(self.currentUser.logoFileId, self.currentAccount.id, self.accessToken, 'LOGO');
+        const getFileUrlResult = await fileApi.getFileURL(logoFileId, self.currentAccount.id, self.accessToken, 'LOGO');
         // @ts-ignore
         self.setCurrentFileUrl(getFileUrlResult.fileURL);
       } catch (e) {
