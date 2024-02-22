@@ -4,6 +4,7 @@ import DocumentPicker from 'react-native-document-picker';
 import uuid from 'react-native-uuid';
 
 import { useStores } from '../../models';
+import { Log } from '../../screens/welcome/utils/utils';
 // import { Log } from '../../screens/welcome/utils/utils';
 import { palette } from '../../theme/palette';
 
@@ -16,12 +17,19 @@ export function FileUpload() {
         type: [DocumentPicker.types.allFiles],
       });
       const documentPickerResponse = result[0];
+      const uri = documentPickerResponse.uri;
       const type = documentPickerResponse.type;
 
-      const blob = await (await fetch(documentPickerResponse.uri)).blob();
-      //const file = new File([blob], documentPickerResponse.name);
+      const formData = new FormData();
+      formData.append('file', {
+        // @ts-ignore
+        uri: uri,
+        type: type,
+        name: 'file',
+      });
 
-      await fileStore.upload(`${uuid.v4()}.${type.split('/').pop()}`, 'LOGO', type, blob);
+      Log(formData);
+      await fileStore.upload(`${uuid.v4()}.${type.split('/').pop()}`, 'LOGO', type, formData);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         __DEV__ && console.tron.log(`Canceling upload`);

@@ -18,7 +18,7 @@ export const FileStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    upload: async (fileId: string, fileType: string, type: string, payload: ArrayBuffer) => {
+    upload: async (fileId: string, fileType: string, type: string, payload: FormData) => {
       try {
         const fileApi = new FileApi(self.environment.api);
         await fileApi.uploadFile(self.currentAccount.id, fileId, fileType, type, payload);
