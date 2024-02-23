@@ -79,12 +79,13 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
+    <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE} testID='drawer'>
       <AutoImage
         source={require('./utils/drawer-header-background.png')}
         resizeMode='stretch'
         resizeMethod='auto'
         style={{ position: 'absolute', zIndex: 1 }}
+        testID='drawerLogo'
       />
       <BPDrawerHeader
         onPress={() => {
@@ -104,7 +105,12 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
             }
 
             return (
-              <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
+              <TouchableOpacity
+                key={route.key}
+                style={NAVIGATION_STYLE}
+                onPress={() => props.navigation.navigate(route.name)}
+                testID={`${route.name}DrawerTab`}
+              >
                 <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
                 <View style={TEXT_CONTAINER_STYLE}>
                   <Text style={TEXT_STYLE} testID={`${route.name}Text`}>

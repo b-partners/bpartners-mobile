@@ -10,7 +10,7 @@ import { Icon } from '../../../components';
 
 export const Menu: FC<{ navigation: DrawerNavigationProp<any> }> = observer(({ navigation }) => {
   return (
-    <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} testID='menuContainer'>
+    <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} testID='homeMenuButton'>
       <View>
         {/*<View style={BULLET_STYLE}>
           <Icon icon="redBullet" />
