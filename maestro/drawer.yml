@@ -1,0 +1,40 @@
+appId: com.bpartnersmobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: 'homeScreen'
+    timeout: 5000
+- assertVisible:
+    id: 'homeMenuButton'
+- tapOn:
+    id: 'homeMenuButton'
+    waitToSettleTimeoutMs: 500
+- assertVisible:
+    id: 'drawer'
+- assertVisible:
+    id: 'drawerLogo'
+- assertVisible:
+    id: 'craftsmanFirstName'
+- assertVisible:
+    id: 'craftsmanLastName'
+- assertVisible:
+    id: 'homeDrawerTab'
+- tapOn:
+    id: 'homeDrawerTab'
+    waitToSettleTimeoutMs: 500
+- assertVisible:
+    id: 'homeScreen'
+- assertVisible:
+    id: 'homeMenuButton'
+- tapOn:
+    id: 'homeMenuButton'
+    waitToSettleTimeoutMs: 500
+- assertVisible:
+    id: 'profileDrawerTab'
+- tapOn:
+    id: 'profileDrawerTab'
+    waitToSettleTimeoutMs: 500
+- assertVisible:
+    id: 'companyScreen'
+- stopApp

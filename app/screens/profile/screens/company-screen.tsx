@@ -80,7 +80,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
       <View style={styles.container}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={styles.screen} preset='scroll'>
-          <View style={styles.viewContainer}>
+          <View style={styles.viewContainer} testID='companyScreen'>
             {currentUser.logoFileId ? (
               <View style={styles.logoContainer}>
                 <AutoImage source={logoUri} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
