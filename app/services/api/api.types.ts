@@ -104,6 +104,8 @@ export type InitPaymentResult = { kind: 'ok'; paymentInitiation: { id: string } 
 
 export type GetFileInformation = { kind: 'ok'; fileInfos: File } | GeneralApiProblem;
 
+export type GetFileURLResult = { kind: 'ok'; fileURL: string } | GeneralApiProblem;
+
 export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProblem;
 
 export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } | GeneralApiProblem;

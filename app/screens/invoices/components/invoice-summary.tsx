@@ -13,7 +13,7 @@ export const InvoiceSummary: React.FC<InvoiceSummaryProps> = props => {
   return (
     <View style={{ width: '100%', height: 70, flexDirection: 'row', alignItems: 'center', marginTop: spacing[1] }}>
       <SummaryCard
-        colors={[palette.solidGrey, palette.lighterGrey, '#A8B3C1']}
+        colors={[palette.white, palette.lighterGrey, '#A8B3C1']}
         space={'1.5%'}
         icon={<MaterialCommunityIcon name='file-multiple-outline' size={22} color={color.palette.secondaryColor} />}
         label={'invoiceScreen.summary.quotation'}

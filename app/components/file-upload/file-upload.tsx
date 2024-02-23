@@ -1,86 +1,69 @@
-import React, { useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
+import uuid from 'react-native-uuid';
 
-import { TxKeyPath } from '../../i18n';
+import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { color } from '../../theme';
-import { Button } from '../button/button';
+import { palette } from '../../theme/palette';
+import { showMessage } from '../../utils/snackbar';
 
-type FileUploadProps = {
-  selectFileTx: TxKeyPath;
-  uploadFileTx: TxKeyPath;
-  onUploadFile: () => void;
-  fileId?: string;
-};
-
-const BUTTON_STYLE = { backgroundColor: color.palette.lighterGrey, flex: 1 };
-
-const BUTTON_TEXT_STYLE = { fontSize: 16 };
-
-const CONTAINER_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row' };
-
-const FLEX_ITEM_STYLE = {};
-
-export function FileUpload(props: FileUploadProps) {
-  const [fileToUpload, setFileToUpload] = useState<File>(null);
+export function FileUpload() {
   const { fileStore } = useStores();
-
-  const uploadFile = () => {
-    if (!fileToUpload) {
-      __DEV__ && console.tron.log('Please select a file', fileToUpload);
-      return;
-    }
-
-    fileStore.upload(fileToUpload, props.fileId);
-  };
 
   const selectFile = async () => {
     try {
       const result = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      __DEV__ && console.tron.log(`Picking file`, result);
       const documentPickerResponse = result[0];
+      const uri = documentPickerResponse.uri;
+      const type = documentPickerResponse.type;
 
-      // get the file from the file system
-      const blob = await (await fetch(documentPickerResponse.uri)).blob();
-      const file = new File([blob], documentPickerResponse.name);
+      const formData = new FormData();
+      formData.append('file', {
+        // @ts-ignore
+        uri: uri,
+        type: type,
+        name: 'file',
+      });
 
-      setFileToUpload(file);
+      const logoFileId = `${uuid.v4()}.${type.split('/').pop()}`;
+      await fileStore.upload(logoFileId, 'LOGO', type, formData);
+      await fileStore.getFileUrl(logoFileId);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         __DEV__ && console.tron.log(`Canceling upload`);
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       } else {
         __DEV__ && console.tron.log(`Error while uploading file, ${err}`);
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         throw err;
       }
     }
   };
 
   return (
-    <View style={CONTAINER_STYLE}>
-      <View style={FLEX_ITEM_STYLE}>
-        <Button
-          style={BUTTON_STYLE}
-          textStyle={BUTTON_TEXT_STYLE}
-          onPress={fileToUpload ? uploadFile : selectFile}
-          tx={fileToUpload ? props.uploadFileTx : props.selectFileTx}
-        />
-      </View>
-      <View style={FLEX_ITEM_STYLE}>
-        {fileToUpload && (
-          <Button
-            style={BUTTON_STYLE}
-            textStyle={BUTTON_TEXT_STYLE}
-            onPress={() => {
-              __DEV__ && console.tron.log(`Deleting file`);
-              setFileToUpload(null);
-            }}
-            tx={'profileScreen.fields.removeFileButton'}
-          />
-        )}
-      </View>
-    </View>
+    <TouchableOpacity style={fileUploadStyles.container} onPress={selectFile}>
+      <View style={fileUploadStyles.round} />
+    </TouchableOpacity>
   );
 }
+
+const fileUploadStyles = StyleSheet.create({
+  container: {
+    width: 20,
+    height: 20,
+    borderRadius: 20,
+    backgroundColor: palette.secondaryColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  round: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: palette.white,
+  },
+});

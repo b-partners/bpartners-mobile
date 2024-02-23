@@ -39,7 +39,8 @@
     "addedOrUpdated": "Updated successfully !",
     "yes": "Yes",
     "no": "No",
-    "reload": "Reload"
+    "reload": "Reload",
+    "selectAFile": "Please select a file"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
