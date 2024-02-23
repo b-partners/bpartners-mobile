@@ -15,7 +15,6 @@ import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
-import { createFileUrl } from '../../utils/file-utils';
 import { RTLog } from '../../utils/reactotron-log';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
@@ -28,17 +27,17 @@ import { getAttributesAsync } from './utils/function';
 import { FULL } from './utils/styles';
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, authStore } = useStores();
+  const { transactionStore, authStore, fileStore } = useStores();
+  const { fileUrl } = fileStore;
   const { availableBalance } = authStore.currentAccount;
-  const { currentAccount, currentAccountHolder, currentUser, accessToken } = authStore;
+  const { currentAccountHolder, currentUser, accessToken } = authStore;
   const { loadingTransactions, currentMonthSummary, latestTransactions, transactionsSummary } = transactionStore;
-
-  const uri = createFileUrl(currentUser.logoFileId, currentAccount.id, accessToken, 'LOGO');
 
   useEffect(() => {
     (async () => {
       const date = new Date();
       await authStore.whoami(accessToken);
+      await fileStore.getFileUrl(currentUser.logoFileId);
       await transactionStore.getTransactionCategories();
       await transactionStore.getTransactionsSummary(date.getFullYear());
       await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
@@ -153,7 +152,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       <View testID='homeScreen' style={FULL}>
         <HeaderWithBalance
           balance={availableBalance}
-          left={<Logo uri={uri} logoStyle={{ width: 50, height: 50 }} />}
+          left={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} />}
           right={<Menu navigation={navigation} />}
         />
         <Screen preset='scroll' backgroundColor={palette.white}>

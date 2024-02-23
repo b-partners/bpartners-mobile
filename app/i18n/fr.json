@@ -39,7 +39,8 @@
     "addedOrUpdated": "Mis à jour avec succès !",
     "yes": "Oui",
     "no": "Non",
-    "reload": "Rafraichir"
+    "reload": "Rafraichir",
+    "selectAFile": "Veuillez sélectionner un fichier"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
