@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "NODE_OPTIONS=\"--max_old_space_size=8192\" react-native start",
-    "ios": "react-native run-ios --simulator=\"iPhone 15 Pro Max\"",
+    "ios": "react-native run-ios --simulator=\"iPhone 15\"",
     "android": "NODE_OPTIONS=\"--max_old_space_size=8192\" react-native run-android",
     "build:ios:debug:e2e": "detox build --configuration ios.sim.debug",
     "build:ios:release:e2e": "detox build --configuration ios.sim.release",
