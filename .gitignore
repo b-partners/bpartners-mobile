@@ -90,3 +90,6 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+#test-credentials
+maestro/utils/credentials.ts
