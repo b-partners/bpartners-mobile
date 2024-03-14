@@ -1,11 +1,6 @@
 appId: com.bpartnersmobile
 ---
 - runFlow:
-    file: login.yml
-    env:
-      USER_EMAIL: ''
-      USER_PASSWORD: ''
+    file: subflows/home.yml
 - runFlow:
-    file: home.yml
-- runFlow:
-    file: drawer.yml
+    file: subflows/drawer.yml

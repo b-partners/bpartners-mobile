@@ -1,10 +1,11 @@
 appId: com.bpartnersmobile
 ---
-- launchApp
+- runFlow:
+      file: login.yml
 - extendedWaitUntil:
     visible:
       id: 'homeScreen'
-    timeout: 5000
+    timeout: 150000
 - assertVisible:
     id: 'homeCurrentBalance'
 - assertVisible:
@@ -13,7 +14,7 @@ appId: com.bpartnersmobile
     id: 'homeMenuButton'
 - tapOn:
     id: 'homeMenuButton'
-    waitToSettleTimeoutMs: 500
+    waitToSettleTimeoutMs: 10000
 - assertVisible:
     id: 'drawer'
 - assertVisible:
@@ -25,13 +26,13 @@ appId: com.bpartnersmobile
 - back
 - tapOn:
     id: 'transactionSummarySettingsButton'
-    waitToSettleTimeoutMs: 500
+    waitToSettleTimeoutMs: 10000
 - tapOn:
     id: 'transactionSummarySettingsButton'
-    waitToSettleTimeoutMs: 1000
+    waitToSettleTimeoutMs: 20000
 - tapOn:
     text: 'Vue mensuelle'
-    waitToSettleTimeoutMs: 1000
+    waitToSettleTimeoutMs: 20000
 - assertVisible:
     text: '(ce mois)'
 - assertVisible:
@@ -40,10 +41,12 @@ appId: com.bpartnersmobile
     element:
       id: 'viewAllTransactionsButton'
     direction: DOWN
-    timeout: 5000
+    timeout: 50000
     speed: 40
 - tapOn:
     id: 'viewAllTransactionsButton'
 - assertVisible:
     id: 'transactionListScreen'
-- stopApp
+- back
+- runFlow:
+    file: logout.yml

@@ -1,0 +1,21 @@
+appId: com.bpartnersmobile
+---
+- assertVisible:
+    id: 'homeMenuButton'
+- tapOn:
+    id: 'homeMenuButton'
+    waitToSettleTimeoutMs: 10000
+- scrollUntilVisible:
+    element:
+        id: 'logoutButton'
+    direction: DOWN
+    timeout: 50000
+    speed: 40
+- tapOn:
+    id: 'logoutButton'
+    waitToSettleTimeoutMs: 10000
+- extendedWaitUntil:
+    visible:
+        id: 'welcomeScreen'
+    timeout: 50000
+- stopApp
