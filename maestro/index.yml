@@ -1,10 +1,10 @@
 appId: com.bpartnersmobile
 ---
 - runFlow:
-      file: login.yml
-      env:
-          USER_EMAIL: ''
-          USER_PASSWORD: ''
+    file: login.yml
+    env:
+      USER_EMAIL: ''
+      USER_PASSWORD: ''
 - runFlow:
     file: home.yml
 - runFlow:
