@@ -1,7 +1,7 @@
 appId: com.bpartnersmobile
 ---
 - runFlow:
-      file: login.yml
+    file: login.yml
 - extendedWaitUntil:
     visible:
       id: 'homeScreen'

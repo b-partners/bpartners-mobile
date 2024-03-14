@@ -1,7 +1,7 @@
 appId: com.bpartnersmobile
 env:
-    USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
-    USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+  USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+  USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
 ---
 - launchApp
 - extendedWaitUntil:

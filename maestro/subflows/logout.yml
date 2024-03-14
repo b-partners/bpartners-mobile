@@ -7,7 +7,7 @@ appId: com.bpartnersmobile
     waitToSettleTimeoutMs: 10000
 - scrollUntilVisible:
     element:
-        id: 'logoutButton'
+      id: 'logoutButton'
     direction: DOWN
     timeout: 50000
     speed: 40
@@ -16,6 +16,6 @@ appId: com.bpartnersmobile
     waitToSettleTimeoutMs: 10000
 - extendedWaitUntil:
     visible:
-        id: 'welcomeScreen'
+      id: 'welcomeScreen'
     timeout: 50000
 - stopApp

@@ -40,5 +40,4 @@ appId: com.bpartnersmobile
     id: 'companyScreen'
 - back
 - runFlow:
-        file: logout.yml
-
+    file: logout.yml

@@ -2,7 +2,7 @@ name: Build and upload to Maestro Cloud (Native Android)
 
 on:
   pull_request:
-    branches: [ dev ]
+    branches: [dev]
 
 jobs:
   maestro-cloud:
@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: 11
           distribution: 'temurin'
-      - run: ./gradlew assembleDebug
+      - run: cd android && ./gradlew assembleDebug && cd ..
       - uses: mobile-dev-inc/action-maestro-cloud@v1
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
