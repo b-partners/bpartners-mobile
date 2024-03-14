@@ -47,6 +47,7 @@ import { ProductScreen } from '../screens/product/products-screen';
 import { ProfileEditionScreen } from '../screens/profile-edition/profile-edition-screen';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { NavigatorParamList, TabNavigatorParamList } from './utils/utils';
+import {AnnotatorScreen} from "../screens/annotator/annotator";
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -145,6 +146,7 @@ const AppTabStack = observer(function () {
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
         <Tab.Screen name='invoiceForm' component={InvoiceFormScreen} />
+        <Tab.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
       </>
     </Tab.Navigator>
   );
