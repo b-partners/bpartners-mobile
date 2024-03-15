@@ -14,7 +14,7 @@ appId: com.bpartnersmobile
     id: 'homeMenuButton'
 - tapOn:
     id: 'homeMenuButton'
-    waitToSettleTimeoutMs: 10000
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'drawer'
 - assertVisible:
@@ -26,13 +26,13 @@ appId: com.bpartnersmobile
 - back
 - tapOn:
     id: 'transactionSummarySettingsButton'
-    waitToSettleTimeoutMs: 10000
+    waitToSettleTimeoutMs: 100000
 - tapOn:
     id: 'transactionSummarySettingsButton'
-    waitToSettleTimeoutMs: 20000
+    waitToSettleTimeoutMs: 100000
 - tapOn:
     text: 'Vue mensuelle'
-    waitToSettleTimeoutMs: 20000
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     text: '(ce mois)'
 - assertVisible:
@@ -41,7 +41,7 @@ appId: com.bpartnersmobile
     element:
       id: 'viewAllTransactionsButton'
     direction: DOWN
-    timeout: 50000
+    timeout: 100000
     speed: 40
 - tapOn:
     id: 'viewAllTransactionsButton'

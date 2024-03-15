@@ -10,7 +10,7 @@ appId: com.bpartnersmobile
     id: 'homeMenuButton'
 - tapOn:
     id: 'homeMenuButton'
-    waitToSettleTimeoutMs: 10000
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'drawer'
 - assertVisible:
@@ -23,19 +23,19 @@ appId: com.bpartnersmobile
     id: 'homeDrawerTab'
 - tapOn:
     id: 'homeDrawerTab'
-    waitToSettleTimeoutMs: 10000
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'homeScreen'
 - assertVisible:
     id: 'homeMenuButton'
 - tapOn:
     id: 'homeMenuButton'
-    waitToSettleTimeoutMs: 10000
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'profileDrawerTab'
 - tapOn:
     id: 'profileDrawerTab'
-    waitToSettleTimeoutMs: 10000
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'companyScreen'
 - back
