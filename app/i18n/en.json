@@ -40,7 +40,8 @@
     "yes": "Yes",
     "no": "No",
     "reload": "Reload",
-    "selectAFile": "Please select a file"
+    "selectAFile": "Please select a file",
+    "labels": "Labels"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -179,6 +180,18 @@
   "prospectConfigurationScreen": {
     "title": "Prospect configuration",
     "setUpPerimeter": "Configure the prospecting perimeter."
+  },
+  "annotationScreen": {
+    "title": "Annotation",
+    "generateQuote": "Generate a quote",
+    "labels": {
+      "surface": "Surface",
+      "covering": "Covering",
+      "type": "Type",
+      "gradient": "Gradient",
+      "wear": "Wear",
+      "velux": "Velux"
+    }
   },
   "onboardingScreen": {
     "title": "Onboarding"
