@@ -15,6 +15,7 @@ jobs:
         with:
           java-version: 11
           distribution: 'temurin'
+      - run: npm install --force
       - run: cd android && ./gradlew assembleDebug && cd ..
       - uses: mobile-dev-inc/action-maestro-cloud@v1
         with:
