@@ -94,6 +94,10 @@
     },
     "transactionCategoryPlaceholder": "Sélectionner un élément"
   },
+  "exportAccounting": {
+    "title": "Export comptable",
+    "chooseTransactionPeriod": "Choisissez votre période de transaction à communiquer à votre comptable :"
+  },
   "prospectScreen": {
     "title": "Prospects",
     "tab": {

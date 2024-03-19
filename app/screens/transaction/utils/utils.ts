@@ -31,6 +31,11 @@ export type PaymentModalProps = {
   invoices: Invoice[];
 };
 
+export type ExportModalProps = {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export const TransactionStatusLabel = {
   PENDING: translate('transactionListScreen.status.pending'),
   UPCOMING: translate('transactionListScreen.status.upcoming'),
@@ -46,3 +51,4 @@ export const TransactionStatusColor = {
   REJECTED: palette.pastelRed,
   UNKNOWN: palette.greyDarker,
 };
+
