@@ -5,12 +5,13 @@ import { TransactionCategory } from '../../models/entities/transaction-category/
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import {
-  AssociateTransactionResult,
+  AssociateTransactionResult, GenerateExportLink,
   GetTransactionCategoriesResult,
   GetTransactionsResult,
   GetTransactionsSummaryResult,
   UpdateTransactionCategoriesResult,
 } from './api.types';
+import {TransactionExportInput} from "../../models/entities/transaction-export-link/transaction-export-link";
 
 export class TransactionApi {
   private api: Api;
@@ -32,6 +33,18 @@ export class TransactionApi {
       category: item.category && item.category.length ? item.category[0] : null,
     }));
     return { kind: 'ok', transactions };
+  }
+
+  async postTransactionExportLink(accountId: string, transactionExportInput: TransactionExportInput): Promise<GenerateExportLink> {
+    // make the api call
+    const response: ApiResponse<any> = await this.api.apisauce.post(`accounts/${accountId}/transactions/exportLink`, transactionExportInput);
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+
+    return { kind: 'ok', transactionExportInput };
   }
 
   async getTransactionsSummary(accountId: string, year: number): Promise<GetTransactionsSummaryResult> {

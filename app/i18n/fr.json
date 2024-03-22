@@ -40,7 +40,10 @@
     "yes": "Oui",
     "no": "Non",
     "reload": "Rafraichir",
-    "selectAFile": "Veuillez sélectionner un fichier"
+    "selectAFile": "Veuillez sélectionner un fichier",
+    "from":  "De",
+    "to": "À",
+    "validate": "Valider"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",

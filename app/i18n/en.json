@@ -40,7 +40,10 @@
     "yes": "Yes",
     "no": "No",
     "reload": "Reload",
-    "selectAFile": "Please select a file"
+    "selectAFile": "Please select a file",
+    "from":  "From",
+    "to": "To",
+    "validate": "Validate"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",

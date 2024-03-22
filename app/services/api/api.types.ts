@@ -15,6 +15,7 @@ import { TransactionSummary } from '../../models/entities/transaction-summary/tr
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
 import { GeneralApiProblem } from './api-problem';
+import {TransactionExportInput} from "../../models/entities/transaction-export-link/transaction-export-link";
 
 export interface Whoami {
   user: any;
@@ -36,6 +37,8 @@ export type GetUsersResult = { kind: 'ok'; users: User[] } | GeneralApiProblem;
 export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type GetTransactionsResult = { kind: 'ok'; transactions: Transaction[] } | GeneralApiProblem;
+
+export type GenerateExportLink = { kind: 'ok'; transactionExportInput: TransactionExportInput } | GeneralApiProblem;
 
 export type GetTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 

@@ -1,26 +1,30 @@
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {View, ViewStyle} from 'react-native';
 import {Modal} from 'react-native-paper';
 import {Controller, useForm} from "react-hook-form";
 
-import {DatePickerField, Text} from '../../../components';
+import {Button, DatePickerField, Loader, Text} from '../../../components';
 import {palette} from '../../../theme/palette';
 import {spacing} from "../../../theme";
 import {ExportModalProps} from '../utils/utils';
 import {translate} from "../../../i18n";
 import {showMessage} from "../../../utils/snackbar";
-import {Log} from "../../welcome/utils/utils";
 import {KeyboardLayout} from "../../../components/keyboard-layout/KeyboardLayout";
+
 import {
     DATE_PICKER_CONTAINER_STYLE,
     DATE_PICKER_LABEL_STYLE,
     DATE_PICKER_TEXT_STYLE
 } from "../../invoice-form/components/utils";
+import {SHADOW_STYLE} from "../../invoices/utils/styles";
+import {useStores} from "../../../models";
 
 export const ExportAccountModal: React.FC<ExportModalProps> = props => {
     const {showModal, setShowModal} = props;
 
-    const [loading, setLoading] = useState(true);
+    const {transactionStore} = useStores();
+
+    const [loading, setLoading] = useState(false);
     const [keyboardOpen, setKeyboardOpen] = useState(false);
 
     const closeModal = () => {
@@ -30,18 +34,15 @@ export const ExportAccountModal: React.FC<ExportModalProps> = props => {
     const {
         handleSubmit,
         control,
-        formState: {errors},
+        formState: {},
     } = useForm({
         mode: 'all',
     });
 
-    const hasErrors = errors.unpaidRelaunch || errors.draftRelaunch;
-
-    const onSubmit = async configurations => {
+    const onSubmit = async dateRange => {
         setLoading(true);
         try {
-            // await invoiceStore.updateInvoiceRelaunchConf(configurations);
-            Log(configurations);
+            await transactionStore.generateTransactionExportLink({...dateRange, transactionStatus: "BOOKED"});
             showMessage(translate('common.addedOrUpdated'), {backgroundColor: palette.green});
         } catch (e) {
             showMessage(translate('errors.somethingWentWrong'), {backgroundColor: palette.pastelRed});
@@ -50,6 +51,16 @@ export const ExportAccountModal: React.FC<ExportModalProps> = props => {
             setLoading(false);
         }
     };
+
+    const BUTTON_STYLE: ViewStyle = {
+        ...SHADOW_STYLE,
+        backgroundColor: palette.secondaryColor,
+        borderRadius: 10,
+        paddingVertical: spacing[3],
+        paddingHorizontal: spacing[2],
+        width: '45%',
+        height: 40,
+    }
 
     return (
         <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
@@ -70,7 +81,7 @@ export const ExportAccountModal: React.FC<ExportModalProps> = props => {
                         marginHorizontal: '2%',
                         padding: '5%',
                         width: '96%',
-                        height: 450,
+                        height: 390,
                     }}
                 >
                     <Text tx={'exportAccounting.title'} style={{color: palette.black, fontSize: 20}}/>
@@ -78,14 +89,14 @@ export const ExportAccountModal: React.FC<ExportModalProps> = props => {
                         tx={'exportAccounting.chooseTransactionPeriod'}
                         style={{color: palette.black, fontSize: 16, paddingVertical: spacing[4]}}
                     />
-                    <View style={{height: 190, display: 'flex', justifyContent: 'space-between'}}>
+                    <View style={{height: 180, display: 'flex', justifyContent: 'space-between'}}>
                         <Controller
                             control={control}
                             name='from'
                             defaultValue={new Date()}
                             render={({field: {onChange, value}}) => (
                                 <DatePickerField
-                                    labelTx='calendarScreen.eventEditionModal.from'
+                                    labelTx='common.from'
                                     isButtonPreset={false}
                                     labelStyle={DATE_PICKER_LABEL_STYLE}
                                     containerStyle={{...DATE_PICKER_CONTAINER_STYLE, maxHeight: 80}}
@@ -104,7 +115,7 @@ export const ExportAccountModal: React.FC<ExportModalProps> = props => {
                             defaultValue={new Date()}
                             render={({field: {onChange, value}}) => (
                                 <DatePickerField
-                                    labelTx='calendarScreen.eventEditionModal.to'
+                                    labelTx='common.to'
                                     isButtonPreset={false}
                                     labelStyle={DATE_PICKER_LABEL_STYLE}
                                     containerStyle={{...DATE_PICKER_CONTAINER_STYLE, maxHeight: 80}}
@@ -116,6 +127,33 @@ export const ExportAccountModal: React.FC<ExportModalProps> = props => {
                                 />
                             )}
                         />
+                    </View>
+                    <View style={{
+                        marginVertical: spacing[5],
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button
+                            tx={'common.cancel'}
+                            style={BUTTON_STYLE}
+                            onPress={() => {
+                            }}
+                            textStyle={{fontSize: 13, fontFamily: 'Geometria-Bold'}}
+                        />
+                        {loading
+                            ?
+                            <View style={BUTTON_STYLE}>
+                                <Loader size={20} color={palette.white}/>
+                            </View>
+                            :
+                            <Button
+                                tx={'common.validate'}
+                                style={BUTTON_STYLE}
+                                onPress={handleSubmit(onSubmit)}
+                                textStyle={{fontSize: 13, fontFamily: 'Geometria-Bold'}}
+                            />
+                        }
                     </View>
                 </View>
             </Modal>
