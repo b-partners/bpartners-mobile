@@ -40,7 +40,10 @@
     "yes": "Yes",
     "no": "No",
     "reload": "Reload",
-    "selectAFile": "Please select a file"
+    "selectAFile": "Please select a file",
+    "from": "From",
+    "to": "To",
+    "validate": "Validate"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -137,6 +140,10 @@
       }
     },
     "transactionCategoryPlaceholder": "Select an item"
+  },
+  "exportAccounting": {
+    "title": "Export accounting",
+    "chooseTransactionPeriod": "Choose your transaction period to communicate to your accountant:"
   },
   "prospectScreen": {
     "title": "Prospects",
