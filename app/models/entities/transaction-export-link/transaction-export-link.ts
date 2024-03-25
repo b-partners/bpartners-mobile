@@ -1,10 +1,11 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
-import {TransactionStatus} from "../transaction/transaction";
+
+import { TransactionStatus } from '../transaction/transaction';
 
 export const TransactionExportInputModel = types.model('TransactionExportInput').props({
   from: types.maybeNull(types.Date),
   to: types.maybeNull(types.number),
-// @ts-ignore
+  // @ts-ignore
   transactionStatus: types.maybeNull(TransactionStatus),
 });
 

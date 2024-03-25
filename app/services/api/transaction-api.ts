@@ -2,16 +2,17 @@ import { ApiResponse } from 'apisauce';
 
 import { TransactionFilter } from '../../models/entities/filter/filter';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
+import { TransactionExportInput } from '../../models/entities/transaction-export-link/transaction-export-link';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import {
-  AssociateTransactionResult, GenerateExportLink,
+  AssociateTransactionResult,
+  GenerateExportLink,
   GetTransactionCategoriesResult,
   GetTransactionsResult,
   GetTransactionsSummaryResult,
   UpdateTransactionCategoriesResult,
 } from './api.types';
-import {TransactionExportInput} from "../../models/entities/transaction-export-link/transaction-export-link";
 
 export class TransactionApi {
   private api: Api;
