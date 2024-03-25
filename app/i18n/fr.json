@@ -40,7 +40,8 @@
     "yes": "Oui",
     "no": "Non",
     "reload": "Rafraichir",
-    "selectAFile": "Veuillez sélectionner un fichier"
+    "selectAFile": "Veuillez sélectionner un fichier",
+    "labels": "Labels"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -129,6 +130,18 @@
       "convertProspectIntoCustomer": "Transformer en client",
       "freeUpProspect": "Libérer ce prospect",
       "convertCustomerIntoProspect": "Remettre en prospect"
+    }
+  },
+  "annotationScreen": {
+    "title": "Annotation",
+    "generateQuote": "Générer un devis",
+    "labels": {
+      "surface": "Surface",
+      "covering": "Revêtement",
+      "type": "Type",
+      "gradient": "Pente",
+      "wear": "Usure",
+      "velux": "Velux"
     }
   },
   "prospectConfigurationScreen": {

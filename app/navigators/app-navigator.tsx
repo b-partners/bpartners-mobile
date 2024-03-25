@@ -41,6 +41,7 @@ import {
   TransactionListScreen,
   WelcomeScreen,
 } from '../screens';
+import { AnnotatorScreen } from '../screens/annotator/annotator';
 import { CalendarScreen } from '../screens/calendar/calendar-screen';
 import { CustomersScreen } from '../screens/customer/customers-screen';
 import { ProductScreen } from '../screens/product/products-screen';
@@ -145,6 +146,7 @@ const AppTabStack = observer(function () {
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
         <Tab.Screen name='invoiceForm' component={InvoiceFormScreen} />
+        <Tab.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
       </>
     </Tab.Navigator>
   );

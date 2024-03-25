@@ -26,6 +26,7 @@ interface EventData {
   id: string;
   participants: string[];
 }
+
 export const EventModal = (props: EventModalProps) => {
   const { isOpen, setOpen, currentEvent, isEditing } = props;
   const [participants, setParticipants] = useState([]);
@@ -41,9 +42,7 @@ export const EventModal = (props: EventModalProps) => {
   useEffect(() => {
     if (currentEvent.participants && isEditing) {
       const initialParticipants = [];
-      {
-        currentEvent.participants.map(item => initialParticipants.push(item));
-      }
+      currentEvent.participants.map(item => initialParticipants.push(item));
       setParticipants(initialParticipants);
     } else if (currentCalendar && !isEditing) {
       const initialParticipants = [];
@@ -146,7 +145,14 @@ export const EventModal = (props: EventModalProps) => {
         }}
       >
         <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
-          <View style={{ width: '96%', height: isKeyboardOpen ? '90%' : '70%', backgroundColor: palette.white, borderRadius: 10 }}>
+          <View
+            style={{
+              width: '96%',
+              height: isKeyboardOpen ? '90%' : '70%',
+              backgroundColor: palette.white,
+              borderRadius: 10,
+            }}
+          >
             <View style={{ flex: 1, margin: spacing[2], alignItems: 'center', marginTop: spacing[6] }}>
               <View style={{ marginBottom: 10, width: '90%' }}>
                 <Controller
