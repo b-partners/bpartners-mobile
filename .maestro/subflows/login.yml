@@ -1,0 +1,35 @@
+appId: com.bpartnersmobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: 'welcomeScreen'
+    timeout: 150000
+- assertVisible:
+    id: 'emailInput'
+- tapOn:
+    id: 'emailInput'
+    waitToSettleTimeoutMs: 100000
+- inputText: ${USER_EMAIL}
+- assertVisible:
+    id: 'passwordInput'
+- tapOn:
+    id: 'passwordInput'
+    waitToSettleTimeoutMs: 100000
+- inputText: ${USER_PASSWORD}
+- assertVisible:
+    id: 'loginButton'
+- assertVisible:
+    text: ${USER_EMAIL}
+- doubleTapOn:
+    id: 'toggleButton'
+    waitToSettleTimeoutMs: 100000
+- assertVisible:
+    text: ${USER_PASSWORD}
+- tapOn:
+    id: 'loginButton'
+    waitToSettleTimeoutMs: 100000
+- extendedWaitUntil:
+    visible:
+      id: 'homeScreen'
+    timeout: 150000

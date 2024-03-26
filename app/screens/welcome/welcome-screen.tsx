@@ -121,6 +121,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                   defaultValue={userDetails.email}
                   autoCapitalize='none'
                   autoCorrect={false}
+                  testID='emailInput'
                 />
                 {errors.email && touched.email && <Text style={styles.error}>{errors.email}</Text>}
               </View>
@@ -133,8 +134,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}
                     secureTextEntry={showPassword}
+                    testID='passwordInput'
                   />
-                  <View style={styles.iconContainer}>
+                  <View style={styles.iconContainer} testID='toggleButton'>
                     {showPassword ? (
                       <IoniconIcon name='eye-off-outline' size={28} color={color.palette.secondaryColor} onPress={() => toggleShowPassword()} />
                     ) : (
