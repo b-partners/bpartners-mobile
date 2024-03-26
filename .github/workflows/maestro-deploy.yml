@@ -1,8 +1,8 @@
 name: Build and upload to Maestro Cloud (Native Android)
 
 on:
-  pull_request:
-    branches: [dev]
+  push:
+    branches: [preprod, prod]
 
 jobs:
   maestro-cloud:
