@@ -1,0 +1,6 @@
+appId: com.bpartnersmobile
+---
+- runFlow:
+    file: subflows/home.yml
+- runFlow:
+    file: subflows/drawer.yml

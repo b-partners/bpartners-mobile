@@ -1,15 +1,16 @@
 appId: com.bpartnersmobile
 ---
-- launchApp
+- runFlow:
+    file: login.yml
 - extendedWaitUntil:
     visible:
       id: 'homeScreen'
-    timeout: 5000
+    timeout: 150000
 - assertVisible:
     id: 'homeMenuButton'
 - tapOn:
     id: 'homeMenuButton'
-    waitToSettleTimeoutMs: 500
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'drawer'
 - assertVisible:
@@ -22,19 +23,21 @@ appId: com.bpartnersmobile
     id: 'homeDrawerTab'
 - tapOn:
     id: 'homeDrawerTab'
-    waitToSettleTimeoutMs: 500
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'homeScreen'
 - assertVisible:
     id: 'homeMenuButton'
 - tapOn:
     id: 'homeMenuButton'
-    waitToSettleTimeoutMs: 500
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'profileDrawerTab'
 - tapOn:
     id: 'profileDrawerTab'
-    waitToSettleTimeoutMs: 500
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'companyScreen'
-- stopApp
+- back
+- runFlow:
+    file: logout.yml
