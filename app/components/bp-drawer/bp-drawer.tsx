@@ -128,6 +128,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
         </ScrollView>
       </View>
       <TouchableOpacity
+        testID='logoutButton'
         style={LOGOUT_CONTAINER_STYLE}
         onPress={async () => {
           setIsLoading(true);
