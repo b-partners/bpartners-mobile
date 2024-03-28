@@ -34,6 +34,7 @@ export type NavigatorParamList = {
   };
   profileEdition: undefined;
   calendar: undefined;
+  annotatorEdition: undefined;
 };
 
 export type TabNavigatorParamList = {
