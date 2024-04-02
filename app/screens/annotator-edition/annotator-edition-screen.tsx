@@ -1,5 +1,5 @@
 import React, { FC, useState, useRef } from 'react';
-import { Button, View, PanResponder, Animated, TouchableWithoutFeedback } from 'react-native';
+import { Text, Button, View, PanResponder, Animated, TouchableWithoutFeedback } from 'react-native';
 import { Provider } from 'react-native-paper';
 import { observer } from 'mobx-react-lite';
 import { DrawerScreenProps } from '@react-navigation/drawer';
@@ -48,6 +48,41 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 setPoints(newPoints);
             }
         });
+    };
+
+    const calculateDistance = (point1, point2) => {
+        const dx = point2.x - point1.x;
+        const dy = point2.y - point1.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    const renderDistances = () => {
+        const distances = [];
+
+        for (let i = 0; i < points.length; i++) {
+            const point1 = points[i];
+            const point2 = points[(i + 1) % points.length]; // Utiliser l'opérateur modulo pour le dernier point
+            const distance = calculateDistance(point1, point2);
+            const midX = (point1.x + point2.x) / 2;
+            const midY = (point1.y + point2.y) / 2;
+
+            distances.push(
+                <Text
+                    key={`distance_${i}`}
+                    style={{
+                        position: 'absolute',
+                        left: midX,
+                        top: midY,
+                        color: 'black',
+                        fontSize: 12
+                    }}
+                >
+                    {distance.toFixed(2)}
+                </Text>
+            );
+        }
+
+        return distances;
     };
 
     const renderPoints = () => {
@@ -106,6 +141,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                                     />
                                 </Svg>
                                 {renderPoints()}
+                                {renderDistances()}
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
