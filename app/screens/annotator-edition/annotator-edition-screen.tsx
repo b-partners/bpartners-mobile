@@ -25,13 +25,26 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         setPoints([]);
     };
 
+    const handleRemoveLastPoint = () => {
+        setPoints(prevPoints => prevPoints.slice(0, -1));
+    };
+
     const createPanResponder = (index) => {
         return PanResponder.create({
             onStartShouldSetPanResponder: () => true,
+            onMoveShouldSetPanResponder: (event, gestureState) => {
+                // Seuil de déplacement augmenté pour tous les points
+                const moveThreshold = 75; // Ajustez cette valeur selon vos préférences
+                // Autoriser le déplacement si le déplacement total dépasse le seuil
+                return Math.abs(gestureState.dx) > moveThreshold || Math.abs(gestureState.dy) > moveThreshold;
+            },
             onPanResponderMove: (event, gestureState) => {
-                const { locationX, locationY } = event.nativeEvent;
+                const { dx, dy } = gestureState;
                 const newPoints = [...points];
-                newPoints[index] = { x: locationX, y: locationY };
+                const updatedPoint = { ...newPoints[index] };
+                updatedPoint.x += dx;
+                updatedPoint.y += dy;
+                newPoints[index] = updatedPoint;
                 setPoints(newPoints);
             }
         });
@@ -74,6 +87,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             <Button
                                 title="Clear Points"
                                 onPress={handleClearPoints}
+                            />
+                        </View>
+                        <View style={{ marginBottom: 10 }}>
+                            <Button
+                                title="Remove Last Point"
+                                onPress={handleRemoveLastPoint}
                             />
                         </View>
                         <TouchableWithoutFeedback onPress={handlePress}>
