@@ -1,5 +1,5 @@
 import React, { FC, useState, useRef } from 'react';
-import { Text, Button, View, PanResponder, Animated, TouchableWithoutFeedback } from 'react-native';
+import { Image, Text, Button, View, PanResponder, Animated, TouchableWithoutFeedback } from 'react-native';
 import { Provider } from 'react-native-paper';
 import { observer } from 'mobx-react-lite';
 import { DrawerScreenProps } from '@react-navigation/drawer';
@@ -61,7 +61,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
         for (let i = 0; i < points.length; i++) {
             const point1 = points[i];
-            const point2 = points[(i + 1) % points.length]; // Utiliser l'opérateur modulo pour le dernier point
+            const point2 = points[(i + 1) % points.length];
             const distance = calculateDistance(point1, point2);
             const midX = (point1.x + point2.x) / 2;
             const midY = (point1.y + point2.y) / 2;
@@ -94,17 +94,27 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                     {...panResponders.current[index].panHandlers}
                     style={{
                         position: 'absolute',
-                        left: point.x - 5,
-                        top: point.y - 5,
-                        backgroundColor: 'red',
-                        width: 10,
-                        height: 10,
-                        borderRadius: 5
+                        left: point.x - 10,
+                        top: point.y - 10,
+                        width: 20,
+                        height: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
                     }}
-                />
+                >
+                    <View
+                        style={{
+                            backgroundColor: 'red',
+                            width: 10,
+                            height: 10,
+                            borderRadius: 5
+                        }}
+                    />
+                </Animated.View>
             );
         });
     };
+
 
     return (
         <Provider>
