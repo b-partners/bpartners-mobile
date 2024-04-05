@@ -184,6 +184,10 @@
   "annotationScreen": {
     "title": "Annotation",
     "generateQuote": "Generate a quote",
+    "process": {
+      "cancelAnnotation": "Cancel annotation",
+      "removeLastPoint": "Remove the last point"
+    },
     "labels": {
       "surface": "Surface",
       "covering": "Covering",

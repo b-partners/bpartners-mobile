@@ -135,6 +135,10 @@
   "annotationScreen": {
     "title": "Annotation",
     "generateQuote": "Générer un devis",
+    "process": {
+      "cancelAnnotation": "Annuler l'annotation",
+      "removeLastPoint": "Retirer le dernier point"
+    },
     "labels": {
       "surface": "Surface",
       "covering": "Revêtement",
