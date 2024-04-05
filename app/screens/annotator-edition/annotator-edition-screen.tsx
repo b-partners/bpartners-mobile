@@ -23,14 +23,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     setPoints(prevPoints => [...prevPoints, { x: locationX, y: locationY }]);
   };
 
-  const handleClearPoints = () => {
-    setPoints([]);
-  };
-
-  const handleRemoveLastPoint = () => {
-    setPoints(prevPoints => prevPoints.slice(0, -1));
-  };
-
   const createPanResponder = index => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -75,6 +67,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             top: midY,
             color: '#90F80A',
             fontSize: 12,
+            fontWeight: '800',
           }}
         >
           {distance.toFixed(2)}
@@ -153,6 +146,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     marginVertical: spacing[1],
   };
 
+  const BUTTON_DISABLED_STYLE: TextStyle = {
+    ...BUTTON_STYLE,
+    backgroundColor: palette.lighterGrey,
+    borderColor: palette.lighterGrey,
+  };
+
   const BUTTON_TEXT_STYLE: TextStyle = {
     fontSize: 16,
     color: palette.white,
@@ -207,18 +206,34 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               />
             </View>
             <View style={{ width: '90%', height: 50, marginHorizontal: '5%', alignItems: 'center', marginBottom: 5 }}>
-              <TouchableOpacity style={BUTTON_STYLE} onPress={handleRemoveLastPoint}>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.removeLastPoint'} />
+              {points.length === 0 ? (
+                <View style={BUTTON_DISABLED_STYLE}>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.removeLastPoint'} />
+                  </View>
                 </View>
-              </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={BUTTON_STYLE} onPress={() => setPoints(prevPoints => prevPoints.slice(0, -1))}>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.removeLastPoint'} />
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
             <View style={{ width: '90%', height: 50, marginHorizontal: '5%', alignItems: 'center', marginBottom: 5 }}>
-              <TouchableOpacity style={BUTTON_STYLE} onPress={handleClearPoints}>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.cancelAnnotation'} />
+              {points.length === 0 ? (
+                <View style={BUTTON_DISABLED_STYLE}>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.cancelAnnotation'} />
+                  </View>
                 </View>
-              </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={BUTTON_STYLE} onPress={() => setPoints([])}>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.cancelAnnotation'} />
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
