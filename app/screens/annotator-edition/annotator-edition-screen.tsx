@@ -33,9 +33,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         return PanResponder.create({
             onStartShouldSetPanResponder: () => true,
             onMoveShouldSetPanResponder: (event, gestureState) => {
-                // Seuil de déplacement augmenté pour tous les points
-                const moveThreshold = 75; // Ajustez cette valeur selon vos préférences
-                // Autoriser le déplacement si le déplacement total dépasse le seuil
+                const moveThreshold = 75;
                 return Math.abs(gestureState.dx) > moveThreshold || Math.abs(gestureState.dy) > moveThreshold;
             },
             onPanResponderMove: (event, gestureState) => {
@@ -73,7 +71,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         position: 'absolute',
                         left: midX,
                         top: midY,
-                        color: 'black',
+                        color: '#90F80A',
                         fontSize: 12
                     }}
                 >
@@ -104,7 +102,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 >
                     <View
                         style={{
-                            backgroundColor: 'red',
+                            backgroundColor: '#90F80A',
                             width: 10,
                             height: 10,
                             borderRadius: 5
@@ -142,11 +140,24 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         </View>
                         <TouchableWithoutFeedback onPress={handlePress}>
                             <View style={{ flex: 1 }}>
-                                <Svg height="100%" width="100%">
+                                <Image style={{
+                                    width: 350,
+                                    height: 350,
+                                    position: 'absolute',
+                                }} source={require('./assets/images/lom3.jpg')} />
+                                <Svg
+                                    height="100%"
+                                    width="100%"
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                    }}
+                                >
                                     <Polygon
                                         points={points.map(point => `${point.x},${point.y}`).join(' ')}
                                         fill="none"
-                                        stroke="black"
+                                        stroke="#90F80A"
                                         strokeWidth="2"
                                     />
                                 </Svg>
