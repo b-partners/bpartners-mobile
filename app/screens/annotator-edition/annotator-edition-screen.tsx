@@ -1,13 +1,15 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useRef, useState } from 'react';
-import { Animated, Button, Image, PanResponder, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, Image, PanResponder, Text, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 
 import { Header } from '../../components';
+import { translate } from '../../i18n';
 import { NavigatorParamList } from '../../navigators/utils/utils';
-import { color } from '../../theme';
+import { color, spacing } from '../../theme';
+import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
@@ -102,7 +104,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         >
           <View
             style={{
-              backgroundColor: '#90F80A',
+              backgroundColor: '#000000',
               width: 10,
               height: 10,
               borderRadius: 5,
@@ -113,18 +115,30 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
+  const BUTTON_STYLE: TextStyle = {
+    backgroundColor: palette.secondaryColor,
+    width: '100%',
+    height: 40,
+    alignSelf: 'center',
+    borderRadius: 5,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: palette.secondaryColor,
+    marginVertical: spacing[1],
+  };
+
+  const BUTTON_TEXT_STYLE: TextStyle = {
+    fontSize: 16,
+    color: color.palette.white,
+  };
+
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
           <View style={{ flex: 1, padding: 10 }}>
-            <View style={{ marginBottom: 10 }}>
-              <Button title='Clear Points' onPress={handleClearPoints} />
-            </View>
-            <View style={{ marginBottom: 10 }}>
-              <Button title='Remove Last Point' onPress={handleRemoveLastPoint} />
-            </View>
             <TouchableWithoutFeedback onPress={handlePress}>
               <View style={{ flex: 1 }}>
                 <Image
@@ -144,12 +158,23 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                     left: 0,
                   }}
                 >
-                  <Polygon points={points.map(point => `${point.x},${point.y}`).join(' ')} fill='none' stroke='#90F80A' strokeWidth='2' />
+                  <Polygon points={points.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
                 </Svg>
                 {renderPoints()}
                 {renderDistances()}
               </View>
             </TouchableWithoutFeedback>
+            <TouchableOpacity style={BUTTON_STYLE} onPress={handleClearPoints}>
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={BUTTON_TEXT_STYLE}>{translate('annotationScreen.process.cancelAnnotation')}</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={BUTTON_STYLE} onPress={handleRemoveLastPoint}>
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={BUTTON_TEXT_STYLE}>{translate('annotationScreen.process.removeLastPoint')}</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </ErrorBoundary>
