@@ -115,11 +115,27 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
+  const calculatePolygonArea = () => {
+    let area = 0;
+    const numPoints = points.length;
+
+    for (let i = 0; i < numPoints; i++) {
+      const currentPoint = points[i];
+      const nextPoint = points[(i + 1) % numPoints];
+
+      area += currentPoint.x * nextPoint.y;
+      area -= currentPoint.y * nextPoint.x;
+    }
+
+    area = Math.abs(area) / 2;
+    return area.toFixed(2);
+  };
+
   const mockData = {
     address: '5b rue Paul Hevry 10430, Rosières-près-troyes',
     image: 'https://amazon-s3',
     labels: {
-      surface: '142 m2',
+      surface: calculatePolygonArea(),
     },
   };
 
@@ -154,31 +170,31 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'} style={{ color: palette.black, fontFamily: 'Geometria' }} />
             </View>
             <TouchableWithoutFeedback onPress={handlePress}>
-              <View style={{ flex: 1, paddingTop: 10, alignItems: 'center' }}>
-                <View style={{ width: 320, height: 320 }}>
-                  <Image
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                    }}
-                    source={require('./assets/images/Rennes_Solar_Panel.jpg')}
-                  />
-                  <View style={{ width: '100%', height: '100%', position: 'absolute' }}>
-                    <Svg height={320} width={320}>
-                      <Polygon
-                        points={points.map(point => `${point.x},${point.y}`).join(' ')}
-                        fill='rgba(144, 248, 10, 0.4)'
-                        stroke='#90F80A'
-                        strokeWidth='1'
-                      />
-                      {renderPoints()}
-                      {renderDistances()}
-                    </Svg>
-                  </View>
-                </View>
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <Image
+                  style={{
+                    width: 320,
+                    height: 320,
+                    position: 'absolute',
+                  }}
+                  source={require('./assets/images/Rennes_Solar_Panel.jpg')}
+                />
+                <Svg
+                  height='100%'
+                  width='100%'
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                  }}
+                >
+                  <Polygon points={points.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
+                </Svg>
+                {renderPoints()}
+                {renderDistances()}
               </View>
             </TouchableWithoutFeedback>
-            <View style={{ width: '90%', marginHorizontal: '5%', marginBottom: 5 }}>
+            <View style={{ width: '100%', marginHorizontal: '5%', marginBottom: 140, paddingHorizontal: 10 }}>
               <Text tx={'common.labels'} style={{ color: palette.black, fontSize: 22, fontWeight: '700', width: '90%', marginVertical: spacing[3] }} />
               <FlatList
                 style={{ width: '90%' }}
