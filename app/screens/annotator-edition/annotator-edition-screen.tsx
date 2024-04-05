@@ -129,11 +129,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               <View style={{ flex: 1 }}>
                 <Image
                   style={{
-                    width: 350,
-                    height: 350,
+                    width: 372,
+                    height: 372,
                     position: 'absolute',
                   }}
-                  source={require('./assets/images/lom3.jpg')}
+                  source={require('./assets/images/Rennes_Solar_Panel.jpg')}
                 />
                 <Svg
                   height='100%'
