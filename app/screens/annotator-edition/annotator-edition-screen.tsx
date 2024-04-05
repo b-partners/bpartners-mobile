@@ -1,14 +1,15 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useRef, useState } from 'react';
-import { Animated, Image, PanResponder, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 
-import { Header, Text } from '../../components';
+import { Header, Separator, Text } from '../../components';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import LabelRow from '../annotator/components/label-row';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
@@ -114,9 +115,19 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
+  const mockData = {
+    address: '5b rue Paul Hevry 10430, Rosières-près-troyes',
+    image: 'https://amazon-s3',
+    labels: {
+      surface: '142 m2',
+    },
+  };
+
+  const labelsKey = Object.keys(mockData.labels);
+
   const BUTTON_STYLE: TextStyle = {
     backgroundColor: palette.secondaryColor,
-    width: 200,
+    width: 350,
     height: 40,
     borderRadius: 5,
     justifyContent: 'center',
@@ -130,6 +141,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     fontSize: 16,
     color: palette.white,
   };
+
+  const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
   return (
     <Provider>
@@ -165,26 +178,27 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 </View>
               </View>
             </TouchableWithoutFeedback>
-            <TouchableOpacity style={BUTTON_STYLE} onPress={handleRemoveLastPoint}>
-              <View style={{ justifyContent: 'center' }}>
-                <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.removeLastPoint'} />
-              </View>
-            </TouchableOpacity>
-            <View style={{ width: '90%', height: 50, marginHorizontal: '5%', alignItems: 'center', marginBottom: 10 }}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: palette.secondaryColor,
-                  width: 350,
-                  height: 40,
-                  borderRadius: 5,
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  borderWidth: 1,
-                  borderColor: palette.secondaryColor,
-                  marginVertical: spacing[1],
+            <View style={{ width: '90%', marginHorizontal: '5%', marginBottom: 5 }}>
+              <Text tx={'common.labels'} style={{ color: palette.black, fontSize: 22, fontWeight: '700', width: '90%', marginVertical: spacing[3] }} />
+              <FlatList
+                style={{ width: '90%' }}
+                data={labelsKey}
+                keyExtractor={key => key}
+                renderItem={({ item }) => {
+                  return <LabelRow labelKey={item} labels={mockData.labels} />;
                 }}
-                onPress={handleClearPoints}
-              >
+                ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
+              />
+            </View>
+            <View style={{ width: '90%', height: 50, marginHorizontal: '5%', alignItems: 'center', marginBottom: 5 }}>
+              <TouchableOpacity style={BUTTON_STYLE} onPress={handleRemoveLastPoint}>
+                <View style={{ justifyContent: 'center' }}>
+                  <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.removeLastPoint'} />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={{ width: '90%', height: 50, marginHorizontal: '5%', alignItems: 'center', marginBottom: 5 }}>
+              <TouchableOpacity style={BUTTON_STYLE} onPress={handleClearPoints}>
                 <View style={{ justifyContent: 'center' }}>
                   <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.cancelAnnotation'} />
                 </View>
