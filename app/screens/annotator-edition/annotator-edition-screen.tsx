@@ -1,12 +1,11 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useRef, useState } from 'react';
-import { Animated, Image, PanResponder, Text, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, Image, PanResponder, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 
-import { Header } from '../../components';
-import { translate } from '../../i18n';
+import { Header, Text } from '../../components';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -137,44 +136,60 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white }}>
-          <View style={{ flex: 1, padding: 10 }}>
-            <View style={{ width: '100%', height: 50, alignItems: 'flex-end' }}>
-              <TouchableOpacity style={BUTTON_STYLE} onPress={handleClearPoints}>
-                <View style={{ justifyContent: 'center' }}>
-                  <Text style={BUTTON_TEXT_STYLE}>{translate('annotationScreen.process.cancelAnnotation')}</Text>
-                </View>
-              </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <View style={{ width: '100%', height: 50, alignItems: 'center', padding: 10, marginTop: 10 }}>
+              <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'} style={{ color: palette.black, fontFamily: 'Geometria' }} />
             </View>
             <TouchableWithoutFeedback onPress={handlePress}>
-              <View style={{ flex: 1, backgroundColor: palette.secondaryColor }}>
-                <Image
-                  style={{
-                    width: 372,
-                    height: 372,
-                    position: 'absolute',
-                  }}
-                  source={require('./assets/images/Rennes_Solar_Panel.jpg')}
-                />
-                <Svg
-                  height='100%'
-                  width='100%'
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                  }}
-                >
-                  <Polygon points={points.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
-                </Svg>
-                {renderPoints()}
-                {renderDistances()}
+              <View style={{ flex: 1, paddingTop: 10, alignItems: 'center' }}>
+                <View style={{ width: 320, height: 320 }}>
+                  <Image
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    source={require('./assets/images/Rennes_Solar_Panel.jpg')}
+                  />
+                  <View style={{ width: '100%', height: '100%', position: 'absolute' }}>
+                    <Svg height={320} width={320}>
+                      <Polygon
+                        points={points.map(point => `${point.x},${point.y}`).join(' ')}
+                        fill='rgba(144, 248, 10, 0.4)'
+                        stroke='#90F80A'
+                        strokeWidth='1'
+                      />
+                      {renderPoints()}
+                      {renderDistances()}
+                    </Svg>
+                  </View>
+                </View>
               </View>
             </TouchableWithoutFeedback>
             <TouchableOpacity style={BUTTON_STYLE} onPress={handleRemoveLastPoint}>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={BUTTON_TEXT_STYLE}>{translate('annotationScreen.process.removeLastPoint')}</Text>
+                <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.removeLastPoint'} />
               </View>
             </TouchableOpacity>
+            <View style={{ width: '90%', height: 50, marginHorizontal: '5%', alignItems: 'center', marginBottom: 10 }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: palette.secondaryColor,
+                  width: 350,
+                  height: 40,
+                  borderRadius: 5,
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  borderWidth: 1,
+                  borderColor: palette.secondaryColor,
+                  marginVertical: spacing[1],
+                }}
+                onPress={handleClearPoints}
+              >
+                <View style={{ justifyContent: 'center' }}>
+                  <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.cancelAnnotation'} />
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ErrorBoundary>
