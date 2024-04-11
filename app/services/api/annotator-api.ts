@@ -1,17 +1,18 @@
 import { ApiResponse } from 'apisauce';
 
-import { AnnotatorApiConfig } from './annotator-api-config';
+import { Geojson } from '../../models/entities/geojson/geojson';
 import { getGeneralApiProblem } from './api-problem';
-import { BankConnection } from './api.types';
+import { GeojsonResult } from './api.types';
+import { GeojsonApiConfig } from './geojson-api-config';
 
-export class AnnotatorApi {
-  private api: AnnotatorApiConfig;
+export class GeojsonApi {
+  private api: GeojsonApiConfig;
 
-  constructor(api: AnnotatorApiConfig) {
+  constructor(api: GeojsonApiConfig) {
     this.api = api;
   }
-  async convertPoints(): Promise<BankConnection> {
-    const response: ApiResponse<BankConnection> = await this.api.apisauce.post(`users/${userId}/accounts/${accountId}/initiateBankConnection`);
+  async convertPoints(geojson: Geojson): Promise<GeojsonResult> {
+    const response: ApiResponse<GeojsonResult> = await this.api.apisauce.post(``, geojson);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

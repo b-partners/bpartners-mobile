@@ -23,5 +23,5 @@ export default {
   accessKeyId: config.ACCESS_KEY_ID || '',
   secretAccessKey: config.SECRET_ACCESS_KEY || '',
   region: config.REGION || '',
-  annotatorUrl: config.ANNOTATOR_URL || '',
+  geojsonUrl: config.GEOJSON_URL || '',
 };

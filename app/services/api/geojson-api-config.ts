@@ -1,11 +1,11 @@
 import { ApisauceInstance, create } from 'apisauce';
 
-import { ANNOTATOR_API_CONFIG, ApiConfigWithoutToken } from './api-config';
+import { ApiConfigWithoutToken, GEOJSON_API_CONFIG } from './api-config';
 
 /**
  * Manages all requests to the API.
  */
-export class AnnotatorApiConfig {
+export class GeojsonApiConfig {
   /**
    * The underlying apisauce instance which performs the requests.
    */
@@ -21,7 +21,7 @@ export class AnnotatorApiConfig {
    *
    * @param config The configuration to use.
    */
-  constructor(config: ApiConfigWithoutToken = ANNOTATOR_API_CONFIG) {
+  constructor(config: ApiConfigWithoutToken = GEOJSON_API_CONFIG) {
     this.config = config;
   }
 

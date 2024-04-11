@@ -30,8 +30,8 @@ export const DEFAULT_API_CONFIG: ApiConfig = {
   tokenWhiteList: ['authInitiation', 'token'],
 };
 
-export const ANNOTATOR_API_CONFIG = {
-  url: env.annotatorUrl || '',
+export const GEOJSON_API_CONFIG = {
+  url: env.geojsonUrl || '',
   timeout: 10000,
 };
 

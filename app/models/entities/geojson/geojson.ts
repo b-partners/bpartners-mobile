@@ -25,7 +25,7 @@ export const GeojsonModel = types.model('Geojson').props({
   regions: types.maybeNull(RegionModel),
 });
 
-export interface GeojsonShape extends Instance<typeof GeojsonModel> {}
+export interface Geojson extends Instance<typeof GeojsonModel> {}
 
 export interface GeojsonSnapshotOut extends SnapshotOut<typeof GeojsonModel> {}
 
