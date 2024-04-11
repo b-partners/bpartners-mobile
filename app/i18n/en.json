@@ -186,7 +186,8 @@
     "generateQuote": "Generate a quote",
     "process": {
       "cancelAnnotation": "Cancel annotation",
-      "removeLastPoint": "Remove the last point"
+      "removeLastPoint": "Remove the last point",
+      "validatePolygon": "Validate polygon"
     },
     "labels": {
       "surface": "Surface",
