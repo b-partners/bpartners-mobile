@@ -10,23 +10,23 @@ export const RegionAttributesModel = types.model('RegionAttributes').props({
   label: types.maybeNull(types.string),
 });
 
-export const ShapeModel = types.model('Shape').props({
+export const ShapeObjectModel = types.model('Shape').props({
   shape_attributes: types.maybeNull(ShapeAttributesModel),
   region_attributes: types.maybeNull(RegionAttributesModel),
 });
 
 export const RegionModel = types.model('Region').props({
-  '1': types.maybeNull(ShapeModel),
+  '1': types.maybeNull(ShapeObjectModel),
 });
 
-export const AnnotatorShapeModel = types.model('AnnotatorShape').props({
+export const GeojsonModel = types.model('Geojson').props({
   size: types.maybeNull(types.string),
   filename: types.maybeNull(types.string),
   regions: types.maybeNull(RegionModel),
 });
 
-export interface AnnotatorShape extends Instance<typeof AnnotatorShapeModel> {}
+export interface GeojsonShape extends Instance<typeof GeojsonModel> {}
 
-export interface AnnotatorShapeSnapshotOut extends SnapshotOut<typeof AnnotatorShapeModel> {}
+export interface GeojsonSnapshotOut extends SnapshotOut<typeof GeojsonModel> {}
 
-export interface AnnotatorShapeSnapshotIn extends SnapshotIn<typeof AnnotatorShapeModel> {}
+export interface GeojsonSnapshotIn extends SnapshotIn<typeof GeojsonModel> {}

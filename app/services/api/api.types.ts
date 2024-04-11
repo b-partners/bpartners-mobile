@@ -119,3 +119,5 @@ export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | Gene
 export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;
 
 export type UpdateAccountHodlerInfo = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
+
+export type ConvertPointResult = { kind: 'ok'; geojson: AccountHolder } | GeneralApiProblem;
