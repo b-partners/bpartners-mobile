@@ -1,6 +1,6 @@
 import { ApiResponse } from 'apisauce';
 
-import { Geojson } from '../../models/entities/geojson/geojson';
+import { Points } from '../../models/entities/points/points';
 import { getGeneralApiProblem } from './api-problem';
 import { GeojsonResult } from './api.types';
 import { GeojsonApiConfig } from './geojson-api-config';
@@ -11,8 +11,8 @@ export class GeojsonApi {
   constructor(api: GeojsonApiConfig) {
     this.api = api;
   }
-  async convertPoints(geojson: Geojson): Promise<GeojsonResult> {
-    const response: ApiResponse<GeojsonResult> = await this.api.apisauce.post(``, geojson);
+  async convertPoints(points: Points): Promise<GeojsonResult> {
+    const response: ApiResponse<GeojsonResult> = await this.api.apisauce.post(``, points);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
