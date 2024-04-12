@@ -4,6 +4,7 @@ import { BusinessActivityItem } from '../../models/entities/business-activity/bu
 import { Calendar } from '../../models/entities/calendar/calendar';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
+import { Geojson } from '../../models/entities/geojson/geojson';
 import { Invoice, InvoiceRelaunch, InvoiceSummary } from '../../models/entities/invoice/invoice';
 import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Marketplace } from '../../models/entities/marketplace/marketplace';
@@ -119,3 +120,5 @@ export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | Gene
 export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;
 
 export type UpdateAccountHodlerInfo = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
+
+export type GeojsonResult = { kind: 'ok'; geojson: Geojson } | GeneralApiProblem;
