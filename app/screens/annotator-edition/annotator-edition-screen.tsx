@@ -1,5 +1,6 @@
 import {DrawerScreenProps} from '@react-navigation/drawer';
 import {observer} from 'mobx-react-lite';
+import {Dropdown} from 'react-native-element-dropdown';
 import React, {FC, useRef, useState} from 'react';
 import {
     Animated,
@@ -19,7 +20,6 @@ import {Header, Separator, Text} from '../../components';
 import {NavigatorParamList} from '../../navigators/utils/utils';
 import {spacing} from '../../theme';
 import {palette} from '../../theme/palette';
-import LabelRow from '../annotator/components/label-row';
 import {ErrorBoundary} from '../error/error-boundary';
 import {FULL} from '../invoices/utils/styles';
 import {HEADER, HEADER_TITLE} from '../payment-initiation/utils/style';
@@ -30,6 +30,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     const [polygons, setPolygons] = useState([]);
     const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
     const panResponders = useRef([]);
+
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
 
     Log('============polygons===========')
     Log(polygons)
@@ -137,8 +140,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     const startNewPolygon = () => {
         if (currentPolygonPoints.length > 0) {
             const newPolygon = [...currentPolygonPoints];
-            setPolygons([...polygons, newPolygon]);
+            setPolygons((prevPolygons) => [...prevPolygons, newPolygon]);
             setCurrentPolygonPoints([]);
+            setValue(null);
+            setIsFocus(false);
         }
     };
 
@@ -149,8 +154,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             surface: 8787,
         },
     };
-
-    const labelsKey = Object.keys(mockData.labels);
 
     const BUTTON_STYLE: TextStyle = {
         backgroundColor: palette.secondaryColor,
@@ -176,6 +179,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     };
 
     const SEPARATOR_COMPONENT_STYLE: ViewStyle = {borderColor: palette.lighterGrey};
+
+    const data = [
+        {label: 'Item 1', value: '1'},
+        {label: 'Item 2', value: '2'},
+        {label: 'Item 3', value: '3'},
+        {label: 'Item 4', value: '4'},
+        {label: 'Item 5', value: '5'},
+        {label: 'Item 6', value: '6'},
+        {label: 'Item 7', value: '7'},
+        {label: 'Item 8', value: '8'},
+    ];
 
     return (
         <Provider>
@@ -208,7 +222,14 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                                 {renderDistances()}
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{width: '100%', marginHorizontal: '5%', marginBottom: 90, paddingHorizontal: 10}}>
+                        <View style={{
+                            width: '100%',
+                            marginHorizontal: '5%',
+                            paddingHorizontal: 10,
+                            borderWidth: 1,
+                            borderColor: palette.pastelRed,
+                            height: 175
+                        }}>
                             <Text tx={'common.labels'} style={{
                                 color: palette.black,
                                 fontSize: 22,
@@ -217,14 +238,43 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                                 marginVertical: spacing[3]
                             }}/>
                             <FlatList
-                                style={{width: '90%'}}
-                                data={labelsKey}
-                                keyExtractor={key => key}
-                                renderItem={({item}) => {
-                                    return <LabelRow labelKey={item} labels={mockData.labels}/>;
+                                style={{ width: '90%' }}
+                                data={polygons}
+                                keyExtractor={(item, index) => `polygon_${index}`} // Use index as a fallback key
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View key={`polygon_${index}`} style={{ width: '100%', marginVertical: spacing[3] }}>
+                                            <Text style={{ color: palette.black, fontSize: 16, fontWeight: '600', marginBottom: spacing[1] }}>
+                                                Polygon {index + 1}
+                                            </Text>
+                                            <Dropdown
+                                                style={{
+                                                    borderWidth: 1,
+                                                    borderColor: palette.lightGrey,
+                                                    borderRadius: 25,
+                                                    paddingHorizontal: spacing[3],
+                                                }}
+                                                data={data}
+                                                search
+                                                maxHeight={300}
+                                                labelField="label"
+                                                valueField="value"
+                                                placeholder={!isFocus ? 'Select item' : '...'}
+                                                searchPlaceholder="Search..."
+                                                value={value}
+                                                onFocus={() => setIsFocus(true)}
+                                                onBlur={() => setIsFocus(false)}
+                                                onChange={(item) => {
+                                                    setValue(item.value);
+                                                    setIsFocus(false);
+                                                }}
+                                            />
+                                        </View>
+                                    );
                                 }}
-                                ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE}/>}
+                                ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
                             />
+
                         </View>
                         <View style={{
                             width: '90%',
@@ -236,11 +286,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             {validatePolygon(currentPolygonPoints) ?
                                 (
                                     <TouchableOpacity style={BUTTON_STYLE} onPress={startNewPolygon}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        <Text style={BUTTON_TEXT_STYLE}
-                                              tx={'annotationScreen.process.validatePolygon'}/>
-                                    </View>
-                                </TouchableOpacity>
+                                        <View style={{justifyContent: 'center'}}>
+                                            <Text style={BUTTON_TEXT_STYLE}
+                                                  tx={'annotationScreen.process.validatePolygon'}/>
+                                        </View>
+                                    </TouchableOpacity>
                                 ) :
                                 (
                                     <View style={BUTTON_DISABLED_STYLE}>
