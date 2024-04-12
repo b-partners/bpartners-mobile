@@ -53,6 +53,7 @@
     "@react-native-firebase/app": "^18.5.0",
     "@react-native-firebase/messaging": "^18.5.0",
     "@react-native-menu/menu": "^0.9.1",
+    "@react-native-picker/picker": "^2.7.5",
     "@react-navigation/bottom-tabs": "^6.5.3",
     "@react-navigation/drawer": "^6.4.4",
     "@react-navigation/material-top-tabs": "^6.3.0",
