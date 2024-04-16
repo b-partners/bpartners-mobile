@@ -11,6 +11,7 @@ import { Product } from '../../models/entities/product/product';
 import { Prospect } from '../../models/entities/prospect/prospect';
 import { RelaunchConfiguration } from '../../models/entities/relaunch-configuration/relaunch-configuration';
 import { TransactionCategory } from '../../models/entities/transaction-category/transaction-category';
+import { TransactionExportInput } from '../../models/entities/transaction-export-link/transaction-export-link';
 import { TransactionSummary } from '../../models/entities/transaction-summary/transaction-summary';
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
@@ -36,6 +37,8 @@ export type GetUsersResult = { kind: 'ok'; users: User[] } | GeneralApiProblem;
 export type GetUserResult = { kind: 'ok'; user: User } | GeneralApiProblem;
 
 export type GetTransactionsResult = { kind: 'ok'; transactions: Transaction[] } | GeneralApiProblem;
+
+export type GenerateExportLink = { kind: 'ok'; transactionExportInput: TransactionExportInput } | GeneralApiProblem;
 
 export type GetTransactionCategoriesResult = { kind: 'ok'; transactionCategories: TransactionCategory[] } | GeneralApiProblem;
 

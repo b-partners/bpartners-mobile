@@ -1,8 +1,10 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
+import { Log } from '../../../screens/welcome/utils/utils';
 import { TransactionApi } from '../../../services/api/transaction-api';
 import { TransactionFilter } from '../../entities/filter/filter';
 import { TransactionCategory, TransactionCategoryModel, TransactionCategorySnapshotOut } from '../../entities/transaction-category/transaction-category';
+import { TransactionExportInput } from '../../entities/transaction-export-link/transaction-export-link';
 import { TransactionSummary, TransactionSummaryModel } from '../../entities/transaction-summary/transaction-summary';
 import { TransactionModel, TransactionSnapshotOut } from '../../entities/transaction/transaction';
 import { withCredentials } from '../../extensions/with-credentials';
@@ -35,6 +37,18 @@ export const TransactionStoreModel = types
       __DEV__ && console.tron.log(`Failing to fetch transactions summary, ${error}`);
       self.catchOrThrow(error);
     },
+  }))
+  .actions(self => ({
+    generateTransactionExportLink: flow(function* (exportLinkInput: TransactionExportInput) {
+      const transactionApi = new TransactionApi(self.environment.api);
+      try {
+        Log('posting ...');
+        return yield transactionApi.postTransactionExportLink(self.currentAccount.id, exportLinkInput);
+      } catch (e) {
+        Log(`Failing to generate transaction export link, ${e}`);
+        self.catchOrThrow(e);
+      }
+    }),
   }))
   .actions(self => ({
     getTransactionsSummary: flow(function* (year: number) {

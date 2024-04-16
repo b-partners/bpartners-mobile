@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
+import { Provider } from 'react-native-paper';
 import { Searchbar } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
@@ -16,6 +17,7 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/components/utils';
 import { LOADER_STYLE, SCREEN_STYLE } from '../invoices/utils/styles';
+import { ExportingAccountingButton } from './components/export-accounting-button';
 import { Transaction } from './components/transaction';
 import { TransactionModal } from './components/transaction-modal';
 
@@ -86,113 +88,118 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
   ];
 
   return (
-    <ErrorBoundary catchErrors='always'>
-      <HeaderWithBalance
-        balance={availableBalance}
-        left={
-          <TouchableOpacity onPress={() => navigation.navigate('home')}>
-            <Icon icon='back' />
-          </TouchableOpacity>
-        }
-      />
-      <View testID='transactionListScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
-        <Searchbar
-          placeholder={translate('common.search')}
-          onChangeText={handleInputChange}
-          value={searchQuery}
-          style={{
-            backgroundColor: palette.solidGrey,
-            height: 40,
-            borderRadius: 10,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: spacing[4],
-            width: '90%',
-            marginHorizontal: '5%',
-          }}
-          iconColor={palette.lightGrey}
-          clearIcon='close-circle'
-          onClearIconPress={handleRefresh}
-          inputStyle={{ color: palette.black, alignSelf: 'center' }}
-          placeholderTextColor={palette.lightGrey}
+    <Provider>
+      <ErrorBoundary catchErrors='always'>
+        <HeaderWithBalance
+          balance={availableBalance}
+          left={
+            <TouchableOpacity onPress={() => navigation.navigate('home')}>
+              <Icon icon='back' />
+            </TouchableOpacity>
+          }
         />
-        {loadingTransactionCategories || loadingTransactions ? (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
-        ) : transactions.length > 0 ? (
-          <ScrollView style={{ backgroundColor: palette.white, flexDirection: 'column', marginTop: spacing[2] }}>
-            <FlatList
-              testID='listContainer'
-              contentContainerStyle={FLAT_LIST}
-              data={displayedItems}
-              renderItem={({ item }) => {
-                return (
-                  <Transaction
-                    key={item.id}
-                    item={item}
-                    transactionCategories={transactionCategories}
-                    showTransactionCategory={true}
-                    setShowModal={setShowModal}
-                    setCurrentTransaction={setCurrentTransaction}
-                  />
-                );
+        <View testID='transactionListScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <Searchbar
+              placeholder={translate('common.search')}
+              onChangeText={handleInputChange}
+              value={searchQuery}
+              style={{
+                backgroundColor: palette.solidGrey,
+                height: 40,
+                borderRadius: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: spacing[4],
+                width: '60%',
+                marginHorizontal: '2.4%',
               }}
-              ItemSeparatorComponent={() => <Separator />}
+              iconColor={palette.lightGrey}
+              clearIcon='close-circle'
+              onClearIconPress={handleRefresh}
+              inputStyle={{ color: palette.black, alignSelf: 'center' }}
+              placeholderTextColor={palette.lightGrey}
             />
-          </ScrollView>
-        ) : (
-          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
-            <NoDataProvided reload={handleRefresh} />
-          </Screen>
-        )}
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: spacing[1],
-              height: 80,
-              width: '100%',
-              marginBottom: spacing[4],
-              alignItems: 'center',
-              paddingLeft: spacing[4],
-            }}
-          >
-            <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-            <Dropdown
-              style={styles.dropdown}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={status}
-              maxHeight={300}
-              labelField='label'
-              valueField='value'
-              placeholder={'Status'}
-              value={currentStatus}
-              onChange={item => {
-                setCurrentStatus(item.value);
-              }}
-              renderLeftIcon={() => (
-                <TouchableOpacity onPress={() => setCurrentStatus(null)}>
-                  <AntDesignIcon style={styles.icon} color={palette.black} name='closecircleo' size={20} />
-                </TouchableOpacity>
-              )}
-            />
+            <ExportingAccountingButton />
           </View>
-        </KeyboardAvoidingView>
-        {currentTransaction && (
-          <TransactionModal
-            showModal={showModal}
-            setShowModal={setShowModal}
-            currentTransaction={currentTransaction}
-            invoice={invoice}
-            loading={loading}
-            loadingInvoice={loadingInvoice}
-            invoices={combinedInvoices}
-          />
-        )}
-      </View>
-    </ErrorBoundary>
+          {loadingTransactionCategories || loadingTransactions ? (
+            <Loader size='large' containerStyle={LOADER_STYLE} />
+          ) : transactions.length > 0 ? (
+            <ScrollView style={{ backgroundColor: palette.white, flexDirection: 'column', marginTop: spacing[2] }}>
+              <FlatList
+                testID='listContainer'
+                contentContainerStyle={FLAT_LIST}
+                data={displayedItems}
+                renderItem={({ item }) => {
+                  return (
+                    <Transaction
+                      key={item.id}
+                      item={item}
+                      transactionCategories={transactionCategories}
+                      showTransactionCategory={true}
+                      setShowModal={setShowModal}
+                      setCurrentTransaction={setCurrentTransaction}
+                    />
+                  );
+                }}
+                ItemSeparatorComponent={() => <Separator />}
+              />
+            </ScrollView>
+          ) : (
+            <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
+              <NoDataProvided reload={handleRefresh} />
+            </Screen>
+          )}
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: spacing[1],
+                height: 80,
+                width: '100%',
+                marginBottom: spacing[4],
+                alignItems: 'center',
+                paddingLeft: spacing[4],
+              }}
+            >
+              <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
+              <Dropdown
+                style={styles.dropdown}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={status}
+                maxHeight={300}
+                labelField='label'
+                valueField='value'
+                placeholder={'Status'}
+                value={currentStatus}
+                onChange={item => {
+                  setCurrentStatus(item.value);
+                }}
+                renderLeftIcon={() => (
+                  <TouchableOpacity onPress={() => setCurrentStatus(null)}>
+                    <AntDesignIcon style={styles.icon} color={palette.black} name='closecircleo' size={20} />
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          </KeyboardAvoidingView>
+          {currentTransaction && (
+            <TransactionModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+              currentTransaction={currentTransaction}
+              invoice={invoice}
+              loading={loading}
+              loadingInvoice={loadingInvoice}
+              invoices={combinedInvoices}
+            />
+          )}
+        </View>
+      </ErrorBoundary>
+    </Provider>
   );
 });
 
