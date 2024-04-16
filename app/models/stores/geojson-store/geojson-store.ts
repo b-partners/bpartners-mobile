@@ -1,11 +1,9 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
-import { Log } from '../../../screens/welcome/utils/utils';
 import { GeojsonApi } from '../../../services/api/geojson-api';
 import { Geojson, GeojsonModel } from '../../entities/geojson/geojson';
 import { Points } from '../../entities/points/points';
 import { withCredentials } from '../../extensions/with-credentials';
-import { withGeojsonEnvironment } from '../../extensions/with-geojson-environment';
 import { withRootStore } from '../../extensions/with-root-store';
 
 export const GeojsonStoreModel = types
@@ -14,7 +12,6 @@ export const GeojsonStoreModel = types
     geojson: types.maybeNull(GeojsonModel),
   })
   .extend(withRootStore)
-  .extend(withGeojsonEnvironment)
   .extend(withCredentials)
   .actions(self => ({
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
@@ -26,10 +23,10 @@ export const GeojsonStoreModel = types
   }))
   .actions(self => ({
     convertPoints: flow(function* (points: Points) {
-      const geojsonApi = new GeojsonApi(self.environment.api);
+      const geojsonApi = new GeojsonApi();
       try {
         const convertPointResult = yield geojsonApi.convertPoints(points);
-        Log(convertPointResult.geojson);
+        self.convertPointSuccess(convertPointResult[0]);
       } catch (e) {
         self.catchOrThrow(e);
       }
