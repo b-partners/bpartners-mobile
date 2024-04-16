@@ -10,6 +10,7 @@ import { CalendarStoreModel } from '../calendar-store/calendar-store';
 import { CustomerStoreModel } from '../customer-store/customer-store';
 import { DraftStoreModel } from '../draft-store/draft-store';
 import { FileStoreModel } from '../file-store/file-store';
+import { GeojsonStoreModel } from '../geojson-store/geojson-store';
 import { InvoiceStoreModel } from '../invoice-store/invoice-store';
 import { LegalFileStoreModel } from '../legal-file-store/legal-file-store';
 import { MarketplaceStoreModel } from '../marketplace-store/marketplace-store';
@@ -40,7 +41,8 @@ export const RootStoreModel = types.model('RootStore').props({
     quotationStore: types.optional(QuotationStoreModel, {} as any),
     bankStore: types.optional(BankStoreModel, {} as any),
     businessActivityStore: types.optional(BusinessActivityStoreModel, {} as any),
-    calendarStore: types.optional(CalendarStoreModel, {} as any)
+    calendarStore: types.optional(CalendarStoreModel, {} as any),
+    geojsonStore: types.optional(GeojsonStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;
