@@ -189,6 +189,9 @@
       "removeLastPoint": "Remove the last point",
       "validatePolygon": "Validate polygon"
     },
+    "errors": {
+      "requiredLabel" : "Please give a label for each annotation"
+    },
     "labels": {
       "surface": "Surface",
       "covering": "Covering",

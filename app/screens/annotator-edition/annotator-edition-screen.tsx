@@ -1,12 +1,12 @@
 import {DrawerScreenProps} from '@react-navigation/drawer';
 import {observer} from 'mobx-react-lite';
-import {Dropdown} from 'react-native-element-dropdown';
 import React, {FC, useRef, useState} from 'react';
 import {
     Animated,
     FlatList,
     Image,
     PanResponder,
+    Platform,
     TextStyle,
     TouchableOpacity,
     TouchableWithoutFeedback,
@@ -16,7 +16,7 @@ import {
 import {Provider} from 'react-native-paper';
 import Svg, {Polygon} from 'react-native-svg';
 
-import {Header, Separator, Text} from '../../components';
+import {Header, InputField, Separator, Text} from '../../components';
 import {NavigatorParamList} from '../../navigators/utils/utils';
 import {spacing} from '../../theme';
 import {palette} from '../../theme/palette';
@@ -25,19 +25,37 @@ import {FULL} from '../invoices/utils/styles';
 import {HEADER, HEADER_TITLE} from '../payment-initiation/utils/style';
 import {Log} from "../welcome/utils/utils";
 import {validatePolygon} from "./utils/polygon-validator";
+import {showMessage} from "../../utils/snackbar";
+import {translate} from "../../i18n";
+import {validateLabel} from "./utils/label-validator";
+import {Controller, useForm} from "react-hook-form";
+import {getAnnotatorResolver} from "./utils/annotator-info-validator";
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({navigation}) {
     const [polygons, setPolygons] = useState([]);
     const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
+    const [annotation, setAnnotation] = useState([]);
+
     const panResponders = useRef([]);
 
-    const [value, setValue] = useState(null);
-    const [isFocus, setIsFocus] = useState(false);
 
     Log('============polygons===========')
     Log(polygons)
     Log('============currentPolygonPoints===========')
     Log(currentPolygonPoints)
+    Log('============Annotations===========')
+    Log(annotation)
+
+    const {
+        handleSubmit,
+        control,
+        formState: {errors},
+    } = useForm({
+        mode: 'all',
+        defaultValues: {label: ''},
+        resolver: getAnnotatorResolver(),
+    });
+
     const handlePress = event => {
         const {locationX, locationY} = event.nativeEvent;
         setCurrentPolygonPoints([...currentPolygonPoints, {x: locationX, y: locationY}]);
@@ -79,7 +97,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
     const renderDistances = () => {
         const distances = [];
-
         for (let i = 0; i < currentPolygonPoints.length; i++) {
             const point1 = currentPolygonPoints[i];
             const point2 = currentPolygonPoints[(i + 1) % currentPolygonPoints.length];
@@ -103,7 +120,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 </Text>
             );
         }
-
         return distances;
     };
 
@@ -137,22 +153,21 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         });
     };
 
-    const startNewPolygon = () => {
-        if (currentPolygonPoints.length > 0) {
-            const newPolygon = [...currentPolygonPoints];
-            setPolygons((prevPolygons) => [...prevPolygons, newPolygon]);
-            setCurrentPolygonPoints([]);
-            setValue(null);
-            setIsFocus(false);
-        }
-    };
+    const onSubmit = data => {
+        const {label} = data;
 
-    const mockData = {
-        address: '5b rue Paul Hevry 10430, Rosières-près-troyes',
-        image: 'https://amazon-s3',
-        labels: {
-            surface: 8787,
-        },
+        if (validateLabel(label)) {
+            showMessage(translate('annotationScreen.errors.requiredLabel'), {backgroundColor: palette.pastelRed});
+        } else {
+            const newPolygon = [...currentPolygonPoints];
+            const newAnnotation = {
+                polygon: newPolygon,
+                label: label,
+            };
+            setPolygons((prevPolygons) => [...prevPolygons, newPolygon]);
+            setAnnotation((annotation) => [...annotation, newAnnotation]);
+            setCurrentPolygonPoints([]);
+        }
     };
 
     const BUTTON_STYLE: TextStyle = {
@@ -179,17 +194,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     };
 
     const SEPARATOR_COMPONENT_STYLE: ViewStyle = {borderColor: palette.lighterGrey};
-
-    const data = [
-        {label: 'Item 1', value: '1'},
-        {label: 'Item 2', value: '2'},
-        {label: 'Item 3', value: '3'},
-        {label: 'Item 4', value: '4'},
-        {label: 'Item 5', value: '5'},
-        {label: 'Item 6', value: '6'},
-        {label: 'Item 7', value: '7'},
-        {label: 'Item 8', value: '8'},
-    ];
 
     return (
         <Provider>
@@ -223,11 +227,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             </View>
                         </TouchableWithoutFeedback>
                         <View style={{
-                            width: '100%',
-                            marginHorizontal: '5%',
+                            width: '94%',
+                            marginHorizontal: '3%',
                             paddingHorizontal: 10,
-                            borderWidth: 1,
-                            borderColor: palette.pastelRed,
                             height: 175
                         }}>
                             <Text tx={'common.labels'} style={{
@@ -238,43 +240,48 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                                 marginVertical: spacing[3]
                             }}/>
                             <FlatList
-                                style={{ width: '90%' }}
+                                style={{width: '100%'}}
                                 data={polygons}
-                                keyExtractor={(item, index) => `polygon_${index}`} // Use index as a fallback key
-                                renderItem={({ item, index }) => {
+                                keyExtractor={(item, index) => `polygon_${index}`}
+                                renderItem={({item, index}) => {
                                     return (
-                                        <View key={`polygon_${index}`} style={{ width: '100%', marginVertical: spacing[3] }}>
-                                            <Text style={{ color: palette.black, fontSize: 16, fontWeight: '600', marginBottom: spacing[1] }}>
+                                        <View key={`polygon_${index}`}
+                                              style={{width: '100%', marginVertical: spacing[3]}}>
+                                            <Text style={{
+                                                color: palette.black,
+                                                fontSize: 16,
+                                                fontWeight: '600',
+                                                marginBottom: spacing[1]
+                                            }}>
                                                 Polygon {index + 1}
                                             </Text>
-                                            <Dropdown
-                                                style={{
-                                                    borderWidth: 1,
-                                                    borderColor: palette.lightGrey,
-                                                    borderRadius: 25,
-                                                    paddingHorizontal: spacing[3],
-                                                }}
-                                                data={data}
-                                                search
-                                                maxHeight={300}
-                                                labelField="label"
-                                                valueField="value"
-                                                placeholder={!isFocus ? 'Select item' : '...'}
-                                                searchPlaceholder="Search..."
-                                                value={value}
-                                                onFocus={() => setIsFocus(true)}
-                                                onBlur={() => setIsFocus(false)}
-                                                onChange={(item) => {
-                                                    setValue(item.value);
-                                                    setIsFocus(false);
-                                                }}
-                                            />
+                                            <Text style={{
+                                                color: palette.secondaryColor,
+                                                fontSize: 14,
+                                                fontWeight: '800',
+                                            }}>
+                                                {annotation[index]?.label}
+                                            </Text>
                                         </View>
                                     );
                                 }}
-                                ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
+                                ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE}/>}
                             />
-
+                            <Controller
+                                control={control}
+                                name='label'
+                                defaultValue=''
+                                render={({field: {onChange, value}}) => (
+                                    <InputField
+                                        labelTx={'common.labels'}
+                                        error={!!errors.label}
+                                        value={value}
+                                        onChange={onChange}
+                                        errorMessage={errors.label?.message}
+                                        backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                                    />
+                                )}
+                            />
                         </View>
                         <View style={{
                             width: '90%',
@@ -283,48 +290,15 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             alignItems: 'center',
                             marginBottom: 5
                         }}>
-                            {validatePolygon(currentPolygonPoints) ?
-                                (
-                                    <TouchableOpacity style={BUTTON_STYLE} onPress={startNewPolygon}>
-                                        <View style={{justifyContent: 'center'}}>
-                                            <Text style={BUTTON_TEXT_STYLE}
-                                                  tx={'annotationScreen.process.validatePolygon'}/>
-                                        </View>
-                                    </TouchableOpacity>
-                                ) :
-                                (
-                                    <View style={BUTTON_DISABLED_STYLE}>
-                                        <View style={{justifyContent: 'center'}}>
-                                            <Text style={BUTTON_TEXT_STYLE}
-                                                  tx={'annotationScreen.process.validatePolygon'}/>
-                                        </View>
-                                    </View>
-                                )
-                            }
-                        </View>
-                        <View style={{
-                            width: '90%',
-                            height: 50,
-                            marginHorizontal: '5%',
-                            alignItems: 'center',
-                            marginBottom: 5
-                        }}>
-                            {currentPolygonPoints.length === 0 ? (
-                                <View style={BUTTON_DISABLED_STYLE}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        <Text style={BUTTON_TEXT_STYLE}
-                                              tx={'annotationScreen.process.removeLastPoint'}/>
-                                    </View>
+                            <TouchableOpacity
+                                style={validatePolygon(currentPolygonPoints) ? BUTTON_STYLE : BUTTON_DISABLED_STYLE}
+                                onPress={handleSubmit(onSubmit)}
+                                disabled={!validatePolygon(currentPolygonPoints)}>
+                                <View style={{justifyContent: 'center'}}>
+                                    <Text style={BUTTON_TEXT_STYLE}
+                                          tx={'annotationScreen.process.validatePolygon'}/>
                                 </View>
-                            ) : (
-                                <TouchableOpacity style={BUTTON_STYLE}
-                                                  onPress={() => setCurrentPolygonPoints(prevPoints => prevPoints.slice(0, -1))}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        <Text style={BUTTON_TEXT_STYLE}
-                                              tx={'annotationScreen.process.removeLastPoint'}/>
-                                    </View>
-                                </TouchableOpacity>
-                            )}
+                            </TouchableOpacity>
                         </View>
                         <View style={{
                             width: '90%',
@@ -333,21 +307,34 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             alignItems: 'center',
                             marginBottom: 5
                         }}>
-                            {polygons.length === 0 ? (
-                                <View style={BUTTON_DISABLED_STYLE}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        <Text style={BUTTON_TEXT_STYLE}
-                                              tx={'annotationScreen.process.cancelAnnotation'}/>
-                                    </View>
+                            <TouchableOpacity
+                                style={currentPolygonPoints.length === 0 ? BUTTON_DISABLED_STYLE : BUTTON_STYLE}
+                                onPress={() => setCurrentPolygonPoints(prevPoints => prevPoints.slice(0, -1))}
+                                disabled={currentPolygonPoints.length === 0}
+                            >
+                                <View style={{justifyContent: 'center'}}>
+                                    <Text style={BUTTON_TEXT_STYLE}
+                                          tx={'annotationScreen.process.removeLastPoint'}/>
                                 </View>
-                            ) : (
-                                <TouchableOpacity style={BUTTON_STYLE} onPress={() => setPolygons([])}>
-                                    <View style={{justifyContent: 'center'}}>
-                                        <Text style={BUTTON_TEXT_STYLE}
-                                              tx={'annotationScreen.process.cancelAnnotation'}/>
-                                    </View>
-                                </TouchableOpacity>
-                            )}
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{
+                            width: '90%',
+                            height: 50,
+                            marginHorizontal: '5%',
+                            alignItems: 'center',
+                            marginBottom: 5
+                        }}>
+                            <TouchableOpacity
+                                style={polygons.length === 0 ? BUTTON_DISABLED_STYLE : BUTTON_STYLE}
+                                onPress={() => setPolygons([])}
+                                disabled={polygons.length === 0}
+                            >
+                                <View style={{justifyContent: 'center'}}>
+                                    <Text style={BUTTON_TEXT_STYLE}
+                                          tx={'annotationScreen.process.cancelAnnotation'}/>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
