@@ -50,6 +50,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         handleSubmit,
         control,
         formState: {errors},
+        setValue,
     } = useForm({
         mode: 'all',
         defaultValues: {label: ''},
@@ -153,8 +154,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         });
     };
 
-    const onSubmit = data => {
+    const startNewPolygon = data => {
         const {label} = data;
+
+        Log(label);
 
         if (validateLabel(label)) {
             showMessage(translate('annotationScreen.errors.requiredLabel'), {backgroundColor: palette.pastelRed});
@@ -167,7 +170,15 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             setPolygons((prevPolygons) => [...prevPolygons, newPolygon]);
             setAnnotation((annotation) => [...annotation, newAnnotation]);
             setCurrentPolygonPoints([]);
+            setValue('label', null);
         }
+    };
+
+    const BUTTON_CONTAINER_STYLE: TextStyle = {
+        width: '90%',
+        height: 45,
+        marginHorizontal: '5%',
+        alignItems: 'center',
     };
 
     const BUTTON_STYLE: TextStyle = {
@@ -202,7 +213,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE}/>
                 <View testID='AnnotatorEditionScreen' style={{...FULL, backgroundColor: palette.white}}>
                     <View style={{flex: 1}}>
-                        <View style={{width: '100%', height: 50, alignItems: 'center', padding: 10, marginTop: 10}}>
+                        <View style={{width: '100%', height: 40, alignItems: 'center', padding: 10, marginTop: 10}}>
                             <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'}
                                   style={{color: palette.black, fontFamily: 'Geometria'}}/>
                         </View>
@@ -230,14 +241,14 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             width: '94%',
                             marginHorizontal: '3%',
                             paddingHorizontal: 10,
-                            height: 175
+                            height: 215
                         }}>
                             <Text tx={'common.labels'} style={{
                                 color: palette.black,
                                 fontSize: 22,
                                 fontWeight: '700',
                                 width: '90%',
-                                marginVertical: spacing[3]
+                                marginTop: spacing[1]
                             }}/>
                             <FlatList
                                 style={{width: '100%'}}
@@ -283,16 +294,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                                 )}
                             />
                         </View>
-                        <View style={{
-                            width: '90%',
-                            height: 50,
-                            marginHorizontal: '5%',
-                            alignItems: 'center',
-                            marginBottom: 5
-                        }}>
+                        <View style={BUTTON_CONTAINER_STYLE}>
                             <TouchableOpacity
                                 style={validatePolygon(currentPolygonPoints) ? BUTTON_STYLE : BUTTON_DISABLED_STYLE}
-                                onPress={handleSubmit(onSubmit)}
+                                onPress={handleSubmit(startNewPolygon)}
                                 disabled={!validatePolygon(currentPolygonPoints)}>
                                 <View style={{justifyContent: 'center'}}>
                                     <Text style={BUTTON_TEXT_STYLE}
@@ -300,13 +305,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={{
-                            width: '90%',
-                            height: 50,
-                            marginHorizontal: '5%',
-                            alignItems: 'center',
-                            marginBottom: 5
-                        }}>
+                        <View style={BUTTON_CONTAINER_STYLE}>
                             <TouchableOpacity
                                 style={currentPolygonPoints.length === 0 ? BUTTON_DISABLED_STYLE : BUTTON_STYLE}
                                 onPress={() => setCurrentPolygonPoints(prevPoints => prevPoints.slice(0, -1))}
@@ -318,13 +317,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={{
-                            width: '90%',
-                            height: 50,
-                            marginHorizontal: '5%',
-                            alignItems: 'center',
-                            marginBottom: 5
-                        }}>
+                        <View style={BUTTON_CONTAINER_STYLE}>
                             <TouchableOpacity
                                 style={polygons.length === 0 ? BUTTON_DISABLED_STYLE : BUTTON_STYLE}
                                 onPress={() => setPolygons([])}
