@@ -190,7 +190,7 @@
       "validatePolygon": "Validate polygon"
     },
     "errors": {
-      "requiredLabel" : "Please give a label for each annotation"
+      "requiredLabel": "Please give a label for each annotation"
     },
     "labels": {
       "surface": "Surface",

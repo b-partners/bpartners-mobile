@@ -141,7 +141,7 @@
       "validatePolygon": "Valider le polygone"
     },
     "errors": {
-      "requiredLabel" : "Veuillez donner un label pour chaque annotation"
+      "requiredLabel": "Veuillez donner un label pour chaque annotation"
     },
     "labels": {
       "surface": "Surface",
