@@ -147,9 +147,16 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       setPolygons(prevPolygons => [...prevPolygons, newPolygon]);
       setAnnotation(prevAnnotation => [...prevAnnotation, newAnnotation]);
       setCurrentPolygonPoints([]);
-      setValue('label', null);
+      setValue('label', '');
     }
   };
+
+  const handleCancelAnnotation = () => {
+      setPolygons([]);
+      setAnnotation([]);
+      setCurrentPolygonPoints([]);
+      setValue('label', '');
+  }
 
   const BUTTON_CONTAINER_STYLE: TextStyle = {
     width: '90%',
@@ -196,7 +203,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               <View style={{ flex: 1, alignItems: 'center' }}>
                 <Image
                   style={{
-                    width: 320,
+                    width: 350,
                     height: 320,
                     position: 'absolute',
                   }}
@@ -224,7 +231,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               }}
             >
               <Text
-                tx={'common.labels'}
+                tx={'annotationScreen.annotations'}
                 style={{
                   color: palette.black,
                   fontSize: 22,
@@ -264,21 +271,21 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 }}
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
               />
-              <Controller
-                control={control}
-                name='label'
-                defaultValue=''
-                render={({ field: { onChange, value } }) => (
-                  <InputField
-                    labelTx={'common.labels'}
-                    error={!!errors.label}
-                    value={value}
-                    onChange={onChange}
-                    errorMessage={errors.label?.message}
-                    backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                  />
-                )}
-              />
+                {validatePolygon(currentPolygonPoints) && (<Controller
+                    control={control}
+                    name='label'
+                    defaultValue=''
+                    render={({field: {onChange, value}}) => (
+                        <InputField
+                            labelTx={'common.labels'}
+                            error={!!errors.label}
+                            value={value}
+                            onChange={onChange}
+                            errorMessage={errors.label?.message}
+                            backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                        />
+                    )}
+                />)}
             </View>
             <View style={BUTTON_CONTAINER_STYLE}>
               <TouchableOpacity
@@ -305,7 +312,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             <View style={BUTTON_CONTAINER_STYLE}>
               <TouchableOpacity
                 style={polygons.length === 0 ? BUTTON_DISABLED_STYLE : BUTTON_STYLE}
-                onPress={() => setPolygons([])}
+                onPress={handleCancelAnnotation}
                 disabled={polygons.length === 0}
               >
                 <View style={{ justifyContent: 'center' }}>

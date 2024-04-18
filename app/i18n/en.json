@@ -183,6 +183,7 @@
   },
   "annotationScreen": {
     "title": "Annotation",
+    "annotations": "Annotations",
     "generateQuote": "Generate a quote",
     "process": {
       "cancelAnnotation": "Cancel annotation",

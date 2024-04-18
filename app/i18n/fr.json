@@ -134,6 +134,7 @@
   },
   "annotationScreen": {
     "title": "Annotation",
+    "annotations": "Annotations",
     "generateQuote": "Générer un devis",
     "process": {
       "cancelAnnotation": "Annuler l'annotation",
