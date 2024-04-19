@@ -18,8 +18,8 @@ import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { getAnnotatorResolver } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
-import {calculateCentroid, calculateDistance, getPolygonName} from "./utils/utils";
-import {styles} from "./utils/styles";
+import { styles } from './utils/styles';
+import { calculateCentroid, calculateDistance, getPolygonName } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const [polygons, setPolygons] = useState([]);
@@ -63,40 +63,35 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
-    const renderPolygons = () => {
-        return polygons.map((polygonPoints, index) => {
-            const centroid = calculateCentroid(polygonPoints);
+  const renderPolygons = () => {
+    return polygons.map((polygonPoints, index) => {
+      const centroid = calculateCentroid(polygonPoints);
 
-            return (
-                <React.Fragment key={index}>
-                    <Svg height="100%" width="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
-                        <Polygon
-                            points={polygonPoints.map((point) => `${point.x},${point.y}`).join(' ')}
-                            fill="rgba(144, 248, 10, 0.4)"
-                            stroke="#90F80A"
-                            strokeWidth="1"
-                        />
-                    </Svg>
-                    {annotation[index]?.label && (
-                        <Text
-                            style={{
-                                position: 'absolute',
-                                left: centroid.x - 15,
-                                top: centroid.y - 10,
-                                color: '#000',
-                                fontSize: 14,
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            {annotation[index]?.label}
-                        </Text>
-                    )}
-                </React.Fragment>
-            );
-        });
-    };
+      return (
+        <React.Fragment key={index}>
+          <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
+            <Polygon points={polygonPoints.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
+          </Svg>
+          {annotation[index]?.label && (
+            <Text
+              style={{
+                position: 'absolute',
+                left: centroid.x - 15,
+                top: centroid.y - 10,
+                color: '#000',
+                fontSize: 14,
+                fontWeight: 'bold',
+              }}
+            >
+              {annotation[index]?.label}
+            </Text>
+          )}
+        </React.Fragment>
+      );
+    });
+  };
 
-    const renderDistances = () => {
+  const renderDistances = () => {
     const distances = [];
     for (let i = 0; i < currentPolygonPoints.length; i++) {
       const point1 = currentPolygonPoints[i];
@@ -173,11 +168,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   };
 
   const handleCancelAnnotation = () => {
-      setPolygons([]);
-      setAnnotation([]);
-      setCurrentPolygonPoints([]);
-      setValue('label', '');
-  }
+    setPolygons([]);
+    setAnnotation([]);
+    setCurrentPolygonPoints([]);
+    setValue('label', '');
+  };
 
   return (
     <Provider>
@@ -260,21 +255,23 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 }}
                 ItemSeparatorComponent={() => <Separator style={styles.separator} />}
               />
-                {validatePolygon(currentPolygonPoints) && (<Controller
-                    control={control}
-                    name='label'
-                    defaultValue=''
-                    render={({field: {onChange, value}}) => (
-                        <InputField
-                            labelTx={'common.labels'}
-                            error={!!errors.label}
-                            value={value}
-                            onChange={onChange}
-                            errorMessage={errors.label?.message}
-                            backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                        />
-                    )}
-                />)}
+              {validatePolygon(currentPolygonPoints) && (
+                <Controller
+                  control={control}
+                  name='label'
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField
+                      labelTx={'common.labels'}
+                      error={!!errors.label}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.label?.message}
+                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                    />
+                  )}
+                />
+              )}
             </View>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
