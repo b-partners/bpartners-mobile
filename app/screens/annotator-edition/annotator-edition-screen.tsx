@@ -1,9 +1,12 @@
+import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, createRef, useRef, useState } from 'react';
 import { Animated, FlatList, Image, PanResponder, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import { Header, Separator, Text } from '../../components';
 import { NavigatorParamList } from '../../navigators/utils/utils';
@@ -159,6 +162,24 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
+  const zoomableViewRef = createRef<ReactNativeZoomableView>();
+
+  const handleZoom = event => {
+    /*const adjustedPoints = points.map(point => ({
+      x: point.x * scale,
+      y: point.y * scale,
+    }));
+    setPoints(adjustedPoints);*/
+  };
+
+  const handlePan = ({ translationX, translationY }) => {
+    const adjustedPoints = points.map(point => ({
+      x: point.x + translationX,
+      y: point.y + translationY,
+    }));
+    setPoints(adjustedPoints);
+  };
+
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
@@ -170,14 +191,15 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             </View>
             <TouchableWithoutFeedback onPress={handlePress}>
               <View style={{ width: 320, height: 320, alignSelf: 'center' }}>
-                <Image
-                  style={{
-                    width: 320,
-                    height: 320,
-                    position: 'absolute',
-                  }}
-                  source={require('./assets/images/Rennes_Solar_Panel.jpg')}
-                />
+                <ReactNativeZoomableView maxZoom={30} contentWidth={320} contentHeight={320} ref={zoomableViewRef}>
+                  <Image
+                    style={{
+                      width: 320,
+                      height: 320,
+                    }}
+                    source={require('./assets/images/Rennes_Solar_Panel.jpg')}
+                  />
+                </ReactNativeZoomableView>
                 <Svg
                   height='100%'
                   width='100%'
@@ -193,7 +215,57 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 {renderDistances()}
               </View>
             </TouchableWithoutFeedback>
-            <View style={{ width: '100%', marginHorizontal: '5%', marginBottom: 140, paddingHorizontal: 10 }}>
+            <View style={{ width: '100%', height: 50, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
+              <TouchableOpacity
+                style={{ width: 40, height: 40, borderRadius: 40, backgroundColor: palette.secondaryColor, justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => zoomableViewRef.current!.zoomBy(1)}
+              >
+                <MaterialIcon name='zoom-in' size={22} color={palette.white} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: 40, height: 40, borderRadius: 40, backgroundColor: palette.secondaryColor, justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => zoomableViewRef.current!.zoomBy(-1)}
+              >
+                <MaterialIcon name='zoom-out' size={22} color={palette.white} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: 40, height: 40, borderRadius: 40, backgroundColor: palette.secondaryColor, justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => {
+                  zoomableViewRef.current!.moveBy(-30, 0);
+                  handlePan({ translationX: 30, translationY: 0 });
+                }}
+              >
+                <AntDesignIcon name='arrowleft' size={22} color={palette.white} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: 40, height: 40, borderRadius: 40, backgroundColor: palette.secondaryColor, justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => {
+                  zoomableViewRef.current!.moveBy(30, 0);
+                  handlePan({ translationX: -30, translationY: 0 });
+                }}
+              >
+                <AntDesignIcon name='arrowright' size={22} color={palette.white} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: 40, height: 40, borderRadius: 40, backgroundColor: palette.secondaryColor, justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => {
+                  zoomableViewRef.current!.moveBy(0, -30);
+                  handlePan({ translationX: 0, translationY: 30 });
+                }}
+              >
+                <AntDesignIcon name='arrowup' size={22} color={palette.white} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: 40, height: 40, borderRadius: 40, backgroundColor: palette.secondaryColor, justifyContent: 'center', alignItems: 'center' }}
+                onPress={() => {
+                  zoomableViewRef.current!.moveBy(0, 30);
+                  handlePan({ translationX: 0, translationY: -30 });
+                }}
+              >
+                <AntDesignIcon name='arrowdown' size={22} color={palette.white} />
+              </TouchableOpacity>
+            </View>
+            <View style={{ width: '100%', marginHorizontal: '5%', marginBottom: 100, paddingHorizontal: 10 }}>
               <Text tx={'common.labels'} style={{ color: palette.black, fontSize: 22, fontWeight: '700', width: '90%', marginVertical: spacing[3] }} />
               <FlatList
                 style={{ width: '90%' }}
@@ -205,6 +277,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
               />
             </View>
+
             <View style={{ width: '90%', height: 50, marginHorizontal: '5%', alignItems: 'center', marginBottom: 5 }}>
               {points.length === 0 ? (
                 <View style={BUTTON_DISABLED_STYLE}>

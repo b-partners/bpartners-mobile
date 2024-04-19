@@ -43,6 +43,7 @@
     "@expo/vector-icons": "^13.0.0",
     "@hookform/resolvers": "^3.3.2",
     "@notifee/react-native": "^7.8.0",
+    "@openspacelabs/react-native-zoomable-view": "^2.1.6",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-community/blur": "^4.3.0",
     "@react-native-community/eslint-config": "^3.1.0",
