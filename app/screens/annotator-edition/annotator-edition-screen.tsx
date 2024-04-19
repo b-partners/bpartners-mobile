@@ -2,7 +2,7 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, FlatList, Image, PanResponder, Platform, TextStyle, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 
@@ -18,7 +18,8 @@ import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { getAnnotatorResolver } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
-import {calculateCentroid, getPolygonName} from "./utils/utils";
+import {calculateCentroid, calculateDistance, getPolygonName} from "./utils/utils";
+import {styles} from "./utils/styles";
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const [polygons, setPolygons] = useState([]);
@@ -60,12 +61,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         setCurrentPolygonPoints(newPoints);
       },
     });
-  };
-
-  const calculateDistance = (point1, point2) => {
-    const dx = point2.x - point1.x;
-    const dy = point2.y - point1.y;
-    return Math.sqrt(dx * dx + dy * dy);
   };
 
     const renderPolygons = () => {
@@ -184,38 +179,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       setValue('label', '');
   }
 
-  const BUTTON_CONTAINER_STYLE: TextStyle = {
-    width: '90%',
-    height: 45,
-    marginHorizontal: '5%',
-    alignItems: 'center',
-  };
-
-  const BUTTON_STYLE: TextStyle = {
-    backgroundColor: palette.secondaryColor,
-    width: 350,
-    height: 40,
-    borderRadius: 5,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: palette.secondaryColor,
-    marginVertical: spacing[1],
-  };
-
-  const BUTTON_DISABLED_STYLE: TextStyle = {
-    ...BUTTON_STYLE,
-    backgroundColor: palette.lighterGrey,
-    borderColor: palette.lighterGrey,
-  };
-
-  const BUTTON_TEXT_STYLE: TextStyle = {
-    fontSize: 16,
-    color: palette.white,
-  };
-
-  const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
-
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
@@ -295,7 +258,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                     </View>
                   );
                 }}
-                ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
+                ItemSeparatorComponent={() => <Separator style={styles.separator} />}
               />
                 {validatePolygon(currentPolygonPoints) && (<Controller
                     control={control}
@@ -313,36 +276,36 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                     )}
                 />)}
             </View>
-            <View style={BUTTON_CONTAINER_STYLE}>
+            <View style={styles.buttonContainer}>
               <TouchableOpacity
-                style={validatePolygon(currentPolygonPoints) ? BUTTON_STYLE : BUTTON_DISABLED_STYLE}
+                style={validatePolygon(currentPolygonPoints) ? styles.button : styles.disabledButton}
                 onPress={handleSubmit(startNewPolygon)}
                 disabled={!validatePolygon(currentPolygonPoints)}
               >
                 <View style={{ justifyContent: 'center' }}>
-                  <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.validatePolygon'} />
+                  <Text style={styles.buttonText} tx={'annotationScreen.process.validatePolygon'} />
                 </View>
               </TouchableOpacity>
             </View>
-            <View style={BUTTON_CONTAINER_STYLE}>
+            <View style={styles.buttonContainer}>
               <TouchableOpacity
-                style={currentPolygonPoints.length === 0 ? BUTTON_DISABLED_STYLE : BUTTON_STYLE}
+                style={currentPolygonPoints.length === 0 ? styles.disabledButton : styles.button}
                 onPress={() => setCurrentPolygonPoints(prevPoints => prevPoints.slice(0, -1))}
                 disabled={currentPolygonPoints.length === 0}
               >
                 <View style={{ justifyContent: 'center' }}>
-                  <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.removeLastPoint'} />
+                  <Text style={styles.buttonText} tx={'annotationScreen.process.removeLastPoint'} />
                 </View>
               </TouchableOpacity>
             </View>
-            <View style={BUTTON_CONTAINER_STYLE}>
+            <View style={styles.buttonContainer}>
               <TouchableOpacity
-                style={polygons.length === 0 ? BUTTON_DISABLED_STYLE : BUTTON_STYLE}
+                style={polygons.length === 0 ? styles.disabledButton : styles.button}
                 onPress={handleCancelAnnotation}
                 disabled={polygons.length === 0}
               >
                 <View style={{ justifyContent: 'center' }}>
-                  <Text style={BUTTON_TEXT_STYLE} tx={'annotationScreen.process.cancelAnnotation'} />
+                  <Text style={styles.buttonText} tx={'annotationScreen.process.cancelAnnotation'} />
                 </View>
               </TouchableOpacity>
             </View>

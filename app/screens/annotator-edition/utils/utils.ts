@@ -3,6 +3,13 @@ export const getPolygonName = (index) => {
     return `Polygon ${letter}`;
 };
 
+// Calculate the distance between two polygon's points
+export const calculateDistance = (point1, point2) => {
+    const dx = point2.x - point1.x;
+    const dy = point2.y - point1.y;
+    return Math.sqrt(dx * dx + dy * dy);
+};
+
 export const calculateCentroid = (polygonPoints) => {
     const numPoints = polygonPoints.length;
     let sumX = 0;
