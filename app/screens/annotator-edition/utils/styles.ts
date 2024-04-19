@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   button: {
     backgroundColor: palette.secondaryColor,
     borderColor: palette.secondaryColor,
-    width: 350,
+    width: 370,
     height: 40,
     borderRadius: 5,
     justifyContent: 'center',
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     marginVertical: spacing[1],
   },
   disabledButton: {
-    width: 350,
+    width: 370,
     height: 40,
     borderRadius: 5,
     justifyContent: 'center',
