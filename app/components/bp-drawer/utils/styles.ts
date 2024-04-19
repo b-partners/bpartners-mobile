@@ -53,6 +53,7 @@ export const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
   width: '100%',
   backgroundColor: palette.white,
   paddingTop: spacing[6],
+  paddingBottom: spacing[7],
   paddingHorizontal: spacing[4],
 };
 
