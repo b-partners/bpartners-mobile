@@ -18,6 +18,7 @@ import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { getAnnotatorResolver } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
+import {calculateCentroid, getPolygonName} from "./utils/utils";
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const [polygons, setPolygons] = useState([]);
@@ -67,15 +68,40 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     return Math.sqrt(dx * dx + dy * dy);
   };
 
-  const renderPolygons = () => {
-    return polygons.map((polygonPoints, index) => (
-      <Svg key={index} height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
-        <Polygon points={polygonPoints.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
-      </Svg>
-    ));
-  };
+    const renderPolygons = () => {
+        return polygons.map((polygonPoints, index) => {
+            const centroid = calculateCentroid(polygonPoints);
 
-  const renderDistances = () => {
+            return (
+                <React.Fragment key={index}>
+                    <Svg height="100%" width="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
+                        <Polygon
+                            points={polygonPoints.map((point) => `${point.x},${point.y}`).join(' ')}
+                            fill="rgba(144, 248, 10, 0.4)"
+                            stroke="#90F80A"
+                            strokeWidth="1"
+                        />
+                    </Svg>
+                    {annotation[index]?.label && (
+                        <Text
+                            style={{
+                                position: 'absolute',
+                                left: centroid.x - 15,
+                                top: centroid.y - 10,
+                                color: '#000',
+                                fontSize: 14,
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            {annotation[index]?.label}
+                        </Text>
+                    )}
+                </React.Fragment>
+            );
+        });
+    };
+
+    const renderDistances = () => {
     const distances = [];
     for (let i = 0; i < currentPolygonPoints.length; i++) {
       const point1 = currentPolygonPoints[i];
@@ -255,7 +281,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                           marginBottom: spacing[1],
                         }}
                       >
-                        Polygon {index + 1}
+                        {getPolygonName(index)}
                       </Text>
                       <Text
                         style={{
