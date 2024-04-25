@@ -5,6 +5,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import { Button, Text } from '../../../components';
 import { translate } from '../../../i18n';
+import { Account } from '../../../models/entities/account/account';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
@@ -12,15 +13,16 @@ import { showMessage } from '../../../utils/snackbar';
 type InvoiceCreationModalProps = {
   confirmationModal: boolean;
   setConfirmationModal: React.Dispatch<React.SetStateAction<boolean>>;
+  account: Account;
 };
 
 export const AccountDeletionModal: React.FC<InvoiceCreationModalProps> = props => {
-  const { confirmationModal, setConfirmationModal } = props;
+  const { confirmationModal, setConfirmationModal, account } = props;
 
   const openMailApp = () => {
     const recipient = 'contact@bpartners.app';
-    const subject = '[Suppresion de compte]';
-    const body = translate('profileScreen.deleteMessage');
+    const subject = '[Suppression de compte]';
+    const body = translate('profileScreen.deleteMessage', { userId: account.id, username: account.name });
 
     const url = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 

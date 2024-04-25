@@ -20,7 +20,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const { authStore, businessActivityStore, fileStore } = useStores();
   const { fileUrl } = fileStore;
   const logoUri: ImageURISource = { uri: fileUrl };
-  const { currentAccountHolder, currentUser } = authStore;
+  const { currentAccountHolder, currentUser, currentAccount } = authStore;
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [accountHolder, setAccountHolder] = useState<AccountHolder>();
 
@@ -157,7 +157,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               setConfirmationModal(true);
             }}
           />
-          <AccountDeletionModal confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} />
+          <AccountDeletionModal account={currentAccount} confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} />
           <View style={styles.footer}>
             <Text tx={'profileScreen.footer.essential'} style={styles.footerTitle} />
             <Text tx={'profileScreen.footer.service'} style={{ ...styles.footerText, color: palette.lighterBlack }} />
