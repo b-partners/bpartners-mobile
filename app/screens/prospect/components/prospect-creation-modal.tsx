@@ -11,7 +11,7 @@ import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { navigate } from '../../../navigators/navigation-utilities';
+//import { navigate } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
@@ -74,7 +74,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
         ...prospectInfos,
       });
       showMessage(translate('common.added'), { backgroundColor: palette.green });
-      navigate('annotator');
+      //navigate('annotator');
     } catch (e) {
       showMessage(e);
       throw e;
