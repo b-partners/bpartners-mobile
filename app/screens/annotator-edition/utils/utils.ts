@@ -1,9 +1,7 @@
-export const getPolygonName = index => {
-  const letter = String.fromCharCode(65 + index);
-  return `Polygon ${letter}`;
+export const getPolygonName = (index) => {
+    return `Polygon ${String.fromCharCode(65 + index)}`;
 };
 
-// Calculate the distance between two polygon's points
 export const calculateDistance = (point1, point2) => {
   const dx = point2.x - point1.x;
   const dy = point2.y - point1.y;
