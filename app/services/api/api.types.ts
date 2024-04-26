@@ -1,5 +1,6 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
+import { Annotation } from '../../models/entities/annotation/annotation';
 import { AreaPicture } from '../../models/entities/area-picture/area-picture';
 import { BusinessActivityItem } from '../../models/entities/business-activity/business-activity';
 import { Calendar } from '../../models/entities/calendar/calendar';
@@ -28,6 +29,13 @@ export type RedirectionUrlsStatus = {
     successUrl: string;
     failureUrl: string;
   };
+};
+
+export type GetAreaPictureAnnotationsResult = {
+  id: string;
+  idAreaPicture: string;
+  creationDatetime: string;
+  annotations: Annotation[];
 };
 
 export type RedirectionStatusUrls = { redirectionStatusUrls: { successUrl: string; failureUrl: string } };
