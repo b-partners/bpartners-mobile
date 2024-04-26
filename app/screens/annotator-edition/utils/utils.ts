@@ -1,5 +1,5 @@
-export const getPolygonName = (index) => {
-    return `Polygon ${String.fromCharCode(65 + index)}`;
+export const getPolygonName = index => {
+  return `Polygon ${String.fromCharCode(65 + index)}`;
 };
 
 export const calculateDistance = (point1, point2) => {
