@@ -1,5 +1,6 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
+import { AreaPicture } from '../../models/entities/area-picture/area-picture';
 import { BusinessActivityItem } from '../../models/entities/business-activity/business-activity';
 import { Calendar } from '../../models/entities/calendar/calendar';
 import { Customer } from '../../models/entities/customer/customer';
@@ -112,6 +113,8 @@ export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProbl
 export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } | GeneralApiProblem;
 
 export type GetProspectResult = { kind: 'ok'; prospects: Prospect[] } | GeneralApiProblem;
+
+export type GetAreaPictureResult = { kind: 'ok'; areaPicture: AreaPicture } | GeneralApiProblem;
 
 export type UpdateProspectResult = { kind: 'ok'; prospect: Prospect } | GeneralApiProblem;
 
