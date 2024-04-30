@@ -11,7 +11,7 @@ export const AreaPictureStoreModel = types
   .model('Bank')
   .props({
     areaPicture: types.maybeNull(AreaPictureModel),
-    annotation: types.maybeNull(AnnotationModel),
+    annotations: types.optional(types.array(AnnotationModel), []),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -32,9 +32,7 @@ export const AreaPictureStoreModel = types
   }))
   .actions(self => ({
     getAreaPictureAnnotationsSuccess: (annotations: Annotation[]) => {
-      if (annotations.length > 0) {
-        self.annotation = annotations[1];
-      }
+      self.annotations.replace(annotations);
     },
   }))
   .actions(self => ({
@@ -59,7 +57,7 @@ export const AreaPictureStoreModel = types
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
         const getAreaPictureAnnotationsResult = yield areaPictureApi.getAreaPictureAnnotations(self.currentAccount.id, id);
-        self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult);
+        self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult[0].annotations);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
       }
