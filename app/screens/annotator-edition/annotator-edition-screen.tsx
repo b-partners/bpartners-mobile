@@ -28,6 +28,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const [polygons, setPolygons] = useState([]);
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [annotation, setAnnotation] = useState([]);
+  const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
+
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   const data = [
@@ -41,7 +43,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     { label: 'Pathway 2', value: '8' },
   ];
 
+  Log('annotation');
   Log(annotation);
+  Log('polygons');
+  Log(polygons);
+
   const {
     handleSubmit,
     control,
@@ -53,10 +59,23 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     defaultValues: getDefaultValue(polygons?.length),
   });
 
-  const handlePress = useCallback(event => {
-    const { locationX, locationY } = event.nativeEvent;
-    setCurrentPolygonPoints(prevPoints => [...prevPoints, { x: locationX, y: locationY }]);
-  }, []);
+  const handlePress = useCallback(
+    event => {
+      const { locationX, locationY } = event.nativeEvent;
+
+      // Calculate relative position based on image offset
+      const relativeX = locationX - imageOffset.x;
+      const relativeY = locationY - imageOffset.y;
+
+      setCurrentPolygonPoints(prevPoints => [...prevPoints, { x: relativeX, y: relativeY }]);
+    },
+    [imageOffset]
+  );
+
+  const handleImageLayout = event => {
+    const { x, y } = event.nativeEvent.layout;
+    setImageOffset({ x, y });
+  };
 
   const createPanResponder = index => {
     return PanResponder.create({
@@ -69,8 +88,19 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         const { dx, dy } = gestureState;
         const newPoints = [...currentPolygonPoints];
         const updatedPoint = { ...newPoints[index] };
-        updatedPoint.x += dx;
-        updatedPoint.y += dy;
+
+        // Calculate the new point coordinates
+        const newX = updatedPoint.x + dx;
+        const newY = updatedPoint.y + dy;
+
+        // Get image dimensions
+        const imageWidth = 365;
+        const imageHeight = 331;
+
+        // Limit point coordinates so that they remain inside the image
+        updatedPoint.x = Math.max(0, Math.min(newX, imageWidth));
+        updatedPoint.y = Math.max(0, Math.min(newY, imageHeight));
+
         newPoints[index] = updatedPoint;
         setCurrentPolygonPoints(newPoints);
       },
@@ -224,6 +254,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 <TouchableWithoutFeedback onPress={handlePress}>
                   <View style={{ display: 'flex', alignItems: 'center' }}>
                     <Image
+                      onLayout={handleImageLayout}
                       style={{
                         width: 365,
                         height: 331,
