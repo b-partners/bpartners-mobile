@@ -5,6 +5,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Button, DatePickerField, Icon, Loader, Text } from '../../components';
@@ -572,7 +573,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                   items={products}
                   onDeleteItem={async (__, index) => {
                     setRemoveProduct(true);
-                    await productRemove(index);
+                    productRemove(index);
                     setRemoveProduct(false);
                   }}
                   onValueChange={product => {
@@ -598,7 +599,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             }}
             onPress={async () => {
               const product = await createProductDefaultModel().create();
-              await productAppend(product);
+              productAppend(product);
             }}
           >
             <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
@@ -731,6 +732,23 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       >
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
+
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('annotator');
+          }}
+        >
+          <View
+            style={{
+              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
+              borderWidth: 2,
+              borderRadius: 100,
+              padding: spacing[3],
+            }}
+          >
+            <MaterialCommunityIcons name='image-area' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
+          </View>
+        </TouchableOpacity>
 
         {previewLoading ? (
           <View
