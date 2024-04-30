@@ -39,7 +39,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
           headerTx='annotationScreen.title'
           leftIcon={'back'}
           rightIcon={'settings'}
-          onLeftPress={() => navigation.navigate('bp_home')}
+          onLeftPress={() => navigation.goBack()}
           onRightPress={() => navigation.navigate('prospectConfiguration')}
           style={HEADER}
           titleStyle={HEADER_TITLE}

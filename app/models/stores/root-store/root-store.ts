@@ -3,6 +3,7 @@ import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { AccountHolder } from '../../entities/account-holder/account-holder';
 import { Account } from '../../entities/account/account';
 import { User } from '../../entities/user/user';
+import { AreaPictureStoreModel } from '../area-picture-store/area-picture-store';
 import { AuthStoreModel } from '../auth-store/auth-store';
 import { BankStoreModel } from '../bank-store/bank-store';
 import { BusinessActivityStoreModel } from '../business-activity-store/business-activity-store';
@@ -42,7 +43,8 @@ export const RootStoreModel = types.model('RootStore').props({
     bankStore: types.optional(BankStoreModel, {} as any),
     businessActivityStore: types.optional(BusinessActivityStoreModel, {} as any),
     calendarStore: types.optional(CalendarStoreModel, {} as any),
-    geojsonStore: types.optional(GeojsonStoreModel, {} as any)
+    geojsonStore: types.optional(GeojsonStoreModel, {} as any),
+    areaPictureStore: types.optional(AreaPictureStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;

@@ -733,22 +733,24 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
 
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('annotator');
-          }}
-        >
-          <View
-            style={{
-              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
-              borderWidth: 2,
-              borderRadius: 100,
-              padding: spacing[3],
+        {invoice.idAreaPicture && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('annotator');
             }}
           >
-            <MaterialCommunityIcons name='image-area' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
-          </View>
-        </TouchableOpacity>
+            <View
+              style={{
+                borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
+                borderWidth: 2,
+                borderRadius: 100,
+                padding: spacing[3],
+              }}
+            >
+              <MaterialCommunityIcons name='image-area' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
+            </View>
+          </TouchableOpacity>
+        )}
 
         {previewLoading ? (
           <View
