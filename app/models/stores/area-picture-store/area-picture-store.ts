@@ -48,7 +48,7 @@ export const AreaPictureStoreModel = types
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
         const getAreaPictureResult = yield areaPictureApi.getAreaPicture(self.currentAccount.id, id);
-        self.getAreaPictureSuccess(getAreaPictureResult.areaPicture);
+        self.getAreaPictureSuccess(getAreaPictureResult);
       } catch (e) {
         self.getAreaPictureFail(e);
       }
@@ -59,7 +59,7 @@ export const AreaPictureStoreModel = types
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
         const getAreaPictureAnnotationsResult = yield areaPictureApi.getAreaPictureAnnotations(self.currentAccount.id, id);
-        self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult.annotations);
+        self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
       }
