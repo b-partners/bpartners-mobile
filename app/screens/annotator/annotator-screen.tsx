@@ -14,7 +14,6 @@ import { calculateCentroid, calculateDistance } from '../annotator-edition/utils
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { Log } from '../welcome/utils/utils';
 import LabelRow from './components/label-row';
 
 export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annotator'>> = observer(function AnnotatorScreen({ navigation }) {
@@ -28,12 +27,24 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
   const panResponders = useRef([]);
 
   useEffect(() => {
-    const polygonArray = [];
-    annotations.map(item => {
-      polygonArray.push(item.polygon.points);
-    });
-    Log(polygonArray);
-    setPolygons(polygonArray);
+    if (pictureUrl) {
+      Image.getSize(pictureUrl, (width, height) => {
+        const xRatio = width / 320;
+        const yRatio = height / 320;
+        const polygonArray = [];
+        annotations.map(item => {
+          const points = [];
+          item.polygon.points.map(pt => {
+            points.push({
+              x: pt.x / xRatio,
+              y: pt.y / yRatio,
+            });
+          });
+          polygonArray.push(points);
+        });
+        setPolygons(polygonArray);
+      });
+    }
   }, []);
 
   const labelsData = {
@@ -57,8 +68,19 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         const { dx, dy } = gestureState;
         const newPoints = [...currentPolygonPoints];
         const updatedPoint = { ...newPoints[index] };
-        updatedPoint.x += dx;
-        updatedPoint.y += dy;
+
+        // Calculate the new point coordinates
+        const newX = updatedPoint.x + dx;
+        const newY = updatedPoint.y + dy;
+
+        // Get image dimensions
+        const imageWidth = 350;
+        const imageHeight = 320;
+
+        // Limit point coordinates so that they remain inside the image
+        updatedPoint.x = Math.max(0, Math.min(newX, imageWidth));
+        updatedPoint.y = Math.max(0, Math.min(newY, imageHeight));
+
         newPoints[index] = updatedPoint;
         setCurrentPolygonPoints(newPoints);
       },
@@ -154,15 +176,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header
-          headerTx='annotationScreen.title'
-          leftIcon={'back'}
-          rightIcon={'settings'}
-          onLeftPress={() => navigation.goBack()}
-          onRightPress={() => navigation.navigate('prospectConfiguration')}
-          style={HEADER}
-          titleStyle={HEADER_TITLE}
-        />
+        <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorScreen' style={{ ...FULL, backgroundColor: color.palette.white, position: 'relative' }}>
           <View style={{ width: '100%', height: 40, alignItems: 'center', padding: 10, marginTop: 10 }}>
             <Text text={`${areaPicture.filename}`} style={{ color: palette.black, fontFamily: 'Geometria' }} />
@@ -170,13 +184,13 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Image
               style={{
-                width: 350,
+                width: 320,
                 height: 320,
                 position: 'absolute',
               }}
               source={pictureUrl ? { uri: pictureUrl } : require('../annotator/assets/images/picture-placeholder.png')}
             />
-            {renderPolygons()}
+            <View style={{ width: 320, height: 320, position: 'absolute' }}>{renderPolygons()}</View>
             <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
               <Polygon
                 points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
