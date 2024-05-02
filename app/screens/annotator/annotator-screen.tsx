@@ -21,14 +21,19 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
   const { areaPictureStore } = useStores();
   const { annotations } = areaPictureStore;
 
+  const [polygons, setPolygons] = useState([]);
+  const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
+  const [annotation /*setAnnotation*/] = useState([]);
+
+  const panResponders = useRef([]);
+
   useEffect(() => {
     const polygonArray = [];
-    annotations.map(annotation => {
-      const polygon = [];
-      polygon.push(annotation.polygon.points);
-      polygonArray.push(polygon);
+    annotations.map(item => {
+      polygonArray.push(item.polygon.points);
     });
     Log(polygonArray);
+    setPolygons(polygonArray);
   }, []);
 
   const mockData = {
@@ -47,12 +52,6 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
   const labelsKey = Object.keys(mockData.labels);
 
   const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
-
-  const [polygons, setPolygons] = useState([]);
-  const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
-  const [annotation, setAnnotation] = useState([]);
-
-  const panResponders = useRef([]);
 
   const createPanResponder = index => {
     return PanResponder.create({
