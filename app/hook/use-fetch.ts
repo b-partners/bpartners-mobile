@@ -1,7 +1,8 @@
 import { onSnapshot } from 'mobx-state-tree';
 import { useEffect, useState } from 'react';
 
-import { TRootStoreModelKey, useStores } from '../models';
+import { useStores } from '../models';
+import { UseFetchOptions } from './type';
 
 /**
  * A hook for fetching data
@@ -11,9 +12,10 @@ import { TRootStoreModelKey, useStores } from '../models';
  *
  * It encapsulate repetitive pattern when fetching data such as a state variable holding error, loading state, ...
  * */
-function useFetch<T>(fetchAction: () => Promise<T | any>, store?: TRootStoreModelKey, deps?: any[]) {
+function useFetch<T>(fetchAction: () => Promise<T | any>, options: UseFetchOptions, deps?: any[]) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean>();
+  const { store, mutateOnly } = options;
 
   const rootStore = useStores();
   const modelStore = store && rootStore[store];
@@ -39,15 +41,16 @@ function useFetch<T>(fetchAction: () => Promise<T | any>, store?: TRootStoreMode
   }
 
   useEffect(() => {
-    (async () => await load())();
+    if (!mutateOnly) {
+      (async () => await load())();
+    }
   }, [...deps]);
 
-  async function refresh() {
+  async function mutate() {
     await load();
-    return data;
   }
 
-  return { data, isLoading, error, refresh };
+  return { data, isLoading, error, refresh: mutate };
 }
 
 export default useFetch;
