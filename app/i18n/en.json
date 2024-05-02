@@ -194,6 +194,7 @@
       "requiredLabel": "Please give a label for each annotation"
     },
     "labels": {
+      "address": "Address",
       "surface": "Surface",
       "covering": "Covering",
       "type": "Type",

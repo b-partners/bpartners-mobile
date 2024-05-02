@@ -19,7 +19,7 @@ import LabelRow from './components/label-row';
 
 export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annotator'>> = observer(function AnnotatorScreen({ navigation }) {
   const { areaPictureStore } = useStores();
-  const { annotations, pictureUrl } = areaPictureStore;
+  const { annotations, pictureUrl, areaPicture } = areaPictureStore;
 
   const [polygons, setPolygons] = useState([]);
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
@@ -36,20 +36,13 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
     setPolygons(polygonArray);
   }, []);
 
-  const mockData = {
-    address: '5b rue Paul Hevry 10430, Rosières-près-troyes',
-    image: 'https://amazon-s3',
+  const labelsData = {
     labels: {
-      surface: '142 m2',
-      covering: 'Tiles',
-      type: '2 PANS',
-      gradient: '45°',
-      wear: 'PARTIELLE',
-      velux: null,
+      address: areaPicture.address,
     },
   };
 
-  const labelsKey = Object.keys(mockData.labels);
+  const labelsKey = Object.keys(labelsData.labels);
 
   const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
@@ -172,7 +165,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         />
         <View testID='AnnotatorScreen' style={{ ...FULL, backgroundColor: color.palette.white, position: 'relative' }}>
           <View style={{ width: '100%', height: 40, alignItems: 'center', padding: 10, marginTop: 10 }}>
-            <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+            <Text text={`${areaPicture.filename}`} style={{ color: palette.black, fontFamily: 'Geometria' }} />
           </View>
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Image
@@ -195,14 +188,14 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
             {renderPoints()}
             {renderDistances()}
           </View>
-          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 100 }}>
             <Text tx={'common.labels'} style={{ color: palette.black, fontSize: 22, fontWeight: '700', width: '90%', marginVertical: spacing[3] }} />
             <FlatList
               style={{ width: '90%' }}
               data={labelsKey}
               keyExtractor={key => key}
               renderItem={({ item }) => {
-                return <LabelRow labelKey={item} labels={mockData.labels} />;
+                return <LabelRow labelKey={item} labels={labelsData.labels} />;
               }}
               ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
             />
