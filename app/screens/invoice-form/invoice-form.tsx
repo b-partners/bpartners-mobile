@@ -60,6 +60,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { invoiceStore, customerStore, draftStore, quotationStore, areaPictureStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
+  const { areaPicture } = areaPictureStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [modal, setModal] = useState<CustomerModalType>({
@@ -740,6 +741,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               setAnnotationLoading(true);
               await areaPictureStore.getAreaPicture(invoice.idAreaPicture);
               await areaPictureStore.getAreaPictureAnnotations(invoice.idAreaPicture);
+              await areaPictureStore.getPictureUrl(areaPicture.fileId);
               setAnnotationLoading(false);
               navigation.navigate('annotator');
             }}

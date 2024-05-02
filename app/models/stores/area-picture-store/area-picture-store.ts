@@ -1,6 +1,10 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
+import { translate } from '../../../i18n';
 import { AreaPictureApi } from '../../../services/api/area-picture-api';
+import { FileApi } from '../../../services/api/file-api';
+import { palette } from '../../../theme/palette';
+import { showMessage } from '../../../utils/snackbar';
 import { Annotation, AnnotationModel } from '../../entities/annotation/annotation';
 import { AreaPicture, AreaPictureModel } from '../../entities/area-picture/area-picture';
 import { withCredentials } from '../../extensions/with-credentials';
@@ -12,6 +16,7 @@ export const AreaPictureStoreModel = types
   .props({
     areaPicture: types.maybeNull(AreaPictureModel),
     annotations: types.optional(types.array(AnnotationModel), []),
+    pictureUrl: types.maybeNull(types.string),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -42,6 +47,11 @@ export const AreaPictureStoreModel = types
     },
   }))
   .actions(self => ({
+    setCurrentPictureUrl: (pictureUrl: string) => {
+      self.pictureUrl = pictureUrl;
+    },
+  }))
+  .actions(self => ({
     getAreaPicture: flow(function* (id: string) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
@@ -62,6 +72,19 @@ export const AreaPictureStoreModel = types
         self.getAreaPictureAnnotationsFail(e);
       }
     }),
+  }))
+  .actions(self => ({
+    getPictureUrl: async (fileId: string) => {
+      const fileApi = new FileApi(self.environment.api);
+      try {
+        const getPictureUrlResult = await fileApi.getFileURL(fileId, self.currentAccount.id, self.accessToken, 'AREA_PICTURE');
+        // @ts-ignore
+        self.setCurrentPictureUrl(getPictureUrlResult.fileURL);
+      } catch (e) {
+        showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
+        self.catchOrThrow(e);
+      }
+    },
   }));
 
 export interface AreaPictureStore extends Instance<typeof AreaPictureStoreModel> {}

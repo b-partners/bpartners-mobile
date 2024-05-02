@@ -19,7 +19,7 @@ import LabelRow from './components/label-row';
 
 export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annotator'>> = observer(function AnnotatorScreen({ navigation }) {
   const { areaPictureStore } = useStores();
-  const { annotations } = areaPictureStore;
+  const { annotations, pictureUrl } = areaPictureStore;
 
   const [polygons, setPolygons] = useState([]);
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
@@ -181,7 +181,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
                 height: 320,
                 position: 'absolute',
               }}
-              source={require('./assets/images/annotator_zan.jpg')}
+              source={pictureUrl ? { uri: pictureUrl } : require('../annotator/assets/images/picture-placeholder.png')}
             />
             {renderPolygons()}
             <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
