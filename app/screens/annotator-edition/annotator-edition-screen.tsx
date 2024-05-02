@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
@@ -25,13 +26,14 @@ import { dropDownStyles, styles } from './utils/styles';
 import { calculateCentroid, calculateDistance, getPolygonName } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  const [polygons, setPolygons] = useState([]);
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
+  const [polygons, setPolygons] = useState([]);
   const [annotation, setAnnotation] = useState([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
+  Log(annotation);
   const data = [
     { label: 'Roof 1', value: '1' },
     { label: 'Roof 2', value: '2' },
@@ -43,10 +45,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     { label: 'Pathway 2', value: '8' },
   ];
 
-  Log('annotation');
-  Log(annotation);
-  Log('polygons');
-  Log(polygons);
+  const lastAnnotation = annotation[annotation.length - 1];
 
   const {
     handleSubmit,
@@ -56,7 +55,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   } = useForm({
     mode: 'all',
     resolver: getAnnotatorResolver(),
-    defaultValues: getDefaultValue(polygons?.length),
+    defaultValues: getDefaultValue(0),
   });
 
   const handlePress = useCallback(
@@ -201,22 +200,48 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       showMessage(translate('annotationScreen.errors.requiredLabel'), { backgroundColor: palette.pastelRed });
     } else {
       const newPolygon = [...currentPolygonPoints];
+
+      const newAnnotationId = lastAnnotation ? lastAnnotation.id + 1 : 0;
+
+      const getNewAnnotationId = () => {
+        if (lastAnnotation && lastAnnotation.id <25) {
+          return lastAnnotation.id + 1;
+        } else {
+          return 0;
+        }
+      }
+
       const newAnnotation = {
+        id: getNewAnnotationId(),
         polygonPoints: newPolygon,
         labelName: labelName,
         labelType: labelType,
       };
+
       setCurrentPolygonPoints([]);
       setPolygons(prevPolygons => [...prevPolygons, newPolygon]);
       setAnnotation(prevAnnotation => [...prevAnnotation, newAnnotation]);
-      reset(getDefaultValue(polygons.length + 1));
+
+      reset(getDefaultValue(newAnnotationId + 1));
     }
+  };
+
+  const handleDeletePolygon = index => {
+    const updatedPolygons = [...polygons];
+    const updatedAnnotation = [...annotation];
+
+    updatedPolygons.splice(index, 1);
+    updatedAnnotation.splice(index, 1);
+
+    setPolygons(updatedPolygons);
+    setAnnotation(updatedAnnotation);
   };
 
   const handleCancelAnnotation = () => {
     setCurrentPolygonPoints([]);
     setPolygons([]);
     setAnnotation([]);
+
     reset(getDefaultValue(0));
   };
 
@@ -308,26 +333,47 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                           keyExtractor={(item, index) => `polygon_${index}`}
                           renderItem={({ index }) => {
                             return (
-                              <View key={`polygon_${index}`} style={{ width: '100%', marginVertical: spacing[3] }}>
-                                <Text
+                              <View
+                                key={`polygon_${index}`}
+                                style={{
+                                  width: '100%',
+                                  marginVertical: spacing[3],
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                }}
+                              >
+                                <View>
+                                  <Text
+                                    style={{
+                                      color: palette.black,
+                                      fontSize: 16,
+                                      fontWeight: '600',
+                                      marginBottom: spacing[1],
+                                    }}
+                                  >
+                                    {annotation[index]?.labelName}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      color: palette.secondaryColor,
+                                      fontSize: 14,
+                                      fontWeight: '800',
+                                    }}
+                                  >
+                                    {annotation[index]?.labelType?.label}
+                                  </Text>
+                                </View>
+                                <TouchableOpacity
+                                  onPress={() => handleDeletePolygon(index)}
                                   style={{
-                                    color: palette.black,
-                                    fontSize: 16,
-                                    fontWeight: '600',
-                                    marginBottom: spacing[1],
+                                    padding: 10,
+                                    alignItems: 'center',
+                                    width: 45,
                                   }}
                                 >
-                                  {annotation[index]?.labelName}
-                                </Text>
-                                <Text
-                                  style={{
-                                    color: palette.secondaryColor,
-                                    fontSize: 14,
-                                    fontWeight: '800',
-                                  }}
-                                >
-                                  {annotation[index]?.labelType?.label}
-                                </Text>
+                                  <MaterialCommunityIcons name='delete' size={22} color={palette.pastelRed} />
+                                </TouchableOpacity>
                               </View>
                             );
                           }}

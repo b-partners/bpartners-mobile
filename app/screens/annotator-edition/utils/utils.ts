@@ -1,5 +1,11 @@
 export const getPolygonName = index => {
-  return `Polygon ${String.fromCharCode(65 + index)}`;
+  const nextChar = String.fromCharCode(65 + index);
+
+  if (nextChar >= 'A' && nextChar < '[') {
+    return `Polygon ${nextChar}`;
+  } else {
+    return `Polygon A`;
+  }
 };
 
 export const calculateDistance = (point1, point2) => {
