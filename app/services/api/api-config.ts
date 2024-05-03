@@ -30,6 +30,11 @@ export const DEFAULT_API_CONFIG: ApiConfig = {
   tokenWhiteList: ['authInitiation', 'token'],
 };
 
+export const GEOJSON_API_CONFIG = {
+  url: env.geojsonUrl || '',
+  timeout: 10000,
+};
+
 export const API_CONFIG_WITHOUT_TOKEN: ApiConfigWithoutToken = {
   url: env.apiBaseUrl || '',
   timeout: 10000,

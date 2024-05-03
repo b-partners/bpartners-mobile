@@ -76,6 +76,7 @@ export function BPDrawerHeader(props: {
                 color: color.palette.white,
                 fontFamily: 'Geometria-Bold',
               }}
+              testID='craftsmanFirstName'
             >
               {currentUser?.firstName}
             </Text>
@@ -85,6 +86,7 @@ export function BPDrawerHeader(props: {
                 color: color.palette.white,
                 fontFamily: 'Geometria',
               }}
+              testID='craftsmanLastName'
             >
               {currentUser?.lastName}
             </Text>

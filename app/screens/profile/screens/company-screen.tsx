@@ -20,7 +20,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
   const { authStore, businessActivityStore, fileStore } = useStores();
   const { fileUrl } = fileStore;
   const logoUri: ImageURISource = { uri: fileUrl };
-  const { currentAccountHolder, currentUser } = authStore;
+  const { currentAccountHolder, currentUser, currentAccount } = authStore;
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [accountHolder, setAccountHolder] = useState<AccountHolder>();
 
@@ -80,7 +80,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
       <View style={styles.container}>
         <GradientBackground colors={['#422443', '#281b34']} />
         <Screen style={styles.screen} preset='scroll'>
-          <View style={styles.viewContainer}>
+          <View style={styles.viewContainer} testID='companyScreen'>
             {currentUser.logoFileId ? (
               <View style={styles.logoContainer}>
                 <AutoImage source={logoUri} style={styles.logo} resizeMethod='resize' resizeMode='stretch' />
@@ -157,7 +157,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               setConfirmationModal(true);
             }}
           />
-          <AccountDeletionModal confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} />
+          <AccountDeletionModal account={currentAccount} confirmationModal={confirmationModal} setConfirmationModal={setConfirmationModal} />
           <View style={styles.footer}>
             <Text tx={'profileScreen.footer.essential'} style={styles.footerTitle} />
             <Text tx={'profileScreen.footer.service'} style={{ ...styles.footerText, color: palette.lighterBlack }} />

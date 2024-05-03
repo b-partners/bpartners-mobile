@@ -95,7 +95,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
           </TouchableOpacity>
         }
       />
-      <View testID='TransactionListScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
+      <View testID='transactionListScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         <Searchbar
           placeholder={translate('common.search')}
           onChangeText={handleInputChange}
