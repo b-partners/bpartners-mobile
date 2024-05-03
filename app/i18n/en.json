@@ -40,7 +40,8 @@
     "yes": "Yes",
     "no": "No",
     "reload": "Reload",
-    "selectAFile": "Please select a file"
+    "selectAFile": "Please select a file",
+    "labels": "Labels"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -179,6 +180,30 @@
   "prospectConfigurationScreen": {
     "title": "Prospect configuration",
     "setUpPerimeter": "Configure the prospecting perimeter."
+  },
+  "annotationScreen": {
+    "title": "Annotation",
+    "annotations": "Annotations",
+    "generateQuote": "Generate a quote",
+    "process": {
+      "cancelAnnotation": "Cancel annotation",
+      "removeLastPoint": "Remove the last point",
+      "validatePolygon": "Validate polygon"
+    },
+    "errors": {
+      "requiredLabel": "Please give a label for each annotation"
+    },
+    "labels": {
+      "address": "Address",
+      "surface": "Surface",
+      "covering": "Covering",
+      "type": "Type",
+      "gradient": "Gradient",
+      "wear": "Wear",
+      "velux": "Velux",
+      "slope": "Slope",
+      "area": "Zone"
+    }
   },
   "onboardingScreen": {
     "title": "Onboarding"

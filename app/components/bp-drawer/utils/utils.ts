@@ -16,4 +16,5 @@ export type RouteNameProps = {
   configuration: string | React.ReactElement;
   partners: string | React.ReactElement;
   calendar: string | React.ReactElement;
+  //annotatorEdition: string | React.ReactElement;
 };

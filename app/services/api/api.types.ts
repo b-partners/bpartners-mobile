@@ -1,9 +1,12 @@
 import { AccountHolder } from '../../models/entities/account-holder/account-holder';
 import { Account } from '../../models/entities/account/account';
+import { Annotation } from '../../models/entities/annotation/annotation';
+import { AreaPicture } from '../../models/entities/area-picture/area-picture';
 import { BusinessActivityItem } from '../../models/entities/business-activity/business-activity';
 import { Calendar } from '../../models/entities/calendar/calendar';
 import { Customer } from '../../models/entities/customer/customer';
 import { File } from '../../models/entities/file/file';
+import { Geojson } from '../../models/entities/geojson/geojson';
 import { Invoice, InvoiceRelaunch, InvoiceSummary } from '../../models/entities/invoice/invoice';
 import { LegalFile } from '../../models/entities/legal-file/legal-file';
 import { Marketplace } from '../../models/entities/marketplace/marketplace';
@@ -26,6 +29,13 @@ export type RedirectionUrlsStatus = {
     successUrl: string;
     failureUrl: string;
   };
+};
+
+export type GetAreaPictureAnnotationsResult = {
+  id: string;
+  idAreaPicture: string;
+  creationDatetime: string;
+  annotations: Annotation[];
 };
 
 export type RedirectionStatusUrls = { redirectionStatusUrls: { successUrl: string; failureUrl: string } };
@@ -112,6 +122,8 @@ export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } |
 
 export type GetProspectResult = { kind: 'ok'; prospects: Prospect[] } | GeneralApiProblem;
 
+export type GetAreaPictureResult = { kind: 'ok'; areaPicture: AreaPicture } | GeneralApiProblem;
+
 export type UpdateProspectResult = { kind: 'ok'; prospect: Prospect } | GeneralApiProblem;
 
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;
@@ -119,3 +131,5 @@ export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | Gene
 export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | GeneralApiProblem;
 
 export type UpdateAccountHodlerInfo = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
+
+export type GeojsonResult = { kind: 'ok'; geojson: Geojson } | GeneralApiProblem;

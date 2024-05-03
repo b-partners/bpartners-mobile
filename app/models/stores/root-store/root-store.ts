@@ -3,6 +3,7 @@ import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { AccountHolder } from '../../entities/account-holder/account-holder';
 import { Account } from '../../entities/account/account';
 import { User } from '../../entities/user/user';
+import { AreaPictureStoreModel } from '../area-picture-store/area-picture-store';
 import { AuthStoreModel } from '../auth-store/auth-store';
 import { BankStoreModel } from '../bank-store/bank-store';
 import { BusinessActivityStoreModel } from '../business-activity-store/business-activity-store';
@@ -10,6 +11,7 @@ import { CalendarStoreModel } from '../calendar-store/calendar-store';
 import { CustomerStoreModel } from '../customer-store/customer-store';
 import { DraftStoreModel } from '../draft-store/draft-store';
 import { FileStoreModel } from '../file-store/file-store';
+import { GeojsonStoreModel } from '../geojson-store/geojson-store';
 import { InvoiceStoreModel } from '../invoice-store/invoice-store';
 import { LegalFileStoreModel } from '../legal-file-store/legal-file-store';
 import { MarketplaceStoreModel } from '../marketplace-store/marketplace-store';
@@ -40,7 +42,9 @@ export const RootStoreModel = types.model('RootStore').props({
     quotationStore: types.optional(QuotationStoreModel, {} as any),
     bankStore: types.optional(BankStoreModel, {} as any),
     businessActivityStore: types.optional(BusinessActivityStoreModel, {} as any),
-    calendarStore: types.optional(CalendarStoreModel, {} as any)
+    calendarStore: types.optional(CalendarStoreModel, {} as any),
+    geojsonStore: types.optional(GeojsonStoreModel, {} as any),
+    areaPictureStore: types.optional(AreaPictureStoreModel, {} as any)
 }).views(self => ({
     get accessToken(): string {
         return self?.authStore?.accessToken;

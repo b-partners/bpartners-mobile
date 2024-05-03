@@ -40,7 +40,8 @@
     "yes": "Oui",
     "no": "Non",
     "reload": "Rafraichir",
-    "selectAFile": "Veuillez sélectionner un fichier"
+    "selectAFile": "Veuillez sélectionner un fichier",
+    "labels": "Labels"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -129,6 +130,30 @@
       "convertProspectIntoCustomer": "Transformer en client",
       "freeUpProspect": "Libérer ce prospect",
       "convertCustomerIntoProspect": "Remettre en prospect"
+    }
+  },
+  "annotationScreen": {
+    "title": "Annotation",
+    "annotations": "Annotations",
+    "generateQuote": "Générer un devis",
+    "process": {
+      "cancelAnnotation": "Annuler l'annotation",
+      "removeLastPoint": "Retirer le dernier point",
+      "validatePolygon": "Valider le polygone"
+    },
+    "errors": {
+      "requiredLabel": "Veuillez donner un label pour chaque annotation"
+    },
+    "labels": {
+      "address": "Adresse",
+      "surface": "Surface",
+      "covering": "Revêtement",
+      "type": "Type",
+      "gradient": "Pente",
+      "wear": "Usure",
+      "velux": "Velux",
+      "slope": "Pente",
+      "area": "Zone"
     }
   },
   "prospectConfigurationScreen": {

@@ -34,9 +34,11 @@ export type NavigatorParamList = {
   };
   profileEdition: undefined;
   calendar: undefined;
+  annotatorEdition: undefined;
 };
 
 export type TabNavigatorParamList = {
+  annotator: undefined;
   prospect: undefined;
   prospectConfiguration: undefined;
   forgotPassword: undefined;
