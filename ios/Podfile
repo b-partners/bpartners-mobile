@@ -10,7 +10,7 @@ install! 'cocoapods', :deterministic_uuids => false
 
 pod 'Firebase', :modular_headers => true
 pod 'FirebaseCoreInternal', :modular_headers => true
-pod 'GoogleUtilities', :modular_headers => true
+pod 'GoogleUtilities', :modular_headers => truex
 pod 'FirebaseCore', :modular_headers => true
 
 target 'BpartnersMobile' do
