@@ -1,4 +1,3 @@
-// import { Octicons as Icon } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
@@ -26,12 +25,13 @@ const VALUE_STYLE: TextStyle = {
 };
 
 const LABEL_ROW_CONTAINER: ViewStyle = {
-  flex: 1,
+  width: 280,
+  height: 40,
   flexDirection: 'row',
   alignItems: 'center',
 };
 
-const LabelRow: FC<TLabelRow> = props => {
+const AnnotationLabelRow: FC<TLabelRow> = props => {
   const { labelKey, labels } = props;
 
   return (
@@ -45,4 +45,4 @@ const LabelRow: FC<TLabelRow> = props => {
   );
 };
 
-export default LabelRow;
+export default AnnotationLabelRow;

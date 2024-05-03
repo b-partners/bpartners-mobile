@@ -200,7 +200,9 @@
       "type": "Type",
       "gradient": "Gradient",
       "wear": "Wear",
-      "velux": "Velux"
+      "velux": "Velux",
+      "slope": "Slope",
+      "area": "Zone"
     }
   },
   "onboardingScreen": {

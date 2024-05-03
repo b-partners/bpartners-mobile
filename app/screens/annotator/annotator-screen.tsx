@@ -1,12 +1,13 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, Image, PanResponder, View, ViewStyle } from 'react-native';
-import { Provider } from 'react-native-paper';
+import { Animated, Image, PanResponder, ScrollView, View } from 'react-native';
+import { List, Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 
-import { Header, Separator, Text } from '../../components';
+import { Header, Text } from '../../components';
 import { useStores } from '../../models';
+import { Annotation } from '../../models/entities/annotation/annotation';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -14,7 +15,7 @@ import { calculateCentroid, calculateDistance } from '../annotator-edition/utils
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import LabelRow from './components/label-row';
+import AnnotationLabelRow from './components/annotator-label-row';
 
 export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annotator'>> = observer(function AnnotatorScreen({ navigation }) {
   const { areaPictureStore } = useStores();
@@ -46,16 +47,6 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
       });
     }
   }, []);
-
-  const labelsData = {
-    labels: {
-      address: areaPicture.address,
-    },
-  };
-
-  const labelsKey = Object.keys(labelsData.labels);
-
-  const SEPARATOR_COMPONENT_STYLE: ViewStyle = { borderColor: palette.lighterGrey };
 
   const createPanResponder = index => {
     return PanResponder.create({
@@ -181,7 +172,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
           <View style={{ width: '100%', height: 40, alignItems: 'center', padding: 10, marginTop: 10 }}>
             <Text text={`${areaPicture.filename}`} style={{ color: palette.black, fontFamily: 'Geometria' }} />
           </View>
-          <View style={{ flex: 1, alignItems: 'center' }}>
+          <View style={{ width: '100%', height: 320, alignItems: 'center' }}>
             <Image
               style={{
                 width: 320,
@@ -202,18 +193,36 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
             {renderPoints()}
             {renderDistances()}
           </View>
-          <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 100 }}>
-            <Text tx={'common.labels'} style={{ color: palette.black, fontSize: 22, fontWeight: '700', width: '90%', marginVertical: spacing[3] }} />
-            <FlatList
-              style={{ width: '90%' }}
-              data={labelsKey}
-              keyExtractor={key => key}
-              renderItem={({ item }) => {
-                return <LabelRow labelKey={item} labels={labelsData.labels} />;
-              }}
-              ItemSeparatorComponent={() => <Separator style={SEPARATOR_COMPONENT_STYLE} />}
-            />
-          </View>
+          <ScrollView style={{ flexDirection: 'column', flex: 1, marginTop: spacing[2] }} contentContainerStyle={{ alignItems: 'center' }}>
+            {annotations.map((item: Annotation, i: number) => {
+              const data = {
+                labels: {
+                  covering: item.metadata.covering,
+                  type: item.labelType,
+                  wear: item.metadata.wearLevel,
+                  slope: item.metadata.slope,
+                  area: item.metadata.area,
+                },
+              };
+              return (
+                <List.AccordionGroup key={i}>
+                  <List.Accordion
+                    title={item.labelName}
+                    id='1'
+                    style={{ width: 320, borderRadius: 10, borderColor: palette.lighterGrey, borderWidth: 1, marginVertical: spacing[2] }}
+                    rippleColor={palette.lighterGrey}
+                    titleStyle={{ color: palette.secondaryColor }}
+                  >
+                    <AnnotationLabelRow labelKey={'type'} labels={data.labels} />
+                    <AnnotationLabelRow labelKey={'area'} labels={data.labels} />
+                    <AnnotationLabelRow labelKey={'covering'} labels={data.labels} />
+                    <AnnotationLabelRow labelKey={'slope'} labels={data.labels} />
+                    <AnnotationLabelRow labelKey={'wear'} labels={data.labels} />
+                  </List.Accordion>
+                </List.AccordionGroup>
+              );
+            })}
+          </ScrollView>
         </View>
       </ErrorBoundary>
     </Provider>

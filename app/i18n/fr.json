@@ -151,7 +151,9 @@
       "type": "Type",
       "gradient": "Pente",
       "wear": "Usure",
-      "velux": "Velux"
+      "velux": "Velux",
+      "slope": "Pente",
+      "area": "Zone"
     }
   },
   "prospectConfigurationScreen": {
