@@ -59,10 +59,10 @@ export const NAVIGATION_CONTAINER_STYLE: ViewStyle = {
 
 export const SCROLLVIEW_CONTAINER_STYLE: ViewStyle = {
   width: '100%',
-  height: '60%',
+  height: '70%',
   zIndex: 2,
   position: 'absolute',
-  top: '25%',
+  top: '22%',
 };
 
 export const DRAWER_SCROLLVIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: '100%' };

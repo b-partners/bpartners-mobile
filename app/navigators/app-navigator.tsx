@@ -17,6 +17,7 @@ import { BPDrawer, BpTabNavigation, Text } from '../components';
 import { translate } from '../i18n';
 import { useStores } from '../models';
 import {
+  AnnotatorEditionScreen,
   BankScreen,
   ChangePasswordScreen,
   CodeExchangeScreen,
@@ -41,6 +42,7 @@ import {
   TransactionListScreen,
   WelcomeScreen,
 } from '../screens';
+import { AnnotatorScreen } from '../screens/annotator/annotator-screen';
 import { CalendarScreen } from '../screens/calendar/calendar-screen';
 import { CustomersScreen } from '../screens/customer/customers-screen';
 import { ProductScreen } from '../screens/product/products-screen';
@@ -111,6 +113,7 @@ const AppStack = observer(function () {
           <Drawer.Screen name='partners' component={PartnersScreen} />
           <Drawer.Screen name='profileEdition' component={ProfileEditionScreen} />
           <Drawer.Screen name='calendar' component={CalendarScreen} />
+          <Drawer.Screen name='annotatorEdition' component={AnnotatorEditionScreen} />
         </>
       ) : (
         <>
@@ -145,6 +148,7 @@ const AppTabStack = observer(function () {
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
         <Tab.Screen name='invoiceForm' component={InvoiceFormScreen} />
+        <Tab.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
       </>
     </Tab.Navigator>
   );
@@ -159,12 +163,12 @@ export function AppNavigator(props: NavigationProps) {
   // const { setError } = useError();
 
   /*const handleError = async (asyncFunc: () => any) => {
-    try {
-      await asyncFunc();
-    } catch (e) {
-      setError(e);
-    }
-  };*/
+      try {
+        await asyncFunc();
+      } catch (e) {
+        setError(e);
+      }
+    };*/
 
   const onStateChange = async (state: NavigationState) => {
     const route = state.routeNames[state.index];
@@ -173,23 +177,23 @@ export function AppNavigator(props: NavigationProps) {
         bankInfo.fetchBankInfo(currentUser.id);
         break;
       /*case 'transactionList':
-        await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
-        break;
-      /*case 'paymentList':
-              await handleError(
-                async () =>
-                  await Promise.all([
-                    draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }),
-                    quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 }),
-                    invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 }),
-                    productStore.getProducts(),
-                    customerStore.getCustomers(),
-                  ])
-              );
+              await handleError(async () => await Promise.all([transactionStore.getTransactions(), transactionStore.getTransactionCategories()]));
               break;
-            case 'invoiceForm':
-              await handleError(async () => await Promise.all([invoiceStore.getProducts(), invoiceStore.getCustomers()]));
-              break;*/
+            /*case 'paymentList':
+                    await handleError(
+                      async () =>
+                        await Promise.all([
+                          draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: 10 }),
+                          quotationStore.getQuotations({ status: InvoiceStatus.PROPOSAL, page: 1, pageSize: 10 }),
+                          invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: 10 }),
+                          productStore.getProducts(),
+                          customerStore.getCustomers(),
+                        ])
+                    );
+                    break;
+                  case 'invoiceForm':
+                    await handleError(async () => await Promise.all([invoiceStore.getProducts(), invoiceStore.getCustomers()]));
+                    break;*/
     }
   };
 
