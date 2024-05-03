@@ -8,7 +8,7 @@ export const ICON_CONTAINER: StyleProp<ViewStyle> = {
   position: 'absolute',
   top: 0,
   right: 0,
-  zIndex: 99,
+  zIndex: 999,
   height: '100%',
   width: 60,
   display: 'flex',

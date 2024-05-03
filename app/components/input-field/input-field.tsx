@@ -1,10 +1,10 @@
 import React, { ComponentProps, FC, ReactNode } from 'react';
-import { KeyboardTypeOptions, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { KeyboardTypeOptions, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { TxKeyPath } from '../../i18n';
+import { Log } from '../../screens/welcome/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import ErrorMessage from '../forms/error-message';
@@ -30,6 +30,11 @@ export const InputField: FC<ComponentProps<typeof TextInput> & InputFieldProps> 
   const { labelTx, error, onChange, errorMessage, width, backgroundColor, rightRender, rightText, keyboardType, endIconName, onPressEndIcon, ...others } =
     props;
 
+  const handlePress = () => {
+    Log('here');
+    onPressEndIcon();
+  };
+
   return (
     <View>
       <View style={INPUT_CONTAINER}>
@@ -47,7 +52,7 @@ export const InputField: FC<ComponentProps<typeof TextInput> & InputFieldProps> 
         />
         {endIconName && (
           <View style={ICON_CONTAINER}>
-            <TouchableOpacity onPress={onPressEndIcon}>
+            <TouchableOpacity onPress={handlePress}>
               <IonIcon name={endIconName as string} size={28} color={color.palette.secondaryColor} />
             </TouchableOpacity>
           </View>
