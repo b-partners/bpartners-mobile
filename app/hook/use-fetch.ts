@@ -1,7 +1,10 @@
+import { translate } from 'i18n-js';
 import { onSnapshot } from 'mobx-state-tree';
 import { useEffect, useState } from 'react';
 
 import { useStores } from '../models';
+import { palette } from '../theme/palette';
+import { showMessage } from '../utils/snackbar';
 import { UseFetchOptions } from './type';
 
 /**
@@ -12,21 +15,22 @@ import { UseFetchOptions } from './type';
  *
  * It encapsulate repetitive pattern when fetching data such as a state variable holding error, loading state, ...
  * */
-function useFetch<T>(fetchAction: () => Promise<T | any>, options: UseFetchOptions, deps?: any[]) {
+function useFetch<T, P>(fetchAction: (params?: P) => Promise<T | any>, options: UseFetchOptions, deps = []) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean>();
-  const { store, mutateOnly } = options;
+  const { store, mutateOnly = false, txErrorMessage } = options;
 
   const rootStore = useStores();
   const modelStore = store && rootStore[store];
   const [data, setData] = useState<typeof modelStore | T>(null);
   onSnapshot(rootStore, snapshot => __DEV__ && console.tron.log('store changed' + JSON.stringify(snapshot)));
+  const errorMessageStyles = { backgroundColor: palette.pastelRed };
 
-  async function load() {
+  async function fetch(params?: P) {
     setIsLoading(true);
     try {
       // The action should return de data as response in case if !store
-      const response = await fetchAction();
+      const response = await fetchAction(params);
       // use the data from the store as return value
       if (store) {
         setData(modelStore);
@@ -34,6 +38,7 @@ function useFetch<T>(fetchAction: () => Promise<T | any>, options: UseFetchOptio
         setData(response);
       }
     } catch (e) {
+      txErrorMessage && showMessage(translate(txErrorMessage), errorMessageStyles);
       setError(true);
     } finally {
       setIsLoading(false);
@@ -42,15 +47,11 @@ function useFetch<T>(fetchAction: () => Promise<T | any>, options: UseFetchOptio
 
   useEffect(() => {
     if (!mutateOnly) {
-      (async () => await load())();
+      (async () => await fetch())();
     }
   }, [...deps]);
 
-  async function mutate() {
-    await load();
-  }
-
-  return { data, isLoading, error, refresh: mutate };
+  return { data, isLoading, error, fetch };
 }
 
 export default useFetch;
