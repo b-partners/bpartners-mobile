@@ -23,7 +23,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
 
   const [polygons, setPolygons] = useState([]);
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
-  const [annotation /*setAnnotation*/] = useState([]);
+  const [annotation, setAnnotation] = useState([]);
 
   const panResponders = useRef([]);
 
@@ -33,16 +33,27 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         const xRatio = width / 320;
         const yRatio = height / 320;
         const polygonArray = [];
+        const annotationArray = [];
         annotations.map(item => {
           const points = [];
+          const polygonPoints = [];
           item.polygon.points.map(pt => {
             points.push({
               x: pt.x / xRatio,
               y: pt.y / yRatio,
             });
+            polygonPoints.push({
+              x: pt.x / xRatio,
+              y: pt.y / yRatio,
+            });
+          });
+          annotationArray.push({
+            polygonPoints: polygonPoints,
+            label: item.labelName,
           });
           polygonArray.push(points);
         });
+        setAnnotation(annotationArray);
         setPolygons(polygonArray);
       });
     }
