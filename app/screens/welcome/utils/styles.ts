@@ -96,6 +96,8 @@ export const styles = StyleSheet.create({
   forgotPassword: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: spacing[2],
+    marginBottom: spacing[2],
+    transform: [{ translateY: -spacing[2] }],
   },
+  forgotPasswordText: { fontFamily: 'Geometria-Bold', ...normalText },
 });
