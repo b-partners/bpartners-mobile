@@ -23,7 +23,7 @@ import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-va
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
 import { dropDownStyles, styles } from './utils/styles';
-import { calculateCentroid, calculateDistance, getPolygonName } from './utils/utils';
+import { calculateCentroid, calculateDistance, constrainPointCoordinates, getPolygonName } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
@@ -66,15 +66,26 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       const relativeX = locationX - imageOffset.x;
       const relativeY = locationY - imageOffset.y;
 
-      setCurrentPolygonPoints(prevPoints => [...prevPoints, { x: relativeX, y: relativeY }]);
+      // Get image dimensions
+      const imageWidth = 320;
+      const imageHeight = 300;
+
+      // Constrain new point coordinates within image boundaries
+      const { x, y } = constrainPointCoordinates(relativeX, relativeY, imageWidth, imageHeight);
+
+      setCurrentPolygonPoints(prevPoints => [...prevPoints, { x, y }]);
     },
     [imageOffset]
   );
 
   const handleImageLayout = event => {
     const { x, y } = event.nativeEvent.layout;
+    Log('x: ' + x);
+    Log('y: ' + y);
     setImageOffset({ x, y });
   };
+
+  Log(imageOffset);
 
   const createPanResponder = index => {
     return PanResponder.create({
@@ -86,20 +97,20 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       onPanResponderMove: (event, gestureState) => {
         const { dx, dy } = gestureState;
         const newPoints = [...currentPolygonPoints];
-        const updatedPoint = { ...newPoints[index] };
+        let updatedPoint = { ...newPoints[index] };
 
         // Calculate the new point coordinates
         const newX = updatedPoint.x + dx;
         const newY = updatedPoint.y + dy;
 
         // Get image dimensions
-        const imageWidth = 365;
-        const imageHeight = 331;
+        const imageWidth = 320;
+        const imageHeight = 300;
 
-        // Limit point coordinates so that they remain inside the image
-        updatedPoint.x = Math.max(0, Math.min(newX, imageWidth));
-        updatedPoint.y = Math.max(0, Math.min(newY, imageHeight));
+        // Constrain point coordinates within image boundaries
+        updatedPoint = constrainPointCoordinates(newX, newY, imageWidth, imageHeight);
 
+        // Update the point in the array and set state
         newPoints[index] = updatedPoint;
         setCurrentPolygonPoints(newPoints);
       },
@@ -204,12 +215,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       const newAnnotationId = lastAnnotation ? lastAnnotation.id + 1 : 0;
 
       const getNewAnnotationId = () => {
-        if (lastAnnotation && lastAnnotation.id <25) {
+        if (lastAnnotation && lastAnnotation.id < 25) {
           return lastAnnotation.id + 1;
         } else {
           return 0;
         }
-      }
+      };
 
       const newAnnotation = {
         id: getNewAnnotationId(),
@@ -277,26 +288,39 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'} style={{ color: palette.black, fontFamily: 'Geometria' }} />
                 </View>
                 <TouchableWithoutFeedback onPress={handlePress}>
-                  <View style={{ display: 'flex', alignItems: 'center' }}>
-                    <Image
-                      onLayout={handleImageLayout}
-                      style={{
-                        width: 365,
-                        height: 331,
-                      }}
-                      source={require('./assets/images/Rennes_Solar_Panel.jpg')}
-                    />
-                    {renderPolygons}
-                    <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
-                      <Polygon
-                        points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
-                        fill='rgba(144, 248, 10, 0.4)'
-                        stroke='#90F80A'
-                        strokeWidth='1'
+                  <View
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: 350,
+                      backgroundColor: palette.lighterGrey,
+                      borderWidth: 1,
+                      borderColor: palette.white,
+                    }}
+                  >
+                    <View style={{ width: 320, height: 300 }}>
+                      <Image
+                        onLayout={handleImageLayout}
+                        style={{
+                          width: 320,
+                          height: 300,
+                        }}
+                        source={require('./assets/images/Rennes_Solar_Panel.jpg')}
                       />
-                    </Svg>
-                    {renderPoints}
-                    {renderDistances}
+                      {renderPolygons}
+                      <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
+                        <Polygon
+                          points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
+                          fill='rgba(144, 248, 10, 0.4)'
+                          stroke='#90F80A'
+                          strokeWidth='1'
+                        />
+                      </Svg>
+                      {renderPoints}
+                      {renderDistances}
+                    </View>
                   </View>
                 </TouchableWithoutFeedback>
                 <View

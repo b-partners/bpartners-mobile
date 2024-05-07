@@ -29,3 +29,9 @@ export const calculateCentroid = polygonPoints => {
 
   return { x: centroidX, y: centroidY };
 };
+
+export const constrainPointCoordinates = (x, y, imageWidth, imageHeight) => {
+  const constrainedX = Math.max(0, Math.min(x, imageWidth));
+  const constrainedY = Math.max(0, Math.min(y, imageHeight));
+  return { x: constrainedX, y: constrainedY };
+};
