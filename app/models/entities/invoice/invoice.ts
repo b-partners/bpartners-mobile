@@ -89,6 +89,7 @@ export const InvoiceModel = types.model('Invoice').props({
   createdAt: types.maybeNull(types.Date),
   updatedAt: types.maybeNull(types.Date),
   metadata: types.maybeNull(MetadataModel),
+  idAreaPicture: types.maybeNull(types.string),
 });
 
 export interface Invoice extends Instance<typeof InvoiceModel> {}
@@ -135,6 +136,7 @@ export const EMPTY_INVOICE: Invoice = {
     submittedAt: null,
   },
   paymentMethod: PaymentMethod.UNKNOWN,
+  idAreaPicture: null,
 };
 
 export const createInvoiceDefaultModel = (status: InvoiceStatus = InvoiceStatus.DRAFT, invoiceToBeUpdated: Invoice) => {

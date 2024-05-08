@@ -11,6 +11,7 @@ import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
+//import { navigate } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
@@ -37,8 +38,8 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
   const prospectInfoResolver = yup.object({
     email: yup.string(),
     phone: yup.string(),
-    address: yup.string(),
-    name: yup.string().required(translate('errors.required')),
+    address: yup.string().required(translate('errors.required')),
+    name: yup.string(),
     comment: yup.string(),
   });
 
@@ -73,6 +74,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
         ...prospectInfos,
       });
       showMessage(translate('common.added'), { backgroundColor: palette.green });
+      //navigate('annotator');
     } catch (e) {
       showMessage(e);
       throw e;
@@ -101,7 +103,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
             borderRadius: 20,
             marginHorizontal: '2%',
             width: '96%',
-            height: 450,
+            height: 480,
           }}
         >
           <View

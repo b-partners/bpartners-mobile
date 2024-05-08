@@ -40,7 +40,8 @@
     "yes": "Oui",
     "no": "Non",
     "reload": "Rafraichir",
-    "selectAFile": "Veuillez sélectionner un fichier"
+    "selectAFile": "Veuillez sélectionner un fichier",
+    "labels": "Labels"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -131,6 +132,30 @@
       "convertCustomerIntoProspect": "Remettre en prospect"
     }
   },
+  "annotationScreen": {
+    "title": "Annotation",
+    "annotations": "Annotations",
+    "generateQuote": "Générer un devis",
+    "process": {
+      "cancelAnnotation": "Annuler l'annotation",
+      "removeLastPoint": "Retirer le dernier point",
+      "validatePolygon": "Valider le polygone"
+    },
+    "errors": {
+      "requiredLabel": "Veuillez donner un label pour chaque annotation"
+    },
+    "labels": {
+      "address": "Adresse",
+      "surface": "Surface",
+      "covering": "Revêtement",
+      "type": "Type",
+      "gradient": "Pente",
+      "wear": "Usure",
+      "velux": "Velux",
+      "slope": "Pente",
+      "area": "Zone"
+    }
+  },
   "prospectConfigurationScreen": {
     "title": "Configuration du prospect",
     "setUpPerimeter": "Configurer le périmètre de prospection."
@@ -210,7 +235,7 @@
     "delete": "Supprimer mon compte",
     "firstStep": "Pour supprimer définitivement votre compte, veuillez appuyer sur le bouton \"Confirmer\".",
     "secondStep": "Cela ouvrira un e-mail prêt à être envoyé à notre équipe dédiée à la suppression des comptes.",
-    "deleteMessage": "Chère équipe technique;\n\nJe vous prie de bien vouloir supprimer définitivement mon compte d'utilisateur. Je comprends que cela entraînera la suppression de toutes les informations associées à mon compte, y compris les transactions et les données personnelles.\n\nNous vous serions reconnaissants de bien vouloir examiner cette demande de suppression de compte et de la traiter en conséquence. Si vous avez besoin de plus amples informations ou si vous avez des questions supplémentaires, n'hésitez pas à me contacter directement.\n\nJe vous remercie de votre attention et de votre assistance.",
+    "deleteMessage": "Chère équipe technique;\n\nJe vous prie de bien vouloir supprimer définitivement mon compte d'utilisateur dont l'identifiant est [ %{userId} ] et le nom est [ %{username} ]. Je comprends que cela entraînera la suppression de toutes les informations associées à mon compte, y compris les transactions et les données personnelles.\n\nNous vous serions reconnaissants de bien vouloir examiner cette demande de suppression de compte et de la traiter en conséquence. Si vous avez besoin de plus amples informations ou si vous avez des questions supplémentaires, n'hésitez pas à me contacter directement.\n\nJe vous remercie de votre attention et de votre assistance.",
     "footer": {
       "essential": "L'Essentiel",
       "service": "Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant",

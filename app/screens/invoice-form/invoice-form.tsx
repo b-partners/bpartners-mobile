@@ -5,6 +5,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Button, DatePickerField, Icon, Loader, Text } from '../../components';
@@ -56,9 +57,10 @@ export enum CheckboxEnum {
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoice, initialStatus, navigation } = props;
-  const { invoiceStore, customerStore, draftStore, quotationStore } = useStores();
+  const { invoiceStore, customerStore, draftStore, quotationStore, areaPictureStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
+  const { areaPicture } = areaPictureStore;
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
   const [modal, setModal] = useState<CustomerModalType>({
@@ -70,6 +72,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [paymentCreation, setPaymentCreation] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [annotationLoading, setAnnotationLoading] = useState(false);
 
   const {
     control,
@@ -572,7 +575,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                   items={products}
                   onDeleteItem={async (__, index) => {
                     setRemoveProduct(true);
-                    await productRemove(index);
+                    productRemove(index);
                     setRemoveProduct(false);
                   }}
                   onValueChange={product => {
@@ -598,7 +601,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             }}
             onPress={async () => {
               const product = await createProductDefaultModel().create();
-              await productAppend(product);
+              productAppend(product);
             }}
           >
             <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
@@ -731,6 +734,34 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       >
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
+
+        {invoice?.idAreaPicture && (
+          <TouchableOpacity
+            onPress={async () => {
+              setAnnotationLoading(true);
+              await areaPictureStore.getAreaPicture(invoice.idAreaPicture);
+              await areaPictureStore.getAreaPictureAnnotations(invoice.idAreaPicture);
+              await areaPictureStore.getPictureUrl(areaPicture.fileId);
+              setAnnotationLoading(false);
+              navigation.navigate('annotator');
+            }}
+          >
+            <View
+              style={{
+                borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
+                borderWidth: 2,
+                borderRadius: 100,
+                padding: spacing[3],
+              }}
+            >
+              {annotationLoading ? (
+                <Loader size={25} animating={true} color={palette.secondaryColor} />
+              ) : (
+                <MaterialCommunityIcons name='image-area' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
+              )}
+            </View>
+          </TouchableOpacity>
+        )}
 
         {previewLoading ? (
           <View

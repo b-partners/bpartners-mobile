@@ -3,6 +3,7 @@ export * from './transaction/transaction-list-screen';
 export * from './error/error-boundary';
 export * from './payment-initiation/payment-initiation-screen';
 export * from './profile/profile-screen';
+export * from './annotator-edition/annotator-edition-screen';
 export * from './home/home-screen';
 export * from './legal-file/legal-file-screen';
 export * from './bank/bank-screen';

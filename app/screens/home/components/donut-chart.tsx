@@ -106,7 +106,7 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
             }}
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity testID={'transactionSummarySettingsButton'}>
           <Menu
             items={items}
             actions={{
@@ -132,7 +132,7 @@ export const DonutChart: React.FC<DonutChartProps> = props => {
           })}
         </View>
         <View style={{ width: '70%', height: '100%', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <View style={{ height: 120, width: 240 }}>
+          <View style={{ height: 120, width: 240 }} testID='transactionSummaryChart'>
             {
               <PieChart
                 donut

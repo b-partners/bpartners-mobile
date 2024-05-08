@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import { firebaseConfig } from '../../app';
 import { HeaderWithBalance, Screen } from '../../components';
 import env from '../../config/env';
 import { useStores } from '../../models';
@@ -25,6 +24,17 @@ import { Menu } from './components/menu';
 import { TransactionSummary } from './components/transaction-summary';
 import { getAttributesAsync } from './utils/function';
 import { FULL } from './utils/styles';
+
+export const firebaseConfig = {
+  authDomain: '',
+  databaseURL: '',
+  storageBucket: '',
+  messagingSenderId: '398836708559',
+  measurementId: '',
+  projectId: 'bpartners-notification-push',
+  appId: '1:398836708559:android:40b9be40b768eb0206f3ba',
+  apiKey: 'AIzaSyBDpF1jZq0t3O5XXzvHcHdRYBGpfL9Fw58',
+};
 
 export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore, authStore, fileStore } = useStores();
@@ -152,7 +162,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
       <View testID='homeScreen' style={FULL}>
         <HeaderWithBalance
           balance={availableBalance}
-          left={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} />}
+          left={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} testID={'craftsmanLogo'} />}
           right={<Menu navigation={navigation} />}
         />
         <Screen preset='scroll' backgroundColor={palette.white}>

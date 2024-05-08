@@ -79,12 +79,13 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   };
 
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE}>
+    <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE} testID='drawer'>
       <AutoImage
         source={require('./utils/drawer-header-background.png')}
         resizeMode='stretch'
         resizeMethod='auto'
         style={{ position: 'absolute', zIndex: 1 }}
+        testID='drawerLogo'
       />
       <BPDrawerHeader
         onPress={() => {
@@ -96,30 +97,38 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
         navigation={props.navigation}
       />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
-        <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
-          {props.state.routes.map((route: any) => {
-            const routeTitle = TitleRoute[route.name];
-            if (routeTitle === undefined) {
-              return null;
-            }
+        <ScrollView>
+          <View style={NAVIGATION_CONTAINER_STYLE}>
+            {props.state.routes.map((route: any) => {
+              const routeTitle = TitleRoute[route.name];
+              if (routeTitle === undefined) {
+                return null;
+              }
 
-            return (
-              <TouchableOpacity key={route.key} style={NAVIGATION_STYLE} onPress={() => props.navigation.navigate(route.name)} testID={route.name}>
-                <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
-                <View style={TEXT_CONTAINER_STYLE}>
-                  <Text style={TEXT_STYLE} testID={`${route.name}Text`}>
-                    {routeTitle}
-                  </Text>
-                </View>
-                <View style={ICON_CONTAINER_STYLE}>
-                  <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+              return (
+                <TouchableOpacity
+                  key={route.key}
+                  style={NAVIGATION_STYLE}
+                  onPress={() => props.navigation.navigate(route.name)}
+                  testID={`${route.name}DrawerTab`}
+                >
+                  <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
+                  <View style={TEXT_CONTAINER_STYLE}>
+                    <Text style={TEXT_STYLE} testID={`${route.name}Text`}>
+                      {routeTitle}
+                    </Text>
+                  </View>
+                  <View style={ICON_CONTAINER_STYLE}>
+                    <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </ScrollView>
       </View>
       <TouchableOpacity
+        testID='logoutButton'
         style={LOGOUT_CONTAINER_STYLE}
         onPress={async () => {
           setIsLoading(true);

@@ -107,7 +107,7 @@ export const Bank: React.FC = () => {
                     alignItems: 'flex-end',
                   }}
                 >
-                  <Logo uri={currentAccount?.bank?.logoUrl} logoStyle={{ width: 140, height: 70 }} />
+                  <Logo uri={currentAccount?.bank?.logoUrl} logoStyle={{ width: 140, height: 70 }} testID={'logoBank'} />
                 </View>
               </View>
               <View
