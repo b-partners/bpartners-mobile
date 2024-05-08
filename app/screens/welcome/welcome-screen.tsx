@@ -98,8 +98,8 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
         <View style={styles.form}>
           <View style={styles.field}>
             <FormProvider {...form}>
-              <BpInput name='email' labelTx='welcomeScreen.email' />
-              <BpPasswordInput name='password' labelTx='welcomeScreen.password' />
+              <BpInput name='email' labelTx='welcomeScreen.email' testID='emailInput' />
+              <BpPasswordInput name='password' labelTx='welcomeScreen.password' testID='passwordInput' />
             </FormProvider>
           </View>
           <View style={styles.forgotPassword}>
