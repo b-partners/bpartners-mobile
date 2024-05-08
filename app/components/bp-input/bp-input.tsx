@@ -1,6 +1,6 @@
 import React, { ComponentProps, FC, ReactNode } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 
 import { TxKeyPath, translate } from '../../i18n';
 import { palette } from '../../theme/palette';
@@ -28,13 +28,7 @@ export const BpInput: FC<BpInputProps> = ({ name, ...props }) => {
         name={name}
         defaultValue=''
         render={({ field: { ref: _ref, ...field } }) => (
-          <InputField
-            {...field}
-            {...props}
-            error={!!error}
-            errorMessage={errorMessage}
-            backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-          />
+          <InputField {...field} {...props} error={!!error} errorMessage={errorMessage} backgroundColor={palette.white} />
         )}
       />
     </View>
