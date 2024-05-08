@@ -1,7 +1,6 @@
-import React, { ComponentProps, FC, ReactNode } from 'react';
+import React, { ComponentProps, FC, ReactElement, cloneElement } from 'react';
 import { KeyboardTypeOptions, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import { TxKeyPath } from '../../i18n';
 import { Log } from '../../screens/welcome/utils/utils';
@@ -22,13 +21,12 @@ interface InputFieldProps {
   rightRender?: boolean;
   rightText?: string;
   keyboardType?: KeyboardTypeOptions;
-  endIconName?: ReactNode;
+  endIcon?: ReactElement;
   onPressEndIcon?: () => void;
 }
 
 export const InputField: FC<ComponentProps<typeof TextInput> & InputFieldProps> = props => {
-  const { labelTx, error, onChange, errorMessage, width, backgroundColor, rightRender, rightText, keyboardType, endIconName, onPressEndIcon, ...others } =
-    props;
+  const { labelTx, error, onChange, errorMessage, width, backgroundColor, rightRender, rightText, keyboardType, endIcon, onPressEndIcon, ...others } = props;
 
   const handlePress = () => {
     Log('here');
@@ -50,11 +48,9 @@ export const InputField: FC<ComponentProps<typeof TextInput> & InputFieldProps> 
           theme={TEXT_INPUT_THEME}
           right={rightRender && <TextInput.Affix text={rightText} textStyle={RIGHT_TEXT} />}
         />
-        {endIconName && (
+        {endIcon && (
           <View style={ICON_CONTAINER}>
-            <TouchableOpacity onPress={handlePress}>
-              <IonIcon name={endIconName as string} size={28} color={color.palette.secondaryColor} />
-            </TouchableOpacity>
+            <TouchableOpacity onPress={handlePress}>{cloneElement(endIcon, { size: 28, color: color.palette.secondaryColor })}</TouchableOpacity>
           </View>
         )}
       </View>
