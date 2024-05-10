@@ -3,7 +3,7 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, FlatList, Image, PanResponder, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
@@ -268,12 +268,14 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             titleStyle={HEADER_TITLE}
           />
           <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
-            <View
+            <ScrollView
               style={{
+                marginBottom: 10,
+              }}
+              contentContainerStyle={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: 10,
               }}
             >
               <View style={{ width: '94%' }}>
@@ -288,40 +290,44 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'} style={{ color: palette.black, fontFamily: 'Geometria' }} />
                 </View>
                 <TouchableWithoutFeedback onPress={handlePress}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      width: '100%',
-                      height: 350,
-                      backgroundColor: palette.lighterGrey,
-                      borderWidth: 1,
-                      borderColor: palette.white,
-                    }}
-                  >
-                    <View style={{ width: 320, height: 300 }}>
-                      <Image
-                        onLayout={handleImageLayout}
-                        style={{
-                          width: 320,
-                          height: 300,
-                        }}
-                        source={require('./assets/images/Rennes_Solar_Panel.jpg')}
-                      />
-                      {renderPolygons}
-                      <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
-                        <Polygon
-                          points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
-                          fill='rgba(144, 248, 10, 0.4)'
-                          stroke='#90F80A'
-                          strokeWidth='1'
+                  {isKeyboardOpen ? (
+                    <View style={{ width: '100%', height: 100 }} />
+                  ) : (
+                    <View
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        height: 350,
+                        backgroundColor: palette.lighterGrey,
+                        borderWidth: 1,
+                        borderColor: palette.white,
+                      }}
+                    >
+                      <View style={{ width: 320, height: 300 }}>
+                        <Image
+                          onLayout={handleImageLayout}
+                          style={{
+                            width: 320,
+                            height: 300,
+                          }}
+                          source={require('./assets/images/Rennes_Solar_Panel.jpg')}
                         />
-                      </Svg>
-                      {renderPoints}
-                      {renderDistances}
+                        {renderPolygons}
+                        <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
+                          <Polygon
+                            points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
+                            fill='rgba(144, 248, 10, 0.4)'
+                            stroke='#90F80A'
+                            strokeWidth='1'
+                          />
+                        </Svg>
+                        {renderPoints}
+                        {renderDistances}
+                      </View>
                     </View>
-                  </View>
+                  )}
                 </TouchableWithoutFeedback>
                 <View
                   style={{
@@ -480,7 +486,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   )}
                 </View>
                 {!isKeyboardOpen && (
-                  <View>
+                  <View style={{ marginBottom: 50 }}>
                     <View style={styles.buttonContainer}>
                       <TouchableOpacity
                         style={validatePolygon(currentPolygonPoints) ? styles.button : styles.disabledButton}
@@ -517,7 +523,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   </View>
                 )}
               </View>
-            </View>
+            </ScrollView>
           </View>
         </KeyboardLayout>
       </ErrorBoundary>
