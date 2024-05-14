@@ -74,6 +74,16 @@ export const AreaPictureStoreModel = types
     }),
   }))
   .actions(self => ({
+    updateAreaPictureAnnotations: flow(function* (areaPictureId: string, annotationId: string, annotations: Annotation[]) {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        yield areaPictureApi.updateAreaPictureAnnotations(self.currentAccount.id, areaPictureId, annotationId, annotations);
+      } catch (e) {
+        self.getAreaPictureAnnotationsFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
     getPictureUrl: async (fileId: string) => {
       const fileApi = new FileApi(self.environment.api);
       try {
