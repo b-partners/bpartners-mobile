@@ -15,6 +15,7 @@ export const AreaPictureStoreModel = types
   .model('Bank')
   .props({
     areaPicture: types.maybeNull(AreaPictureModel),
+    areaPictures: types.optional(types.array(AreaPictureModel), []),
     annotations: types.optional(types.array(AnnotationModel), []),
     pictureUrl: types.maybeNull(types.string),
   })
@@ -59,6 +60,28 @@ export const AreaPictureStoreModel = types
         self.getAreaPictureSuccess(getAreaPictureResult);
       } catch (e) {
         self.getAreaPictureFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getAreaPicturesSuccess: (areaPictures: AreaPicture[]) => {
+      self.areaPictures.replace(areaPictures);
+    },
+  }))
+  .actions(self => ({
+    getAreaPicturesFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getAreaPictures: flow(function* () {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        const getAreaPictureResult = yield areaPictureApi.getAreaPictures(self.currentAccount.id);
+        self.getAreaPicturesSuccess(getAreaPictureResult);
+      } catch (e) {
+        self.getAreaPicturesFail(e);
       }
     }),
   }))

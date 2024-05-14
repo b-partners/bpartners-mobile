@@ -4,13 +4,24 @@ import uuid from 'react-native-uuid';
 import { Annotation } from '../../models/entities/annotation/annotation';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetAreaPictureAnnotationsResult, GetAreaPictureResult } from './api.types';
+import { GetAreaPictureAnnotationsResult, GetAreaPictureResult, GetAreaPicturesResult } from './api.types';
 
 export class AreaPictureApi {
   private api: Api;
 
   constructor(api: Api) {
     this.api = api;
+  }
+
+  async getAreaPictures(accountId: string): Promise<GetAreaPicturesResult> {
+    const response: ApiResponse<GetAreaPicturesResult> = await this.api.apisauce.get(`accounts/${accountId}/areaPictures`);
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response);
+      if (problem) throw new Error(problem.kind);
+    }
+
+    return response.data;
   }
 
   async getAreaPicture(accountId: string, id: string): Promise<GetAreaPictureResult> {
