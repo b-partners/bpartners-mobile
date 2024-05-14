@@ -124,6 +124,8 @@ export type GetProspectResult = { kind: 'ok'; prospects: Prospect[] } | GeneralA
 
 export type GetAreaPictureResult = { kind: 'ok'; areaPicture: AreaPicture } | GeneralApiProblem;
 
+export type GetAreaPicturesResult = { kind: 'ok'; areaPictures: AreaPicture[] } | GeneralApiProblem;
+
 export type UpdateProspectResult = { kind: 'ok'; prospect: Prospect } | GeneralApiProblem;
 
 export type GetLegalFilesResult = { kind: 'ok'; legalFiles: LegalFile[] } | GeneralApiProblem;

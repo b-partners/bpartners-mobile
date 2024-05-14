@@ -15,6 +15,7 @@ export const AreaPictureStoreModel = types
   .model('Bank')
   .props({
     areaPicture: types.maybeNull(AreaPictureModel),
+    areaPictures: types.optional(types.array(AreaPictureModel), []),
     annotations: types.optional(types.array(AnnotationModel), []),
     pictureUrl: types.maybeNull(types.string),
   })
@@ -63,11 +64,43 @@ export const AreaPictureStoreModel = types
     }),
   }))
   .actions(self => ({
+    getAreaPicturesSuccess: (areaPictures: AreaPicture[]) => {
+      self.areaPictures.replace(areaPictures);
+    },
+  }))
+  .actions(self => ({
+    getAreaPicturesFail: error => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getAreaPictures: flow(function* () {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        const getAreaPictureResult = yield areaPictureApi.getAreaPictures(self.currentAccount.id);
+        self.getAreaPicturesSuccess(getAreaPictureResult);
+      } catch (e) {
+        self.getAreaPicturesFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
     getAreaPictureAnnotations: flow(function* (id: string) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
         const getAreaPictureAnnotationsResult = yield areaPictureApi.getAreaPictureAnnotations(self.currentAccount.id, id);
         self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult[0].annotations);
+      } catch (e) {
+        self.getAreaPictureAnnotationsFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateAreaPictureAnnotations: flow(function* (areaPictureId: string, annotationId: string, annotations: Annotation[]) {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        yield areaPictureApi.updateAreaPictureAnnotations(self.currentAccount.id, areaPictureId, annotationId, annotations);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
       }
