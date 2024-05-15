@@ -5,7 +5,7 @@ import { Annotation } from '../../models/entities/annotation/annotation';
 import { ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
-import { GetAddressAreaPictureResult, GetAreaPictureAnnotationsResult, GetAreaPictureResult, GetAreaPicturesResult } from './api.types';
+import { GetAreaPictureAnnotationsResult, GetAreaPictureFile, GetAreaPictureResult, GetAreaPicturesResult } from './api.types';
 
 export class AreaPictureApi {
   private api: Api;
@@ -47,7 +47,7 @@ export class AreaPictureApi {
     return response.data;
   }
 
-  async getAddressAreaPicture(accountId: string, prospectId: string, address: string): Promise<GetAddressAreaPictureResult> {
+  async getAreaPictureFile(accountId: string, prospectId: string, address: string): Promise<GetAreaPictureFile> {
     const areaPictureId = uuid.v4();
     const fileId = uuid.v4();
     const payload = {
@@ -60,7 +60,7 @@ export class AreaPictureApi {
       createdAt: null,
       updatedAt: null,
     };
-    const response: ApiResponse<GetAddressAreaPictureResult> = await this.api.apisauce.put(`accounts/${accountId}/areaPictures/${areaPictureId}/raw`, payload);
+    const response: ApiResponse<GetAreaPictureFile> = await this.api.apisauce.put(`accounts/${accountId}/areaPictures/${areaPictureId}/raw`, payload);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);

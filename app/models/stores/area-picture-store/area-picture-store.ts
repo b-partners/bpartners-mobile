@@ -14,6 +14,7 @@ import { withRootStore } from '../../extensions/with-root-store';
 export const AreaPictureStoreModel = types
   .model('Bank')
   .props({
+    areaPictureFile: types.maybeNull(types.string),
     areaPicture: types.maybeNull(AreaPictureModel),
     areaPictures: types.optional(types.array(AreaPictureModel), []),
     annotations: types.optional(types.array(AnnotationModel), []),
@@ -31,7 +32,7 @@ export const AreaPictureStoreModel = types
     },
   }))
   .actions(self => ({
-    getAreaPictureFail: error => {
+    getAreaPictureFail: (error: Error) => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -42,7 +43,7 @@ export const AreaPictureStoreModel = types
     },
   }))
   .actions(self => ({
-    getAreaPictureAnnotationsFail: error => {
+    getAreaPictureAnnotationsFail: (error: Error) => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -69,7 +70,7 @@ export const AreaPictureStoreModel = types
     },
   }))
   .actions(self => ({
-    getAreaPicturesFail: error => {
+    getAreaPicturesFail: (error: Error) => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -93,6 +94,28 @@ export const AreaPictureStoreModel = types
         self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult[0].annotations);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getAreaPictureFileSuccess: (file: string) => {
+      self.areaPictureFile = file;
+    },
+  }))
+  .actions(self => ({
+    getAreaPictureFileFail: (error: Error) => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getAreaPictureFile: flow(function* (prospectId: string, address: string) {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        const getAreaPictureFileResult = yield areaPictureApi.getAreaPictureFile(self.currentAccount.id, prospectId, address);
+        self.getAreaPictureFileSuccess(getAreaPictureFileResult);
+      } catch (e) {
+        self.getAreaPictureFileFail(e);
       }
     }),
   }))

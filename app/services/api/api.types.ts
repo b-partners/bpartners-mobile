@@ -136,4 +136,4 @@ export type UpdateAccountHodlerInfo = { kind: 'ok'; accountHolder: AccountHolder
 
 export type GeojsonResult = { kind: 'ok'; geojson: Geojson } | GeneralApiProblem;
 
-export type GetAddressAreaPictureResult = { kind: 'ok'; areaPicture: string } | GeneralApiProblem;
+export type GetAreaPictureFile = { kind: 'ok'; file: string } | GeneralApiProblem;
