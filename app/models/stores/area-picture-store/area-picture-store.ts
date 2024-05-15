@@ -104,7 +104,7 @@ export const AreaPictureStoreModel = types
   }))
   .actions(self => ({
     getAreaPictureFileFail: (error: Error) => {
-      __DEV__ && console.tron.log(error);
+      __DEV__ && console.tron.log(error.message);
       self.catchOrThrow(error);
     },
   }))

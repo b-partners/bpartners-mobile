@@ -11,7 +11,7 @@ import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-//import { navigate } from '../../../navigators/navigation-utilities';
+import { navigate } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
@@ -21,7 +21,7 @@ import { ButtonActions } from './button-action';
 export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props => {
   const { showModal, setShowModal, status, setStatus } = props;
 
-  const { prospectStore } = useStores();
+  const { prospectStore, areaPictureStore } = useStores();
 
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
@@ -67,14 +67,16 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
 
   const onSubmit = async prospectInfos => {
     setIsLoading(true);
+    const prospectId = uuidv4();
     try {
-      await prospectStore.creationProspect({
-        id: uuidv4(),
+      /*await prospectStore.creationProspect({
+        id: prospectId,
         status: 'TO_CONTACT',
         ...prospectInfos,
       });
-      showMessage(translate('common.added'), { backgroundColor: palette.green });
-      //navigate('annotator');
+      showMessage(translate('common.added'), { backgroundColor: palette.green });*/
+      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address);
+      navigate('annotatorEdition');
     } catch (e) {
       showMessage(e);
       throw e;
