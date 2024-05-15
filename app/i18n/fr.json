@@ -156,7 +156,8 @@
       "area": "Zone",
       "usuryRate": "Taux d'usure",
       "obstacle": "Obstacle",
-      "comment": "Commentaire"
+      "comment": "Commentaire",
+      "labelName": "Nom du label"
     }
   },
   "prospectConfigurationScreen": {

@@ -13,11 +13,11 @@ const annotatorInfoResolver = yup.object({
             value: yup.string().required(translate('errors.required')),
         })
         .required(translate('errors.required')),
-    covering: yup.string().required(translate('errors.required')),
-    slope: yup.number().required(translate('errors.required')),
-    wearLevel: yup.number().required(translate('errors.required')),
-    comment: yup.string().required(translate('errors.required')),
-    obstacle: yup.string().required(translate('errors.required')),
+    covering: yup.string(),
+    slope: yup.number(),
+    wearLevel: yup.number(),
+    comment: yup.string(),
+    obstacle: yup.string(),
 });
 
 export const getAnnotatorResolver = () => {

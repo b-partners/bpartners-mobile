@@ -205,7 +205,8 @@
       "area": "Zone",
       "usuryRate": "Usury Rate",
       "obstacle": "Obstacle",
-      "comment": "Comment"
+      "comment": "Comment",
+      "labelName": "Label Name"
     }
   },
   "onboardingScreen": {
