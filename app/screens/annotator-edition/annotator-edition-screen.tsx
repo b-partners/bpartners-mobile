@@ -278,11 +278,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 justifyContent: 'space-between',
               }}
             >
-              <View style={{ width: '94%' }}>
+              <View style={{ width: '94%', height: 750 }}>
                 <View
                   style={{
                     width: '100%',
-                    height: 40,
                     alignItems: 'center',
                     padding: 10,
                   }}
@@ -291,7 +290,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 </View>
                 <TouchableWithoutFeedback onPress={handlePress}>
                   {isKeyboardOpen ? (
-                    <View style={{ width: '100%', height: 100 }} />
+                    <View style={{ width: '100%', height: 50 }} />
                   ) : (
                     <View
                       style={{
@@ -421,13 +420,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                               display: 'flex',
                               justifyContent: 'center',
                               backgroundColor: palette.white,
-                              height: 127,
+                              height: 180,
                               borderWidth: 1,
                               borderRadius: 5,
-                              borderColor: palette.lighterGrey,
-                              zIndex: 10,
+                              borderColor: palette.pastelRed,
                               position: 'absolute',
-                              bottom: 110,
+                              bottom: 0,
                             }
                           : {
                               display: 'flex',
@@ -458,28 +456,111 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                           )}
                         />
                       </View>
+                      {/*<View>*/}
+                      {/*  <Controller*/}
+                      {/*    control={control}*/}
+                      {/*    name='labelType'*/}
+                      {/*    render={({ field: { onChange, value } }) => (*/}
+                      {/*      <Dropdown*/}
+                      {/*        style={dropDownStyles.dropdown}*/}
+                      {/*        placeholderStyle={dropDownStyles.placeholderStyle}*/}
+                      {/*        selectedTextStyle={dropDownStyles.selectedTextStyle}*/}
+                      {/*        inputSearchStyle={dropDownStyles.inputSearchStyle}*/}
+                      {/*        iconStyle={dropDownStyles.iconStyle}*/}
+                      {/*        data={data}*/}
+                      {/*        search*/}
+                      {/*        maxHeight={300}*/}
+                      {/*        labelField='label'*/}
+                      {/*        valueField='value'*/}
+                      {/*        placeholder='Select item'*/}
+                      {/*        searchPlaceholder='Search...'*/}
+                      {/*        value={value}*/}
+                      {/*        onChange={onChange}*/}
+                      {/*      />*/}
+                      {/*    )}*/}
+                      {/*  />*/}
+                      {/*</View>*/}
+                        <View>
+                            <Controller
+                                control={control}
+                                name='covering'
+                                defaultValue={getPolygonName(polygons.length).toString()}
+                                render={({ field: { onChange, value } }) => (
+                                    <InputField
+                                        labelTx={'annotationScreen.labels.covering'}
+                                        error={!!errors.covering}
+                                        value={value}
+                                        onChange={onChange}
+                                        errorMessage={errors.labelName?.message}
+                                        backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                                    />
+                                )}
+                            />
+                        </View>
                       <View>
                         <Controller
-                          control={control}
-                          name='labelType'
-                          render={({ field: { onChange, value } }) => (
-                            <Dropdown
-                              style={dropDownStyles.dropdown}
-                              placeholderStyle={dropDownStyles.placeholderStyle}
-                              selectedTextStyle={dropDownStyles.selectedTextStyle}
-                              inputSearchStyle={dropDownStyles.inputSearchStyle}
-                              iconStyle={dropDownStyles.iconStyle}
-                              data={data}
-                              search
-                              maxHeight={300}
-                              labelField='label'
-                              valueField='value'
-                              placeholder='Select item'
-                              searchPlaceholder='Search...'
-                              value={value}
-                              onChange={onChange}
-                            />
-                          )}
+                            control={control}
+                            name='slope'
+                            render={({ field: { onChange, value } }) => (
+                                <InputField
+                                    labelTx={'annotationScreen.labels.gradient'}
+                                    keyboardType={'numeric'}
+                                    error={!!errors.slope}
+                                    value={value}
+                                    onChange={onChange}
+                                    errorMessage={errors.slope?.message}
+                                    backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                                />
+                            )}
+                        />
+                      </View>
+                      <View>
+                        <Controller
+                            control={control}
+                            name='wearLevel'
+                            render={({ field: { onChange, value } }) => (
+                                <InputField
+                                    labelTx={'annotationScreen.labels.usuryRate'}
+                                    keyboardType={'numeric'}
+                                    error={!!errors.wearLevel}
+                                    value={value}
+                                    onChange={onChange}
+                                    errorMessage={errors.wearLevel?.message}
+                                    backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                                />
+                            )}
+                        />
+                      </View>
+                      <View>
+                        <Controller
+                            control={control}
+                            name='comment'
+                            render={({ field: { onChange, value } }) => (
+                                <InputField
+                                    labelTx={'annotationScreen.labels.comment'}
+                                    error={!!errors.comment}
+                                    value={value}
+                                    onChange={onChange}
+                                    errorMessage={errors.comment?.message}
+                                    backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                                />
+                            )}
+                        />
+                      </View>
+                      <View>
+                        <Controller
+                            control={control}
+                            name='obstacle'
+                            render={({ field: { onChange, value } }) => (
+                                <InputField
+                                    labelTx={'annotationScreen.labels.obstacle'}
+                                    error={!!errors.obstacle}
+                                    value={value}
+                                    onChange={onChange}
+                                    errorMessage={errors.obstacle?.message}
+                                    backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                                />
+                            )}
                         />
                       </View>
                     </View>
