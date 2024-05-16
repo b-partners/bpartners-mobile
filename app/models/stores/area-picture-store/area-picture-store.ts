@@ -31,7 +31,7 @@ export const AreaPictureStoreModel = types
     },
   }))
   .actions(self => ({
-    getAreaPictureFail: error => {
+    getAreaPictureFail: (error: Error) => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -42,7 +42,7 @@ export const AreaPictureStoreModel = types
     },
   }))
   .actions(self => ({
-    getAreaPictureAnnotationsFail: error => {
+    getAreaPictureAnnotationsFail: (error: Error) => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -69,7 +69,7 @@ export const AreaPictureStoreModel = types
     },
   }))
   .actions(self => ({
-    getAreaPicturesFail: error => {
+    getAreaPicturesFail: (error: Error) => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -93,6 +93,17 @@ export const AreaPictureStoreModel = types
         self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult[0].annotations);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getAreaPictureFile: flow(function* (prospectId: string, address: string, fileId: string) {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        const getAreaPictureFileResult = yield areaPictureApi.getAreaPictureFile(self.currentAccount.id, prospectId, address, fileId);
+        self.getAreaPictureSuccess(getAreaPictureFileResult);
+      } catch (e) {
+        self.getAreaPictureFail(e);
       }
     }),
   }))
