@@ -40,7 +40,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
     email: yup.string(),
     phone: yup.string(),
     address: yup.string().required(translate('errors.required')),
-    name: yup.string(),
+    name: yup.string().required(translate('errors.required')),
     comment: yup.string(),
   });
 
