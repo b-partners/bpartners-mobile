@@ -14,7 +14,6 @@ import { withRootStore } from '../../extensions/with-root-store';
 export const AreaPictureStoreModel = types
   .model('Bank')
   .props({
-    areaPictureFile: types.maybeNull(types.string),
     areaPicture: types.maybeNull(AreaPictureModel),
     areaPictures: types.optional(types.array(AreaPictureModel), []),
     annotations: types.optional(types.array(AnnotationModel), []),
@@ -98,24 +97,13 @@ export const AreaPictureStoreModel = types
     }),
   }))
   .actions(self => ({
-    getAreaPictureFileSuccess: (file: string) => {
-      self.areaPictureFile = file;
-    },
-  }))
-  .actions(self => ({
-    getAreaPictureFileFail: (error: Error) => {
-      __DEV__ && console.tron.log(error.message);
-      self.catchOrThrow(error);
-    },
-  }))
-  .actions(self => ({
-    getAreaPictureFile: flow(function* (prospectId: string, address: string) {
+    getAreaPictureFile: flow(function* (prospectId: string, address: string, fileId: string) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
-        const getAreaPictureFileResult = yield areaPictureApi.getAreaPictureFile(self.currentAccount.id, prospectId, address);
-        self.getAreaPictureFileSuccess(getAreaPictureFileResult);
+        const getAreaPictureFileResult = yield areaPictureApi.getAreaPictureFile(self.currentAccount.id, prospectId, address, fileId);
+        self.getAreaPictureSuccess(getAreaPictureFileResult);
       } catch (e) {
-        self.getAreaPictureFileFail(e);
+        self.getAreaPictureFail(e);
       }
     }),
   }))

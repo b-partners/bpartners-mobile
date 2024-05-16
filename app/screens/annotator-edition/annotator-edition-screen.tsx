@@ -28,7 +28,7 @@ import { calculateCentroid, calculateDistance, constrainPointCoordinates, getPol
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const { areaPictureStore } = useStores();
-  const { areaPictureFile } = areaPictureStore;
+  const { pictureUrl } = areaPictureStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
@@ -316,7 +316,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             width: 320,
                             height: 300,
                           }}
-                          source={{ uri: areaPictureFile }}
+                          source={{ uri: pictureUrl }}
                         />
                         {renderPolygons}
                         <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>

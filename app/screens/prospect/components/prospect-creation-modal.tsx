@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
+import uuid from 'react-native-uuid';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { v4 as uuidv4 } from 'uuid';
 import * as yup from 'yup';
@@ -68,14 +69,16 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
   const onSubmit = async prospectInfos => {
     setIsLoading(true);
     const prospectId = uuidv4();
+    const fileId = uuid.v4();
     try {
-      /*await prospectStore.creationProspect({
+      await prospectStore.creationProspect({
         id: prospectId,
         status: 'TO_CONTACT',
         ...prospectInfos,
       });
-      showMessage(translate('common.added'), { backgroundColor: palette.green });*/
-      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address);
+      showMessage(translate('common.added'), { backgroundColor: palette.green });
+      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId);
+      await areaPictureStore.getPictureUrl(fileId);
       navigate('annotatorEdition');
     } catch (e) {
       showMessage(e);
