@@ -13,6 +13,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  annotatorForm: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 323,
+    backgroundColor: palette.white,
+    zIndex: 10,
+    paddingBottom: spacing[5],
+  },
   button: {
     backgroundColor: palette.secondaryColor,
     borderColor: palette.secondaryColor,
@@ -48,8 +57,6 @@ export const dropDownStyles = StyleSheet.create({
   dropdown: {
     margin: 16,
     height: 30,
-    borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
   },
   icon: {
     marginRight: 5,
