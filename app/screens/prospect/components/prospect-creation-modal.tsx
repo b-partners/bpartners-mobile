@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
+import uuid from 'react-native-uuid';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { v4 as uuidv4 } from 'uuid';
 import * as yup from 'yup';
@@ -11,7 +12,7 @@ import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-//import { navigate } from '../../../navigators/navigation-utilities';
+import { navigate } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
@@ -21,7 +22,7 @@ import { ButtonActions } from './button-action';
 export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props => {
   const { showModal, setShowModal, status, setStatus } = props;
 
-  const { prospectStore } = useStores();
+  const { prospectStore, areaPictureStore } = useStores();
 
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
   const [current, setCurrent] = React.useState<ProspectFeedback | null>(null);
@@ -39,7 +40,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
     email: yup.string(),
     phone: yup.string(),
     address: yup.string().required(translate('errors.required')),
-    name: yup.string(),
+    name: yup.string().required(translate('errors.required')),
     comment: yup.string(),
   });
 
@@ -67,14 +68,18 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
 
   const onSubmit = async prospectInfos => {
     setIsLoading(true);
+    const prospectId = uuidv4();
+    const fileId = uuid.v4();
     try {
       await prospectStore.creationProspect({
-        id: uuidv4(),
+        id: prospectId,
         status: 'TO_CONTACT',
         ...prospectInfos,
       });
       showMessage(translate('common.added'), { backgroundColor: palette.green });
-      //navigate('annotator');
+      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId);
+      await areaPictureStore.getPictureUrl(fileId);
+      navigate('annotatorEdition');
     } catch (e) {
       showMessage(e);
       throw e;
