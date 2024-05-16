@@ -8,6 +8,11 @@ export const styles = StyleSheet.create({
     height: 45,
     alignItems: 'center',
   },
+  scrollContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   button: {
     backgroundColor: palette.secondaryColor,
     borderColor: palette.secondaryColor,

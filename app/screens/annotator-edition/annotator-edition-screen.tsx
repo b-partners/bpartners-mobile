@@ -286,11 +286,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             style={{
                                 marginBottom: 10,
                             }}
-                            contentContainerStyle={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                            }}
+                            contentContainerStyle={
+                                Platform.OS === 'ios' ?
+                                    styles.scrollContainer :
+                                    {... styles.scrollContainer, height: '100%'}
+                            }
                         >
                             <View style={{width: '94%', height: 750}}>
                                 <View
@@ -347,7 +347,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                                 <View
                                     style={{
                                         display: 'flex',
-                                        height: 200,
+                                        height: 190,
                                         borderWidth: 1,
                                         borderColor: palette.pastelRed
                                     }}
