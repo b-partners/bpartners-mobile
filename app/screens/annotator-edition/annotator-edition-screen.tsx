@@ -71,8 +71,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const handleImageLayout = event => {
     const { x, y } = event.nativeEvent.layout;
-    Log('x: ' + x);
-    Log('y: ' + y);
     setImageOffset({ x, y });
   };
 

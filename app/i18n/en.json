@@ -206,7 +206,8 @@
       "usuryRate": "Usury Rate",
       "obstacle": "Obstacle",
       "comment": "Comment",
-      "labelName": "Label Name"
+      "labelName": "Label Name",
+      "labelType": "Label Type"
     }
   },
   "onboardingScreen": {

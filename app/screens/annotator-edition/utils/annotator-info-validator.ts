@@ -29,8 +29,8 @@ export const getDefaultValue = polygonLength => {
     labelName: getPolygonName(polygonLength),
     labelType: { label: 'Roof 1', value: '1' },
     covering: '',
-    slope: 0,
-    wearLevel: 0,
+    slope: '',
+    wearLevel: '',
     comment: '',
     obstacle: '',
   };

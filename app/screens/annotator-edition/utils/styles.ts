@@ -57,6 +57,10 @@ export const dropDownStyles = StyleSheet.create({
   dropdown: {
     margin: 16,
     height: 30,
+    width: '95%',
+    color: palette.secondaryColor,
+    position: 'absolute',
+    top: 15
   },
   icon: {
     marginRight: 5,
@@ -66,10 +70,13 @@ export const dropDownStyles = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: palette.secondaryColor
   },
   iconStyle: {
     width: 20,
     height: 20,
+    right: 24,
+    tintColor: palette.secondaryColor
   },
   inputSearchStyle: {
     height: 40,
