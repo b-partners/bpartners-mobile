@@ -11,7 +11,7 @@ import Svg, { Polygon } from 'react-native-svg';
 import { Header, InputField, Separator, Text } from '../../components';
 import { KeyboardLayout } from '../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../i18n';
-import { useStores } from '../../models';
+//import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -27,8 +27,8 @@ import { dropDownStyles, styles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, getPolygonName } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  const { areaPictureStore } = useStores();
-  const { pictureUrl } = areaPictureStore;
+  /*const { areaPictureStore } = useStores();
+  const { pictureUrl } = areaPictureStore;*/
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
@@ -316,7 +316,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             width: 320,
                             height: 300,
                           }}
-                          source={{ uri: pictureUrl }}
+                          //source={{ uri: pictureUrl }}
+                          source={require('./assets/images/Rennes_Solar_Panel.jpg')}
                         />
                         {renderPolygons}
                         <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
