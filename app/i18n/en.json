@@ -203,7 +203,12 @@
       "wear": "Wear",
       "velux": "Velux",
       "slope": "Slope",
-      "area": "Zone"
+      "area": "Zone",
+      "usuryRate": "Usury Rate",
+      "obstacle": "Obstacle",
+      "comment": "Comment",
+      "labelName": "Label Name",
+      "labelType": "Label Type"
     }
   },
   "onboardingScreen": {
