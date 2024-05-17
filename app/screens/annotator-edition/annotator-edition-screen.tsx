@@ -2,13 +2,13 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 
 import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
-//import { useStores } from '../../models';
+import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -17,6 +17,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Log } from '../welcome/utils/utils';
+import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
 import { AnnotationModal } from './components/annotation-modal';
@@ -27,8 +28,8 @@ import { styles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  /*const { areaPictureStore } = useStores();
-  const { pictureUrl } = areaPictureStore;*/
+  const { areaPictureStore } = useStores();
+  const { pictureUrl, areaPicture } = areaPictureStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
@@ -269,7 +270,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   padding: 10,
                 }}
               >
-                <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
               </View>
               <TouchableWithoutFeedback onPress={handlePress}>
                 {isKeyboardOpen ? (
@@ -294,8 +295,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                           width: 320,
                           height: 300,
                         }}
-                        //source={{ uri: pictureUrl }}
-                        source={require('./assets/images/Rennes_Solar_Panel.jpg')}
+                        source={{ uri: pictureUrl }}
                       />
                       {renderPolygons}
                       <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
@@ -361,41 +361,15 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 )}
               </View>
               {!isKeyboardOpen && (
-                <View style={{ marginBottom: 50, zIndex: -1 }}>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={validatePolygon(currentPolygonPoints) ? styles.button : styles.disabledButton}
-                      onPress={handleSubmit(startNewPolygon)}
-                      disabled={!validatePolygon(currentPolygonPoints)}
-                    >
-                      <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.buttonText} tx={'annotationScreen.process.validatePolygon'} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={currentPolygonPoints.length === 0 ? styles.disabledButton : styles.button}
-                      onPress={() => setCurrentPolygonPoints(prevPoints => prevPoints.slice(0, -1))}
-                      disabled={currentPolygonPoints.length === 0}
-                    >
-                      <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.buttonText} tx={'annotationScreen.process.removeLastPoint'} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={polygons.length === 0 ? styles.disabledButton : styles.button}
-                      onPress={handleCancelAnnotation}
-                      disabled={polygons.length === 0}
-                    >
-                      <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.buttonText} tx={'annotationScreen.process.cancelAnnotation'} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+                <AnnotationButtonAction
+                  validatePolygon={validatePolygon}
+                  currentPolygonPoints={currentPolygonPoints}
+                  handleSubmit={handleSubmit}
+                  startNewPolygon={startNewPolygon}
+                  setCurrentPolygonPoints={setCurrentPolygonPoints}
+                  polygonLength={polygons?.length}
+                  handleCancelAnnotation={handleCancelAnnotation}
+                />
               )}
             </View>
           </ScrollView>

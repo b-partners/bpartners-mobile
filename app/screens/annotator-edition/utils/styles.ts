@@ -5,8 +5,21 @@ import { palette } from '../../../theme/palette';
 
 export const styles = StyleSheet.create({
   buttonContainer: {
+    width: '49%',
     height: 45,
     alignItems: 'center',
+  },
+  buttonRowContainer: {
+    width: '100%',
+    marginBottom: 50,
+    zIndex: -1,
+    display: 'flex',
+  },
+  buttonColumnContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   scrollContainer: {
     display: 'flex',
