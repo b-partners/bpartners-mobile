@@ -2,14 +2,13 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 
 import { Header, Separator, Text } from '../../components';
-import { KeyboardLayout } from '../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../i18n';
-//import { useStores } from '../../models';
+import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -18,8 +17,10 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Log } from '../welcome/utils/utils';
+import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
+import { AnnotationModal } from './components/annotation-modal';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
@@ -27,8 +28,8 @@ import { styles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  /*const { areaPictureStore } = useStores();
-  const { pictureUrl } = areaPictureStore;*/
+  const { areaPictureStore } = useStores();
+  const { pictureUrl, areaPicture } = areaPictureStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
@@ -77,8 +78,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     const { x, y } = event.nativeEvent.layout;
     setImageOffset({ x, y });
   };
-
-  Log(imageOffset);
 
   const createPanResponder = index => {
     return PanResponder.create({
@@ -250,162 +249,141 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     reset(getDefaultValue(0));
   };
 
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <KeyboardLayout setKeyboardOpen={setIsKeyboardOpen}>
-          <Header
-            headerTx='annotationScreen.title'
-            leftIcon={'back'}
-            onLeftPress={() => navigation.navigate('home')}
-            style={HEADER}
-            titleStyle={HEADER_TITLE}
-          />
-          <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
-            <ScrollView
-              style={{
-                marginBottom: 10,
-              }}
-              contentContainerStyle={Platform.OS === 'ios' ? styles.scrollContainer : { ...styles.scrollContainer, height: '100%' }}
-            >
-              <View style={{ width: '94%', height: 750 }}>
-                <View
-                  style={{
-                    width: '100%',
-                    alignItems: 'center',
-                    padding: 10,
-                  }}
-                >
-                  <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'} style={{ color: palette.black, fontFamily: 'Geometria' }} />
-                </View>
-                <TouchableWithoutFeedback onPress={handlePress}>
-                  {isKeyboardOpen ? (
-                    <View style={{ width: '100%', height: 100 }} />
-                  ) : (
-                    <View
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '100%',
-                        height: 350,
-                        backgroundColor: palette.lighterGrey,
-                        borderWidth: 1,
-                        borderColor: palette.white,
-                      }}
-                    >
-                      <View style={{ width: 320, height: 300 }}>
-                        <Image
-                          onLayout={handleImageLayout}
-                          style={{
-                            width: 320,
-                            height: 300,
-                          }}
-                          //source={{ uri: pictureUrl }}
-                          source={require('./assets/images/Rennes_Solar_Panel.jpg')}
-                        />
-                        {renderPolygons}
-                        <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
-                          <Polygon
-                            points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
-                            fill='rgba(144, 248, 10, 0.4)'
-                            stroke='#90F80A'
-                            strokeWidth='1'
-                          />
-                        </Svg>
-                        {renderPoints}
-                        {renderDistances}
-                      </View>
-                    </View>
-                  )}
-                </TouchableWithoutFeedback>
-                <View
-                  style={{
-                    display: 'flex',
-                    height: 190,
-                  }}
-                >
-                  {!isKeyboardOpen && (
-                    <>
-                      <Text
-                        tx={'annotationScreen.annotations'}
+        <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
+          <ScrollView
+            style={{
+              marginBottom: 10,
+            }}
+            contentContainerStyle={Platform.OS === 'ios' ? styles.scrollContainer : { ...styles.scrollContainer, height: '100%' }}
+          >
+            <View style={{ width: '94%', height: 750 }}>
+              <View
+                style={{
+                  width: '100%',
+                  alignItems: 'center',
+                  padding: 10,
+                }}
+              >
+                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+              </View>
+              <TouchableWithoutFeedback onPress={handlePress}>
+                {isKeyboardOpen ? (
+                  <View style={{ width: '100%', height: 100 }} />
+                ) : (
+                  <View
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: 350,
+                      backgroundColor: palette.lighterGrey,
+                      borderWidth: 1,
+                      borderColor: palette.white,
+                    }}
+                  >
+                    <View style={{ width: 320, height: 300 }}>
+                      <Image
+                        onLayout={handleImageLayout}
                         style={{
-                          color: palette.black,
-                          fontSize: 22,
-                          fontWeight: '700',
-                          marginTop: spacing[1],
+                          width: 320,
+                          height: 300,
                         }}
+                        source={{ uri: pictureUrl }}
                       />
-                      {polygons.length === 0 ? (
-                        <View style={{ marginVertical: 10 }}>
-                          <Text
-                            text={"Pas encore d'annotation effectuée."}
-                            style={{
-                              color: palette.greyDarker,
-                              fontFamily: 'Geometria',
-                            }}
-                          />
-                        </View>
-                      ) : (
-                        <ScrollView style={{ maxHeight: 150 }}>
-                          {!validatePolygon(currentPolygonPoints) && (
-                            <FlatList
-                              style={{ width: '100%', height: 150 }}
-                              data={polygons}
-                              keyExtractor={(item, index) => `polygon_${index}`}
-                              renderItem={({ index }) => {
-                                return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} />;
-                              }}
-                              ItemSeparatorComponent={() => <Separator style={styles.separator} />}
-                            />
-                          )}
-                        </ScrollView>
-                      )}
-                    </>
-                  )}
-                  {validatePolygon(currentPolygonPoints) && <AnnotationForm polygons={polygons} control={control} errors={errors} watch={watch} />}
-                </View>
-                {!isKeyboardOpen && (
-                  <View style={{ marginBottom: 50, zIndex: -1 }}>
-                    <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={validatePolygon(currentPolygonPoints) ? styles.button : styles.disabledButton}
-                        onPress={handleSubmit(startNewPolygon)}
-                        disabled={!validatePolygon(currentPolygonPoints)}
-                      >
-                        <View style={{ justifyContent: 'center' }}>
-                          <Text style={styles.buttonText} tx={'annotationScreen.process.validatePolygon'} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={currentPolygonPoints.length === 0 ? styles.disabledButton : styles.button}
-                        onPress={() => setCurrentPolygonPoints(prevPoints => prevPoints.slice(0, -1))}
-                        disabled={currentPolygonPoints.length === 0}
-                      >
-                        <View style={{ justifyContent: 'center' }}>
-                          <Text style={styles.buttonText} tx={'annotationScreen.process.removeLastPoint'} />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={polygons.length === 0 ? styles.disabledButton : styles.button}
-                        onPress={handleCancelAnnotation}
-                        disabled={polygons.length === 0}
-                      >
-                        <View style={{ justifyContent: 'center' }}>
-                          <Text style={styles.buttonText} tx={'annotationScreen.process.cancelAnnotation'} />
-                        </View>
-                      </TouchableOpacity>
+                      {renderPolygons}
+                      <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
+                        <Polygon
+                          points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
+                          fill='rgba(144, 248, 10, 0.4)'
+                          stroke='#90F80A'
+                          strokeWidth='1'
+                        />
+                      </Svg>
+                      {renderPoints}
+                      {renderDistances}
                     </View>
                   </View>
                 )}
+              </TouchableWithoutFeedback>
+              <View
+                style={{
+                  display: 'flex',
+                  height: 190,
+                }}
+              >
+                {!isKeyboardOpen && (
+                  <>
+                    <Text
+                      tx={'annotationScreen.annotations'}
+                      style={{
+                        color: palette.black,
+                        fontSize: 22,
+                        fontWeight: '700',
+                        marginTop: spacing[1],
+                      }}
+                    />
+                    {polygons.length === 0 ? (
+                      <View style={{ marginVertical: 10 }}>
+                        <Text
+                          text={"Pas encore d'annotation effectuée."}
+                          style={{
+                            color: palette.greyDarker,
+                            fontFamily: 'Geometria',
+                          }}
+                        />
+                      </View>
+                    ) : (
+                      <ScrollView style={{ maxHeight: 150 }}>
+                        {!validatePolygon(currentPolygonPoints) && (
+                          <FlatList
+                            style={{ width: '100%', height: 150 }}
+                            data={polygons}
+                            keyExtractor={(item, index) => `polygon_${index}`}
+                            renderItem={({ index }) => {
+                              return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} />;
+                            }}
+                            ItemSeparatorComponent={() => <Separator style={styles.separator} />}
+                          />
+                        )}
+                      </ScrollView>
+                    )}
+                  </>
+                )}
+                {validatePolygon(currentPolygonPoints) && (
+                  <AnnotationForm polygons={polygons} control={control} errors={errors} watch={watch} setShowModal={setShowModal} />
+                )}
               </View>
-            </ScrollView>
-          </View>
-        </KeyboardLayout>
+              {!isKeyboardOpen && (
+                <AnnotationButtonAction
+                  validatePolygon={validatePolygon}
+                  currentPolygonPoints={currentPolygonPoints}
+                  handleSubmit={handleSubmit}
+                  startNewPolygon={startNewPolygon}
+                  setCurrentPolygonPoints={setCurrentPolygonPoints}
+                  polygonLength={polygons?.length}
+                  handleCancelAnnotation={handleCancelAnnotation}
+                />
+              )}
+            </View>
+          </ScrollView>
+        </View>
+        <AnnotationModal
+          errors={errors}
+          setKeyboardOpen={setIsKeyboardOpen}
+          isKeyboardOpen={isKeyboardOpen}
+          setShowModal={setShowModal}
+          showModal={showModal}
+          control={control}
+          polygonLength={polygons?.length}
+          reset={reset}
+        />
       </ErrorBoundary>
     </Provider>
   );
