@@ -57,7 +57,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
             borderRadius: 7,
           }}
         >
-          <View style={{ width: '100%', height: 20 }}></View>
+          <View style={{ width: '100%', height: 5 }}></View>
           <View style={{ position: 'relative', height: 70, width: '100%', borderBottomWidth: 1, borderColor: palette.lighterGrey }}>
             <Text
               tx={'annotationScreen.labels.labelType'}
@@ -102,7 +102,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                 value={value}
                 onChange={onChange}
                 errorMessage={errors.labelName?.message}
-                backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                backgroundColor={palette.white}
                 onStartShouldSetResponder={() => true}
               />
             )}
@@ -118,7 +118,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                 value={value}
                 onChange={onChange}
                 errorMessage={errors.labelName?.message}
-                backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                backgroundColor={palette.white}
               />
             )}
           />
@@ -133,7 +133,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                 value={value}
                 onChange={onChange}
                 errorMessage={errors.slope?.message}
-                backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                backgroundColor={palette.white}
               />
             )}
           />
@@ -148,7 +148,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                 value={value}
                 onChange={onChange}
                 errorMessage={errors.wearLevel?.message}
-                backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                backgroundColor={palette.white}
               />
             )}
           />
@@ -162,7 +162,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                 value={value}
                 onChange={onChange}
                 errorMessage={errors.comment?.message}
-                backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                backgroundColor={palette.white}
               />
             )}
           />
@@ -176,7 +176,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                 value={value}
                 onChange={onChange}
                 errorMessage={errors.obstacle?.message}
-                backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                backgroundColor={palette.white}
               />
             )}
           />
