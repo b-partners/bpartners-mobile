@@ -1,4 +1,3 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
@@ -19,6 +18,7 @@ import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Log } from '../welcome/utils/utils';
 import AnnotationForm from './components/annotation-form';
+import AnnotationItem from './components/annotation-item';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
@@ -28,14 +28,14 @@ import { calculateCentroid, calculateDistance, constrainPointCoordinates } from 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
-  const [annotation, setAnnotation] = useState([]);
+  const [annotations, setAnnotations] = useState([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
-  Log(annotation);
+  Log(annotations);
 
-  const lastAnnotation = annotation[annotation.length - 1];
+  const lastAnnotation = annotations[annotations.length - 1];
 
   const {
     handleSubmit,
@@ -174,7 +174,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
             <Polygon points={polygonPoints.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
           </Svg>
-          {annotation[index]?.labelName && (
+          {annotations[index]?.labelName && (
             <Text
               style={{
                 position: 'absolute',
@@ -185,13 +185,13 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                 fontWeight: 'bold',
               }}
             >
-              {annotation[index]?.labelName}
+              {annotations[index]?.labelName}
             </Text>
           )}
         </React.Fragment>
       );
     });
-  }, [polygons, annotation]);
+  }, [polygons, annotations]);
 
   const startNewPolygon = labels => {
     const { labelName, labelType } = labels;
@@ -221,27 +221,27 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       setCurrentPolygonPoints([]);
       setPolygons(prevPolygons => [...prevPolygons, newPolygon]);
-      setAnnotation(prevAnnotation => [...prevAnnotation, newAnnotation]);
+      setAnnotations(prevAnnotation => [...prevAnnotation, newAnnotation]);
 
       reset(getDefaultValue(newAnnotationId + 1));
     }
   };
 
-  const handleDeletePolygon = index => {
-    const updatedPolygons = [...polygons];
-    const updatedAnnotation = [...annotation];
-
-    updatedPolygons.splice(index, 1);
-    updatedAnnotation.splice(index, 1);
-
-    setPolygons(updatedPolygons);
-    setAnnotation(updatedAnnotation);
-  };
+  // const handleDeletePolygon = index => {
+  //   const updatedPolygons = [...polygons];
+  //   const updatedAnnotation = [...annotations];
+  //
+  //   updatedPolygons.splice(index, 1);
+  //   updatedAnnotation.splice(index, 1);
+  //
+  //   setPolygons(updatedPolygons);
+  //   setAnnotations(updatedAnnotation);
+  // };
 
   const handleCancelAnnotation = () => {
     setCurrentPolygonPoints([]);
     setPolygons([]);
-    setAnnotation([]);
+    setAnnotations([]);
 
     reset(getDefaultValue(0));
   };
@@ -343,58 +343,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         </View>
                       ) : (
                         <ScrollView style={{ maxHeight: 150 }}>
-                          {!validatePolygon(currentPolygonPoints) && <FlatList
-                              style={{width: '100%', height: 150}}
+                          {!validatePolygon(currentPolygonPoints) && (
+                            <FlatList
+                              style={{ width: '100%', height: 150 }}
                               data={polygons}
                               keyExtractor={(item, index) => `polygon_${index}`}
-                              renderItem={({index}) => {
-                                return (
-                                    <View
-                                        key={`polygon_${index}`}
-                                        style={{
-                                          width: '100%',
-                                          marginVertical: spacing[3],
-                                          display: 'flex',
-                                          flexDirection: 'row',
-                                          justifyContent: 'space-between',
-                                        }}
-                                    >
-                                      <View>
-                                        <Text
-                                            style={{
-                                              color: palette.black,
-                                              fontSize: 16,
-                                              fontWeight: '600',
-                                              marginBottom: spacing[1],
-                                            }}
-                                        >
-                                          {annotation[index]?.labelName}
-                                        </Text>
-                                        <Text
-                                            style={{
-                                              color: palette.secondaryColor,
-                                              fontSize: 14,
-                                              fontWeight: '800',
-                                            }}
-                                        >
-                                          {annotation[index]?.labelType?.label}
-                                        </Text>
-                                      </View>
-                                      <TouchableOpacity
-                                          onPress={() => handleDeletePolygon(index)}
-                                          style={{
-                                            padding: 10,
-                                            alignItems: 'center',
-                                            width: 45,
-                                          }}
-                                      >
-                                        <MaterialCommunityIcons name='delete' size={22} color={palette.pastelRed}/>
-                                      </TouchableOpacity>
-                                    </View>
-                                );
+                              renderItem={({ index }) => {
+                                return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} />;
                               }}
-                              ItemSeparatorComponent={() => <Separator style={styles.separator}/>}
-                          />}
+                              ItemSeparatorComponent={() => <Separator style={styles.separator} />}
+                            />
+                          )}
                         </ScrollView>
                       )}
                     </>

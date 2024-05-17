@@ -60,7 +60,7 @@ export const dropDownStyles = StyleSheet.create({
     width: '95%',
     color: palette.secondaryColor,
     position: 'absolute',
-    top: 15
+    top: 15,
   },
   icon: {
     marginRight: 5,
@@ -70,16 +70,31 @@ export const dropDownStyles = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: 16,
-    color: palette.secondaryColor
+    color: palette.secondaryColor,
   },
   iconStyle: {
     width: 20,
     height: 20,
     right: 24,
-    tintColor: palette.secondaryColor
+    tintColor: palette.secondaryColor,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+  },
+});
+
+export const labelStyles = StyleSheet.create({
+  key: {
+    fontSize: 12,
+    color: palette.lightGrey,
+    paddingTop: spacing[3],
+    paddingLeft: spacing[4],
+  },
+  value: {
+    fontSize: 16,
+    color: palette.secondaryColor,
+    paddingTop: spacing[1],
+    paddingLeft: spacing[4],
   },
 });
