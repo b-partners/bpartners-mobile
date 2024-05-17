@@ -78,8 +78,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     setImageOffset({ x, y });
   };
 
-  Log(imageOffset);
-
   const createPanResponder = index => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -410,6 +408,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           showModal={showModal}
           control={control}
           polygonLength={polygons?.length}
+          reset={reset}
         />
       </ErrorBoundary>
     </Provider>

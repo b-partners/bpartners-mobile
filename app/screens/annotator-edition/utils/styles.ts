@@ -20,6 +20,8 @@ export const styles = StyleSheet.create({
     zIndex: 10,
     flexDirection: 'row',
     borderRadius: 5,
+    position: 'absolute',
+    top: 40,
   },
   button: {
     backgroundColor: palette.secondaryColor,

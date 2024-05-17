@@ -1,6 +1,6 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Modal } from 'react-native-paper';
 
@@ -9,6 +9,7 @@ import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayo
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
+import { getDefaultValue } from '../utils/annotator-info-validator';
 import { dropDownStyles } from '../utils/styles';
 import { getPolygonName } from '../utils/utils';
 
@@ -20,10 +21,11 @@ type AnnotationModalProps = {
   control: any;
   polygonLength: number;
   errors: any;
+  reset: any;
 };
 
 export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
-  const { showModal, setShowModal, setKeyboardOpen, errors, polygonLength, control, isKeyboardOpen } = props;
+  const { showModal, setShowModal, setKeyboardOpen, errors, polygonLength, control, isKeyboardOpen, reset } = props;
 
   const labelTypes = [
     { label: 'Roof 1', value: '1' },
@@ -192,7 +194,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
             }}
           >
             <Button
-              tx={'common.next'}
+              tx={'common.cancel'}
               style={{
                 ...SHADOW_STYLE,
                 backgroundColor: palette.secondaryColor,
@@ -202,11 +204,14 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                 width: '43%',
                 height: 40,
               }}
-              onPress={() => {}}
+              onPress={() => {
+                reset(getDefaultValue(0));
+                setShowModal(false);
+              }}
               textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
             />
             <Button
-              tx={'common.next'}
+              tx={'common.save'}
               style={{
                 ...SHADOW_STYLE,
                 backgroundColor: palette.secondaryColor,
@@ -216,7 +221,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                 width: '43%',
                 height: 40,
               }}
-              onPress={() => {}}
+              onPress={() => setShowModal(false)}
               textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
             />
           </View>
