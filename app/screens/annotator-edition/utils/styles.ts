@@ -14,13 +14,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   annotatorForm: {
-    position: 'absolute',
-    top: 0,
     width: '100%',
-    height: 323,
-    backgroundColor: palette.white,
+    height: 70,
+    backgroundColor: palette.secondaryColor,
     zIndex: 10,
-    paddingBottom: spacing[5],
+    flexDirection: 'row',
+    borderRadius: 5,
   },
   button: {
     backgroundColor: palette.secondaryColor,
