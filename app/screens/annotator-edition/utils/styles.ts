@@ -5,8 +5,21 @@ import { palette } from '../../../theme/palette';
 
 export const styles = StyleSheet.create({
   buttonContainer: {
+    width: '49%',
     height: 45,
     alignItems: 'center',
+  },
+  buttonRowContainer: {
+    width: '100%',
+    marginBottom: 50,
+    zIndex: -1,
+    display: 'flex',
+  },
+  buttonColumnContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   scrollContainer: {
     display: 'flex',
@@ -14,13 +27,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   annotatorForm: {
-    position: 'absolute',
-    top: 0,
     width: '100%',
-    height: 323,
-    backgroundColor: palette.white,
+    height: 70,
+    backgroundColor: palette.secondaryColor,
     zIndex: 10,
-    paddingBottom: spacing[5],
+    flexDirection: 'row',
+    borderRadius: 5,
+    position: 'absolute',
+    top: 40,
   },
   button: {
     backgroundColor: palette.secondaryColor,

@@ -41,7 +41,8 @@
     "no": "No",
     "reload": "Reload",
     "selectAFile": "Please select a file",
-    "labels": "Labels"
+    "labels": "Labels",
+    "validate": "Validate"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
