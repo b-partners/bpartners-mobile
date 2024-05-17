@@ -154,7 +154,12 @@
       "wear": "Usure",
       "velux": "Velux",
       "slope": "Pente",
-      "area": "Zone"
+      "area": "Zone",
+      "usuryRate": "Taux d'usure",
+      "obstacle": "Obstacle",
+      "comment": "Commentaire",
+      "labelName": "Nom du label",
+      "labelType": "Type de label"
     }
   },
   "prospectConfigurationScreen": {

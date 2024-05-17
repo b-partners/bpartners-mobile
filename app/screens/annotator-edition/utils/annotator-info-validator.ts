@@ -13,6 +13,11 @@ const annotatorInfoResolver = yup.object({
       value: yup.string().required(translate('errors.required')),
     })
     .required(translate('errors.required')),
+  covering: yup.string(),
+  slope: yup.string(),
+  wearLevel: yup.string(),
+  comment: yup.string(),
+  obstacle: yup.string(),
 });
 
 export const getAnnotatorResolver = () => {
@@ -23,5 +28,10 @@ export const getDefaultValue = polygonLength => {
   return {
     labelName: getPolygonName(polygonLength),
     labelType: { label: 'Roof 1', value: '1' },
+    covering: '',
+    slope: '',
+    wearLevel: '',
+    comment: '',
+    obstacle: '',
   };
 };
