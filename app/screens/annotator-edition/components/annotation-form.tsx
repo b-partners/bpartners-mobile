@@ -10,7 +10,7 @@ import { palette } from '../../../theme/palette';
 import { dropDownStyles, styles } from '../utils/styles';
 import { getPolygonName } from '../utils/utils';
 
-const AnnotationItem: FC<any> = props => {
+const AnnotationForm: FC<any> = props => {
   const { polygons, control, errors, watch } = props;
   const [accordionExpanded, setAccordionExpanded] = useState(false);
 
@@ -195,4 +195,4 @@ const AnnotationItem: FC<any> = props => {
   );
 };
 
-export default AnnotationItem;
+export default AnnotationForm;
