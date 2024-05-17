@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -41,6 +41,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
     phone: yup.string(),
     address: yup.string().required(translate('errors.required')),
     name: yup.string().required(translate('errors.required')),
+    firstName: yup.string().required(translate('errors.required')),
     comment: yup.string(),
   });
 
@@ -57,6 +58,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
       phone: '',
       address: '',
       name: '',
+      firstName: '',
       comment: '',
     },
     resolver: prospectResolver,
@@ -102,13 +104,14 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
           justifyContent: keyboardOpen ? 'flex-start' : 'center',
         }}
       >
-        <View
+        <ScrollView
           style={{
             backgroundColor: palette.white,
             borderRadius: 20,
             marginHorizontal: '2%',
+            paddingVertical: spacing[2],
             width: '96%',
-            height: 480,
+            height: 540,
           }}
         >
           <View
@@ -209,6 +212,23 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
               <View style={{ marginBottom: 10, width: '100%' }}>
                 <Controller
                   control={control}
+                  name='firstName'
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField
+                      labelTx={'prospectScreen.process.firstName'}
+                      error={!!errors.firstName}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.firstName?.message}
+                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                    />
+                  )}
+                />
+              </View>
+              <View style={{ marginBottom: 10, width: '100%' }}>
+                <Controller
+                  control={control}
                   name='comment'
                   defaultValue=''
                   render={({ field: { onChange, value } }) => (
@@ -251,7 +271,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
               setCurrentPage={setCurrentPage}
             />
           </View>
-        </View>
+        </ScrollView>
       </Modal>
     </KeyboardLayout>
   );

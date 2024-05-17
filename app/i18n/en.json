@@ -151,6 +151,7 @@
       "phone": "Phone number",
       "address": "Address",
       "name": "Prospect name",
+      "firstName": "Prospect first name",
       "comment": "Comment",
       "optional": "Optional",
       "amountLabel": "Potential contract value in € (Optional)",

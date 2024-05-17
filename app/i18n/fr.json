@@ -107,6 +107,7 @@
       "phone": "Téléphone",
       "address": "Adresse",
       "name": "Nom du prospect",
+      "firstName": "Prénom du prospect",
       "comment": "Commentaire",
       "amountLabel": "Valeur potentielle du contrat en € (Optionel)",
       "amount": "Montant",
