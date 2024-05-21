@@ -38,7 +38,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
-  Log(annotations);
+  Log(polygons);
 
   const lastAnnotation = annotations[annotations.length - 1];
 
