@@ -1,40 +1,43 @@
 import getAreaOfPolygon from 'geolib/es/getAreaOfPolygon';
 import getDistance from 'geolib/es/getPreciseDistance';
 
-import { GeojsonReturn, Measurement, Polygon } from '../../types';
+import { Log } from '../../../welcome/utils/utils';
+import { GeojsonReturn, Measurement } from '../../types';
 import { GeoPointMapper } from '../mappers';
 
 export class GeojsonMapper {
-  public static toMeasurements(restGeojson: GeojsonReturn[], domainPolygons: Polygon[]): Measurement[] {
+  public static toMeasurements(restGeojson: GeojsonReturn[]): Measurement[] {
     const measurements: Measurement[] = [];
 
     restGeojson.forEach(geojson => {
-      const associatedPolygon = domainPolygons.find(polygon => polygon.id === geojson.properties.id);
-      const coordinates = geojson.geometry.coordinates[0][0];
+      const coordinates = geojson.geometry.coordinates[0][0].slice();
+      const currentPolygonId = geojson.properties.id;
+      const area = this.toArea(geojson, currentPolygonId);
+      measurements.push(area as Measurement);
 
-      if (associatedPolygon) {
-        const area = this.toArea(geojson, associatedPolygon);
-        measurements.push(area as Measurement);
-        for (let a = 1; a < coordinates.length; a++) {
-          const prevCoordinate = coordinates[a - 1];
-          const currentCoordinate = coordinates[a];
+      Log(coordinates);
+      coordinates.push(coordinates[0]);
+      Log('here');
 
-          measurements.push({
-            polygonId: associatedPolygon.id,
-            unity: 'm',
-            value: +getDistance(GeoPointMapper.toGeoLocation(prevCoordinate), GeoPointMapper.toGeoLocation(currentCoordinate), 0.2).toFixed(2),
-          });
-        }
+      for (let a = 1; a < coordinates.length; a++) {
+        const prevCoordinate = coordinates[a - 1];
+        const currentCoordinate = coordinates[a];
+
+        measurements.push({
+          polygonId: currentPolygonId,
+          unity: 'm',
+          value: +getDistance(GeoPointMapper.toGeoLocation(prevCoordinate), GeoPointMapper.toGeoLocation(currentCoordinate), 0.2).toFixed(2),
+        });
       }
     });
 
     return measurements;
   }
 
-  private static toArea(restGeojson: GeojsonReturn, domainPolygon: Polygon): Measurement {
+  private static toArea(restGeojson: GeojsonReturn, polygonId: string): Measurement {
     const area = getAreaOfPolygon(restGeojson.geometry.coordinates[0][0].map(GeoPointMapper.toGeoLocation));
     return {
-      polygonId: domainPolygon.id,
+      polygonId: polygonId,
       unity: 'm²',
       value: Math.round(area),
     };

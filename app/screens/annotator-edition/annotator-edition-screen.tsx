@@ -17,6 +17,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
+import { Log } from '../welcome/utils/utils';
 import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
@@ -25,6 +26,7 @@ import { Polygon as PolygonType } from './types';
 import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
+import { GeojsonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
 import { styles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
@@ -32,7 +34,7 @@ import { calculateCentroid, calculateDistance, constrainPointCoordinates, conver
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const { areaPictureStore, geojsonStore } = useStores();
   const { pictureUrl, areaPicture } = areaPictureStore;
-  //const { geojson } = geojsonStore;
+  const { geojson } = geojsonStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
@@ -240,6 +242,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     };
 
     await geojsonStore.convertPoints(payload);
+
+    Log('GeojsonMapper.toMeasurements(geojson)');
+    Log(GeojsonMapper.toMeasurements(geojson));
   };
 
   // const handleDeletePolygon = index => {
