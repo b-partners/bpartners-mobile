@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Animated, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
+import uuid from 'react-native-uuid';
 
 import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
@@ -21,6 +22,8 @@ import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
 import { AnnotationModal } from './components/annotation-modal';
+import { Polygon as PolygonType } from './types';
+import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
@@ -33,14 +36,14 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
-  const [annotations, setAnnotations] = useState([]);
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
-  Log(polygons);
+  Log(annotations);
 
-  const lastAnnotation = annotations[annotations.length - 1];
+  // const lastAnnotation = annotations[annotations.length - 1];
 
   const {
     handleSubmit,
@@ -202,31 +205,31 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     if (validateLabel(labelName)) {
       showMessage(translate('annotationScreen.errors.requiredLabel'), { backgroundColor: palette.pastelRed });
     } else {
-      const newPolygon = [...currentPolygonPoints];
+      const newPolygon: PolygonType = { id: uuid.v4() as string, points: [...currentPolygonPoints] };
 
-      const newAnnotationId = lastAnnotation ? lastAnnotation.id + 1 : 0;
+      //const newAnnotationId = lastAnnotation ? lastAnnotation.id + 1 : 0;
 
-      const getNewAnnotationId = () => {
+      /*const getNewAnnotationId = () => {
         if (lastAnnotation && lastAnnotation.id < 25) {
           return lastAnnotation.id + 1;
         } else {
           return 0;
         }
-      };
+      };*/
 
       const newAnnotation = {
-        id: getNewAnnotationId(),
-        polygonPoints: newPolygon,
+        id: uuid.v4(),
+        polygons: [newPolygon],
         labelName: labelName,
         labelType: labelType,
         ...labels,
       };
 
       setCurrentPolygonPoints([]);
-      setPolygons(prevPolygons => [...prevPolygons, newPolygon]);
+      setPolygons(prevPolygons => [...prevPolygons, newPolygon.points]);
       setAnnotations(prevAnnotation => [...prevAnnotation, newAnnotation]);
 
-      reset(getDefaultValue(newAnnotationId + 1));
+      reset(getDefaultValue(annotations.length + 1));
     }
   };
 

@@ -1,3 +1,5 @@
+import { Log } from '../../welcome/utils/utils';
+
 export const getPolygonName = index => {
   const nextChar = String.fromCharCode(65 + index);
 
@@ -15,6 +17,8 @@ export const calculateDistance = (point1, point2) => {
 };
 
 export const calculateCentroid = polygonPoints => {
+  Log('polygonPoints');
+  Log(polygonPoints);
   const numPoints = polygonPoints.length;
   let sumX = 0;
   let sumY = 0;
