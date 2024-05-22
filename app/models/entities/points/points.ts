@@ -15,13 +15,16 @@ export const RegionModel = types.model('Region').props({
   shapes_attributes: types.maybeNull(ShapeAttributesModel),
 });
 
+export const Regions = types.map(RegionModel);
+
 export const PointsModel = types.model('Points').props({
   image_size: types.maybeNull(types.string),
   filename: types.maybeNull(types.string),
-  regions: types.maybeNull(RegionModel),
+  regions: types.maybeNull(Regions),
   regions_attributes: types.maybeNull(RegionAttributesModel),
 });
 
+export interface Regions extends Instance<typeof Regions> {}
 export interface Points extends Instance<typeof PointsModel> {}
 
 export interface PointsSnapshotOut extends SnapshotOut<typeof PointsModel> {}

@@ -2,7 +2,7 @@ import { Polygon } from './polygon';
 
 export interface Annotation {
   id: string;
-  polygons: Polygon[];
+  polygon: Polygon;
   labelName: string;
   labelType: LabelType;
   slope: string;

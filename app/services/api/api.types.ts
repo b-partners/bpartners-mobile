@@ -134,4 +134,4 @@ export type ApproveLegalFileResult = { kind: 'ok'; legalFile: LegalFile } | Gene
 
 export type UpdateAccountHodlerInfo = { kind: 'ok'; accountHolder: AccountHolder } | GeneralApiProblem;
 
-export type GeojsonResult = { kind: 'ok'; geojson: Geojson } | GeneralApiProblem;
+export type GeojsonResult = { kind: 'ok'; geojson: Geojson[] } | GeneralApiProblem;

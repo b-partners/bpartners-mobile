@@ -54,6 +54,7 @@ export class AreaPictureApi {
       zoomLevel: ZoomLevel.HOUSES_0,
       fileId: fileId,
       prospectId: prospectId,
+      layer: null,
     };
     const response: ApiResponse<GetAreaPictureResult> = await this.api.apisauce.put(`accounts/${accountId}/areaPictures/${areaPictureId}`, payload);
 

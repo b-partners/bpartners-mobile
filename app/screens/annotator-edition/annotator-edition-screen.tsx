@@ -17,7 +17,6 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { Log } from '../welcome/utils/utils';
 import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
@@ -28,11 +27,12 @@ import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-va
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
 import { styles } from './utils/styles';
-import { calculateCentroid, calculateDistance, constrainPointCoordinates } from './utils/utils';
+import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  const { areaPictureStore } = useStores();
+  const { areaPictureStore, geojsonStore } = useStores();
   const { pictureUrl, areaPicture } = areaPictureStore;
+  //const { geojson } = geojsonStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
@@ -40,10 +40,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-
-  Log(annotations);
-
-  // const lastAnnotation = annotations[annotations.length - 1];
 
   const {
     handleSubmit,
@@ -207,19 +203,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     } else {
       const newPolygon: PolygonType = { id: uuid.v4() as string, points: [...currentPolygonPoints] };
 
-      //const newAnnotationId = lastAnnotation ? lastAnnotation.id + 1 : 0;
-
-      /*const getNewAnnotationId = () => {
-        if (lastAnnotation && lastAnnotation.id < 25) {
-          return lastAnnotation.id + 1;
-        } else {
-          return 0;
-        }
-      };*/
-
       const newAnnotation = {
         id: uuid.v4(),
-        polygons: [newPolygon],
+        polygon: newPolygon,
         labelName: labelName,
         labelType: labelType,
         ...labels,
@@ -231,6 +217,29 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       reset(getDefaultValue(annotations.length + 1));
     }
+  };
+
+  const generateQuote = async () => {
+    const mappedData = {};
+
+    annotations.forEach(annotation => {
+      const convertedData = convertData(annotation);
+      Object.assign(mappedData, convertedData);
+    });
+
+    const payload = {
+      filename: areaPicture.filename,
+      regions: mappedData,
+      regions_attributes: {
+        label: '',
+      },
+      image_size: await getImageWidth(pictureUrl),
+      x_tile: areaPicture.xTile,
+      y_title: areaPicture.yTile,
+      zoom: getZoomLevel(areaPicture.zoomLevel),
+    };
+
+    await geojsonStore.convertPoints(payload);
   };
 
   // const handleDeletePolygon = index => {
@@ -372,6 +381,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   setCurrentPolygonPoints={setCurrentPolygonPoints}
                   polygonLength={polygons?.length}
                   handleCancelAnnotation={handleCancelAnnotation}
+                  generateQuote={generateQuote}
                 />
               )}
             </View>

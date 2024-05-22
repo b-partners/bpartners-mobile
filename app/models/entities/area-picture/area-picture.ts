@@ -26,6 +26,24 @@ export enum ZoomLevel {
   HOUSE_PROPERTY = 'HOUSE_PROPERTY',
 }
 
+export const ZOOM_LEVEL = [
+  {
+    value: 'BUILDINGS',
+    label: 'Quartier',
+    zoom: 19,
+  },
+  {
+    value: 'HOUSES_0',
+    label: 'Parcelle cadastrale',
+    zoom: 20,
+  },
+  {
+    value: 'HOUSE_PROPERTY',
+    label: 'Toiture',
+    zoom: 23,
+  },
+];
+
 export const AreaPictureModel = types.model('AreaPicture').props({
   id: types.maybeNull(types.string),
   xTile: types.maybeNull(types.number),

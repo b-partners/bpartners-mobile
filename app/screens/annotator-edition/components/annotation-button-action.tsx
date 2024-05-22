@@ -5,7 +5,16 @@ import { Text } from '../../../components';
 import { styles } from '../utils/styles';
 
 const AnnotationButtonAction: FC<any> = props => {
-  const { validatePolygon, currentPolygonPoints, handleSubmit, startNewPolygon, setCurrentPolygonPoints, polygonLength, handleCancelAnnotation } = props;
+  const {
+    validatePolygon,
+    currentPolygonPoints,
+    handleSubmit,
+    startNewPolygon,
+    setCurrentPolygonPoints,
+    polygonLength,
+    handleCancelAnnotation,
+    generateQuote,
+  } = props;
   return (
     <View style={styles.buttonRowContainer}>
       <View style={styles.buttonColumnContainer}>
@@ -42,7 +51,7 @@ const AnnotationButtonAction: FC<any> = props => {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={polygonLength === 0 ? styles.disabledButton : styles.button} onPress={() => {}} disabled={polygonLength === 0}>
+          <TouchableOpacity style={polygonLength === 0 ? styles.disabledButton : styles.button} onPress={generateQuote} disabled={polygonLength === 0}>
             <View style={{ justifyContent: 'center' }}>
               <Text style={styles.buttonText} tx={'annotationScreen.generateQuote'} />
             </View>
