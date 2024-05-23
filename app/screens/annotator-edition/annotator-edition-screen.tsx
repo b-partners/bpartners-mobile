@@ -10,6 +10,7 @@ import uuid from 'react-native-uuid';
 import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
+import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -223,10 +224,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const generateQuote = async () => {
     const mappedData = {};
+    const annotationPayload: AnnotationType = [];
 
     annotations.forEach(annotation => {
       const convertedData = convertData(annotation);
       Object.assign(mappedData, convertedData);
+      const annotationPayload = {};
     });
 
     const payload = {
