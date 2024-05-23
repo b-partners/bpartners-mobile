@@ -243,8 +243,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
     await geojsonStore.convertPoints(payload);
 
-    Log('GeojsonMapper.toMeasurements(geojson)');
-    Log(GeojsonMapper.toMeasurements(geojson));
+    //const geojsonData = GeojsonMapper.toMeasurements(geojson);
   };
 
   // const handleDeletePolygon = index => {

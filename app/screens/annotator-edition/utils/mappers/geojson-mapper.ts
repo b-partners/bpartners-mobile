@@ -1,7 +1,6 @@
 import getAreaOfPolygon from 'geolib/es/getAreaOfPolygon';
 import getDistance from 'geolib/es/getPreciseDistance';
 
-import { Log } from '../../../welcome/utils/utils';
 import { GeojsonReturn, Measurement } from '../../types';
 import { GeoPointMapper } from '../mappers';
 
@@ -15,9 +14,7 @@ export class GeojsonMapper {
       const area = this.toArea(geojson, currentPolygonId);
       measurements.push(area as Measurement);
 
-      Log(coordinates);
       coordinates.push(coordinates[0]);
-      Log('here');
 
       for (let a = 1; a < coordinates.length; a++) {
         const prevCoordinate = coordinates[a - 1];
