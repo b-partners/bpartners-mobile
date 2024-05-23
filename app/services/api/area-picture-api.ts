@@ -66,12 +66,8 @@ export class AreaPictureApi {
     return response.data;
   }
 
-  async updateAreaPictureAnnotations(
-    accountId: string,
-    areaPictureId: string,
-    annotationId: string,
-    annotations: Annotation[]
-  ): Promise<GetAreaPictureAnnotationsResult> {
+  async updateAreaPictureAnnotations(accountId: string, areaPictureId: string, annotations: Annotation[]): Promise<GetAreaPictureAnnotationsResult> {
+    const annotationId = uuid.v4() as string;
     const response: ApiResponse<GetAreaPictureAnnotationsResult> = await this.api.apisauce.put(
       `accounts/${accountId}/areaPictures/${areaPictureId}/annotations/${annotationId}`,
       {

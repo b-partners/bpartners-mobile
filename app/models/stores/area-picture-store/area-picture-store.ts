@@ -108,10 +108,10 @@ export const AreaPictureStoreModel = types
     }),
   }))
   .actions(self => ({
-    updateAreaPictureAnnotations: flow(function* (areaPictureId: string, annotationId: string, annotations: Annotation[]) {
+    updateAreaPictureAnnotations: flow(function* (areaPictureId: string, annotations: Annotation[]) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
-        yield areaPictureApi.updateAreaPictureAnnotations(self.currentAccount.id, areaPictureId, annotationId, annotations);
+        yield areaPictureApi.updateAreaPictureAnnotations(self.currentAccount.id, areaPictureId, annotations);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
       }
