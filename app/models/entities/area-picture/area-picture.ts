@@ -46,7 +46,6 @@ export const ZOOM_LEVEL = [
 
 export const AreaPictureMapLayerModel = types.model('AreaPictureMapLayer').props({
   departementName: types.maybeNull(types.string),
-  maximumZoomLevel: types.maybeNull(types.number),
   year: types.maybeNull(types.number),
   name: types.maybeNull(types.string),
   precisionLevelInCm: types.maybeNull(types.number),
