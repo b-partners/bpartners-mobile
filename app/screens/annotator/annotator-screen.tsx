@@ -57,7 +57,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         setPolygons(polygonArray);
       });
     }
-  }, []);
+  }, [pictureUrl]);
 
   const createPanResponder = index => {
     return PanResponder.create({

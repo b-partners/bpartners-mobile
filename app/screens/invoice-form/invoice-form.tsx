@@ -39,6 +39,7 @@ type InvoiceFormProps = {
   onSaveInvoice: (invoice: Invoice) => Promise<void>;
   initialStatus?: InvoiceStatus;
   navigation: StackNavigationProp<TabNavigatorParamList, 'invoiceForm', undefined>;
+  areaPictureId?: string;
 };
 
 const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
@@ -56,7 +57,7 @@ export enum CheckboxEnum {
 }
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { products, invoice, initialStatus, navigation } = props;
+  const { products, invoice, initialStatus, navigation, areaPictureId } = props;
   const { invoiceStore, customerStore, draftStore, quotationStore, areaPictureStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
@@ -191,6 +192,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           status: invoiceType,
           paymentRegulations: [...invoices.paymentRegulations, restToPay],
           paymentType: 'IN_INSTALMENT',
+          idAreaPicture: areaPictureId ?? null,
         });
       } else if (payInInstalments === CheckboxEnum.CHECKED && totalPercent === 10000) {
         await invoiceStore.saveInvoice({
@@ -199,6 +201,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           metadata: { ...invoices.metadata, submittedAt: new Date() },
           status: invoiceType,
           paymentType: 'IN_INSTALMENT',
+          idAreaPicture: areaPictureId ?? null,
         });
       } else {
         await invoiceStore.saveInvoice({
@@ -206,6 +209,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           customer: selectedCustomer,
           metadata: { ...invoices.metadata, submittedAt: new Date() },
           status: invoiceType,
+          idAreaPicture: areaPictureId ?? null,
         });
       }
       setConfirmationModal(false);

@@ -19,6 +19,7 @@ export type NavigatorParamList = {
   invoiceForm: {
     invoiceID?: string;
     status?: InvoiceStatus;
+    areaPictureId?: string;
   };
   invoicePreview: {
     fileId: string;
@@ -53,6 +54,7 @@ export type TabNavigatorParamList = {
   invoiceForm: {
     invoiceID?: string;
     initialStatus?: InvoiceStatus;
+    areaPictureId?: string;
   };
   invoicePreview: {
     fileId: string;

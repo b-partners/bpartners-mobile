@@ -11,7 +11,6 @@ import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
-import { navigate } from '../../navigators/navigation-utilities';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -34,7 +33,7 @@ import { styles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  const { areaPictureStore, geojsonStore, authStore } = useStores();
+  const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
   const { pictureUrl, areaPicture } = areaPictureStore;
   const { geojson } = geojsonStore;
   const { currentUser } = authStore;
@@ -283,8 +282,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       });
 
       await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
+      await customerStore.getCustomers();
+
+      navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id });
     } catch {
-      navigate('prospect');
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
     }
 
     setLoading(false);
