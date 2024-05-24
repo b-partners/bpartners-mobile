@@ -11,14 +11,15 @@ import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
+import { navigate } from '../../navigators/navigation-utilities';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { commaToDot } from '../../utils/comma-to-dot';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { Log } from '../welcome/utils/utils';
 import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
@@ -33,14 +34,16 @@ import { styles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  const { areaPictureStore, geojsonStore } = useStores();
+  const { areaPictureStore, geojsonStore, authStore } = useStores();
   const { pictureUrl, areaPicture } = areaPictureStore;
   const { geojson } = geojsonStore;
+  const { currentUser } = authStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
+  const [isLoading, setLoading] = useState(false);
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
@@ -223,30 +226,68 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   };
 
   const generateQuote = async () => {
-    const mappedData = {};
-    const annotationPayload: AnnotationType = [];
+    setLoading(true);
+    try {
+      const mappedData = {};
+      const annotationsArrayPayload: AnnotationType[] = [];
 
-    annotations.forEach(annotation => {
-      const convertedData = convertData(annotation);
-      Object.assign(mappedData, convertedData);
-      const annotationPayload = {};
-    });
+      annotations.forEach(annotation => {
+        const convertedData = convertData(annotation);
+        Object.assign(mappedData, convertedData);
+      });
 
-    const payload = {
-      filename: areaPicture.filename,
-      regions: mappedData,
-      regions_attributes: {
-        label: '',
-      },
-      image_size: await getImageWidth(pictureUrl),
-      x_tile: areaPicture.xTile,
-      y_title: areaPicture.yTile,
-      zoom: getZoomLevel(areaPicture.zoomLevel),
-    };
+      const payload = {
+        filename: areaPicture.filename,
+        regions: mappedData,
+        regions_attributes: {
+          label: '',
+        },
+        image_size: await getImageWidth(pictureUrl),
+        x_tile: areaPicture.xTile,
+        y_title: areaPicture.yTile,
+        zoom: getZoomLevel(areaPicture.zoomLevel),
+      };
 
-    await geojsonStore.convertPoints(payload);
+      await geojsonStore.convertPoints(payload);
 
-    //const geojsonData = GeojsonMapper.toMeasurements(geojson);
+      const geojsonData = GeojsonMapper.toMeasurements(geojson);
+
+      const annotationId = uuid.v4() as string;
+
+      annotations.forEach(annotation => {
+        const annotationArea = geojsonData.find(item => item.polygonId === annotation.polygon.id && item.unity === 'm²');
+
+        const annotationData: AnnotationType = {
+          areaPictureId: areaPicture.id,
+          metadata: {
+            area: annotationArea?.value,
+            fillColor: null,
+            covering: annotation?.covering,
+            comment: annotation?.comment,
+            slope: commaToDot(annotation?.slope),
+            strokeColor: null,
+            wearLevel: commaToDot(annotation?.wearLevel),
+            obstacle: annotation?.obstacle,
+          },
+          polygon: {
+            // @ts-ignore
+            points: annotation.polygon.points,
+          },
+          labelType: annotation?.labelType?.value,
+          id: annotation?.id,
+          annotationId: annotationId,
+          labelName: annotation?.labelName,
+          userId: currentUser?.id,
+        };
+        annotationsArrayPayload.push(annotationData);
+      });
+
+      await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
+    } catch {
+      navigate('prospect');
+    }
+
+    setLoading(false);
   };
 
   // const handleDeletePolygon = index => {
@@ -389,6 +430,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   polygonLength={polygons?.length}
                   handleCancelAnnotation={handleCancelAnnotation}
                   generateQuote={generateQuote}
+                  isLoading={isLoading}
                 />
               )}
             </View>

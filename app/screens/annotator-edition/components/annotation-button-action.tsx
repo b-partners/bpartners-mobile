@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
-import { Text } from '../../../components';
+import { Loader, Text } from '../../../components';
+import { palette } from '../../../theme/palette';
 import { styles } from '../utils/styles';
 
 const AnnotationButtonAction: FC<any> = props => {
@@ -14,6 +15,7 @@ const AnnotationButtonAction: FC<any> = props => {
     polygonLength,
     handleCancelAnnotation,
     generateQuote,
+    isLoading,
   } = props;
   return (
     <View style={styles.buttonRowContainer}>
@@ -52,9 +54,13 @@ const AnnotationButtonAction: FC<any> = props => {
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={polygonLength === 0 ? styles.disabledButton : styles.button} onPress={generateQuote} disabled={polygonLength === 0}>
-            <View style={{ justifyContent: 'center' }}>
-              <Text style={styles.buttonText} tx={'annotationScreen.generateQuote'} />
-            </View>
+            {isLoading ? (
+              <Loader size={25} color={palette.white} />
+            ) : (
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={styles.buttonText} tx={'annotationScreen.generateQuote'} />
+              </View>
+            )}
           </TouchableOpacity>
         </View>
       </View>

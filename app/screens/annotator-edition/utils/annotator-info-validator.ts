@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { translate } from '../../../i18n';
+import { annotationCommaValidation } from './annotationCommaValidation';
 import { getPolygonName } from './utils';
 
 const annotatorInfoResolver = yup.object({
@@ -14,8 +15,16 @@ const annotatorInfoResolver = yup.object({
     })
     .required(translate('errors.required')),
   covering: yup.string(),
-  slope: yup.string(),
-  wearLevel: yup.string(),
+  slope: yup.string().test(
+    'comma validation',
+    () => translate('errors.invalidPercent'),
+    value => annotationCommaValidation(value)
+  ),
+  wearLevel: yup.string().test(
+    'comma validation',
+    () => translate('errors.invalidPercent'),
+    value => annotationCommaValidation(value)
+  ),
   comment: yup.string(),
   obstacle: yup.string(),
 });

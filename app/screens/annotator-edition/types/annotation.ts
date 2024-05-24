@@ -8,6 +8,8 @@ export interface Annotation {
   slope: string;
   wearLevel: string;
   covering: string;
+  comment: string;
+  obstacle: string;
 }
 
 export interface LabelType {
