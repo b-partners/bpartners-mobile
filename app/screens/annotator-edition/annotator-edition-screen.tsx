@@ -1,8 +1,9 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 import uuid from 'react-native-uuid';
@@ -58,6 +59,19 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     defaultValues: getDefaultValue(0),
   });
 
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        handleCancelAnnotation();
+        return false;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
+
   const handlePress = useCallback(
     event => {
       const { locationX, locationY } = event.nativeEvent;
@@ -68,7 +82,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       // Get image dimensions
       const imageWidth = 320;
-      const imageHeight = 300;
+      const imageHeight = 320;
 
       // Constrain new point coordinates within image boundaries
       const { x, y } = constrainPointCoordinates(relativeX, relativeY, imageWidth, imageHeight);
@@ -101,7 +115,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
         // Get image dimensions
         const imageWidth = 320;
-        const imageHeight = 300;
+        const imageHeight = 320;
 
         // Constrain point coordinates within image boundaries
         updatedPoint = constrainPointCoordinates(newX, newY, imageWidth, imageHeight);
@@ -229,6 +243,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     try {
       const mappedData = {};
       const annotationsArrayPayload: AnnotationType[] = [];
+      const imageSize = await getImageWidth(pictureUrl);
+      const ratio = imageSize / 320;
 
       annotations.forEach(annotation => {
         const convertedData = convertData(annotation);
@@ -236,12 +252,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       });
 
       const payload = {
-        filename: areaPicture.filename,
+        filename: areaPicture?.filename,
         regions: mappedData,
         regions_attributes: {
           label: '',
         },
-        image_size: await getImageWidth(pictureUrl),
+        image_size: imageSize,
         x_tile: areaPicture.xTile,
         y_title: areaPicture.yTile,
         zoom: getZoomLevel(areaPicture.zoomLevel),
@@ -255,6 +271,13 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       annotations.forEach(annotation => {
         const annotationArea = geojsonData.find(item => item.polygonId === annotation.polygon.id && item.unity === 'm²');
+        const polygonPoints = [];
+        annotation.polygon.points.map(pt => {
+          polygonPoints.push({
+            x: pt.x * ratio,
+            y: pt.y * ratio,
+          });
+        });
 
         const annotationData: AnnotationType = {
           areaPictureId: areaPicture.id,
@@ -270,7 +293,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           },
           polygon: {
             // @ts-ignore
-            points: annotation.polygon.points,
+            points: polygonPoints,
           },
           labelType: annotation?.labelType?.value,
           id: annotation?.id,
@@ -283,6 +306,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
       await customerStore.getCustomers();
+      handleCancelAnnotation();
 
       navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id });
     } catch {
@@ -311,12 +335,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     reset(getDefaultValue(0));
   };
 
+  const handleBackNavigation = () => {
+    handleCancelAnnotation();
+    navigation.navigate('home');
+  };
+
   const [showModal, setShowModal] = useState(false);
 
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={handleBackNavigation} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
           <ScrollView
             style={{
@@ -350,17 +379,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                       borderColor: palette.white,
                     }}
                   >
-                    <View style={{ width: 320, height: 300 }}>
+                    <View style={{ width: 320, height: 320 }}>
                       <Image
                         onLayout={handleImageLayout}
                         style={{
                           width: 320,
-                          height: 300,
+                          height: 320,
                         }}
                         source={{ uri: pictureUrl }}
                       />
                       {renderPolygons}
-                      <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
+                      <Svg width='320' height='320' style={{ position: 'absolute', top: 0, left: 0 }}>
                         <Polygon
                           points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
                           fill='rgba(144, 248, 10, 0.4)'
