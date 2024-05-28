@@ -111,6 +111,7 @@ export const AreaPictureStoreModel = types
         self.getAreaPictureSuccess(getAreaPictureFileResult);
       } catch (e) {
         self.getAreaPictureFail(e);
+        throw e;
       }
     }),
   }))
@@ -134,6 +135,7 @@ export const AreaPictureStoreModel = types
       } catch (e) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         self.catchOrThrow(e);
+        throw e;
       }
     },
   }));
