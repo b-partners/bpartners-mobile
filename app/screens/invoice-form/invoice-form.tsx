@@ -238,7 +238,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
       }
     } catch (e) {
-      showMessage(e);
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
+
       throw e;
     } finally {
       setCreationLoading(false);

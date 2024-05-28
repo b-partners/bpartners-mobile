@@ -141,7 +141,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
         showMessage(translate('common.addedOrUpdated'), { backgroundColor: palette.green });
       }, 1500);
     } catch (e) {
-      showMessage(e);
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
       throw e;
     } finally {
       setIsButtonLoading(false);

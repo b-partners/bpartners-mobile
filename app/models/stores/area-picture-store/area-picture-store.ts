@@ -43,8 +43,6 @@ export const AreaPictureStoreModel = types
   }))
   .actions(self => ({
     getAreaPictureAnnotationsSuccess: (annotations: Annotation[]) => {
-      __DEV__ && console.tron.log('annotations');
-      __DEV__ && console.tron.log(annotations);
       self.annotations.replace(annotations);
     },
   }))

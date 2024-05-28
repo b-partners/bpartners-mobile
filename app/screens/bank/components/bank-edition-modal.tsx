@@ -5,6 +5,7 @@ import { Modal } from 'react-native-paper';
 
 import { Button, InputField, Loader } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
+import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { AccountInfos } from '../../../models/entities/account/account';
 import { color, spacing } from '../../../theme';
@@ -46,7 +47,8 @@ export const BankEditionModal: React.FC<BankModalProps> = props => {
       const updatedAccountList = await authStore.updateAccountInfos(bankInfo);
       setAccountInfo(updatedAccountList);
     } catch (e) {
-      showMessage(e);
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
+
       throw e;
     } finally {
       setShowModal(false);
