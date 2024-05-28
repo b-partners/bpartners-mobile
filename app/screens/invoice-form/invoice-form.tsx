@@ -74,6 +74,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [annotationLoading, setAnnotationLoading] = useState(false);
+  const [creationLoading, setCreationLoading] = useState(false);
 
   const {
     control,
@@ -173,6 +174,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   };
 
   const onSubmit = async (invoices: { metadata: any; paymentRegulations: any }) => {
+    setCreationLoading(true);
     try {
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
         const latestPayment = paymentFields[paymentFields.length - 1];
@@ -239,6 +241,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       showMessage(e);
       throw e;
     } finally {
+      setCreationLoading(false);
       reset();
     }
   };
@@ -841,14 +844,17 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           setCurrentPayment={setCurrentPayment}
         />
       )}
-      <InvoiceCreationModal
-        invoiceType={invoiceType}
-        confirmationModal={confirmationModal}
-        setConfirmationModal={setConfirmationModal}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-        status={initialStatus}
-      />
+      {!hasError && (
+        <InvoiceCreationModal
+          invoiceType={invoiceType}
+          confirmationModal={confirmationModal}
+          setConfirmationModal={setConfirmationModal}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+          status={initialStatus}
+          loading={creationLoading}
+        />
+      )}
     </View>
   );
 };

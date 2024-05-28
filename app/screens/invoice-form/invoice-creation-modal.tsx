@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-import { Button, Text } from '../../components';
+import { Button, Loader, Text } from '../../components';
 import { InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -14,10 +14,11 @@ type InvoiceCreationModalProps = {
   onSubmit: (invoices: any) => Promise<void>;
   invoiceType: InvoiceStatus;
   status: InvoiceStatus;
+  loading: boolean;
 };
 
 export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props => {
-  const { confirmationModal, setConfirmationModal, handleSubmit, onSubmit, invoiceType, status } = props;
+  const { confirmationModal, setConfirmationModal, handleSubmit, onSubmit, invoiceType, status, loading } = props;
 
   const getTx = () => {
     if (invoiceType === InvoiceStatus.DRAFT) {
@@ -60,17 +61,21 @@ export const InvoiceCreationModal: React.FC<InvoiceCreationModalProps> = props =
                   height: 45,
                 }}
               >
-                <>
-                  <Text
-                    tx='common.submit'
-                    style={{
-                      color: palette.white,
-                      marginRight: spacing[2],
-                      fontFamily: 'Geometria',
-                    }}
-                  />
-                  <SimpleLineIcons name='check' size={20} color='white' />
-                </>
+                {loading ? (
+                  <Loader color={palette.white} size={26} />
+                ) : (
+                  <>
+                    <Text
+                      tx='common.submit'
+                      style={{
+                        color: palette.white,
+                        marginRight: spacing[2],
+                        fontFamily: 'Geometria',
+                      }}
+                    />
+                    <SimpleLineIcons name='check' size={20} color='white' />
+                  </>
+                )}
               </Button>
             </View>
             <View style={{ width: '100%', height: '10%', justifyContent: 'center', alignItems: 'center' }}>
