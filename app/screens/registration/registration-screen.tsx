@@ -50,7 +50,8 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
         navigation.navigate('welcome');
       }, 5000);
     } catch (e) {
-      showMessage(e);
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
+
       throw e;
     } finally {
       reset();

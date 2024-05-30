@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { translate } from '../../../i18n';
+import { Log } from '../../../screens/welcome/utils/utils';
 import { AreaPictureApi } from '../../../services/api/area-picture-api';
 import { FileApi } from '../../../services/api/file-api';
 import { palette } from '../../../theme/palette';
@@ -27,7 +28,11 @@ export const AreaPictureStoreModel = types
   }))
   .actions(self => ({
     getAreaPictureSuccess: (areaPicture: AreaPicture) => {
-      self.areaPicture = areaPicture;
+      try {
+        self.areaPicture = areaPicture;
+      } catch (e) {
+        Log(e.message);
+      }
     },
   }))
   .actions(self => ({
@@ -104,6 +109,7 @@ export const AreaPictureStoreModel = types
         self.getAreaPictureSuccess(getAreaPictureFileResult);
       } catch (e) {
         self.getAreaPictureFail(e);
+        throw e;
       }
     }),
   }))
@@ -127,6 +133,7 @@ export const AreaPictureStoreModel = types
       } catch (e) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         self.catchOrThrow(e);
+        throw e;
       }
     },
   }));

@@ -34,4 +34,5 @@ export interface ButtonProps extends TouchableOpacityProps {
    */
   children?: React.ReactNode;
   isLoading?: boolean;
+  disabled?: boolean;
 }

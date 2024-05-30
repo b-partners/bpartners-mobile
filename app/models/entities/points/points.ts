@@ -10,21 +10,21 @@ export const RegionAttributesModel = types.model('RegionAttributes').props({
   label: types.maybeNull(types.string),
 });
 
-export const ShapeObjectModel = types.model('Shape').props({
-  shape_attributes: types.maybeNull(ShapeAttributesModel),
-  region_attributes: types.maybeNull(RegionAttributesModel),
+export const RegionModel = types.model('Region').props({
+  id: types.maybeNull(types.string),
+  shapes_attributes: types.maybeNull(ShapeAttributesModel),
 });
 
-export const RegionModel = types.model('Region').props({
-  '1': types.maybeNull(ShapeObjectModel),
-});
+export const Regions = types.map(RegionModel);
 
 export const PointsModel = types.model('Points').props({
-  size: types.maybeNull(types.string),
+  image_size: types.maybeNull(types.string),
   filename: types.maybeNull(types.string),
-  regions: types.maybeNull(RegionModel),
+  regions: types.maybeNull(Regions),
+  regions_attributes: types.maybeNull(RegionAttributesModel),
 });
 
+export interface Regions extends Instance<typeof Regions> {}
 export interface Points extends Instance<typeof PointsModel> {}
 
 export interface PointsSnapshotOut extends SnapshotOut<typeof PointsModel> {}

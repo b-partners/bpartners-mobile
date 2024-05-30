@@ -1,46 +1,51 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
+import uuid from 'react-native-uuid';
 
 import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
+import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { commaToDot } from '../../utils/comma-to-dot';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { Log } from '../welcome/utils/utils';
 import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
 import { AnnotationModal } from './components/annotation-modal';
+import { Polygon as PolygonType } from './types';
+import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
+import { GeojsonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
 import { styles } from './utils/styles';
-import { calculateCentroid, calculateDistance, constrainPointCoordinates } from './utils/utils';
+import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  const { areaPictureStore } = useStores();
+  const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
   const { pictureUrl, areaPicture } = areaPictureStore;
+  const { geojson } = geojsonStore;
+  const { currentUser } = authStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
   const [polygons, setPolygons] = useState([]);
-  const [annotations, setAnnotations] = useState([]);
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
+  const [isLoading, setLoading] = useState(false);
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-
-  Log(annotations);
-
-  const lastAnnotation = annotations[annotations.length - 1];
 
   const {
     handleSubmit,
@@ -54,6 +59,19 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     defaultValues: getDefaultValue(0),
   });
 
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        handleCancelAnnotation();
+        return false;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
+
   const handlePress = useCallback(
     event => {
       const { locationX, locationY } = event.nativeEvent;
@@ -64,7 +82,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       // Get image dimensions
       const imageWidth = 320;
-      const imageHeight = 300;
+      const imageHeight = 320;
 
       // Constrain new point coordinates within image boundaries
       const { x, y } = constrainPointCoordinates(relativeX, relativeY, imageWidth, imageHeight);
@@ -97,7 +115,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
         // Get image dimensions
         const imageWidth = 320;
-        const imageHeight = 300;
+        const imageHeight = 320;
 
         // Constrain point coordinates within image boundaries
         updatedPoint = constrainPointCoordinates(newX, newY, imageWidth, imageHeight);
@@ -202,32 +220,100 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     if (validateLabel(labelName)) {
       showMessage(translate('annotationScreen.errors.requiredLabel'), { backgroundColor: palette.pastelRed });
     } else {
-      const newPolygon = [...currentPolygonPoints];
-
-      const newAnnotationId = lastAnnotation ? lastAnnotation.id + 1 : 0;
-
-      const getNewAnnotationId = () => {
-        if (lastAnnotation && lastAnnotation.id < 25) {
-          return lastAnnotation.id + 1;
-        } else {
-          return 0;
-        }
-      };
+      const newPolygon: PolygonType = { id: uuid.v4() as string, points: [...currentPolygonPoints] };
 
       const newAnnotation = {
-        id: getNewAnnotationId(),
-        polygonPoints: newPolygon,
+        id: uuid.v4(),
+        polygon: newPolygon,
         labelName: labelName,
         labelType: labelType,
         ...labels,
       };
 
       setCurrentPolygonPoints([]);
-      setPolygons(prevPolygons => [...prevPolygons, newPolygon]);
+      setPolygons(prevPolygons => [...prevPolygons, newPolygon.points]);
       setAnnotations(prevAnnotation => [...prevAnnotation, newAnnotation]);
 
-      reset(getDefaultValue(newAnnotationId + 1));
+      reset(getDefaultValue(annotations.length + 1));
     }
+  };
+
+  const generateQuote = async () => {
+    setLoading(true);
+    try {
+      const mappedData = {};
+      const annotationsArrayPayload: AnnotationType[] = [];
+      const imageSize = await getImageWidth(pictureUrl);
+      const ratio = imageSize / 320;
+
+      annotations.forEach(annotation => {
+        const convertedData = convertData(annotation);
+        Object.assign(mappedData, convertedData);
+      });
+
+      const payload = {
+        filename: areaPicture?.filename,
+        regions: mappedData,
+        regions_attributes: {
+          label: '',
+        },
+        image_size: imageSize,
+        x_tile: areaPicture.xTile,
+        y_title: areaPicture.yTile,
+        zoom: getZoomLevel(areaPicture.zoomLevel),
+      };
+
+      await geojsonStore.convertPoints(payload);
+
+      const geojsonData = GeojsonMapper.toMeasurements(geojson);
+
+      const annotationId = uuid.v4() as string;
+
+      annotations.forEach(annotation => {
+        const annotationArea = geojsonData.find(item => item.polygonId === annotation.polygon.id && item.unity === 'm²');
+        const polygonPoints = [];
+        annotation.polygon.points.map(pt => {
+          polygonPoints.push({
+            x: pt.x * ratio,
+            y: pt.y * ratio,
+          });
+        });
+
+        const annotationData: AnnotationType = {
+          areaPictureId: areaPicture.id,
+          metadata: {
+            area: annotationArea?.value,
+            fillColor: null,
+            covering: annotation?.covering,
+            comment: annotation?.comment,
+            slope: commaToDot(annotation?.slope),
+            strokeColor: null,
+            wearLevel: commaToDot(annotation?.wearLevel),
+            obstacle: annotation?.obstacle,
+          },
+          polygon: {
+            // @ts-ignore
+            points: polygonPoints,
+          },
+          labelType: annotation?.labelType?.value,
+          id: annotation?.id,
+          annotationId: annotationId,
+          labelName: annotation?.labelName,
+          userId: currentUser?.id,
+        };
+        annotationsArrayPayload.push(annotationData);
+      });
+
+      await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
+      await customerStore.getCustomers();
+      handleCancelAnnotation();
+
+      navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id });
+    } catch {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
+    }
+
+    setLoading(false);
   };
 
   // const handleDeletePolygon = index => {
@@ -249,12 +335,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     reset(getDefaultValue(0));
   };
 
+  const handleBackNavigation = () => {
+    handleCancelAnnotation();
+    navigation.navigate('home');
+  };
+
   const [showModal, setShowModal] = useState(false);
 
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={handleBackNavigation} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
           <ScrollView
             style={{
@@ -288,17 +379,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                       borderColor: palette.white,
                     }}
                   >
-                    <View style={{ width: 320, height: 300 }}>
+                    <View style={{ width: 320, height: 320 }}>
                       <Image
                         onLayout={handleImageLayout}
                         style={{
                           width: 320,
-                          height: 300,
+                          height: 320,
                         }}
                         source={{ uri: pictureUrl }}
                       />
                       {renderPolygons}
-                      <Svg width='320' height='300' style={{ position: 'absolute', top: 0, left: 0 }}>
+                      <Svg width='320' height='320' style={{ position: 'absolute', top: 0, left: 0 }}>
                         <Polygon
                           points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
                           fill='rgba(144, 248, 10, 0.4)'
@@ -369,6 +460,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   setCurrentPolygonPoints={setCurrentPolygonPoints}
                   polygonLength={polygons?.length}
                   handleCancelAnnotation={handleCancelAnnotation}
+                  generateQuote={generateQuote}
+                  isLoading={isLoading}
                 />
               )}
             </View>

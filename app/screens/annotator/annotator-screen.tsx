@@ -57,7 +57,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         setPolygons(polygonArray);
       });
     }
-  }, []);
+  }, [pictureUrl, annotations]);
 
   const createPanResponder = index => {
     return PanResponder.create({
@@ -76,7 +76,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         const newY = updatedPoint.y + dy;
 
         // Get image dimensions
-        const imageWidth = 350;
+        const imageWidth = 320;
         const imageHeight = 320;
 
         // Limit point coordinates so that they remain inside the image

@@ -13,7 +13,7 @@ import { ButtonProps } from './button.props';
  */
 export function Button(props: ButtonProps) {
   // grab the props
-  const { preset = 'primary', tx, text, style: styleOverride, textStyle: textStyleOverride, children, isLoading, ...rest } = props;
+  const { disabled, preset = 'primary', tx, text, style: styleOverride, textStyle: textStyleOverride, children, isLoading, ...rest } = props;
 
   const viewStyle = viewPresets[preset] || viewPresets.primary;
   const viewStyles = [viewStyle, styleOverride];
@@ -23,7 +23,7 @@ export function Button(props: ButtonProps) {
   const content = children || <Text tx={tx} text={text} style={textStyles} />;
 
   return (
-    <TouchableOpacity style={viewStyles} {...rest}>
+    <TouchableOpacity style={viewStyles} {...rest} disabled={disabled}>
       {isLoading ? <Loader size={25} /> : content}
     </TouchableOpacity>
   );

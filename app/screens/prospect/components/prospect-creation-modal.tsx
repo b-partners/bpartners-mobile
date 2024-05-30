@@ -83,8 +83,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
       await areaPictureStore.getPictureUrl(fileId);
       navigate('annotatorEdition');
     } catch (e) {
-      showMessage(e);
-      throw e;
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
     } finally {
       setIsLoading(false);
       closeModal();

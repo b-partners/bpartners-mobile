@@ -1,11 +1,22 @@
 import React, { FC } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
-import { Text } from '../../../components';
+import { Loader, Text } from '../../../components';
+import { palette } from '../../../theme/palette';
 import { styles } from '../utils/styles';
 
 const AnnotationButtonAction: FC<any> = props => {
-  const { validatePolygon, currentPolygonPoints, handleSubmit, startNewPolygon, setCurrentPolygonPoints, polygonLength, handleCancelAnnotation } = props;
+  const {
+    validatePolygon,
+    currentPolygonPoints,
+    handleSubmit,
+    startNewPolygon,
+    setCurrentPolygonPoints,
+    polygonLength,
+    handleCancelAnnotation,
+    generateQuote,
+    isLoading,
+  } = props;
   return (
     <View style={styles.buttonRowContainer}>
       <View style={styles.buttonColumnContainer}>
@@ -42,10 +53,14 @@ const AnnotationButtonAction: FC<any> = props => {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={polygonLength === 0 ? styles.disabledButton : styles.button} onPress={() => {}} disabled={polygonLength === 0}>
-            <View style={{ justifyContent: 'center' }}>
-              <Text style={styles.buttonText} tx={'annotationScreen.generateQuote'} />
-            </View>
+          <TouchableOpacity style={polygonLength === 0 ? styles.disabledButton : styles.button} onPress={generateQuote} disabled={polygonLength === 0}>
+            {isLoading ? (
+              <Loader size={25} color={palette.white} />
+            ) : (
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={styles.buttonText} tx={'annotationScreen.generateQuote'} />
+              </View>
+            )}
           </TouchableOpacity>
         </View>
       </View>

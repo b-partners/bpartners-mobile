@@ -54,6 +54,8 @@ export class AreaPictureApi {
       zoomLevel: ZoomLevel.HOUSES_0,
       fileId: fileId,
       prospectId: prospectId,
+      layer: null,
+      isExtended: false,
     };
     const response: ApiResponse<GetAreaPictureResult> = await this.api.apisauce.put(`accounts/${accountId}/areaPictures/${areaPictureId}`, payload);
 
@@ -74,7 +76,7 @@ export class AreaPictureApi {
     const response: ApiResponse<GetAreaPictureAnnotationsResult> = await this.api.apisauce.put(
       `accounts/${accountId}/areaPictures/${areaPictureId}/annotations/${annotationId}`,
       {
-        id: uuid.v4(),
+        id: annotationId,
         idAreaPicture: areaPictureId,
         creationDatetime: null,
         annotations: annotations,

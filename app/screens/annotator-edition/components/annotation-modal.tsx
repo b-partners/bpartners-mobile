@@ -210,8 +210,10 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
               }}
               textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
             />
+
             <Button
               tx={'common.save'}
+              disabled={errors?.slope || errors?.wearLevel}
               style={{
                 ...SHADOW_STYLE,
                 backgroundColor: palette.secondaryColor,
