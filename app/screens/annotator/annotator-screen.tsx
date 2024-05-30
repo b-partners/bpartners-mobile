@@ -57,7 +57,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         setPolygons(polygonArray);
       });
     }
-  }, []);
+  }, [pictureUrl, annotations]);
 
   const createPanResponder = index => {
     return PanResponder.create({
@@ -76,7 +76,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         const newY = updatedPoint.y + dy;
 
         // Get image dimensions
-        const imageWidth = 350;
+        const imageWidth = 320;
         const imageHeight = 320;
 
         // Limit point coordinates so that they remain inside the image
@@ -181,7 +181,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
         <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorScreen' style={{ ...FULL, backgroundColor: color.palette.white, position: 'relative' }}>
           <View style={{ width: '100%', height: 40, alignItems: 'center', padding: 10, marginTop: 10 }}>
-            <Text text={`${areaPicture.filename}`} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+            <Text text={`${areaPicture?.filename}`} style={{ color: palette.black, fontFamily: 'Geometria' }} />
           </View>
           <View style={{ width: '100%', height: 320, alignItems: 'center' }}>
             <Image

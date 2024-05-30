@@ -65,6 +65,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
       phone: prospect?.phone,
       address: prospect?.address,
       name: prospect?.name,
+      firstName: prospect?.firstName,
       comment: prospect?.comment,
     },
   });
@@ -122,6 +123,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     const prospectToBeEdited = {
       ...prospect,
       name: prospectInfos.name,
+      firstName: prospectInfos.firstName,
       status: handleStatus(),
       email: prospectInfos.email,
       phone: prospectInfos.phone,
@@ -139,7 +141,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
         showMessage(translate('common.addedOrUpdated'), { backgroundColor: palette.green });
       }, 1500);
     } catch (e) {
-      showMessage(e);
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
       throw e;
     } finally {
       setIsButtonLoading(false);
@@ -174,7 +176,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
             borderRadius: 20,
             marginHorizontal: '2%',
             width: '96%',
-            height: keyboardOpen ? 400 : 520,
+            height: keyboardOpen ? 420 : 540,
           }}
         >
           <View
@@ -204,7 +206,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           </View>
           {currentPage === 1 ? (
             <ScrollView style={{ width: '100%', height: '100%', paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
-              <View style={{ marginBottom: 20, width: '100%' }}>
+              <View style={{ marginBottom: 10, width: '100%' }}>
                 <Controller
                   control={control}
                   name='email'
@@ -221,7 +223,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 20, width: '100%' }}>
+              <View style={{ marginBottom: 10, width: '100%' }}>
                 <Controller
                   control={control}
                   name='phone'
@@ -238,7 +240,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 20, width: '100%' }}>
+              <View style={{ marginBottom: 10, width: '100%' }}>
                 <Controller
                   control={control}
                   name='address'
@@ -255,7 +257,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 20, width: '100%' }}>
+              <View style={{ marginBottom: 10, width: '100%' }}>
                 <Controller
                   control={control}
                   name='name'
@@ -272,7 +274,24 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
                   )}
                 />
               </View>
-              <View style={{ marginBottom: 20, width: '100%' }}>
+              <View style={{ marginBottom: 10, width: '100%' }}>
+                <Controller
+                  control={control}
+                  name='firstName'
+                  defaultValue=''
+                  render={({ field: { onChange, value } }) => (
+                    <InputField
+                      labelTx={'prospectScreen.process.firstName'}
+                      error={!!errors.firstName}
+                      value={value}
+                      onChange={onChange}
+                      errorMessage={errors.firstName?.message}
+                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
+                    />
+                  )}
+                />
+              </View>
+              <View style={{ marginBottom: 10, width: '100%' }}>
                 <Controller
                   control={control}
                   name='comment'

@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { translate } from '../../../i18n';
+import { Log } from '../../../screens/welcome/utils/utils';
 import { AreaPictureApi } from '../../../services/api/area-picture-api';
 import { FileApi } from '../../../services/api/file-api';
 import { palette } from '../../../theme/palette';
@@ -15,6 +16,7 @@ export const AreaPictureStoreModel = types
   .model('Bank')
   .props({
     areaPicture: types.maybeNull(AreaPictureModel),
+    areaPictures: types.optional(types.array(AreaPictureModel), []),
     annotations: types.optional(types.array(AnnotationModel), []),
     pictureUrl: types.maybeNull(types.string),
   })
@@ -26,11 +28,15 @@ export const AreaPictureStoreModel = types
   }))
   .actions(self => ({
     getAreaPictureSuccess: (areaPicture: AreaPicture) => {
-      self.areaPicture = areaPicture;
+      try {
+        self.areaPicture = areaPicture;
+      } catch (e) {
+        Log(e.message);
+      }
     },
   }))
   .actions(self => ({
-    getAreaPictureFail: error => {
+    getAreaPictureFail: (error: Error) => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -41,7 +47,7 @@ export const AreaPictureStoreModel = types
     },
   }))
   .actions(self => ({
-    getAreaPictureAnnotationsFail: error => {
+    getAreaPictureAnnotationsFail: (error: Error) => {
       __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
@@ -63,11 +69,55 @@ export const AreaPictureStoreModel = types
     }),
   }))
   .actions(self => ({
+    getAreaPicturesSuccess: (areaPictures: AreaPicture[]) => {
+      self.areaPictures.replace(areaPictures);
+    },
+  }))
+  .actions(self => ({
+    getAreaPicturesFail: (error: Error) => {
+      __DEV__ && console.tron.log(error);
+      self.catchOrThrow(error);
+    },
+  }))
+  .actions(self => ({
+    getAreaPictures: flow(function* () {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        const getAreaPictureResult = yield areaPictureApi.getAreaPictures(self.currentAccount.id);
+        self.getAreaPicturesSuccess(getAreaPictureResult);
+      } catch (e) {
+        self.getAreaPicturesFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
     getAreaPictureAnnotations: flow(function* (id: string) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
         const getAreaPictureAnnotationsResult = yield areaPictureApi.getAreaPictureAnnotations(self.currentAccount.id, id);
         self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult[0].annotations);
+      } catch (e) {
+        self.getAreaPictureAnnotationsFail(e);
+      }
+    }),
+  }))
+  .actions(self => ({
+    getAreaPictureFile: flow(function* (prospectId: string, address: string, fileId: string) {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        const getAreaPictureFileResult = yield areaPictureApi.getAreaPictureFile(self.currentAccount.id, prospectId, address, fileId);
+        self.getAreaPictureSuccess(getAreaPictureFileResult);
+      } catch (e) {
+        self.getAreaPictureFail(e);
+        throw e;
+      }
+    }),
+  }))
+  .actions(self => ({
+    updateAreaPictureAnnotations: flow(function* (areaPictureId: string, annotationId: string, annotations: Annotation[]) {
+      const areaPictureApi = new AreaPictureApi(self.environment.api);
+      try {
+        yield areaPictureApi.updateAreaPictureAnnotations(self.currentAccount.id, areaPictureId, annotationId, annotations);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
       }
@@ -83,6 +133,7 @@ export const AreaPictureStoreModel = types
       } catch (e) {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         self.catchOrThrow(e);
+        throw e;
       }
     },
   }));
