@@ -81,7 +81,7 @@ export const ButtonActions = props => {
         }}
         textStyle={{ fontSize: 13, fontFamily: 'Geometria-Bold' }}
       />
-      {currentPage === 2 && isLoading ? (
+      {isLoading ? (
         <View style={{ paddingVertical: spacing[3], paddingHorizontal: spacing[2], width: 100, height: 40 }}>
           <Loader size={20} color={palette.secondaryColor} />
         </View>

@@ -41,7 +41,8 @@
     "no": "Non",
     "reload": "Rafraichir",
     "selectAFile": "Veuillez sélectionner un fichier",
-    "labels": "Labels"
+    "labels": "Labels",
+    "validate": "Valider"
   },
   "errors": {
     "invalidEmail": "Adresse e-mail invalide",
@@ -107,6 +108,7 @@
       "phone": "Téléphone",
       "address": "Adresse",
       "name": "Nom du prospect",
+      "firstName": "Prénom du prospect",
       "comment": "Commentaire",
       "amountLabel": "Valeur potentielle du contrat en € (Optionel)",
       "amount": "Montant",
@@ -153,7 +155,12 @@
       "wear": "Usure",
       "velux": "Velux",
       "slope": "Pente",
-      "area": "Zone"
+      "area": "Zone",
+      "usuryRate": "Taux d'usure",
+      "obstacle": "Obstacle",
+      "comment": "Commentaire",
+      "labelName": "Nom du label",
+      "labelType": "Type de label"
     }
   },
   "prospectConfigurationScreen": {

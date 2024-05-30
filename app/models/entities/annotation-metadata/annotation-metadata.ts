@@ -5,6 +5,10 @@ export const AnnotationMetadataModel = types.model('AnnotationMetadata').props({
   slope: types.maybeNull(types.number),
   wearLevel: types.maybeNull(types.number),
   covering: types.maybeNull(types.string),
+  fillColor: types.maybeNull(types.string),
+  strokeColor: types.maybeNull(types.string),
+  comment: types.maybeNull(types.string),
+  obstacle: types.maybeNull(types.string),
 });
 
 export interface AnnotationMetadata extends Instance<typeof AnnotationMetadataModel> {}

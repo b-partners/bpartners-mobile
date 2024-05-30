@@ -41,7 +41,8 @@
     "no": "No",
     "reload": "Reload",
     "selectAFile": "Please select a file",
-    "labels": "Labels"
+    "labels": "Labels",
+    "validate": "Validate"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -151,6 +152,7 @@
       "phone": "Phone number",
       "address": "Address",
       "name": "Prospect name",
+      "firstName": "Prospect first name",
       "comment": "Comment",
       "optional": "Optional",
       "amountLabel": "Potential contract value in € (Optional)",
@@ -202,7 +204,12 @@
       "wear": "Wear",
       "velux": "Velux",
       "slope": "Slope",
-      "area": "Zone"
+      "area": "Zone",
+      "usuryRate": "Usury Rate",
+      "obstacle": "Obstacle",
+      "comment": "Comment",
+      "labelName": "Label Name",
+      "labelType": "Label Type"
     }
   },
   "onboardingScreen": {

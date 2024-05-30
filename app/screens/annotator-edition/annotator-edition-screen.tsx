@@ -1,49 +1,100 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Animated, FlatList, Image, PanResponder, Platform, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
+import uuid from 'react-native-uuid';
 
-import { Header, InputField, Separator, Text } from '../../components';
-import { KeyboardLayout } from '../../components/keyboard-layout/KeyboardLayout';
+import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
+import { useStores } from '../../models';
+import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
+import { commaToDot } from '../../utils/comma-to-dot';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { getAnnotatorResolver } from './utils/annotator-info-validator';
+import AnnotationButtonAction from './components/annotation-button-action';
+import AnnotationForm from './components/annotation-form';
+import AnnotationItem from './components/annotation-item';
+import { AnnotationModal } from './components/annotation-modal';
+import { Polygon as PolygonType } from './types';
+import { Annotation } from './types/annotation';
+import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
+import { GeojsonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
 import { styles } from './utils/styles';
-import { calculateCentroid, calculateDistance, getPolygonName } from './utils/utils';
+import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
-  const [polygons, setPolygons] = useState([]);
-  const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
-  const [annotation, setAnnotation] = useState([]);
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
+  const { pictureUrl, areaPicture } = areaPictureStore;
+  const { geojson } = geojsonStore;
+  const { currentUser } = authStore;
 
-  const panResponders = useRef([]);
+  const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
+  const [polygons, setPolygons] = useState([]);
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
+  const [isLoading, setLoading] = useState(false);
+
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   const {
     handleSubmit,
     control,
     formState: { errors },
-    setValue,
+    reset,
+    watch,
   } = useForm({
     mode: 'all',
-    defaultValues: { label: '' },
     resolver: getAnnotatorResolver(),
+    defaultValues: getDefaultValue(0),
   });
 
-  const handlePress = event => {
-    const { locationX, locationY } = event.nativeEvent;
-    setCurrentPolygonPoints([...currentPolygonPoints, { x: locationX, y: locationY }]);
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        handleCancelAnnotation();
+        return false;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
+
+  const handlePress = useCallback(
+    event => {
+      const { locationX, locationY } = event.nativeEvent;
+
+      // Calculate relative position based on image offset
+      const relativeX = locationX - imageOffset.x;
+      const relativeY = locationY - imageOffset.y;
+
+      // Get image dimensions
+      const imageWidth = 320;
+      const imageHeight = 320;
+
+      // Constrain new point coordinates within image boundaries
+      const { x, y } = constrainPointCoordinates(relativeX, relativeY, imageWidth, imageHeight);
+
+      setCurrentPolygonPoints(prevPoints => [...prevPoints, { x, y }]);
+    },
+    [imageOffset]
+  );
+
+  const handleImageLayout = event => {
+    const { x, y } = event.nativeEvent.layout;
+    setImageOffset({ x, y });
   };
 
   const createPanResponder = index => {
@@ -56,44 +107,58 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       onPanResponderMove: (event, gestureState) => {
         const { dx, dy } = gestureState;
         const newPoints = [...currentPolygonPoints];
-        const updatedPoint = { ...newPoints[index] };
-        updatedPoint.x += dx;
-        updatedPoint.y += dy;
+        let updatedPoint = { ...newPoints[index] };
+
+        // Calculate the new point coordinates
+        const newX = updatedPoint.x + dx;
+        const newY = updatedPoint.y + dy;
+
+        // Get image dimensions
+        const imageWidth = 320;
+        const imageHeight = 320;
+
+        // Constrain point coordinates within image boundaries
+        updatedPoint = constrainPointCoordinates(newX, newY, imageWidth, imageHeight);
+
+        // Update the point in the array and set state
         newPoints[index] = updatedPoint;
         setCurrentPolygonPoints(newPoints);
       },
     });
   };
 
-  const renderPolygons = () => {
-    return polygons.map((polygonPoints, index) => {
-      const centroid = calculateCentroid(polygonPoints);
+  const renderPoints = useMemo(() => {
+    return currentPolygonPoints.map((point, index) => {
+      const panResponder = createPanResponder(index);
 
       return (
-        <React.Fragment key={index}>
-          <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
-            <Polygon points={polygonPoints.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
-          </Svg>
-          {annotation[index]?.label && (
-            <Text
-              style={{
-                position: 'absolute',
-                left: centroid.x - 15,
-                top: centroid.y - 10,
-                color: '#000',
-                fontSize: 14,
-                fontWeight: 'bold',
-              }}
-            >
-              {annotation[index]?.label}
-            </Text>
-          )}
-        </React.Fragment>
+        <Animated.View
+          key={index}
+          {...panResponder.panHandlers}
+          style={{
+            position: 'absolute',
+            left: point.x - 10,
+            top: point.y - 10,
+            width: 20,
+            height: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: '#000000',
+              width: 8,
+              height: 8,
+              borderRadius: 5,
+            }}
+          />
+        </Animated.View>
       );
     });
-  };
+  }, [currentPolygonPoints]);
 
-  const renderDistances = () => {
+  const renderDistances = useMemo(() => {
     const distances = [];
     for (let i = 0; i < currentPolygonPoints.length; i++) {
       const point1 = currentPolygonPoints[i];
@@ -119,108 +184,229 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       );
     }
     return distances;
-  };
+  }, [currentPolygonPoints]);
 
-  const renderPoints = () => {
-    return currentPolygonPoints.map((point, index) => {
-      panResponders.current[index] = createPanResponder(index);
+  const renderPolygons = useMemo(() => {
+    return polygons.map((polygonPoints, index) => {
+      const centroid = calculateCentroid(polygonPoints);
+
       return (
-        <Animated.View
-          key={index}
-          {...panResponders.current[index].panHandlers}
-          style={{
-            position: 'absolute',
-            left: point.x - 10,
-            top: point.y - 10,
-            width: 20,
-            height: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: '#000000',
-              width: 8,
-              height: 8,
-              borderRadius: 5,
-            }}
-          />
-        </Animated.View>
+        <React.Fragment key={index}>
+          <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
+            <Polygon points={polygonPoints.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
+          </Svg>
+          {annotations[index]?.labelName && (
+            <Text
+              style={{
+                position: 'absolute',
+                left: centroid.x - 15,
+                top: centroid.y - 10,
+                color: '#000',
+                fontSize: 14,
+                fontWeight: 'bold',
+              }}
+            >
+              {annotations[index]?.labelName}
+            </Text>
+          )}
+        </React.Fragment>
       );
     });
-  };
+  }, [polygons, annotations]);
 
-  const startNewPolygon = data => {
-    const { label } = data;
+  const startNewPolygon = labels => {
+    const { labelName, labelType } = labels;
 
-    if (validateLabel(label)) {
+    if (validateLabel(labelName)) {
       showMessage(translate('annotationScreen.errors.requiredLabel'), { backgroundColor: palette.pastelRed });
     } else {
-      const newPolygon = [...currentPolygonPoints];
+      const newPolygon: PolygonType = { id: uuid.v4() as string, points: [...currentPolygonPoints] };
+
       const newAnnotation = {
+        id: uuid.v4(),
         polygon: newPolygon,
-        label: label,
+        labelName: labelName,
+        labelType: labelType,
+        ...labels,
       };
-      setPolygons(prevPolygons => [...prevPolygons, newPolygon]);
-      setAnnotation(prevAnnotation => [...prevAnnotation, newAnnotation]);
+
       setCurrentPolygonPoints([]);
-      setValue('label', '');
+      setPolygons(prevPolygons => [...prevPolygons, newPolygon.points]);
+      setAnnotations(prevAnnotation => [...prevAnnotation, newAnnotation]);
+
+      reset(getDefaultValue(annotations.length + 1));
     }
   };
 
-  const handleCancelAnnotation = () => {
-    setPolygons([]);
-    setAnnotation([]);
-    setCurrentPolygonPoints([]);
-    setValue('label', '');
+  const generateQuote = async () => {
+    setLoading(true);
+    try {
+      const mappedData = {};
+      const annotationsArrayPayload: AnnotationType[] = [];
+      const imageSize = await getImageWidth(pictureUrl);
+      const ratio = imageSize / 320;
+
+      annotations.forEach(annotation => {
+        const convertedData = convertData(annotation);
+        Object.assign(mappedData, convertedData);
+      });
+
+      const payload = {
+        filename: areaPicture?.filename,
+        regions: mappedData,
+        regions_attributes: {
+          label: '',
+        },
+        image_size: imageSize,
+        x_tile: areaPicture.xTile,
+        y_title: areaPicture.yTile,
+        zoom: getZoomLevel(areaPicture.zoomLevel),
+      };
+
+      await geojsonStore.convertPoints(payload);
+
+      const geojsonData = GeojsonMapper.toMeasurements(geojson);
+
+      const annotationId = uuid.v4() as string;
+
+      annotations.forEach(annotation => {
+        const annotationArea = geojsonData.find(item => item.polygonId === annotation.polygon.id && item.unity === 'm²');
+        const polygonPoints = [];
+        annotation.polygon.points.map(pt => {
+          polygonPoints.push({
+            x: pt.x * ratio,
+            y: pt.y * ratio,
+          });
+        });
+
+        const annotationData: AnnotationType = {
+          areaPictureId: areaPicture.id,
+          metadata: {
+            area: annotationArea?.value,
+            fillColor: null,
+            covering: annotation?.covering,
+            comment: annotation?.comment,
+            slope: commaToDot(annotation?.slope),
+            strokeColor: null,
+            wearLevel: commaToDot(annotation?.wearLevel),
+            obstacle: annotation?.obstacle,
+          },
+          polygon: {
+            // @ts-ignore
+            points: polygonPoints,
+          },
+          labelType: annotation?.labelType?.value,
+          id: annotation?.id,
+          annotationId: annotationId,
+          labelName: annotation?.labelName,
+          userId: currentUser?.id,
+        };
+        annotationsArrayPayload.push(annotationData);
+      });
+
+      await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
+      await customerStore.getCustomers();
+      handleCancelAnnotation();
+
+      navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id });
+    } catch {
+      showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
+    }
+
+    setLoading(false);
   };
+
+  // const handleDeletePolygon = index => {
+  //   const updatedPolygons = [...polygons];
+  //   const updatedAnnotation = [...annotations];
+  //
+  //   updatedPolygons.splice(index, 1);
+  //   updatedAnnotation.splice(index, 1);
+  //
+  //   setPolygons(updatedPolygons);
+  //   setAnnotations(updatedAnnotation);
+  // };
+
+  const handleCancelAnnotation = () => {
+    setCurrentPolygonPoints([]);
+    setPolygons([]);
+    setAnnotations([]);
+
+    reset(getDefaultValue(0));
+  };
+
+  const handleBackNavigation = () => {
+    handleCancelAnnotation();
+    navigation.navigate('home');
+  };
+
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <KeyboardLayout setKeyboardOpen={setIsKeyboardOpen}>
-          <Header
-            headerTx='annotationScreen.title'
-            leftIcon={'back'}
-            onLeftPress={() => navigation.navigate('home')}
-            style={HEADER}
-            titleStyle={HEADER_TITLE}
-          />
-          <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
-            <View style={{ flex: 1 }}>
-              <View style={{ width: '100%', height: 40, alignItems: 'center', padding: 10, marginTop: 10 }}>
-                <Text text={'5b rue Paul Hevry 10430, Rosières-près-troyes'} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+        <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={handleBackNavigation} style={HEADER} titleStyle={HEADER_TITLE} />
+        <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
+          <ScrollView
+            style={{
+              marginBottom: 10,
+            }}
+            contentContainerStyle={Platform.OS === 'ios' ? styles.scrollContainer : { ...styles.scrollContainer, height: '100%' }}
+          >
+            <View style={{ width: '94%', height: 750 }}>
+              <View
+                style={{
+                  width: '100%',
+                  alignItems: 'center',
+                  padding: 10,
+                }}
+              >
+                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
               </View>
               <TouchableWithoutFeedback onPress={handlePress}>
-                <View style={{ flex: 1, alignItems: 'center' }}>
-                  <Image
+                {isKeyboardOpen ? (
+                  <View style={{ width: '100%', height: 100 }} />
+                ) : (
+                  <View
                     style={{
-                      width: 350,
-                      height: 320,
-                      position: 'absolute',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: 350,
+                      backgroundColor: palette.lighterGrey,
+                      borderWidth: 1,
+                      borderColor: palette.white,
                     }}
-                    source={require('./assets/images/Rennes_Solar_Panel.jpg')}
-                  />
-                  {renderPolygons()}
-                  <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
-                    <Polygon
-                      points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
-                      fill='rgba(144, 248, 10, 0.4)'
-                      stroke='#90F80A'
-                      strokeWidth='1'
-                    />
-                  </Svg>
-                  {renderPoints()}
-                  {renderDistances()}
-                </View>
+                  >
+                    <View style={{ width: 320, height: 320 }}>
+                      <Image
+                        onLayout={handleImageLayout}
+                        style={{
+                          width: 320,
+                          height: 320,
+                        }}
+                        source={{ uri: pictureUrl }}
+                      />
+                      {renderPolygons}
+                      <Svg width='320' height='320' style={{ position: 'absolute', top: 0, left: 0 }}>
+                        <Polygon
+                          points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
+                          fill='rgba(144, 248, 10, 0.4)'
+                          stroke='#90F80A'
+                          strokeWidth='1'
+                        />
+                      </Svg>
+                      {renderPoints}
+                      {renderDistances}
+                    </View>
+                  </View>
+                )}
               </TouchableWithoutFeedback>
               <View
                 style={{
-                  width: '94%',
-                  marginHorizontal: '3%',
-                  paddingHorizontal: 10,
-                  height: 215,
+                  display: 'flex',
+                  height: 190,
                 }}
               >
                 {!isKeyboardOpen && (
@@ -231,123 +417,66 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         color: palette.black,
                         fontSize: 22,
                         fontWeight: '700',
-                        width: '90%',
                         marginTop: spacing[1],
                       }}
                     />
                     {polygons.length === 0 ? (
-                      <Text text={"Pas encore d'annotation effectuée."} style={{ color: palette.greyDarker, fontFamily: 'Geometria', marginVertical: 20 }} />
+                      <View style={{ marginVertical: 10 }}>
+                        <Text
+                          text={"Pas encore d'annotation effectuée."}
+                          style={{
+                            color: palette.greyDarker,
+                            fontFamily: 'Geometria',
+                          }}
+                        />
+                      </View>
                     ) : (
-                      <FlatList
-                        style={{ width: '100%' }}
-                        data={polygons}
-                        keyExtractor={(item, index) => `polygon_${index}`}
-                        renderItem={({ index }) => {
-                          return (
-                            <View key={`polygon_${index}`} style={{ width: '100%', marginVertical: spacing[3] }}>
-                              <Text
-                                style={{
-                                  color: palette.black,
-                                  fontSize: 16,
-                                  fontWeight: '600',
-                                  marginBottom: spacing[1],
-                                }}
-                              >
-                                {getPolygonName(index)}
-                              </Text>
-                              <Text
-                                style={{
-                                  color: palette.secondaryColor,
-                                  fontSize: 14,
-                                  fontWeight: '800',
-                                }}
-                              >
-                                {annotation[index]?.label}
-                              </Text>
-                            </View>
-                          );
-                        }}
-                        ItemSeparatorComponent={() => <Separator style={styles.separator} />}
-                      />
+                      <ScrollView style={{ maxHeight: 150 }}>
+                        {!validatePolygon(currentPolygonPoints) && (
+                          <FlatList
+                            style={{ width: '100%', height: 150 }}
+                            data={polygons}
+                            keyExtractor={(item, index) => `polygon_${index}`}
+                            renderItem={({ index }) => {
+                              return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} />;
+                            }}
+                            ItemSeparatorComponent={() => <Separator style={styles.separator} />}
+                          />
+                        )}
+                      </ScrollView>
                     )}
                   </>
                 )}
                 {validatePolygon(currentPolygonPoints) && (
-                  <View
-                    style={
-                      isKeyboardOpen
-                        ? {
-                            width: '95%',
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 20,
-                          }
-                        : {
-                            width: '100%',
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 10,
-                          }
-                    }
-                  >
-                    <Controller
-                      control={control}
-                      name='label'
-                      defaultValue=''
-                      render={({ field: { onChange, value } }) => (
-                        <InputField
-                          labelTx={'common.labels'}
-                          error={!!errors.label}
-                          value={value}
-                          onChange={onChange}
-                          errorMessage={errors.label?.message}
-                          backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                        />
-                      )}
-                    />
-                  </View>
+                  <AnnotationForm polygons={polygons} control={control} errors={errors} watch={watch} setShowModal={setShowModal} />
                 )}
               </View>
               {!isKeyboardOpen && (
-                <View>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={validatePolygon(currentPolygonPoints) ? styles.button : styles.disabledButton}
-                      onPress={handleSubmit(startNewPolygon)}
-                      disabled={!validatePolygon(currentPolygonPoints)}
-                    >
-                      <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.buttonText} tx={'annotationScreen.process.validatePolygon'} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={currentPolygonPoints.length === 0 ? styles.disabledButton : styles.button}
-                      onPress={() => setCurrentPolygonPoints(prevPoints => prevPoints.slice(0, -1))}
-                      disabled={currentPolygonPoints.length === 0}
-                    >
-                      <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.buttonText} tx={'annotationScreen.process.removeLastPoint'} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={polygons.length === 0 ? styles.disabledButton : styles.button}
-                      onPress={handleCancelAnnotation}
-                      disabled={polygons.length === 0}
-                    >
-                      <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.buttonText} tx={'annotationScreen.process.cancelAnnotation'} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+                <AnnotationButtonAction
+                  validatePolygon={validatePolygon}
+                  currentPolygonPoints={currentPolygonPoints}
+                  handleSubmit={handleSubmit}
+                  startNewPolygon={startNewPolygon}
+                  setCurrentPolygonPoints={setCurrentPolygonPoints}
+                  polygonLength={polygons?.length}
+                  handleCancelAnnotation={handleCancelAnnotation}
+                  generateQuote={generateQuote}
+                  isLoading={isLoading}
+                />
               )}
             </View>
-          </View>
-        </KeyboardLayout>
+          </ScrollView>
+        </View>
+        <AnnotationModal
+          errors={errors}
+          setKeyboardOpen={setIsKeyboardOpen}
+          isKeyboardOpen={isKeyboardOpen}
+          setShowModal={setShowModal}
+          showModal={showModal}
+          control={control}
+          polygonLength={polygons?.length}
+          reset={reset}
+        />
       </ErrorBoundary>
     </Provider>
   );

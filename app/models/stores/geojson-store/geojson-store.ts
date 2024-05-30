@@ -7,9 +7,9 @@ import { withCredentials } from '../../extensions/with-credentials';
 import { withRootStore } from '../../extensions/with-root-store';
 
 export const GeojsonStoreModel = types
-  .model('Bank')
+  .model('Geojson')
   .props({
-    geojson: types.maybeNull(GeojsonModel),
+    geojson: types.optional(types.array(GeojsonModel), []),
   })
   .extend(withRootStore)
   .extend(withCredentials)
@@ -17,8 +17,8 @@ export const GeojsonStoreModel = types
     catchOrThrow: (error: Error) => self.rootStore.authStore.catchOrThrow(error),
   }))
   .actions(self => ({
-    convertPointSuccess: (geojson: Geojson) => {
-      self.geojson = geojson;
+    convertPointSuccess: (geojson: Geojson[]) => {
+      self.geojson.replace(geojson as any);
     },
   }))
   .actions(self => ({
@@ -26,7 +26,7 @@ export const GeojsonStoreModel = types
       const geojsonApi = new GeojsonApi();
       try {
         const convertPointResult = yield geojsonApi.convertPoints(points);
-        self.convertPointSuccess(convertPointResult[0]);
+        self.convertPointSuccess(convertPointResult);
       } catch (e) {
         self.catchOrThrow(e);
       }
