@@ -320,16 +320,16 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     setLoading(false);
   };
 
-  // const handleDeletePolygon = index => {
-  //   const updatedPolygons = [...polygons];
-  //   const updatedAnnotation = [...annotations];
-  //
-  //   updatedPolygons.splice(index, 1);
-  //   updatedAnnotation.splice(index, 1);
-  //
-  //   setPolygons(updatedPolygons);
-  //   setAnnotations(updatedAnnotation);
-  // };
+  const handleDeletePolygon = index => {
+    const updatedPolygons = [...polygons];
+    const updatedAnnotation = [...annotations];
+
+    updatedPolygons.splice(index, 1);
+    updatedAnnotation.splice(index, 1);
+
+    setPolygons(updatedPolygons);
+    setAnnotations(updatedAnnotation);
+  };
 
   const handleCancelAnnotation = () => {
     setCurrentPolygonPoints([]);
@@ -496,7 +496,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             data={polygons}
                             keyExtractor={(item, index) => `polygon_${index}`}
                             renderItem={({ index }) => {
-                              return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} />;
+                              return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} handleDeletePolygon={handleDeletePolygon} />;
                             }}
                             ItemSeparatorComponent={() => <Separator style={styles.separator} />}
                           />
