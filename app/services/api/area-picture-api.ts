@@ -55,6 +55,7 @@ export class AreaPictureApi {
       fileId: fileId,
       prospectId: prospectId,
       layer: null,
+      isExtended: false,
     };
     const response: ApiResponse<GetAreaPictureResult> = await this.api.apisauce.put(`accounts/${accountId}/areaPictures/${areaPictureId}`, payload);
 
