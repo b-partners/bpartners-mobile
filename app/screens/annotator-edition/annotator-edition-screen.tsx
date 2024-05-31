@@ -1,7 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -33,7 +33,16 @@ import { validateLabel } from './utils/label-validator';
 import { GeojsonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
 import { styles, zoomDropDownStyles } from './utils/styles';
-import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
+import {
+  annotationToRegions,
+  calculateCentroid,
+  calculateDistance,
+  constrainPointCoordinates,
+  convertData,
+  getImageWidth, getMeasurmements,
+  getZoomLevel
+} from './utils/utils';
+import {Log} from "../welcome/utils/utils";
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
