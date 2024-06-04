@@ -80,6 +80,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
                   selectedTextStyle={dropDownStyles.selectedTextStyle}
                   inputSearchStyle={dropDownStyles.inputSearchStyle}
                   iconStyle={dropDownStyles.iconStyle}
+                  itemTextStyle={dropDownStyles.itemTextStyle}
                   data={labelTypes}
                   search
                   maxHeight={300}
