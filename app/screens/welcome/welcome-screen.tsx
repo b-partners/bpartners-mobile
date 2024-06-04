@@ -64,7 +64,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     try {
       user = await Auth.signIn(email, password);
     } catch (e) {
-      showMessage(translate('errors.credentials', errorMessageStyles));
+      showMessage(translate('errors.credentials'), warningMessageStyles);
       return;
     }
     if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
