@@ -96,6 +96,9 @@ export const dropDownStyles = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
+  itemTextStyle: {
+    color: palette.purple,
+  },
 });
 
 export const labelStyles = StyleSheet.create({
