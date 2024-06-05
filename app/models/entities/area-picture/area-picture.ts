@@ -19,7 +19,7 @@ export enum ZoomLevel {
   NEIGHBORHOOD = 'NEIGHBORHOOD',
   STREETS = 'STREETS',
   CITY_BLOCK = 'CITY_BLOCK',
-  BUILDINGS = 'BUILDINGS',
+  BUILDING = 'BUILDING',
   HOUSES_0 = 'HOUSES_0',
   HOUSES_1 = 'HOUSES_1',
   HOUSES_2 = 'HOUSES_2',
@@ -28,7 +28,7 @@ export enum ZoomLevel {
 
 export const ZOOM_LEVEL = [
   {
-    value: 'BUILDINGS',
+    value: 'BUILDING',
     label: 'Quartier',
     zoom: 19,
   },
