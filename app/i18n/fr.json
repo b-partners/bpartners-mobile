@@ -141,7 +141,9 @@
     "process": {
       "cancelAnnotation": "Annuler l'annotation",
       "removeLastPoint": "Retirer le dernier point",
-      "validatePolygon": "Valider le polygone"
+      "validatePolygon": "Valider le polygone",
+      "refocusImage": "Recentrer l'image",
+      "zoomLevel": "Niveau de zoom :"
     },
     "errors": {
       "requiredLabel": "Veuillez donner un label pour chaque annotation"

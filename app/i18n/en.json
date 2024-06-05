@@ -190,7 +190,9 @@
     "process": {
       "cancelAnnotation": "Cancel annotation",
       "removeLastPoint": "Remove the last point",
-      "validatePolygon": "Validate polygon"
+      "validatePolygon": "Validate polygon",
+      "refocusImage": "Refocus the image",
+      "zoomLevel": "Zoom level :"
     },
     "errors": {
       "requiredLabel": "Please give a label for each annotation"

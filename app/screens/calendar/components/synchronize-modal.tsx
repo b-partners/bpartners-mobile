@@ -4,14 +4,13 @@ import { Checkbox } from 'react-native-paper';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
-import { AutoImage, Button, Text } from '../../../components';
+import { AutoImage, Button, ScrollingText, Text } from '../../../components';
 import { TEXT_STYLE } from '../../../components/bp-drawer/utils/styles';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SynchronizeModalProps } from '../utils/utils';
-import { ScrollingText } from './scrolling-text';
 
 export const SynchronizeModal = (props: SynchronizeModalProps) => {
   const { isOpen, setOpen } = props;

@@ -12,6 +12,7 @@ import { InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
+import { ZoomLevel } from '../../../models/entities/area-picture/area-picture';
 import { navigate } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -79,7 +80,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
         ...prospectInfos,
       });
       showMessage(translate('common.added'), { backgroundColor: palette.green });
-      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId);
+      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId, ZoomLevel.HOUSES_0, false);
       await areaPictureStore.getPictureUrl(fileId);
       navigate('annotatorEdition');
     } catch (e) {
