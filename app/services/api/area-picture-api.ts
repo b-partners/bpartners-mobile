@@ -52,6 +52,7 @@ export class AreaPictureApi {
     address: string,
     fileId: string,
     zoomLevel: string,
+    isExtended: boolean,
     areaPictureId?: string
   ): Promise<GetAreaPictureResult> {
     const currentAreaPictureId = areaPictureId ?? uuid.v4();
@@ -61,7 +62,7 @@ export class AreaPictureApi {
       fileId: fileId,
       prospectId: prospectId,
       layer: null,
-      isExtended: false,
+      isExtended: isExtended,
     };
     const response: ApiResponse<GetAreaPictureResult> = await this.api.apisauce.put(`accounts/${accountId}/areaPictures/${currentAreaPictureId}`, payload);
 

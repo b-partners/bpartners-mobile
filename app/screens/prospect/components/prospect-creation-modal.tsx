@@ -80,7 +80,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
         ...prospectInfos,
       });
       showMessage(translate('common.added'), { backgroundColor: palette.green });
-      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId, ZoomLevel.HOUSES_0);
+      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId, ZoomLevel.HOUSES_0, false);
       await areaPictureStore.getPictureUrl(fileId);
       navigate('annotatorEdition');
     } catch (e) {
