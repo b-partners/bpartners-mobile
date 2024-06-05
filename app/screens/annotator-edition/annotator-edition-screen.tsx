@@ -346,6 +346,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     const fileId = uuid.v4();
     await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomLevel?.value, areaPicture?.id);
     await areaPictureStore.getPictureUrl(fileId);
+    handleCancelAnnotation();
 
     setZoomValue(zoomLevel);
   };
