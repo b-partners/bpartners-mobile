@@ -2,7 +2,6 @@ import { ApiResponse } from 'apisauce';
 import uuid from 'react-native-uuid';
 
 import { Annotation } from '../../models/entities/annotation/annotation';
-import { ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import { GetAreaPictureAnnotationsResult, GetAreaPictureResult, GetAreaPicturesResult } from './api.types';
@@ -47,11 +46,11 @@ export class AreaPictureApi {
     return response.data;
   }
 
-  async getAreaPictureFile(accountId: string, prospectId: string, address: string, fileId: string): Promise<GetAreaPictureResult> {
+  async getAreaPictureFile(accountId: string, prospectId: string, address: string, fileId: string, zoomLevel: string): Promise<GetAreaPictureResult> {
     const areaPictureId = uuid.v4();
     const payload = {
       address: address,
-      zoomLevel: ZoomLevel.HOUSES_0,
+      zoomLevel: zoomLevel,
       fileId: fileId,
       prospectId: prospectId,
       layer: null,
