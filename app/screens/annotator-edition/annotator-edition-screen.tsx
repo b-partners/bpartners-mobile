@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
@@ -46,6 +46,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
   const [isLoading, setLoading] = useState(false);
+  const [isExtended, setIsExtended] = useState(false);
+  const [zoomValue, setZoomValue] = useState(ZoomLevel.HOUSES_0);
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
@@ -343,16 +345,24 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   };
 
   const handleChangeZoomLevel = async zoomLevel => {
+    setIsExtended(false);
     const fileId = uuid.v4();
     await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomLevel?.value, false, areaPicture?.id);
     await areaPictureStore.getPictureUrl(fileId);
     handleCancelAnnotation();
 
-    setZoomValue(zoomLevel);
+    setZoomValue(zoomLevel?.value);
+  };
+
+  const handleExtend = async () => {
+    setIsExtended(true);
+    const fileId = uuid.v4();
+    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomValue, true, areaPicture?.id);
+    await areaPictureStore.getPictureUrl(fileId);
+    handleCancelAnnotation();
   };
 
   const [showModal, setShowModal] = useState(false);
-  const [zoomValue, setZoomValue] = useState(ZoomLevel.HOUSES_0);
 
   return (
     <Provider>
@@ -369,25 +379,34 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               <View
                 style={{
                   width: '100%',
-                  height: 40,
-                  alignItems: 'flex-end',
+                  height: 60,
+                  flexDirection: 'row',
                 }}
               >
-                <Dropdown
-                  style={zoomDropDownStyles.dropdown}
-                  placeholderStyle={zoomDropDownStyles.placeholderStyle}
-                  selectedTextStyle={zoomDropDownStyles.selectedTextStyle}
-                  iconStyle={zoomDropDownStyles.iconStyle}
-                  itemTextStyle={zoomDropDownStyles.itemTextStyle}
-                  data={ZOOM_LEVEL}
-                  maxHeight={300}
-                  labelField='label'
-                  valueField='value'
-                  placeholder='Select item'
-                  searchPlaceholder='Rechercher...'
-                  value={zoomValue}
-                  onChange={handleChangeZoomLevel}
-                />
+                <View style={{ width: '50%', paddingHorizontal: spacing[1] }}>
+                  <TouchableOpacity style={isExtended ? styles.focusDisabledButton : styles.focusButton} onPress={handleExtend} disabled={false}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text style={styles.buttonText} tx={'annotationScreen.process.refocusImage'} />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: '50%', paddingHorizontal: spacing[1] }}>
+                  <Dropdown
+                    style={zoomDropDownStyles.dropdown}
+                    placeholderStyle={zoomDropDownStyles.placeholderStyle}
+                    selectedTextStyle={zoomDropDownStyles.selectedTextStyle}
+                    iconStyle={zoomDropDownStyles.iconStyle}
+                    itemTextStyle={zoomDropDownStyles.itemTextStyle}
+                    data={ZOOM_LEVEL}
+                    maxHeight={300}
+                    labelField='label'
+                    valueField='value'
+                    placeholder='Select item'
+                    searchPlaceholder='Rechercher...'
+                    value={zoomValue}
+                    onChange={handleChangeZoomLevel}
+                  />
+                </View>
               </View>
               <TouchableWithoutFeedback onPress={handlePress}>
                 {isKeyboardOpen ? (

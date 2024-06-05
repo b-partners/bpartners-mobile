@@ -47,6 +47,17 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     marginVertical: spacing[1],
   },
+  focusButton: {
+    backgroundColor: palette.secondaryColor,
+    borderColor: palette.secondaryColor,
+    width: '100%',
+    height: 30,
+    borderRadius: 5,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    borderWidth: 1,
+    marginTop: 20,
+  },
   disabledButton: {
     width: '100%',
     height: 40,
@@ -55,6 +66,17 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderWidth: 1,
     marginVertical: spacing[1],
+    backgroundColor: palette.lighterGrey,
+    borderColor: palette.lighterGrey,
+  },
+  focusDisabledButton: {
+    width: '100%',
+    height: 30,
+    borderRadius: 5,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    borderWidth: 1,
+    marginTop: 20,
     backgroundColor: palette.lighterGrey,
     borderColor: palette.lighterGrey,
   },
@@ -104,12 +126,11 @@ export const dropDownStyles = StyleSheet.create({
 export const zoomDropDownStyles = StyleSheet.create({
   dropdown: {
     height: 30,
-    position: 'absolute',
     backgroundColor: palette.secondaryColor,
-    borderRadius: 50,
-    paddingLeft: 30,
-    width: 220,
-    top: 0,
+    borderRadius: 5,
+    paddingLeft: 10,
+    width: '100%',
+    marginTop: 20,
   },
   icon: {
     marginRight: 5,
@@ -124,7 +145,7 @@ export const zoomDropDownStyles = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    right: 24,
+    right: 10,
     tintColor: palette.white,
   },
   inputSearchStyle: {
