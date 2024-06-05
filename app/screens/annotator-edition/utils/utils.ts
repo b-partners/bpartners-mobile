@@ -88,8 +88,6 @@ export const getImageWidth = async (pictureUrl: string): Promise<number> => {
 export const annotationToRegions = (annotations: Annotation[]) => {
   const mappedData = {};
 
-  Log('annotations');
-  Log(annotations);
   annotations.forEach(annotation => {
     const convertedData = convertData(annotation);
     Object.assign(mappedData, convertedData);
@@ -111,7 +109,7 @@ export const getMeasurmements = async (areaPicture, mappedData, imageSize, geojs
     zoom: getZoomLevel(areaPicture.zoomLevel),
   };
 
-  await geojsonStore.convertPoints(payload);
+  const result = await geojsonStore.convertPoints(payload);
 
-  return GeojsonMapper.toMeasurements(geojsonStore?.geojson);
+  return GeojsonMapper.toMeasurements(result);
 }

@@ -27,6 +27,7 @@ export const GeojsonStoreModel = types
       try {
         const convertPointResult = yield geojsonApi.convertPoints(points);
         self.convertPointSuccess(convertPointResult);
+        return convertPointResult;
       } catch (e) {
         self.catchOrThrow(e);
       }
