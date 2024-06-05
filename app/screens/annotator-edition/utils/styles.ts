@@ -101,6 +101,41 @@ export const dropDownStyles = StyleSheet.create({
   },
 });
 
+export const zoomDropDownStyles = StyleSheet.create({
+  dropdown: {
+    height: 30,
+    position: 'absolute',
+    backgroundColor: palette.secondaryColor,
+    borderRadius: 50,
+    paddingLeft: 30,
+    width: 220,
+    top: 0,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: palette.white,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    right: 24,
+    tintColor: palette.white,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  itemTextStyle: {
+    color: palette.purple,
+  },
+});
+
 export const labelStyles = StyleSheet.create({
   key: {
     fontSize: 12,

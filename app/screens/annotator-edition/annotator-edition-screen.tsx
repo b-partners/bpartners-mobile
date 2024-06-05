@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 import uuid from 'react-native-uuid';
@@ -12,6 +13,7 @@ import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
+import { ZOOM_LEVEL, ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -30,7 +32,7 @@ import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-va
 import { validateLabel } from './utils/label-validator';
 import { GeojsonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
-import { styles } from './utils/styles';
+import { styles, zoomDropDownStyles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
@@ -340,7 +342,16 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     navigation.navigate('home');
   };
 
+  const handleChangeZoomLevel = async zoomLevel => {
+    const fileId = uuid.v4();
+    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomLevel?.value, areaPicture?.id);
+    await areaPictureStore.getPictureUrl(fileId);
+
+    setZoomValue(zoomLevel);
+  };
+
   const [showModal, setShowModal] = useState(false);
+  const [zoomValue, setZoomValue] = useState(ZoomLevel.HOUSES_0);
 
   return (
     <Provider>
@@ -357,11 +368,25 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               <View
                 style={{
                   width: '100%',
-                  alignItems: 'center',
-                  padding: 10,
+                  height: 40,
+                  alignItems: 'flex-end',
                 }}
               >
-                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+                <Dropdown
+                  style={zoomDropDownStyles.dropdown}
+                  placeholderStyle={zoomDropDownStyles.placeholderStyle}
+                  selectedTextStyle={zoomDropDownStyles.selectedTextStyle}
+                  iconStyle={zoomDropDownStyles.iconStyle}
+                  itemTextStyle={zoomDropDownStyles.itemTextStyle}
+                  data={ZOOM_LEVEL}
+                  maxHeight={300}
+                  labelField='label'
+                  valueField='value'
+                  placeholder='Select item'
+                  searchPlaceholder='Rechercher...'
+                  value={zoomValue}
+                  onChange={handleChangeZoomLevel}
+                />
               </View>
               <TouchableWithoutFeedback onPress={handlePress}>
                 {isKeyboardOpen ? (
@@ -403,6 +428,16 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   </View>
                 )}
               </TouchableWithoutFeedback>
+              <View
+                style={{
+                  width: '100%',
+                  alignItems: 'center',
+                  padding: 10,
+                  flexDirection: 'row',
+                }}
+              >
+                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+              </View>
               <View
                 style={{
                   display: 'flex',

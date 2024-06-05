@@ -102,10 +102,10 @@ export const AreaPictureStoreModel = types
     }),
   }))
   .actions(self => ({
-    getAreaPictureFile: flow(function* (prospectId: string, address: string, fileId: string, zoomLevel: string) {
+    getAreaPictureFile: flow(function* (prospectId: string, address: string, fileId: string, zoomLevel: string, areaPictureId?: string) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
-        const getAreaPictureFileResult = yield areaPictureApi.getAreaPictureFile(self.currentAccount.id, prospectId, address, fileId, zoomLevel);
+        const getAreaPictureFileResult = yield areaPictureApi.getAreaPictureFile(self.currentAccount.id, prospectId, address, fileId, zoomLevel, areaPictureId);
         self.getAreaPictureSuccess(getAreaPictureFileResult);
       } catch (e) {
         self.getAreaPictureFail(e);

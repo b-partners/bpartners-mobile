@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Easing, View } from 'react-native';
 
-import { Text } from '../../../components';
-import { spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
+import { spacing } from '../../theme';
+import { palette } from '../../theme/palette';
+import { Text } from '../index';
 
 export const ScrollingText = ({ text, containerWidth }) => {
   const translateX = useRef(new Animated.Value(containerWidth)).current;

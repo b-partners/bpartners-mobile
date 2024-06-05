@@ -46,8 +46,15 @@ export class AreaPictureApi {
     return response.data;
   }
 
-  async getAreaPictureFile(accountId: string, prospectId: string, address: string, fileId: string, zoomLevel: string): Promise<GetAreaPictureResult> {
-    const areaPictureId = uuid.v4();
+  async getAreaPictureFile(
+    accountId: string,
+    prospectId: string,
+    address: string,
+    fileId: string,
+    zoomLevel: string,
+    areaPictureId?: string
+  ): Promise<GetAreaPictureResult> {
+    const currentAreaPictureId = areaPictureId ?? uuid.v4();
     const payload = {
       address: address,
       zoomLevel: zoomLevel,
@@ -56,7 +63,7 @@ export class AreaPictureApi {
       layer: null,
       isExtended: false,
     };
-    const response: ApiResponse<GetAreaPictureResult> = await this.api.apisauce.put(`accounts/${accountId}/areaPictures/${areaPictureId}`, payload);
+    const response: ApiResponse<GetAreaPictureResult> = await this.api.apisauce.put(`accounts/${accountId}/areaPictures/${currentAreaPictureId}`, payload);
 
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
