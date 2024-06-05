@@ -84,6 +84,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: palette.white,
   },
+  zoomLabel: {
+    fontSize: 14,
+    color: palette.greyDarker,
+  },
   separator: {
     borderColor: palette.lighterGrey,
   },

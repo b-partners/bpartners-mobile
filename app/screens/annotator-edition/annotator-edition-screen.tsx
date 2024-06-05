@@ -391,6 +391,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   </TouchableOpacity>
                 </View>
                 <View style={{ width: '50%', paddingHorizontal: spacing[1] }}>
+                  <View style={{ position: 'absolute', top: 0, left: spacing[2] }}>
+                    <Text style={styles.zoomLabel} tx={'annotationScreen.process.zoomLevel'} />
+                  </View>
                   <Dropdown
                     style={zoomDropDownStyles.dropdown}
                     placeholderStyle={zoomDropDownStyles.placeholderStyle}
