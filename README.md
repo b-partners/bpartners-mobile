@@ -2,7 +2,7 @@
 
 BPartners Mobile is the mobile version of [BPartners](https://www.bpartners.app/home) app
 
-Project currently based on: 
+Project currently based on:
 
 - React Native
 - React Navigation
