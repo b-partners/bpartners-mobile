@@ -2,6 +2,8 @@ import { Image } from 'react-native';
 
 import { ZOOM_LEVEL } from '../../../models/entities/area-picture/area-picture';
 import { Log } from '../../welcome/utils/utils';
+import { GeojsonReturn, Measurement } from '../types';
+import { GeojsonMapper } from './mappers';
 
 export const getPolygonName = index => {
   const nextChar = String.fromCharCode(65 + index);
@@ -82,14 +84,35 @@ export const getImageWidth = async (pictureUrl: string): Promise<number> => {
     );
   });
 };
-export const getImageWidth1 = (pictureUrl: string): number => {
-  let res: number;
-  Image.getSize(pictureUrl, width => {
-    res = width;
-    Log('res');
-    Log(res);
+
+export const getMeasurements = async (areaPicture, annotations, imageSize, geojsonStore): Promise<Measurement[]> => {
+  const mappedData = {};
+
+  annotations.forEach(annotation => {
+    const convertedData = convertData(annotation);
+    Object.assign(mappedData, convertedData);
   });
-  Log('res2');
-  Log(res);
-  return res;
+
+  const payload = {
+    filename: areaPicture?.filename,
+    regions: mappedData,
+    regions_attributes: {
+      label: '',
+    },
+    image_size: imageSize,
+    x_tile: areaPicture.xTile,
+    y_title: areaPicture.yTile,
+    zoom: getZoomLevel(areaPicture.zoomLevel),
+  };
+
+  let result: Measurement[] = [];
+
+  try {
+    const res: GeojsonReturn[] = await geojsonStore.convertPoints(payload);
+    result = GeojsonMapper.toMeasurements(res);
+  } catch (error) {
+    Log('Error converting points:', error);
+  }
+
+  return result;
 };

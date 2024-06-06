@@ -56,7 +56,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     supportContact: translate('supportContactScreen.title'),
     bank: translate('logoutScreen.swan'),
     configuration: translate('configurationScreen.title'),
-    //annotatorEdition: translate('annotationScreen.title'),
+    // annotatorEdition: translate('annotationScreen.title'),
     partners: translate('partnersScreen.title'),
     calendar: translate('calendarScreen.title'),
   };
@@ -77,7 +77,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
     configuration: <IoniconIcon name='settings-outline' size={21} color={color.palette.secondaryColor} />,
     partners: <FontAwesomeIcon name='handshake-o' size={17} color={color.palette.secondaryColor} />,
     calendar: <IoniconIcon name='calendar-outline' size={22} color={color.palette.secondaryColor} />,
-    //annotatorEdition: <IoniconIcon name='scan-outline' size={22} color={color.palette.secondaryColor} />,
+    // annotatorEdition: <IoniconIcon name='scan-outline' size={22} color={color.palette.secondaryColor} />,
   };
 
   return (
@@ -99,35 +99,38 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
         navigation={props.navigation}
       />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
-        <ScrollView style={NAVIGATION_CONTAINER_STYLE}>
-          {props.state.routes.map((route: any) => {
-            const routeTitle = TitleRoute[route.name];
-            if (routeTitle === undefined) {
-              return null;
-            }
+        <ScrollView>
+          <View style={NAVIGATION_CONTAINER_STYLE}>
+            {props.state.routes.map((route: any) => {
+              const routeTitle = TitleRoute[route.name];
+              if (routeTitle === undefined) {
+                return null;
+              }
 
-            return (
-              <TouchableOpacity
-                key={route.key}
-                style={NAVIGATION_STYLE}
-                onPress={() => props.navigation.navigate(route.name)}
-                testID={`${route.name}DrawerTab`}
-              >
-                <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
-                <View style={TEXT_CONTAINER_STYLE}>
-                  <Text style={TEXT_STYLE} testID={`${route.name}Text`}>
-                    {routeTitle}
-                  </Text>
-                </View>
-                <View style={ICON_CONTAINER_STYLE}>
-                  <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+              return (
+                <TouchableOpacity
+                  key={route.key}
+                  style={NAVIGATION_STYLE}
+                  onPress={() => props.navigation.navigate(route.name)}
+                  testID={`${route.name}DrawerTab`}
+                >
+                  <View style={ICON_CONTAINER_STYLE}>{IconRoute[route.name]}</View>
+                  <View style={TEXT_CONTAINER_STYLE}>
+                    <Text style={TEXT_STYLE} testID={`${route.name}Text`}>
+                      {routeTitle}
+                    </Text>
+                  </View>
+                  <View style={ICON_CONTAINER_STYLE}>
+                    <EntypoIcon name='chevron-thin-right' size={18} color='#000' />
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </ScrollView>
       </View>
       <TouchableOpacity
+        testID='logoutButton'
         style={LOGOUT_CONTAINER_STYLE}
         onPress={async () => {
           setIsLoading(true);

@@ -42,7 +42,9 @@
     "reload": "Reload",
     "selectAFile": "Please select a file",
     "labels": "Labels",
-    "validate": "Validate"
+    "validate": "Validate",
+    "delete": "Delete",
+    "closeSection": "Close the section"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",

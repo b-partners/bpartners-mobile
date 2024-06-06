@@ -1,7 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -22,6 +22,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
+import { Log } from '../welcome/utils/utils';
 import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
@@ -30,15 +31,13 @@ import { Polygon as PolygonType } from './types';
 import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
-import { GeojsonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
 import { styles, zoomDropDownStyles } from './utils/styles';
-import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
+import { calculateCentroid, calculateDistance, constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
   const { pictureUrl, areaPicture } = areaPictureStore;
-  const { geojson } = geojsonStore;
   const { currentUser } = authStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
@@ -190,6 +189,21 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     return distances;
   }, [currentPolygonPoints]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const imageSize = await getImageWidth(pictureUrl);
+
+        const realMeasure = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
+
+        Log('realMeasure');
+        Log(realMeasure);
+      } catch (e) {
+        Log(e);
+      }
+    })();
+  }, [annotations]);
+
   const renderPolygons = useMemo(() => {
     return polygons.map((polygonPoints, index) => {
       const centroid = calculateCentroid(polygonPoints);
@@ -245,31 +259,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const generateQuote = async () => {
     setLoading(true);
     try {
-      const mappedData = {};
       const annotationsArrayPayload: AnnotationType[] = [];
+
       const imageSize = await getImageWidth(pictureUrl);
       const ratio = imageSize / 320;
 
-      annotations.forEach(annotation => {
-        const convertedData = convertData(annotation);
-        Object.assign(mappedData, convertedData);
-      });
-
-      const payload = {
-        filename: areaPicture?.filename,
-        regions: mappedData,
-        regions_attributes: {
-          label: '',
-        },
-        image_size: imageSize,
-        x_tile: areaPicture.xTile,
-        y_title: areaPicture.yTile,
-        zoom: getZoomLevel(areaPicture.zoomLevel),
-      };
-
-      await geojsonStore.convertPoints(payload);
-
-      const geojsonData = GeojsonMapper.toMeasurements(geojson);
+      const geojsonData = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
 
       const annotationId = uuid.v4() as string;
 
@@ -320,16 +315,16 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     setLoading(false);
   };
 
-  // const handleDeletePolygon = index => {
-  //   const updatedPolygons = [...polygons];
-  //   const updatedAnnotation = [...annotations];
-  //
-  //   updatedPolygons.splice(index, 1);
-  //   updatedAnnotation.splice(index, 1);
-  //
-  //   setPolygons(updatedPolygons);
-  //   setAnnotations(updatedAnnotation);
-  // };
+  const handleDeletePolygon = index => {
+    const updatedPolygons = [...polygons];
+    const updatedAnnotation = [...annotations];
+
+    updatedPolygons.splice(index, 1);
+    updatedAnnotation.splice(index, 1);
+
+    setPolygons(updatedPolygons);
+    setAnnotations(updatedAnnotation);
+  };
 
   const handleCancelAnnotation = () => {
     setCurrentPolygonPoints([]);
@@ -496,7 +491,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                             data={polygons}
                             keyExtractor={(item, index) => `polygon_${index}`}
                             renderItem={({ index }) => {
-                              return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} />;
+                              return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} handleDeletePolygon={handleDeletePolygon} />;
                             }}
                             ItemSeparatorComponent={() => <Separator style={styles.separator} />}
                           />
