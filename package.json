@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "NODE_OPTIONS=\"--max_old_space_size=8192\" react-native start",
-    "ios": "react-native run-ios --simulator=\"iPhone 15\"",
+    "ios": "react-native run-ios --simulator=\"iPhone 15 Pro Max\"",
     "android": "NODE_OPTIONS=\"--max_old_space_size=8192\" react-native run-android",
     "build:ios:debug:e2e": "detox build --configuration ios.sim.debug",
     "build:ios:release:e2e": "detox build --configuration ios.sim.release",
@@ -142,7 +142,7 @@
     "@rnx-kit/metro-resolver-symlinks": "0.1.21",
     "@storybook/addons": "6.5.8",
     "@storybook/react-native": "5.3.25",
-    "@storybook/react-native-server": "5.3.23",
+    "@storybook/react-native-server": "6.5.8",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/i18n-js": "3.8.2",
     "@types/jest": "26.0.19",
