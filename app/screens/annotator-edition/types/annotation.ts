@@ -1,3 +1,4 @@
+import { Wearness } from '../../../models/entities/annotation-metadata/annotation-metadata';
 import { Polygon } from './polygon';
 
 export interface Annotation {
@@ -10,6 +11,8 @@ export interface Annotation {
   covering: string;
   comment: string;
   obstacle: string;
+  moldRate: string;
+  wearness: Wearness;
 }
 
 export interface LabelType {

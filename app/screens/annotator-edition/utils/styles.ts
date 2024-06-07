@@ -107,6 +107,7 @@ export const dropDownStyles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color: palette.secondaryColor,
   },
   selectedTextStyle: {
     fontSize: 16,

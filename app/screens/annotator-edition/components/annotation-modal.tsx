@@ -6,10 +6,12 @@ import { Modal } from 'react-native-paper';
 
 import { Button, InputField, Text } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
+import { LabelledDropdown } from '../../../components/labelled-dropdown/labelled-dropdown';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 import { getDefaultValue } from '../utils/annotator-info-validator';
+import { labelTypes, rangeOptions, wearnessOptions } from '../utils/select-options';
 import { dropDownStyles } from '../utils/styles';
 import { getPolygonName } from '../utils/utils';
 
@@ -26,17 +28,6 @@ type AnnotationModalProps = {
 
 export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
   const { showModal, setShowModal, setKeyboardOpen, errors, polygonLength, control, isKeyboardOpen, reset } = props;
-
-  const labelTypes = [
-    { label: 'Roof 1', value: '1' },
-    { label: 'Roof 2', value: '2' },
-    { label: 'Roof 3', value: '3' },
-    { label: 'Tree 1', value: '4' },
-    { label: 'Tree 2', value: '5' },
-    { label: 'Tree 3', value: '6' },
-    { label: 'Pathway 1', value: '7' },
-    { label: 'Pathway 2', value: '8' },
-  ];
 
   return (
     <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
@@ -140,21 +131,9 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
               />
             )}
           />
-          <Controller
-            control={control}
-            name='wearLevel'
-            render={({ field: { onChange, value } }) => (
-              <InputField
-                labelTx={'annotationScreen.labels.usuryRate'}
-                keyboardType={'numeric'}
-                error={!!errors.wearLevel}
-                value={value}
-                onChange={onChange}
-                errorMessage={errors.wearLevel?.message}
-                backgroundColor={palette.white}
-              />
-            )}
-          />
+          <LabelledDropdown control={control} name={'wearness'} labelTx={'annotationScreen.labels.usury'} data={wearnessOptions} />
+          <LabelledDropdown control={control} name={'wearLevel'} labelTx={'annotationScreen.labels.usuryRate'} data={rangeOptions} />
+          <LabelledDropdown control={control} name={'moldRate'} labelTx={'annotationScreen.labels.moldRate'} data={rangeOptions} />
           <Controller
             control={control}
             name='comment'

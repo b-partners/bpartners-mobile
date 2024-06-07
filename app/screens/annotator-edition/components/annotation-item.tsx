@@ -43,7 +43,7 @@ const AnnotationItem: FC<any> = props => {
               >
                 {annotation?.labelName}
               </Text>
-              <Text style={{ fontSize: 16, color: palette.white }}>{annotation?.labelType.label}</Text>
+              <Text style={{ fontSize: 16, color: palette.white }}>{annotation?.labelType}</Text>
             </View>
           }
           id='1'
@@ -74,7 +74,7 @@ const AnnotationItem: FC<any> = props => {
           >
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.labelType'} style={labelStyles.key} />
-              <Text text={annotation?.labelType.label} style={labelStyles.value} />
+              <Text text={annotation?.labelType} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.labelName'} style={labelStyles.key} />
@@ -89,16 +89,24 @@ const AnnotationItem: FC<any> = props => {
               <Text text={annotation?.slope} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
+              <Text tx={'annotationScreen.labels.usury'} style={labelStyles.key} />
+              <Text text={annotation?.wearness} style={labelStyles.value} />
+            </View>
+            <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.usuryRate'} style={labelStyles.key} />
               <Text text={annotation?.wearLevel} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
-              <Text tx={'annotationScreen.labels.comment'} style={labelStyles.key} />
-              <Text text={annotation?.comment} style={labelStyles.value} />
+              <Text tx={'annotationScreen.labels.moldRate'} style={labelStyles.key} />
+              <Text text={annotation?.moldRate} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.obstacle'} style={labelStyles.key} />
               <Text text={annotation?.obstacle} style={labelStyles.value} />
+            </View>
+            <View style={FIELD_STYLE}>
+              <Text tx={'annotationScreen.labels.comment'} style={labelStyles.key} />
+              <Text text={annotation?.comment} style={labelStyles.value} />
             </View>
             <View style={{ display: 'flex', flexDirection: 'row' }}>
               <TouchableOpacity

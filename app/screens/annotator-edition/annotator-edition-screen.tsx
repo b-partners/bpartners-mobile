@@ -50,6 +50,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
+  Log('annotations');
+  Log(annotations);
   const {
     handleSubmit,
     control,
@@ -61,6 +63,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     resolver: getAnnotatorResolver(),
     defaultValues: getDefaultValue(0),
   });
+
+  useEffect(() => {
+    Log(errors);
+  }, [errors]);
 
   useFocusEffect(
     useCallback(() => {
@@ -233,7 +239,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   }, [polygons, annotations]);
 
   const startNewPolygon = labels => {
-    const { labelName, labelType } = labels;
+    const { labelName, labelType, moldRate, wearLevel, wearness } = labels;
 
     if (validateLabel(labelName)) {
       showMessage(translate('annotationScreen.errors.requiredLabel'), { backgroundColor: palette.pastelRed });
@@ -242,10 +248,13 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       const newAnnotation = {
         id: uuid.v4(),
+        ...labels,
         polygon: newPolygon,
         labelName: labelName,
-        labelType: labelType,
-        ...labels,
+        labelType: labelType?.value,
+        moldRate: moldRate?.value,
+        wearLevel: wearLevel?.value,
+        wearness: wearness?.value,
       };
 
       setCurrentPolygonPoints([]);
@@ -289,6 +298,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             strokeColor: null,
             wearLevel: commaToDot(annotation?.wearLevel),
             obstacle: annotation?.obstacle,
+            moldRate: commaToDot(annotation?.moldRate),
+            wearness: annotation?.wearness,
           },
           polygon: {
             // @ts-ignore
