@@ -14,7 +14,7 @@ import { NavigatorParamList } from '../../navigators/utils/utils';
 import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/components/utils';
+import { invoicePageSize } from '../invoice-form/utils/utils';
 import { LOADER_STYLE, SCREEN_STYLE } from '../invoices/utils/styles';
 import { Transaction } from './components/transaction';
 import { TransactionModal } from './components/transaction-modal';

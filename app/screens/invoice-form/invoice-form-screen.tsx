@@ -2,24 +2,17 @@ import { useLinkTo } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 
 import { Header, Screen } from '../../components';
 import { useStores } from '../../models';
 import { Invoice } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
-import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { InvoiceForm } from './invoice-form';
-
-const FULL: ViewStyle = {
-  flex: 1,
-};
-const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
-};
+import { InvoiceForm } from './components/invoice/invoice-form';
+import { CONTAINER, FULL } from './utils/styles';
 
 export const InvoiceFormScreen: FC<StackScreenProps<TabNavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
   const invoiceId = route.params?.invoiceID;

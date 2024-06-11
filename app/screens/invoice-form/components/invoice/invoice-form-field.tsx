@@ -1,9 +1,9 @@
 import React from 'react';
 import { Platform, TextStyle } from 'react-native';
 
-import { TextField, TextFieldProps } from '../../components';
-import { spacing } from '../../theme';
-import { palette } from '../../theme/palette';
+import { TextField, TextFieldProps } from '../../../../components';
+import { spacing } from '../../../../theme';
+import { palette } from '../../../../theme/palette';
 
 type InvoiceFormFieldProps = TextFieldProps & { error?: boolean };
 

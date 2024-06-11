@@ -20,7 +20,7 @@ import { getThreshold } from '../../utils/get-threshold';
 import { vatToMinors } from '../../utils/money';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/utils/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Product } from './components/product';

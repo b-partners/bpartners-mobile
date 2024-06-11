@@ -1,7 +1,14 @@
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { color, spacing } from '../../theme';
-import { palette } from '../../theme/palette';
+import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
+
+export const FULL: ViewStyle = {
+  flex: 1,
+};
+export const CONTAINER: ViewStyle = {
+  backgroundColor: color.transparent,
+};
 
 export const SHADOW_STYLE: ViewStyle = {
   shadowOffset: { height: 10, width: 0 },

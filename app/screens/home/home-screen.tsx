@@ -16,7 +16,7 @@ import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { RTLog } from '../../utils/reactotron-log';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/components/utils';
+import { invoicePageSize } from '../invoice-form/utils/utils';
 import { Log } from '../welcome/utils/utils';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { Logo } from './components/logo';

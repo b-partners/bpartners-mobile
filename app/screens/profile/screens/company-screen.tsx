@@ -12,7 +12,7 @@ import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { palette } from '../../../theme/palette';
 import { printCurrency } from '../../../utils/money';
 import { ErrorBoundary } from '../../error/error-boundary';
-import { invoicePageSize } from '../../invoice-form/components/utils';
+import { invoicePageSize } from '../../invoice-form/utils/utils';
 import { AccountDeletionModal } from '../components/account-deletion-modal';
 import { profileStyles as styles } from '../utils/styles';
 

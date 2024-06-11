@@ -12,7 +12,7 @@ import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/components/utils';
+import { invoicePageSize } from '../invoice-form/utils/utils';
 import { DraftsScreen } from '../invoices/drafts-screen';
 import { InvoicesScreen } from '../invoices/invoices-screen';
 import { QuotationsScreen } from '../invoices/quotations-screen';
