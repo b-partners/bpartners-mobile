@@ -1,7 +1,6 @@
-import { TextStyle, ViewStyle } from 'react-native';
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 import { color, spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
 
 export const FULL: ViewStyle = {
   flex: 1,
@@ -17,35 +16,39 @@ export const SHADOW_STYLE: ViewStyle = {
   shadowColor: 'rgba(156, 37, 90, 0.2)',
   elevation: 2,
 };
-export const BUTTON_STYLE: ViewStyle = {
-  backgroundColor: color.primary,
-  marginHorizontal: '5%',
-  borderRadius: 40,
-  paddingVertical: spacing[3],
-  paddingHorizontal: spacing[2],
-};
-
-export const DEFAULT_FONT_STYLE = {
-  fontFamily: 'Geometria',
-};
-
-export const TEXT_STYLE: TextStyle = {
-  ...DEFAULT_FONT_STYLE,
-  color: palette.textClassicColor,
-  fontSize: 14,
-  fontWeight: '400',
-  lineHeight: 17.61,
-};
-export const CHEVRON_DOWN_ICON_STYLE: ViewStyle = {
-  flex: 1,
-  justifyContent: 'center',
-  position: 'absolute',
-  paddingBottom: spacing[1],
-  bottom: spacing[2],
-  right: spacing[2],
-};
-
 export const INVALID_FORM_FIELD: ViewStyle = {
   borderBottomColor: '#FF5983',
   borderBottomWidth: 2,
 };
+
+export const DATE_PICKER_LABEL_STYLE: TextStyle = { color: color.palette.greyDarker, fontFamily: 'Geometria-Bold' };
+
+export const DATE_PICKER_CONTAINER_STYLE: ViewStyle = {
+  padding: spacing[4],
+  backgroundColor: color.transparent,
+  borderColor: '#E1E5EF',
+  borderWidth: 1,
+};
+
+export const DATE_PICKER_TEXT_STYLE: TextStyle = {
+  color: color.palette.textClassicColor,
+  marginTop: spacing[2],
+  fontFamily: 'Geometria-Bold',
+};
+
+export const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
+
+export const INVOICE_LABEL_STYLE: TextStyle = {
+  color: color.palette.greyDarker,
+  fontFamily: 'Geometria-Bold',
+  fontSize: 13,
+  textTransform: 'uppercase',
+};
+
+export const InvoiceFormStyles = StyleSheet.create({
+  container: {
+    paddingHorizontal: spacing[8],
+    height: '100%',
+    marginBottom: spacing[8],
+  },
+});

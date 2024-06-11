@@ -13,7 +13,7 @@ import { useStores } from '../../../models';
 import { navigate, navigationRef } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/utils/utils';
+import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../invoice-form/utils/styles';
 import { EventModalProps } from '../utils/utils';
 import { ParticipantItem } from './participant-item';
 

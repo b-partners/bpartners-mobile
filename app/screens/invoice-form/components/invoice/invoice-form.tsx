@@ -1,8 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -12,18 +11,18 @@ import { Button, DatePickerField, Icon, Loader, Text } from '../../../../compone
 import { translate } from '../../../../i18n';
 import { useStores } from '../../../../models';
 import { Customer } from '../../../../models/entities/customer/customer';
-import { Invoice, InvoiceStatus, createInvoiceDefaultModel } from '../../../../models/entities/invoice/invoice';
+import { InvoiceStatus, createInvoiceDefaultModel } from '../../../../models/entities/invoice/invoice';
 import { PaymentRegulation } from '../../../../models/entities/payment-regulation/payment-regulation';
-import { Product, createProductDefaultModel } from '../../../../models/entities/product/product';
+import { createProductDefaultModel } from '../../../../models/entities/product/product';
 import { navigate } from '../../../../navigators/navigation-utilities';
-import { TabNavigatorParamList } from '../../../../navigators/utils/utils';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { showMessage } from '../../../../utils/snackbar';
 import { CustomerModal } from '../../../customer/components/customer-modal';
 import { CustomerModalType } from '../../../customer/customers-screen';
 import { LOADER_STYLE } from '../../../invoices/utils/styles';
-import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, dateConversion, invoicePageSize } from '../../utils/utils';
+import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, INVOICE_LABEL_STYLE, ROW_STYLE } from '../../utils/styles';
+import { CheckboxEnum, InvoiceFormProps, dateConversion, invoicePageSize } from '../../utils/utils';
 import { CustomerFormFieldFooter } from '../customer/customer-form-field-footer';
 import { PaymentCreationModal } from '../payment-regulation-form-field/payment-creation-modal';
 import { PaymentRegulationDraftField } from '../payment-regulation-form-field/payment-regulation-draft-field';
@@ -32,29 +31,6 @@ import { ProductFormField } from '../product-form-field/product-form-field';
 import { SelectFormField } from '../select-form-field/select-form-field';
 import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
-
-type InvoiceFormProps = {
-  invoice?: Invoice;
-  products: Product[];
-  onSaveInvoice: (invoice: Invoice) => Promise<void>;
-  initialStatus?: InvoiceStatus;
-  navigation: StackNavigationProp<TabNavigatorParamList, 'invoiceForm', undefined>;
-  areaPictureId?: string;
-};
-
-const ROW_STYLE: ViewStyle = { display: 'flex', flexDirection: 'row', width: '100%' };
-
-const INVOICE_LABEL_STYLE: TextStyle = {
-  color: color.palette.greyDarker,
-  fontFamily: 'Geometria-Bold',
-  fontSize: 13,
-  textTransform: 'uppercase',
-};
-
-export enum CheckboxEnum {
-  CHECKED = 'checked',
-  UNCHECKED = 'unchecked',
-}
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { products, invoice, initialStatus, navigation, areaPictureId } = props;

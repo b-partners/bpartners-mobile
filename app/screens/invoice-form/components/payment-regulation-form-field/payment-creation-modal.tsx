@@ -13,7 +13,8 @@ import { spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { amountToMajors, amountToMinors } from '../../../../utils/money';
 import { showMessage } from '../../../../utils/snackbar';
-import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, convertStringToDate, dateConversion } from '../../utils/utils';
+import { DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE } from '../../utils/styles';
+import { convertStringToDate, dateConversion } from '../../utils/utils';
 
 type PaymentCreationModalProps = {
   open: boolean;
