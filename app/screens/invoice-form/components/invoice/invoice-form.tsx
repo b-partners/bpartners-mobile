@@ -21,7 +21,14 @@ import { showMessage } from '../../../../utils/snackbar';
 import { CustomerModal } from '../../../customer/components/customer-modal';
 import { CustomerModalType } from '../../../customer/customers-screen';
 import { LOADER_STYLE } from '../../../invoices/utils/styles';
-import { DATE_PICKER_CONTAINER_STYLE, DATE_PICKER_LABEL_STYLE, DATE_PICKER_TEXT_STYLE, INVOICE_LABEL_STYLE, ROW_STYLE } from '../../utils/styles';
+import {
+  DATE_PICKER_CONTAINER_STYLE,
+  DATE_PICKER_LABEL_STYLE,
+  DATE_PICKER_TEXT_STYLE,
+  INVOICE_LABEL_STYLE,
+  ROW_STYLE,
+  invoiceFormStyles as styles,
+} from '../../utils/styles';
 import { CheckboxEnum, InvoiceFormProps, dateConversion, invoicePageSize } from '../../utils/utils';
 import { CustomerFormFieldFooter } from '../customer/customer-form-field-footer';
 import { PaymentCreationModal } from '../payment-regulation-form-field/payment-creation-modal';
@@ -38,20 +45,32 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
   const { areaPicture } = areaPictureStore;
+
+  // recover the most current customer from store and set it to the current selected customer
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(FIRST_CUSTOMER);
-  const [modal, setModal] = useState<CustomerModalType>({
-    type: 'CREATION',
-    state: false,
-    customer: null,
-  });
+
+  // initial state used
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [paymentCreation, setPaymentCreation] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [annotationLoading, setAnnotationLoading] = useState(false);
   const [creationLoading, setCreationLoading] = useState(false);
+  const [removeProduct, setRemoveProduct] = useState(false);
+  const [allowPaymentDelay, setAllowPaymentDelay] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
+  const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
+  const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
+  const [totalPercent, setTotalPercent] = useState(0);
+  const [currentPayment, setCurrentPayment] = useState<PaymentRegulation>(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(null);
+  const [customerModal, setCustomerModal] = useState<CustomerModalType>({
+    type: 'CREATION',
+    state: false,
+    customer: null,
+  });
 
+  // use react-hook-form to control input data
   const {
     control,
     handleSubmit,
@@ -64,6 +83,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
+  // use useFieldArray to easily control products in a table
   const {
     fields: productFields,
     append: productAppend,
@@ -76,6 +96,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       required: translate('errors.required'),
     },
   });
+
+  // use useFieldArray to easily control payment regulations in a table
   const {
     fields: paymentFields,
     remove: paymentRemove,
@@ -84,16 +106,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     control,
     name: 'paymentRegulations',
   });
+
+  // check if title, reference, products or customer contains an error
   const hasError = errors.title || errors.ref || errors.products || errors.customer;
 
-  const [removeProduct, setRemoveProduct] = useState(false);
-  const [allowPaymentDelay, setAllowPaymentDelay] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
-  const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
-  const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
-  const [totalPercent, setTotalPercent] = useState(0);
-  const [currentPayment, setCurrentPayment] = useState<PaymentRegulation>(null);
-  const [currentIndex, setCurrentIndex] = useState<number>(null);
-
+  // function to navigate to the invoice screen, but in a specific tab: drafts, quotations or invoices
   const navigateToTab = (tab: string) => {
     navigation.reset({
       index: 0,
@@ -102,6 +119,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   };
 
   useEffect(() => {
+    // if it's editing, retrieve all payment regulations, store them in react-hook-form and display them on screen
     if (paymentFields.length > 1) {
       setPayInInstalments(CheckboxEnum.CHECKED);
       let temp = [];
@@ -130,6 +148,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   }, [currentPayment]);
 
+  // function called when the button that allow payment delay is clicked
   const togglePaymentDelay = () => {
     if (allowPaymentDelay === CheckboxEnum.CHECKED) {
       setValue('delayInPaymentAllowed', null);
@@ -140,6 +159,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
+  // function called when the button that allow payment regulations is clicked
   const togglePaymentRegulation = () => {
     if (payInInstalments === CheckboxEnum.CHECKED) {
       paymentFields.length = 0;
@@ -149,10 +169,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
+  // used to save an invoice
   const onSubmit = async (invoices: { metadata: any; paymentRegulations: any }) => {
     setCreationLoading(true);
     try {
+      // if the user has created payment regulations, but the total does not reach 100%
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
+        // create a payment regulation with the last payment maturity date and with the rest of the percent
         const latestPayment = paymentFields[paymentFields.length - 1];
         const dateObj = new Date(latestPayment.maturityDate);
         dateObj.setMonth(dateObj.getMonth() + 1);
@@ -163,6 +186,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           percent: 10000 - totalPercent,
           amount: null,
         };
+
+        // save the invoice with payment regulations and the rest to pay
         await invoiceStore.saveInvoice({
           ...invoices,
           customer: selectedCustomer,
@@ -172,7 +197,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           paymentType: 'IN_INSTALMENT',
           idAreaPicture: areaPictureId ?? null,
         });
+
+        // if the user has created payment regulations, but the total reaches 100%
       } else if (payInInstalments === CheckboxEnum.CHECKED && totalPercent === 10000) {
+        // save the invoice with payment regulations
         await invoiceStore.saveInvoice({
           ...invoices,
           customer: selectedCustomer,
@@ -181,7 +209,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           paymentType: 'IN_INSTALMENT',
           idAreaPicture: areaPictureId ?? null,
         });
+
+        // if there is no payment regulation
       } else {
+        // create an invoice normally
         await invoiceStore.saveInvoice({
           ...invoices,
           customer: selectedCustomer,
@@ -191,6 +222,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         });
       }
       setConfirmationModal(false);
+
+      // if the invoice status is DRAFT, navigate to drafts tab and refresh drafts and quotations lists
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
@@ -200,6 +233,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           pageSize: invoicePageSize,
         });
       }
+
+      // if the invoice status is PROPOSAL, navigate to quotations tab and refresh drafts and quotations lists
       if (invoiceType === InvoiceStatus.PROPOSAL) {
         navigateToTab('quotations');
         await quotationStore.getQuotations({
@@ -209,6 +244,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         });
         await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
       }
+
+      // if the invoice status is CONFIRMED, navigate to invoices tab and refresh invoices lists
       if (invoiceType === InvoiceStatus.CONFIRMED) {
         navigateToTab('invoices');
         await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
@@ -223,11 +260,17 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     }
   };
 
+  // used to preview an invoice
   const handleInvoicePreviewPress = async (invoices: { metadata: any; paymentRegulations: any }) => {
     setPreviewLoading(true);
+
+    // save an invoice before preview
     let savedInvoice: { fileId: any; title: any };
+
     try {
+      // if the user has created payment regulations, but the total does not reach 100%
       if (payInInstalments === CheckboxEnum.CHECKED && totalPercent < 10000) {
+        // create a payment regulation with the last payment maturity date and with the rest of the percent
         const latestPayment = paymentFields[paymentFields.length - 1];
         const dateObj = new Date(latestPayment.maturityDate);
         dateObj.setMonth(dateObj.getMonth() + 1);
@@ -238,6 +281,8 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           percent: 10000 - totalPercent,
           amount: null,
         };
+
+        // save the invoice with payment regulations and the rest to pay
         savedInvoice = await invoiceStore.saveInvoice({
           ...invoices,
           customer: selectedCustomer,
@@ -246,7 +291,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           metadata: { ...invoices.metadata, submittedAt: new Date() },
           paymentRegulations: [...invoices.paymentRegulations, restToPay],
         });
+
+        // if the user has created payment regulations, but the total reaches 100%
       } else if (payInInstalments === CheckboxEnum.CHECKED && totalPercent === 10000) {
+        // save the invoice with payment regulations
         savedInvoice = await invoiceStore.saveInvoice({
           ...invoices,
           customer: selectedCustomer,
@@ -254,7 +302,10 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           metadata: { ...invoices.metadata, submittedAt: new Date() },
           status: invoiceType,
         });
+
+        // if there is no payment regulation
       } else {
+        // create an invoice normally
         savedInvoice = await invoiceStore.saveInvoice({
           ...invoices,
           customer: selectedCustomer,
@@ -263,13 +314,16 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         });
       }
       setConfirmationModal(false);
-      __DEV__ && console.tron.log(savedInvoice);
+
+      // navigate to invoice preview screen with the invoice id
       navigate('invoicePreview', {
         fileId: savedInvoice.fileId,
         invoiceTitle: savedInvoice.title,
         invoice: savedInvoice,
         situation: true,
       });
+
+      // refresh drafts or quotations lists
       invoiceType === 'DRAFT' &&
         (await draftStore.getDrafts({
           status: InvoiceStatus.DRAFT,
@@ -291,7 +345,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   };
 
   return (
-    <View style={{ paddingBottom: spacing[6] }}>
+    <View style={styles.container}>
       <View style={ROW_STYLE}>
         <Controller
           name='title'
@@ -376,7 +430,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           }}
         />
       </View>
-      <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
+      <View style={styles.paymentDelayContainer}>
         <Checkbox.Item
           status={allowPaymentDelay}
           onPress={togglePaymentDelay}
@@ -385,18 +439,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           mode={'android'}
           label={''}
         />
-        <Text
-          tx={'invoiceFormScreen.invoiceForm.delayPaymentLabel'}
-          style={{
-            borderRadius: 5,
-            fontFamily: 'Geometria',
-            fontSize: 13,
-            alignSelf: 'center',
-            color: palette.darkBlack,
-            width: '80%',
-          }}
-          numberOfLines={2}
-        />
+        <Text tx={'invoiceFormScreen.invoiceForm.delayPaymentLabel'} style={styles.paymentDelayLabel} numberOfLines={2} />
       </View>
       {allowPaymentDelay === CheckboxEnum.CHECKED && (
         <View style={ROW_STYLE}>
@@ -486,13 +529,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                 itemSuffix={<Icon icon='edit' />}
                 itemSuffixAction={() => {}}
                 footer={<CustomerFormFieldFooter />}
-                selectContainerStyle={{
-                  paddingHorizontal: spacing[3],
-                  marginBottom: spacing[6],
-                  width: '100%',
-                  borderWidth: 1,
-                  borderColor: errors.customer ? palette.pastelRed : '#E1E5EF',
-                }}
+                selectContainerStyle={{ ...styles.customerForm, borderColor: errors.customer ? palette.pastelRed : '#E1E5EF' }}
                 style={INVOICE_LABEL_STYLE}
               />
             );
@@ -502,50 +539,24 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       <Button
         onPress={() => {
           customerStore.saveCustomerInit();
-          setModal({
+          setCustomerModal({
             type: 'CREATION',
             state: true,
             customer: null,
           });
         }}
-        style={{
-          flexDirection: 'row',
-          marginBottom: spacing[6],
-          backgroundColor: palette.white,
-          borderColor: color.palette.secondaryColor,
-          borderWidth: 1,
-          borderRadius: 25,
-          paddingVertical: spacing[2],
-          marginHorizontal: spacing[2],
-        }}
+        style={styles.customerButton}
       >
         <RNVIcon name='plus' color={color.palette.secondaryColor} size={15} />
-        <Text
-          tx='invoiceFormScreen.customerSelectionForm.addClient'
-          style={{
-            color: color.palette.secondaryColor,
-            marginLeft: spacing[2],
-            fontFamily: 'Geometria',
-          }}
-        />
+        <Text tx='invoiceFormScreen.customerSelectionForm.addClient' style={styles.customerLabel} />
       </Button>
-      <CustomerModal modal={modal} setModal={setModal} />
+      <CustomerModal modal={customerModal} setModal={setCustomerModal} />
       <List.Accordion
         title='Produits'
-        style={{
-          borderColor: errors.products ? palette.pastelRed : '#E1E5EF',
-          borderWidth: 1,
-          height: 70,
-          justifyContent: 'center',
-        }}
-        titleStyle={{
-          fontFamily: 'Geometria-Bold',
-          fontSize: 12,
-          textTransform: 'uppercase',
-          color: errors.products ? palette.pastelRed : palette.lighterGrey,
-        }}
+        style={{ ...styles.productAccordion, borderColor: errors.products ? palette.pastelRed : '#E1E5EF' }}
+        titleStyle={{ ...styles.productTitle, color: errors.products ? palette.pastelRed : palette.lighterGrey }}
       >
-        <View style={{ paddingHorizontal: spacing[4], marginTop: spacing[5] }}>
+        <View style={styles.productContainer}>
           {removeProduct ? (
             <Loader size='large' containerStyle={LOADER_STYLE} />
           ) : (
@@ -572,35 +583,18 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </View>
         <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
           <Button
-            style={{
-              backgroundColor: palette.white,
-              borderColor: color.palette.secondaryColor,
-              borderWidth: 1,
-              borderRadius: 25,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              paddingHorizontal: spacing[6],
-              width: '100%',
-              marginBottom: spacing[5],
-            }}
-            onPress={async () => {
-              const product = await createProductDefaultModel().create();
+            style={styles.productButton}
+            onPress={() => {
+              const product = createProductDefaultModel().create();
               productAppend(product);
             }}
           >
             <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
-            <Text
-              tx='invoiceFormScreen.productForm.addProduct'
-              style={{
-                color: color.palette.secondaryColor,
-                fontFamily: 'Geometria',
-                marginLeft: spacing[3],
-              }}
-            />
+            <Text tx='invoiceFormScreen.productForm.addProduct' style={styles.productLabel} />
           </Button>
         </View>
       </List.Accordion>
-      <View style={{ display: 'flex', width: '100%', height: 50, flexDirection: 'row' }}>
+      <View style={styles.paymentRegulationContainer}>
         <Checkbox.Item
           status={payInInstalments}
           onPress={togglePaymentRegulation}
@@ -609,37 +603,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           mode={'android'}
           label={''}
         />
-        <Text
-          tx={'invoiceFormScreen.paymentRegulationForm.payIn'}
-          style={{
-            borderRadius: 5,
-            fontFamily: 'Geometria',
-            fontSize: 13,
-            alignSelf: 'center',
-            color: palette.darkBlack,
-            width: '80%',
-          }}
-          numberOfLines={2}
-        />
+        <Text tx={'invoiceFormScreen.paymentRegulationForm.payIn'} style={styles.paymentRegulationLabel} numberOfLines={2} />
       </View>
       {payInInstalments === CheckboxEnum.CHECKED && (
-        <List.Accordion
-          title='Accompte'
-          style={{
-            borderColor: '#E1E5EF',
-            borderWidth: 1,
-            height: 70,
-            justifyContent: 'center',
-            backgroundColor: palette.white,
-          }}
-          titleStyle={{
-            fontFamily: 'Geometria-Bold',
-            fontSize: 12,
-            textTransform: 'uppercase',
-            color: palette.lightGrey,
-          }}
-        >
-          <View style={{ paddingHorizontal: spacing[6], marginTop: spacing[5] }}>
+        <List.Accordion title='Accompte' style={styles.paymentRegulationAccordion} titleStyle={styles.paymentRegulationTitle}>
+          <View style={styles.paymentRegulationFormContainer}>
             {removePaymentRegulation ? (
               <Loader size='large' containerStyle={LOADER_STYLE} />
             ) : (
@@ -655,17 +623,15 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
                       setCurrentPayment={setCurrentPayment}
                       paymentRemove={paymentRemove}
                       setTotalPercent={setTotalPercent}
-                      onDeleteItem={async (__, index, percent) => {
+                      onDeleteItem={(__, index, percent) => {
                         setRemovePaymentRegulation(true);
                         if (index === 0 && paymentFields.length === 1) {
-                          await paymentRemove(0);
+                          paymentRemove(0);
                           setPayInInstalments(CheckboxEnum.UNCHECKED);
                           setTotalPercent(0);
                         } else {
                           setTotalPercent(prevTotalPercent => prevTotalPercent - percent);
-                          await paymentRemove(index);
-                          __DEV__ && console.tron.log(index);
-                          __DEV__ && console.tron.log(paymentFields[index]);
+                          paymentRemove(index);
                         }
                         setRemovePaymentRegulation(false);
                       }}
@@ -676,46 +642,21 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             )}
             {totalPercent > 0 && totalPercent < 10000 && <PaymentRegulationDraftField percent={totalPercent} />}
           </View>
-          <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
+          <View style={styles.paymentRegulationButtonContainer}>
             <Button
-              style={{
-                backgroundColor: palette.white,
-                borderColor: color.palette.secondaryColor,
-                borderWidth: 1,
-                borderRadius: 25,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                paddingHorizontal: spacing[6],
-                width: '100%',
-                marginBottom: spacing[5],
-              }}
+              style={styles.paymentRegulationButton}
               onPress={() => {
                 setCurrentPayment(null);
                 setPaymentCreation(true);
               }}
             >
               <RNVIcon name='plus' size={16} color={color.palette.secondaryColor} />
-              <Text
-                tx='invoiceFormScreen.paymentRegulationForm.add'
-                style={{
-                  color: color.palette.secondaryColor,
-                  fontFamily: 'Geometria',
-                  marginLeft: spacing[3],
-                }}
-              />
+              <Text tx='invoiceFormScreen.paymentRegulationForm.add' style={styles.paymentRegulationButtonLabel} />
             </Button>
           </View>
         </List.Accordion>
       )}
-      <View
-        style={{
-          ...ROW_STYLE,
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          paddingHorizontal: spacing[5],
-          marginTop: spacing[4],
-        }}
-      >
+      <View style={styles.buttonActionContainer}>
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
 
@@ -730,14 +671,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               navigation.navigate('annotator');
             }}
           >
-            <View
-              style={{
-                borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
-                borderWidth: 2,
-                borderRadius: 100,
-                padding: spacing[3],
-              }}
-            >
+            <View style={{ ...styles.areaPictureButtonContainer, borderColor: hasError ? palette.solidGrey : palette.secondaryColor }}>
               {annotationLoading ? (
                 <Loader size={25} animating={true} color={palette.secondaryColor} />
               ) : (
@@ -748,26 +682,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         )}
 
         {previewLoading ? (
-          <View
-            style={{
-              borderColor: palette.white,
-              borderWidth: 2,
-              borderRadius: 100,
-              padding: spacing[3],
-            }}
-          >
+          <View style={styles.previewButtonContainer}>
             <Loader size={30} animating={true} color={palette.secondaryColor} />
           </View>
         ) : (
           <TouchableOpacity onPress={handleSubmit(handleInvoicePreviewPress)}>
-            <View
-              style={{
-                borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
-                borderWidth: 2,
-                borderRadius: 100,
-                padding: spacing[3],
-              }}
-            >
+            <View style={{ ...styles.buttonAction, borderColor: hasError ? palette.solidGrey : palette.secondaryColor }}>
               <MaterialIcons name='preview' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
             </View>
           </TouchableOpacity>
@@ -779,14 +699,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             setConfirmationModal(true);
           }}
         >
-          <View
-            style={{
-              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
-              borderWidth: 2,
-              borderRadius: 100,
-              padding: spacing[3],
-            }}
-          >
+          <View style={{ ...styles.buttonAction, borderColor: hasError ? palette.solidGrey : palette.secondaryColor }}>
             <RNVIcon name='save' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
           </View>
         </TouchableOpacity>
@@ -796,14 +709,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             setConfirmationModal(true);
           }}
         >
-          <View
-            style={{
-              borderColor: hasError ? palette.solidGrey : palette.secondaryColor,
-              borderWidth: 2,
-              borderRadius: 100,
-              padding: spacing[3],
-            }}
-          >
+          <View style={{ ...styles.buttonAction, borderColor: hasError ? palette.solidGrey : palette.secondaryColor }}>
             <Octicons name='file-submodule' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
           </View>
         </TouchableOpacity>

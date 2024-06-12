@@ -1,6 +1,7 @@
 import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 import { color, spacing } from '../../../theme';
+import { palette } from '../../../theme/palette';
 
 export const FULL: ViewStyle = {
   flex: 1,
@@ -45,10 +46,147 @@ export const INVOICE_LABEL_STYLE: TextStyle = {
   textTransform: 'uppercase',
 };
 
-export const InvoiceFormStyles = StyleSheet.create({
+export const invoiceFormStyles = StyleSheet.create({
   container: {
-    paddingHorizontal: spacing[8],
-    height: '100%',
-    marginBottom: spacing[8],
+    paddingBottom: spacing[6],
+  },
+  paymentDelayContainer: {
+    display: 'flex',
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+  },
+  paymentDelayLabel: {
+    borderRadius: 5,
+    fontFamily: 'Geometria',
+    fontSize: 13,
+    alignSelf: 'center',
+    color: palette.darkBlack,
+    width: '80%',
+  },
+  customerForm: {
+    paddingHorizontal: spacing[3],
+    marginBottom: spacing[6],
+    width: '100%',
+    borderWidth: 1,
+  },
+  customerButton: {
+    flexDirection: 'row',
+    marginBottom: spacing[6],
+    backgroundColor: palette.white,
+    borderColor: color.palette.secondaryColor,
+    borderWidth: 1,
+    borderRadius: 25,
+    paddingVertical: spacing[2],
+    marginHorizontal: spacing[2],
+  },
+  customerLabel: {
+    color: color.palette.secondaryColor,
+    marginLeft: spacing[2],
+    fontFamily: 'Geometria',
+  },
+  productAccordion: {
+    borderWidth: 1,
+    height: 70,
+    justifyContent: 'center',
+  },
+  productTitle: {
+    fontFamily: 'Geometria-Bold',
+    fontSize: 12,
+    textTransform: 'uppercase',
+  },
+  productContainer: {
+    paddingHorizontal: spacing[4],
+    marginTop: spacing[5],
+  },
+  productButton: {
+    backgroundColor: palette.white,
+    borderColor: color.palette.secondaryColor,
+    borderWidth: 1,
+    borderRadius: 25,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: spacing[6],
+    width: '100%',
+    marginBottom: spacing[5],
+  },
+  productLabel: {
+    color: color.palette.secondaryColor,
+    fontFamily: 'Geometria',
+    marginLeft: spacing[3],
+  },
+  paymentRegulationContainer: {
+    display: 'flex',
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+  },
+  paymentRegulationLabel: {
+    borderRadius: 5,
+    fontFamily: 'Geometria',
+    fontSize: 13,
+    alignSelf: 'center',
+    color: palette.darkBlack,
+    width: '80%',
+  },
+  paymentRegulationAccordion: {
+    borderColor: '#E1E5EF',
+    borderWidth: 1,
+    height: 70,
+    justifyContent: 'center',
+    backgroundColor: palette.white,
+  },
+  paymentRegulationTitle: {
+    fontFamily: 'Geometria-Bold',
+    fontSize: 12,
+    textTransform: 'uppercase',
+    color: palette.lightGrey,
+  },
+  paymentRegulationFormContainer: {
+    paddingHorizontal: spacing[6],
+    marginTop: spacing[5],
+  },
+  paymentRegulationButtonContainer: {
+    ...ROW_STYLE,
+    paddingHorizontal: spacing[3],
+  },
+  paymentRegulationButton: {
+    backgroundColor: palette.white,
+    borderColor: color.palette.secondaryColor,
+    borderWidth: 1,
+    borderRadius: 25,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: spacing[6],
+    width: '100%',
+    marginBottom: spacing[5],
+  },
+  paymentRegulationButtonLabel: {
+    color: color.palette.secondaryColor,
+    fontFamily: 'Geometria',
+    marginLeft: spacing[3],
+  },
+  buttonActionContainer: {
+    ...ROW_STYLE,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingHorizontal: spacing[5],
+    marginTop: spacing[4],
+  },
+  areaPictureButtonContainer: {
+    borderWidth: 2,
+    borderRadius: 100,
+    padding: spacing[3],
+  },
+  previewButtonContainer: {
+    borderColor: palette.white,
+    borderWidth: 2,
+    borderRadius: 100,
+    padding: spacing[3],
+  },
+  buttonAction: {
+    borderWidth: 2,
+    borderRadius: 100,
+    padding: spacing[3],
   },
 });
