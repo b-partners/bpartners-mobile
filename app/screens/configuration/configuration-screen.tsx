@@ -15,8 +15,8 @@ import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
+import { configurationScreenStyles as styles } from './utils/styles';
 
 export const ConfigurationScreen: FC<DrawerScreenProps<NavigatorParamList, 'configuration'>> = observer(function ConfigurationScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -93,24 +93,10 @@ export const ConfigurationScreen: FC<DrawerScreenProps<NavigatorParamList, 'conf
           titleStyle={HEADER_TITLE}
         />
         {loading && <ProgressBar progress={0.5} color={palette.secondaryColor} indeterminate={true} style={{ marginTop: spacing[2] }} />}
-        <View testID='ConfigurationScreen' style={{ ...FULL, backgroundColor: color.palette.white, padding: spacing[3] }}>
-          <Text
-            tx={'configurationScreen.RelaunchFrequency'}
-            style={{
-              color: palette.black,
-              fontSize: 18,
-              paddingBottom: spacing[1],
-              marginTop: spacing[2],
-              marginBottom: spacing[5],
-              borderBottomWidth: 1,
-              borderColor: palette.lighterGrey,
-              alignSelf: 'center',
-              textAlign: 'center',
-              width: '60%',
-            }}
-          />
-          <Text tx={'configurationScreen.UnconfirmedQuotation'} style={{ color: palette.black, fontSize: 16, marginBottom: spacing[3] }} />
-          <View style={{ marginBottom: 20, width: '100%' }}>
+        <View testID='ConfigurationScreen' style={styles.screen}>
+          <Text tx={'configurationScreen.RelaunchFrequency'} style={styles.relaunchFrequency} />
+          <Text tx={'configurationScreen.UnconfirmedQuotation'} style={styles.unconfirmedQuotation} />
+          <View style={styles.inputContainer}>
             <Controller
               control={control}
               name='draftRelaunch'
@@ -130,8 +116,8 @@ export const ConfigurationScreen: FC<DrawerScreenProps<NavigatorParamList, 'conf
               )}
             />
           </View>
-          <Text tx={'configurationScreen.LateInvoice'} style={{ color: palette.black, fontSize: 16, marginBottom: spacing[3] }} />
-          <View style={{ marginBottom: 20, width: '100%' }}>
+          <Text tx={'configurationScreen.LateInvoice'} style={styles.lateInvoice} />
+          <View style={styles.inputContainer}>
             <Controller
               control={control}
               name='unpaidRelaunch'
@@ -151,23 +137,9 @@ export const ConfigurationScreen: FC<DrawerScreenProps<NavigatorParamList, 'conf
               )}
             />
           </View>
-          <View style={{ marginBottom: 20, width: '100%', marginVertical: spacing[5] }}>
+          <View style={{ ...styles.inputContainer, marginVertical: spacing[5] }}>
             {hasErrors ? (
-              <TouchableOpacity
-                style={{
-                  position: 'relative',
-                  backgroundColor: palette.lighterGrey,
-                  width: '100%',
-                  height: 40,
-                  alignSelf: 'center',
-                  borderRadius: 5,
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  borderWidth: 1,
-                  borderColor: palette.lighterGrey,
-                }}
-                onPress={() => {}}
-              >
+              <TouchableOpacity style={styles.disabledButton} onPress={() => {}}>
                 <View style={{ justifyContent: 'center', marginRight: 8 }}>
                   <MaterialCommunityIcons name='zip-disk' size={22} color={color.palette.white} />
                 </View>
@@ -183,21 +155,7 @@ export const ConfigurationScreen: FC<DrawerScreenProps<NavigatorParamList, 'conf
                 </View>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity
-                style={{
-                  position: 'relative',
-                  backgroundColor: palette.secondaryColor,
-                  width: '100%',
-                  height: 40,
-                  alignSelf: 'center',
-                  borderRadius: 5,
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  borderWidth: 1,
-                  borderColor: palette.secondaryColor,
-                }}
-                onPress={handleSubmit(onSubmit)}
-              >
+              <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <View style={{ justifyContent: 'center', marginRight: 8 }}>
                   {loading ? <Loader size={22} color={palette.white} /> : <MaterialCommunityIcons name='zip-disk' size={22} color={color.palette.white} />}
                 </View>
