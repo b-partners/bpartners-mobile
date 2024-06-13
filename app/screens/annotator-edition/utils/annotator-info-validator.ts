@@ -3,8 +3,8 @@ import * as yup from 'yup';
 
 import { translate } from '../../../i18n';
 import { Wearness } from '../../../models/entities/annotation-metadata/annotation-metadata';
-import { annotationCommaValidation } from './annotationCommaValidation';
 import { getPolygonName } from './utils';
+import {coveringOptions, labelTypes, rangeOptions, slopeOptions, wearnessOptions} from "./select-options";
 
 const annotatorInfoResolver = yup.object({
   labelName: yup.string().required(translate('errors.required')),
@@ -15,12 +15,20 @@ const annotatorInfoResolver = yup.object({
       value: yup.string().required(translate('errors.required')),
     })
     .required(translate('errors.required')),
-  covering: yup.string(),
-  slope: yup.string().test(
-    'comma validation',
-    () => translate('errors.invalidPercent'),
-    value => annotationCommaValidation(value)
-  ),
+  covering: yup
+      .object()
+      .shape({
+          label: yup.string().nullable(),
+          value: yup.string().nullable(),
+      })
+      .nullable(),
+  slope: yup
+      .object()
+      .shape({
+          label: yup.string().nullable(),
+          value: yup.string().nullable(),
+      })
+      .nullable(),
   comment: yup.string(),
   obstacle: yup.string(),
   wearness: yup
@@ -53,13 +61,13 @@ export const getAnnotatorResolver = () => {
 export const getDefaultValue = polygonLength => {
   return {
     labelName: getPolygonName(polygonLength),
-    labelType: { label: 'Roof 1', value: '1' },
-    covering: '',
-    slope: '',
-    wearLevel: '',
+    labelType: labelTypes[0],
+    covering: coveringOptions[0],
+    slope: slopeOptions[0],
+    wearLevel: rangeOptions[0],
     comment: '',
     obstacle: '',
-    moldRate: '',
-    wearness: '',
+    moldRate: rangeOptions[0],
+    wearness: wearnessOptions[0],
   };
 };

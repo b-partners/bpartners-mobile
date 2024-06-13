@@ -216,6 +216,22 @@
       "comment": "Comment",
       "labelName": "Label Name",
       "labelType": "Label Type"
+    },
+    "covering": {
+      "Tiles": "Tiles",
+      "Slate": "Slate",
+      "Concrete": "Concrete",
+      "Other": "Other"
+    },
+    "wearness": {
+      "LOW" : "Low",
+      "PARTIAL" : "Partial",
+    "ADVANCED" : "Advanced",
+      "EXTREME" : "Extreme"
+    },
+    "labelType":{
+      "Roof": "Roof",
+      "Velux": "Velux"
     }
   },
   "onboardingScreen": {

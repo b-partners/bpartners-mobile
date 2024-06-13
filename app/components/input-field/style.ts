@@ -19,11 +19,10 @@ export const ICON_CONTAINER: StyleProp<ViewStyle> = {
 export const TEXT_INPUT_STYLE = (error: boolean, width: string | number, bg: string) =>
   ({
     borderBottomWidth: error ? 2 : 0,
-    borderBottomColor: error ? palette.pastelRed : palette.greyDarker,
+    borderBottomColor: error ? palette.pastelRed : palette.lighterGrey,
     backgroundColor: bg,
     borderRadius: 5,
-    width: width || '100%',
-    elevation: 5,
+    width: width || '100%'
   }) as StyleProp<TextStyle>;
 
 export const TEXT_INPUT_THEME = {
@@ -32,7 +31,7 @@ export const TEXT_INPUT_THEME = {
   },
 };
 
-export const LABEL_STYLE = { color: palette.greyDarker, width: '100%', fontSize: 16 };
+export const LABEL_STYLE = { color: palette.lightGrey, width: '100%', fontSize: 14 };
 
 export const RIGHT_TEXT = {
   fontSize: 16,
