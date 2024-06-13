@@ -196,11 +196,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   useEffect(() => {
     (async () => {
       try {
-          const imageSize = await getImageWidth(pictureUrl);
-          const realMeasure = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
+        const imageSize = await getImageWidth(pictureUrl);
+        const realMeasure = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
 
-          Log('realMeasure');
-          Log(realMeasure);
+        Log('realMeasure');
+        Log(realMeasure);
       } catch (e) {
         Log(e);
       }
@@ -235,13 +235,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   }, [polygons, annotations]);
 
-  Log('annotations')
-  Log(annotations)
+  Log('annotations');
+  Log(annotations);
 
-
-  Log('===============')
-  Log('polygons')
-  Log(polygons)
+  Log('===============');
+  Log('polygons');
+  Log(polygons);
 
   const startNewPolygon = labels => {
     const { labelName, labelType, covering, slope, moldRate, wearLevel, wearness } = labels;

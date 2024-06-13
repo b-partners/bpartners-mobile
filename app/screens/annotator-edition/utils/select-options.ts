@@ -1,23 +1,22 @@
 import { Wearness } from '../../../models/entities/annotation-metadata/annotation-metadata';
-
-import Pente1 from '../assets/slopes/pente1.png'
-import Pente2 from '../assets/slopes/pente2.png'
-import Pente3 from '../assets/slopes/pente3.png'
-import Pente4 from '../assets/slopes/pente4.png'
-import Pente5 from '../assets/slopes/pente5.png'
-import Pente6 from '../assets/slopes/pente6.png'
-import Pente7 from '../assets/slopes/pente7.png'
-import Pente8 from '../assets/slopes/pente8.png'
-import Pente9 from '../assets/slopes/pente9.png'
-import Pente10 from '../assets/slopes/pente10.png'
-import Pente11 from '../assets/slopes/pente11.png'
-import Pente12 from '../assets/slopes/pente12.png'
-import Pente13 from '../assets/slopes/pente13.png'
-import Pente14 from '../assets/slopes/pente14.png'
-import Pente15 from '../assets/slopes/pente15.png'
-import Pente16 from '../assets/slopes/pente16.png'
-import Pente17 from '../assets/slopes/pente17.png'
-import Pente18 from '../assets/slopes/pente18.png'
+import Pente1 from '../assets/slopes/pente1.png';
+import Pente2 from '../assets/slopes/pente2.png';
+import Pente3 from '../assets/slopes/pente3.png';
+import Pente4 from '../assets/slopes/pente4.png';
+import Pente5 from '../assets/slopes/pente5.png';
+import Pente6 from '../assets/slopes/pente6.png';
+import Pente7 from '../assets/slopes/pente7.png';
+import Pente8 from '../assets/slopes/pente8.png';
+import Pente9 from '../assets/slopes/pente9.png';
+import Pente10 from '../assets/slopes/pente10.png';
+import Pente11 from '../assets/slopes/pente11.png';
+import Pente12 from '../assets/slopes/pente12.png';
+import Pente13 from '../assets/slopes/pente13.png';
+import Pente14 from '../assets/slopes/pente14.png';
+import Pente15 from '../assets/slopes/pente15.png';
+import Pente16 from '../assets/slopes/pente16.png';
+import Pente17 from '../assets/slopes/pente17.png';
+import Pente18 from '../assets/slopes/pente18.png';
 
 type SelectOption = {
   label: string;
@@ -28,7 +27,6 @@ type WearnessOption = {
   label: string;
   value: Wearness;
 };
-
 
 export const labelTypes = [
   { label: 'Toit', value: 'Roof' },

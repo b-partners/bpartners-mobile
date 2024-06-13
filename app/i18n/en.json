@@ -224,12 +224,12 @@
       "Other": "Other"
     },
     "wearness": {
-      "LOW" : "Low",
-      "PARTIAL" : "Partial",
-    "ADVANCED" : "Advanced",
-      "EXTREME" : "Extreme"
+      "LOW": "Low",
+      "PARTIAL": "Partial",
+      "ADVANCED": "Advanced",
+      "EXTREME": "Extreme"
     },
-    "labelType":{
+    "labelType": {
       "Roof": "Roof",
       "Velux": "Velux"
     }

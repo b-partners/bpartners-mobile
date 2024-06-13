@@ -3,8 +3,8 @@ import * as yup from 'yup';
 
 import { translate } from '../../../i18n';
 import { Wearness } from '../../../models/entities/annotation-metadata/annotation-metadata';
+import { coveringOptions, labelTypes, rangeOptions, slopeOptions, wearnessOptions } from './select-options';
 import { getPolygonName } from './utils';
-import {coveringOptions, labelTypes, rangeOptions, slopeOptions, wearnessOptions} from "./select-options";
 
 const annotatorInfoResolver = yup.object({
   labelName: yup.string().required(translate('errors.required')),
@@ -16,19 +16,19 @@ const annotatorInfoResolver = yup.object({
     })
     .required(translate('errors.required')),
   covering: yup
-      .object()
-      .shape({
-          label: yup.string().nullable(),
-          value: yup.string().nullable(),
-      })
-      .nullable(),
+    .object()
+    .shape({
+      label: yup.string().nullable(),
+      value: yup.string().nullable(),
+    })
+    .nullable(),
   slope: yup
-      .object()
-      .shape({
-          label: yup.string().nullable(),
-          value: yup.string().nullable(),
-      })
-      .nullable(),
+    .object()
+    .shape({
+      label: yup.string().nullable(),
+      value: yup.string().nullable(),
+    })
+    .nullable(),
   comment: yup.string(),
   obstacle: yup.string(),
   wearness: yup

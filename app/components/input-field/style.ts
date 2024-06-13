@@ -22,7 +22,7 @@ export const TEXT_INPUT_STYLE = (error: boolean, width: string | number, bg: str
     borderBottomColor: error ? palette.pastelRed : palette.lighterGrey,
     backgroundColor: bg,
     borderRadius: 5,
-    width: width || '100%'
+    width: width || '100%',
   }) as StyleProp<TextStyle>;
 
 export const TEXT_INPUT_THEME = {

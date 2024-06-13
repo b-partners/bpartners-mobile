@@ -175,12 +175,12 @@
       "Other": "Autre"
     },
     "wearness": {
-      "LOW" : "Minime",
-      "PARTIAL" : "Partielle",
-      "ADVANCED" : "Avancée",
-      "EXTREME" : "Extrême"
+      "LOW": "Minime",
+      "PARTIAL": "Partielle",
+      "ADVANCED": "Avancée",
+      "EXTREME": "Extrême"
     },
-    "labelType":{
+    "labelType": {
       "Roof": "Toit",
       "Velux": "Velux"
     }
