@@ -15,6 +15,8 @@ import { useStores } from '../../models';
 import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
 import { ZOOM_LEVEL, ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { NavigatorParamList } from '../../navigators/utils/utils';
+import { ConverterApi } from '../../services/api/converter-api';
+import { GeojsonApi } from '../../services/api/geojson-api';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { commaToDot } from '../../utils/comma-to-dot';
@@ -27,10 +29,11 @@ import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
 import { AnnotationModal } from './components/annotation-modal';
-import { Polygon as PolygonType } from './types';
+import { ConverterPayloadGeoJSON, Polygon as PolygonType } from './types';
 import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
+import { polygonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
 import { styles, zoomDropDownStyles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
@@ -375,6 +378,40 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   };
 
   const [showModal, setShowModal] = useState(false);
+
+  // Marker
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const {
+          filename,
+          xTile: x_tile,
+          yTile: y_tile,
+
+          zoom: { number: zoom },
+        } = areaPicture;
+
+        Log('pictureUrl');
+        Log(pictureUrl);
+
+        const imageSize = await getImageWidth(pictureUrl);
+
+        const geoJson: ConverterPayloadGeoJSON = polygonMapper.toRest(areaPicture?.geoPositions, { filename, image_size: imageSize, x_tile, y_tile, zoom });
+
+        Log('geoJson1');
+        Log(geoJson);
+
+        const converterApi = new ConverterApi();
+        const convertPointResult = await converterApi.convertPolygon(geoJson);
+
+        Log('convertPointResult');
+        Log(convertPointResult);
+      } catch (e) {
+        Log(e);
+      }
+    })();
+  }, []);
 
   return (
     <Provider>

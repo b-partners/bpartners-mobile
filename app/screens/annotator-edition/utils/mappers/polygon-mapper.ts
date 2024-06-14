@@ -1,16 +1,33 @@
-import { GeoShapeAttributes, Polygon } from '../../types';
+import { GeoPosition } from '../../../../models/entities/area-picture/area-picture';
+import { ConverterPayloadGeoJSON, Geometry } from '../../types';
 
-export class PolygonMapper {
-  public static toGeoShapeAttributes(polygon: Polygon): GeoShapeAttributes {
-    const shapeAttributes: GeoShapeAttributes = {
-      all_points_x: [],
-      all_points_y: [],
-      name: 'polygon',
+type GeoPolygonToRestMetaData = {
+  filename: string;
+  image_size: number;
+  x_tile: number;
+  y_tile: number;
+  zoom: number;
+};
+
+export const polygonMapper = {
+  toRest(geoPositions: GeoPosition[], metadata: GeoPolygonToRestMetaData) {
+    const geometry: Geometry = {
+      coordinates: [[[...geoPositions.map(({ latitude, longitude }) => [longitude, latitude])]]],
+      type: 'MultiPolygon',
     };
-    polygon.points.forEach(({ x, y }) => {
-      shapeAttributes.all_points_x.push(x);
-      shapeAttributes.all_points_y.push(y);
-    });
-    return shapeAttributes;
-  }
-}
+
+    const res: ConverterPayloadGeoJSON = {
+      ...metadata,
+      properties: {
+        id: '',
+      },
+      region_attributes: {
+        label: 'pathway',
+      },
+      geometry,
+      type: 'Feature',
+    };
+
+    return res;
+  },
+};
