@@ -5,7 +5,7 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import { Provider } from 'react-native-paper';
+import { ProgressBar, Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 import uuid from 'react-native-uuid';
 
@@ -16,7 +16,6 @@ import { Annotation as AnnotationType } from '../../models/entities/annotation/a
 import { ZOOM_LEVEL, ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { ConverterApi } from '../../services/api/converter-api';
-import { GeojsonApi } from '../../services/api/geojson-api';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { commaToDot } from '../../utils/comma-to-dot';
@@ -29,11 +28,12 @@ import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
 import { AnnotationModal } from './components/annotation-modal';
-import { ConverterPayloadGeoJSON, Polygon as PolygonType } from './types';
+import { ConverterPayloadGeoJSON, Point, Polygon as PolygonType } from './types';
 import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
 import { polygonMapper } from './utils/mappers';
+import { GeojsonMapper } from './utils/mappers/geojson-mapper';
 import { validatePolygon } from './utils/polygon-validator';
 import { styles, zoomDropDownStyles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
@@ -48,8 +48,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
   const [isLoading, setLoading] = useState(false);
+  const [isImageLoading, setImageLoading] = useState(false);
   const [isExtended, setIsExtended] = useState(false);
   const [zoomValue, setZoomValue] = useState(ZoomLevel.HOUSES_0);
+  const [markerPosition, setMarker] = useState<Point | null>(null);
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
@@ -238,13 +240,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   }, [polygons, annotations]);
 
-  Log('annotations');
-  Log(annotations);
-
-  Log('===============');
-  Log('polygons');
-  Log(polygons);
-
   const startNewPolygon = labels => {
     const { labelName, labelType, covering, slope, moldRate, wearLevel, wearness } = labels;
 
@@ -361,12 +356,18 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const handleChangeZoomLevel = async zoomLevel => {
     setIsExtended(false);
+    setImageLoading(true);
     const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomLevel?.value, false, areaPicture?.id);
-    await areaPictureStore.getPictureUrl(fileId);
-    handleCancelAnnotation();
-
-    setZoomValue(zoomLevel?.value);
+    try {
+      await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomLevel?.value, false, areaPicture?.id);
+      await areaPictureStore.getPictureUrl(fileId);
+    } catch (e) {
+      Log(e);
+    } finally {
+      setImageLoading(false);
+      handleCancelAnnotation();
+      setZoomValue(zoomLevel?.value);
+    }
   };
 
   const handleExtend = async () => {
@@ -375,6 +376,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomValue, true, areaPicture?.id);
     await areaPictureStore.getPictureUrl(fileId);
     handleCancelAnnotation();
+    setMarker(null);
   };
 
   const [showModal, setShowModal] = useState(false);
@@ -384,6 +386,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   useEffect(() => {
     (async () => {
       try {
+        Log('isExtended');
+        Log(isExtended);
+
         const {
           filename,
           xTile: x_tile,
@@ -397,6 +402,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
         const imageSize = await getImageWidth(pictureUrl);
 
+        Log('imageSize');
+        Log(imageSize);
+
         const geoJson: ConverterPayloadGeoJSON = polygonMapper.toRest(areaPicture?.geoPositions, { filename, image_size: imageSize, x_tile, y_tile, zoom });
 
         Log('geoJson1');
@@ -407,11 +415,23 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
         Log('convertPointResult');
         Log(convertPointResult);
+
+        const markerPositionMapped = GeojsonMapper.toMarker((convertPointResult || [null])[0]);
+
+        const ratio = imageSize / 320;
+
+        if (markerPositionMapped.length > 0 && currentPolygonPoints.length === 0) {
+          const { x, y } = markerPositionMapped[0];
+          setMarker({ x: x / ratio, y: y / ratio });
+        }
       } catch (e) {
         Log(e);
       }
     })();
-  }, []);
+  }, [pictureUrl, zoomValue, isExtended, areaPicture, currentPolygonPoints]);
+
+  Log('markerPosition');
+  Log(markerPosition);
 
   return (
     <Provider>
@@ -460,6 +480,14 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   />
                 </View>
               </View>
+              {isImageLoading && (
+                <ProgressBar
+                  progress={0.5}
+                  color={palette.secondaryColor}
+                  indeterminate={true}
+                  style={{ marginTop: spacing[2], backgroundColor: palette.white }}
+                />
+              )}
               <TouchableWithoutFeedback onPress={handlePress}>
                 {isKeyboardOpen ? (
                   <View style={{ width: '100%', height: 100 }} />
@@ -496,6 +524,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                       </Svg>
                       {renderPoints}
                       {renderDistances}
+                      {!isImageLoading && markerPosition && (
+                        <View style={{ position: 'absolute', top: markerPosition.y - 10, left: markerPosition.x - 10 }}>
+                          <View style={{ backgroundColor: palette.pastelRed, width: 20, height: 20, borderRadius: 10 }} />
+                        </View>
+                      )}
                     </View>
                   </View>
                 )}
