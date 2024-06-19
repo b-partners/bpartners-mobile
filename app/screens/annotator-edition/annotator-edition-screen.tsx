@@ -8,6 +8,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { ProgressBar, Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 import uuid from 'react-native-uuid';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
@@ -16,7 +17,7 @@ import { Annotation as AnnotationType } from '../../models/entities/annotation/a
 import { ZOOM_LEVEL, ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { ConverterApi } from '../../services/api/converter-api';
-import { spacing } from '../../theme';
+import { color, spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { commaToDot } from '../../utils/comma-to-dot';
 import { showMessage } from '../../utils/snackbar';
@@ -364,7 +365,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     } catch (e) {
       Log(e);
     } finally {
-      setImageLoading(false);
       handleCancelAnnotation();
       setZoomValue(zoomLevel?.value);
     }
@@ -372,11 +372,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const handleExtend = async () => {
     setIsExtended(true);
+    setImageLoading(true);
     const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomValue, true, areaPicture?.id);
-    await areaPictureStore.getPictureUrl(fileId);
-    handleCancelAnnotation();
-    setMarker(null);
+    try {
+      await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomValue, true, areaPicture?.id);
+      await areaPictureStore.getPictureUrl(fileId);
+    } catch (e) {
+      Log(e);
+    } finally {
+      handleCancelAnnotation();
+      setMarker(null);
+    }
   };
 
   const [showModal, setShowModal] = useState(false);
@@ -385,10 +391,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   useEffect(() => {
     (async () => {
+      setMarker(null);
       try {
-        Log('isExtended');
-        Log(isExtended);
-
         const {
           filename,
           xTile: x_tile,
@@ -397,25 +401,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           zoom: { number: zoom },
         } = areaPicture;
 
-        Log('pictureUrl');
-        Log(pictureUrl);
-
         const imageSize = await getImageWidth(pictureUrl);
-
-        Log('imageSize');
-        Log(imageSize);
-
         const geoJson: ConverterPayloadGeoJSON = polygonMapper.toRest(areaPicture?.geoPositions, { filename, image_size: imageSize, x_tile, y_tile, zoom });
-
-        Log('geoJson1');
-        Log(geoJson);
-
         const converterApi = new ConverterApi();
         const convertPointResult = await converterApi.convertPolygon(geoJson);
-
-        Log('convertPointResult');
-        Log(convertPointResult);
-
         const markerPositionMapped = GeojsonMapper.toMarker((convertPointResult || [null])[0]);
 
         const ratio = imageSize / 320;
@@ -428,7 +417,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         Log(e);
       }
     })();
-  }, [pictureUrl, zoomValue, isExtended, areaPicture, currentPolygonPoints]);
+  }, [pictureUrl, zoomValue, isExtended, areaPicture]);
 
   Log('markerPosition');
   Log(markerPosition);
@@ -507,6 +496,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                     <View style={{ width: 320, height: 320 }}>
                       <Image
                         onLayout={handleImageLayout}
+                        onLoad={() => {
+                          setImageLoading(false);
+                        }}
                         style={{
                           width: 320,
                           height: 320,
@@ -526,7 +518,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                       {renderDistances}
                       {!isImageLoading && markerPosition && (
                         <View style={{ position: 'absolute', top: markerPosition.y - 10, left: markerPosition.x - 10 }}>
-                          <View style={{ backgroundColor: palette.pastelRed, width: 20, height: 20, borderRadius: 10 }} />
+                          <Entypo name='location-pin' size={25} color={color.palette.secondaryColor} />
                         </View>
                       )}
                     </View>
