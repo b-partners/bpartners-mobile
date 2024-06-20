@@ -53,6 +53,16 @@ export const AreaPictureMapLayerModel = types.model('AreaPictureMapLayer').props
   source: types.maybeNull(types.string),
 });
 
+export const GeoPositionModel = types.model('GeoPositionModel').props({
+  score: types.maybeNull(types.number),
+  longitude: types.maybeNull(types.number),
+  latitude: types.maybeNull(types.number),
+});
+
+export const ZoomModel = types.model('ZoomModel').props({
+  level: types.enumeration(Object.values(ZoomLevel)),
+  number: types.maybeNull(types.number),
+});
 export const AreaPictureModel = types.model('AreaPicture').props({
   id: types.maybeNull(types.string),
   xTile: types.maybeNull(types.number),
@@ -62,15 +72,18 @@ export const AreaPictureModel = types.model('AreaPicture').props({
   availableLayers: types.maybeNull(types.array(types.string)),
   address: types.maybeNull(types.string),
   zoomLevel: types.maybeNull(types.enumeration(Object.values(ZoomLevel))),
+  zoom: types.maybeNull(ZoomModel),
   layer: types.maybeNull(types.string),
   fileId: types.maybeNull(types.string),
   filename: types.maybeNull(types.string),
   prospectId: types.maybeNull(types.string),
   createdAt: types.maybeNull(types.string),
   updatedAt: types.maybeNull(types.string),
+  geoPositions: types.maybeNull(types.array(GeoPositionModel)),
 });
 
 export interface AreaPicture extends Instance<typeof AreaPictureModel> {}
+export interface GeoPosition extends Instance<typeof GeoPositionModel> {}
 
 export interface AreaPictureSnapshotOut extends SnapshotOut<typeof AreaPictureModel> {}
 

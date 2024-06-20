@@ -1,16 +1,16 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
 import { Modal } from 'react-native-paper';
 
-import { Button, InputField, Text } from '../../../components';
+import { Button, InputField } from '../../../components';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
+import { LabelledDropdown } from '../../../components/labelled-dropdown/labelled-dropdown';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { SHADOW_STYLE } from '../../invoices/utils/styles';
 import { getDefaultValue } from '../utils/annotator-info-validator';
-import { dropDownStyles } from '../utils/styles';
+import { coveringOptions, labelTypes, rangeOptions, slopeOptions, wearnessOptions } from '../utils/select-options';
 import { getPolygonName } from '../utils/utils';
 
 type AnnotationModalProps = {
@@ -26,17 +26,6 @@ type AnnotationModalProps = {
 
 export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
   const { showModal, setShowModal, setKeyboardOpen, errors, polygonLength, control, isKeyboardOpen, reset } = props;
-
-  const labelTypes = [
-    { label: 'Roof 1', value: '1' },
-    { label: 'Roof 2', value: '2' },
-    { label: 'Roof 3', value: '3' },
-    { label: 'Tree 1', value: '4' },
-    { label: 'Tree 2', value: '5' },
-    { label: 'Tree 3', value: '6' },
-    { label: 'Pathway 1', value: '7' },
-    { label: 'Pathway 2', value: '8' },
-  ];
 
   return (
     <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
@@ -59,41 +48,6 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
             borderRadius: 7,
           }}
         >
-          <View style={{ width: '100%', height: 5 }}></View>
-          <View style={{ position: 'relative', height: 70, width: '100%', borderBottomWidth: 1, borderColor: palette.lighterGrey }}>
-            <Text
-              tx={'annotationScreen.labels.labelType'}
-              style={{
-                fontSize: 12,
-                color: palette.lightGrey,
-                paddingTop: spacing[3],
-                paddingLeft: spacing[4],
-              }}
-            />
-            <Controller
-              control={control}
-              name='labelType'
-              render={({ field: { onChange, value } }) => (
-                <Dropdown
-                  style={dropDownStyles.dropdown}
-                  placeholderStyle={dropDownStyles.placeholderStyle}
-                  selectedTextStyle={dropDownStyles.selectedTextStyle}
-                  inputSearchStyle={dropDownStyles.inputSearchStyle}
-                  iconStyle={dropDownStyles.iconStyle}
-                  itemTextStyle={dropDownStyles.itemTextStyle}
-                  data={labelTypes}
-                  search
-                  maxHeight={300}
-                  labelField='label'
-                  valueField='value'
-                  placeholder='Select item'
-                  searchPlaceholder='Rechercher...'
-                  value={value}
-                  onChange={onChange}
-                />
-              )}
-            />
-          </View>
           <Controller
             control={control}
             name='labelName'
@@ -110,51 +64,12 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
               />
             )}
           />
-          <Controller
-            control={control}
-            name='covering'
-            defaultValue={getPolygonName(polygonLength).toString()}
-            render={({ field: { onChange, value } }) => (
-              <InputField
-                labelTx={'annotationScreen.labels.covering'}
-                error={!!errors.covering}
-                value={value}
-                onChange={onChange}
-                errorMessage={errors.labelName?.message}
-                backgroundColor={palette.white}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name='slope'
-            render={({ field: { onChange, value } }) => (
-              <InputField
-                labelTx={'annotationScreen.labels.gradient'}
-                keyboardType={'numeric'}
-                error={!!errors.slope}
-                value={value}
-                onChange={onChange}
-                errorMessage={errors.slope?.message}
-                backgroundColor={palette.white}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name='wearLevel'
-            render={({ field: { onChange, value } }) => (
-              <InputField
-                labelTx={'annotationScreen.labels.usuryRate'}
-                keyboardType={'numeric'}
-                error={!!errors.wearLevel}
-                value={value}
-                onChange={onChange}
-                errorMessage={errors.wearLevel?.message}
-                backgroundColor={palette.white}
-              />
-            )}
-          />
+          <LabelledDropdown control={control} name={'labelType'} labelTx={'annotationScreen.labels.labelType'} data={labelTypes} />
+          <LabelledDropdown control={control} name={'covering'} labelTx={'annotationScreen.labels.covering'} data={coveringOptions} />
+          <LabelledDropdown control={control} name={'slope'} labelTx={'annotationScreen.labels.gradient'} data={slopeOptions} />
+          <LabelledDropdown control={control} name={'wearness'} labelTx={'annotationScreen.labels.usury'} data={wearnessOptions} />
+          <LabelledDropdown control={control} name={'wearLevel'} labelTx={'annotationScreen.labels.usuryRate'} data={rangeOptions} />
+          <LabelledDropdown control={control} name={'moldRate'} labelTx={'annotationScreen.labels.moldRate'} data={rangeOptions} />
           <Controller
             control={control}
             name='comment'

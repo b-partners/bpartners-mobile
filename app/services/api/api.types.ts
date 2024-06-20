@@ -17,6 +17,7 @@ import { TransactionCategory } from '../../models/entities/transaction-category/
 import { TransactionSummary } from '../../models/entities/transaction-summary/transaction-summary';
 import { Transaction } from '../../models/entities/transaction/transaction';
 import { User } from '../../models/entities/user/user';
+import { ConverterResultGeoJSON } from '../../screens/annotator-edition/types';
 import { GeneralApiProblem } from './api-problem';
 
 export interface Whoami {
@@ -123,6 +124,7 @@ export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } |
 export type GetProspectResult = { kind: 'ok'; prospects: Prospect[] } | GeneralApiProblem;
 
 export type GetAreaPictureResult = { kind: 'ok'; areaPicture: AreaPicture } | GeneralApiProblem;
+export type GetConverterResult = { kind: 'ok'; convertedPoints: ConverterResultGeoJSON } | GeneralApiProblem;
 
 export type GetAreaPicturesResult = { kind: 'ok'; areaPictures: AreaPicture[] } | GeneralApiProblem;
 

@@ -160,11 +160,29 @@
       "velux": "Velux",
       "slope": "Pente",
       "area": "Zone",
+      "usury": "Usure",
       "usuryRate": "Taux d'usure",
+      "moldRate": "Taux de moisissure",
       "obstacle": "Obstacle",
       "comment": "Commentaire",
       "labelName": "Nom du label",
       "labelType": "Type de label"
+    },
+    "covering": {
+      "Tiles": "Tuiles",
+      "Slate": "Ardoise",
+      "Concrete": "Beton",
+      "Other": "Autre"
+    },
+    "wearness": {
+      "LOW": "Minime",
+      "PARTIAL": "Partielle",
+      "ADVANCED": "Avancée",
+      "EXTREME": "Extrême"
+    },
+    "labelType": {
+      "Roof": "Toit",
+      "Velux": "Velux"
     }
   },
   "prospectConfigurationScreen": {

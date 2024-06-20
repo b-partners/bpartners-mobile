@@ -1,7 +1,7 @@
 import getAreaOfPolygon from 'geolib/es/getAreaOfPolygon';
 import getDistance from 'geolib/es/getPreciseDistance';
 
-import { GeojsonReturn, Measurement } from '../../types';
+import { ConverterResultGeoJSON, GeojsonReturn, Measurement, Point } from '../../types';
 import { GeoPointMapper } from '../mappers';
 
 export class GeojsonMapper {
@@ -38,5 +38,23 @@ export class GeojsonMapper {
       unity: 'm²',
       value: Math.round(area),
     };
+  }
+
+  static toMarker(geoJson: ConverterResultGeoJSON): Point[] {
+    if (!geoJson) return [];
+    const { regions } = geoJson;
+
+    const getCenter = (coordinates: number[]) => {
+      if (!coordinates) return 0;
+      const sumOfCoordinates = coordinates.reduce((prev, current) => prev + current);
+      return sumOfCoordinates / coordinates.length;
+    };
+
+    return Object.keys(regions).map(id => {
+      const {
+        shape_attributes: { all_points_x, all_points_y },
+      } = regions[id];
+      return { x: getCenter(all_points_x), y: getCenter(all_points_y) };
+    });
   }
 }

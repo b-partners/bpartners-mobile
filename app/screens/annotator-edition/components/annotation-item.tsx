@@ -4,8 +4,10 @@ import { ScrollView, TextStyle, TouchableOpacity, View } from 'react-native';
 import { List } from 'react-native-paper';
 
 import { Text } from '../../../components';
+import { TxKeyPath } from '../../../i18n';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { slopeOptions } from '../utils/select-options';
 import { labelStyles } from '../utils/styles';
 
 const AnnotationItem: FC<any> = props => {
@@ -43,7 +45,7 @@ const AnnotationItem: FC<any> = props => {
               >
                 {annotation?.labelName}
               </Text>
-              <Text style={{ fontSize: 16, color: palette.white }}>{annotation?.labelType.label}</Text>
+              <Text tx={`annotationScreen.labelType.${annotation?.labelType}` as TxKeyPath} />
             </View>
           }
           id='1'
@@ -74,7 +76,7 @@ const AnnotationItem: FC<any> = props => {
           >
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.labelType'} style={labelStyles.key} />
-              <Text text={annotation?.labelType.label} style={labelStyles.value} />
+              <Text tx={`annotationScreen.labelType.${annotation?.labelType}` as TxKeyPath} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.labelName'} style={labelStyles.key} />
@@ -82,23 +84,31 @@ const AnnotationItem: FC<any> = props => {
             </View>
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.covering'} style={labelStyles.key} />
-              <Text text={annotation?.covering} style={labelStyles.value} />
+              <Text tx={`annotationScreen.covering.${annotation?.covering}` as TxKeyPath} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.gradient'} style={labelStyles.key} />
-              <Text text={annotation?.slope} style={labelStyles.value} />
+              <Text text={slopeOptions[parseInt(annotation?.slope) - 1]?.label} style={labelStyles.value} />
+            </View>
+            <View style={FIELD_STYLE}>
+              <Text tx={'annotationScreen.labels.usury'} style={labelStyles.key} />
+              <Text tx={`annotationScreen.wearness.${annotation?.wearness}` as TxKeyPath} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.usuryRate'} style={labelStyles.key} />
               <Text text={annotation?.wearLevel} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
-              <Text tx={'annotationScreen.labels.comment'} style={labelStyles.key} />
-              <Text text={annotation?.comment} style={labelStyles.value} />
+              <Text tx={'annotationScreen.labels.moldRate'} style={labelStyles.key} />
+              <Text text={annotation?.moldRate} style={labelStyles.value} />
             </View>
             <View style={FIELD_STYLE}>
               <Text tx={'annotationScreen.labels.obstacle'} style={labelStyles.key} />
               <Text text={annotation?.obstacle} style={labelStyles.value} />
+            </View>
+            <View style={FIELD_STYLE}>
+              <Text tx={'annotationScreen.labels.comment'} style={labelStyles.key} />
+              <Text text={annotation?.comment} style={labelStyles.value} />
             </View>
             <View style={{ display: 'flex', flexDirection: 'row' }}>
               <TouchableOpacity
