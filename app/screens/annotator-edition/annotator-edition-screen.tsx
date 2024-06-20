@@ -1,9 +1,9 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { ProgressBar, Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
@@ -33,11 +33,11 @@ import { ConverterPayloadGeoJSON, Point, Polygon as PolygonType } from './types'
 import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
-import { polygonMapper } from './utils/mappers';
-import { GeojsonMapper } from './utils/mappers/geojson-mapper';
+import { GeojsonMapper, polygonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
+import { renderDistances, renderPoints, renderPolygons } from './utils/renderFunctions';
 import { styles, zoomDropDownStyles } from './utils/styles';
-import { calculateCentroid, calculateDistance, constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
+import { constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
@@ -140,65 +140,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
-  const renderPoints = useMemo(() => {
-    return currentPolygonPoints.map((point, index) => {
-      const panResponder = createPanResponder(index);
-
-      return (
-        <Animated.View
-          key={index}
-          {...panResponder.panHandlers}
-          style={{
-            position: 'absolute',
-            left: point.x - 10,
-            top: point.y - 10,
-            width: 20,
-            height: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: '#000000',
-              width: 8,
-              height: 8,
-              borderRadius: 5,
-            }}
-          />
-        </Animated.View>
-      );
-    });
-  }, [currentPolygonPoints]);
-
-  const renderDistances = useMemo(() => {
-    const distances = [];
-    for (let i = 0; i < currentPolygonPoints.length; i++) {
-      const point1 = currentPolygonPoints[i];
-      const point2 = currentPolygonPoints[(i + 1) % currentPolygonPoints.length];
-      const distance = calculateDistance(point1, point2);
-      const midX = (point1.x + point2.x) / 2;
-      const midY = (point1.y + point2.y) / 2;
-
-      distances.push(
-        <Text
-          key={`distance_${i}`}
-          style={{
-            position: 'absolute',
-            left: midX,
-            top: midY,
-            color: '#90F80A',
-            fontSize: 12,
-            fontWeight: '800',
-          }}
-        >
-          {distance.toFixed(2)}
-        </Text>
-      );
-    }
-    return distances;
-  }, [currentPolygonPoints]);
-
   useEffect(() => {
     (async () => {
       try {
@@ -212,34 +153,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       }
     })();
   }, [annotations]);
-
-  const renderPolygons = useMemo(() => {
-    return polygons.map((polygonPoints, index) => {
-      const centroid = calculateCentroid(polygonPoints);
-
-      return (
-        <React.Fragment key={index}>
-          <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
-            <Polygon points={polygonPoints.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
-          </Svg>
-          {annotations[index]?.labelName && (
-            <Text
-              style={{
-                position: 'absolute',
-                left: centroid.x - 15,
-                top: centroid.y - 10,
-                color: '#000',
-                fontSize: 14,
-                fontWeight: 'bold',
-              }}
-            >
-              {annotations[index]?.labelName}
-            </Text>
-          )}
-        </React.Fragment>
-      );
-    });
-  }, [polygons, annotations]);
 
   const startNewPolygon = labels => {
     const { labelName, labelType, covering, slope, moldRate, wearLevel, wearness } = labels;
@@ -505,7 +418,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         }}
                         source={{ uri: pictureUrl }}
                       />
-                      {renderPolygons}
+                      {renderPolygons(polygons, annotations)}
                       <Svg width='320' height='320' style={{ position: 'absolute', top: 0, left: 0 }}>
                         <Polygon
                           points={currentPolygonPoints.map(point => `${point.x},${point.y}`).join(' ')}
@@ -514,8 +427,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                           strokeWidth='1'
                         />
                       </Svg>
-                      {renderPoints}
-                      {renderDistances}
+                      {renderPoints(currentPolygonPoints, createPanResponder)}
+                      {renderDistances(currentPolygonPoints)}
                       {!isImageLoading && markerPosition && (
                         <View style={{ position: 'absolute', top: markerPosition.y - 10, left: markerPosition.x - 10 }}>
                           <Entypo name='location-pin' size={25} color={color.palette.secondaryColor} />
