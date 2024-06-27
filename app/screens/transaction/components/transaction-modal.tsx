@@ -14,7 +14,7 @@ import { navigate } from '../../../navigators/navigation-utilities';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
-import { invoicePageSize } from '../../invoice-form/components/utils';
+import { invoicePageSize } from '../../invoice-form/utils/utils';
 import { transactionModalStyles as styles } from '../utils/styles';
 import { PaymentModalProps } from '../utils/utils';
 import { InvoiceSelectionModal } from './invoice-selection-modal';

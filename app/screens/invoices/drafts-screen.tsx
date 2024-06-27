@@ -13,7 +13,7 @@ import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/utils/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
 import { InvoiceSummary } from './components/invoice-summary';

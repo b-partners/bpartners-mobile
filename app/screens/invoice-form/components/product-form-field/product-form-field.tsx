@@ -18,8 +18,8 @@ import { showMessage } from '../../../../utils/snackbar';
 import { BUTTON_INVOICE_STYLE, BUTTON_TEXT_STYLE } from '../../../invoices/utils/styles';
 import { ProductModal } from '../../../product/components/product-modal';
 import { ProductModalType } from '../../../product/products-screen';
-import { InvoiceFormField } from '../../invoice-form-field';
-import { invoicePageSize } from '../utils';
+import { invoicePageSize } from '../../utils/utils';
+import { InvoiceFormField } from '../invoice/invoice-form-field';
 
 type ProductFormFieldProps = {
   index: number;

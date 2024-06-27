@@ -19,7 +19,7 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
-import { invoicePageSize } from '../../invoice-form/components/utils';
+import { invoicePageSize } from '../../invoice-form/utils/utils';
 import { InvoiceSelectionModal } from '../../transaction/components/invoice-selection-modal';
 import { TransactionField } from '../../transaction/components/transaction-field';
 import { transactionModalStyles as styles } from '../../transaction/utils/styles';

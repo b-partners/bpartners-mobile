@@ -10,7 +10,7 @@ import RadioButton from '../../../components/radio-button/radio-button';
 import { useStores } from '../../../models';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { INVALID_FORM_FIELD } from '../../invoice-form/styles';
+import { INVALID_FORM_FIELD } from '../../invoice-form/utils/styles';
 import { CustomerModalType } from '../customers-screen';
 import { CustomerValidationSchema } from '../utils/customer-validator';
 import { intiaValueRenderer, saveOrUpdate } from '../utils/utils';

@@ -2,10 +2,10 @@ import React from 'react';
 import { Modal, View } from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-import { Button, Loader, Text } from '../../components';
-import { InvoiceStatus } from '../../models/entities/invoice/invoice';
-import { spacing } from '../../theme';
-import { palette } from '../../theme/palette';
+import { Button, Loader, Text } from '../../../../components';
+import { InvoiceStatus } from '../../../../models/entities/invoice/invoice';
+import { spacing } from '../../../../theme';
+import { palette } from '../../../../theme/palette';
 
 type InvoiceCreationModalProps = {
   confirmationModal: boolean;

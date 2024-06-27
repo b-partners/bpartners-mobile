@@ -22,7 +22,7 @@ import { getThreshold } from '../../utils/get-threshold';
 import { RTLog } from '../../utils/reactotron-log';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/utils/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceSummary } from './components/invoice-summary';
 import { PartialPaymentModal } from './components/partial-payment-modal';
