@@ -7,7 +7,6 @@ export type ProspectItemProps = {
   menuItem: MenuItem[];
   prospect: Prospect;
   setCurrentStatus: React.Dispatch<React.SetStateAction<string>>;
-  key: number;
 };
 
 export type ProcessModalProps = {

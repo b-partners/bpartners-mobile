@@ -31,7 +31,7 @@ export const ProspectStoreModel = types
     },
   }))
   .actions(self => ({
-    getProspects: flow(function* (filter: ProspectFilter) {
+    getProspects: flow(function* (filter?: ProspectFilter) {
       self.loadingProspect = true;
       const prospectApi = new ProspectApi(self.environment.api);
       try {

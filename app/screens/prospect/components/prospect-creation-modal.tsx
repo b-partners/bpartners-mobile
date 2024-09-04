@@ -1,14 +1,13 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { FormProvider } from 'react-hook-form';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { Modal } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { v4 as uuidv4 } from 'uuid';
-import * as yup from 'yup';
 
-import { InputField, Text } from '../../../components';
+import { Text } from '../../../components';
+import { BpInput } from '../../../components/bp-input';
 import { KeyboardLayout } from '../../../components/keyboard-layout/KeyboardLayout';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
@@ -16,9 +15,11 @@ import { ZoomLevel } from '../../../models/entities/area-picture/area-picture';
 import { navigate } from '../../../navigators/navigation-utilities';
 import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { useProspectInfoForm } from '../../../utils/resolvers';
 import { showMessage } from '../../../utils/snackbar';
 import { ProspectCreationModalProps, ProspectFeedback } from '../utils/utils';
 import { ButtonActions } from './button-action';
+import { ProspectCreationStyle } from './style';
 
 export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props => {
   const { showModal, setShowModal, status, setStatus } = props;
@@ -37,33 +38,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
     setShowModal(false);
   };
 
-  const prospectInfoResolver = yup.object({
-    email: yup.string(),
-    phone: yup.string(),
-    address: yup.string().required(translate('errors.required')),
-    name: yup.string().required(translate('errors.required')),
-    firstName: yup.string().required(translate('errors.required')),
-    comment: yup.string(),
-  });
-
-  const prospectResolver = yupResolver(prospectInfoResolver);
-
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
-    mode: 'all',
-    defaultValues: {
-      email: '',
-      phone: '',
-      address: '',
-      name: '',
-      firstName: '',
-      comment: '',
-    },
-    resolver: prospectResolver,
-  });
+  const form = useProspectInfoForm();
 
   const handleAmountRender = () => {
     setCurrentPage(2);
@@ -80,8 +55,8 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
         ...prospectInfos,
       });
       showMessage(translate('common.added'), { backgroundColor: palette.green });
-      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId, ZoomLevel.HOUSES_0, false);
-      await areaPictureStore.getPictureUrl(fileId);
+      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId as string, ZoomLevel.HOUSES_0, false);
+      await areaPictureStore.getPictureUrl(fileId as string);
       navigate('annotatorEdition');
     } catch (e) {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
@@ -94,169 +69,30 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
 
   return (
     <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
-      <Modal
-        visible={showModal}
-        dismissableBackButton={true}
-        onDismiss={closeModal}
-        style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: keyboardOpen ? 'flex-start' : 'center',
-        }}
-      >
-        <ScrollView
-          style={{
-            backgroundColor: palette.white,
-            borderRadius: 20,
-            marginHorizontal: '2%',
-            paddingVertical: spacing[2],
-            width: '96%',
-            height: 540,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              height: 50,
-              width: '100%',
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-            }}
-          >
-            <View
-              style={{
-                height: '100%',
-                width: '85%',
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingLeft: spacing[4],
-              }}
-            >
-              <Text text={'Prospect : '} style={{ fontSize: 15, color: palette.secondaryColor }} />
-              <Text text={''} style={{ fontSize: 15, color: palette.secondaryColor }} />
+      <Modal visible={showModal} dismissableBackButton={true} onDismiss={closeModal} style={ProspectCreationStyle.modal(keyboardOpen)}>
+        <ScrollView style={ProspectCreationStyle.scrollViewContainer}>
+          <View style={ProspectCreationStyle.headerContainer}>
+            <View style={ProspectCreationStyle.headerTitleContainer}>
+              <Text text='Prospect : ' style={ProspectCreationStyle.headerTitle} />
+              <Text text='' style={ProspectCreationStyle.headerTitle} />
             </View>
-            <TouchableOpacity onPress={closeModal} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <TouchableOpacity onPress={closeModal} style={ProspectCreationStyle.closeButton}>
               <AntDesignIcon name='close' color={color.palette.lightGrey} size={20} />
             </TouchableOpacity>
           </View>
           {currentPage === 1 && (
-            <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
-              <View style={{ marginBottom: 10, width: '100%' }}>
-                <Controller
-                  control={control}
-                  name='email'
-                  defaultValue=''
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'prospectScreen.process.email'}
-                      error={!!errors.email}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.email?.message}
-                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                    />
-                  )}
-                />
+            <FormProvider {...form}>
+              <View style={{ flex: 1, paddingHorizontal: spacing[4], paddingTop: spacing[2] }}>
+                <BpInput name='address' labelTx='prospectScreen.process.address' />
+                <BpInput name='name' labelTx='prospectScreen.process.name' />
+                <BpInput name='firstName' labelTx='prospectScreen.process.firstName' />
+                <BpInput name='email' labelTx='prospectScreen.process.email' />
+                <BpInput name='phone' labelTx='prospectScreen.process.phone' />
+                <BpInput multiline name='comment' labelTx='prospectScreen.process.comment' />
               </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
-                <Controller
-                  control={control}
-                  name='phone'
-                  defaultValue=''
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'prospectScreen.process.phone'}
-                      error={!!errors.phone}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.phone?.message}
-                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                    />
-                  )}
-                />
-              </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
-                <Controller
-                  control={control}
-                  name='address'
-                  defaultValue=''
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'prospectScreen.process.address'}
-                      error={!!errors.address}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.address?.message}
-                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                    />
-                  )}
-                />
-              </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
-                <Controller
-                  control={control}
-                  name='name'
-                  defaultValue=''
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'prospectScreen.process.name'}
-                      error={!!errors.name}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.name?.message}
-                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                    />
-                  )}
-                />
-              </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
-                <Controller
-                  control={control}
-                  name='firstName'
-                  defaultValue=''
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'prospectScreen.process.firstName'}
-                      error={!!errors.firstName}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.firstName?.message}
-                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                    />
-                  )}
-                />
-              </View>
-              <View style={{ marginBottom: 10, width: '100%' }}>
-                <Controller
-                  control={control}
-                  name='comment'
-                  defaultValue=''
-                  render={({ field: { onChange, value } }) => (
-                    <InputField
-                      labelTx={'prospectScreen.process.comment'}
-                      error={!!errors.comment}
-                      value={value}
-                      onChange={onChange}
-                      errorMessage={errors.comment?.message}
-                      backgroundColor={Platform.OS === 'ios' ? palette.solidGrey : palette.white}
-                    />
-                  )}
-                />
-              </View>
-            </View>
+            </FormProvider>
           )}
-          <View
-            style={{
-              height: 60,
-              width: '100%',
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              justifyContent: 'flex-end',
-              paddingRight: spacing[4],
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}
-          >
+          <View style={ProspectCreationStyle.actionContainer}>
             <ButtonActions
               isLoading={isLoading}
               isCreating={true}
@@ -264,7 +100,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
               selectedStatus={status}
               prospectFeedBack={current}
               currentPage={currentPage}
-              handleSubmit={handleSubmit}
+              handleSubmit={form.handleSubmit}
               onSubmit={onSubmit}
               handleAmountRender={handleAmountRender}
               closeModal={closeModal}

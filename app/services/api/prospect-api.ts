@@ -19,7 +19,7 @@ export class ProspectApi {
   //   }
   // }
 
-  async getProspects(ahId: string, filter: ProspectFilter): Promise<GetProspectResult> {
+  async getProspects(ahId: string, filter?: ProspectFilter): Promise<GetProspectResult> {
     // make the api call
     __DEV__ && console.tron.log(`Fetching prospect`);
     const response: ApiResponse<any> = await this.api.apisauce.get(`/accountHolders/${ahId}/prospects`, filter);
