@@ -11,7 +11,7 @@ import { View } from 'react-native';
 import { HeaderWithBalance, Screen } from '../../components';
 import env from '../../config/env';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators/utils/utils';
+import { NavigatorParamList } from '../../navigators/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { RTLog } from '../../utils/reactotron-log';
@@ -84,9 +84,6 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     // send token to storage if changed
     if (!token || token !== currentToken) {
       await authStore.registerFCMToken(currentToken);
-      const newARN = currentUser.snsArn;
-      if (!newARN) {
-      }
       await AsyncStorage.setItem('fcmToken', currentToken);
     }
 
@@ -95,12 +92,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
     // test endpoint connection
     try {
-      let attributes = await getAttributesAsync({
-        EndpointArn: endpointARN,
-      });
-      // @ts-ignore
-      if ((attributes && !attributes.Enabled) || attributes.Token !== event.deviceToken) {
-      }
+      await getAttributesAsync({ EndpointArn: endpointARN });
     } catch (e) {
       RTLog(e.message);
     }
