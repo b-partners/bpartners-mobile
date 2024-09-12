@@ -120,7 +120,7 @@ export type UploadFileResult = { kind: 'ok'; message: string } | GeneralApiProbl
 
 export type GetMarketplaceResult = { kind: 'ok'; marketplaces: Marketplace[] } | GeneralApiProblem;
 
-export type GetProspectResult = { kind: 'ok'; prospects: Prospect[] } | GeneralApiProblem;
+export type GetProspectResult = { kind: 'ok'; prospects: Prospect[]; hasNext: boolean } | GeneralApiProblem;
 
 export type GetAreaPictureResult = { kind: 'ok'; areaPicture: AreaPicture } | GeneralApiProblem;
 
