@@ -7,7 +7,7 @@ import { Menu, Provider, Searchbar } from 'react-native-paper';
 import { Header, Loader, NoDataProvided } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { Prospect } from '../../models/entities/prospect/prospect';
+import { Prospect, ProspectStatus } from '../../models/entities/prospect/prospect';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -22,47 +22,47 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
   const { prospectStore } = useStores();
   const { prospects, loadingProspect } = prospectStore;
 
-  const [currentStatus, setCurrentStatus] = useState<string>('TO_CONTACT');
+  const [{ page, status }, setFilters] = useState<{ status: ProspectStatus; page: number }>({ status: ProspectStatus.TO_CONTACT, page: 1 });
+
+  const setCurrentStatus = (currentStatus: string) => setFilters(prev => ({ ...prev, status: ProspectStatus[currentStatus] }));
+
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const getActiveClassName = useCallback(
     (activeStatus): object => {
-      return currentStatus === activeStatus && { borderBottomWidth: 2, borderColor: '#9C255A' };
+      return status === activeStatus && { borderBottomWidth: 2, borderColor: '#9C255A' };
     },
-    [currentStatus]
+    [status]
   );
 
   const handleClickMenu = actualStatus => {
     setCurrentStatus(actualStatus);
   };
 
-  const filteredProspect = prospects.filter(item => item.status === currentStatus);
+  const filteredProspect = prospects;
 
   const PROSPECT_STATUS = [
-    { id: 'toContact', title: translate('prospectScreen.tab.toContact'), label: 'TO_CONTACT' },
-    { id: 'contacted', title: translate('prospectScreen.tab.contacted'), label: 'CONTACTED' },
-    { id: 'converted', title: translate('prospectScreen.tab.converted'), label: 'CONVERTED' },
+    { id: 'toContact', title: translate('prospectScreen.tab.toContact'), label: ProspectStatus.TO_CONTACT },
+    { id: 'contacted', title: translate('prospectScreen.tab.contacted'), label: ProspectStatus.CONTACTED },
+    { id: 'converted', title: translate('prospectScreen.tab.converted'), label: ProspectStatus.CONVERTED },
   ];
 
-  const prospectWithoutCurrentStatus = PROSPECT_STATUS.filter(status => status.label !== currentStatus);
+  const prospectWithoutCurrentStatus = PROSPECT_STATUS.filter(s => s.label !== status);
 
-  const handleRefresh = async () => {
-    await prospectStore.getProspects();
-  };
+  const handleRefresh = async () => await prospectStore.getProspects({ name: '', page, perPage: 10, status });
 
   useEffect(() => {
-    (async () => {
-      await handleRefresh();
-    })();
-  }, []);
-  const onChangeSearch = query => setSearchQuery(query);
+    handleRefresh();
+  }, [page, status]);
+
+  const onChangeSearch = (query: string) => setSearchQuery(query);
   const debounceTimeoutRef = useRef(null);
 
   const searchProspect = async () => {
     await prospectStore.getProspects({ name: searchQuery });
   };
 
-  const handleInputChange = query => {
+  const handleInputChange = (query: string) => {
     onChangeSearch(query);
     if (query) {
       if (debounceTimeoutRef.current) {
@@ -103,30 +103,30 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
             <CreationPortal />
           </View>
           <View style={styles.menuContainer}>
-            {PROSPECT_STATUS.map(status => {
+            {PROSPECT_STATUS.map(s => {
               return (
                 <Menu.Item
-                  onPress={() => handleClickMenu(status.label)}
-                  key={status.id}
-                  title={status.title}
+                  onPress={() => handleClickMenu(s.label)}
+                  key={s.id}
+                  title={s.title}
                   titleStyle={{ color: palette.secondaryColor }}
-                  style={{ ...getActiveClassName(status.label), width: '28%' }}
+                  style={{ ...getActiveClassName(s.label), width: '28%' }}
                 />
               );
             })}
           </View>
           <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
-            {loadingProspect ? (
+            {loadingProspect && (
               <View style={styles.loader}>
                 <Loader size='large' style={styles.full} />
               </View>
-            ) : filteredProspect.length > 0 ? (
-              filteredProspect.map((item: Prospect, index: number) => {
-                return <ProspectItem key={index} menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} />;
-              })
-            ) : (
-              <NoDataProvided reload={handleRefresh} />
             )}
+            {!loadingProspect &&
+              filteredProspect.length > 0 &&
+              filteredProspect.map((item: Prospect) => {
+                return <ProspectItem key={item.id} menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} />;
+              })}
+            {!loadingProspect && filteredProspect.length === 0 && <NoDataProvided reload={handleRefresh} />}
           </ScrollView>
         </View>
       </ErrorBoundary>
