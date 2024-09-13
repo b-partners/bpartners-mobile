@@ -14,12 +14,6 @@ export class ProspectApi {
     this.api = api;
   }
 
-  // private mapProspect(item: Prospect): Prospect {
-  //   return {
-  //     ...item
-  //   }
-  // }
-
   async getProspects(ahId: string, filter: ProspectFilter, page = 1, perPage = 10, status?: ProspectStatus): Promise<GetProspectResult> {
     // make the api call
     __DEV__ && console.tron.log(`Fetching prospect`);
