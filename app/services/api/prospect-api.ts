@@ -20,8 +20,8 @@ export class ProspectApi {
 
     const fetcher: TPaginationFetcher = currentPage => {
       const mappedStatus = getParams('status', status);
-      const url = `/accountHolders/${ahId}/prospects?page=${currentPage}&pageSize=${perPage}&${mappedStatus}`;
-      return this.api.apisauce.get(url, filter);
+      const url = `/accountHolders/${ahId}/prospects?page=${filter.name.length > 0 ? 0 : currentPage}&pageSize=${perPage}&name=${filter.name}&${mappedStatus}`;
+      return this.api.apisauce.get(url);
     };
 
     const { data, hasNext, kind } = await getPagination(fetcher, page);
