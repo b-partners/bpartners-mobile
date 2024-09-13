@@ -5,6 +5,7 @@ import { ScrollView, View } from 'react-native';
 import { Menu, Provider, Searchbar } from 'react-native-paper';
 
 import { Header, Loader, NoDataProvided } from '../../components';
+import { Pagination } from '../../components/bp-pagination';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Prospect, ProspectStatus } from '../../models/entities/prospect/prospect';
@@ -20,11 +21,12 @@ import { prospectStyles as styles } from './utils/styles';
 
 export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
   const { prospectStore } = useStores();
-  const { prospects, loadingProspect } = prospectStore;
+  const { prospects, loadingProspect, hasNext } = prospectStore;
 
   const [{ page, status }, setFilters] = useState<{ status: ProspectStatus; page: number }>({ status: ProspectStatus.TO_CONTACT, page: 1 });
 
   const setCurrentStatus = (currentStatus: string) => setFilters(prev => ({ ...prev, status: ProspectStatus[currentStatus] }));
+  const setPage = (currentPage: number) => setFilters(prev => ({ ...prev, page: currentPage }));
 
   const [searchQuery, setSearchQuery] = React.useState('');
 
@@ -121,11 +123,15 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
                 <Loader size='large' style={styles.full} />
               </View>
             )}
-            {!loadingProspect &&
-              filteredProspect.length > 0 &&
-              filteredProspect.map((item: Prospect) => {
-                return <ProspectItem key={item.id} menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} />;
-              })}
+
+            {!loadingProspect && filteredProspect.length > 0 && (
+              <>
+                {filteredProspect.map((item: Prospect) => (
+                  <ProspectItem key={item.id} menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} />
+                ))}
+                <Pagination page={page} changePage={setPage} hasNext={hasNext} />
+              </>
+            )}
             {!loadingProspect && filteredProspect.length === 0 && <NoDataProvided reload={handleRefresh} />}
           </ScrollView>
         </View>
