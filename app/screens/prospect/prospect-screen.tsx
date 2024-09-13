@@ -39,6 +39,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
 
   const handleClickMenu = actualStatus => {
     setCurrentStatus(actualStatus);
+    setPage(1);
   };
 
   const filteredProspect = prospects;
