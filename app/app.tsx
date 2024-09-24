@@ -14,7 +14,6 @@ import React, { useEffect, useState } from 'react';
 import { LogBox } from 'react-native';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import { ToggleStorybook } from '../storybook/toggle-storybook';
 import env from './config/env';
 import './i18n';
 import { RootStore, RootStoreProvider, setupRootStore } from './models';
@@ -25,6 +24,7 @@ import { initFonts } from './theme/fonts';
 import './utils/ignore-warnings';
 // expo
 import * as storage from './utils/storage';
+
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
@@ -70,15 +70,13 @@ function App() {
 
   // otherwise, we're ready to render the app
   return (
-    <ToggleStorybook>
-      <RootStoreProvider value={rootStore}>
-        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <ErrorBoundary catchErrors='always'>
-            <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
-          </ErrorBoundary>
-        </SafeAreaProvider>
-      </RootStoreProvider>
-    </ToggleStorybook>
+    <RootStoreProvider value={rootStore}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <ErrorBoundary catchErrors='always'>
+          <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
+        </ErrorBoundary>
+      </SafeAreaProvider>
+    </RootStoreProvider>
   );
 }
 
