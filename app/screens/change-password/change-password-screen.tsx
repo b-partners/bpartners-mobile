@@ -41,7 +41,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
     defaultValues: { phoneNumber: '', newPassword: '', confirmPassword: '' },
   });
 
-  const onSubmit = async userInfos => {
+  const onSubmit = async (userInfos: any) => {
     try {
       __DEV__ && console.tron.log(userInfos);
       setLoading(true);
@@ -82,9 +82,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
             <Controller
               control={control}
               name='phoneNumber'
-              rules={{
-                required: translate('errors.required'),
-              }}
+              rules={{ required: translate('errors.required') || '' }}
               defaultValue=''
               render={({ field: { onChange, value } }) => (
                 <InputField
