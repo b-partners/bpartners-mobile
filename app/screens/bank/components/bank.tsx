@@ -40,7 +40,7 @@ export const Bank: React.FC = () => {
           setSelectedAccount(getCurrentAccount(accounts));
           setAccountInfo(getCurrentAccountInfo(accounts));
         }
-      } catch (e) {
+      } catch {
         if (!isCancelled) {
           showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
           setShowModal(false);

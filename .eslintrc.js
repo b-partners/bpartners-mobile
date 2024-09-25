@@ -14,7 +14,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'react-native', 'react-hooks'],
+  plugins: ['react', '@typescript-eslint', 'react-native', 'react-hooks', 'jest'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],

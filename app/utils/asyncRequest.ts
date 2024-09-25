@@ -5,7 +5,7 @@ import { showMessage } from './snackbar';
 export async function handleAsyncRequest<T>(promiseFunction: () => Promise<T>): Promise<void> {
   try {
     await promiseFunction();
-  } catch (error) {
+  } catch {
     showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
   }
 }

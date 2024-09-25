@@ -59,7 +59,7 @@ export const AnnotationModal: React.FC<AnnotationModalProps> = props => {
             borderRadius: 7,
           }}
         >
-          <View style={{ width: '100%', height: 5 }}></View>
+          <View style={{ width: '100%', height: 5 }} />
           <View style={{ position: 'relative', height: 70, width: '100%', borderBottomWidth: 1, borderColor: palette.lighterGrey }}>
             <Text
               tx={'annotationScreen.labels.labelType'}

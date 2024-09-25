@@ -83,7 +83,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
       setIsFetching(true);
       try {
         await customerStore.getCustomers();
-      } catch (e) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       } finally {
         if (!isCancelled) {
@@ -104,7 +104,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
     try {
       await customerStore.getCustomers(filter);
       setCurrentPage(1);
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
       setIsFetching(false);

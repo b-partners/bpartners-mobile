@@ -58,7 +58,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
       await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId as string, ZoomLevel.HOUSES_0, false);
       await areaPictureStore.getPictureUrl(fileId as string);
       navigate('annotatorEdition');
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
     } finally {
       setIsLoading(false);

@@ -84,7 +84,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, ...commonFetchParams });
           await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, ...commonFetchParams });
         }
-      } catch (e) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         setVisible(false);
       } finally {

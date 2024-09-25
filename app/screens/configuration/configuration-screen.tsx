@@ -44,7 +44,7 @@ export const ConfigurationScreen: FC<DrawerScreenProps<NavigatorParamList, 'conf
         if (!isCancelled) {
           setRelaunchConf(invoiceRelaunchConf);
         }
-      } catch (e) {
+      } catch {
         if (!isCancelled) {
           showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         }

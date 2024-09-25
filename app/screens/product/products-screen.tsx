@@ -59,7 +59,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
     const fetchData = async () => {
       try {
         await productStore.getProducts();
-      } catch (error) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     };
@@ -77,7 +77,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
     if (offsetY <= getThreshold()) {
       try {
         await handleRefresh();
-      } catch (error) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     }
@@ -118,7 +118,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
           },
         },
       });
-    } catch (error) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
   }

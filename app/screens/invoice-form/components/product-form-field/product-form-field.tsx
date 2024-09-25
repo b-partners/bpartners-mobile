@@ -66,7 +66,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
       setIsFetching(true);
       try {
         await productStore.getProducts();
-      } catch (e) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       } finally {
         if (!isCancelled) {
@@ -91,7 +91,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
         pageSize: invoicePageSize,
       });
       setCurrentPage(1);
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
       setIsFetching(false);

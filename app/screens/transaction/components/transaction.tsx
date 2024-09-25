@@ -47,7 +47,7 @@ export const Transaction = (
       setLoading(false);
       setIsModifying(false);
       await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
   };

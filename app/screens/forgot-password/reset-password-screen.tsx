@@ -38,7 +38,7 @@ export const ResetPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'reset
       setTimeout(() => {
         navigation.navigate('welcome');
       }, 4000);
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       __DEV__ && console.tron.logImportant(response);
     } finally {

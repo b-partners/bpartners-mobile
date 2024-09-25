@@ -48,7 +48,7 @@ export const InvoiceSelectionModal: React.FC<InvoiceSelectionModalProps> = props
         await transactionStore.getTransactions();
         setTransactionModal(false);
       }
-    } catch (error) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
       setLoadingCreation(false);
