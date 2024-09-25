@@ -3,7 +3,7 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
 import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
@@ -60,7 +60,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
         navigation.navigate('legalFile');
       } else {
         await authStore.getAccounts();
-        navigation.navigate('transactionList');
+        navigation.navigate('oauth');
       }
     } catch (e) {
       showMessage((e as Error).message);
