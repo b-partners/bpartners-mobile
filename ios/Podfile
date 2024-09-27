@@ -1,3 +1,5 @@
+pod_folder = Pathname.new(__FILE__).dirname.realpath
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -18,7 +20,6 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-pod_folder = Pathname.new(__FILE__).dirname.realpath
 pod 'AppAuth'
 
 pod 'Firebase', :modular_headers => true

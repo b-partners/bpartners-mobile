@@ -3,6 +3,9 @@
 #import <Expo/Expo.h>
 #import "RNAppAuthAuthorizationFlowManager.h"
 
-@interface AppDelegate : EXAppDelegateWrapper RCTAppDelegate
+// added the <RNAppAuthAuthorizationFlowManager>
+@interface AppDelegate : EXAppDelegateWrapper <RNAppAuthAuthorizationFlowManager>
+
+@property(nonatomic, weak)id<RNAppAuthAuthorizationFlowManagerDelegate>authorizationFlowManagerDelegate;
 
 @end
