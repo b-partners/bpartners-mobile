@@ -41,6 +41,7 @@
     "eas-build-pre-install": "cp .env.template .env"
   },
   "dependencies": {
+    "@bpartners/typescript-client": "^0.54.1",
     "@expo/vector-icons": "^14.0.3",
     "@hookform/resolvers": "^3.9.0",
     "@notifee/react-native": "^9.0.2",
