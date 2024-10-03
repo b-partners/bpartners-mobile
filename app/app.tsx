@@ -10,6 +10,7 @@
  * if you're interested in adding screens and navigators.
  */
 import * as Sentry from '@sentry/react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { LogBox } from 'react-native';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -40,6 +41,8 @@ Sentry.init({
 });
 
 env.appEnv !== 'dev' && LogBox.ignoreAllLogs();
+
+const queryClient = new QueryClient();
 
 /**
  * This is the root component of our app.
@@ -73,7 +76,9 @@ function App() {
     <RootStoreProvider value={rootStore}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <ErrorBoundary catchErrors='always'>
-          <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
+          <QueryClientProvider client={queryClient}>
+            <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
+          </QueryClientProvider>
         </ErrorBoundary>
       </SafeAreaProvider>
     </RootStoreProvider>
