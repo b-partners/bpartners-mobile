@@ -3,7 +3,20 @@ import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  Animated,
+  BackHandler,
+  FlatList,
+  GestureResponderEvent,
+  Image,
+  LayoutChangeEvent,
+  PanResponder,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
@@ -27,7 +40,7 @@ import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
 import { AnnotationModal } from './components/annotation-modal';
-import { Polygon as PolygonType } from './types';
+import { Point, Polygon as PolygonType } from './types';
 import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
@@ -35,16 +48,18 @@ import { validatePolygon } from './utils/polygon-validator';
 import { styles, zoomDropDownStyles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
 
-export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
+type TAnnotatorEditionScreenFC = FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>>;
+
+export const AnnotatorEditionScreen: TAnnotatorEditionScreenFC = observer(function AnnotatorEditionScreen({ navigation }) {
   const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
   const { pictureUrl, areaPicture } = areaPictureStore;
   const { currentUser } = authStore;
 
-  const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
-  const [polygons, setPolygons] = useState([]);
+  const [currentPolygonPoints, setCurrentPolygonPoints] = useState<Point[]>([]);
+  const [polygons, setPolygons] = useState<Point[][]>([]);
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isExtended, setIsExtended] = useState(false);
   const [zoomValue, setZoomValue] = useState(ZoomLevel.HOUSES_0);
 
@@ -76,7 +91,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   );
 
   const handlePress = useCallback(
-    event => {
+    (event: GestureResponderEvent) => {
       const { locationX, locationY } = event.nativeEvent;
 
       // Calculate relative position based on image offset
@@ -95,12 +110,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     [imageOffset]
   );
 
-  const handleImageLayout = event => {
+  const handleImageLayout = (event: LayoutChangeEvent) => {
     const { x, y } = event.nativeEvent.layout;
     setImageOffset({ x, y });
   };
 
-  const createPanResponder = index => {
+  const createPanResponder = (index: number) => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: (event, gestureState) => {
@@ -136,7 +151,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       return (
         <Animated.View
-          key={index}
+          key={`${index}-${point.x}-${point.y}`}
           {...panResponder.panHandlers}
           style={{
             position: 'absolute',
@@ -192,7 +207,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   useEffect(() => {
     (async () => {
       try {
-        const imageSize = await getImageWidth(pictureUrl);
+        const imageSize = await getImageWidth(pictureUrl as string);
 
         const realMeasure = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
 
@@ -205,15 +220,15 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   }, [annotations]);
 
   const renderPolygons = useMemo(() => {
-    return polygons.map((polygonPoints, index) => {
+    return polygons.map((polygonPoints: Point[], index) => {
       const centroid = calculateCentroid(polygonPoints);
 
       return (
-        <React.Fragment key={index}>
+        <React.Fragment key={`${centroid.x}-${centroid.y}-${index}`}>
           <Svg height='100%' width='100%' style={{ position: 'absolute', top: 0, left: 0 }}>
             <Polygon points={polygonPoints.map(point => `${point.x},${point.y}`).join(' ')} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
           </Svg>
-          {annotations[index]?.labelName && (
+          {!!annotations[index]?.labelName && (
             <Text
               style={{
                 position: 'absolute',
@@ -232,7 +247,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   }, [polygons, annotations]);
 
-  const startNewPolygon = labels => {
+  const startNewPolygon = (labels: any) => {
     const { labelName, labelType } = labels;
 
     if (validateLabel(labelName)) {
@@ -249,7 +264,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       };
 
       setCurrentPolygonPoints([]);
-      setPolygons(prevPolygons => [...prevPolygons, newPolygon.points]);
+      setPolygons(prevPolygons => {
+        console.log(prevPolygons);
+        return [...prevPolygons, newPolygon.points];
+      });
       setAnnotations(prevAnnotation => [...prevAnnotation, newAnnotation]);
 
       reset(getDefaultValue(annotations.length + 1));
@@ -257,11 +275,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   };
 
   const generateQuote = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const annotationsArrayPayload: AnnotationType[] = [];
 
-      const imageSize = await getImageWidth(pictureUrl);
+      const imageSize = await getImageWidth(pictureUrl as string);
       const ratio = imageSize / 320;
 
       const geojsonData = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
@@ -270,8 +288,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
       annotations.forEach(annotation => {
         const annotationArea = geojsonData.find(item => item.polygonId === annotation.polygon.id && item.unity === 'm²');
-        const polygonPoints = [];
-        annotation.polygon.points.map(pt => {
+        const polygonPoints: Point[] = [];
+        annotation.polygon.points.forEach(pt => {
           polygonPoints.push({
             x: pt.x * ratio,
             y: pt.y * ratio,
@@ -279,15 +297,15 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         });
 
         const annotationData: AnnotationType = {
-          areaPictureId: areaPicture.id,
+          areaPictureId: areaPicture?.id as string,
           metadata: {
-            area: annotationArea?.value,
+            area: annotationArea?.value as number,
             fillColor: null,
             covering: annotation?.covering,
             comment: annotation?.comment,
-            slope: commaToDot(annotation?.slope),
+            slope: commaToDot(annotation?.slope) as number,
             strokeColor: null,
-            wearLevel: commaToDot(annotation?.wearLevel),
+            wearLevel: commaToDot(annotation?.wearLevel) as number,
             obstacle: annotation?.obstacle,
           },
           polygon: {
@@ -298,24 +316,24 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           id: annotation?.id,
           annotationId: annotationId,
           labelName: annotation?.labelName,
-          userId: currentUser?.id,
+          userId: currentUser?.id as string,
         };
         annotationsArrayPayload.push(annotationData);
       });
 
-      await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
-      await customerStore.getCustomers();
+      await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id as string, annotationId, annotationsArrayPayload);
+      await customerStore.getCustomers({} as any);
       handleCancelAnnotation();
 
-      navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id });
+      navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id as string });
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
     }
 
-    setLoading(false);
+    setIsLoading(false);
   };
 
-  const handleDeletePolygon = index => {
+  const handleDeletePolygon = (index: number) => {
     const updatedPolygons = [...polygons];
     const updatedAnnotation = [...annotations];
 
@@ -339,11 +357,18 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     navigation.navigate('home');
   };
 
-  const handleChangeZoomLevel = async zoomLevel => {
+  const handleChangeZoomLevel = async (zoomLevel: any) => {
     setIsExtended(false);
     const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomLevel?.value, false, areaPicture?.id);
-    await areaPictureStore.getPictureUrl(fileId);
+    await areaPictureStore.getAreaPictureFile(
+      areaPicture?.prospectId as string,
+      areaPicture?.address as string,
+      fileId as string,
+      zoomLevel?.value as string,
+      false,
+      areaPicture?.id as string
+    );
+    await areaPictureStore.getPictureUrl(fileId as string);
     handleCancelAnnotation();
 
     setZoomValue(zoomLevel?.value);
@@ -352,8 +377,15 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const handleExtend = async () => {
     setIsExtended(true);
     const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomValue, true, areaPicture?.id);
-    await areaPictureStore.getPictureUrl(fileId);
+    await areaPictureStore.getAreaPictureFile(
+      areaPicture?.prospectId as string,
+      areaPicture?.address as string,
+      fileId as string,
+      zoomValue,
+      true,
+      areaPicture?.id as string
+    );
+    await areaPictureStore.getPictureUrl(fileId as any);
     handleCancelAnnotation();
   };
 
@@ -429,7 +461,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                           width: 320,
                           height: 320,
                         }}
-                        source={{ uri: pictureUrl }}
+                        source={{ uri: pictureUrl ?? undefined }}
                       />
                       {renderPolygons}
                       <Svg width='320' height='320' style={{ position: 'absolute', top: 0, left: 0 }}>
@@ -454,7 +486,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   flexDirection: 'row',
                 }}
               >
-                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+                <Text text={areaPicture?.address ?? ''} style={{ color: palette.black, fontFamily: 'Geometria' }} />
               </View>
               <View
                 style={{
