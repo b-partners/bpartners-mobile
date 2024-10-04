@@ -23,7 +23,6 @@ import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
-import { ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -58,8 +57,8 @@ export const AnnotatorEditionScreen: TAnnotatorEditionScreenFC = observer(functi
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
   const [isLoading, setIsLoading] = useState(false);
-  const [isExtended, setIsExtended] = useState(false);
-  const [zoomValue, setZoomValue] = useState(ZoomLevel.HOUSES_0);
+  // const [isExtended, setIsExtended] = useState(false);
+  // const [zoomValue, setZoomValue] = useState(ZoomLevel.HOUSES_0);
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
@@ -355,37 +354,37 @@ export const AnnotatorEditionScreen: TAnnotatorEditionScreenFC = observer(functi
     navigation.navigate('home');
   };
 
-  const handleChangeZoomLevel = async (zoomLevel: any) => {
-    setIsExtended(false);
-    const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(
-      areaPicture?.prospectId as string,
-      areaPicture?.address as string,
-      fileId as string,
-      zoomLevel?.value as string,
-      false,
-      areaPicture?.id as string
-    );
-    await areaPictureStore.getPictureUrl(fileId as string);
-    handleCancelAnnotation();
+  // const handleChangeZoomLevel = async (zoomLevel: any) => {
+  //   setIsExtended(false);
+  //   const fileId = uuid.v4();
+  //   await areaPictureStore.getAreaPictureFile(
+  //     areaPicture?.prospectId as string,
+  //     areaPicture?.address as string,
+  //     fileId as string,
+  //     zoomLevel?.value as string,
+  //     false,
+  //     areaPicture?.id as string
+  //   );
+  //   await areaPictureStore.getPictureUrl(fileId as string);
+  //   handleCancelAnnotation();
 
-    setZoomValue(zoomLevel?.value);
-  };
+  //   setZoomValue(zoomLevel?.value);
+  // };
 
-  const handleExtend = async () => {
-    setIsExtended(true);
-    const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(
-      areaPicture?.prospectId as string,
-      areaPicture?.address as string,
-      fileId as string,
-      zoomValue,
-      true,
-      areaPicture?.id as string
-    );
-    await areaPictureStore.getPictureUrl(fileId as any);
-    handleCancelAnnotation();
-  };
+  // const handleExtend = async () => {
+  //   setIsExtended(true);
+  //   const fileId = uuid.v4();
+  //   await areaPictureStore.getAreaPictureFile(
+  //     areaPicture?.prospectId as string,
+  //     areaPicture?.address as string,
+  //     fileId as string,
+  //     zoomValue,
+  //     true,
+  //     areaPicture?.id as string
+  //   );
+  //   await areaPictureStore.getPictureUrl(fileId as any);
+  //   handleCancelAnnotation();
+  // };
 
   const [showModal, setShowModal] = useState(false);
 
