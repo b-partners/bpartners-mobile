@@ -11,13 +11,10 @@ import {
   Image,
   LayoutChangeEvent,
   PanResponder,
-  Platform,
   ScrollView,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 import uuid from 'react-native-uuid';
@@ -26,7 +23,7 @@ import { Header, Separator, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
-import { ZOOM_LEVEL, ZoomLevel } from '../../models/entities/area-picture/area-picture';
+import { ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -38,6 +35,7 @@ import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Log } from '../welcome/utils/utils';
 import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
+import { AnnotationHeaderButtons } from './components/annotation-header-button';
 import AnnotationItem from './components/annotation-item';
 import { AnnotationModal } from './components/annotation-modal';
 import { Point, Polygon as PolygonType } from './types';
@@ -45,7 +43,7 @@ import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
 import { validatePolygon } from './utils/polygon-validator';
-import { styles, zoomDropDownStyles } from './utils/styles';
+import { styles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
 
 type TAnnotatorEditionScreenFC = FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>>;
@@ -197,7 +195,7 @@ export const AnnotatorEditionScreen: TAnnotatorEditionScreenFC = observer(functi
             fontWeight: '800',
           }}
         >
-          {distance.toFixed(2)}
+          {distance.toFixed(2)}m
         </Text>
       );
     }
@@ -396,48 +394,9 @@ export const AnnotatorEditionScreen: TAnnotatorEditionScreenFC = observer(functi
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={handleBackNavigation} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
-          <ScrollView
-            style={{
-              marginBottom: 10,
-            }}
-            contentContainerStyle={Platform.OS === 'ios' ? styles.scrollContainer : { ...styles.scrollContainer, height: '100%' }}
-          >
+          <ScrollView style={{ marginBottom: 10 }} contentContainerStyle={styles.scrollContainer}>
             <View style={{ width: '94%', height: 750 }}>
-              <View
-                style={{
-                  width: '100%',
-                  height: 60,
-                  flexDirection: 'row',
-                }}
-              >
-                <View style={{ width: '50%', paddingHorizontal: spacing[1] }}>
-                  <TouchableOpacity style={isExtended ? styles.focusDisabledButton : styles.focusButton} onPress={handleExtend} disabled={false}>
-                    <View style={{ justifyContent: 'center' }}>
-                      <Text style={styles.buttonText} tx={'annotationScreen.process.refocusImage'} />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ width: '50%', paddingHorizontal: spacing[1] }}>
-                  <View style={{ position: 'absolute', top: 0, left: spacing[2] }}>
-                    <Text style={styles.zoomLabel} tx={'annotationScreen.process.zoomLevel'} />
-                  </View>
-                  <Dropdown
-                    style={zoomDropDownStyles.dropdown}
-                    placeholderStyle={zoomDropDownStyles.placeholderStyle}
-                    selectedTextStyle={zoomDropDownStyles.selectedTextStyle}
-                    iconStyle={zoomDropDownStyles.iconStyle}
-                    itemTextStyle={zoomDropDownStyles.itemTextStyle}
-                    data={ZOOM_LEVEL}
-                    maxHeight={300}
-                    labelField='label'
-                    valueField='value'
-                    placeholder='Select item'
-                    searchPlaceholder='Rechercher...'
-                    value={zoomValue}
-                    onChange={handleChangeZoomLevel}
-                  />
-                </View>
-              </View>
+              <AnnotationHeaderButtons />
               <TouchableWithoutFeedback onPress={handlePress}>
                 {isKeyboardOpen ? (
                   <View style={{ width: '100%', height: 100 }} />

@@ -13,6 +13,7 @@ import * as Sentry from '@sentry/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { LogBox } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import env from './config/env';
@@ -21,6 +22,7 @@ import { RootStore, RootStoreProvider, setupRootStore } from './models';
 import { AppNavigator } from './navigators/app-navigator';
 import { useNavigationPersistence } from './navigators/navigation-utilities';
 import { ErrorBoundary } from './screens';
+import { RNPaperTheme } from './theme';
 import { initFonts } from './theme/fonts';
 import './utils/ignore-warnings';
 // expo
@@ -77,7 +79,9 @@ function App() {
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <ErrorBoundary catchErrors='always'>
           <QueryClientProvider client={queryClient}>
-            <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
+            <PaperProvider theme={RNPaperTheme}>
+              <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
+            </PaperProvider>
           </QueryClientProvider>
         </ErrorBoundary>
       </SafeAreaProvider>
