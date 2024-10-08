@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["dom"],
     "noImplicitAny": false,
-    "strict": false
+    "strict": false,
+    "lib": ["esnext", "dom"]
   },
   "extends": "@react-native/typescript-config/tsconfig.json"
 }
