@@ -502,7 +502,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                     )}
                   </View>
                 )}
-                <View style={{ backgroundColor: 'pink', padding: 5 }}>
+                <View style={{ padding: 5 }}>
                   {validatePolygon(currentPolygonPoints) && (
                     <AnnotationForm polygons={polygons} control={control} errors={errors} watch={watch} setShowModal={setShowModal} />
                   )}
