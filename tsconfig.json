@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["dom"]
+    "lib": ["dom"],
+    "noImplicitAny": false,
+    "strict": false
   },
   "extends": "@react-native/typescript-config/tsconfig.json"
 }
