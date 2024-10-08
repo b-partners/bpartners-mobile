@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { ScrollView, View } from 'react-native';
-import { Button, RadioButton } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -24,10 +23,7 @@ const zoomOutMap: IconSource = {
 };
 
 export const AnnotationHeaderButtons = () => {
-  const refRBSheet = useRef<any>(null);
-
-  const handleOpen = () => refRBSheet.current.open();
-
+  const handleOpen = () => console.log('here');
   return (
     <View style={{ marginVertical: 5 }}>
       <ScrollView
@@ -47,15 +43,6 @@ export const AnnotationHeaderButtons = () => {
           Recenter l'image
         </Button>
       </ScrollView>
-      <RBSheet ref={refRBSheet} draggable={true} dragOnContent={true} height={400}>
-        <View style={{ padding: 10 }}>
-          <RadioButton.Group onValueChange={() => {}} value='19'>
-            <RadioButton.Item color={palette.mulberry} label='Quartier' value='19' />
-            <RadioButton.Item color={palette.mulberry} label='Parcelle cadastrale' value='20' />
-            <RadioButton.Item color={palette.mulberry} label='Toiture' value='23' />
-          </RadioButton.Group>
-        </View>
-      </RBSheet>
     </View>
   );
 };
