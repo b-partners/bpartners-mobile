@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   buttonRowContainer: {
     width: '100%',
-    marginBottom: 50,
+    marginBottom: 20,
     zIndex: -1,
     display: 'flex',
   },
@@ -33,8 +33,6 @@ export const styles = StyleSheet.create({
     zIndex: 10,
     flexDirection: 'row',
     borderRadius: 5,
-    position: 'absolute',
-    top: 40,
   },
   button: {
     backgroundColor: palette.secondaryColor,
