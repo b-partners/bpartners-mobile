@@ -18,7 +18,7 @@
     "test:android:release:e2e": "detox test --configuration android.emu.release",
     "test:android:device:debug:e2e": "detox test --configuration android.att.debug",
     "test:android:device:release:e2e": "detox test --configuration android.att.release",
-    "test:maestro": ".maestro test .maestro/index.yml",
+    "test:maestro": "maestro test .maestro/index.yml",
     "test:android": "maestro test maestro/index.yml",
     "compile": "tsc --noEmit -p . --pretty",
     "format": "npm run format:json && npm run format:md && npm run format:ts && npm run format:yml",

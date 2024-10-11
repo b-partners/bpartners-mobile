@@ -14,7 +14,7 @@ export const BpPasswordInput: FC<BpInputProps> = props => {
     <BpInput
       {...props}
       secureTextEntry={!isVisible}
-      endIcon={<IonIcon name={isVisible ? 'eye-off-outline' : 'eye-sharp'} size={28} color={color.palette.secondaryColor} />}
+      endIcon={<IonIcon testID='togglePasswordVisibility' name={isVisible ? 'eye-off-outline' : 'eye-sharp'} size={28} color={color.palette.secondaryColor} />}
       onPressEndIcon={toggleView}
     />
   );
