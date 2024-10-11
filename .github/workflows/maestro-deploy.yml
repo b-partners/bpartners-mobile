@@ -4,6 +4,8 @@ on:
   push:
     branches: [preprod, prod]
 
+  workflow_dispatch:
+
 jobs:
   maestro-cloud:
     runs-on: ubuntu-latest
