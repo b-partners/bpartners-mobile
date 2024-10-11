@@ -19,13 +19,11 @@ jobs:
   style:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 17.x
-
-      - run: npm install --location=global prettier
-      - run: npm install --no-save @trivago/prettier-plugin-sort-imports@^4.3.0
+        uses: actions/setup-node@v4
+      - run: rm package.json package-lock.json
+      - run: npm init -y
+      - run: npm install -D prettier @trivago/prettier-plugin-sort-imports@^4.3.0
       - run: prettier --check "app/**/*.{js,ts,tsx}" "./**/*.{yml,yaml}"
