@@ -1,6 +1,6 @@
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 import { DrawerActions } from '@react-navigation/native';
-import React from 'react';
+import React, { FC } from 'react';
 import { Platform, Text, TouchableOpacity, View } from 'react-native';
 
 import { User } from '../../../models/entities/user/user';
@@ -8,13 +8,13 @@ import { color, spacing } from '../../../theme';
 import { AutoImage } from '../../auto-image/auto-image';
 import { Icon } from '../../icon/icon';
 
-export function BPDrawerHeader(props: {
-  onPress: () => void;
+type BPDrawerHeaderProps = {
   currentUser: User;
   uri: string;
-  onChangeText: (value: string) => void;
   navigation: DrawerNavigationHelpers;
-}) {
+};
+
+export const BPDrawerHeader: FC<BPDrawerHeaderProps> = props => {
   const { currentUser, navigation, uri } = props;
 
   return (
@@ -25,7 +25,6 @@ export function BPDrawerHeader(props: {
         width: '100%',
         height: '25%',
         justifyContent: 'center',
-        paddingTop: 30,
       }}
     >
       <View
@@ -84,4 +83,4 @@ export function BPDrawerHeader(props: {
       </View>
     </View>
   );
-}
+};

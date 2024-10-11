@@ -92,15 +92,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
         style={{ position: 'absolute', zIndex: 1 }}
         testID='drawerLogo'
       />
-      <BPDrawerHeader
-        onPress={() => {
-          props.navigation.closeDrawer();
-        }}
-        currentUser={currentUser as User}
-        uri={fileUrl || ''}
-        onChangeText={() => {}}
-        navigation={props.navigation}
-      />
+      <BPDrawerHeader currentUser={currentUser as User} uri={fileUrl || ''} navigation={props.navigation} />
       <View style={SCROLLVIEW_CONTAINER_STYLE}>
         <ScrollView>
           <View style={NAVIGATION_CONTAINER_STYLE}>
