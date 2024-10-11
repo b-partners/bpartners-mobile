@@ -34,6 +34,7 @@ jobs:
           echo ACCESS_KEY_ID= ${{ secrets.ACCESS_KEY_ID }} >> .env
           echo REGION= ${{ secrets.REGION }} >> .env
           echo SECRET_ACCESS_KEY = ${{ secrets.SECRET_ACCESS_KEY }} >> .env
+      - run: npm start &
       - run: cd android && ./gradlew assembleDebug && cd ..
       - uses: mobile-dev-inc/action-maestro-cloud@v1.9.2
         with:
