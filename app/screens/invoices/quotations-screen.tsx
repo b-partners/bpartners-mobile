@@ -18,7 +18,7 @@ import { formatDate } from '../../utils/format-date';
 import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/utils/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
 import { InvoiceSummary } from './components/invoice-summary';
@@ -87,7 +87,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     if (offsetY <= getThreshold()) {
       try {
         await handleRefresh();
-      } catch (error) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     }

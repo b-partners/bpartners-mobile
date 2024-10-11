@@ -27,6 +27,7 @@ export * from './switch/switch';
 export * from './text/text';
 export * from './text-field/text-field';
 export * from './wallpaper/wallpaper';
+export * from './scrolling-text/scrolling-text';
 export { Separator } from './separator/Separator';
 export { BPDrawer } from './bp-drawer/bp-drawer';
 export { BpTabNavigation } from './bp-tab-navigation/bp-tab-navigation';

@@ -2,7 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree'
 
 import { ProspectApi } from '../../../services/api/prospect-api';
 import { ProspectFilter } from '../../entities/filter/filter';
-import { Prospect, ProspectModel } from '../../entities/prospect/prospect';
+import { Prospect, ProspectModel, ProspectStatus } from '../../entities/prospect/prospect';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -12,6 +12,7 @@ export const ProspectStoreModel = types
   .props({
     prospects: types.optional(types.array(ProspectModel), []),
     loadingProspect: types.optional(types.boolean, false),
+    hasNext: types.optional(types.boolean, false),
   })
   .extend(withRootStore)
   .extend(withEnvironment)
@@ -31,12 +32,14 @@ export const ProspectStoreModel = types
     },
   }))
   .actions(self => ({
-    getProspects: flow(function* (filter: ProspectFilter) {
+    getProspects: flow(function* (filter: ProspectFilter & { page?: number; perPage?: number; status?: ProspectStatus }) {
       self.loadingProspect = true;
       const prospectApi = new ProspectApi(self.environment.api);
+      const { page, perPage, status, name } = filter;
       try {
-        const getProspectsResult = yield prospectApi.getProspects(self.currentAccountHolder.id, filter);
+        const getProspectsResult = yield prospectApi.getProspects(self.currentAccountHolder.id, { name }, page, perPage, status);
         self.getProspectsSuccess(getProspectsResult.prospects);
+        self.hasNext = getProspectsResult.hasNext;
       } catch (e) {
         self.getProspectsFail(e);
       } finally {

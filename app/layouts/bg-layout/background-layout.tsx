@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Dimensions } from 'react-native';
 
 import { AutoImage, Screen } from '../../components';
@@ -6,7 +6,11 @@ import KeyboardAvoidingWrapper from '../../components/keyboard-avoiding-wrapper/
 import { ErrorBoundary } from '../../screens';
 import { palette } from '../../theme/palette';
 
-export const BgLayout: React.FC = ({ children }) => {
+interface BgLayoutProps {
+  children?: ReactNode;
+}
+
+export const BgLayout: FC<BgLayoutProps> = ({ children }) => {
   const screenHeight = Dimensions.get('screen').height;
   return (
     <ErrorBoundary catchErrors='always'>

@@ -19,7 +19,7 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { amountToMajors, amountToMinors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
-import { invoicePageSize } from '../../invoice-form/components/utils';
+import { invoicePageSize } from '../../invoice-form/utils/utils';
 import { InvoiceSelectionModal } from '../../transaction/components/invoice-selection-modal';
 import { TransactionField } from '../../transaction/components/transaction-field';
 import { transactionModalStyles as styles } from '../../transaction/utils/styles';
@@ -84,7 +84,7 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
           await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, ...commonFetchParams });
           await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, ...commonFetchParams });
         }
-      } catch (e) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
         setVisible(false);
       } finally {
