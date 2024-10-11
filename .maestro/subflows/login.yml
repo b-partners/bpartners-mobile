@@ -10,20 +10,25 @@ appId: com.bpartnersmobile
 - tapOn:
     id: 'emailInput'
     waitToSettleTimeoutMs: 100000
+- eraseText: 50
 - inputText: ${USER_EMAIL}
 - assertVisible:
     id: 'passwordInput'
 - tapOn:
     id: 'passwordInput'
     waitToSettleTimeoutMs: 100000
+- eraseText: 50
 - inputText: ${USER_PASSWORD}
 - assertVisible:
     id: 'loginButton'
 - assertVisible:
     text: ${USER_EMAIL}
-- doubleTapOn:
-    id: 'toggleButton'
-    waitToSettleTimeoutMs: 100000
+- assertVisible:
+    id: 'togglePasswordVisibility'
+- tapOn:
+    id: 'togglePasswordVisibility'
+- tapOn:
+    id: 'togglePasswordVisibility'
 - assertVisible:
     text: ${USER_PASSWORD}
 - tapOn:
