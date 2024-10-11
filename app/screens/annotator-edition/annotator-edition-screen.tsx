@@ -3,13 +3,13 @@ import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, BackHandler, FlatList, Image, PanResponder, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 import uuid from 'react-native-uuid';
 
-import { Header, Separator, Text } from '../../components';
+import { Header, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
@@ -271,7 +271,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       annotations.forEach(annotation => {
         const annotationArea = geojsonData.find(item => item.polygonId === annotation.polygon.id && item.unity === 'm²');
         const polygonPoints = [];
-        annotation.polygon.points.map(pt => {
+        annotation.polygon.points.forEach(pt => {
           polygonPoints.push({
             x: pt.x * ratio,
             y: pt.y * ratio,
@@ -304,7 +304,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       });
 
       await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
-      await customerStore.getCustomers();
+      await customerStore.getCustomers({} as any);
       handleCancelAnnotation();
 
       navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id });
@@ -342,8 +342,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const handleChangeZoomLevel = async zoomLevel => {
     setIsExtended(false);
     const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomLevel?.value, false, areaPicture?.id);
-    await areaPictureStore.getPictureUrl(fileId);
+    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId as string, zoomLevel?.value, false, areaPicture?.id);
+    await areaPictureStore.getPictureUrl(fileId as string);
     handleCancelAnnotation();
 
     setZoomValue(zoomLevel?.value);
@@ -352,8 +352,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const handleExtend = async () => {
     setIsExtended(true);
     const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId, zoomValue, true, areaPicture?.id);
-    await areaPictureStore.getPictureUrl(fileId);
+    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId as string, zoomValue, true, areaPicture?.id);
+    await areaPictureStore.getPictureUrl(fileId as string);
     handleCancelAnnotation();
   };
 
@@ -365,12 +365,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={handleBackNavigation} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
           <ScrollView
-            style={{
-              marginBottom: 10,
+            contentContainerStyle={{
+              padding: 'auto',
+              margin: 'auto',
             }}
-            contentContainerStyle={Platform.OS === 'ios' ? styles.scrollContainer : { ...styles.scrollContainer, height: '100%' }}
           >
-            <View style={{ width: '94%', height: 750 }}>
+            <View style={{ width: '94%' }}>
               <View
                 style={{
                   width: '100%',
@@ -418,8 +418,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                       width: '100%',
                       height: 350,
                       backgroundColor: palette.lighterGrey,
-                      borderWidth: 1,
                       borderColor: palette.white,
+                      margin: 'auto',
+                      padding: 20,
                     }}
                   >
                     <View style={{ width: 320, height: 320 }}>
@@ -456,14 +457,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               >
                 <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
               </View>
-              <View
-                style={{
-                  display: 'flex',
-                  height: 190,
-                }}
-              >
+              <View>
                 {!isKeyboardOpen && (
-                  <>
+                  <View>
                     <Text
                       tx={'annotationScreen.annotations'}
                       style={{
@@ -471,12 +467,13 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         fontSize: 22,
                         fontWeight: '700',
                         marginTop: spacing[1],
+                        maxHeight: 200,
                       }}
                     />
-                    {polygons.length === 0 ? (
+                    {annotations.length === 0 ? (
                       <View style={{ marginVertical: 10 }}>
                         <Text
-                          text={"Pas encore d'annotation effectuée."}
+                          text="Pas encore d'annotation effectuée."
                           style={{
                             color: palette.greyDarker,
                             fontFamily: 'Geometria',
@@ -484,39 +481,46 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         />
                       </View>
                     ) : (
-                      <ScrollView style={{ maxHeight: 150 }}>
-                        {!validatePolygon(currentPolygonPoints) && (
-                          <FlatList
-                            style={{ width: '100%', height: 150 }}
-                            data={polygons}
-                            keyExtractor={(item, index) => `polygon_${index}`}
-                            renderItem={({ index }) => {
-                              return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} handleDeletePolygon={handleDeletePolygon} />;
-                            }}
-                            ItemSeparatorComponent={() => <Separator style={styles.separator} />}
-                          />
-                        )}
-                      </ScrollView>
+                      <View>
+                        <FlatList
+                          nestedScrollEnabled
+                          style={{
+                            maxHeight: 200,
+                            marginVertical: 10,
+                          }}
+                          contentContainerStyle={{
+                            margin: 2,
+                            width: '100%',
+                          }}
+                          data={annotations}
+                          keyExtractor={item => `polygon_${item.id}`}
+                          renderItem={({ item }) => {
+                            return <AnnotationItem key={`polygon_${item.id}`} annotation={item} handleDeletePolygon={handleDeletePolygon} />;
+                          }}
+                        />
+                      </View>
                     )}
-                  </>
+                  </View>
                 )}
-                {validatePolygon(currentPolygonPoints) && (
-                  <AnnotationForm polygons={polygons} control={control} errors={errors} watch={watch} setShowModal={setShowModal} />
+                <View style={{ padding: 5 }}>
+                  {validatePolygon(currentPolygonPoints) && (
+                    <AnnotationForm polygons={polygons} control={control} errors={errors} watch={watch} setShowModal={setShowModal} />
+                  )}
+                </View>
+                {!isKeyboardOpen && (
+                  <AnnotationButtonAction
+                    validatePolygon={validatePolygon}
+                    currentPolygonPoints={currentPolygonPoints}
+                    handleSubmit={handleSubmit}
+                    startNewPolygon={startNewPolygon}
+                    setCurrentPolygonPoints={setCurrentPolygonPoints}
+                    polygonLength={polygons?.length}
+                    handleCancelAnnotation={handleCancelAnnotation}
+                    generateQuote={generateQuote}
+                    isLoading={isLoading}
+                  />
                 )}
               </View>
-              {!isKeyboardOpen && (
-                <AnnotationButtonAction
-                  validatePolygon={validatePolygon}
-                  currentPolygonPoints={currentPolygonPoints}
-                  handleSubmit={handleSubmit}
-                  startNewPolygon={startNewPolygon}
-                  setCurrentPolygonPoints={setCurrentPolygonPoints}
-                  polygonLength={polygons?.length}
-                  handleCancelAnnotation={handleCancelAnnotation}
-                  generateQuote={generateQuote}
-                  isLoading={isLoading}
-                />
-              )}
             </View>
           </ScrollView>
         </View>

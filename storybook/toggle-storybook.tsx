@@ -3,6 +3,7 @@ import { DevSettings } from 'react-native';
 
 import { DEFAULT_REACTOTRON_WS_URI } from '../app/services/reactotron/reactotron-config';
 import { loadString, saveString } from '../app/utils/storage';
+import { StorybookUIRoot as StorybookUIRootComponent } from './storybook';
 
 /**
  * Toggle Storybook mode, in __DEV__ mode only.
@@ -14,9 +15,9 @@ import { loadString, saveString } from '../app/utils/storage';
  * persists across reloads/restarts - this is handy when developing
  * new components in Storybook.
  */
-export function ToggleStorybook(props) {
+export function ToggleStorybook(props: any) {
   const [showStorybook, setShowStorybook] = useState(false);
-  const [StorybookUIRoot, setStorybookUIRoot] = useState(null);
+  const [StorybookUIRoot, setStorybookUIRoot] = useState<any>(null);
   const ws = useRef(new WebSocket(DEFAULT_REACTOTRON_WS_URI));
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export function ToggleStorybook(props) {
       }
 
       // Load the storybook UI once
-      setStorybookUIRoot(() => require('./storybook').StorybookUIRoot);
+      setStorybookUIRoot(() => StorybookUIRootComponent);
 
       // Behave as Reactotron.storybookSwitcher(), not a HOC way.
       ws.current.onmessage = e => {

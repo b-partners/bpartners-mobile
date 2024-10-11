@@ -55,7 +55,7 @@ export const ProspectConfigurationScreen: FC<DrawerScreenProps<TabNavigatorParam
 
         await authStore.updateGlobalInfos(newGlobalInfo);
         showMessage(translate('common.addedOrUpdated'), { backgroundColor: palette.green });
-      } catch (_err) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     };

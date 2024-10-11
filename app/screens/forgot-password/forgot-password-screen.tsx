@@ -54,7 +54,7 @@ export const ForgotPasswordScreen: FC<StackScreenProps<NavigatorParamList, 'forg
     try {
       await forgotPassword(values.email);
       reset();
-    } catch (e) {
+    } catch {
       setLoading(false);
     } finally {
       setLoading(false);

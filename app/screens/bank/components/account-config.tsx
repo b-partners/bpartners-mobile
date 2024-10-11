@@ -30,7 +30,7 @@ const AccountConfig: FC<TAccountConfigProps> = props => {
     try {
       await authStore.setActiveAccount(selectedAccount?.id);
       setAccountInfo(selectedAccount);
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
       setIsLoading(false);

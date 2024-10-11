@@ -29,7 +29,7 @@ export const BankDisconnectionModal: React.FC<BankModalProps> = props => {
     try {
       const account = await authStore.disconnectBank();
       setAccountInfo(account);
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     } finally {
       setIsLoading(false);

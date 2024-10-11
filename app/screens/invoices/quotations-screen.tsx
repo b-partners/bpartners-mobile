@@ -87,7 +87,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
     if (offsetY <= getThreshold()) {
       try {
         await handleRefresh();
-      } catch (error) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     }

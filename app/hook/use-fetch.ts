@@ -37,7 +37,7 @@ function useFetch<T, P>(fetchAction: (params?: P) => Promise<T | any>, options: 
       } else {
         setData(response);
       }
-    } catch (e) {
+    } catch {
       txErrorMessage && showMessage(translate(txErrorMessage), errorMessageStyles);
       setError(true);
     } finally {

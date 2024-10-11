@@ -1,24 +1,20 @@
-import org.apache.tools.ant.taskdefs.condition.Os
-
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
+        buildToolsVersion = "34.0.0"
         minSdkVersion = 23
-        compileSdkVersion = 33
-        targetSdkVersion = 33
-        kotlin_version = "1.8.20" // Update this to your version
-        ndkVersion = "25.0.8775105"
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        ndkVersion = "26.1.10909125"
+        kotlin_version = "1.9.24"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath ("com.android.tools.build:gradle:7.3.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath ("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
         classpath("de.undercouch:gradle-download-task:5.3.0")
         classpath("com.google.gms:google-services:4.4.0")
         // NOTE: Do not place your application dependencies here; they belong
@@ -26,37 +22,4 @@ buildscript {
     }
 }
 
-allprojects {
-    def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
-
-    configurations.configureEach {
-        resolutionStrategy {
-            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
-        }
-    }
-
-    repositories {
-        maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url(new File(["node", "--print", "require.resolve('react-native/package.json')"].execute().text.trim(), "../android"))
-        }
-        maven {
-            // Android JSC is installed from npm
-            url(new File(["node", "--print", "require.resolve('jsc-android/package.json')"].execute().text.trim(), "../dist"))
-        }
-        mavenCentral {
-            // We don't want to fetch react-native from Maven Central as there are
-            // older versions over there.
-            content {
-                excludeGroup "com.facebook.react"
-            }
-        }
-        google()
-        maven {
-            url("$rootDir/../node_modules/detox/Detox-android")
-        }
-        maven {
-            url 'https://www.jitpack.io'
-        }
-    }
-}
+apply plugin: "com.facebook.react.rootproject"

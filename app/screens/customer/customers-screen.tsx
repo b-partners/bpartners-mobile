@@ -51,7 +51,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     const fetchData = async () => {
       try {
         await customerStore.getCustomers();
-      } catch (error) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     };
@@ -69,7 +69,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     if (offsetY <= getThreshold()) {
       try {
         await handleRefresh();
-      } catch (error) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     }
@@ -110,7 +110,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
           },
         },
       });
-    } catch (error) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
   }
@@ -119,7 +119,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
     try {
       await customerStore.getCustomers(filter);
       setCurrentPage(1);
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
   };

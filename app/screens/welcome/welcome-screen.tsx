@@ -63,7 +63,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
     let user: any;
     try {
       user = await Auth.signIn(email, password);
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.credentials'), warningMessageStyles);
       return;
     }
@@ -87,7 +87,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           await authStore.getAccounts();
           navigation.navigate('oauth');
         }
-      } catch (e) {
+      } catch {
         showMessage(translate('errors.verifyConnection', errorMessageStyles));
       }
     }

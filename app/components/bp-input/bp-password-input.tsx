@@ -1,15 +1,13 @@
 import React, { FC, useState } from 'react';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import { Log } from '../../screens/welcome/utils/utils';
 import { color } from '../../theme';
 import { BpInput, BpInputProps } from './bp-input';
 
 export const BpPasswordInput: FC<BpInputProps> = props => {
-  const [isVisible, setVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const toggleView = () => {
-    Log('here');
-    setVisible(prev => !prev);
+    setIsVisible(prev => !prev);
   };
 
   return (

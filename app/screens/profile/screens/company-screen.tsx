@@ -73,7 +73,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
 
   const country = accountHolder?.contactAddress?.country;
   const socialCapital = accountHolder?.companyInfo?.socialCapital;
-  const amountTarget = accountHolder?.revenueTargets[0]?.amountTarget;
+  const amountTarget = (accountHolder?.revenueTargets || [{}])[0]?.amountTarget;
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -90,7 +90,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               </View>
             ) : (
               <AutoImage
-                source={require('../../components/bp-drawer/utils/profile-placeholder.png')}
+                source={require('../../../components/bp-drawer/utils/profile-placeholder.png')}
                 resizeMode='stretch'
                 resizeMethod='auto'
                 style={styles.logoPlaceholder}

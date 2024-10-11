@@ -41,7 +41,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
     defaultValues: { phoneNumber: '', newPassword: '', confirmPassword: '' },
   });
 
-  const onSubmit = async userInfos => {
+  const onSubmit = async (userInfos: any) => {
     try {
       __DEV__ && console.tron.log(userInfos);
       setLoading(true);
@@ -63,7 +63,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
         navigation.navigate('oauth');
       }
     } catch (e) {
-      showMessage(e.message);
+      showMessage((e as Error).message);
       throw e;
     } finally {
       setLoading(false);
@@ -82,9 +82,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
             <Controller
               control={control}
               name='phoneNumber'
-              rules={{
-                required: translate('errors.required'),
-              }}
+              rules={{ required: translate('errors.required') || '' }}
               defaultValue=''
               render={({ field: { onChange, value } }) => (
                 <InputField
@@ -103,14 +101,14 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
               control={control}
               name='newPassword'
               rules={{
-                required: translate('errors.required'),
+                required: translate('errors.required') || undefined,
                 minLength: {
                   value: 8,
-                  message: translate('errors.minPassword', { length: 8 }),
+                  message: translate('errors.minPassword', { length: 8 }) || '',
                 },
                 pattern: {
                   value: passwordPattern,
-                  message: translate('errors.invalidPassword'),
+                  message: translate('errors.invalidPassword') || '',
                 },
               }}
               render={({ field: { onChange, value } }) => (
@@ -119,7 +117,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                   error={!!errors.newPassword}
                   value={value}
                   onChange={onChange}
-                  errorMessage={errors.newPassword?.message}
+                  errorMessage={errors.newPassword?.message || ''}
                   width={270}
                 />
               )}
@@ -130,9 +128,9 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
               control={control}
               name='confirmPassword'
               rules={{
-                required: translate('errors.required'),
+                required: translate('errors.required') || '',
                 validate: {
-                  matchesPassword: value => value === watch('newPassword') || translate('errors.invalidConfirmPassword'),
+                  matchesPassword: value => value === watch('newPassword') || translate('errors.invalidConfirmPassword') || '',
                 },
               }}
               render={({ field: { onChange, value } }) => (
@@ -141,7 +139,7 @@ export const ChangePasswordScreen: FC<DrawerScreenProps<NavigatorParamList, 'cha
                   error={!!errors.confirmPassword}
                   value={value}
                   onChange={onChange}
-                  errorMessage={errors.confirmPassword?.message}
+                  errorMessage={errors.confirmPassword?.message || ''}
                   width={270}
                 />
               )}
