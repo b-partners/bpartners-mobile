@@ -28,9 +28,6 @@ appId: com.bpartnersmobile
     id: 'transactionSummarySettingsButton'
     waitToSettleTimeoutMs: 100000
 - tapOn:
-    id: 'transactionSummarySettingsButton'
-    waitToSettleTimeoutMs: 100000
-- tapOn:
     text: 'Vue mensuelle'
     waitToSettleTimeoutMs: 100000
 - assertVisible:
