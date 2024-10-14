@@ -8,6 +8,9 @@ on:
 
   workflow_dispatch:
 
+env:
+  NODE_OPTIONS: '--max_old_space_size=8192'
+
 jobs:
   maestro-cloud:
     runs-on: ubuntu-latest
