@@ -14,6 +14,9 @@ on:
         type: number
         default: 1
 
+env:
+  NODE_OPTIONS: '--max_old_space_size=8192'
+
 jobs:
   android-browserstack:
     runs-on: ubuntu-latest
@@ -54,7 +57,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - run: NODE_OPTIONS="--max_old_space_size=8192" npm run build-android
+      - run: npm run build-android
 
       - name: Remove duplicated ressources
         run: |
