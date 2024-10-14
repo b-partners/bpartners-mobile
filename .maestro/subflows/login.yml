@@ -30,6 +30,7 @@ appId: com.bpartnersmobile
     id: 'togglePasswordVisibility'
 - assertVisible:
     text: ${USER_PASSWORD}
+- hideKeyboard
 - tapOn:
     id: 'loginButton'
     waitToSettleTimeoutMs: 100000
