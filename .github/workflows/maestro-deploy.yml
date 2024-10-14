@@ -20,7 +20,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      - run: npm install --legacy-peer-deps
+      - run: npm install --force
       - name: Retrieve the environment variables from aws and put them in .env
         run: |
           echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
