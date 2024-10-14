@@ -25,8 +25,7 @@ appId: com.bpartnersmobile
     text: ${USER_EMAIL}
 - assertVisible:
     id: 'togglePasswordVisibility'
-- tapOn:
-    id: 'togglePasswordVisibility'
+- hideKeyboard
 - tapOn:
     id: 'togglePasswordVisibility'
 - assertVisible:
