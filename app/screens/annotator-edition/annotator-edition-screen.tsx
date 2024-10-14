@@ -1,17 +1,19 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Animated, BackHandler, FlatList, Image, PanResponder, Platform, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, BackHandler, FlatList, Image, PanResponder, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
 import { Provider } from 'react-native-paper';
 import Svg, { Polygon } from 'react-native-svg';
 import uuid from 'react-native-uuid';
 
-import { Header, Separator, Text } from '../../components';
+import { Header, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Annotation as AnnotationType } from '../../models/entities/annotation/annotation';
+import { ZOOM_LEVEL, ZoomLevel } from '../../models/entities/area-picture/area-picture';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
@@ -20,6 +22,7 @@ import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
+import { Log } from '../welcome/utils/utils';
 import AnnotationButtonAction from './components/annotation-button-action';
 import AnnotationForm from './components/annotation-form';
 import AnnotationItem from './components/annotation-item';
@@ -28,15 +31,13 @@ import { Polygon as PolygonType } from './types';
 import { Annotation } from './types/annotation';
 import { getAnnotatorResolver, getDefaultValue } from './utils/annotator-info-validator';
 import { validateLabel } from './utils/label-validator';
-import { GeojsonMapper } from './utils/mappers';
 import { validatePolygon } from './utils/polygon-validator';
-import { styles } from './utils/styles';
-import { calculateCentroid, calculateDistance, constrainPointCoordinates, convertData, getImageWidth, getZoomLevel } from './utils/utils';
+import { styles, zoomDropDownStyles } from './utils/styles';
+import { calculateCentroid, calculateDistance, constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
   const { pictureUrl, areaPicture } = areaPictureStore;
-  const { geojson } = geojsonStore;
   const { currentUser } = authStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
@@ -44,6 +45,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
   const [isLoading, setLoading] = useState(false);
+  const [isExtended, setIsExtended] = useState(false);
+  const [zoomValue, setZoomValue] = useState(ZoomLevel.HOUSES_0);
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
@@ -186,6 +189,21 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     return distances;
   }, [currentPolygonPoints]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const imageSize = await getImageWidth(pictureUrl);
+
+        const realMeasure = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
+
+        Log('realMeasure');
+        Log(realMeasure);
+      } catch (e) {
+        Log(e);
+      }
+    })();
+  }, [annotations]);
+
   const renderPolygons = useMemo(() => {
     return polygons.map((polygonPoints, index) => {
       const centroid = calculateCentroid(polygonPoints);
@@ -241,38 +259,19 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const generateQuote = async () => {
     setLoading(true);
     try {
-      const mappedData = {};
       const annotationsArrayPayload: AnnotationType[] = [];
+
       const imageSize = await getImageWidth(pictureUrl);
       const ratio = imageSize / 320;
 
-      annotations.forEach(annotation => {
-        const convertedData = convertData(annotation);
-        Object.assign(mappedData, convertedData);
-      });
-
-      const payload = {
-        filename: areaPicture?.filename,
-        regions: mappedData,
-        regions_attributes: {
-          label: '',
-        },
-        image_size: imageSize,
-        x_tile: areaPicture.xTile,
-        y_title: areaPicture.yTile,
-        zoom: getZoomLevel(areaPicture.zoomLevel),
-      };
-
-      await geojsonStore.convertPoints(payload);
-
-      const geojsonData = GeojsonMapper.toMeasurements(geojson);
+      const geojsonData = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
 
       const annotationId = uuid.v4() as string;
 
       annotations.forEach(annotation => {
         const annotationArea = geojsonData.find(item => item.polygonId === annotation.polygon.id && item.unity === 'm²');
         const polygonPoints = [];
-        annotation.polygon.points.map(pt => {
+        annotation.polygon.points.forEach(pt => {
           polygonPoints.push({
             x: pt.x * ratio,
             y: pt.y * ratio,
@@ -305,7 +304,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       });
 
       await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
-      await customerStore.getCustomers();
+      await customerStore.getCustomers({} as any);
       handleCancelAnnotation();
 
       navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id });
@@ -316,16 +315,16 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     setLoading(false);
   };
 
-  // const handleDeletePolygon = index => {
-  //   const updatedPolygons = [...polygons];
-  //   const updatedAnnotation = [...annotations];
-  //
-  //   updatedPolygons.splice(index, 1);
-  //   updatedAnnotation.splice(index, 1);
-  //
-  //   setPolygons(updatedPolygons);
-  //   setAnnotations(updatedAnnotation);
-  // };
+  const handleDeletePolygon = index => {
+    const updatedPolygons = [...polygons];
+    const updatedAnnotation = [...annotations];
+
+    updatedPolygons.splice(index, 1);
+    updatedAnnotation.splice(index, 1);
+
+    setPolygons(updatedPolygons);
+    setAnnotations(updatedAnnotation);
+  };
 
   const handleCancelAnnotation = () => {
     setCurrentPolygonPoints([]);
@@ -340,6 +339,24 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     navigation.navigate('home');
   };
 
+  const handleChangeZoomLevel = async zoomLevel => {
+    setIsExtended(false);
+    const fileId = uuid.v4();
+    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId as string, zoomLevel?.value, false, areaPicture?.id);
+    await areaPictureStore.getPictureUrl(fileId as string);
+    handleCancelAnnotation();
+
+    setZoomValue(zoomLevel?.value);
+  };
+
+  const handleExtend = async () => {
+    setIsExtended(true);
+    const fileId = uuid.v4();
+    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId as string, zoomValue, true, areaPicture?.id);
+    await areaPictureStore.getPictureUrl(fileId as string);
+    handleCancelAnnotation();
+  };
+
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -348,20 +365,46 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={handleBackNavigation} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
           <ScrollView
-            style={{
-              marginBottom: 10,
+            contentContainerStyle={{
+              padding: 'auto',
+              margin: 'auto',
             }}
-            contentContainerStyle={Platform.OS === 'ios' ? styles.scrollContainer : { ...styles.scrollContainer, height: '100%' }}
           >
-            <View style={{ width: '94%', height: 750 }}>
+            <View style={{ width: '94%' }}>
               <View
                 style={{
                   width: '100%',
-                  alignItems: 'center',
-                  padding: 10,
+                  height: 60,
+                  flexDirection: 'row',
                 }}
               >
-                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+                <View style={{ width: '50%', paddingHorizontal: spacing[1] }}>
+                  <TouchableOpacity style={isExtended ? styles.focusDisabledButton : styles.focusButton} onPress={handleExtend} disabled={false}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text style={styles.buttonText} tx={'annotationScreen.process.refocusImage'} />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: '50%', paddingHorizontal: spacing[1] }}>
+                  <View style={{ position: 'absolute', top: 0, left: spacing[2] }}>
+                    <Text style={styles.zoomLabel} tx={'annotationScreen.process.zoomLevel'} />
+                  </View>
+                  <Dropdown
+                    style={zoomDropDownStyles.dropdown}
+                    placeholderStyle={zoomDropDownStyles.placeholderStyle}
+                    selectedTextStyle={zoomDropDownStyles.selectedTextStyle}
+                    iconStyle={zoomDropDownStyles.iconStyle}
+                    itemTextStyle={zoomDropDownStyles.itemTextStyle}
+                    data={ZOOM_LEVEL}
+                    maxHeight={300}
+                    labelField='label'
+                    valueField='value'
+                    placeholder='Select item'
+                    searchPlaceholder='Rechercher...'
+                    value={zoomValue}
+                    onChange={handleChangeZoomLevel}
+                  />
+                </View>
               </View>
               <TouchableWithoutFeedback onPress={handlePress}>
                 {isKeyboardOpen ? (
@@ -375,8 +418,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                       width: '100%',
                       height: 350,
                       backgroundColor: palette.lighterGrey,
-                      borderWidth: 1,
                       borderColor: palette.white,
+                      margin: 'auto',
+                      padding: 20,
                     }}
                   >
                     <View style={{ width: 320, height: 320 }}>
@@ -405,12 +449,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               </TouchableWithoutFeedback>
               <View
                 style={{
-                  display: 'flex',
-                  height: 190,
+                  width: '100%',
+                  alignItems: 'center',
+                  padding: 10,
+                  flexDirection: 'row',
                 }}
               >
+                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+              </View>
+              <View>
                 {!isKeyboardOpen && (
-                  <>
+                  <View>
                     <Text
                       tx={'annotationScreen.annotations'}
                       style={{
@@ -418,12 +467,13 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         fontSize: 22,
                         fontWeight: '700',
                         marginTop: spacing[1],
+                        maxHeight: 200,
                       }}
                     />
-                    {polygons.length === 0 ? (
+                    {annotations.length === 0 ? (
                       <View style={{ marginVertical: 10 }}>
                         <Text
-                          text={"Pas encore d'annotation effectuée."}
+                          text="Pas encore d'annotation effectuée."
                           style={{
                             color: palette.greyDarker,
                             fontFamily: 'Geometria',
@@ -431,39 +481,46 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                         />
                       </View>
                     ) : (
-                      <ScrollView style={{ maxHeight: 150 }}>
-                        {!validatePolygon(currentPolygonPoints) && (
-                          <FlatList
-                            style={{ width: '100%', height: 150 }}
-                            data={polygons}
-                            keyExtractor={(item, index) => `polygon_${index}`}
-                            renderItem={({ index }) => {
-                              return <AnnotationItem key={`polygon_${index}`} annotation={annotations[index]} />;
-                            }}
-                            ItemSeparatorComponent={() => <Separator style={styles.separator} />}
-                          />
-                        )}
-                      </ScrollView>
+                      <View>
+                        <FlatList
+                          nestedScrollEnabled
+                          style={{
+                            maxHeight: 200,
+                            marginVertical: 10,
+                          }}
+                          contentContainerStyle={{
+                            margin: 2,
+                            width: '100%',
+                          }}
+                          data={annotations}
+                          keyExtractor={item => `polygon_${item.id}`}
+                          renderItem={({ item }) => {
+                            return <AnnotationItem key={`polygon_${item.id}`} annotation={item} handleDeletePolygon={handleDeletePolygon} />;
+                          }}
+                        />
+                      </View>
                     )}
-                  </>
+                  </View>
                 )}
-                {validatePolygon(currentPolygonPoints) && (
-                  <AnnotationForm polygons={polygons} control={control} errors={errors} watch={watch} setShowModal={setShowModal} />
+                <View style={{ padding: 5 }}>
+                  {validatePolygon(currentPolygonPoints) && (
+                    <AnnotationForm polygons={polygons} control={control} errors={errors} watch={watch} setShowModal={setShowModal} />
+                  )}
+                </View>
+                {!isKeyboardOpen && (
+                  <AnnotationButtonAction
+                    validatePolygon={validatePolygon}
+                    currentPolygonPoints={currentPolygonPoints}
+                    handleSubmit={handleSubmit}
+                    startNewPolygon={startNewPolygon}
+                    setCurrentPolygonPoints={setCurrentPolygonPoints}
+                    polygonLength={polygons?.length}
+                    handleCancelAnnotation={handleCancelAnnotation}
+                    generateQuote={generateQuote}
+                    isLoading={isLoading}
+                  />
                 )}
               </View>
-              {!isKeyboardOpen && (
-                <AnnotationButtonAction
-                  validatePolygon={validatePolygon}
-                  currentPolygonPoints={currentPolygonPoints}
-                  handleSubmit={handleSubmit}
-                  startNewPolygon={startNewPolygon}
-                  setCurrentPolygonPoints={setCurrentPolygonPoints}
-                  polygonLength={polygons?.length}
-                  handleCancelAnnotation={handleCancelAnnotation}
-                  generateQuote={generateQuote}
-                  isLoading={isLoading}
-                />
-              )}
             </View>
           </ScrollView>
         </View>

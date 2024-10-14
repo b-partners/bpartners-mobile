@@ -3,7 +3,7 @@ import { Modal, View } from 'react-native';
 
 import { Header } from '../../../../components';
 import { palette } from '../../../../theme/palette';
-import { ModalProps } from '../utils';
+import { ModalProps } from '../../utils/utils';
 import { CustomerCreationForm } from './customer-creation-form';
 
 export const CustomerCreationModal: React.FC<ModalProps> = props => {

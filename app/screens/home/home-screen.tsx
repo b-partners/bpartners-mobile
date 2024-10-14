@@ -11,13 +11,12 @@ import { View } from 'react-native';
 import { HeaderWithBalance, Screen } from '../../components';
 import env from '../../config/env';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators/utils/utils';
+import { NavigatorParamList } from '../../navigators/utils';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { RTLog } from '../../utils/reactotron-log';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/components/utils';
-import { Log } from '../welcome/utils/utils';
+import { invoicePageSize } from '../invoice-form/utils/utils';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
 import { Logo } from './components/logo';
 import { Menu } from './components/menu';
@@ -25,6 +24,8 @@ import { TransactionSummary } from './components/transaction-summary';
 import { getAttributesAsync } from './utils/function';
 import { FULL } from './utils/styles';
 
+// TODO: convert to environment variable
+// firebase console configuration
 export const firebaseConfig = {
   authDomain: '',
   databaseURL: '',
@@ -44,6 +45,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   const { loadingTransactions, currentMonthSummary, latestTransactions, transactionsSummary } = transactionStore;
 
   useEffect(() => {
+    // retrieve the necessary data
     (async () => {
       const date = new Date();
       await authStore.whoami(accessToken);
@@ -54,46 +56,43 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     })();
   }, []);
 
+  // initial state used
   const [message, setMessage] = useState<null | string>();
   const [displayNotification, setDisplayNotification] = useState(false);
 
+  // use to retrieve remote message notification
   // @ts-ignore
   const onRemoteMessage = async () => {
-    RTLog('onRemoteMessage called');
+    // set AWS configuration
     AWS.config = new AWS.Config();
     AWS.config.accessKeyId = Base64.decode(env.accessKeyId);
     AWS.config.secretAccessKey = Base64.decode(env.secretAccessKey);
     AWS.config.region = Base64.decode(env.region);
 
+    // check if device is already registered for remote message
     const isRegistered = firebase.messaging().isDeviceRegisteredForRemoteMessages;
     if (!isRegistered) {
-      RTLog('Register for remote notification');
       await firebase.messaging().registerDeviceForRemoteMessages();
     }
+
+    // retrieve firebase token stored in storage
     const token = await AsyncStorage.getItem('fcmToken');
-    let endpointARN = '';
+
+    // get the current device firebase token
     const currentToken = await firebase.messaging().getToken();
-    Log('Device Token Received', currentToken);
+
+    // send token to storage if changed
     if (!token || token !== currentToken) {
       await authStore.registerFCMToken(currentToken);
-      RTLog(currentUser.snsArn);
-      const newARN = currentUser.snsArn;
-      if (!newARN) {
-        RTLog('Error creating endpointARN');
-      }
       await AsyncStorage.setItem('fcmToken', currentToken);
     }
-    endpointARN = Base64.decode(currentUser.snsArn);
-    RTLog('endpointARN:', endpointARN);
+
+    // retrieve sns endpoint arn
+    const endpointARN = Base64.decode(currentUser.snsArn);
+
+    // test endpoint connection
     try {
-      let attributes = await getAttributesAsync({
-        EndpointArn: endpointARN,
-      });
-      RTLog(attributes);
-      // @ts-ignore
-      if ((attributes && !attributes.Enabled) || attributes.Token !== event.deviceToken) {
-        RTLog('Endpoint Error');
-      }
+      await getAttributesAsync({ EndpointArn: endpointARN });
     } catch (e) {
       RTLog(e.message);
     }
@@ -108,9 +107,9 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
       await onRemoteMessage();
 
+      // use to get remote notification message from sns
       messaging().onMessage(async remoteMessage => {
         const messageData = remoteMessage.data;
-        Log('data: ', messageData.default);
         setMessage(messageData.default.toString());
         setDisplayNotification(true);
         setDisplayNotification(false);
@@ -118,7 +117,6 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
       messaging().setBackgroundMessageHandler(async remoteMessage => {
         const messageData = remoteMessage.data;
-        Log('data: ', messageData.default);
         setMessage(messageData.default.toString());
         setDisplayNotification(true);
         setDisplayNotification(false);
@@ -127,6 +125,7 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
   }, []);
 
   useEffect(() => {
+    // show notification on the user device with notifee
     const showNotification = async (mes: string) => {
       const channelId = await notifee.createChannel({
         id: 'notification',
@@ -153,7 +152,9 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     };
 
     if (displayNotification) {
-      showNotification(message);
+      (async () => {
+        await showNotification(message);
+      })();
     }
   }, [displayNotification]);
 

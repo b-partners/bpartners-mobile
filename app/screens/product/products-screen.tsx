@@ -20,7 +20,7 @@ import { getThreshold } from '../../utils/get-threshold';
 import { vatToMinors } from '../../utils/money';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize, itemsPerPage } from '../invoice-form/components/utils';
+import { invoicePageSize, itemsPerPage } from '../invoice-form/utils/utils';
 import { FULL, LOADER_STYLE, SECTION_LIST_CONTAINER_STYLE, SEPARATOR_STYLE } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { Product } from './components/product';
@@ -59,7 +59,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
     const fetchData = async () => {
       try {
         await productStore.getProducts();
-      } catch (error) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     };
@@ -77,7 +77,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
     if (offsetY <= getThreshold()) {
       try {
         await handleRefresh();
-      } catch (error) {
+      } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
     }
@@ -118,7 +118,7 @@ export const ProductScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer'>
           },
         },
       });
-    } catch (error) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
     }
   }

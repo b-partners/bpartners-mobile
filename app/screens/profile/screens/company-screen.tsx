@@ -12,7 +12,7 @@ import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { palette } from '../../../theme/palette';
 import { printCurrency } from '../../../utils/money';
 import { ErrorBoundary } from '../../error/error-boundary';
-import { invoicePageSize } from '../../invoice-form/components/utils';
+import { invoicePageSize } from '../../invoice-form/utils/utils';
 import { AccountDeletionModal } from '../components/account-deletion-modal';
 import { profileStyles as styles } from '../utils/styles';
 
@@ -73,7 +73,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
 
   const country = accountHolder?.contactAddress?.country;
   const socialCapital = accountHolder?.companyInfo?.socialCapital;
-  const amountTarget = accountHolder?.revenueTargets[0]?.amountTarget;
+  const amountTarget = (accountHolder?.revenueTargets || [{}])[0]?.amountTarget;
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -90,7 +90,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
               </View>
             ) : (
               <AutoImage
-                source={require('../../components/bp-drawer/utils/profile-placeholder.png')}
+                source={require('../../../components/bp-drawer/utils/profile-placeholder.png')}
                 resizeMode='stretch'
                 resizeMethod='auto'
                 style={styles.logoPlaceholder}

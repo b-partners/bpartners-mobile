@@ -42,7 +42,9 @@
     "reload": "Reload",
     "selectAFile": "Please select a file",
     "labels": "Labels",
-    "validate": "Validate"
+    "validate": "Validate",
+    "delete": "Delete",
+    "closeSection": "Close the section"
   },
   "errors": {
     "invalidEmail": "Invalid email address.",
@@ -190,7 +192,9 @@
     "process": {
       "cancelAnnotation": "Cancel annotation",
       "removeLastPoint": "Remove the last point",
-      "validatePolygon": "Validate polygon"
+      "validatePolygon": "Validate polygon",
+      "refocusImage": "Refocus the image",
+      "zoomLevel": "Zoom level :"
     },
     "errors": {
       "requiredLabel": "Please give a label for each annotation"

@@ -10,17 +10,19 @@
  * if you're interested in adding screens and navigators.
  */
 import * as Sentry from '@sentry/react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { LogBox } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import { ToggleStorybook } from '../storybook/toggle-storybook';
 import env from './config/env';
 import './i18n';
 import { RootStore, RootStoreProvider, setupRootStore } from './models';
 import { AppNavigator } from './navigators/app-navigator';
 import { useNavigationPersistence } from './navigators/navigation-utilities';
 import { ErrorBoundary } from './screens';
+import { RNPaperTheme } from './theme';
 import { initFonts } from './theme/fonts';
 import './utils/ignore-warnings';
 // expo
@@ -41,6 +43,8 @@ Sentry.init({
 });
 
 env.appEnv !== 'dev' && LogBox.ignoreAllLogs();
+
+const queryClient = new QueryClient();
 
 /**
  * This is the root component of our app.
@@ -71,15 +75,17 @@ function App() {
 
   // otherwise, we're ready to render the app
   return (
-    <ToggleStorybook>
-      <RootStoreProvider value={rootStore}>
-        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <ErrorBoundary catchErrors='always'>
-            <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
-          </ErrorBoundary>
-        </SafeAreaProvider>
-      </RootStoreProvider>
-    </ToggleStorybook>
+    <RootStoreProvider value={rootStore}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <ErrorBoundary catchErrors='always'>
+          <QueryClientProvider client={queryClient}>
+            <PaperProvider theme={RNPaperTheme}>
+              <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
+            </PaperProvider>
+          </QueryClientProvider>
+        </ErrorBoundary>
+      </SafeAreaProvider>
+    </RootStoreProvider>
   );
 }
 

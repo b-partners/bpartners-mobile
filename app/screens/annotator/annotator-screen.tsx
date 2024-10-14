@@ -16,6 +16,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { FULL } from '../invoices/utils/styles';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import AnnotationLabelRow from './components/annotator-label-row';
+import { accordionTheme } from './utils/accordion-theme';
 
 export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annotator'>> = observer(function AnnotatorScreen({ navigation }) {
   const { areaPictureStore } = useStores();
@@ -223,6 +224,7 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
                     style={{ width: 320, borderRadius: 10, borderColor: palette.lighterGrey, borderWidth: 1, marginVertical: spacing[2] }}
                     rippleColor={palette.lighterGrey}
                     titleStyle={{ color: palette.secondaryColor }}
+                    theme={accordionTheme}
                   >
                     <AnnotationLabelRow labelKey={'type'} labels={data.labels} />
                     <AnnotationLabelRow labelKey={'area'} labels={data.labels} />

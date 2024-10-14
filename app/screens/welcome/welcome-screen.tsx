@@ -60,7 +60,13 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   }, []);
 
   async function signIn({ email, password }: Credentials) {
-    const user = await Auth.signIn(email, password);
+    let user: any;
+    try {
+      user = await Auth.signIn(email, password);
+    } catch {
+      showMessage(translate('errors.credentials'), warningMessageStyles);
+      return;
+    }
     if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
       showMessage(translate('errors.changePassword'), warningMessageStyles);
       navigation.navigate('changePassword', { userName: email, password: password });
@@ -81,7 +87,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           await authStore.getAccounts();
           navigation.navigate('oauth');
         }
-      } catch (e) {
+      } catch {
         showMessage(translate('errors.verifyConnection', errorMessageStyles));
       }
     }

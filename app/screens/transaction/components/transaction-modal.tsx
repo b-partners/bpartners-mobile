@@ -14,7 +14,7 @@ import { navigate } from '../../../navigators/navigation-utilities';
 import { palette } from '../../../theme/palette';
 import { printCurrencyToMajors } from '../../../utils/money';
 import { showMessage } from '../../../utils/snackbar';
-import { invoicePageSize } from '../../invoice-form/components/utils';
+import { invoicePageSize } from '../../invoice-form/utils/utils';
 import { transactionModalStyles as styles } from '../utils/styles';
 import { PaymentModalProps } from '../utils/utils';
 import { InvoiceSelectionModal } from './invoice-selection-modal';
@@ -37,7 +37,7 @@ export const TransactionModal: React.FC<PaymentModalProps> = props => {
       setVisible(true);
       await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
       await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, page: 1, pageSize: invoicePageSize });
-    } catch (e) {
+    } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       setVisible(false);
     }
