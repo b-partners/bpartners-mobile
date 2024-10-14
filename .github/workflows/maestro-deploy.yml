@@ -3,21 +3,21 @@ name: Build and upload to Maestro Cloud (Native Android)
 on:
   push:
     branches: [preprod, prod]
+  pull_request:
+    branches: [preprod, prod]
 
   workflow_dispatch:
 
 jobs:
   maestro-cloud:
     runs-on: ubuntu-latest
-    outputs:
-      app: android/app/build/outputs/apk/debug
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
-      - run: npm install --force
+      - run: npm install --legacy-peer-deps
       - name: Retrieve the environment variables from aws and put them in .env
         run: |
           echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
@@ -34,12 +34,10 @@ jobs:
           echo ACCESS_KEY_ID= ${{ secrets.ACCESS_KEY_ID }} >> .env
           echo REGION= ${{ secrets.REGION }} >> .env
           echo SECRET_ACCESS_KEY = ${{ secrets.SECRET_ACCESS_KEY }} >> .env
-      - run: npm start &
-      - run: cd android && ./gradlew assembleDebug && cd ..
       - uses: mobile-dev-inc/action-maestro-cloud@v1.9.2
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
           app-file: android/app/build/outputs/apk/debug/app-debug.apk
           env: |
-            USER_EMAIL=${{ secrets.TEST_USER_EMAIL }}
-            USER_PASSWORD=${{ secrets.TEST_USER_PASSWORD }}
+            USER_EMAIL="${{ secrets.TEST_USER_EMAIL }}"
+            USER_PASSWORD="${{ secrets.TEST_USER_PASSWORD }}"
