@@ -122,7 +122,6 @@ android {
                 appAuthRedirectScheme: 'app.bpartners.auth'
         ]
     }
-
     signingConfigs {
         release {
             if (project.hasProperty('APP_UPLOAD_STORE_FILE')) {
@@ -130,6 +129,11 @@ android {
                 storePassword APP_UPLOAD_STORE_PASSWORD
                 keyAlias APP_UPLOAD_KEY_ALIAS
                 keyPassword APP_UPLOAD_KEY_PASSWORD
+            } else {
+                storeFile file('debug.keystore')
+                storePassword 'android'
+                keyAlias 'androiddebugkey'
+                keyPassword 'android'
             }
         }
     }

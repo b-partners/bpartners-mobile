@@ -3,16 +3,19 @@ name: Build and upload to Maestro Cloud (Native Android)
 on:
   push:
     branches: [preprod, prod]
+  pull_request:
+    branches: [preprod, prod]
 
   workflow_dispatch:
+
+env:
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 jobs:
   maestro-cloud:
     runs-on: ubuntu-latest
-    outputs:
-      app: android/app/build/outputs/apk/debug
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -20,7 +23,7 @@ jobs:
       - run: npm install --force
       - name: Retrieve the environment variables from aws and put them in .env
         run: |
-          echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo API_URL=${{ secrets.TEST_API_URL }} > .env
           echo SCHEME=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SCHEME" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
@@ -30,16 +33,15 @@ jobs:
           echo SENTRY_ENV=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SENTRY_ENV" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
-          echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
-          echo ACCESS_KEY_ID= ${{ secrets.ACCESS_KEY_ID }} >> .env
-          echo REGION= ${{ secrets.REGION }} >> .env
-          echo SECRET_ACCESS_KEY = ${{ secrets.SECRET_ACCESS_KEY }} >> .env
-      - run: npm start &
-      - run: cd android && ./gradlew assembleDebug && cd ..
+          echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/github.event.inputs.envbpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo ACCESS_KEY_ID=${{ secrets.ACCESS_KEY_ID }} >> .env
+          echo REGION=${{ secrets.REGION }} >> .env
+          echo SECRET_ACCESS_KEY=${{ secrets.SECRET_ACCESS_KEY }} >> .env
+      - run: cd android && ./gradlew assembleRelease && cd ..
       - uses: mobile-dev-inc/action-maestro-cloud@v1.9.2
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
-          app-file: android/app/build/outputs/apk/debug/app-debug.apk
+          app-file: android/app/build/outputs/apk/release/app-release.apk
           env: |
             USER_EMAIL=${{ secrets.TEST_USER_EMAIL }}
             USER_PASSWORD=${{ secrets.TEST_USER_PASSWORD }}
