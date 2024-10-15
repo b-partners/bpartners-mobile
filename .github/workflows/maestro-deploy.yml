@@ -24,6 +24,9 @@ jobs:
       - name: Retrieve the environment variables from aws and put them in .env
         run: |
           echo API_URL=${{ secrets.TEST_API_URL }} > .env
+          echo WEB_CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/preprod/WEB_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo USER_POOL_ID=$(aws ssm get-parameters --names "/bpartners/mobile/preprod/USER_POOL_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo OAUTH_DOMAIN=$(aws ssm get-parameters --names "/bpartners/mobile/preprod/OAUTH_DOMAIN" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SCHEME=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SCHEME" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
