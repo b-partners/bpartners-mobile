@@ -35,7 +35,7 @@ jobs:
             export ENV=preprod
           fi
           echo API_URL=${{ secrets.TEST_API_URL }} > .env
-          echo WEB_CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/WEB_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo WEB_CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/WEB_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo USER_POOL_ID=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/USER_POOL_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo OAUTH_DOMAIN=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/OAUTH_DOMAIN" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SCHEME=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/SCHEME" --with-decryption --output text --query "Parameters[*].Value") >> .env
@@ -51,7 +51,7 @@ jobs:
           echo ACCESS_KEY_ID=${{ secrets.ACCESS_KEY_ID }} >> .env
           echo REGION=${{ secrets.REGION }} >> .env
           echo SECRET_ACCESS_KEY=${{ secrets.SECRET_ACCESS_KEY }} >> .env
-      - run: cd android && ./gradlew assembleRelease && cd ..
+      - run: cd android && ./gradlew clean && ./gradlew assembleRelease && cd ..
       - uses: mobile-dev-inc/action-maestro-cloud@v1.9.2
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
