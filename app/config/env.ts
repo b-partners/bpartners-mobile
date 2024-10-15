@@ -24,4 +24,8 @@ export default {
   secretAccessKey: config.SECRET_ACCESS_KEY || '',
   region: config.REGION || '',
   geojsonUrl: config.GEOJSON_URL || '',
+  aws_region: config.AWS_REGION || '',
+  aws_user_pools_id: config.USER_POOL_ID || '',
+  aws_web_client_id: config.WEB_CLIENT_ID || '',
+  aws_oauth_domain: config.OAUTH_DOMAIN || '',
 };

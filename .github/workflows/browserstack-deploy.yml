@@ -14,6 +14,9 @@ on:
         type: number
         default: 1
 
+env:
+  NODE_OPTIONS: '--max_old_space_size=8192'
+
 jobs:
   android-browserstack:
     runs-on: ubuntu-latest
@@ -54,7 +57,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - run: NODE_OPTIONS="--max_old_space_size=8192" npm run build-android
+      - run: npm run build-android
 
       - name: Remove duplicated ressources
         run: |
@@ -63,7 +66,10 @@ jobs:
 
       - name: Retrieve the environment variables from aws and put them in .env
         run: |
-          echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo WEB_CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/WEB_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo USER_POOL_ID=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/USER_POOL_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo OAUTH_DOMAIN=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/OAUTH_DOMAIN" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/API_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SCHEME=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SCHEME" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo SUCCESS_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/SUCCESS_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo FAILURE_URL=$(aws ssm get-parameters --names "/bpartners/mobile/${{ github.event.inputs.env }}/FAILURE_URL" --with-decryption --output text --query "Parameters[*].Value") >> .env
@@ -76,6 +82,7 @@ jobs:
           echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo ACCESS_KEY_ID= ${{ secrets.ACCESS_KEY_ID }} >> .env
           echo REGION= ${{ secrets.REGION }} >> .env
+          echo AWS_REGION= ${{ secrets.AWS_REGION }} >> .env
           echo SECRET_ACCESS_KEY = ${{ secrets.SECRET_ACCESS_KEY }} >> .env
 
       - name: Build apk and bundle
