@@ -23,9 +23,9 @@ jobs:
       - name: Set environment variable based on branch
         run: |
           if [[ "${{ github.ref_name }}" == "prod" ]]; then
-            echo "ENV=prod" >> $GITHUB_ENV
+            export ENV=prod
           else
-            echo "ENV=preprod" >> $GITHUB_ENV
+            export ENV=preprod
           fi
       - run: npm install --force
       - name: Retrieve the environment variables from aws and put them in .env
