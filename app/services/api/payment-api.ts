@@ -1,10 +1,11 @@
 import { ApiErrorResponse, ApiOkResponse, ApiResponse } from 'apisauce';
 
 import env from '../../config/env';
-import { Criteria, PageCriteria } from '../../models/entities/criteria/criteria';
+import { PageCriteria } from '../../models/entities/criteria/criteria';
 import { Invoice, MethodModel } from '../../models/entities/invoice/invoice';
 import { PaymentInitiation } from '../../models/entities/payment-initiation/payment-initiation';
 import { RelaunchConfiguration } from '../../models/entities/relaunch-configuration/relaunch-configuration';
+import { GetListOptions } from '../../queries';
 import { Api } from './api';
 import { getGeneralApiProblem } from './api-problem';
 import {
@@ -13,7 +14,6 @@ import {
   GetInvoiceRelaunchResult,
   GetInvoiceResult,
   GetInvoiceSummaryResult,
-  GetInvoicesResult,
   InitPaymentResult,
   InvoiceRelaunchResult,
   UpdateInvoiceRelaunchConfResult,
@@ -100,9 +100,11 @@ export class PaymentApi {
     return { kind: 'ok', invoice };
   }
 
-  async getInvoices(accountId: string, criteria: Criteria): Promise<GetInvoicesResult> {
+  async getInvoices(accountId: string, { page = 1, pageSize = 10, filters = {} }: GetListOptions) {
     // make the api call
-    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoices`, criteria);
+    console.log('filters', filters);
+
+    const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoices`, { page, pageSize, filters });
     // the typical ways to die when calling an api
     if (!response.ok) {
       const problem = getGeneralApiProblem(response);
