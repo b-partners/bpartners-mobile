@@ -206,7 +206,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       paymentMethod: method,
     };
     try {
-      await invoiceStore.saveInvoice(editedItem);
+      await invoiceStore.saveInvoice(editedItem as any);
       setIsLoading(false);
       setOpenPaymentMethodModal(false);
       setOpenModal(true);
@@ -238,7 +238,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionInvoicesByMonth(displayedItems)]}
+                sections={[...sectionInvoicesByMonth(displayedItems as any)]}
                 renderItem={({ item }) =>
                   item.status === InvoiceStatus.CONFIRMED ? (
                     <Invoice

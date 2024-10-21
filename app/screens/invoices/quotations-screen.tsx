@@ -131,7 +131,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
         paymentRegulations: editPayment,
       };
       navigateToTab(navigation, 'invoices');
-      await invoiceStore.saveInvoice(editedItem);
+      await invoiceStore.saveInvoice(editedItem as any);
       await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
       setNavigationState(false);
       await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
@@ -184,7 +184,7 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionInvoicesByMonth(displayedItems)]}
+                sections={[...sectionInvoicesByMonth(displayedItems as any)]}
                 renderItem={({ item }) => (
                   <Invoice
                     item={item}

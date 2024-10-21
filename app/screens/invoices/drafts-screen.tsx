@@ -146,7 +146,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionInvoicesByMonth(invoices as any)]}
+                sections={[...sectionInvoicesByMonth(invoices)]}
                 renderItem={({ item }) => (
                   <Invoice
                     item={item}
