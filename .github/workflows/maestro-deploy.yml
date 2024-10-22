@@ -20,6 +20,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+      - name: Connect to BPartners AWS CodeArtifact
+        run: |
+          sh ./initAWS.sh bpartners ${{ secrets.ACCESS_KEY_ID }} ${{ secrets.SECRET_ACCESS_KEY }} ${{ secrets.REGION }}
+          sh ./initNpmrc.sh bpartners bpartners-store npm-bpartners-app 688605879718
       - run: npm install --force
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
