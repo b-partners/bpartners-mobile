@@ -29,6 +29,11 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Connect to BPartners AWS CodeArtifact
+        run: |
+          sh ./initAWS.sh bpartners ${{ secrets.ACCESS_KEY_ID }} ${{ secrets.SECRET_ACCESS_KEY }} ${{ secrets.REGION }}
+          sh ./initNpmrc.sh bpartners bpartners-store npm-bpartners-app 688605879718
+
       - run: npm install --force
 
       - name: Decode keystore
