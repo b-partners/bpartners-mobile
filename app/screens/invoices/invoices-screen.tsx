@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { BpPagination, Button, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
+import { Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
+import { Pagination } from '../../components/bp-pagination';
 import { ReloadModal } from '../../components/reload-modal/reload-modal';
-// import env from '../../config/env';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Customer } from '../../models/entities/customer/customer';
@@ -13,7 +13,7 @@ import { Invoice as IInvoice, InvoiceRelaunch, InvoiceStatus, PaymentMethod } fr
 import { PaymentRegulation } from '../../models/entities/payment-regulation/payment-regulation';
 import { navigate } from '../../navigators/navigation-utilities';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
-import { spacing } from '../../theme';
+import { useQueryInvoice } from '../../queries';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { sendEmail } from '../../utils/core/invoicing-utils';
@@ -22,8 +22,8 @@ import { getThreshold } from '../../utils/get-threshold';
 import { RTLog } from '../../utils/reactotron-log';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize, itemsPerPage } from '../invoice-form/utils/utils';
 import { Invoice } from './components/invoice';
+import { InvoiceCreationButton } from './components/invoice-creation-button';
 import { InvoiceSummary } from './components/invoice-summary';
 import { PartialPaymentModal } from './components/partial-payment-modal';
 import { PaymentMethodSelectionModal } from './components/payment-method-selection';
@@ -33,7 +33,6 @@ import { SendingConfirmationModal } from './components/sending-confirmation-moda
 import { sectionInvoicesByMonth } from './utils/section-quotation-by-month';
 import {
   BUTTON_CONTAINER_STYLE,
-  BUTTON_TEXT_STYLE,
   CONTAINER_STYLE,
   FOOTER_COMPONENT_STYLE,
   LOADER_STYLE,
@@ -41,20 +40,22 @@ import {
   SECTION_HEADER_TEXT_STYLE,
   SECTION_LIST_CONTAINER_STYLE,
   SEPARATOR_STYLE,
-  SHADOW_STYLE,
 } from './utils/styles';
 
 export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
+  const {
+    data: invoices,
+    isLoading: isInvoicesLoading,
+    setPage,
+    hasNext,
+    page,
+    query: { refetch: handleRefresh },
+  } = useQueryInvoice({ status: [InvoiceStatus.CONFIRMED, InvoiceStatus.PAID] });
+
   const { invoiceStore, authStore } = useStores();
+  const [navigationState, setNavigationState] = useState(false);
   const { invoicesSummary } = invoiceStore;
   const [loadingSummary, setLoadingSummary] = useState(false);
-  const { invoices, loadingInvoice, paidInvoices } = invoiceStore;
-  const combinedInvoices = invoices.concat(paidInvoices);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(Math.ceil(combinedInvoices.length / itemsPerPage));
-  const startItemIndex = (currentPage - 1) * itemsPerPage;
-  const endItemIndex = currentPage * itemsPerPage;
-  const displayedItems = combinedInvoices.slice(startItemIndex, endItemIndex);
   const [openModal, setOpenModal] = useState(false);
   const [openPaymentMethodModal, setOpenPaymentMethodModal] = useState(false);
   const [openPartialPaymentModal, setOpenPartialPaymentModal] = useState(false);
@@ -89,12 +90,6 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
       setLoadingSummary(false);
     })();
   }, []);
-
-  const handleRefresh = async () => {
-    await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
-    await invoiceStore.getPaidInvoices({ status: InvoiceStatus.PAID, page: 1, pageSize: invoicePageSize });
-    setMaxPage(Math.ceil(combinedInvoices.length / itemsPerPage));
-  };
 
   const handleScroll = async event => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -166,7 +161,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
         method: currentMethod,
       };
       const updatedInvoice = await invoiceStore.updatePaymentRegulationStatus(invoiceId, paymentId, method);
-      await invoiceStore.getInvoices({ status: InvoiceStatus.CONFIRMED, page: 1, pageSize: invoicePageSize });
+      handleRefresh();
       setCurrentInvoice(updatedInvoice);
       RTLog(updatedInvoice);
       let paid = 0;
@@ -231,14 +226,15 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
           unpaid={invoicesSummary.unpaid?.amount}
           loading={loadingSummary}
         />
-        {loadingInvoice ? (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
-        ) : displayedItems.length > 0 ? (
+
+        {isInvoicesLoading && <Loader size='large' containerStyle={LOADER_STYLE} />}
+
+        {!isInvoicesLoading && invoices.length > 0 && (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionInvoicesByMonth(displayedItems as any)]}
+                sections={[...sectionInvoicesByMonth(invoices as any)]}
                 renderItem={({ item }) =>
                   item.status === InvoiceStatus.CONFIRMED ? (
                     <Invoice
@@ -265,7 +261,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
                 }
                 keyExtractor={item => item.id}
                 renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
-                refreshing={loadingInvoice}
+                refreshing={isInvoicesLoading}
                 onRefresh={handleRefresh}
                 progressViewOffset={100}
                 stickySectionHeadersEnabled={true}
@@ -275,31 +271,28 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
               />
             </View>
           </Screen>
-        ) : (
+        )}
+
+        {!isInvoicesLoading && invoices.length === 0 && (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <NoDataProvided reload={handleRefresh} />
           </Screen>
         )}
+
         <View style={BUTTON_CONTAINER_STYLE}>
-          <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <View style={{ width: '75%', justifyContent: 'center' }}>
-            <Button
-              tx='quotationScreen.createInvoice'
-              style={{
-                ...SHADOW_STYLE,
-                backgroundColor: palette.secondaryColor,
-                marginVertical: spacing[1],
-                marginHorizontal: spacing[1],
-                borderRadius: 8,
-                paddingVertical: spacing[3],
-                paddingHorizontal: spacing[2],
-              }}
-              textStyle={BUTTON_TEXT_STYLE}
-              onPress={() => {
-                navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED });
-              }}
-            />
-          </View>
+          <Pagination
+            changePage={setPage}
+            page={page}
+            hasNext={hasNext}
+            actions={
+              <InvoiceCreationButton
+                navigation={navigation}
+                navigationState={navigationState}
+                setNavigationState={setNavigationState}
+                invoiceStatus={InvoiceStatus.CONFIRMED}
+              />
+            }
+          />
           {currentInvoice && (
             <PartialPaymentModal
               item={currentInvoice}
