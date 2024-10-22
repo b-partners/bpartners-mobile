@@ -31,11 +31,7 @@ export const ProfileEditionScreen: FC<StackScreenProps<NavigatorParamList, 'prof
         style={HEADER}
         titleStyle={HEADER_TITLE}
       />
-      <Tab.Navigator
-        initialRouteName={'globalInfo'}
-        style={TAB_BAR_STYLE}
-        tabBar={props => <TabBar {...props} />}
-      >
+      <Tab.Navigator initialRouteName={'globalInfo'} style={TAB_BAR_STYLE} tabBar={props => <TabBar {...props} />}>
         <Tab.Screen name={'globalInfo'} component={GlobalInfoForm} navigationKey='globalInfo' />
         <Tab.Screen name={'feedback'} component={FeedbackForm} navigationKey='feedback' />
         <Tab.Screen name={'activity'} component={ActivityForm} navigationKey='activity' />
