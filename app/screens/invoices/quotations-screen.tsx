@@ -3,13 +3,15 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
+import { Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
+import { Pagination } from '../../components/bp-pagination';
 import { ReloadModal } from '../../components/reload-modal/reload-modal';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceRelaunch, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { navigate } from '../../navigators/navigation-utilities';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
+import { useQueryInvoice } from '../../queries';
 import { color } from '../../theme';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
@@ -18,7 +20,6 @@ import { formatDate } from '../../utils/format-date';
 import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize, itemsPerPage } from '../invoice-form/utils/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
 import { InvoiceSummary } from './components/invoice-summary';
@@ -38,21 +39,23 @@ import {
 } from './utils/styles';
 
 export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-  const { invoiceStore, authStore, quotationStore } = useStores();
+  const { invoiceStore, authStore } = useStores();
   const { invoicesSummary } = invoiceStore;
   const [loadingSummary, setLoadingSummary] = useState(false);
-  const { loadingQuotation, quotations } = quotationStore;
+  const {
+    isLoading: loadingQuotation,
+    data: quotations,
+    hasNext,
+    page,
+    setPage,
+    query: { refetch: handleRefresh },
+  } = useQueryInvoice({ status: [InvoiceStatus.PROPOSAL] });
   const [navigationState, setNavigationState] = useState(false);
   const [relaunchHistory, setRelaunchHistory] = useState(false);
   const [relaunchMessage, setRelaunchMessage] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [currentRelaunch, setCurrentRelaunch] = useState<InvoiceRelaunch | null>();
-  const [maxPage, setMaxPage] = useState(Math.ceil(quotations.length / itemsPerPage));
   const [currentQuotation, setCurrentQuotation] = useState<IInvoice>();
   const messageOption = { backgroundColor: palette.green };
-  const startItemIndex = (currentPage - 1) * itemsPerPage;
-  const endItemIndex = currentPage * itemsPerPage;
-  const displayedItems = quotations.slice(startItemIndex, endItemIndex);
   const [modalVisible, setModalVisible] = useState(false);
   const [rotation, setRotation] = useState(0);
 
@@ -76,11 +79,6 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
       setLoadingSummary(false);
     })();
   }, []);
-
-  const handleRefresh = async () => {
-    await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
-    setMaxPage(Math.ceil(quotations.length / itemsPerPage));
-  };
 
   const handleScroll = async event => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -132,9 +130,8 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
       };
       navigateToTab(navigation, 'invoices');
       await invoiceStore.saveInvoice(editedItem as any);
-      await invoiceStore.getInvoices({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.CONFIRMED });
       setNavigationState(false);
-      await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
+      handleRefresh();
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsInvoice'), messageOption);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
@@ -177,14 +174,15 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
           unpaid={invoicesSummary.unpaid?.amount}
           loading={loadingSummary}
         />
-        {loadingQuotation ? (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
-        ) : displayedItems.length > 0 ? (
+
+        {loadingQuotation && <Loader size='large' containerStyle={LOADER_STYLE} />}
+
+        {!loadingQuotation && quotations.length > 0 && (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionInvoicesByMonth(displayedItems as any)]}
+                sections={[...sectionInvoicesByMonth(quotations as any)]}
                 renderItem={({ item }) => (
                   <Invoice
                     item={item}
@@ -209,18 +207,26 @@ export const QuotationsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamLis
               />
             </View>
           </Screen>
-        ) : (
+        )}
+
+        {!loadingQuotation && quotations.length === 0 && (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <NoDataProvided reload={handleRefresh} />
           </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>
-          <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <InvoiceCreationButton
-            navigation={navigation}
-            navigationState={navigationState}
-            setNavigationState={setNavigationState}
-            invoiceStatus={InvoiceStatus.PROPOSAL}
+          <Pagination
+            changePage={setPage}
+            page={page}
+            hasNext={hasNext}
+            actions={
+              <InvoiceCreationButton
+                navigation={navigation}
+                navigationState={navigationState}
+                setNavigationState={setNavigationState}
+                invoiceStatus={InvoiceStatus.PROPOSAL}
+              />
+            }
           />
         </View>
         {currentQuotation && (

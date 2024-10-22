@@ -9,5 +9,8 @@ export const useQueryInvoice = (defaultParams: InvoiceListParams = {}) => {
     return await invoiceProvider.getList({ filters: { ...filters, ...defaultParams }, page, pageSize: PAGE_SIZE });
   };
 
-  return useQueryList(fetcher, ['query', 'invoice', 'list'], { page: 1, filters: { status: InvoiceStatus.DRAFT, archiveStatus: 'ENABLED' } });
+  return useQueryList(fetcher, ['query', 'invoice', 'list', defaultParams.status], {
+    page: 1,
+    filters: { status: InvoiceStatus.DRAFT, archiveStatus: 'ENABLED' },
+  });
 };
