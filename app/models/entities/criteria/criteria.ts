@@ -8,7 +8,8 @@ export const PageCriteriaModel = types.model('PageCriteria').props({
 });
 
 export const CriteriaModel = types.model('Criteria').props({
-  page: types.maybe(PageCriteriaModel),
+  page: types.maybe(types.maybeNull(types.number)),
+  pageSize: types.maybe(types.maybeNull(types.number)),
   status: types.maybe(types.maybeNull(types.enumeration(Object.values(InvoiceStatus)))),
 });
 

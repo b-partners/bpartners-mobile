@@ -8,7 +8,7 @@ import { BankApi } from '../../../services/api/bank-api';
 import { palette } from '../../../theme/palette';
 import { RTLog } from '../../../utils/reactotron-log';
 import { showMessage } from '../../../utils/snackbar';
-import { clear, save } from '../../../utils/storage';
+import { clear, save, storage } from '../../../utils/storage';
 import { AccountHolder, AccountHolderModel } from '../../entities/account-holder/account-holder';
 import { Account, AccountInfos, AccountInfosModel, AccountModel } from '../../entities/account/account';
 import { BusinessActivity } from '../../entities/business-activity/business-activity';
@@ -178,6 +178,10 @@ export const AuthStoreModel = types
       await save('currentUser', currentUser);
       await save('currentAccount', currentAccount);
       await save('currentAccountHolder', currentAccountHolder);
+
+      await storage.saveUserId(currentUser.id);
+      await storage.saveAccountId(currentAccount.id);
+      await storage.saveAccountHolderId(currentAccountHolder.id);
     },
   }))
   .actions(self => ({
