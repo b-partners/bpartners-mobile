@@ -481,3 +481,11 @@ export const sendingConfirmationModalStyles = StyleSheet.create({
     fontFamily: 'Geometria',
   },
 });
+
+export const INVOICE_CREATION_BUTTON: ViewStyle = {
+  ...SHADOW_STYLE,
+  backgroundColor: palette.secondaryColor,
+  borderRadius: 8,
+  width: 150,
+  marginHorizontal: 'auto',
+};

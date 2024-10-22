@@ -6,14 +6,23 @@ import { Button } from '../../../components';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { InvoiceStatus } from '../../../models/entities/invoice/invoice';
-import { spacing } from '../../../theme';
-import { palette } from '../../../theme/palette';
-import { BUTTON_TEXT_STYLE, SHADOW_STYLE, invoiceCreationButtonStyles as styles } from '../utils/styles';
+import { BUTTON_TEXT_STYLE, INVOICE_CREATION_BUTTON, invoiceCreationButtonStyles as styles } from '../utils/styles';
 import { InvoiceCreationProps } from '../utils/utils';
 
 export const InvoiceCreationButton: React.FC<InvoiceCreationProps> = props => {
   const { navigationState, setNavigationState, navigation, invoiceStatus } = props;
   const { invoiceStore } = useStores();
+
+  const handlePress = () => {
+    invoiceStore.saveInvoiceInit();
+    if (invoiceStatus === InvoiceStatus.PROPOSAL) {
+      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.PROPOSAL });
+    } else if (invoiceStatus === InvoiceStatus.CONFIRMED) {
+      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED });
+    } else {
+      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.DRAFT });
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -22,27 +31,7 @@ export const InvoiceCreationButton: React.FC<InvoiceCreationProps> = props => {
           {translate('common.loading')}
         </Snackbar>
       ) : (
-        <Button
-          tx='quotationScreen.createQuotation'
-          style={{
-            ...SHADOW_STYLE,
-            backgroundColor: palette.secondaryColor,
-            marginVertical: spacing[1],
-            marginHorizontal: spacing[1],
-            borderRadius: 8,
-            paddingVertical: spacing[3],
-            paddingHorizontal: spacing[2],
-          }}
-          textStyle={BUTTON_TEXT_STYLE}
-          onPress={() => {
-            invoiceStore.saveInvoiceInit();
-            invoiceStatus === InvoiceStatus.PROPOSAL
-              ? navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.PROPOSAL })
-              : invoiceStatus === InvoiceStatus.CONFIRMED
-                ? navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED })
-                : navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.DRAFT });
-          }}
-        />
+        <Button tx='quotationScreen.createQuotation' style={INVOICE_CREATION_BUTTON} textStyle={BUTTON_TEXT_STYLE} onPress={handlePress} />
       )}
     </View>
   );

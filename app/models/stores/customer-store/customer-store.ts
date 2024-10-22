@@ -2,7 +2,6 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree'
 
 import { CustomerApi } from '../../../services/api/customer-api';
 import { Customer, CustomerModel, CustomerSnapshotOut } from '../../entities/customer/customer';
-import { Filter } from '../../entities/filter/filter';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
 import { withRootStore } from '../../extensions/with-root-store';
@@ -33,7 +32,7 @@ export const CustomerStoreModel = types
     },
   }))
   .actions(self => ({
-    getCustomers: flow(function* (filters: Filter) {
+    getCustomers: flow(function* (filters: any) {
       self.loadingCustomer = true;
       const customerApi = new CustomerApi(self.environment.api);
       try {
