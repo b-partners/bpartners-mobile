@@ -172,8 +172,12 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
           </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>
-          <Pagination page={page} changePage={setPage} hasNext={hasNext} />
-          <InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />
+          <Pagination
+            page={page}
+            changePage={setPage}
+            hasNext={hasNext}
+            actions={<InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />}
+          />
         </View>
       </View>
     </ErrorBoundary>
