@@ -49,6 +49,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     setPage,
     hasNext,
     page,
+    invalidateInvoices,
     query: { refetch: handleRefresh },
   } = useQueryInvoice({ status: [InvoiceStatus.CONFIRMED, InvoiceStatus.PAID] });
 
@@ -161,7 +162,7 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
         method: currentMethod,
       };
       const updatedInvoice = await invoiceStore.updatePaymentRegulationStatus(invoiceId, paymentId, method);
-      handleRefresh();
+      invalidateInvoices();
       setCurrentInvoice(updatedInvoice);
       RTLog(updatedInvoice);
       let paid = 0;

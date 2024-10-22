@@ -64,25 +64,14 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
           screenOptions={({ route: tabRoute }) => ({
             tabBarIndicatorStyle: { backgroundColor: color.primary },
             tabBarActiveTintColor: color.primary,
+            tabBarStyle: { backgroundColor: 'white' },
             tabBarLabel: ({ focused }) => {
               const activeLabelStyle: TextStyle = { width: 75, color: color.primary, fontWeight: '900' };
-
               let labelStyle: TextStyle = { color: palette.textClassicColor };
               labelStyle = focused ? { ...labelStyle, ...activeLabelStyle } : { ...labelStyle };
-
-              return (
-                <>
-                  <Text text={TabName[tabRoute.name]} style={labelStyle} />
-                </>
-              );
+              return <Text text={TabName[tabRoute.name]} style={labelStyle} />;
             },
           })}
-          // @ts-ignore
-          tabBarOptions={{
-            style: {
-              backgroundColor: palette.white,
-            },
-          }}
         >
           <Tab.Screen
             name={'drafts'}

@@ -102,8 +102,6 @@ export class PaymentApi {
 
   async getInvoices(accountId: string, { page = 1, pageSize = 10, filters = {} }: GetListOptions) {
     // make the api call
-    console.log('filters', filters);
-
     const response: ApiResponse<any> = await this.api.apisauce.get(`accounts/${accountId}/invoices`, { page, pageSize, filters });
     // the typical ways to die when calling an api
     if (!response.ok) {

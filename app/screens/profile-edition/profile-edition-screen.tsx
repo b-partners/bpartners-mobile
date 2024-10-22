@@ -35,12 +35,6 @@ export const ProfileEditionScreen: FC<StackScreenProps<NavigatorParamList, 'prof
         initialRouteName={'globalInfo'}
         style={TAB_BAR_STYLE}
         tabBar={props => <TabBar {...props} />}
-        // @ts-ignore
-        tabBarOptions={{
-          style: {
-            backgroundColor: palette.white,
-          },
-        }}
       >
         <Tab.Screen name={'globalInfo'} component={GlobalInfoForm} navigationKey='globalInfo' />
         <Tab.Screen name={'feedback'} component={FeedbackForm} navigationKey='feedback' />

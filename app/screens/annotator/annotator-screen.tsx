@@ -31,31 +31,35 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
   useEffect(() => {
     if (pictureUrl) {
       Image.getSize(pictureUrl, (width, height) => {
-        const xRatio = width / 320;
-        const yRatio = height / 320;
-        const polygonArray = [];
-        const annotationArray = [];
-        annotations.map(item => {
-          const points = [];
-          const polygonPoints = [];
-          item.polygon.points.map(pt => {
-            points.push({
-              x: pt.x / xRatio,
-              y: pt.y / yRatio,
+        try {
+          const xRatio = width / 320;
+          const yRatio = height / 320;
+          const polygonArray = [];
+          const annotationArray = [];
+          annotations.map(item => {
+            const points = [];
+            const polygonPoints = [];
+            item.polygon.points.map(pt => {
+              points.push({
+                x: pt.x / xRatio,
+                y: pt.y / yRatio,
+              });
+              polygonPoints.push({
+                x: pt.x / xRatio,
+                y: pt.y / yRatio,
+              });
             });
-            polygonPoints.push({
-              x: pt.x / xRatio,
-              y: pt.y / yRatio,
+            annotationArray.push({
+              polygonPoints: polygonPoints,
+              label: item.labelName,
             });
+            polygonArray.push(points);
           });
-          annotationArray.push({
-            polygonPoints: polygonPoints,
-            label: item.labelName,
-          });
-          polygonArray.push(points);
-        });
-        setAnnotation(annotationArray);
-        setPolygons(polygonArray);
+          setAnnotation(annotationArray);
+          setPolygons(polygonArray);
+        } catch {
+          console.log(`Cannot get the size of the image ${pictureUrl}`);
+        }
       });
     }
   }, [pictureUrl, annotations]);

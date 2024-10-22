@@ -1,3 +1,5 @@
+import { useQueryClient } from '@tanstack/react-query';
+
 import { InvoiceStatus } from '../models/entities/invoice/invoice';
 import { InvoiceListParams, invoiceProvider } from '../provider/invoice-provider';
 import { TUseQueryListFetcher, useQueryList } from './use-query-list';
@@ -9,8 +11,15 @@ export const useQueryInvoice = (defaultParams: InvoiceListParams = {}) => {
     return await invoiceProvider.getList({ filters: { ...filters, ...defaultParams }, page, pageSize: PAGE_SIZE });
   };
 
-  return useQueryList(fetcher, ['query', 'invoice', 'list', defaultParams.status], {
+  const query = useQueryList(fetcher, ['query', 'invoice', 'list', defaultParams.status], {
     page: 1,
     filters: { status: InvoiceStatus.DRAFT, archiveStatus: 'ENABLED' },
   });
+  const queryClient = useQueryClient();
+
+  const invalidateInvoiceListCache = () => {
+    queryClient.invalidateQueries({ queryKey: ['query', 'invoice', 'list'] });
+  };
+
+  return { ...query, invalidateInvoices: invalidateInvoiceListCache };
 };

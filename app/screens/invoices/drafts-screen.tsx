@@ -41,6 +41,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
     page,
     hasNext,
     setPage,
+    invalidateInvoices,
     query: { refetch: handleRefresh },
   } = useQueryInvoice({ status: [InvoiceStatus.DRAFT] });
 
@@ -112,7 +113,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
       await invoiceStore.saveInvoice(editedItem as any);
       await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
-      handleRefresh();
+      invalidateInvoices();
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'), messageOption);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
