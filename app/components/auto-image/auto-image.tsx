@@ -26,18 +26,22 @@ export function AutoImage(props: ImageProps) {
   useLayoutEffect(() => {
     let mounted = true;
 
-    if (props.source?.uri) {
-      RNImage.getSize(props.source.uri as any, (width, height) => {
-        if (mounted) setImageSize({ width, height });
-      });
-    } else if (Platform.OS === 'web') {
-      // web requires a different method to get it's size
-      RNImage.getSize(props.source as any, (width, height) => {
-        if (mounted) setImageSize({ width, height });
-      });
-    } else {
-      const { width, height } = RNImage.resolveAssetSource(props.source);
-      setImageSize({ width, height });
+    try {
+      if (props.source?.uri) {
+        RNImage.getSize(props.source.uri as any, (width, height) => {
+          if (mounted) setImageSize({ width, height });
+        });
+      } else if (Platform.OS === 'web') {
+        // web requires a different method to get it's size
+        RNImage.getSize(props.source as any, (width, height) => {
+          if (mounted) setImageSize({ width, height });
+        });
+      } else {
+        const { width, height } = RNImage.resolveAssetSource(props.source);
+        setImageSize({ width, height });
+      }
+    } catch {
+      console.log(`Cannot get the size of the image ${props.source?.uri}`);
     }
 
     return () => {

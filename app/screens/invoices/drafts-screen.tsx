@@ -3,17 +3,19 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import { SectionList, View } from 'react-native';
 
-import { BpPagination, Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
+import { Loader, MenuItem, NoDataProvided, Screen, Separator, Text } from '../../components';
+import { Pagination } from '../../components/bp-pagination';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Invoice as IInvoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
+import { useQueryInvoice } from '../../queries';
 import { palette } from '../../theme/palette';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { getThreshold } from '../../utils/get-threshold';
 import { showMessage } from '../../utils/snackbar';
 import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize, itemsPerPage } from '../invoice-form/utils/utils';
+import { invoicePageSize } from '../invoice-form/utils/utils';
 import { Invoice } from './components/invoice';
 import { InvoiceCreationButton } from './components/invoice-creation-button';
 import { InvoiceSummary } from './components/invoice-summary';
@@ -31,22 +33,21 @@ import {
 } from './utils/styles';
 
 export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, 'invoices'>> = observer(function InvoicesScreen({ navigation }) {
-  const { invoiceStore, draftStore, quotationStore } = useStores();
+  const { invoiceStore, quotationStore } = useStores();
+
+  const {
+    data: invoices,
+    isLoading,
+    page,
+    hasNext,
+    setPage,
+    query: { refetch: handleRefresh },
+  } = useQueryInvoice({ status: [InvoiceStatus.DRAFT] });
+
   const { invoicesSummary } = invoiceStore;
   const [loadingSummary, setLoadingSummary] = useState(false);
-  const { drafts, loadingDraft } = draftStore;
   const [navigationState, setNavigationState] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(Math.ceil(drafts.length / itemsPerPage));
   const messageOption = { backgroundColor: palette.green };
-  const startItemIndex = (currentPage - 1) * itemsPerPage;
-  const endItemIndex = currentPage * itemsPerPage;
-  const displayedItems = drafts.slice(startItemIndex, endItemIndex);
-
-  const handleRefresh = async () => {
-    await draftStore.getDrafts({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.DRAFT });
-    setMaxPage(Math.ceil(drafts.length / itemsPerPage));
-  };
 
   const handleScroll = async event => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -108,10 +109,10 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
         paymentRegulations: editPayment,
       };
       navigateToTab(navigation, 'quotations');
-      await invoiceStore.saveInvoice(editedItem);
+      await invoiceStore.saveInvoice(editedItem as any);
       await quotationStore.getQuotations({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.PROPOSAL });
       setNavigationState(false);
-      await draftStore.getDrafts({ page: 1, pageSize: invoicePageSize, status: InvoiceStatus.DRAFT });
+      handleRefresh();
       showMessage(translate('invoiceScreen.messages.successfullyMarkAsProposal'), messageOption);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to convert invoice, ${e}`);
@@ -131,14 +132,21 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
           unpaid={invoicesSummary.unpaid?.amount}
           loading={loadingSummary}
         />
-        {loadingDraft ? (
-          <Loader size='large' containerStyle={LOADER_STYLE} />
-        ) : displayedItems.length > 0 ? (
+
+        {isLoading && <Loader size='large' containerStyle={LOADER_STYLE} />}
+
+        {!isLoading && invoices.length === 0 && (
+          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
+            <NoDataProvided reload={handleRefresh} />
+          </Screen>
+        )}
+
+        {!isLoading && invoices.length > 0 && (
           <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
             <View>
               <SectionList<IInvoice>
                 style={SECTION_LIST_CONTAINER_STYLE}
-                sections={[...sectionInvoicesByMonth(displayedItems)]}
+                sections={[...sectionInvoicesByMonth(invoices)]}
                 renderItem={({ item }) => (
                   <Invoice
                     item={item}
@@ -152,7 +160,7 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
                 )}
                 keyExtractor={item => item.id}
                 renderSectionHeader={({ section: { title } }) => <Text style={SECTION_HEADER_TEXT_STYLE}>{capitalizeFirstLetter(title)}</Text>}
-                refreshing={loadingDraft}
+                refreshing={isLoading}
                 onRefresh={handleRefresh}
                 progressViewOffset={100}
                 stickySectionHeadersEnabled={true}
@@ -162,14 +170,14 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
               />
             </View>
           </Screen>
-        ) : (
-          <Screen style={SCREEN_STYLE} preset='scroll' backgroundColor={palette.white}>
-            <NoDataProvided reload={handleRefresh} />
-          </Screen>
         )}
         <View style={BUTTON_CONTAINER_STYLE}>
-          <BpPagination maxPage={maxPage} page={currentPage} setPage={setCurrentPage} />
-          <InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />
+          <Pagination
+            page={page}
+            changePage={setPage}
+            hasNext={hasNext}
+            actions={<InvoiceCreationButton navigation={navigation} navigationState={navigationState} setNavigationState={setNavigationState} />}
+          />
         </View>
       </View>
     </ErrorBoundary>

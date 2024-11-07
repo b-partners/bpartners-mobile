@@ -20,6 +20,7 @@ import { NavigatorParamList } from '../../navigators/utils/utils';
 import { palette } from '../../theme/palette';
 import { useLoginForm } from '../../utils/resolvers';
 import { showMessage } from '../../utils/snackbar';
+import { storage } from '../../utils/storage';
 import { UnderlineText } from './components/underline-text';
 import { styles } from './utils/styles';
 import { IdentityState, Log } from './utils/utils';
@@ -78,7 +79,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       };
       await Keychain.setGenericPassword(email, password);
       try {
-        await authStore.whoami(newIdentity.accessToken);
+        const { accessToken } = newIdentity;
+        await storage.saveAccessToken(accessToken);
+        await authStore.whoami(accessToken);
         await legalFilesStore.getLegalFiles();
         const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
         if (!hasApprovedLegalFiles) {
@@ -95,7 +98,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   const { fetch, isLoading } = useFetch<void, Credentials>(signIn, { mutateOnly: true, txErrorMessage: 'errors.credentials' });
 
-  const handleSubmit = form.handleSubmit(data => fetch(data));
+  const handleSubmit = form.handleSubmit(data => fetch(data as any));
 
   return (
     <BgLayout>

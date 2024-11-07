@@ -24,6 +24,7 @@ export const AppTabStack = observer(function () {
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarStyle: { backgroundColor: 'white' },
         headerShown: false,
       }}
       initialRouteName={'bp_home'}

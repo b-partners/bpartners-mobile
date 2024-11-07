@@ -1,7 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from 'mobx-state-tree';
 
 import { ProductApi } from '../../../services/api/product-api';
-import { ProductFilter } from '../../entities/filter/filter';
 import { Product, ProductModel, ProductSnapshotOut } from '../../entities/product/product';
 import { withCredentials } from '../../extensions/with-credentials';
 import { withEnvironment } from '../../extensions/with-environment';
@@ -33,7 +32,7 @@ export const ProductStoreModel = types
     },
   }))
   .actions(self => ({
-    getProducts: flow(function* (productFilter: ProductFilter) {
+    getProducts: flow(function* (productFilter: any) {
       const productApi = new ProductApi(self.environment.api);
       self.loadingProduct = true;
       try {

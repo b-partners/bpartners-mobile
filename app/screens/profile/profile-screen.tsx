@@ -35,30 +35,21 @@ export const ProfileScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
       <Header headerTx='profileScreen.title' titleStyle={styles.headerTitle} leftIcon={'back'} onLeftPress={() => navigation.navigate('home')} />
       <Screen>
         <Tab.Navigator
-          initialRouteName={'company'}
+          initialRouteName='company'
           style={TAB_BAR_STYLE}
           screenOptions={({ route: tabRoute }) => ({
             tabBarIndicatorStyle: { backgroundColor: color.primary },
             tabBarActiveTintColor: color.primary,
+            tabBarStyle: { backgroundColor: 'white' },
             tabBarLabel: ({ focused }) => {
               const activeLabelStyle: TextStyle = { width: 150, color: color.primary, fontWeight: '900' };
 
-              let labelStyle: TextStyle = { color: palette.textClassicColor };
+              let labelStyle: TextStyle = { color: palette.textClassicColor, backgroundColor: 'white' };
               labelStyle = focused ? { ...labelStyle, ...activeLabelStyle } : { ...labelStyle };
 
-              return (
-                <>
-                  <Text text={TabName[tabRoute.name]} style={labelStyle} />
-                </>
-              );
+              return <Text text={TabName[tabRoute.name]} style={labelStyle} />;
             },
           })}
-          // @ts-ignore
-          tabBarOptions={{
-            style: {
-              backgroundColor: palette.white,
-            },
-          }}
         >
           <Tab.Screen
             name={'company'}
