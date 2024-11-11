@@ -49,7 +49,7 @@ jobs:
           else
             export ENV=preprod
           fi
-          echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/preprod/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
           echo WEB_CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/WEB_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo USER_POOL_ID=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/USER_POOL_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo OAUTH_DOMAIN=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/OAUTH_DOMAIN" --with-decryption --output text --query "Parameters[*].Value") >> .env
