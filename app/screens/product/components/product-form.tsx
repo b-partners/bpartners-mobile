@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { observer } from 'mobx-react-lite';
 import React, { Dispatch, FC, PropsWithoutRef, SetStateAction, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';

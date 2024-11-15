@@ -1,4 +1,3 @@
-// import { Octicons as Icon } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 

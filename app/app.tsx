@@ -23,7 +23,6 @@ import { AppNavigator } from './navigators/app-navigator';
 import { useNavigationPersistence } from './navigators/navigation-utilities';
 import { ErrorBoundary } from './screens';
 import { RNPaperTheme } from './theme';
-import { initFonts } from './theme/fonts';
 import './utils/ignore-warnings';
 // expo
 import * as storage from './utils/storage';
@@ -60,7 +59,6 @@ function App() {
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
     (async () => {
-      await initFonts(); // expo
       setupRootStore().then(setRootStore);
     })();
   }, []);

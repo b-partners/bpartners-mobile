@@ -1,4 +1,3 @@
-// *import { Octicons } from '@expo/vector-icons';
 import { Observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, Modal, TouchableOpacity, View, useWindowDimensions } from 'react-native';
@@ -65,7 +64,7 @@ export const ProductFormField: React.FC<ProductFormFieldProps> = props => {
     const fetchData = async () => {
       setIsFetching(true);
       try {
-        await productStore.getProducts();
+        await productStore.getProducts({});
       } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       } finally {

@@ -5,7 +5,6 @@
  * and a "main" flow which the user will use once logged in.
  */
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import * as Linking from 'expo-linking';
 import React from 'react';
 import { useColorScheme } from 'react-native';
 
@@ -28,7 +27,7 @@ import { NavigationProps } from './utils/types';
  */
 
 const navigationContainerConfigLinking = {
-  prefixes: ['bpartners://', Linking.createURL('/')],
+  prefixes: ['bpartners://'],
   config: {
     screens: {
       initialRouteName: 'welcome',
