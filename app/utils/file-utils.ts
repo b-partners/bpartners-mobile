@@ -60,5 +60,6 @@ export const fetchBinaryFileV2 = async (options: DownloadOptionsV2) => {
 };
 
 export const createFileUrl = (fileId: string, accountId: string, accessToken: string, fileType: string, baseUrl = env.apiBaseUrl) => {
-  return baseUrl + `accounts/${accountId}/files/${fileId}/raw?accessToken=${accessToken}&fileType=${fileType}`;
+  const url = new URL(baseUrl);
+  return `${url.href}accounts/${accountId}/files/${fileId}/raw?accessToken=${accessToken}&fileType=${fileType}`;
 };

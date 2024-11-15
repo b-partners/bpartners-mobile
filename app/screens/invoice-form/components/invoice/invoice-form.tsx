@@ -563,7 +563,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             productFields.map((item, i) => {
               return (
                 <ProductFormField
-                  key={i}
+                  key={item.id}
                   index={i}
                   // @ts-ignore
                   temp={item}
@@ -613,30 +613,28 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             ) : (
               paymentFields.map((item, i) => {
                 return (
-                  <>
-                    <PaymentRegulationFormField
-                      key={i}
-                      index={i}
-                      // @ts-ignore
-                      item={item}
-                      setCurrentIndex={setCurrentIndex}
-                      setCurrentPayment={setCurrentPayment}
-                      paymentRemove={paymentRemove}
-                      setTotalPercent={setTotalPercent}
-                      onDeleteItem={(__, index, percent) => {
-                        setRemovePaymentRegulation(true);
-                        if (index === 0 && paymentFields.length === 1) {
-                          paymentRemove(0);
-                          setPayInInstalments(CheckboxEnum.UNCHECKED);
-                          setTotalPercent(0);
-                        } else {
-                          setTotalPercent(prevTotalPercent => prevTotalPercent - percent);
-                          paymentRemove(index);
-                        }
-                        setRemovePaymentRegulation(false);
-                      }}
-                    />
-                  </>
+                  <PaymentRegulationFormField
+                    key={item.id}
+                    index={i}
+                    // @ts-ignore
+                    item={item}
+                    setCurrentIndex={setCurrentIndex}
+                    setCurrentPayment={setCurrentPayment}
+                    paymentRemove={paymentRemove}
+                    setTotalPercent={setTotalPercent}
+                    onDeleteItem={(__, index, percent) => {
+                      setRemovePaymentRegulation(true);
+                      if (index === 0 && paymentFields.length === 1) {
+                        paymentRemove(0);
+                        setPayInInstalments(CheckboxEnum.UNCHECKED);
+                        setTotalPercent(0);
+                      } else {
+                        setTotalPercent(prevTotalPercent => prevTotalPercent - percent);
+                        paymentRemove(index);
+                      }
+                      setRemovePaymentRegulation(false);
+                    }}
+                  />
                 );
               })
             )}
