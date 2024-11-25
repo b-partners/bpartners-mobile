@@ -1,7 +1,7 @@
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, SafeAreaView, TextStyle, View, ViewStyle } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Button, Checkbox, PDFView, Text } from '../../../components';
 import { CheckboxProps } from '../../../components/checkbox/checkbox.props';

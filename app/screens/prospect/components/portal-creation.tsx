@@ -1,6 +1,6 @@
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState } from 'react';
 import { Button as IButton, Portal } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Text } from '../../../components';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';

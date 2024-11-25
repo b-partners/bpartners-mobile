@@ -1,6 +1,6 @@
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import React from 'react';
 import { TextStyle, TouchableOpacity, View } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BulletSeparator, Menu, Text } from '../../../components';
 import { palette } from '../../../theme/palette';
