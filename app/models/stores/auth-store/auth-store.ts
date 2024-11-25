@@ -105,7 +105,7 @@ export const AuthStoreModel = types
   }))
   .actions(() => ({
     getTokenFail: error => {
-      __DEV__ && console.tron.log(error.message);
+      __DEV__ && console.tron.log(error);
       throw error;
     },
   }))
@@ -186,7 +186,7 @@ export const AuthStoreModel = types
   }))
   .actions(self => ({
     getAccountFail: error => {
-      __DEV__ && console.tron.log(error.message);
+      __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
   }))
@@ -211,7 +211,7 @@ export const AuthStoreModel = types
   }))
   .actions(self => ({
     getAccountListFail: error => {
-      __DEV__ && console.tron.log(error.message);
+      __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
   }))
