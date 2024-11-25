@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Modal } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -55,22 +55,22 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
         ...prospectInfos,
       });
       showMessage(translate('common.added'), { backgroundColor: palette.green });
-      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId as string, ZoomLevel.HOUSES_0, false);
-      await areaPictureStore.getPictureUrl(fileId as string);
+      await areaPictureStore.getAreaPictureFile(prospectId, prospectInfos.address, fileId, ZoomLevel.HOUSES_0, false);
+      await areaPictureStore.getPictureUrl(fileId);
       navigate('annotatorEdition');
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
     } finally {
       setIsLoading(false);
       closeModal();
-      await prospectStore.getProspects();
+      await prospectStore.getProspects({ name: '' });
     }
   };
 
   return (
     <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
       <Modal visible={showModal} dismissableBackButton={true} onDismiss={closeModal} style={ProspectCreationStyle.modal(keyboardOpen)}>
-        <ScrollView style={ProspectCreationStyle.scrollViewContainer}>
+        <ScrollView style={ProspectCreationStyle.scrollViewContainer as ViewStyle}>
           <View style={ProspectCreationStyle.headerContainer}>
             <View style={ProspectCreationStyle.headerTitleContainer}>
               <Text text='Prospect : ' style={ProspectCreationStyle.headerTitle} />
