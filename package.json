@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@bpartners/typescript-client": "^0.56.0",
+    "@gorhom/bottom-sheet": "^5.0.6",
     "@hookform/resolvers": "^3.9.0",
     "@notifee/react-native": "^9.1.2",
     "@react-native-async-storage/async-storage": "^2.0.0",
