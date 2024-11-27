@@ -1,13 +1,12 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Menu, Provider, Searchbar } from 'react-native-paper';
 
 import { Header, Loader, NoDataProvided } from '../../components';
 import { Pagination } from '../../components/bp-pagination';
 import { translate } from '../../i18n';
-import { useStores } from '../../models';
 import { Prospect, ProspectStatus } from '../../models/entities/prospect/prospect';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { useQueryProspect } from '../../queries';
@@ -21,20 +20,18 @@ import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
 
 export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
-  const [{ name: searchQuery, status }, setFilters] = useState({ name: '', status: ProspectStatus.TO_CONTACT });
   const {
     data: prospects,
     isLoading: loadingProspect,
     setPage,
     hasNext,
     page,
+    setStatus: setCurrentStatus,
+    setSearchQuery: onChangeSearch,
+    searchQuery,
+    status,
     query: { refetch: handleRefresh },
-  } = useQueryProspect({ status, name: searchQuery });
-
-  const { prospectStore } = useStores();
-
-  const setCurrentStatus = (currentStatus: string) => setFilters(prev => ({ ...prev, status: ProspectStatus[currentStatus] }));
-  const onChangeSearch = (name: string) => setFilters(prev => ({ ...prev, name: name }));
+  } = useQueryProspect({ status: ProspectStatus.TO_CONTACT, name: '' });
 
   const getActiveClassName = useCallback(
     (activeStatus: any): object => {
@@ -43,7 +40,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
     [status]
   );
 
-  const handleClickMenu = actualStatus => {
+  const handleClickMenu = (actualStatus: ProspectStatus) => {
     setCurrentStatus(actualStatus);
     setPage(1);
   };
@@ -57,25 +54,6 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
   ];
 
   const prospectWithoutCurrentStatus = PROSPECT_STATUS.filter(s => s.label !== status);
-
-  const debounceTimeoutRef = useRef(null);
-
-  const searchProspect = async () => {
-    await prospectStore.getProspects({ name: searchQuery });
-  };
-
-  const handleInputChange = (query: string) => {
-    onChangeSearch(query);
-    if (query) {
-      if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current);
-      }
-
-      debounceTimeoutRef.current = setTimeout(async () => {
-        await searchProspect();
-      }, 1500);
-    }
-  };
 
   return (
     <Provider>
@@ -93,7 +71,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             <Searchbar
               placeholder={translate('common.search')}
-              onChangeText={handleInputChange}
+              onChangeText={onChangeSearch}
               value={searchQuery}
               style={styles.searchbar}
               iconColor={palette.lightGrey}
