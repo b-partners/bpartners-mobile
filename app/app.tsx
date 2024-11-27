@@ -16,6 +16,7 @@ import { LogBox } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
+import { SheetModal } from './components';
 import env from './config/env';
 import './i18n';
 import { RootStore, RootStoreProvider, setupRootStore } from './models';
@@ -79,6 +80,7 @@ function App() {
           <QueryClientProvider client={queryClient}>
             <PaperProvider theme={RNPaperTheme}>
               <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
+              <SheetModal />
             </PaperProvider>
           </QueryClientProvider>
         </ErrorBoundary>
