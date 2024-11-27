@@ -68,6 +68,7 @@
     "axios": "^1.7.7",
     "core-js": "^3.38.1",
     "date-fns": "^4.1.0",
+    "debounce-fn": "^6.0.0",
     "eslint-config-react-native-prettier": "^1.0.1",
     "eslint-plugin-no-inline-styles": "^1.0.5",
     "firebase": "^10.13.2",
