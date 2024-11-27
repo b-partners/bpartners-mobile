@@ -97,7 +97,7 @@
     "react-native-element-dropdown": "^2.12.1",
     "react-native-error-boundary": "^1.2.4",
     "react-native-fs": "^2.20.0",
-    "react-native-gesture-handler": "^2.19.0",
+    "react-native-gesture-handler": "^2.21.2",
     "react-native-gifted-charts": "1.4.41",
     "react-native-keychain": "^8.2.0",
     "react-native-linear-gradient": "^2.8.3",
