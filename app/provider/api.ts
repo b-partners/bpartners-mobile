@@ -19,7 +19,14 @@ import { storage } from '../utils/storage';
 
 const getCachedAuthConf = async () => {
   const accessToken = await storage.loadAccessToken();
-  const conf = new Configuration({ accessToken, basePath: env.apiBaseUrl });
+
+  let basePath = env.apiBaseUrl;
+
+  if (basePath.endsWith('/')) {
+    basePath = basePath.slice(0, basePath.length - 1);
+  }
+
+  const conf = new Configuration({ accessToken, basePath });
   conf.baseOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
   return conf;
 };
