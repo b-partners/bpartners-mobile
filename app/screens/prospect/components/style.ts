@@ -1,7 +1,8 @@
-import { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { prospectItemStyles } from '../utils/styles';
 
 export const ProspectCreationStyle = {
   modal: (keyboardOpen: boolean): StyleProp<ViewStyle> => ({
@@ -44,3 +45,19 @@ export const ProspectCreationStyle = {
     flexDirection: 'row',
   } as StyleProp<ViewStyle>,
 };
+
+export const prospectStatusModalStyle = StyleSheet.create({
+  or: {
+    color: palette.black,
+    padding: spacing[2],
+    textAlign: 'center',
+  },
+  title: {
+    color: palette.black,
+    marginVertical: spacing[3],
+    textAlign: 'center',
+  },
+  container: { display: 'flex', flexDirection: 'column', gap: 5 },
+  orContainer: { flexDirection: 'row', alignItems: 'center' },
+  separator: { ...prospectItemStyles.separatorCommonStyle },
+});
