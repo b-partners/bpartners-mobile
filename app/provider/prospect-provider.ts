@@ -1,4 +1,4 @@
-import { ProspectStatus } from '@bpartners/typescript-client';
+import { ProspectStatus, UpdateProspect } from '@bpartners/typescript-client';
 
 import { GetListOptions } from '../queries';
 import { storage } from '../utils/storage';
@@ -19,5 +19,11 @@ export const prospectProvider = {
     const accountHId = await storage.loadAccountHolderId();
     const { data } = await api.getProspectById(accountHId, id);
     return data || [];
+  },
+  async crupdateProspect(prospect: UpdateProspect) {
+    const api = await prospectingApi();
+    const accountHId = await storage.loadAccountHolderId();
+    const { data = [undefined] } = await api.updateProspects(accountHId, [prospect]);
+    return data[0];
   },
 };
