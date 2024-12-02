@@ -10,7 +10,6 @@ import { palette } from '../../../theme/palette';
 import { ProspectFormSheetModal } from './prospect-form-sheet-modal';
 
 export const CreationPortal = () => {
-
   const { open } = useSheetModal();
 
   const handlePress = () => {
