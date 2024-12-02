@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { v4 } from 'uuid';
 import { z as Zod } from 'zod';
 
+import { useSheetModal } from '../hook';
 import { prospectProvider } from '../provider';
 
 const schema = Zod.object({
@@ -38,12 +39,23 @@ const useProspectForm = (_defaultValues?: UpdateProspect) =>
 
 interface UseCrupdateProspectOptions {
   defaultValues?: UpdateProspect;
+  onSuccess?: () => void;
 }
 
 export const useCrupdateProspect = (options?: UseCrupdateProspectOptions) => {
-  const { defaultValues } = options || {};
+  const { defaultValues, onSuccess } = options || {};
+  const { close: closeSheetModal } = useSheetModal();
+
+  const _onSuccess = () => {
+    closeSheetModal();
+  };
+
   const form = useProspectForm(defaultValues);
-  const { data, mutate, isPending, ...others } = useMutation({ mutationFn: prospectProvider.crupdateProspect, mutationKey: ['prospect', 'crupdate'] });
+  const { data, mutate, isPending, ...others } = useMutation({
+    mutationFn: prospectProvider.crupdateProspect,
+    mutationKey: ['prospect', 'crupdate'],
+    onSuccess: onSuccess || _onSuccess,
+  });
   const crupdate = form.handleSubmit((prospect: UpdateProspect) => {
     mutate({
       ...prospect,

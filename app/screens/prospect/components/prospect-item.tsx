@@ -15,7 +15,7 @@ import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
-import { ProspectStatusModal } from './ProspectStatusModal';
+import { ProspectStatusModal } from './prospect-status-modal';
 import { ProcessModal } from './process-modal';
 
 const IconGroup = {
