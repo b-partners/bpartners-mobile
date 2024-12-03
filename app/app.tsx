@@ -75,7 +75,7 @@ function App() {
   // otherwise, we're ready to render the app
   return (
     <RootStoreProvider value={rootStore}>
-      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: '#fff' }}>
         <ErrorBoundary catchErrors='always'>
           <QueryClientProvider client={queryClient}>
             <PaperProvider theme={RNPaperTheme}>

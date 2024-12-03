@@ -1,21 +1,16 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Text } from '../../../components';
-import { useSheetModal } from '../../../hook';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { ProspectFormSheetModal } from './prospect-form-sheet-modal';
 
 export const CreationPortal = () => {
-  const { open } = useSheetModal();
-
+  const { navigate } = useNavigation();
   const handlePress = () => {
-    open(<ProspectFormSheetModal />, {
-      containerStyle: { height: Dimensions.get('screen').height * 0.8 },
-    });
+    navigate('prospectForm' as never);
   };
 
   return (

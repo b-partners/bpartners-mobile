@@ -4,11 +4,11 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { useColorScheme } from 'react-native';
 
 import { Text } from '../components';
+import { palette } from '../theme/palette';
 import { AppStack } from './components';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
 import { NavigationProps } from './utils/types';
@@ -38,7 +38,6 @@ const navigationContainerConfigLinking = {
 };
 
 export function AppNavigator(props: Readonly<NavigationProps>) {
-  const colorScheme = useColorScheme();
   useBackButtonHandler(canExit);
 
   return (
@@ -46,7 +45,7 @@ export function AppNavigator(props: Readonly<NavigationProps>) {
       linking={navigationContainerConfigLinking}
       fallback={<Text text={'Loading...'} />}
       ref={navigationRef as any}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      theme={{ ...DefaultTheme, colors: { ...DefaultTheme.colors, background: palette.white } }}
       {...props}
     >
       <AppStack />

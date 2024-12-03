@@ -29,6 +29,7 @@ export type NavigatorParamList = {
   bank: undefined;
   configuration: undefined;
   partners: undefined;
+  prospectForm: undefined;
   changePassword: {
     userName: string;
     password: string;
@@ -41,6 +42,7 @@ export type NavigatorParamList = {
 export type TabNavigatorParamList = {
   annotator: undefined;
   prospect: undefined;
+  prospectForm: undefined;
   prospectConfiguration: undefined;
   forgotPassword: undefined;
   bp_home: undefined;
