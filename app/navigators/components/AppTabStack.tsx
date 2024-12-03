@@ -23,6 +23,7 @@ const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 export const AppTabStack = observer(function () {
   return (
     <Tab.Navigator
+      id={undefined}
       screenOptions={{
         tabBarStyle: { backgroundColor: 'white' },
         headerShown: false,

@@ -45,7 +45,7 @@ export function AppNavigator(props: Readonly<NavigationProps>) {
     <NavigationContainer
       linking={navigationContainerConfigLinking}
       fallback={<Text text={'Loading...'} />}
-      ref={navigationRef}
+      ref={navigationRef as any}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
       {...props}
     >

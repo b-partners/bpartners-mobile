@@ -52,6 +52,7 @@ export const AppStack = observer(function () {
 
   return (
     <Drawer.Navigator
+      id={undefined}
       screenOptions={{
         headerShown: false,
         drawerStyle: {
