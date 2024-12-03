@@ -181,7 +181,7 @@ export const AuthStoreModel = types
 
       await storage.saveUserId(currentUser.id);
       await storage.saveAccountId(currentAccount.id);
-      await storage.saveAccountHolderId(currentAccountHolder.id);
+      await storage.saveAccountHolder(currentAccountHolder as any);
     },
   }))
   .actions(self => ({

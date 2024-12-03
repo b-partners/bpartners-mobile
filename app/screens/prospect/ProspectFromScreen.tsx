@@ -8,16 +8,27 @@ import { Button } from 'react-native-paper';
 import { Header, Text } from '../../components';
 import { BpInput } from '../../components/bp-input';
 import { TabNavigatorParamList } from '../../navigators/utils';
-import { updateProspectDefaultValues, useCrupdateProspect } from '../../queries';
+import { updateProspectDefaultValues, useCreateAreaPicture, useCrupdateProspect } from '../../queries';
 import { palette } from '../../theme/palette';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { ProspectCreationStyle } from './components/style';
 
 export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = ({ navigation, route }) => {
   const { prospect } = route.params ?? {};
-  const { form, crupdate, isLoading } = useCrupdateProspect();
-  const { width } = Dimensions.get('screen');
+  const { createAreaPicture, isLoading: isCreateAreaPictureLoading } = useCreateAreaPicture();
   const backHandler = () => navigation.navigate('home', { screen: 'prospect' });
+
+  const { form, crupdate, isLoading } = useCrupdateProspect({
+    onSuccess: data => {
+      if (!prospect) {
+        createAreaPicture({ ...data });
+      } else {
+        backHandler();
+      }
+    },
+  });
+
+  const { width } = Dimensions.get('screen');
 
   useEffect(() => {
     const currentProspect = prospect || updateProspectDefaultValues;
@@ -42,7 +53,12 @@ export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'pr
           <BpInput multiline name='comment' labelTx='prospectScreen.process.comment' />
         </FormProvider>
         <View style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <Button loading={isLoading} onPress={crupdate} textColor={palette.white} style={{ backgroundColor: palette.secondaryColor }}>
+          <Button
+            loading={isLoading || isCreateAreaPictureLoading}
+            onPress={crupdate}
+            textColor={palette.white}
+            style={{ backgroundColor: palette.secondaryColor }}
+          >
             Enregistrer
           </Button>
         </View>

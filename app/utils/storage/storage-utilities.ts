@@ -1,9 +1,12 @@
-import { loadString, saveString } from './storage';
+import { AccountHolder } from '@bpartners/typescript-client';
+
+import { load, loadString, save, saveString } from './storage';
 
 const TOKEN_ITEM = 'access-token';
 const USER_ID_ITEM = 'user-id';
 const ACCOUNT_ID_ITEM = 'account-id';
 const ACCOUNT_HOLDER_ID_ITEM = 'account-holder-id';
+const ACCOUNT_HOLDER_ITEM = 'account-holder';
 
 export const storage = {
   saveAccessToken: async (accessToken: string) => {
@@ -28,6 +31,13 @@ export const storage = {
     await saveString(ACCOUNT_HOLDER_ID_ITEM, accountHolderId);
   },
   loadAccountHolderId: async () => {
-    return await loadString(ACCOUNT_HOLDER_ID_ITEM);
+    const { id } = await load(ACCOUNT_HOLDER_ITEM);
+    return id;
+  },
+  saveAccountHolder: async (accountHolder: AccountHolder) => {
+    return await save(ACCOUNT_HOLDER_ITEM, accountHolder);
+  },
+  loadAccountHolder: async (): Promise<AccountHolder> => {
+    return await load(ACCOUNT_HOLDER_ITEM);
   },
 };

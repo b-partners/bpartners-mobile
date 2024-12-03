@@ -6,6 +6,8 @@ import { v4 } from 'uuid';
 import { z as Zod } from 'zod';
 
 import { prospectProvider } from '../provider';
+import { palette } from '../theme/palette';
+import { showMessage } from '../utils/snackbar';
 
 const schema = Zod.object({
   email: Zod.string(),
@@ -38,16 +40,21 @@ const useProspectForm = (_defaultValues?: UpdateProspect) =>
 
 interface UseCrupdateProspectOptions {
   defaultValues?: UpdateProspect;
+  onSuccess?: (data: Prospect) => void;
   queryOptions?: Omit<UseMutationOptions<Prospect, Error, UpdateProspect, unknown>, 'mutationFn' | 'mutationKey'>;
 }
 
 export const useCrupdateProspect = (options?: UseCrupdateProspectOptions) => {
-  const { defaultValues, queryOptions } = options || {};
+  const { defaultValues, queryOptions, onSuccess } = options || {};
   const form = useProspectForm(defaultValues);
   const { data, mutate, isPending, ...others } = useMutation({
+    ...queryOptions,
     mutationFn: prospectProvider.crupdateProspect,
     mutationKey: ['prospect', 'crupdate'],
-    ...queryOptions,
+    onSuccess(prospect) {
+      showMessage('Prospect enregistré avec succès !', { backgroundColor: palette.green });
+      onSuccess(prospect);
+    },
   });
   const crupdate = form.handleSubmit((prospect: UpdateProspect) => {
     mutate({
