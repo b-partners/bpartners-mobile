@@ -1,11 +1,10 @@
-import { ProspectStatus, UpdateProspect } from '@bpartners/typescript-client';
+import { Prospect, ProspectStatus, UpdateProspect } from '@bpartners/typescript-client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { v4 } from 'uuid';
 import { z as Zod } from 'zod';
 
-import { useSheetModal } from '../hook';
 import { prospectProvider } from '../provider';
 
 const schema = Zod.object({
@@ -39,22 +38,16 @@ const useProspectForm = (_defaultValues?: UpdateProspect) =>
 
 interface UseCrupdateProspectOptions {
   defaultValues?: UpdateProspect;
-  onSuccess?: () => void;
+  queryOptions?: Omit<UseMutationOptions<Prospect, Error, UpdateProspect, unknown>, 'mutationFn' | 'mutationKey'>;
 }
 
 export const useCrupdateProspect = (options?: UseCrupdateProspectOptions) => {
-  const { defaultValues, onSuccess } = options || {};
-  const { close: closeSheetModal } = useSheetModal();
-
-  const _onSuccess = () => {
-    closeSheetModal();
-  };
-
+  const { defaultValues, queryOptions } = options || {};
   const form = useProspectForm(defaultValues);
   const { data, mutate, isPending, ...others } = useMutation({
     mutationFn: prospectProvider.crupdateProspect,
     mutationKey: ['prospect', 'crupdate'],
-    onSuccess: onSuccess || _onSuccess,
+    ...queryOptions,
   });
   const crupdate = form.handleSubmit((prospect: UpdateProspect) => {
     mutate({
