@@ -20,7 +20,7 @@ const schema = Zod.object({
 
 const resolver = zodResolver(schema);
 
-const prospectDefaultValues: UpdateProspect = {
+export const updateProspectDefaultValues: UpdateProspect = {
   email: '',
   phone: '',
   address: '',
@@ -33,7 +33,7 @@ const useProspectForm = (_defaultValues?: UpdateProspect) =>
   useForm<UpdateProspect>({
     mode: 'onBlur',
     resolver: resolver,
-    defaultValues: _defaultValues || prospectDefaultValues,
+    defaultValues: _defaultValues || updateProspectDefaultValues,
   });
 
 interface UseCrupdateProspectOptions {

@@ -38,13 +38,14 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState<ProspectStatus | null>(null);
-  const { open } = useSheetModal();
+  const { open: openSheetModal, close: closeSheetModal } = useSheetModal();
 
   useEffect(() => {
     status != null && setShowModal(true);
   }, [status]);
 
   const onEditing = () => {
+    closeSheetModal();
     navigate<keyof TabNavigatorParamList>('prospectForm', { prospect: prospectMapper.prospectToUpdateProspect(prospect as any as Prospect) });
   };
 
@@ -101,7 +102,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
           <View style={styles.menuContainer}>
             <TouchableOpacity
               onPress={() =>
-                open(<ProspectStatusModal menuItems={menuItem} onEditing={onEditing} setStatus={setStatus} />, {
+                openSheetModal(<ProspectStatusModal menuItems={menuItem} onEditing={onEditing} setStatus={setStatus} />, {
                   containerStyle: { height: Dimensions.get('screen').height * 0.4 },
                 })
               }

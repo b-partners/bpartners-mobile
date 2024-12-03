@@ -1,6 +1,5 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { Dimensions, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -9,16 +8,23 @@ import { Button } from 'react-native-paper';
 import { Header, Text } from '../../components';
 import { BpInput } from '../../components/bp-input';
 import { TabNavigatorParamList } from '../../navigators/utils';
-import { useCrupdateProspect } from '../../queries';
+import { updateProspectDefaultValues, useCrupdateProspect } from '../../queries';
 import { palette } from '../../theme/palette';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { ProspectCreationStyle } from './components/style';
 
-export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = observer(function ProspectFormScreen({ navigation, route }) {
+export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = ({ navigation, route }) => {
   const { prospect } = route.params ?? {};
-  const { form, crupdate, isLoading } = useCrupdateProspect({ defaultValues: prospect });
+  const { form, crupdate, isLoading } = useCrupdateProspect();
   const { width } = Dimensions.get('screen');
   const backHandler = () => navigation.navigate('home', { screen: 'prospect' });
+
+  useEffect(() => {
+    const currentProspect = prospect || updateProspectDefaultValues;
+    Object.keys(currentProspect).forEach(key => {
+      form.setValue(key as keyof typeof currentProspect, currentProspect[key]);
+    });
+  }, [prospect]);
 
   return (
     <KeyboardAwareScrollView>
@@ -37,10 +43,10 @@ export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'pr
         </FormProvider>
         <View style={{ display: 'flex', justifyContent: 'space-around' }}>
           <Button loading={isLoading} onPress={crupdate} textColor={palette.white} style={{ backgroundColor: palette.secondaryColor }}>
-            Créer
+            Enregistrer
           </Button>
         </View>
       </View>
     </KeyboardAwareScrollView>
   );
-});
+};

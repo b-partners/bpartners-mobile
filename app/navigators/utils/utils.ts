@@ -58,7 +58,7 @@ export type TabNavigatorParamList = {
   annotator: undefined;
   prospect: undefined;
   prospectForm: {
-    prospect?: UpdateProspect;
+    prospect: UpdateProspect | undefined;
   };
   prospectConfiguration: undefined;
   forgotPassword: undefined;
