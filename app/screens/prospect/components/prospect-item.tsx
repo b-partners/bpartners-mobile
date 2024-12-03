@@ -1,3 +1,5 @@
+import { Prospect } from '@bpartners/typescript-client';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
 import { Card, Paragraph, Portal, Title } from 'react-native-paper';
@@ -9,7 +11,9 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { Text } from '../../../components';
 import { useSheetModal } from '../../../hook';
 import { translate } from '../../../i18n';
+import { prospectMapper } from '../../../mappers';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
+import { TabNavigatorParamList } from '../../../navigators/utils';
 import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
@@ -29,6 +33,7 @@ const IconGroup = {
 };
 
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
+  const { navigate } = useNavigation<NavigationProp<TabNavigatorParamList>>();
   const { prospect, setCurrentStatus, menuItem } = props;
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -40,8 +45,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
   }, [status]);
 
   const onEditing = () => {
-    setShowModal(true);
-    setIsEditing(true);
+    navigate<keyof TabNavigatorParamList>('prospectForm', { prospect: prospectMapper.prospectToUpdateProspect(prospect as any as Prospect) });
   };
 
   return (
