@@ -17,7 +17,7 @@ import { ProspectCreationStyle } from './components/style';
 export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = observer(function ProspectFormScreen({ navigation }) {
   const { form, crupdate, isLoading } = useCrupdateProspect();
   const { width } = Dimensions.get('screen');
-  const backHandler = () => navigation.navigate('prospect');
+  const backHandler = () => navigation.navigate('home', { screen: 'prospect' });
 
   return (
     <KeyboardAwareScrollView>

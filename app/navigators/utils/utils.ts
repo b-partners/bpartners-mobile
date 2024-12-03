@@ -40,6 +40,19 @@ export type NavigatorParamList = {
 };
 
 export type TabNavigatorParamList = {
+  home: {
+    screen:
+      | 'bp_home'
+      | 'marketplace'
+      | 'paymentInitiation'
+      | 'prospect'
+      | 'prospectConfiguration'
+      | 'paymentList'
+      | 'supportContact'
+      | 'invoices'
+      | 'invoiceForm'
+      | 'annotator';
+  };
   annotator: undefined;
   prospect: undefined;
   prospectForm: undefined;
