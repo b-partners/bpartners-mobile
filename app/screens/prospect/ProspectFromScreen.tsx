@@ -14,8 +14,9 @@ import { palette } from '../../theme/palette';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { ProspectCreationStyle } from './components/style';
 
-export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = observer(function ProspectFormScreen({ navigation }) {
-  const { form, crupdate, isLoading } = useCrupdateProspect();
+export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = observer(function ProspectFormScreen({ navigation, route }) {
+  const { prospect } = route.params ?? {};
+  const { form, crupdate, isLoading } = useCrupdateProspect({ defaultValues: prospect });
   const { width } = Dimensions.get('screen');
   const backHandler = () => navigation.navigate('home', { screen: 'prospect' });
 

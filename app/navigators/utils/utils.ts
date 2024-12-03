@@ -1,3 +1,5 @@
+import { UpdateProspect } from '@bpartners/typescript-client';
+
 import { Invoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 
 export type NavigatorParamList = {
@@ -55,7 +57,9 @@ export type TabNavigatorParamList = {
   };
   annotator: undefined;
   prospect: undefined;
-  prospectForm: undefined;
+  prospectForm: {
+    prospect?: UpdateProspect;
+  };
   prospectConfiguration: undefined;
   forgotPassword: undefined;
   bp_home: undefined;
