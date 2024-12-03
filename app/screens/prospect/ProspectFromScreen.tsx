@@ -55,6 +55,7 @@ export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'pr
         <View style={{ display: 'flex', justifyContent: 'space-around' }}>
           <Button
             loading={isLoading || isCreateAreaPictureLoading}
+            disabled={isLoading || isCreateAreaPictureLoading}
             onPress={crupdate}
             textColor={palette.white}
             style={{ backgroundColor: palette.secondaryColor }}
