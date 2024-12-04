@@ -1,4 +1,4 @@
-import { UpdateProspect } from '@bpartners/typescript-client';
+import { AreaPictureDetails, UpdateProspect } from '@bpartners/typescript-client';
 
 import { Invoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 
@@ -38,7 +38,10 @@ export type NavigatorParamList = {
   };
   profileEdition: undefined;
   calendar: undefined;
-  annotatorEdition: undefined;
+  annotatorEdition: {
+    areaPictureDetails: AreaPictureDetails | undefined;
+    pictureUrl: string | undefined;
+  };
 };
 
 export type TabNavigatorParamList = {
@@ -56,6 +59,10 @@ export type TabNavigatorParamList = {
       | 'annotator';
   };
   annotator: undefined;
+  annotatorEdition: {
+    pictureUrl: string | undefined;
+    areaPictureDetails: AreaPictureDetails | undefined;
+  };
   prospect: undefined;
   prospectForm: {
     prospect: UpdateProspect | undefined;

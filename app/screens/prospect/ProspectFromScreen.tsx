@@ -15,7 +15,11 @@ import { ProspectCreationStyle } from './components/style';
 
 export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = ({ navigation, route }) => {
   const { prospect } = route.params ?? {};
-  const { createAreaPicture, isLoading: isCreateAreaPictureLoading } = useCreateAreaPicture();
+  const { createAreaPicture, isLoading: isCreateAreaPictureLoading } = useCreateAreaPicture({
+    onSuccess: (areaPictureDetails, pictureUrl) => {
+      navigation.navigate('annotatorEdition', { areaPictureDetails, pictureUrl });
+    },
+  });
   const backHandler = () => navigation.navigate('home', { screen: 'prospect' });
 
   const { form, crupdate, isLoading } = useCrupdateProspect({

@@ -35,9 +35,12 @@ import { validatePolygon } from './utils/polygon-validator';
 import { styles, zoomDropDownStyles } from './utils/styles';
 import { calculateCentroid, calculateDistance, constrainPointCoordinates, getImageWidth, getMeasurements } from './utils/utils';
 
-export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
+export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({
+  navigation,
+  route,
+}) {
   const { areaPictureStore, geojsonStore, authStore, customerStore } = useStores();
-  const { pictureUrl, areaPicture } = areaPictureStore;
+  const { areaPictureDetails, pictureUrl } = route.params || {};
   const { currentUser } = authStore;
 
   const [currentPolygonPoints, setCurrentPolygonPoints] = useState([]);
@@ -138,24 +141,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         <Animated.View
           key={index}
           {...panResponder.panHandlers}
-          style={{
-            position: 'absolute',
-            left: point.x - 10,
-            top: point.y - 10,
-            width: 20,
-            height: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          style={{ position: 'absolute', left: point.x - 10, top: point.y - 10, width: 20, height: 20, alignItems: 'center', justifyContent: 'center' }}
         >
-          <View
-            style={{
-              backgroundColor: '#000000',
-              width: 8,
-              height: 8,
-              borderRadius: 5,
-            }}
-          />
+          <View style={{ backgroundColor: '#000000', width: 8, height: 8, borderRadius: 5 }} />
         </Animated.View>
       );
     });
@@ -171,17 +159,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       const midY = (point1.y + point2.y) / 2;
 
       distances.push(
-        <Text
-          key={`distance_${i}`}
-          style={{
-            position: 'absolute',
-            left: midX,
-            top: midY,
-            color: '#90F80A',
-            fontSize: 12,
-            fontWeight: '800',
-          }}
-        >
+        <Text key={`distance_${i}`} style={{ position: 'absolute', left: midX, top: midY, color: '#90F80A', fontSize: 12, fontWeight: '800' }}>
           {distance.toFixed(2)}
         </Text>
       );
@@ -194,7 +172,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       try {
         const imageSize = await getImageWidth(pictureUrl);
 
-        const realMeasure = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
+        const realMeasure = await getMeasurements(areaPictureDetails, annotations, imageSize, geojsonStore);
 
         Log('realMeasure');
         Log(realMeasure);
@@ -264,7 +242,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       const imageSize = await getImageWidth(pictureUrl);
       const ratio = imageSize / 320;
 
-      const geojsonData = await getMeasurements(areaPicture, annotations, imageSize, geojsonStore);
+      const geojsonData = await getMeasurements(areaPictureDetails, annotations, imageSize, geojsonStore);
 
       const annotationId = uuid.v4() as string;
 
@@ -279,7 +257,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         });
 
         const annotationData: AnnotationType = {
-          areaPictureId: areaPicture.id,
+          areaPictureId: areaPictureDetails.id,
           metadata: {
             area: annotationArea?.value,
             fillColor: null,
@@ -303,11 +281,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         annotationsArrayPayload.push(annotationData);
       });
 
-      await areaPictureStore.updateAreaPictureAnnotations(areaPicture?.id, annotationId, annotationsArrayPayload);
+      await areaPictureStore.updateAreaPictureAnnotations(areaPictureDetails?.id, annotationId, annotationsArrayPayload);
       await customerStore.getCustomers({} as any);
       handleCancelAnnotation();
 
-      navigation.navigate('invoiceForm', { areaPictureId: areaPicture?.id });
+      navigation.navigate('invoiceForm', { areaPictureId: areaPictureDetails?.id });
     } catch {
       showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.yellow });
     }
@@ -342,7 +320,14 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const handleChangeZoomLevel = async zoomLevel => {
     setIsExtended(false);
     const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId as string, zoomLevel?.value, false, areaPicture?.id);
+    await areaPictureStore.getAreaPictureFile(
+      areaPictureDetails?.prospectId,
+      areaPictureDetails?.address,
+      fileId as string,
+      zoomLevel?.value,
+      false,
+      areaPictureDetails?.id
+    );
     await areaPictureStore.getPictureUrl(fileId as string);
     handleCancelAnnotation();
 
@@ -352,7 +337,14 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const handleExtend = async () => {
     setIsExtended(true);
     const fileId = uuid.v4();
-    await areaPictureStore.getAreaPictureFile(areaPicture?.prospectId, areaPicture?.address, fileId as string, zoomValue, true, areaPicture?.id);
+    await areaPictureStore.getAreaPictureFile(
+      areaPictureDetails?.prospectId,
+      areaPictureDetails?.address,
+      fileId as string,
+      zoomValue,
+      true,
+      areaPictureDetails?.id
+    );
     await areaPictureStore.getPictureUrl(fileId as string);
     handleCancelAnnotation();
   };
@@ -364,20 +356,9 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={handleBackNavigation} style={HEADER} titleStyle={HEADER_TITLE} />
         <View testID='AnnotatorEditionScreen' style={{ ...FULL, backgroundColor: palette.white, position: 'relative' }}>
-          <ScrollView
-            contentContainerStyle={{
-              padding: 'auto',
-              margin: 'auto',
-            }}
-          >
+          <ScrollView contentContainerStyle={{ padding: 'auto', margin: 'auto' }}>
             <View style={{ width: '94%' }}>
-              <View
-                style={{
-                  width: '100%',
-                  height: 60,
-                  flexDirection: 'row',
-                }}
-              >
+              <View style={{ width: '100%', height: 60, flexDirection: 'row' }}>
                 <View style={{ width: '50%', paddingHorizontal: spacing[1] }}>
                   <TouchableOpacity style={isExtended ? styles.focusDisabledButton : styles.focusButton} onPress={handleExtend} disabled={false}>
                     <View style={{ justifyContent: 'center' }}>
@@ -455,7 +436,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                   flexDirection: 'row',
                 }}
               >
-                <Text text={areaPicture?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
+                <Text text={areaPictureDetails?.address} style={{ color: palette.black, fontFamily: 'Geometria' }} />
               </View>
               <View>
                 {!isKeyboardOpen && (

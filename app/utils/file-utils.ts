@@ -1,7 +1,9 @@
+import { FileType } from '@bpartners/typescript-client';
 import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
 import RNFS from 'react-native-fs';
 
 import env from '../config/env';
+import { storage } from './storage';
 
 type DownloadOptions = { url: string; accessToken?: string; fileName: string };
 
@@ -62,4 +64,10 @@ export const fetchBinaryFileV2 = async (options: DownloadOptionsV2) => {
 export const createFileUrl = (fileId: string, accountId: string, accessToken: string, fileType: string, baseUrl = env.apiBaseUrl) => {
   const url = new URL(baseUrl);
   return `${url.href}accounts/${accountId}/files/${fileId}/raw?accessToken=${accessToken}&fileType=${fileType}`;
+};
+
+export const getFileUrl = async (id: string, type: FileType) => {
+  const accountId = await storage.loadAccountId();
+  const accessToken = await storage.loadAccessToken();
+  return `${env.apiBaseUrl}accounts/${accountId}/files/${id}/raw?accessToken=${accessToken}&fileType=${type}`;
 };
