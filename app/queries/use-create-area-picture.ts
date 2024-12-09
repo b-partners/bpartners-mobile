@@ -4,6 +4,7 @@ import { v4 as uuid } from 'react-native-uuid/dist/v4';
 
 import { annotatorProvider } from '../provider';
 import { getFileUrl } from '../utils/file-utils';
+import { notify } from '../utils/snackbar';
 import { storage } from '../utils/storage';
 
 const mutationFn = async (prospect: Prospect) => {
@@ -26,6 +27,10 @@ export interface UseCreateAreaPictureParams {
   onSuccess?: (data: AreaPictureDetails, pictureUrl: string) => void;
 }
 
+const onError = () => {
+  notify("L'adresse que vous avez spécifiée n'est pas encore pris en charge. Veuillez réessayer ultérieurement.", 'error');
+};
+
 export const useCreateAreaPicture = (params?: UseCreateAreaPictureParams) => {
   const { onSuccess } = params || {};
   const {
@@ -33,7 +38,7 @@ export const useCreateAreaPicture = (params?: UseCreateAreaPictureParams) => {
     isPending: isLoading,
     mutate: createAreaPicture,
     ...query
-  } = useMutation({ mutationFn, mutationKey: ['create', 'area-picture'], onSuccess: ({ data, pictureUrl }) => onSuccess(data, pictureUrl) });
+  } = useMutation({ mutationFn, mutationKey: ['create', 'area-picture'], onSuccess: ({ data, pictureUrl }) => onSuccess(data, pictureUrl), onError });
   return {
     createAreaPicture,
     areaPicture,

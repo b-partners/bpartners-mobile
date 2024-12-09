@@ -6,8 +6,6 @@ import { v4 } from 'uuid';
 import { z as Zod } from 'zod';
 
 import { prospectProvider } from '../provider';
-import { palette } from '../theme/palette';
-import { showMessage } from '../utils/snackbar';
 
 const schema = Zod.object({
   email: Zod.string(),
@@ -52,7 +50,6 @@ export const useCrupdateProspect = (options?: UseCrupdateProspectOptions) => {
     mutationFn: prospectProvider.crupdateProspect,
     mutationKey: ['prospect', 'crupdate'],
     onSuccess(prospect) {
-      showMessage('Prospect enregistré avec succès !', { backgroundColor: palette.green });
       onSuccess(prospect);
     },
   });

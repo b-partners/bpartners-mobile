@@ -11,6 +11,7 @@ import { BpInput } from '../../components/bp-input';
 import { TabNavigatorParamList } from '../../navigators/utils';
 import { updateProspectDefaultValues, useCreateAreaPicture, useCrupdateProspect, useGetAccountHolder } from '../../queries';
 import { palette } from '../../theme/palette';
+import { notify } from '../../utils/snackbar';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { ProspectCreationStyle } from './components/style';
 
@@ -26,8 +27,12 @@ export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'pr
   const onCreateAreaPictureSuccess = (areaPictureDetails: AreaPictureDetails, pictureUrl: string) =>
     navigation.navigate('annotatorEdition', { areaPictureDetails, pictureUrl });
   const backHandler = () => navigation.navigate('home', { screen: 'prospect' });
+  const isRoofer = accountHolder?.businessActivities?.primary === 'Couvreur' || accountHolder?.businessActivities?.secondary === 'Couvreur';
+
   const onCrupdateProspectSuccess = (data: Prospect) => {
-    if (!prospect) {
+    const shouldGenerateImage = !prospect && isRoofer;
+    notify(`Prospect ${!prospect ? 'créé' : 'modifié'} avec success.${shouldGenerateImage && " Génération de l'image en cours..."}`, 'info');
+    if (shouldGenerateImage) {
       createAreaPicture({ ...data });
     } else {
       backHandler();
@@ -46,8 +51,6 @@ export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'pr
       form.setValue(key as keyof typeof currentProspect, currentProspect[key]);
     });
   }, [prospect]);
-
-  const isRoofer = accountHolder?.businessActivities?.primary === 'Couvreur' || accountHolder?.businessActivities?.secondary === 'Couvreur';
 
   return (
     <KeyboardAwareScrollView>
