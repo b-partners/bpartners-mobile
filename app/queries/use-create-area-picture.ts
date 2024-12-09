@@ -22,7 +22,7 @@ const mutationFn = async (prospect: Prospect) => {
   return { data, pictureUrl };
 };
 
-interface UseCreateAreaPictureParams {
+export interface UseCreateAreaPictureParams {
   onSuccess?: (data: AreaPictureDetails, pictureUrl: string) => void;
 }
 

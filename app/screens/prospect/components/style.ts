@@ -32,7 +32,7 @@ export const ProspectCreationStyle = {
     alignItems: 'center',
     paddingLeft: spacing[4],
   } as StyleProp<ViewStyle>,
-  headerTitle: { fontSize: 15, color: palette.secondaryColor },
+  headerTitle: { fontSize: 15, marginBottom: 20 },
   closeButton: { flex: 1, justifyContent: 'center', alignItems: 'center' } as StyleProp<ViewStyle>,
   actionContainer: {
     height: 60,
