@@ -345,7 +345,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       true,
       areaPictureDetails?.id
     );
-    await areaPictureStore.getPictureUrl(fileId as string);
+    await areaPictureStore.getPictureUrl(fileId);
     handleCancelAnnotation();
   };
 

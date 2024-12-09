@@ -11,7 +11,6 @@ import { TabNavigatorParamList } from '../../navigators/utils';
 import { updateProspectDefaultValues, useCreateAreaPicture, useCrupdateProspect } from '../../queries';
 import { palette } from '../../theme/palette';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { ProspectCreationStyle } from './components/style';
 
 export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = ({ navigation, route }) => {
   const { prospect } = route.params ?? {};
@@ -45,8 +44,8 @@ export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'pr
     <KeyboardAwareScrollView>
       <Header headerTx='prospectScreen.title' leftIcon={'back'} onLeftPress={backHandler} style={HEADER} titleStyle={HEADER_TITLE} />
       <View style={{ padding: 10, width }}>
-        <View style={ProspectCreationStyle.headerContainer}>
-          <Text text='Prospect : ' style={ProspectCreationStyle.headerTitle} />
+        <View>
+          <Text text="Renseignez l'adresse de votre prospect ou votre client et analysez les images haute résolution de sa toiture." />
         </View>
         <FormProvider {...form}>
           <BpInput name='address' labelTx='prospectScreen.process.address' />
