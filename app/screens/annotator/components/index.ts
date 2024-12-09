@@ -1,1 +1,1 @@
-export * from "./AnnotatorLabelList";
+export * from './AnnotatorLabelList';
