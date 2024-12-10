@@ -16,3 +16,10 @@ export interface LabelType {
   label: string;
   value: string;
 }
+
+export interface AnnotationContainerProps {
+  isLoading: boolean;
+  pictureUrl: string;
+  polygons: [];
+  setPolygons: () => void;
+}
