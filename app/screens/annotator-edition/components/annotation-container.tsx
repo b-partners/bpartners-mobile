@@ -9,26 +9,19 @@ import { AnnotationContainerProps } from '../types/annotation';
 import { AnnotationSizeHandler, useAnnotationScale, useCenterScrollView } from '../utils';
 import { annotationContainerStyle as style } from '../utils/styles';
 
-const { getContainerStyle, getImageSize } = new AnnotationSizeHandler();
-const IMAGE_MARGIN = 100;
-const IMAGE_MARGIN_HALF = IMAGE_MARGIN / 2;
+const { getContainerStyle, getImageSize, getImageContainerSize, getScrollContentHalf } = new AnnotationSizeHandler();
 
 export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, isLoading }) => {
   const { scale, scaleDown, scaleUp, scaleReset } = useAnnotationScale();
-  const { height: imageHeight, width: imageWidth } = useMemo(() => getImageSize(), []);
+  const imageNotScaledSize = useMemo(() => getImageSize(), []);
+  const { height: imageHeight, width: imageWidth } = imageNotScaledSize;
   const imageSize = { height: imageHeight * scale, width: imageWidth * scale };
-
   const containerStyle = useMemo(() => getContainerStyle(), []);
-  const scrollYRef = useCenterScrollView({
-    contentSize: +((+containerStyle.height - imageSize.height + IMAGE_MARGIN_HALF) / 2).toFixed(2),
-    direction: 'y',
-    ref: [isLoading],
-  });
-  const scrollXRef = useCenterScrollView({
-    contentSize: +((+containerStyle.width - imageSize.width + IMAGE_MARGIN_HALF) / 2).toFixed(2),
-    direction: 'x',
-    ref: [isLoading],
-  });
+  const { height: containerHeight, width: containerWidth } = containerStyle;
+  const imageContainerSize = useMemo(() => getImageContainerSize(imageNotScaledSize, scale), [imageSize, scale]);
+  const scrollContentHalf = useMemo(() => getScrollContentHalf(imageSize, { height: +containerHeight, width: +containerWidth }), [imageSize, containerStyle]);
+  const scrollYRef = useCenterScrollView({ contentSize: scrollContentHalf.y, direction: 'y', ref: [isLoading] });
+  const scrollXRef = useCenterScrollView({ contentSize: scrollContentHalf.x, direction: 'x', ref: [isLoading] });
   const [points, setPoints] = useState([]);
 
   useEffect(() => {
@@ -58,21 +51,13 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
             ref={scrollYRef}
             overScrollMode='never'
             bounces={false}
-            style={[{ height: containerStyle.height, width: (imageWidth + IMAGE_MARGIN) * scale }, style.scrollView]}
+            style={[{ height: containerStyle.height, width: imageContainerSize.width }, style.scrollView]}
           >
             <TouchableWithoutFeedback onPress={handlePress}>
-              <View
-                style={[
-                  {
-                    width: (imageWidth + IMAGE_MARGIN) * scale,
-                    height: (imageHeight + IMAGE_MARGIN) * scale,
-                  },
-                  style.imageContainer,
-                ]}
-              >
+              <View style={[imageContainerSize, style.imageContainer]}>
                 {isLoading && <Loader color={palette.lighterPurple} />}
                 {!isLoading && <Image resizeMode='cover' style={imageSize} source={{ uri: pictureUrl }} />}
-                <Svg height={(imageHeight + IMAGE_MARGIN) * scale} width={(imageWidth + IMAGE_MARGIN) * scale} style={style.svgContainer}>
+                <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
                   <Polygon
                     points={points.map(({ x, y }) => `${x * scale},${y * scale}`).join(' ')}
                     fill='rgba(144, 248, 10, 0.4)'

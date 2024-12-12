@@ -4,6 +4,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { palette } from '../../../theme/palette';
 
+export const IMAGE_MARGIN = 100;
+export const IMAGE_MARGIN_HALF = IMAGE_MARGIN / 2;
+
 export class AnnotationSizeHandler {
   public getImageSize() {
     const { width, height } = Dimensions.get('screen');
@@ -14,6 +17,18 @@ export class AnnotationSizeHandler {
     return {
       width: style.width,
       height: style.height,
+    };
+  }
+
+  public getImageContainerSize(imageSize: ReturnType<typeof this.getImageSize>, scale: number) {
+    const { height, width } = imageSize;
+    return { width: (width + IMAGE_MARGIN) * scale, height: (height + IMAGE_MARGIN) * scale };
+  }
+
+  public getScrollContentHalf(imageSize: ReturnType<typeof this.getImageSize>, containerSize: ReturnType<typeof this.getImageSize>) {
+    return {
+      y: +((containerSize.height - imageSize.height + IMAGE_MARGIN_HALF) / 2).toFixed(2),
+      x: +((containerSize.width - imageSize.width + IMAGE_MARGIN_HALF) / 2).toFixed(2),
     };
   }
 
