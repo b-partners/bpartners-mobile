@@ -5,15 +5,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { palette } from '../../../theme/palette';
 
 export class AnnotationSizeHandler {
-  public getImageSize(scale: number) {
+  public getImageSize() {
     const { width, height } = Dimensions.get('screen');
     const style = { width: width - 40, height: height - 40 };
     if (width > height) style.width = height - 40;
     else style.height = width - 40;
 
     return {
-      width: style.width * scale,
-      height: style.height * scale,
+      width: style.width,
+      height: style.height,
     };
   }
 

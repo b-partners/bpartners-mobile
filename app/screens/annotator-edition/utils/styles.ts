@@ -173,3 +173,24 @@ export const labelStyles = StyleSheet.create({
     paddingLeft: spacing[4],
   },
 });
+
+export const annotationContainerStyle = StyleSheet.create({
+  topActions: { display: 'flex', gap: 10 },
+  scrollView: { margin: 0, padding: 0 },
+  imageContainer: {
+    backgroundColor: palette.lighterGrey,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  svgContainer: { position: 'absolute', top: 0, left: 0 },
+  point: {
+    position: 'absolute',
+    height: 10,
+    width: 10,
+    borderRadius: '50%',
+    backgroundColor: 'black',
+    transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
+  },
+});
