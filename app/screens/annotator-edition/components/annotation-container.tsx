@@ -6,10 +6,11 @@ import Svg, { Polygon } from 'react-native-svg';
 import { Loader } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { AnnotationContainerProps } from '../types/annotation';
-import { AnnotationSizeHandler, useAnnotationScale, useCenterScrollView } from '../utils';
+import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationScale, useCenterScrollView } from '../utils';
 import { annotationContainerStyle as style } from '../utils/styles';
 
 const { getContainerStyle, getImageSize, getImageContainerSize, getScrollContentHalf } = new AnnotationSizeHandler();
+const { getSvgPath, getPointPosition, constraintPoint } = new AnnotationPointHandler();
 
 export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, isLoading }) => {
   const { scale, scaleDown, scaleUp, scaleReset } = useAnnotationScale();
@@ -32,7 +33,8 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
     const { locationX, locationY } = event.nativeEvent;
     const x = locationX / scale;
     const y = locationY / scale;
-    setPoints(prev => [...prev, { x, y }]);
+    const point = constraintPoint({ x, y }, imageNotScaledSize);
+    setPoints(prev => [...prev, point]);
   };
 
   const handleCancelAnnotation = () => setPoints([]);
@@ -58,15 +60,10 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
                 {isLoading && <Loader color={palette.lighterPurple} />}
                 {!isLoading && <Image resizeMode='cover' style={imageSize} source={{ uri: pictureUrl }} />}
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
-                  <Polygon
-                    points={points.map(({ x, y }) => `${x * scale},${y * scale}`).join(' ')}
-                    fill='rgba(144, 248, 10, 0.4)'
-                    stroke='#90F80A'
-                    strokeWidth='1'
-                  />
+                  <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
                 </Svg>
-                {points.map(({ x, y }) => (
-                  <View key={`${x}-${y}`} style={[{ top: y * scale, left: x * scale }, style.point]} />
+                {points.map(point => (
+                  <View key={JSON.stringify(point)} style={[getPointPosition(point, scale), style.point]} />
                 ))}
               </View>
             </TouchableWithoutFeedback>
