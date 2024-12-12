@@ -1,4 +1,4 @@
-import { Point } from '@bpartners/typescript-client';
+import { AreaPictureAnnotationInstance, Point } from '@bpartners/typescript-client';
 
 import { IMAGE_MARGIN_HALF } from './annotation-size-handler';
 
@@ -31,5 +31,9 @@ export class AnnotationPointHandler {
     else currentPoint.y = y - IMAGE_MARGIN_HALF;
 
     return currentPoint;
+  }
+
+  public pointFromAnnotation(annotation: AreaPictureAnnotationInstance[]) {
+    return [].concat(...annotation.map(a => a.polygon.points));
   }
 }
