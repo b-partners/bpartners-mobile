@@ -1,7 +1,7 @@
-import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { BackHandler, GestureResponderEvent, Image, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { Button } from 'react-native-paper';
+import Animated from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
 import { v4 } from 'uuid';
 
@@ -14,7 +14,7 @@ import { annotationContainerStyle as style } from '../utils/styles';
 const { getContainerStyle, getImageSize, getImageContainerSize, getScrollContentHalf } = new AnnotationSizeHandler();
 const { getSvgPath, getPointPosition, constraintPoint, pointFromAnnotation } = new AnnotationPointHandler();
 
-export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, isLoading }) => {
+export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, isLoading, annotations, setAnnotations }) => {
   const { scale, scaleDown, scaleUp, scaleReset } = useAnnotationScale();
   const imageNotScaledSize = useMemo(() => getImageSize(), []);
   const { height: imageHeight, width: imageWidth } = imageNotScaledSize;
@@ -23,9 +23,8 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
   const { height: containerHeight, width: containerWidth } = containerStyle;
   const imageContainerSize = useMemo(() => getImageContainerSize(imageNotScaledSize, scale), [imageSize, scale]);
   const scrollContentHalf = useMemo(() => getScrollContentHalf(imageSize, { height: +containerHeight, width: +containerWidth }), [imageSize, containerStyle]);
-  const scrollYRef = useCenterScrollView({ contentSize: scrollContentHalf.y, direction: 'y', ref: [isLoading] });
-  const scrollXRef = useCenterScrollView({ contentSize: scrollContentHalf.x, direction: 'x', ref: [isLoading] });
-  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([]);
+  const scrollYRef = useCenterScrollView({ contentSize: scrollContentHalf.y, direction: 'y', ref: [isLoading, scale] });
+  const scrollXRef = useCenterScrollView({ contentSize: scrollContentHalf.x, direction: 'x', ref: [isLoading, scale] });
   const [points, setPoints] = useState([]);
 
   useEffect(() => {
@@ -46,7 +45,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
   };
 
   const handleAddAnnotation = () => {
-    if (points.length > 0) {
+    if (points.length > 2) {
       setAnnotations(p => [...p, { polygon: { points: [...points, points[0]] }, id: v4() }]);
       setPoints([]);
     }
@@ -70,7 +69,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
             style={[{ height: containerStyle.height, width: imageContainerSize.width }, style.scrollView]}
           >
             <TouchableWithoutFeedback onPress={handlePress}>
-              <View style={[imageContainerSize, style.imageContainer]}>
+              <Animated.View style={[imageContainerSize, style.imageContainer]}>
                 {isLoading && <Loader color={palette.lighterPurple} />}
                 {!isLoading && <Image resizeMode='cover' style={imageSize} source={{ uri: pictureUrl }} />}
                 {annotations.map(({ polygon: { points: currentPoint }, id }) => (
@@ -83,10 +82,10 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
                 </Svg>
                 {pointFromAnnotation(annotations)
                   .concat(points)
-                  .map(point => (
-                    <View key={JSON.stringify(point)} style={[getPointPosition(point, scale), style.point]} />
+                  .map((point, index) => (
+                    <View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />
                   ))}
-              </View>
+              </Animated.View>
             </TouchableWithoutFeedback>
           </ScrollView>
         </ScrollView>

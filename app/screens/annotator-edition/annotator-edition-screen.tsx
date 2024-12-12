@@ -1,6 +1,7 @@
+import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, Provider } from 'react-native-paper';
 
 import { Header } from '../../components';
@@ -12,6 +13,7 @@ import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { AnnotationContainer } from './components';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ route }) {
+  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([]);
   const { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams } = route.params || {};
   const { areaPictureDetails, updateAreaPicture, pictureUrl, isLoading } = useCreateAreaPicture({
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
@@ -32,8 +34,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         <AnnotationContainer
           isLoading={isLoading}
           pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}`}
-          polygons={[]}
-          setPolygons={() => {}}
+          annotations={annotations}
+          setAnnotations={setAnnotations}
         />
       </ErrorBoundary>
     </Provider>

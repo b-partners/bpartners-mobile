@@ -1,3 +1,6 @@
+import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
+import { Dispatch, SetStateAction } from 'react';
+
 import { Polygon } from './polygon';
 
 export interface Annotation {
@@ -20,6 +23,6 @@ export interface LabelType {
 export interface AnnotationContainerProps {
   isLoading: boolean;
   pictureUrl: string;
-  polygons: [];
-  setPolygons: () => void;
+  annotations: AreaPictureAnnotationInstance[];
+  setAnnotations: Dispatch<SetStateAction<AreaPictureAnnotationInstance[]>>;
 }
