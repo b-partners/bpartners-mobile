@@ -68,6 +68,6 @@ export const useGetImageSize = (pictureUrl: string) => {
       setImageSize(res);
     });
   }, []);
-  
+
   return imageSize;
 };
