@@ -8,6 +8,8 @@ export const RNPaperTheme: ThemeProp = {
   colors: {
     ...DefaultTheme.colors,
     primary: palette.mulberry,
+    primaryContainer: palette.mulberry,
     secondary: palette.lighterPurple,
+    secondaryContainer: palette.lighterPurple,
   },
 };

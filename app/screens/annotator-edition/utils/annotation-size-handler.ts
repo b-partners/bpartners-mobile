@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dimensions, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { palette } from '../../../theme/palette';
+import { getImageWidth } from './utils';
 
 export const IMAGE_MARGIN = 100;
 export const IMAGE_MARGIN_HALF = IMAGE_MARGIN / 2;
@@ -57,4 +58,16 @@ export const useCenterScrollView = (params: UseCenterScrollViewParams) => {
     }
   }, ref);
   return scrollViewRef;
+};
+
+export const useGetImageSize = (pictureUrl: string) => {
+  const [imageSize, setImageSize] = useState(0);
+
+  useEffect(() => {
+    getImageWidth(pictureUrl).then(res => {
+      setImageSize(res);
+    });
+  }, []);
+  
+  return imageSize;
 };

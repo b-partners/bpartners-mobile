@@ -175,7 +175,7 @@ export const labelStyles = StyleSheet.create({
 });
 
 export const annotationContainerStyle = StyleSheet.create({
-  topActions: { display: 'flex', gap: 10 },
+  topActions: { display: 'flex', flexDirection: 'row', justifyContent: 'space-around' },
   scrollView: { margin: 0, padding: 0 },
   imageContainer: {
     backgroundColor: palette.lighterGrey,
