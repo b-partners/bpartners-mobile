@@ -58,10 +58,13 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
     setPoints([]);
   };
 
+  useEffect(() => {
+    setPoints([]);
+  }, [annotations]);
+
   const handleAddAnnotation = () => {
     if (points.length > 2) {
       setAnnotations(p => [...p, { polygon: { points: scalePointsToReal([...points, points[0]], imageRealWidth, imageWidth) }, id: v4() }]);
-      setPoints([]);
     }
   };
 
@@ -114,6 +117,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
                     return <Animated.View key={`${JSON.stringify(point)}${index}${pointIndex}`} style={[getPointPosition(point, scale), style.point]} />;
                   })
                 )}
+
                 {points.map((point, index) => {
                   return <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />;
                 })}

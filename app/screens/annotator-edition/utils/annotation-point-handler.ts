@@ -82,4 +82,21 @@ export class AnnotationPointHandler {
       },
     });
   }
+  public getPointsCenter(points: Point[]) {
+    let xRes = 0;
+    let yRes = 0;
+
+    points.forEach(({ x, y }) => {
+      xRes += x;
+      yRes += y;
+    });
+
+    xRes = xRes / points.length;
+    yRes = yRes / points.length;
+
+    return {
+      x: xRes,
+      y: yRes,
+    };
+  }
 }

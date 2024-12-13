@@ -2,12 +2,15 @@ import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { Button, Provider } from 'react-native-paper';
+import { ScrollView, View } from 'react-native';
+import { Button, IconButton, Provider } from 'react-native-paper';
+import MuiIcon from 'react-native-vector-icons/FontAwesome';
 
-import { Header } from '../../components';
+import { Header, Text } from '../../components';
 import { areaPictureMapper } from '../../mappers';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { useCreateAreaPicture } from '../../queries';
+import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { AnnotationContainer } from './components';
@@ -20,23 +23,53 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   });
 
   const extendPicture = () => {
+    setAnnotations([]);
     updateAreaPicture({
       crupdateAreaPictureDetails: areaPictureMapper.areaPicDetailsToCrupdate({ ...areaPictureDetails, isExtended: !areaPictureDetails.isExtended }),
       pictureId: areaPictureDetails.id,
     });
   };
 
+  const handleRemovePolygon = (index: number) => {
+    setAnnotations(a => a.filter((_a, _index) => index !== _index));
+  };
+
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='annotationScreen.title' leftIcon={'back'} style={HEADER} titleStyle={HEADER_TITLE} />
-        <Button onPress={extendPicture}>Extend</Button>
+        <Button buttonColor={palette.purple} textColor='white' style={{ marginHorizontal: 20, marginVertical: 5 }} onPress={extendPicture}>
+          Recentrer l'image
+        </Button>
         <AnnotationContainer
           isLoading={isLoading}
           pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}`}
           annotations={annotations}
           setAnnotations={setAnnotations}
         />
+        <ScrollView style={{ height: 70 }}>
+          {annotations.map(({ annotationId }, index) => (
+            <View
+              style={{
+                backgroundColor: palette.purple,
+                marginHorizontal: 10,
+                marginVertical: 5,
+                padding: 5,
+                borderRadius: 10,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+              key={annotationId}
+            >
+              <View style={{ flexGrow: 1 }}>
+                <Text text={`Polygon ${index + 1}`} />
+              </View>
+              <IconButton icon={() => <MuiIcon color='white' name='edit' size={25} />} />
+              <IconButton icon={() => <MuiIcon color='white' name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
+            </View>
+          ))}
+        </ScrollView>
       </ErrorBoundary>
     </Provider>
   );
