@@ -18,7 +18,7 @@ export const AnnotationNameRenderer: FC<AnnotationNameRendererProps> = ({ annota
       {annotations.map(({ polygon: { points: currentPoints }, id }, index) => {
         const { y, x } = getPointsCenter(currentPoints, scale);
         return (
-          <Animated.View key={id + index} style={[{ top: y, left: x }, style.textContainer]}>
+          <Animated.View key={+id + index} style={[{ top: y, left: x }, style.textContainer]}>
             <Text text={'P' + (index + 1)} />
           </Animated.View>
         );

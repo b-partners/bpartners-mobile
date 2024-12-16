@@ -14,7 +14,6 @@ import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationScale, useC
 import { annotationContainerStyle as style } from '../utils/styles';
 import { AnnotationBackgroundRenderer } from './annotation-background-renderer';
 import { AnnotationNameRenderer } from './annotation-name-renderer';
-import { AnnotationRenderer } from './annotation-renderer';
 
 const { getContainerStyle, getImageSize, getImageContainerSize, getScrollContentHalf } = new AnnotationSizeHandler();
 const { getSvgPath, getPointPosition, constraintPoint, scalePointsToReal, scaleRealPoints } = new AnnotationPointHandler();
@@ -98,11 +97,10 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
               <Animated.View style={[imageContainerSize, style.imageContainer]}>
                 {isLoading && imageRealWidth === 0 && <Loader color={palette.lighterPurple} />}
                 {!isLoading && imageRealWidth > 0 && <Image resizeMode='cover' style={imageSize} source={{ uri: pictureUrl }} />}
-                <AnnotationBackgroundRenderer scale={scale} annotations={scaledAnnotations} size={imageContainerSize} />
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
                   <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
                 </Svg>
-                <AnnotationRenderer annotations={scaledAnnotations} scale={scale} />
+                <AnnotationBackgroundRenderer scale={scale} annotations={scaledAnnotations} size={imageContainerSize} />
                 {points.map((point, index) => (
                   <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />
                 ))}

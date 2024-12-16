@@ -106,11 +106,11 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const createPanResponder = index => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (event, gestureState) => {
+      onMoveShouldSetPanResponder: (_event, gestureState) => {
         const moveThreshold = 75;
         return Math.abs(gestureState.dx) > moveThreshold || Math.abs(gestureState.dy) > moveThreshold;
       },
-      onPanResponderMove: (event, gestureState) => {
+      onPanResponderMove: (_event, gestureState) => {
         const { dx, dy } = gestureState;
         const newPoints = [...currentPolygonPoints];
         let updatedPoint = { ...newPoints[index] };
