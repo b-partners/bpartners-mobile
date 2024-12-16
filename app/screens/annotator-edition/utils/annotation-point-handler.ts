@@ -31,6 +31,7 @@ export class AnnotationPointHandler {
   public getSvgPath(points: Point[], scale: number) {
     return points.map(({ x, y }) => `${(x + IMAGE_MARGIN_HALF) * scale},${(y + IMAGE_MARGIN_HALF) * scale}`).join(' ');
   }
+  
   public getPointPosition({ x, y }: Point, scale: number) {
     return { top: (y + IMAGE_MARGIN_HALF) * scale, left: (x + IMAGE_MARGIN_HALF) * scale };
   }

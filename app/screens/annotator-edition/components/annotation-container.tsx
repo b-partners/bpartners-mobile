@@ -12,6 +12,7 @@ import { palette } from '../../../theme/palette';
 import { AnnotationContainerProps } from '../types/annotation';
 import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationScale, useCenterScrollView, useGetImageSize } from '../utils';
 import { annotationContainerStyle as style } from '../utils/styles';
+import { AnnotationBackgroundRenderer } from './annotation-background-renderer';
 import { AnnotationNameRenderer } from './annotation-name-renderer';
 import { AnnotationRenderer } from './annotation-renderer';
 
@@ -97,23 +98,14 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
               <Animated.View style={[imageContainerSize, style.imageContainer]}>
                 {isLoading && imageRealWidth === 0 && <Loader color={palette.lighterPurple} />}
                 {!isLoading && imageRealWidth > 0 && <Image resizeMode='cover' style={imageSize} source={{ uri: pictureUrl }} />}
-                {annotations.map(({ polygon: { points: currentPoint }, id }) => (
-                  <Svg key={id} height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
-                    <Polygon
-                      points={getSvgPath(scaleRealPoints(currentPoint, imageRealWidth, imageWidth), scale)}
-                      fill='rgba(144, 248, 10, 0.4)'
-                      stroke='#90F80A'
-                      strokeWidth='1'
-                    />
-                  </Svg>
-                ))}
+                <AnnotationBackgroundRenderer scale={scale} annotations={scaledAnnotations} size={imageContainerSize} />
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
                   <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
                 </Svg>
                 <AnnotationRenderer annotations={scaledAnnotations} scale={scale} />
-                {points.map((point, index) => {
-                  return <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />;
-                })}
+                {points.map((point, index) => (
+                  <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />
+                ))}
                 <AnnotationNameRenderer annotations={scaledAnnotations} scale={scale} />
               </Animated.View>
             </TouchableWithoutFeedback>
