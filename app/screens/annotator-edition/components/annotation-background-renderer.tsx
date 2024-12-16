@@ -1,5 +1,6 @@
 import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
-import React, { FC, useEffect, useState } from 'react';
+import debounceFn from 'debounce-fn';
+import React, { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { Animated, PanResponder } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
 
@@ -10,13 +11,16 @@ interface AnnotationBackgroundRendererProps {
   scale: number;
   size: ISize;
   isCreating: boolean;
+  setAnnotations: Dispatch<SetStateAction<AreaPictureAnnotationInstance[]>>;
 }
 
 const { getSvgPath, getPointPosition } = new AnnotationPointHandler();
 
-export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps> = ({ annotations, size, scale, isCreating }) => {
+export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps> = ({ annotations, size, scale, isCreating, setAnnotations }) => {
   const { height, width } = size;
   const [localAnnotations, setLocalAnnotations] = useState(annotations);
+
+  const debounceSetAnnotation = useMemo(() => debounceFn(setAnnotations, { wait: 2000 }), []);
 
   useEffect(() => {
     setLocalAnnotations(annotations);
@@ -46,6 +50,7 @@ export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps>
                 currentAnnotations[index].polygon.points[0].y += dy / scale;
               }
               setLocalAnnotations(currentAnnotations);
+              debounceSetAnnotation(currentAnnotations);
             },
           });
 

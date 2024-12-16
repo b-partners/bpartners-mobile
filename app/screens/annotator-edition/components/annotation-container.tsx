@@ -66,6 +66,14 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
     }
   };
 
+  const handleSetAnnotation = (currentAnnotations: AreaPictureAnnotationInstance[]) => {
+    setAnnotations(
+      currentAnnotations.map(currentAnnotation => {
+        return { ...currentAnnotation, polygon: { points: scalePointsToReal(currentAnnotation.polygon.points, imageRealWidth, imageWidth) } };
+      })
+    );
+  };
+
   const scaledAnnotations: AreaPictureAnnotationInstance[] = annotations.map(annotation => ({
     ...annotation,
     polygon: { points: scaleRealPoints(annotation.polygon.points, imageRealWidth, imageWidth) },
@@ -100,7 +108,13 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
                   <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
                 </Svg>
-                <AnnotationBackgroundRenderer isCreating={points.length !== 0} scale={scale} annotations={scaledAnnotations} size={imageContainerSize} />
+                <AnnotationBackgroundRenderer
+                  setAnnotations={handleSetAnnotation}
+                  isCreating={points.length === 0}
+                  scale={scale}
+                  annotations={scaledAnnotations}
+                  size={imageContainerSize}
+                />
                 {points.map((point, index) => (
                   <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />
                 ))}
