@@ -7,14 +7,15 @@ import Svg, { Polygon } from 'react-native-svg';
 import MuiIcon from 'react-native-vector-icons/MaterialIcons';
 import { v4 } from 'uuid';
 
-import { Loader, Text } from '../../../components';
+import { Loader } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { AnnotationContainerProps } from '../types/annotation';
 import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationScale, useCenterScrollView, useGetImageSize } from '../utils';
 import { annotationContainerStyle as style } from '../utils/styles';
+import { AnnotationNameRenderer } from './annotation-name-rendrer';
 
 const { getContainerStyle, getImageSize, getImageContainerSize, getScrollContentHalf } = new AnnotationSizeHandler();
-const { getSvgPath, getPointPosition, constraintPoint, scalePointsToReal, scaleRealPoints, getPointsCenter } = new AnnotationPointHandler();
+const { getSvgPath, getPointPosition, constraintPoint, scalePointsToReal, scaleRealPoints } = new AnnotationPointHandler();
 
 interface MuiIconButtonProps {
   name: string;
@@ -117,17 +118,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
                 {points.map((point, index) => {
                   return <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />;
                 })}
-                {scaledAnnotations.map(({ polygon: { points: currentPoints }, id }, index) => {
-                  const { y, x } = getPointsCenter(currentPoints, scale);
-                  return (
-                    <Animated.View
-                      key={id + index}
-                      style={{ position: 'absolute', top: y, left: x, margin: 0, padding: 2, backgroundColor: 'black', borderRadius: '50%' }}
-                    >
-                      <Text text={`P${index + 1}`} />
-                    </Animated.View>
-                  );
-                })}
+                <AnnotationNameRenderer annotations={scaledAnnotations} scale={scale} />
               </Animated.View>
             </TouchableWithoutFeedback>
           </ScrollView>

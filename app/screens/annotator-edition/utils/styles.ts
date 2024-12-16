@@ -194,3 +194,18 @@ export const annotationContainerStyle = StyleSheet.create({
     transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
   },
 });
+
+export const annotationNameRendererStyle = StyleSheet.create({
+  textContainer: {
+    position: 'absolute',
+    margin: 0,
+    padding: 0,
+    backgroundColor: 'black',
+    borderRadius: '50%',
+    height: 25,
+    width: 25,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
