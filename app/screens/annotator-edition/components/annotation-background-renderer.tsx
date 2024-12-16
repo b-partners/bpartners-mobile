@@ -9,11 +9,12 @@ interface AnnotationBackgroundRendererProps {
   annotations: AreaPictureAnnotationInstance[];
   scale: number;
   size: ISize;
+  isCreating: boolean;
 }
 
 const { getSvgPath, getPointPosition } = new AnnotationPointHandler();
 
-export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps> = ({ annotations, size, scale }) => {
+export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps> = ({ annotations, size, scale, isCreating }) => {
   const { height, width } = size;
   const [localAnnotations, setLocalAnnotations] = useState(annotations);
 
@@ -48,9 +49,11 @@ export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps>
             },
           });
 
+          const panHandlers = isCreating ? panResponder.panHandlers : {};
+
           return (
             <Animated.View
-              {...panResponder.panHandlers}
+              {...panHandlers}
               key={`${JSON.stringify(point)}${index}${pointIndex}`}
               style={[getPointPosition(point, scale), annotationRendererStyle.point]}
             />

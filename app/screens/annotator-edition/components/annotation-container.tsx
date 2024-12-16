@@ -100,7 +100,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
                   <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
                 </Svg>
-                <AnnotationBackgroundRenderer scale={scale} annotations={scaledAnnotations} size={imageContainerSize} />
+                <AnnotationBackgroundRenderer isCreating={points.length !== 0} scale={scale} annotations={scaledAnnotations} size={imageContainerSize} />
                 {points.map((point, index) => (
                   <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />
                 ))}
