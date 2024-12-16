@@ -1,20 +1,20 @@
 import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { BackHandler, GestureResponderEvent, Image, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
+import { GestureResponderEvent, Image, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
 import MuiIcon from 'react-native-vector-icons/MaterialIcons';
 import { v4 } from 'uuid';
 
-import { Loader } from '../../../components';
+import { Loader, Text } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { AnnotationContainerProps } from '../types/annotation';
 import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationScale, useCenterScrollView, useGetImageSize } from '../utils';
 import { annotationContainerStyle as style } from '../utils/styles';
 
 const { getContainerStyle, getImageSize, getImageContainerSize, getScrollContentHalf } = new AnnotationSizeHandler();
-const { getSvgPath, getPointPosition, constraintPoint, scalePointsToReal, scaleRealPoints } = new AnnotationPointHandler();
+const { getSvgPath, getPointPosition, constraintPoint, scalePointsToReal, scaleRealPoints, getPointsCenter } = new AnnotationPointHandler();
 
 interface MuiIconButtonProps {
   name: string;
@@ -40,10 +40,6 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
   const scrollYRef = useCenterScrollView({ contentSize: scrollContentHalf.y, direction: 'y', ref: [isLoading, scale] });
   const scrollXRef = useCenterScrollView({ contentSize: scrollContentHalf.x, direction: 'x', ref: [isLoading, scale] });
   const [points, setPoints] = useState([]);
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => true);
-  }, []);
 
   const handlePress = (event: GestureResponderEvent) => {
     const { locationX, locationY } = event.nativeEvent;
@@ -120,6 +116,17 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
 
                 {points.map((point, index) => {
                   return <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />;
+                })}
+                {scaledAnnotations.map(({ polygon: { points: currentPoints }, id }, index) => {
+                  const { y, x } = getPointsCenter(currentPoints, scale);
+                  return (
+                    <Animated.View
+                      key={id + index}
+                      style={{ position: 'absolute', top: y, left: x, margin: 0, padding: 2, backgroundColor: 'black', borderRadius: '50%' }}
+                    >
+                      <Text text={`P${index + 1}`} />
+                    </Animated.View>
+                  );
                 })}
               </Animated.View>
             </TouchableWithoutFeedback>

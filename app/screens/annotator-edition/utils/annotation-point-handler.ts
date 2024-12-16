@@ -82,7 +82,7 @@ export class AnnotationPointHandler {
       },
     });
   }
-  public getPointsCenter(points: Point[]) {
+  public getPointsCenter(points: Point[], scale: number) {
     let xRes = 0;
     let yRes = 0;
 
@@ -95,8 +95,8 @@ export class AnnotationPointHandler {
     yRes = yRes / points.length;
 
     return {
-      x: xRes,
-      y: yRes,
+      x: (xRes + IMAGE_MARGIN_HALF) * scale,
+      y: (yRes + IMAGE_MARGIN_HALF) * scale,
     };
   }
 }
