@@ -12,7 +12,8 @@ import { palette } from '../../../theme/palette';
 import { AnnotationContainerProps } from '../types/annotation';
 import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationScale, useCenterScrollView, useGetImageSize } from '../utils';
 import { annotationContainerStyle as style } from '../utils/styles';
-import { AnnotationNameRenderer } from './annotation-name-rendrer';
+import { AnnotationNameRenderer } from './annotation-name-renderer';
+import { AnnotationRenderer } from './annotation-renderer';
 
 const { getContainerStyle, getImageSize, getImageContainerSize, getScrollContentHalf } = new AnnotationSizeHandler();
 const { getSvgPath, getPointPosition, constraintPoint, scalePointsToReal, scaleRealPoints } = new AnnotationPointHandler();
@@ -109,12 +110,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
                   <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
                 </Svg>
-                {scaledAnnotations.map((annotation, index) =>
-                  annotation.polygon.points.map((point, pointIndex) => {
-                    return <Animated.View key={`${JSON.stringify(point)}${index}${pointIndex}`} style={[getPointPosition(point, scale), style.point]} />;
-                  })
-                )}
-
+                <AnnotationRenderer annotations={scaledAnnotations} scale={scale} />
                 {points.map((point, index) => {
                   return <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />;
                 })}

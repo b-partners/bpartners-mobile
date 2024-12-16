@@ -4,5 +4,6 @@ export * from './annotation-form';
 export * from './annotation-header-button';
 export * from './annotation-item';
 export * from './annotation-modal';
-export * from './annotation-name-rendrer';
+export * from './annotation-name-renderer';
+export * from './annotation-renderer';
 export * from './label-row';

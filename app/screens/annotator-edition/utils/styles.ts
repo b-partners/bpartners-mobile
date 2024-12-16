@@ -195,6 +195,10 @@ export const annotationContainerStyle = StyleSheet.create({
   },
 });
 
+export const annotationRendererStyle = StyleSheet.create({
+  point: annotationContainerStyle.point,
+});
+
 export const annotationNameRendererStyle = StyleSheet.create({
   textContainer: {
     position: 'absolute',
