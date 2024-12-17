@@ -2,20 +2,22 @@ import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Dimensions, ScrollView, View } from 'react-native';
 import { Button, IconButton, Provider } from 'react-native-paper';
 import MuiIcon from 'react-native-vector-icons/FontAwesome';
 
 import { Header, Text } from '../../components';
+import { useSheetModal } from '../../hook';
 import { areaPictureMapper } from '../../mappers';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { useCreateAreaPicture } from '../../queries';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { AnnotationContainer } from './components';
+import { AnnotationContainer, AnnotationInfoForm } from './components';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ route }) {
+  const { open: openSheetModal } = useSheetModal();
   const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([]);
   const { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams } = route.params || {};
   const { areaPictureDetails, updateAreaPicture, pictureUrl, isLoading } = useCreateAreaPicture({
@@ -32,6 +34,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   const handleRemovePolygon = (index: number) => {
     setAnnotations(a => a.filter((_a, _index) => index !== _index));
+  };
+  const { height } = Dimensions.get('screen');
+  const handleEdit = (index: number) => {
+    openSheetModal(<AnnotationInfoForm annotation={annotations[index]} />, { containerStyle: { height: height * 0.7 } });
   };
 
   return (
@@ -65,7 +71,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               <View style={{ flexGrow: 1 }}>
                 <Text text={`Polygon ${index + 1}`} />
               </View>
-              <IconButton icon={() => <MuiIcon color='white' name='edit' size={25} />} />
+              <IconButton icon={() => <MuiIcon color='white' name='edit' size={25} />} onPress={() => handleEdit(index)} />
               <IconButton icon={() => <MuiIcon color='white' name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
             </View>
           ))}

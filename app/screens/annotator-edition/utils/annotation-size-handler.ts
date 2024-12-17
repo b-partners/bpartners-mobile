@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Dimensions, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -63,7 +63,7 @@ export const useCenterScrollView = (params: UseCenterScrollViewParams) => {
 export const useGetImageSize = (pictureUrl: string) => {
   const [imageSize, setImageSize] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getImageWidth(pictureUrl).then(res => {
       setImageSize(res);
     });

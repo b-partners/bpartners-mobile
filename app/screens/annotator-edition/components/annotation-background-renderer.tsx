@@ -20,7 +20,7 @@ export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps>
   const { height, width } = size;
   const [localAnnotations, setLocalAnnotations] = useState(annotations);
 
-  const debounceSetAnnotation = useMemo(() => debounceFn(setAnnotations, { wait: 2000 }), []);
+  const debounceSetAnnotation = useMemo(() => debounceFn(setAnnotations, { wait: 2000 }), [setAnnotations]);
 
   useEffect(() => {
     setLocalAnnotations(annotations);

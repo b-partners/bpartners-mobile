@@ -67,11 +67,11 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
   };
 
   const handleSetAnnotation = (currentAnnotations: AreaPictureAnnotationInstance[]) => {
-    setAnnotations(
-      currentAnnotations.map(currentAnnotation => {
-        return { ...currentAnnotation, polygon: { points: scalePointsToReal(currentAnnotation.polygon.points, imageRealWidth, imageWidth) } };
-      })
-    );
+    const result = currentAnnotations.map(currentAnnotation => {
+      const currentPoints = scalePointsToReal(currentAnnotation.polygon.points, imageRealWidth, imageWidth);
+      return { ...currentAnnotation, polygon: { points: currentPoints } };
+    });
+    setAnnotations(result);
   };
 
   const scaledAnnotations: AreaPictureAnnotationInstance[] = annotations.map(annotation => ({
@@ -103,7 +103,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
           >
             <TouchableWithoutFeedback onPress={handlePress}>
               <Animated.View style={[imageContainerSize, style.imageContainer]}>
-                {isLoading && imageRealWidth === 0 && <Loader color={palette.lighterPurple} />}
+                {(isLoading || imageRealWidth === 0) && <Loader color={palette.lighterPurple} />}
                 {!isLoading && imageRealWidth > 0 && <Image resizeMode='cover' style={imageSize} source={{ uri: pictureUrl }} />}
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
                   <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
