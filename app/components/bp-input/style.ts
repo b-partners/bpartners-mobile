@@ -50,6 +50,7 @@ export const bpInputSelectStyle = StyleSheet.create({
 export const bpInputSelectSimpleTextRendererStyle = StyleSheet.create({
   itemStyle: {
     width: '100%',
+    display: 'flex',
     flexDirection: 'row',
     paddingHorizontal: 12,
     justifyContent: 'center',

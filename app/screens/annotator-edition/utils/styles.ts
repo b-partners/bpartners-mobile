@@ -257,3 +257,12 @@ export const annotatorEditorScreen = StyleSheet.create({
     height: '100%',
   },
 });
+
+export const slopeRendererStyle = StyleSheet.create({
+  image: {
+    objectFit: 'contain',
+    height: 60,
+    width: 60,
+    marginRight: 10,
+  },
+});

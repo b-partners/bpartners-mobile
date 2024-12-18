@@ -7,4 +7,5 @@ export * from './annotation-item';
 export * from './annotation-modal';
 export * from './annotation-name-renderer';
 export * from './annotation-renderer';
+export * from './annotation-slope-renderer';
 export * from './label-row';

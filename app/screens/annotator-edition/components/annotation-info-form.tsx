@@ -9,7 +9,8 @@ import { BpInputSelectSimpleTextRenderer } from '../../../components/bp-input';
 import { useAnnotationInfo } from '../../../form';
 import { useSheetModal } from '../../../hook';
 import { palette } from '../../../theme/palette';
-import { annotatorCoveringList, annotatorWearnessList } from '../utils';
+import { annotatorCoveringList, annotatorSlopeImageList, annotatorWearnessList } from '../utils';
+import { slopeRenderer } from './annotation-slope-renderer';
 
 interface AnnotationInfoFormProps {
   annotation: AreaPictureAnnotationInstance;
@@ -47,7 +48,16 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
           getItemTitle={({ name }) => name}
           getItemDefaultValue={value => [...annotatorCoveringList.filter(({ id }) => id === value), null][0]}
           data={annotatorCoveringList}
-          renderItem={BpInputSelectSimpleTextRenderer}
+          renderItem={BpInputSelectSimpleTextRenderer()}
+        />
+        <BpSheetSelect
+          label='Pente'
+          name='covering'
+          getItemValue={({ id }) => id}
+          getItemTitle={({ name }) => name}
+          getItemDefaultValue={value => [...annotatorSlopeImageList.filter(({ id }) => id === value), null][0]}
+          data={annotatorSlopeImageList}
+          renderItem={BpInputSelectSimpleTextRenderer(slopeRenderer)}
         />
         <BpSheetSelect
           label='Usure'
@@ -56,19 +66,19 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
           getItemTitle={({ name }) => name}
           getItemDefaultValue={value => [...annotatorWearnessList.filter(({ id }) => id === value), null][0]}
           data={annotatorWearnessList}
-          renderItem={BpInputSelectSimpleTextRenderer}
+          renderItem={BpInputSelectSimpleTextRenderer()}
         />
         <BpSheetSelect
           label="Taux d'usure"
           name='wearness'
           data={new Array(11).fill(0).map((_value, index) => `${index * 10}`)}
-          renderItem={BpInputSelectSimpleTextRenderer}
+          renderItem={BpInputSelectSimpleTextRenderer()}
         />
         <BpSheetSelect
           label='Taux de moisissure'
           name='moldRate'
           data={new Array(11).fill(0).map((_value, index) => `${index * 10}`)}
-          renderItem={BpInputSelectSimpleTextRenderer}
+          renderItem={BpInputSelectSimpleTextRenderer()}
         />
         <BpSheetInput labelTx='annotationScreen.labels.obstacle' name='obstacle' multiline />
         <BpSheetInput labelTx='prospectScreen.process.comment' name='comment' multiline />
