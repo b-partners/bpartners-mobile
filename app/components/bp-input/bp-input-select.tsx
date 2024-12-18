@@ -11,15 +11,16 @@ import { Text } from '../text/text';
 import { bpInputSelectStyle as style } from './style';
 
 export interface BpInputSelectProps
-  extends Omit<SelectDropdownProps, 'onChange' | 'renderButton' | 'onSelect' | 'value' | 'backgroundColor' | 'errorMessage' | 'error'> {
+  extends Omit<SelectDropdownProps, 'onChange' | 'renderButton' | 'renderItem' | 'onSelect' | 'value' | 'backgroundColor' | 'errorMessage' | 'error'> {
   name: string;
   label: string;
   getItemTitle?: (item: any) => string;
   getItemValue?: (item: any) => any;
   getItemDefaultValue?: (currentValue: any) => any;
+  renderItem: (selectedItem: any, itemTitle: string, index: number, isSelected: boolean) => React.ReactNode;
 }
 
-export const BpInputSelect: FC<BpInputSelectProps> = ({ name, label, getItemTitle, getItemValue, getItemDefaultValue, ...props }) => {
+export const BpInputSelect: FC<BpInputSelectProps> = ({ name, label, getItemTitle, getItemValue, getItemDefaultValue, renderItem, ...props }) => {
   const {
     setValue,
     formState: { errors },
@@ -36,6 +37,7 @@ export const BpInputSelect: FC<BpInputSelectProps> = ({ name, label, getItemTitl
   return (
     <View style={style.container}>
       <SelectDropdown
+        renderItem={(item, index, isSelected) => renderItem(item, getItemTitle ? getItemTitle(item) : item, index, isSelected)}
         defaultValue={getItemDefaultValue ? getItemDefaultValue(value) : value}
         renderButton={(selectedItem, isOpened) => (
           <View style={[style.button, error && style.buttonError]}>

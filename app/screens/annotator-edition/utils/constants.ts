@@ -11,3 +11,17 @@ export const annotatorCoveringList = [
   { id: 'membrane-elastomere', name: 'Membrane élastomère' },
   { id: 'autres', name: 'Autres' },
 ];
+
+export const annotatorWearnessList = [
+  { id: 'LOW', name: '1. Minime' },
+  { id: 'PARTIAL', name: '2. Partielle' },
+  { id: 'ADVANCED', name: '3. Avancée' },
+  { id: 'EXTREME', name: '4. Extrême' },
+];
+
+export const wearTranslation = {
+  LOW: 'Minime',
+  PARTIAL: 'Partielle',
+  ADVANCED: 'Avancée',
+  EXTREME: 'Extrême',
+};

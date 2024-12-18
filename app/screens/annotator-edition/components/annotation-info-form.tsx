@@ -9,7 +9,7 @@ import { BpInputSelectSimpleTextRenderer } from '../../../components/bp-input';
 import { useAnnotationInfo } from '../../../form';
 import { useSheetModal } from '../../../hook';
 import { palette } from '../../../theme/palette';
-import { annotatorCoveringList } from '../utils';
+import { annotatorCoveringList, annotatorWearnessList } from '../utils';
 
 interface AnnotationInfoFormProps {
   annotation: AreaPictureAnnotationInstance;
@@ -47,6 +47,21 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
           getItemTitle={({ name }) => name}
           getItemDefaultValue={value => [...annotatorCoveringList.filter(({ id }) => id === value), null][0]}
           data={annotatorCoveringList}
+          renderItem={BpInputSelectSimpleTextRenderer}
+        />
+        <BpSheetSelect
+          label='Usure'
+          name='wearness'
+          getItemValue={({ id }) => id}
+          getItemTitle={({ name }) => name}
+          getItemDefaultValue={value => [...annotatorWearnessList.filter(({ id }) => id === value), null][0]}
+          data={annotatorWearnessList}
+          renderItem={BpInputSelectSimpleTextRenderer}
+        />
+        <BpSheetSelect
+          label="Taux d'usure"
+          name='wearness'
+          data={new Array(11).fill(0).map((_value, index) => `${index * 10}`)}
           renderItem={BpInputSelectSimpleTextRenderer}
         />
         <BpSheetInput labelTx='prospectScreen.process.comment' name='comment' multiline />
