@@ -46,3 +46,20 @@ export const bpInputSelectStyle = StyleSheet.create({
     color: palette.greyDarker,
   },
 });
+
+export const bpInputSelectSimpleTextRendererStyle = StyleSheet.create({
+  itemStyle: {
+    width: '100%',
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  itemTxtStyle: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#151E26',
+  },
+});

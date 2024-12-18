@@ -1,10 +1,11 @@
 import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
 import React, { FC, useEffect } from 'react';
 import { FormProvider } from 'react-hook-form';
-import { BackHandler, Dimensions, StyleSheet, View } from 'react-native';
+import { BackHandler, Dimensions, View } from 'react-native';
 import { Button } from 'react-native-paper';
 
-import { BpSheetInput, BpSheetSelect, Text } from '../../../components';
+import { BpSheetInput, BpSheetSelect } from '../../../components';
+import { BpInputSelectSimpleTextRenderer } from '../../../components/bp-input';
 import { useAnnotationInfo } from '../../../form';
 import { useSheetModal } from '../../../hook';
 import { palette } from '../../../theme/palette';
@@ -46,13 +47,7 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
           getItemTitle={({ name }) => name}
           getItemDefaultValue={value => [...annotatorCoveringList.filter(({ id }) => id === value), null][0]}
           data={annotatorCoveringList}
-          renderItem={(item, _index, isSelected) => {
-            return (
-              <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
-                <Text style={styles.dropdownItemTxtStyle}>{item.name}</Text>
-              </View>
-            );
-          }}
+          renderItem={BpInputSelectSimpleTextRenderer}
         />
         <BpSheetInput labelTx='prospectScreen.process.comment' name='comment' multiline />
       </FormProvider>
@@ -67,20 +62,3 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  dropdownItemStyle: {
-    width: '100%',
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  dropdownItemTxtStyle: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#151E26',
-  },
-});

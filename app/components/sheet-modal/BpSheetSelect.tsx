@@ -4,7 +4,7 @@ import React, { FC, useCallback } from 'react';
 import { BpInputSelect, BpInputSelectProps } from '../bp-input';
 
 /**
- * Input like BpInput but handle keyboard when using @gorhom/bottom-sheet
+ * Input like BpInputSheetSelect but handle keyboard when using @gorhom/bottom-sheet
  *
  * @param param0
  * @returns
