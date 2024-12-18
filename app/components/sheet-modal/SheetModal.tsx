@@ -36,7 +36,7 @@ export const SheetModal = () => {
   return (
     <GestureHandlerRootView style={{ ...sheetModalStyles.container, ...height }}>
       <BottomSheetModalProvider>
-        <BottomSheetModal enablePanDownToClose={panClose} ref={bottomSheetModalRef} onChange={handleSheetChanges}>
+        <BottomSheetModal enableContentPanningGesture={panClose} enablePanDownToClose={panClose} ref={bottomSheetModalRef} onChange={handleSheetChanges}>
           <BottomSheetView style={{ ...sheetModalStyles.contentContainer, ...containerStyle }}>{content}</BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>
