@@ -64,6 +64,13 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
           data={new Array(11).fill(0).map((_value, index) => `${index * 10}`)}
           renderItem={BpInputSelectSimpleTextRenderer}
         />
+        <BpSheetSelect
+          label='Taux de moisissure'
+          name='moldRate'
+          data={new Array(11).fill(0).map((_value, index) => `${index * 10}`)}
+          renderItem={BpInputSelectSimpleTextRenderer}
+        />
+        <BpSheetInput labelTx='annotationScreen.labels.obstacle' name='obstacle' multiline />
         <BpSheetInput labelTx='prospectScreen.process.comment' name='comment' multiline />
       </FormProvider>
       <View>
