@@ -47,3 +47,8 @@ export const annotatorSlopeImageList = [
   { id: 17, name: 'Pente 17/12', link: require('../assets/images/slope/17.png') },
   { id: 18, name: 'Pente 18/12', link: require('../assets/images/slope/18.png') },
 ];
+
+export const annotationLabelList = [
+  { id: 'roof', name: 'Toit' },
+  { id: 'velux', name: 'Velux' },
+];

@@ -1,8 +1,7 @@
 import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
 import React, { FC, useEffect } from 'react';
 import { FormProvider } from 'react-hook-form';
-import { BackHandler, Dimensions, View } from 'react-native';
-import { ScrollView } from 'react-native';
+import { BackHandler, Dimensions, ScrollView, View } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import { BpSheetInput, BpSheetSelect } from '../../../components';
@@ -10,7 +9,7 @@ import { BpInputSelectSimpleTextRenderer } from '../../../components/bp-input';
 import { useAnnotationInfo } from '../../../form';
 import { useSheetModal } from '../../../hook';
 import { palette } from '../../../theme/palette';
-import { annotatorCoveringList, annotatorSlopeImageList, annotatorWearnessList } from '../utils';
+import { annotationLabelList, annotatorCoveringList, annotatorSlopeImageList, annotatorWearnessList } from '../utils';
 import { slopeRenderer } from './annotation-slope-renderer';
 
 interface AnnotationInfoFormProps {
@@ -19,13 +18,13 @@ interface AnnotationInfoFormProps {
 }
 
 export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, setAnnotation }) => {
-  const { metadata, labelName } = annotation;
-  const form = useAnnotationInfo({ ...metadata, labelName });
+  const { metadata, labelName, labelType } = annotation;
+  const form = useAnnotationInfo({ ...metadata, labelName, labelType });
   const { width, height } = Dimensions.get('screen');
   const { close } = useSheetModal();
 
-  const handlePress = form.handleSubmit(({ labelName: currentLabelName, ...currentMetadata }) => {
-    setAnnotation({ ...annotation, metadata: currentMetadata, labelName: currentLabelName });
+  const handlePress = form.handleSubmit(({ labelName: currentLabelName, labelType: currentLabelType, ...currentMetadata }) => {
+    setAnnotation({ ...annotation, metadata: currentMetadata, labelName: currentLabelName, labelType: currentLabelType });
     close();
   });
 
@@ -43,6 +42,15 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
       <View style={{ minHeight: height * 0.6, paddingBottom: 30 }}>
         <FormProvider {...form}>
           <BpSheetInput labelTx='annotationScreen.labels.labelName' name='labelName' multiline />
+          <BpSheetSelect
+            label='Type de label'
+            name='labelType'
+            getItemValue={({ id }) => id}
+            getItemTitle={({ name }) => name}
+            getItemDefaultValue={value => [...annotationLabelList.filter(({ id }) => id === value), null][0]}
+            data={annotationLabelList}
+            renderItem={BpInputSelectSimpleTextRenderer()}
+          />
           <BpSheetSelect
             label='Revêtement'
             name='covering'
