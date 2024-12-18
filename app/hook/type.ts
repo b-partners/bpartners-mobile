@@ -14,10 +14,12 @@ interface SheetModalState {
   content: ReactNode;
   isOpen: boolean;
   containerStyle: ViewStyle;
+  panClose: boolean;
 }
 
 interface SheetModalOptions {
   containerStyle?: ViewStyle;
+  panClose?: boolean;
 }
 
 interface SheetModalAction {

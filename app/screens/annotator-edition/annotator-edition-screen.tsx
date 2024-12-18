@@ -15,6 +15,7 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { AnnotationContainer, AnnotationInfoForm } from './components';
+import { annotatorEditorScreen as style } from './utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ route }) {
   const { open: openSheetModal } = useSheetModal();
@@ -35,9 +36,21 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const handleRemovePolygon = (index: number) => {
     setAnnotations(a => a.filter((_a, _index) => index !== _index));
   };
+
+  const handleEditAnnotation = (index: number) => (annotation: AreaPictureAnnotationInstance) => {
+    setAnnotations(p => {
+      const currentAnnotations = p.slice();
+      currentAnnotations[index] = annotation;
+      return currentAnnotations;
+    });
+  };
+
   const { height } = Dimensions.get('screen');
   const handleEdit = (index: number) => {
-    openSheetModal(<AnnotationInfoForm annotation={annotations[index]} />, { containerStyle: { height: height * 0.7 } });
+    openSheetModal(<AnnotationInfoForm setAnnotation={handleEditAnnotation(index)} annotation={annotations[index]} />, {
+      containerStyle: { height: height * 0.7 },
+      panClose: false,
+    });
   };
 
   return (
@@ -54,25 +67,16 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           setAnnotations={setAnnotations}
         />
         <ScrollView style={{ height: 70 }}>
-          {annotations.map(({ annotationId }, index) => (
-            <View
-              style={{
-                backgroundColor: palette.purple,
-                marginHorizontal: 10,
-                marginVertical: 5,
-                padding: 5,
-                borderRadius: 10,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-              key={annotationId}
-            >
-              <View style={{ flexGrow: 1 }}>
-                <Text text={`Polygon ${index + 1}`} />
+          {annotations.map(({ annotationId, labelName }, index) => (
+            <View style={style.annotationListContainer} key={annotationId}>
+              <View style={style.polygonRefContainer}>
+                <Text style={style.polygonRefText} text={'P' + (index + 1)} />
               </View>
-              <IconButton icon={() => <MuiIcon color='white' name='edit' size={25} />} onPress={() => handleEdit(index)} />
-              <IconButton icon={() => <MuiIcon color='white' name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
+              <View style={style.annotationListItemTitleContainer}>
+                <Text style={style.annotationListItemTitle} text={labelName} />
+              </View>
+              <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='edit' size={25} />} onPress={() => handleEdit(index)} />
+              <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
             </View>
           ))}
         </ScrollView>

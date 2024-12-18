@@ -213,3 +213,47 @@ export const annotationNameRendererStyle = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export const annotatorEditorScreen = StyleSheet.create({
+  annotationListContainer: {
+    backgroundColor: '#f4f4f4',
+    marginHorizontal: 10,
+    marginVertical: 5,
+    padding: 10,
+    borderRadius: 5,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 1,
+    height: 70,
+  },
+  polygonRefContainer: {
+    borderRadius: 5,
+    backgroundColor: palette.lighterPurple,
+    height: '100%',
+    width: 50,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  polygonRefText: {
+    textAlign: 'center',
+    color: '#f4f4f4',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  annotationListItemTitle: {
+    color: '#333333',
+  },
+  annotationListItemTitleContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexGrow: 1,
+    height: '100%',
+  },
+});

@@ -1,24 +1,86 @@
 import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { FormProvider } from 'react-hook-form';
-import { Dimensions, View } from 'react-native';
+import { BackHandler, Dimensions, StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-paper';
 
-import { BpSheetInput } from '../../../components';
+import { BpSheetInput, BpSheetSelect, Text } from '../../../components';
 import { useAnnotationInfo } from '../../../form';
+import { useSheetModal } from '../../../hook';
+import { palette } from '../../../theme/palette';
+import { annotatorCoveringList } from '../utils';
 
 interface AnnotationInfoFormProps {
   annotation: AreaPictureAnnotationInstance;
+  setAnnotation: (annotation: AreaPictureAnnotationInstance) => void;
 }
 
-export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation }) => {
-  const form = useAnnotationInfo(annotation.metadata);
+export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, setAnnotation }) => {
+  const { metadata, labelName } = annotation;
+  const form = useAnnotationInfo({ ...metadata, labelName });
   const { width, height } = Dimensions.get('screen');
+  const { close } = useSheetModal();
+
+  const handlePress = form.handleSubmit(({ labelName: currentLabelName, ...currentMetadata }) => {
+    setAnnotation({ ...annotation, metadata: currentMetadata, labelName: currentLabelName });
+    close();
+  });
+
+  useEffect(() => {
+    const handleBack = () => {
+      close();
+      return false;
+    };
+    BackHandler.addEventListener('hardwareBackPress', handleBack);
+    return () => BackHandler.removeEventListener('hardwareBackPress', handleBack);
+  }, []);
 
   return (
     <View style={{ padding: 10, width, maxHeight: height * 0.7 }}>
       <FormProvider {...form}>
+        <BpSheetInput labelTx='annotationScreen.labels.labelName' name='labelName' multiline />
+        <BpSheetSelect
+          label='Revêtement'
+          name='covering'
+          getItemValue={({ id }) => id}
+          getItemTitle={({ name }) => name}
+          getItemDefaultValue={value => [...annotatorCoveringList.filter(({ id }) => id === value), null][0]}
+          data={annotatorCoveringList}
+          renderItem={(item, _index, isSelected) => {
+            return (
+              <View style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
+                <Text style={styles.dropdownItemTxtStyle}>{item.name}</Text>
+              </View>
+            );
+          }}
+        />
         <BpSheetInput labelTx='prospectScreen.process.comment' name='comment' multiline />
       </FormProvider>
+      <View>
+        <Button buttonColor={palette.purple} textColor='white' style={{ marginTop: 2 }} onPress={close}>
+          Annuler
+        </Button>
+        <Button buttonColor={palette.purple} textColor='white' style={{ marginTop: 2 }} onPress={handlePress}>
+          Enregistrer
+        </Button>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  dropdownItemStyle: {
+    width: '100%',
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  dropdownItemTxtStyle: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#151E26',
+  },
+});

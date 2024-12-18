@@ -8,7 +8,7 @@ import { sheetModalStyles } from './styles';
 
 export const SheetModal = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const { isOpen, close, containerStyle, content } = useSheetModal();
+  const { isOpen, close, containerStyle, content, panClose } = useSheetModal();
 
   useEffect(() => {
     const onBackPress = () => {
@@ -36,7 +36,7 @@ export const SheetModal = () => {
   return (
     <GestureHandlerRootView style={{ ...sheetModalStyles.container, ...height }}>
       <BottomSheetModalProvider>
-        <BottomSheetModal ref={bottomSheetModalRef} onChange={handleSheetChanges}>
+        <BottomSheetModal enablePanDownToClose={panClose} ref={bottomSheetModalRef} onChange={handleSheetChanges}>
           <BottomSheetView style={{ ...sheetModalStyles.contentContainer, ...containerStyle }}>{content}</BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>

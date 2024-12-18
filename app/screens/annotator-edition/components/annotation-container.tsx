@@ -1,5 +1,5 @@
 import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { GestureResponderEvent, Image, ScrollView, TouchableWithoutFeedback, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
@@ -30,6 +30,7 @@ const MuiIconButton: FC<MuiIconButtonProps> = ({ name, onPress, disabled = false
 };
 
 export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, isLoading, annotations, setAnnotations }) => {
+  const polygonCount = useRef(0);
   const imageRealWidth = useGetImageSize(pictureUrl);
   const { scale, scaleDown, scaleUp, scaleReset } = useAnnotationScale();
   const imageNotScaledSize = useMemo(() => getImageSize(), []);
@@ -57,12 +58,15 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
   };
 
   useEffect(() => {
+    if (annotations.length === 0) polygonCount.current = 0;
     setPoints([]);
   }, [annotations]);
 
   const handleAddAnnotation = () => {
     if (points.length > 2) {
-      setAnnotations(p => [...p, { polygon: { points: scalePointsToReal([...points, points[0]], imageRealWidth, imageWidth) }, id: v4() }]);
+      polygonCount.current++;
+      let labelName = `Polygone ${polygonCount.current}`;
+      setAnnotations(p => [...p, { polygon: { points: scalePointsToReal([...points, points[0]], imageRealWidth, imageWidth) }, id: v4(), labelName }]);
     }
   };
 

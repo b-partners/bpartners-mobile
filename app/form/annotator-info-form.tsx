@@ -7,6 +7,7 @@ import { z } from 'zod';
 export const a = 0;
 
 const schema = z.object({
+  labelName: z.custom(() => true),
   area: z.custom(() => true),
   slope: z.custom(() => true),
   covering: z.custom(() => true),
@@ -21,7 +22,7 @@ const schema = z.object({
 
 const resolver = zodResolver(schema);
 
-export const useAnnotationInfo = (defaultValue?: AreaPictureAnnotationInstanceMetadata) => {
+export const useAnnotationInfo = (defaultValue?: AreaPictureAnnotationInstanceMetadata & { labelName?: string }) => {
   const form = useForm({ resolver, mode: 'all' });
 
   useEffect(() => {
