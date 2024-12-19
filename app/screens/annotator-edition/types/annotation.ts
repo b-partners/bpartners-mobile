@@ -1,4 +1,4 @@
-import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
+import { AreaPictureAnnotationInstance, Zoom } from '@bpartners/typescript-client';
 import { Dispatch, SetStateAction } from 'react';
 
 import { Polygon } from './polygon';
@@ -25,4 +25,6 @@ export interface AnnotationContainerProps {
   pictureUrl: string;
   annotations: AreaPictureAnnotationInstance[];
   setAnnotations: Dispatch<SetStateAction<AreaPictureAnnotationInstance[]>>;
+  filename: string;
+  zoom: Zoom;
 }

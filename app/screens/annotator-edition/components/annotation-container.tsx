@@ -11,8 +11,10 @@ import { Loader } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { AnnotationContainerProps } from '../types/annotation';
 import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationScale, useCenterScrollView, useGetImageSize } from '../utils';
+import { useMeasurement } from '../utils/annotation-measurement-handler';
 import { annotationContainerStyle as style } from '../utils/styles';
 import { AnnotationBackgroundRenderer } from './annotation-background-renderer';
+import { AnnotationMeasurementsRenderer } from './annotation-measurements-renderer';
 import { AnnotationNameRenderer } from './annotation-name-renderer';
 
 const { getContainerStyle, getImageSize, getImageContainerSize, getScrollContentHalf } = new AnnotationSizeHandler();
@@ -29,7 +31,7 @@ const MuiIconButton: FC<MuiIconButtonProps> = ({ name, onPress, disabled = false
   return <IconButton containerColor={disabled ? palette.lightGrey : palette.lighterPurple} disabled={disabled} onPress={onPress} icon={icon} />;
 };
 
-export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, isLoading, annotations, setAnnotations }) => {
+export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, isLoading, annotations, setAnnotations, filename, zoom }) => {
   const polygonCount = useRef(0);
   const imageRealWidth = useGetImageSize(pictureUrl);
   const { scale, scaleDown, scaleUp, scaleReset } = useAnnotationScale();
@@ -43,6 +45,13 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
   const scrollYRef = useCenterScrollView({ contentSize: scrollContentHalf.y, direction: 'y', ref: [isLoading, scale] });
   const scrollXRef = useCenterScrollView({ contentSize: scrollContentHalf.x, direction: 'x', ref: [isLoading, scale] });
   const [points, setPoints] = useState([]);
+
+  const scaledAnnotations: AreaPictureAnnotationInstance[] = annotations.map(annotation => ({
+    ...annotation,
+    polygon: { points: scaleRealPoints(annotation.polygon.points, imageRealWidth, imageWidth) },
+  }));
+
+  const measurements = useMeasurement(annotations, scaledAnnotations, filename, zoom.number, imageRealWidth);
 
   const handlePress = (event: GestureResponderEvent) => {
     const { locationX, locationY } = event.nativeEvent;
@@ -77,11 +86,6 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
     });
     setAnnotations(result);
   };
-
-  const scaledAnnotations: AreaPictureAnnotationInstance[] = annotations.map(annotation => ({
-    ...annotation,
-    polygon: { points: scaleRealPoints(annotation.polygon.points, imageRealWidth, imageWidth) },
-  }));
 
   const handleUndo = () => {
     setPoints(p => p.slice(0, p.length - 1));
@@ -123,6 +127,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
                   <Animated.View key={JSON.stringify(point) + index} style={[getPointPosition(point, scale), style.point]} />
                 ))}
                 <AnnotationNameRenderer annotations={scaledAnnotations} scale={scale} />
+                <AnnotationMeasurementsRenderer measurements={measurements} scale={scale} />
               </Animated.View>
             </TouchableWithoutFeedback>
           </ScrollView>

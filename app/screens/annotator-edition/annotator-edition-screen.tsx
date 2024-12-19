@@ -61,6 +61,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           Recentrer l'image
         </Button>
         <AnnotationContainer
+          filename={areaPictureDetails.filename}
+          zoom={areaPictureDetails.zoom}
           isLoading={isLoading}
           pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}`}
           annotations={annotations}

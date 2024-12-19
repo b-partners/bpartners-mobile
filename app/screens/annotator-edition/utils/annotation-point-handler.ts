@@ -77,7 +77,6 @@ export class AnnotationPointHandler {
 
         // Constrain point coordinates within image boundaries
         newPoints[annotationIndex].polygon.points[pointIndex] = updatedPoint;
-        console.log(updatedPoint, dx, dy);
 
         setAnnotation(newPoints);
       },

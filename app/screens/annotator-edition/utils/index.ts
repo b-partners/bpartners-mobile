@@ -1,3 +1,4 @@
+export * from './annotation-calculus-utilities';
 export * from './annotation-point-handler';
 export * from './annotation-scale-handler';
 export * from './annotation-size-handler';
@@ -8,4 +9,5 @@ export * from './label-validator';
 export * from './mappers';
 export * from './polygon-validator';
 export * from './styles';
+export * from './types';
 export * from './utils';
