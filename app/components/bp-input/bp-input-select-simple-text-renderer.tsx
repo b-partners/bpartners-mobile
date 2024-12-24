@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { View } from 'react-native';
 
 import { palette } from '../../theme/palette';
@@ -7,6 +7,7 @@ import { bpInputSelectSimpleTextRendererStyle as style } from './style';
 
 type TIconRenderer = (item: any) => ReactNode;
 
+// eslint-disable-next-line react/display-name
 export const BpInputSelectSimpleTextRenderer = (iconRenderer?: TIconRenderer) => (_item: any, itemTitle: string, _index: number, isSelected: boolean) => {
   return (
     <View style={{ ...style.itemStyle, ...(isSelected && { backgroundColor: palette.lighterPurple }) }}>

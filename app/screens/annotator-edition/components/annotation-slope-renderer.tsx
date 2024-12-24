@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { AutoImage } from '../../../components';
 import { annotatorSlopeImageList, slopeRendererStyle as style } from '../utils';
 

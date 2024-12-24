@@ -1,5 +1,5 @@
 import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { pointsToGeoPoints } from '../../../provider/geojson-converter-provider';
 import { Measurement } from '../types';
@@ -12,10 +12,9 @@ export const useMeasurement = (
   scaledAnnotations: AreaPictureAnnotationInstance[],
   filename: string,
   zoom: number,
-  image_size: number
+  image_size: number,
+  setMeasurements: Dispatch<SetStateAction<Measurement[]>>
 ) => {
-  const [measurements, setMeasurements] = useState<Measurement[]>([]);
-
   const setGeojsonDebounced = async () => {
     if (annotations.length === 0) {
       setMeasurements([]);
@@ -46,6 +45,4 @@ export const useMeasurement = (
   useEffect(() => {
     setGeojsonDebounced();
   }, [annotations]);
-
-  return measurements;
 };

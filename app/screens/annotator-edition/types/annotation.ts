@@ -1,6 +1,7 @@
 import { AreaPictureAnnotationInstance, Zoom } from '@bpartners/typescript-client';
 import { Dispatch, SetStateAction } from 'react';
 
+import { Measurement } from './measurement';
 import { Polygon } from './polygon';
 
 export interface Annotation {
@@ -27,4 +28,6 @@ export interface AnnotationContainerProps {
   setAnnotations: Dispatch<SetStateAction<AreaPictureAnnotationInstance[]>>;
   filename: string;
   zoom: Zoom;
+  measurements: Measurement[];
+  setMeasurements: Dispatch<SetStateAction<Measurement[]>>;
 }

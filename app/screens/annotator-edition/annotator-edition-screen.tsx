@@ -15,12 +15,14 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { AnnotationContainer, AnnotationInfoForm } from './components';
+import { Measurement } from './types';
 import { annotatorEditorScreen as style } from './utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ route }) {
   const { open: openSheetModal } = useSheetModal();
   const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([]);
   const { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams } = route.params || {};
+  const [measurements, setMeasurements] = useState<Measurement[]>([]);
   const { areaPictureDetails, updateAreaPicture, pictureUrl, isLoading } = useCreateAreaPicture({
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
   });
@@ -61,6 +63,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           Recentrer l'image
         </Button>
         <AnnotationContainer
+          measurements={measurements}
+          setMeasurements={setMeasurements}
           filename={areaPictureDetails.filename}
           zoom={areaPictureDetails.zoom}
           isLoading={isLoading}

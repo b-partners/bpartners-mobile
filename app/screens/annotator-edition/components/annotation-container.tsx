@@ -31,7 +31,16 @@ const MuiIconButton: FC<MuiIconButtonProps> = ({ name, onPress, disabled = false
   return <IconButton containerColor={disabled ? palette.lightGrey : palette.lighterPurple} disabled={disabled} onPress={onPress} icon={icon} />;
 };
 
-export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, isLoading, annotations, setAnnotations, filename, zoom }) => {
+export const AnnotationContainer: FC<AnnotationContainerProps> = ({
+  pictureUrl,
+  isLoading,
+  annotations,
+  setAnnotations,
+  filename,
+  zoom,
+  measurements,
+  setMeasurements,
+}) => {
   const polygonCount = useRef(0);
   const imageRealWidth = useGetImageSize(pictureUrl);
   const { scale, scaleDown, scaleUp, scaleReset } = useAnnotationScale();
@@ -51,7 +60,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({ pictureUrl, 
     polygon: { points: scaleRealPoints(annotation.polygon.points, imageRealWidth, imageWidth) },
   }));
 
-  const measurements = useMeasurement(annotations, scaledAnnotations, filename, zoom.number, imageRealWidth);
+  useMeasurement(annotations, scaledAnnotations, filename, zoom.number, imageRealWidth, setMeasurements);
 
   const handlePress = (event: GestureResponderEvent) => {
     const { locationX, locationY } = event.nativeEvent;
