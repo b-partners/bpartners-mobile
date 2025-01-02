@@ -10,14 +10,14 @@ export class GeojsonMapper {
   public static toMeasurements(restGeojson: GeojsonReturn[], annotations: AreaPictureAnnotationInstance[]): Measurement[] {
     const measurements: Measurement[] = [];
 
-    restGeojson.forEach(geojson => {
+    restGeojson.forEach((geojson, index) => {
       const coordinates = geojson.geometry.coordinates[0][0].slice();
       const currentPolygonId = geojson.properties.id;
       const currentDomainPoints = annotations.filter(({ id }) => geojson.properties.id === id)[0].polygon.points;
       const area = this.toArea(geojson, currentPolygonId, currentDomainPoints);
 
       measurements.push(area);
-
+      if (index !== 0) return;
       for (let a = 1; a < coordinates.length; a++) {
         const prevCoordinate = coordinates[a - 1];
         const currentCoordinate = coordinates[a];

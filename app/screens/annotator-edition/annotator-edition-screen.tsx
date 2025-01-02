@@ -58,7 +58,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' leftIcon={'back'} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='annotationScreen.title' leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
         <Button buttonColor={palette.purple} textColor='white' style={{ marginHorizontal: 20, marginVertical: 5 }} onPress={extendPicture}>
           Recentrer l'image
         </Button>
