@@ -1,9 +1,9 @@
-import { AreaPictureAnnotationInstance } from '@bpartners/typescript-client';
+import { AreaPictureAnnotationInstance, AreaPictureDetails } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
-import { Button, IconButton, Provider } from 'react-native-paper';
+import { IconButton, Provider } from 'react-native-paper';
 import MuiIcon from 'react-native-vector-icons/FontAwesome';
 
 import { Header, Text } from '../../components';
@@ -14,11 +14,14 @@ import { useCreateAreaPicture } from '../../queries';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { AnnotationContainer, AnnotationInfoForm } from './components';
+import { AnnotationContainer, AnnotationInfoForm, AnnotationMenu } from './components';
 import { Measurement } from './types';
 import { annotationLabelList, annotatorEditorScreen as style } from './utils';
 
-export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ route }) {
+export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({
+  route,
+  navigation,
+}) {
   const { open: openSheetModal } = useSheetModal();
   const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([]);
   const { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams } = route.params || {};
@@ -27,10 +30,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
   });
 
-  const extendPicture = () => {
+  const updateAreaPictureDetails = (currentAreaPictureDetails: AreaPictureDetails) => {
     setAnnotations([]);
     updateAreaPicture({
-      crupdateAreaPictureDetails: areaPictureMapper.areaPicDetailsToCrupdate({ ...areaPictureDetails, isExtended: !areaPictureDetails.isExtended }),
+      crupdateAreaPictureDetails: areaPictureMapper.areaPicDetailsToCrupdate({ ...areaPictureDetails, ...currentAreaPictureDetails }),
       pictureId: areaPictureDetails.id,
     });
   };
@@ -55,13 +58,24 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
+  const handleOpenMenu = () => {
+    openSheetModal(
+      <AnnotationMenu
+        navigate={navigation.navigate}
+        isAreaPictureLoading={isLoading}
+        updateAreaPictureDetails={updateAreaPictureDetails}
+        areaPictureDetails={areaPictureDetails}
+      />,
+      {
+        containerStyle: { height: height * 0.5 },
+      }
+    );
+  };
+
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
-        <Button buttonColor={palette.purple} textColor='white' style={{ marginHorizontal: 20, marginVertical: 5 }} onPress={extendPicture}>
-          Recentrer l'image
-        </Button>
+        <Header headerTx='annotationScreen.title' onLeftPress={handleOpenMenu} leftIcon='whiteMenu' style={HEADER} titleStyle={HEADER_TITLE} />
         <AnnotationContainer
           measurements={measurements}
           setMeasurements={setMeasurements}

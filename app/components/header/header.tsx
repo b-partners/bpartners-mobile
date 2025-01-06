@@ -48,7 +48,7 @@ export function Header(props: Readonly<HeaderProps>) {
           <View style={[{ ...ROOT, height: +ROOT.height + top }, style]}>
             {leftIcon ? (
               <TouchableOpacity onPress={onLeftPress} testID='header-left-button'>
-                <Icon icon='back' />
+                <Icon icon={leftIcon} />
               </TouchableOpacity>
             ) : (
               <View style={LEFT} />
