@@ -16,7 +16,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { AnnotationContainer, AnnotationInfoForm } from './components';
 import { Measurement } from './types';
-import { annotatorEditorScreen as style } from './utils';
+import { annotationLabelList, annotatorEditorScreen as style } from './utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ route }) {
   const { open: openSheetModal } = useSheetModal();
@@ -73,13 +73,21 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           setAnnotations={setAnnotations}
         />
         <ScrollView style={{ height: 70 }}>
-          {annotations.map(({ annotationId, labelName }, index) => (
+          {annotations.map(({ annotationId, labelName, labelType }, index) => (
             <View style={style.annotationListContainer} key={annotationId}>
               <View style={style.polygonRefContainer}>
                 <Text style={style.polygonRefText} text={'P' + (index + 1)} />
               </View>
               <View style={style.annotationListItemTitleContainer}>
                 <Text style={style.annotationListItemTitle} text={labelName} />
+                {labelType ? (
+                  <Text style={style.annotationListItemLabel} text={annotationLabelList.filter(({ id }) => id === labelType)[0].name} />
+                ) : (
+                  <View style={style.annotationListItemLabelContainer}>
+                    <MuiIcon color={palette.yellow} name='warning' size={15} />
+                    <Text style={style.annotationListItemLabel} text='Veuillez ajouter un label' />
+                  </View>
+                )}
               </View>
               <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='edit' size={25} />} onPress={() => handleEdit(index)} />
               <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />

@@ -250,6 +250,16 @@ export const annotatorEditorScreen = StyleSheet.create({
   annotationListItemTitle: {
     color: '#333333',
   },
+  annotationListItemLabel: {
+    color: '#999999',
+  },
+  annotationListItemLabelContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 3,
+  },
   annotationListItemTitleContainer: {
     display: 'flex',
     justifyContent: 'space-around',
