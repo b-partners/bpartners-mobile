@@ -10,10 +10,11 @@ import { v4 } from 'uuid';
 import { Loader } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { AnnotationContainerProps } from '../types/annotation';
-import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationScale, useCenterScrollView, useGetImageSize } from '../utils';
+import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationMarkerFetcher, useAnnotationScale, useCenterScrollView, useGetImageSize } from '../utils';
 import { useMeasurement } from '../utils/annotation-measurement-handler';
 import { annotationContainerStyle as style } from '../utils/styles';
 import { AnnotationBackgroundRenderer } from './annotation-background-renderer';
+import { AnnotationMarkerRenderer } from './annotation-marker-renderer';
 import { AnnotationMeasurementsRenderer } from './annotation-measurements-renderer';
 import { AnnotationNameRenderer } from './annotation-name-renderer';
 
@@ -40,6 +41,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
   zoom,
   measurements,
   setMeasurements,
+  areaPictureDetails,
 }) => {
   const polygonCount = useRef(0);
   const imageRealWidth = useGetImageSize(pictureUrl);
@@ -54,6 +56,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
   const scrollYRef = useCenterScrollView({ contentSize: scrollContentHalf.y, direction: 'y', ref: [isLoading, scale] });
   const scrollXRef = useCenterScrollView({ contentSize: scrollContentHalf.x, direction: 'x', ref: [isLoading, scale] });
   const [points, setPoints] = useState([]);
+  const { marker } = useAnnotationMarkerFetcher(areaPictureDetails, imageSize.width);
 
   const scaledAnnotations: AreaPictureAnnotationInstance[] = annotations.map(annotation => ({
     ...annotation,
@@ -137,6 +140,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
                 ))}
                 <AnnotationNameRenderer annotations={scaledAnnotations} scale={scale} />
                 <AnnotationMeasurementsRenderer measurements={measurements} scale={scale} />
+                {!isLoading && annotations.length === 0 && <AnnotationMarkerRenderer marker={marker} scale={scale} />}
               </Animated.View>
             </TouchableWithoutFeedback>
           </ScrollView>

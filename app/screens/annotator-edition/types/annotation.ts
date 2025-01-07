@@ -1,4 +1,4 @@
-import { AreaPictureAnnotationInstance, Zoom } from '@bpartners/typescript-client';
+import { AreaPictureAnnotationInstance, AreaPictureDetails, Zoom } from '@bpartners/typescript-client';
 import { Dispatch, SetStateAction } from 'react';
 
 import { Measurement } from './measurement';
@@ -30,4 +30,5 @@ export interface AnnotationContainerProps {
   zoom: Zoom;
   measurements: Measurement[];
   setMeasurements: Dispatch<SetStateAction<Measurement[]>>;
+  areaPictureDetails: AreaPictureDetails;
 }

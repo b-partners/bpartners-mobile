@@ -5,6 +5,7 @@ import getDistance from 'geolib/es/getPreciseDistance';
 import { GeojsonReturn, Measurement } from '../../types';
 import { findMidpoint, getCenterOfPolygon } from '../annotation-calculus-utilities';
 import { GeoPointMapper } from '../mappers';
+import { ConverterResultGeoJSON } from '../types';
 
 export class GeojsonMapper {
   public static toMeasurements(restGeojson: GeojsonReturn[], annotations: AreaPictureAnnotationInstance[]): Measurement[] {
@@ -43,5 +44,23 @@ export class GeojsonMapper {
       unity: 'm²',
       value: Math.round(area),
     };
+  }
+
+  private static getCenter(coordinates: number[]) {
+    if (!coordinates) return 0;
+    const sumOfCoordinates = coordinates.reduce((prev, current) => prev + current, 0);
+    return sumOfCoordinates / coordinates.length;
+  }
+
+  public static toMarker(geoJson: ConverterResultGeoJSON): Point[] {
+    if (!geoJson) return [];
+    const { regions } = geoJson;
+
+    return Object.keys(regions || {}).map(id => {
+      const {
+        shape_attributes: { all_points_x, all_points_y },
+      } = regions[id];
+      return { x: this.getCenter(all_points_x), y: this.getCenter(all_points_y) };
+    });
   }
 }

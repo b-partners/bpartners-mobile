@@ -1,5 +1,7 @@
 import { AreaPictureAnnotation, CrupdateAreaPictureDetails } from '@bpartners/typescript-client';
+import axios from 'axios';
 
+import { ConverterPayloadGeoJSON, ConverterResultGeoJSON } from '../screens/annotator-edition/utils';
 import { storage } from '../utils/storage';
 import { areaPictureApi } from './api';
 
@@ -35,6 +37,10 @@ export const annotatorProvider = {
     const api = await areaPictureApi();
     const accountId = await storage.loadAccountId();
     const { data } = await api.getAreaPictureAnnotations(accountId, pictureId);
+    return data;
+  },
+  async coordinatesToPixel(geojson: ConverterPayloadGeoJSON): Promise<ConverterResultGeoJSON[]> {
+    const { data } = await axios.post(`${process.env.REACT_APP_ANNOTATOR_PIXEL_CONVERTER_API_URL}/converter`, geojson);
     return data;
   },
 };

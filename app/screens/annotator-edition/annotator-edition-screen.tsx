@@ -77,6 +77,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='annotationScreen.title' onLeftPress={handleOpenMenu} leftIcon='whiteMenu' style={HEADER} titleStyle={HEADER_TITLE} />
         <AnnotationContainer
+          areaPictureDetails={areaPictureDetails}
           measurements={measurements}
           setMeasurements={setMeasurements}
           filename={areaPictureDetails.filename}
