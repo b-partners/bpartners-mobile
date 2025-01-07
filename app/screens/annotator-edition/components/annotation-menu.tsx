@@ -9,12 +9,15 @@ import { BpInputSelectSimpleTextRenderer } from '../../../components/bp-input';
 import { ZOOM_LEVEL, useAnnotationMenu } from '../../../form';
 import { useSheetModal } from '../../../hook';
 import { palette } from '../../../theme/palette';
+import { useAnnotationSubmit } from '../utils';
 
 interface AnnotationMenuProps {
   areaPictureDetails: AreaPictureDetails;
   updateAreaPictureDetails: (areaPictureDetails: CrupdateAreaPictureDetails) => void;
   isAreaPictureLoading: boolean;
   navigate: (...params: any[]) => void;
+  submitAnnotation: ReturnType<typeof useAnnotationSubmit>['submitAnnotation'];
+  draftAnnotationId?: string;
 }
 
 const getLayerTitle = (map: AreaPictureMapLayer) => {
@@ -22,7 +25,14 @@ const getLayerTitle = (map: AreaPictureMapLayer) => {
   return `${name} ${year} ${precisionLevelInCm}cm`;
 };
 
-export const AnnotationMenu: FC<AnnotationMenuProps> = ({ areaPictureDetails, isAreaPictureLoading, updateAreaPictureDetails, navigate }) => {
+export const AnnotationMenu: FC<AnnotationMenuProps> = ({
+  areaPictureDetails,
+  isAreaPictureLoading,
+  updateAreaPictureDetails,
+  navigate,
+  submitAnnotation,
+  draftAnnotationId,
+}) => {
   const { width, height } = Dimensions.get('screen');
   const { otherLayers } = areaPictureDetails;
   const form = useAnnotationMenu(areaPictureDetails);
@@ -40,6 +50,16 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({ areaPictureDetails, is
   const cancelAnnotations = () => {
     close();
     navigate('home', { screen: 'prospect' });
+  };
+
+  const generateInvoice = () => {
+    close();
+    submitAnnotation({});
+  };
+
+  const saveAnnotation = () => {
+    close();
+    submitAnnotation({ draftAnnotationId, isDraft: true });
   };
 
   return (
@@ -73,8 +93,11 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({ areaPictureDetails, is
         <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={cancelAnnotations}>
           Annuler toute l'annotation
         </Button>
-        <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }}>
-          Enregistrer l'annotation
+        <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={generateInvoice}>
+          Générer un devis
+        </Button>
+        <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={saveAnnotation}>
+          Enregistrer entant que brouillon
         </Button>
       </View>
     </ScrollView>

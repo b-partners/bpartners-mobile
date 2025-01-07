@@ -16,7 +16,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { AnnotationContainer, AnnotationInfoForm, AnnotationMenu } from './components';
 import { Measurement } from './types';
-import { annotationLabelList, annotatorEditorScreen as style } from './utils';
+import { annotationLabelList, annotatorEditorScreen as style, useAnnotationSubmit } from './utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({
   route,
@@ -24,7 +24,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 }) {
   const { open: openSheetModal } = useSheetModal();
   const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([]);
-  const { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams } = route.params || {};
+  const { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams, draftAnnotationId: draftAnnotationIdParams } = route.params || {};
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
   const { areaPictureDetails, updateAreaPicture, pictureUrl, isLoading } = useCreateAreaPicture({
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
@@ -58,9 +58,13 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
+  const { submitAnnotation } = useAnnotationSubmit(annotations, measurements, areaPictureDetails);
+
   const handleOpenMenu = () => {
     openSheetModal(
       <AnnotationMenu
+        draftAnnotationId={draftAnnotationIdParams}
+        submitAnnotation={submitAnnotation}
         navigate={navigation.navigate}
         isAreaPictureLoading={isLoading}
         updateAreaPictureDetails={updateAreaPictureDetails}

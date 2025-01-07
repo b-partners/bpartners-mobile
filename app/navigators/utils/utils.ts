@@ -41,6 +41,7 @@ export type NavigatorParamList = {
   annotatorEdition: {
     areaPictureDetails: AreaPictureDetails | undefined;
     pictureUrl: string | undefined;
+    draftAnnotationId: string | undefined;
   };
 };
 
