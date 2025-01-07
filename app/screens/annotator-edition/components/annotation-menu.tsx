@@ -38,6 +38,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({ areaPictureDetails, is
   });
 
   const cancelAnnotations = () => {
+    close();
     navigate('home', { screen: 'prospect' });
   };
 
