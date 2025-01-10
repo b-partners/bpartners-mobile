@@ -63,7 +63,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
     polygon: { points: scaleRealPoints(annotation.polygon.points, imageRealWidth, imageWidth) },
   }));
 
-  useMeasurement(annotations, scaledAnnotations, filename, zoom.number, imageRealWidth, setMeasurements);
+  useMeasurement(annotations, scaledAnnotations, filename, zoom.number, imageRealWidth, setMeasurements, areaPictureDetails.isExtended);
 
   const handlePress = (event: GestureResponderEvent) => {
     const { locationX, locationY } = event.nativeEvent;

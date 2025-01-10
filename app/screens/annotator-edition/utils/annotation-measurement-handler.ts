@@ -13,7 +13,8 @@ export const useMeasurement = (
   filename: string,
   zoom: number,
   image_size: number,
-  setMeasurements: Dispatch<SetStateAction<Measurement[]>>
+  setMeasurements: Dispatch<SetStateAction<Measurement[]>>,
+  isExtended: boolean
 ) => {
   const setGeojsonDebounced = async () => {
     if (annotations.length === 0) {
@@ -37,7 +38,7 @@ export const useMeasurement = (
     });
     const res = await pointsToGeoPoints(currentGeoJson);
     if (res) {
-      let currentMeasurements = GeojsonMapper.toMeasurements(res, scaledAnnotations);
+      let currentMeasurements = GeojsonMapper.toMeasurements(res, scaledAnnotations, isExtended);
       setMeasurements(currentMeasurements);
     }
   };

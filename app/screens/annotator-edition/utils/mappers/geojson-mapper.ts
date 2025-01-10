@@ -8,14 +8,15 @@ import { GeoPointMapper } from '../mappers';
 import { ConverterResultGeoJSON } from '../types';
 
 export class GeojsonMapper {
-  public static toMeasurements(restGeojson: GeojsonReturn[], annotations: AreaPictureAnnotationInstance[]): Measurement[] {
+  public static toMeasurements(restGeojson: GeojsonReturn[], annotations: AreaPictureAnnotationInstance[], isExtended: boolean): Measurement[] {
     const measurements: Measurement[] = [];
 
     restGeojson.forEach((geojson, index) => {
       const coordinates = geojson.geometry.coordinates[0][0].slice();
       const currentPolygonId = geojson.properties.id;
       const currentDomainPoints = annotations.filter(({ id }) => geojson.properties.id === id)[0].polygon.points;
-      const area = this.toArea(geojson, currentPolygonId, currentDomainPoints);
+      let area = this.toArea(geojson, currentPolygonId, currentDomainPoints);
+      if (isExtended) area.value = +(area.value * 9).toFixed(2);
 
       measurements.push(area);
       if (index !== 0) return;
@@ -23,10 +24,12 @@ export class GeojsonMapper {
         const prevCoordinate = coordinates[a - 1];
         const currentCoordinate = coordinates[a];
 
+        let currentDistance = +getDistance(GeoPointMapper.toGeoLocation(prevCoordinate), GeoPointMapper.toGeoLocation(currentCoordinate), 0.2).toFixed(2);
+        if (isExtended) currentDistance = +(currentDistance * 3).toFixed(2);
         measurements.push({
           polygonId: currentPolygonId,
           unity: 'm',
-          value: +getDistance(GeoPointMapper.toGeoLocation(prevCoordinate), GeoPointMapper.toGeoLocation(currentCoordinate), 0.2).toFixed(2),
+          value: currentDistance,
           position: findMidpoint([currentDomainPoints[a - 1], currentDomainPoints[a]]),
         });
       }

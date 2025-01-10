@@ -1,7 +1,8 @@
+import { InvoiceStatus } from '@bpartners/typescript-client';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 
-import { Invoice, InvoiceStatus } from '../../../models/entities/invoice/invoice';
+import { Invoice } from '../../../models/entities/invoice/invoice';
 import { Product } from '../../../models/entities/product/product';
 import { TabNavigatorParamList } from '../../../navigators/utils/utils';
 

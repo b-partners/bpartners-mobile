@@ -1,3 +1,4 @@
+import { InvoiceStatus } from '@bpartners/typescript-client';
 import { useLinkTo } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
@@ -15,9 +16,16 @@ import { InvoiceForm } from './components/invoice/invoice-form';
 import { CONTAINER, FULL } from './utils/styles';
 
 export const InvoiceFormScreen: FC<StackScreenProps<TabNavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
-  const invoiceId = route.params?.invoiceID;
-  const initialStatus = route.params?.initialStatus;
-  const areaPictureId = route.params?.areaPictureId;
+  const [{ areaPictureId, initialStatus, invoiceId }, setState] = useState({ invoiceId: '', initialStatus: '', areaPictureId: '' });
+
+  useEffect(() => {
+    setState({
+      invoiceId: route.params?.invoiceID,
+      initialStatus: route.params?.initialStatus,
+      areaPictureId: route.params?.areaPictureId,
+    });
+  }, []);
+
   const { invoiceStore, productStore } = useStores();
   const { products } = productStore;
   const [toEdit, setToEdit] = useState<Invoice>(null);
@@ -62,7 +70,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<TabNavigatorParamList, 'invo
             invoice={toEdit}
             products={products}
             onSaveInvoice={saveInvoice}
-            initialStatus={initialStatus}
+            initialStatus={initialStatus as InvoiceStatus}
             navigation={navigation}
             areaPictureId={areaPictureId}
           />

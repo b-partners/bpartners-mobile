@@ -40,7 +40,7 @@ export const annotatorProvider = {
     return data;
   },
   async coordinatesToPixel(geojson: ConverterPayloadGeoJSON): Promise<ConverterResultGeoJSON[]> {
-    const { data } = await axios.post(`${process.env.REACT_APP_ANNOTATOR_PIXEL_CONVERTER_API_URL}/converter`, geojson);
+    const { data } = await axios.post(`https://q1xs10we5d.execute-api.eu-west-3.amazonaws.com/Prod/converter`, geojson);
     return data;
   },
 };
