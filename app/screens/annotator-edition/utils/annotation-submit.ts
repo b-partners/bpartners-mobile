@@ -1,10 +1,11 @@
-import { AreaPictureAnnotation, AreaPictureAnnotationInstance, AreaPictureDetails } from '@bpartners/typescript-client';
+import { AreaPictureAnnotation, AreaPictureAnnotationInstance, AreaPictureDetails, InvoiceStatus } from '@bpartners/typescript-client';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useMutation } from '@tanstack/react-query';
 import { v4 as uuid } from 'uuid';
 
 import { TabNavigatorParamList } from '../../../navigators/utils';
 import { annotatorProvider } from '../../../provider';
+import { storage } from '../../../utils/storage';
 import { Measurement } from '../types';
 
 interface MutationParams {
@@ -18,15 +19,22 @@ export const useAnnotationSubmit = (annotations: AreaPictureAnnotationInstance[]
     const { draftAnnotationId, isDraft = false } = params || {};
     const annotationIdValue = draftAnnotationId ?? uuid();
     const areaMeasurements = measurements.filter(({ unity }) => unity === 'm²');
+    const userId = await storage.loadUserId();
     const requestBody: AreaPictureAnnotation = {
-      annotations: annotations.map((annotation, index) => ({ ...annotation, metadata: { ...annotation.metadata, area: areaMeasurements[index].value } })),
+      annotations: annotations.map((annotation, index) => ({
+        ...annotation,
+        metadata: { ...annotation.metadata, area: areaMeasurements[index].value },
+        areaPictureId: areaPictureDetails.id,
+        userId,
+        annotationId: annotationIdValue,
+      })),
       id: annotationIdValue,
       idAreaPicture: areaPictureDetails.id,
       creationDatetime: new Date(),
       isDraft: isDraft,
     };
     const data = await annotatorProvider.annotatePicture(areaPictureDetails.id, annotationIdValue, requestBody);
-    navigate('home', { screen: 'invoiceForm', areaPictureId: areaPictureDetails.id } as any);
+    navigate('home', { screen: 'invoiceForm', areaPictureId: areaPictureDetails.id, invoiceId: uuid(), initialStatus: InvoiceStatus.DRAFT } as any);
     return data;
   };
 
