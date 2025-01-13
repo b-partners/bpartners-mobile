@@ -58,7 +58,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
-  const { submitAnnotation } = useAnnotationSubmit(annotations, measurements, areaPictureDetails);
+  const { submitAnnotation } = useAnnotationSubmit(annotations, measurements, areaPictureDetails, navigation.navigate);
 
   const handleOpenMenu = () => {
     openSheetModal(
@@ -92,7 +92,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           setAnnotations={setAnnotations}
         />
         <ScrollView style={{ height: 70 }}>
-          {annotations.map(({ annotationId, labelName, labelType }, index) => (
+          {annotations.map(({ labelName, labelType, id: annotationId }, index) => (
             <View style={style.annotationListContainer} key={annotationId}>
               <View style={style.polygonRefContainer}>
                 <Text style={style.polygonRefText} text={'P' + (index + 1)} />

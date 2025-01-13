@@ -6,7 +6,6 @@ import { BpTabNavigation } from '../../components';
 import { translate } from '../../i18n';
 import {
   HomeScreen,
-  InvoiceFormScreen,
   InvoicesScreen,
   MarketPlaceScreen,
   PaymentInitiationScreen,
@@ -40,7 +39,6 @@ export const AppTabStack = observer(function () {
         <Tab.Screen name='paymentList' component={PaymentListScreen} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
-        <Tab.Screen name='invoiceForm' component={InvoiceFormScreen} />
         <Tab.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
       </>
     </Tab.Navigator>

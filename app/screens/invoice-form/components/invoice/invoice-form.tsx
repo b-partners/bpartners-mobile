@@ -15,6 +15,7 @@ import { InvoiceStatus, createInvoiceDefaultModel } from '../../../../models/ent
 import { PaymentRegulation } from '../../../../models/entities/payment-regulation/payment-regulation';
 import { createProductDefaultModel } from '../../../../models/entities/product/product';
 import { navigate } from '../../../../navigators/navigation-utilities';
+import { useGetAreaPictureById } from '../../../../queries';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { showMessage } from '../../../../utils/snackbar';
@@ -44,7 +45,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { invoiceStore, customerStore, draftStore, quotationStore, areaPictureStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
-  const { areaPicture } = areaPictureStore;
+  const { data: areaPicture } = useGetAreaPictureById(areaPictureId);
 
   // recover the most current customer from store and set it to the current selected customer
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
@@ -658,15 +659,15 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
         {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
 
-        {invoice?.idAreaPicture && (
+        {(!!invoice?.idAreaPicture || !!areaPictureId) && (
           <TouchableOpacity
             onPress={async () => {
               setAnnotationLoading(true);
-              await areaPictureStore.getAreaPicture(invoice.idAreaPicture);
-              await areaPictureStore.getAreaPictureAnnotations(invoice.idAreaPicture);
+              await areaPictureStore.getAreaPicture(invoice?.idAreaPicture || areaPictureId);
+              await areaPictureStore.getAreaPictureAnnotations(invoice?.idAreaPicture || areaPictureId);
               await areaPictureStore.getPictureUrl(areaPicture.fileId);
               setAnnotationLoading(false);
-              navigation.navigate('annotator');
+              navigation.navigate('home', { screen: 'annotator' });
             }}
           >
             <View style={{ ...styles.areaPictureButtonContainer, borderColor: hasError ? palette.solidGrey : palette.secondaryColor }}>

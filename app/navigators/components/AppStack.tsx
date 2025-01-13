@@ -81,7 +81,7 @@ export const AppStack = observer(function () {
           <Drawer.Screen name='profileEdition' component={ProfileEditionScreen} />
           <Drawer.Screen name='prospectForm' component={ProspectFormScreen} />
           <Drawer.Screen name='calendar' component={CalendarScreen} />
-          <Drawer.Screen name='annotatorEdition' component={AnnotatorEditionScreen} />
+          <Drawer.Screen name='annotatorEdition' component={AnnotatorEditionScreen} options={HIDE_DRAWER_OPTIONS} />
         </>
       )}
 

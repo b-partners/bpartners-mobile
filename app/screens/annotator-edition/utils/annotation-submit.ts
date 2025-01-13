@@ -1,9 +1,7 @@
 import { AreaPictureAnnotation, AreaPictureAnnotationInstance, AreaPictureDetails, InvoiceStatus } from '@bpartners/typescript-client';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useMutation } from '@tanstack/react-query';
 import { v4 as uuid } from 'uuid';
 
-import { TabNavigatorParamList } from '../../../navigators/utils';
 import { annotatorProvider } from '../../../provider';
 import { storage } from '../../../utils/storage';
 import { Measurement } from '../types';
@@ -13,8 +11,12 @@ interface MutationParams {
   draftAnnotationId?: string;
 }
 
-export const useAnnotationSubmit = (annotations: AreaPictureAnnotationInstance[], measurements: Measurement[], areaPictureDetails: AreaPictureDetails) => {
-  const { navigate } = useNavigation<NavigationProp<TabNavigatorParamList, 'invoiceForm'>>();
+export const useAnnotationSubmit = (
+  annotations: AreaPictureAnnotationInstance[],
+  measurements: Measurement[],
+  areaPictureDetails: AreaPictureDetails,
+  navigate: (...args: any[]) => void
+) => {
   const mutationFn = async (params: MutationParams) => {
     const { draftAnnotationId, isDraft = false } = params || {};
     const annotationIdValue = draftAnnotationId ?? uuid();
@@ -34,7 +36,7 @@ export const useAnnotationSubmit = (annotations: AreaPictureAnnotationInstance[]
       isDraft: isDraft,
     };
     const data = await annotatorProvider.annotatePicture(areaPictureDetails.id, annotationIdValue, requestBody);
-    navigate('home', { screen: 'invoiceForm', areaPictureId: areaPictureDetails.id, invoiceId: uuid(), initialStatus: InvoiceStatus.DRAFT } as any);
+    navigate('invoiceForm', { areaPictureId: areaPictureDetails.id, invoiceId: uuid(), initialStatus: InvoiceStatus.DRAFT } as any);
     return data;
   };
 
