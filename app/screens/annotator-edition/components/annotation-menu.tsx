@@ -18,6 +18,7 @@ interface AnnotationMenuProps {
   navigate: (...params: any[]) => void;
   submitAnnotation: ReturnType<typeof useAnnotationSubmit>['submitAnnotation'];
   draftAnnotationId?: string;
+  isLoading?: boolean;
 }
 
 const getLayerTitle = (map: AreaPictureMapLayer) => {
@@ -32,6 +33,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
   navigate,
   submitAnnotation,
   draftAnnotationId,
+  isLoading = false,
 }) => {
   const { width, height } = Dimensions.get('screen');
   const { otherLayers } = areaPictureDetails;
@@ -53,13 +55,11 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
   };
 
   const generateInvoice = () => {
-    close();
-    submitAnnotation({});
+    submitAnnotation({ onDone: close });
   };
 
   const saveAnnotation = () => {
-    close();
-    submitAnnotation({ draftAnnotationId, isDraft: true });
+    submitAnnotation({ draftAnnotationId, isDraft: true, onDone: close });
   };
 
   return (
@@ -83,20 +83,55 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
             renderItem={BpInputSelectSimpleTextRenderer()}
           />
         </FormProvider>
-        <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={handleChangeLayerOrZoom}>
+        <Button
+          loading={isLoading}
+          disabled={isAreaPictureLoading}
+          buttonColor={palette.purple}
+          textColor='white'
+          style={{ marginVertical: 5 }}
+          onPress={handleChangeLayerOrZoom}
+        >
           Appliquer les changements
         </Button>
         <View style={{ marginVertical: 10, borderBottomColor: palette.greyDarker, borderBottomWidth: 2 }} />
-        <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={extendPicture}>
+        <Button
+          loading={isLoading}
+          disabled={isAreaPictureLoading}
+          buttonColor={palette.purple}
+          textColor='white'
+          style={{ marginVertical: 5 }}
+          onPress={extendPicture}
+        >
           {areaPictureDetails?.isExtended ? "Réinitialiser l'image" : "Recentrer l'image"}
         </Button>
-        <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={cancelAnnotations}>
+        <Button
+          loading={isLoading}
+          disabled={isAreaPictureLoading}
+          buttonColor={palette.purple}
+          textColor='white'
+          style={{ marginVertical: 5 }}
+          onPress={cancelAnnotations}
+        >
           Annuler toute l'annotation
         </Button>
-        <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={generateInvoice}>
+        <Button
+          loading={isLoading}
+          disabled={isAreaPictureLoading}
+          buttonColor={palette.purple}
+          textColor='white'
+          style={{ marginVertical: 5 }}
+          onPress={generateInvoice}
+        >
           Générer un devis
         </Button>
-        <Button disabled={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={saveAnnotation}>
+        <Button
+          loading={isLoading}
+          disabled={isAreaPictureLoading}
+          buttonColor={palette.purple}
+          textColor='white'
+          style={{ marginVertical: 5 }}
+          onPress={saveAnnotation}
+        >
           Enregistrer entant que brouillon
         </Button>
       </View>

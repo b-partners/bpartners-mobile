@@ -10,11 +10,22 @@ import { Measurement } from '../types';
 interface MutationParams {
   isDraft?: boolean;
   draftAnnotationId?: string;
+  onDone?: () => void;
 }
 
 const isAnnotationsValid = (areaPictureAnnotation: AreaPictureAnnotation) => {
-  const annotationsWithoutLabels = areaPictureAnnotation.annotations.filter(({ labelName }) => !!labelName);
+  const annotationsWithoutLabels = areaPictureAnnotation.annotations.filter(({ labelType }) => !labelType);
   return annotationsWithoutLabels.length === 0;
+};
+
+const validator = (areaPictureAnnotation: AreaPictureAnnotation) => {
+  if (areaPictureAnnotation?.annotations?.length === 0 && !areaPictureAnnotation.isDraft) {
+    return 'Veuillez faire au moins une annotation avant de générer un devis';
+  }
+  if (!isAnnotationsValid(areaPictureAnnotation)) {
+    return 'Veuillez ajouter un label pour chaque annotation.';
+  }
+  return null;
 };
 
 export const useAnnotationSubmit = (
@@ -24,7 +35,7 @@ export const useAnnotationSubmit = (
   navigate: (...args: any[]) => void
 ) => {
   const mutationFn = async (params: MutationParams) => {
-    const { draftAnnotationId, isDraft = false } = params || {};
+    const { draftAnnotationId, isDraft = false, onDone } = params || {};
     const annotationIdValue = draftAnnotationId ?? uuid();
     const areaMeasurements = measurements.filter(({ unity }) => unity === 'm²');
     const userId = await storage.loadUserId();
@@ -42,12 +53,15 @@ export const useAnnotationSubmit = (
       isDraft: isDraft,
     };
 
-    if (!isAnnotationsValid(requestBody)) {
-      notify('Veuillez ajouter un label pour chaque annotation.', 'error');
+    const errorMessage = validator(requestBody);
+
+    if (errorMessage) {
+      notify(errorMessage, 'error');
       return null;
     }
 
     const data = await annotatorProvider.annotatePicture(areaPictureDetails.id, annotationIdValue, requestBody);
+    onDone?.();
     navigate('invoiceForm', { areaPictureId: areaPictureDetails.id, invoiceId: uuid(), initialStatus: InvoiceStatus.DRAFT } as any);
     return data;
   };

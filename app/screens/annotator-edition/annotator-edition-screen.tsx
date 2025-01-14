@@ -58,7 +58,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
-  const { submitAnnotation } = useAnnotationSubmit(annotations, measurements, areaPictureDetails, navigation.navigate);
+  const { submitAnnotation, isLoading: isAnnotationSubmitPending } = useAnnotationSubmit(annotations, measurements, areaPictureDetails, navigation.navigate);
 
   const handleOpenMenu = () => {
     openSheetModal(
@@ -69,6 +69,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         isAreaPictureLoading={isLoading}
         updateAreaPictureDetails={updateAreaPictureDetails}
         areaPictureDetails={areaPictureDetails}
+        isLoading={isAnnotationSubmitPending}
       />,
       {
         containerStyle: { height: height * 0.5 },
