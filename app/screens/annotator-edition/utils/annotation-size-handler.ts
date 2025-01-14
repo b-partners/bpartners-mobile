@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dimensions, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -11,9 +11,9 @@ export const IMAGE_MARGIN_HALF = IMAGE_MARGIN / 2;
 export class AnnotationSizeHandler {
   public getImageSize() {
     const { width, height } = Dimensions.get('screen');
-    const style = { width: width - 40, height: height - 40 };
-    if (width > height) style.width = height - 40;
-    else style.height = width - 40;
+    const style = { width: width - IMAGE_MARGIN_HALF, height: height - IMAGE_MARGIN_HALF };
+    if (width > height) style.width = height - IMAGE_MARGIN_HALF;
+    else style.height = width - IMAGE_MARGIN_HALF;
 
     return {
       width: style.width,
@@ -63,11 +63,11 @@ export const useCenterScrollView = (params: UseCenterScrollViewParams) => {
 export const useGetImageSize = (pictureUrl: string) => {
   const [imageSize, setImageSize] = useState(0);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getImageWidth(pictureUrl).then(res => {
       setImageSize(res);
     });
-  }, []);
+  }, [pictureUrl]);
 
   return imageSize;
 };

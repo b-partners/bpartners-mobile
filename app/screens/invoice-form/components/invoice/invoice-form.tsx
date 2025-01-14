@@ -227,7 +227,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       // if the invoice status is DRAFT, navigate to drafts tab and refresh drafts and quotations lists
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize } as any);
         await quotationStore.getQuotations({
           status: InvoiceStatus.PROPOSAL,
           page: 1,
@@ -243,7 +243,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           page: 1,
           pageSize: invoicePageSize,
         });
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize } as any);
       }
 
       // if the invoice status is CONFIRMED, navigate to invoices tab and refresh invoices lists
@@ -326,11 +326,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
 
       // refresh drafts or quotations lists
       invoiceType === 'DRAFT' &&
-        (await draftStore.getDrafts({
+        ((await draftStore.getDrafts({
           status: InvoiceStatus.DRAFT,
           page: 1,
           pageSize: invoicePageSize,
-        }));
+        })) as any);
       invoiceType === 'PROPOSAL' &&
         (await quotationStore.getQuotations({
           status: InvoiceStatus.PROPOSAL,

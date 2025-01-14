@@ -56,7 +56,8 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
   const scrollYRef = useCenterScrollView({ contentSize: scrollContentHalf.y, direction: 'y', ref: [isLoading, scale] });
   const scrollXRef = useCenterScrollView({ contentSize: scrollContentHalf.x, direction: 'x', ref: [isLoading, scale] });
   const [points, setPoints] = useState([]);
-  const { marker } = useAnnotationMarkerFetcher(areaPictureDetails, imageSize.width);
+
+  const { marker } = useAnnotationMarkerFetcher(areaPictureDetails, imageRealWidth, imageWidth);
 
   const scaledAnnotations: AreaPictureAnnotationInstance[] = annotations.map(annotation => ({
     ...annotation,

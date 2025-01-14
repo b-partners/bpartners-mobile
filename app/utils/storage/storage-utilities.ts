@@ -9,6 +9,7 @@ const ACCOUNT_HOLDER_ID_ITEM = 'account-holder-id';
 const ACCOUNT_HOLDER_ITEM = 'account-holder';
 const INITIAL_MARKER_ITEM = 'initial-marker';
 const INITIAL_IMAGE_SIZE_ITEM = 'initial-image-size';
+const INITIAL_IMAGE_REAL_SIZE_ITEM = 'initial-image-real-size';
 
 export const storage = {
   saveAccessToken: async (accessToken: string) => {
@@ -53,5 +54,11 @@ export const storage = {
   },
   loadInitialImageSize: async (): Promise<number> => {
     return await load(INITIAL_IMAGE_SIZE_ITEM);
+  },
+  saveInitialImageRealSize: async (imageSize: number) => {
+    return await save(INITIAL_IMAGE_REAL_SIZE_ITEM, imageSize);
+  },
+  loadInitialImageRealSize: async (): Promise<number> => {
+    return await load(INITIAL_IMAGE_REAL_SIZE_ITEM);
   },
 };

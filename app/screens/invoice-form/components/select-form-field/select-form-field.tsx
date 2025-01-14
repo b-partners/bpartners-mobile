@@ -82,7 +82,7 @@ export const SelectFormField: React.FC<SelectFormFieldProps> = props => {
     const fetchData = async () => {
       setIsFetching(true);
       try {
-        await customerStore.getCustomers();
+        await customerStore.getCustomers({});
       } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       } finally {

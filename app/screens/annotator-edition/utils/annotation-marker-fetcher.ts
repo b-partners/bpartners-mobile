@@ -4,26 +4,29 @@ import { useEffect } from 'react';
 
 import { annotatorProvider } from '../../../provider';
 import { storage } from '../../../utils/storage';
+import { IMAGE_MARGIN_HALF } from './annotation-size-handler';
 import { GeojsonMapper, PolygonMapper } from './mappers';
 import { ConverterPayloadGeoJSON } from './types';
 
-const defaultImageShiftSize = 256;
+const defaultImageShiftSize = 64;
 
-const setMarkerOffset = async (areaPictureDetails: AreaPictureDetails, currentImageSize: number) => {
+const setMarkerOffset = async (areaPictureDetails: AreaPictureDetails, currentImageRealSize: number, currentImageSize: number) => {
   const markerPosition = await storage.loadInitialMarker();
-  const imageSize = await storage.loadInitialImageSize();
+  const imageRealSize = await storage.loadInitialImageRealSize();
+  const scale = currentImageSize / currentImageRealSize;
   const { x, y } = markerPosition || {};
 
-  const offset = (currentImageSize - imageSize) / 2;
-  const horizontalShift = (areaPictureDetails.shiftNb || 0) * defaultImageShiftSize;
+  const offset = (currentImageRealSize - imageRealSize) / 2;
+
+  const horizontalShift = (areaPictureDetails.shiftNb || 0) * defaultImageShiftSize * scale;
 
   return {
-    x: x + offset - horizontalShift,
-    y: y + offset,
+    x: (x + offset) * scale - horizontalShift,
+    y: (y + offset) * scale,
   };
 };
 
-export const useAnnotationMarkerFetcher = (areaPictureDetails: AreaPictureDetails, image_size: number) => {
+export const useAnnotationMarkerFetcher = (areaPictureDetails: AreaPictureDetails, imageRealSize: number, imageSize: number) => {
   const { refetch, data } = useQuery({
     queryKey: ['annotation', 'marker'],
     queryFn: async () => {
@@ -35,16 +38,23 @@ export const useAnnotationMarkerFetcher = (areaPictureDetails: AreaPictureDetail
       } = areaPictureDetails;
 
       if (areaPictureDetails.isExtended) {
-        return setMarkerOffset(areaPictureDetails, image_size);
+        return setMarkerOffset(areaPictureDetails, imageRealSize, imageSize);
       }
-      const geoJson: ConverterPayloadGeoJSON = PolygonMapper.toRest(areaPictureDetails.geoPositions, { filename, image_size, x_tile, y_tile, zoom });
+      const geoJson: ConverterPayloadGeoJSON = PolygonMapper.toRest(areaPictureDetails.geoPositions, {
+        filename,
+        image_size: imageRealSize,
+        x_tile,
+        y_tile,
+        zoom,
+      });
       const markerPoint = ((await annotatorProvider.coordinatesToPixel(geoJson)) || [null])[0];
       const mappedPoint = GeojsonMapper.toMarker(markerPoint)[0];
       storage.saveInitialMarker(mappedPoint);
-      storage.saveInitialImageSize(image_size);
+      storage.saveInitialImageSize(imageSize);
+      storage.saveInitialImageRealSize(imageRealSize);
       return {
-        x: 128,
-        y: 128,
+        x: 128 + IMAGE_MARGIN_HALF,
+        y: 128 + IMAGE_MARGIN_HALF,
       };
     },
     enabled: !!areaPictureDetails,
@@ -52,7 +62,7 @@ export const useAnnotationMarkerFetcher = (areaPictureDetails: AreaPictureDetail
 
   useEffect(() => {
     refetch();
-  }, [areaPictureDetails]);
+  }, [areaPictureDetails, imageRealSize, imageSize]);
 
   return {
     marker: (data as Point) || {},
