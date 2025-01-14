@@ -266,6 +266,13 @@ export const annotatorEditorScreen = StyleSheet.create({
     flexGrow: 1,
     height: '100%',
   },
+  areaAndLabelContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 2,
+    flexDirection: 'row',
+  },
 });
 
 export const slopeRendererStyle = StyleSheet.create({

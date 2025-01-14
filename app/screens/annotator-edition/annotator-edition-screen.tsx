@@ -77,6 +77,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     );
   };
 
+  const measurementsArea = measurements.filter(({ unity }) => unity === 'm²');
+
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
@@ -100,14 +102,19 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               </View>
               <View style={style.annotationListItemTitleContainer}>
                 <Text style={style.annotationListItemTitle} text={labelName} />
-                {labelType ? (
-                  <Text style={style.annotationListItemLabel} text={annotationLabelList.filter(({ id }) => id === labelType)[0].name} />
-                ) : (
-                  <View style={style.annotationListItemLabelContainer}>
-                    <MuiIcon color={palette.yellow} name='warning' size={15} />
-                    <Text style={style.annotationListItemLabel} text='Veuillez ajouter un label' />
-                  </View>
-                )}
+                <View style={style.areaAndLabelContainer}>
+                  {measurementsArea[index] && (
+                    <Text style={style.annotationListItemLabel} text={measurementsArea[index]?.value + measurementsArea[index]?.unity + ' | '} />
+                  )}
+                  {labelType ? (
+                    <Text style={style.annotationListItemLabel} text={annotationLabelList.filter(({ id }) => id === labelType)[0].name} />
+                  ) : (
+                    <View style={style.annotationListItemLabelContainer}>
+                      <MuiIcon color={palette.yellow} name='warning' size={15} />
+                      <Text style={style.annotationListItemLabel} text='Label requis' />
+                    </View>
+                  )}
+                </View>
               </View>
               <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='edit' size={25} />} onPress={() => handleEdit(index)} />
               <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
