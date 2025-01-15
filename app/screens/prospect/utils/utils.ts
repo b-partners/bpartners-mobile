@@ -7,6 +7,7 @@ export type ProspectItemProps = {
   menuItem: MenuItem[];
   prospect: Prospect;
   setCurrentStatus: React.Dispatch<React.SetStateAction<string>>;
+  navigate: (...args: any[]) => void;
 };
 
 export type ProcessModalProps = {

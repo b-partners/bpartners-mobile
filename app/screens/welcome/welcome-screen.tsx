@@ -1,7 +1,6 @@
 import { Auth } from '@aws-amplify/auth';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
-import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 import { FormProvider } from 'react-hook-form';
@@ -24,8 +23,6 @@ import { storage } from '../../utils/storage';
 import { UnderlineText } from './components/underline-text';
 import { styles } from './utils/styles';
 import { IdentityState, Log } from './utils/utils';
-
-WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 

@@ -49,7 +49,7 @@ export const InvoicePreviewScreen: FC<StackScreenProps<NavigatorParamList, 'invo
           source={{ uri: invoiceUrl, cache: false }}
           renderActivityIndicator={() => <Loader size={'large'} color={palette.white} />}
           onError={error => {
-            __DEV__ && console.tron.error(error.message, [error.stackTrace]);
+            __DEV__ && console.tron.error(error, [error.stackTrace]);
           }}
           onLoadComplete={() => __DEV__ && console.tron.log('complete')}
         />

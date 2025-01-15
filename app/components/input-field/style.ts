@@ -18,7 +18,7 @@ export const ICON_CONTAINER: StyleProp<ViewStyle> = {
 
 export const TEXT_INPUT_STYLE = (error: boolean, width: string | number, bg: string) =>
   ({
-    borderBottomWidth: error ? 2 : 0,
+    borderBottomWidth: error ? 1 : 0,
     borderBottomColor: error ? palette.pastelRed : palette.greyDarker,
     backgroundColor: bg,
     borderRadius: 5,

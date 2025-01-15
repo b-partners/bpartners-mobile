@@ -1,8 +1,8 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView, Modal, Platform, ScrollView, View } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { Button, Text } from '../../../../components';
 import { DatePickerField } from '../../../../components/date-picker-field/date-picker-field';
@@ -38,7 +38,7 @@ export const PaymentCreationModal: React.FC<PaymentCreationModalProps> = props =
   } = useForm({
     mode: 'all',
     defaultValues: {
-      percent: item && item.percent ? amountToMajors(item.percent).toString() : '',
+      percent: item?.percent ? amountToMajors(item.percent).toString() : '',
       comment: item ? item.comment : '',
       maturityDate: item ? convertStringToDate(item.maturityDate) : new Date(),
     },

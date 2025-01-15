@@ -1,10 +1,10 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity, View } from 'react-native';
 import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Button, DatePickerField, Icon, Loader, Text } from '../../../../components';
@@ -15,6 +15,7 @@ import { InvoiceStatus, createInvoiceDefaultModel } from '../../../../models/ent
 import { PaymentRegulation } from '../../../../models/entities/payment-regulation/payment-regulation';
 import { createProductDefaultModel } from '../../../../models/entities/product/product';
 import { navigate } from '../../../../navigators/navigation-utilities';
+import { useGetAreaPictureById } from '../../../../queries';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { showMessage } from '../../../../utils/snackbar';
@@ -40,11 +41,11 @@ import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
-  const { products, invoice, initialStatus, navigation, areaPictureId } = props;
+  const { invoice, initialStatus, navigation, areaPictureId } = props;
   const { invoiceStore, customerStore, draftStore, quotationStore, areaPictureStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
-  const { areaPicture } = areaPictureStore;
+  const { data: areaPicture } = useGetAreaPictureById(areaPictureId);
 
   // recover the most current customer from store and set it to the current selected customer
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
@@ -57,7 +58,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [previewLoading, setPreviewLoading] = useState(false);
   const [annotationLoading, setAnnotationLoading] = useState(false);
   const [creationLoading, setCreationLoading] = useState(false);
-  const [removeProduct, setRemoveProduct] = useState(false);
   const [allowPaymentDelay, setAllowPaymentDelay] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
   const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
   const [removePaymentRegulation, setRemovePaymentRegulation] = useState(false);
@@ -83,29 +83,48 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
     defaultValues: createInvoiceDefaultModel(invoiceType, invoice).create(),
   });
 
-  // use useFieldArray to easily control products in a table
-  const {
-    fields: productFields,
-    append: productAppend,
-    remove: productRemove,
-    update: productUpdate,
-  } = useFieldArray({
-    control,
-    name: 'products',
-    rules: {
-      required: translate('errors.required'),
-    },
-  });
+  //==============================================================
+  /**
+   * Function to handle product in the invoice form
+   * TODO: Use it inside the custom product form component not here
+   */
+  const productAppend = (product: any) => {
+    const lastProducts = watch('products') || [];
+    setValue('products', [...lastProducts, product] as any);
+  };
 
-  // use useFieldArray to easily control payment regulations in a table
-  const {
-    fields: paymentFields,
-    remove: paymentRemove,
-    append: paymentAppend,
-  } = useFieldArray({
-    control,
-    name: 'paymentRegulations',
-  });
+  const productRemove = (index: number) => {
+    const lastProducts = (watch('products') || []).filter((_, i) => i !== index);
+    console.log(lastProducts);
+
+    setValue('products', lastProducts as any);
+  };
+
+  const productUpdate = (index: number, product: any) => {
+    const lastProducts = (watch('products') || []).slice();
+    lastProducts[index] = product;
+    setValue('products', lastProducts as any);
+    return lastProducts;
+  };
+  //==============================================================
+
+  //==============================================================
+  /**
+   * Function to handle payment in the invoice form
+   * TODO: Use it inside the custom product form component not here
+   */
+  const paymentFields = watch('paymentRegulations');
+  const paymentAppend = (product: any) => {
+    const lastPayments = watch('paymentRegulations') || [];
+    setValue('paymentRegulations', [...lastPayments, product] as any);
+  };
+
+  const paymentRemove = (index: number) => {
+    const lastPayments = (watch('paymentRegulations') || []).slice();
+    lastPayments.splice(index, 1);
+    setValue('paymentRegulations', lastPayments as any);
+  };
+  //==============================================================
 
   // check if title, reference, products or customer contains an error
   const hasError = errors.title || errors.ref || errors.products || errors.customer;
@@ -226,7 +245,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
       // if the invoice status is DRAFT, navigate to drafts tab and refresh drafts and quotations lists
       if (invoiceType === InvoiceStatus.DRAFT) {
         navigateToTab('drafts');
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize } as any);
         await quotationStore.getQuotations({
           status: InvoiceStatus.PROPOSAL,
           page: 1,
@@ -242,7 +261,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           page: 1,
           pageSize: invoicePageSize,
         });
-        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize });
+        await draftStore.getDrafts({ status: InvoiceStatus.DRAFT, page: 1, pageSize: invoicePageSize } as any);
       }
 
       // if the invoice status is CONFIRMED, navigate to invoices tab and refresh invoices lists
@@ -329,7 +348,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           status: InvoiceStatus.DRAFT,
           page: 1,
           pageSize: invoicePageSize,
-        }));
+        } as any));
       invoiceType === 'PROPOSAL' &&
         (await quotationStore.getQuotations({
           status: InvoiceStatus.PROPOSAL,
@@ -447,8 +466,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             name='delayInPaymentAllowed'
             control={control}
             render={({ field: { value, onBlur, onChange } }) => {
-              let suffix: string;
-              value > 1 ? (suffix = 'Jours') : (suffix = 'Jour');
+              const suffix = value > 1 ? 'Jours' : 'Jour';
               return (
                 <InvoiceFormField
                   labelTx='invoiceFormScreen.invoiceForm.delayInPaymentAllowed'
@@ -557,29 +575,17 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         titleStyle={{ ...styles.productTitle, color: errors.products ? palette.pastelRed : palette.lighterGrey }}
       >
         <View style={styles.productContainer}>
-          {removeProduct ? (
-            <Loader size='large' containerStyle={LOADER_STYLE} />
-          ) : (
-            productFields.map((item, i) => {
-              return (
-                <ProductFormField
-                  key={i}
-                  index={i}
-                  // @ts-ignore
-                  temp={item}
-                  items={products}
-                  onDeleteItem={async (__, index) => {
-                    setRemoveProduct(true);
-                    productRemove(index);
-                    setRemoveProduct(false);
-                  }}
-                  onValueChange={product => {
-                    productUpdate(i, product);
-                  }}
-                />
-              );
-            })
-          )}
+          {watch('products')?.map((item, i) => {
+            return (
+              <ProductFormField
+                key={`${item.id}-${i}-${item.quantity}`}
+                index={i}
+                temp={item as any}
+                onDeleteItem={() => productRemove(i)}
+                onValueChange={product => productUpdate(i, product)}
+              />
+            );
+          })}
         </View>
         <View style={{ ...ROW_STYLE, paddingHorizontal: spacing[3] }}>
           <Button
@@ -611,32 +617,30 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
             {removePaymentRegulation ? (
               <Loader size='large' containerStyle={LOADER_STYLE} />
             ) : (
-              paymentFields.map((item, i) => {
+              paymentFields.map((item: any, i) => {
                 return (
-                  <>
-                    <PaymentRegulationFormField
-                      key={i}
-                      index={i}
-                      // @ts-ignore
-                      item={item}
-                      setCurrentIndex={setCurrentIndex}
-                      setCurrentPayment={setCurrentPayment}
-                      paymentRemove={paymentRemove}
-                      setTotalPercent={setTotalPercent}
-                      onDeleteItem={(__, index, percent) => {
-                        setRemovePaymentRegulation(true);
-                        if (index === 0 && paymentFields.length === 1) {
-                          paymentRemove(0);
-                          setPayInInstalments(CheckboxEnum.UNCHECKED);
-                          setTotalPercent(0);
-                        } else {
-                          setTotalPercent(prevTotalPercent => prevTotalPercent - percent);
-                          paymentRemove(index);
-                        }
-                        setRemovePaymentRegulation(false);
-                      }}
-                    />
-                  </>
+                  <PaymentRegulationFormField
+                    key={item.id}
+                    index={i}
+                    // @ts-ignore
+                    item={item}
+                    setCurrentIndex={setCurrentIndex}
+                    setCurrentPayment={setCurrentPayment}
+                    paymentRemove={paymentRemove}
+                    setTotalPercent={setTotalPercent}
+                    onDeleteItem={(__, index, percent) => {
+                      setRemovePaymentRegulation(true);
+                      if (index === 0 && paymentFields.length === 1) {
+                        paymentRemove(0);
+                        setPayInInstalments(CheckboxEnum.UNCHECKED);
+                        setTotalPercent(0);
+                      } else {
+                        setTotalPercent(prevTotalPercent => prevTotalPercent - percent);
+                        paymentRemove(index);
+                      }
+                      setRemovePaymentRegulation(false);
+                    }}
+                  />
                 );
               })
             )}
@@ -657,15 +661,18 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </List.Accordion>
       )}
       <View style={styles.buttonActionContainer}>
-        {checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green })}
-        {checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed })}
+        {(() => {
+          checkInvoice === true && showMessage(translate('common.added'), { backgroundColor: palette.green });
+          checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed });
+          return <View />;
+        })()}
 
-        {invoice?.idAreaPicture && (
+        {(!!invoice?.idAreaPicture || !!areaPictureId) && (
           <TouchableOpacity
             onPress={async () => {
               setAnnotationLoading(true);
-              await areaPictureStore.getAreaPicture(invoice.idAreaPicture);
-              await areaPictureStore.getAreaPictureAnnotations(invoice.idAreaPicture);
+              await areaPictureStore.getAreaPicture(invoice?.idAreaPicture || areaPictureId);
+              await areaPictureStore.getAreaPictureAnnotations(invoice?.idAreaPicture || areaPictureId);
               await areaPictureStore.getPictureUrl(areaPicture.fileId);
               setAnnotationLoading(false);
               navigation.navigate('annotator');
@@ -734,7 +741,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           setConfirmationModal={setConfirmationModal}
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
-          status={initialStatus}
+          status={initialStatus as any}
           loading={creationLoading}
         />
       )}

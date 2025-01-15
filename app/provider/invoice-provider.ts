@@ -4,10 +4,6 @@ import { GetListOptions } from '../queries';
 import { storage } from '../utils/storage';
 import { payingApi } from './api';
 
-// const paymentApi = new PaymentApi(self.environment.api);
-// const { invoices } = await paymentApi.getInvoices(self.currentAccount.id, options);
-// return invoices || [];
-
 export type InvoiceListParams = { status?: InvoiceStatus[]; archiveStatus?: ArchiveStatus; title?: string[] };
 
 export const invoiceProvider = {

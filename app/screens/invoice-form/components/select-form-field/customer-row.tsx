@@ -1,4 +1,4 @@
-// import { Octicons as Icon } from '@expo/vector-icons';
+// import { Octicons as Icon } from 'import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, { FC } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 

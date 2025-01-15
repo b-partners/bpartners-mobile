@@ -173,3 +173,113 @@ export const labelStyles = StyleSheet.create({
     paddingLeft: spacing[4],
   },
 });
+
+export const annotationContainerStyle = StyleSheet.create({
+  topActions: { display: 'flex', flexDirection: 'row', justifyContent: 'space-around' },
+  scrollView: { margin: 0, padding: 0 },
+  imageContainer: {
+    backgroundColor: palette.lighterGrey,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  svgContainer: { position: 'absolute', top: 0, left: 0 },
+  point: {
+    position: 'absolute',
+    height: 10,
+    width: 10,
+    borderRadius: '50%',
+    backgroundColor: 'black',
+    transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
+  },
+});
+
+export const annotationRendererStyle = StyleSheet.create({
+  point: annotationContainerStyle.point,
+});
+
+export const annotationNameRendererStyle = StyleSheet.create({
+  textContainer: {
+    position: 'absolute',
+    margin: 0,
+    padding: 0,
+    backgroundColor: 'black',
+    borderRadius: '50%',
+    height: 25,
+    width: 25,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export const annotatorEditorScreen = StyleSheet.create({
+  annotationListContainer: {
+    backgroundColor: '#f4f4f4',
+    marginHorizontal: 10,
+    marginVertical: 5,
+    padding: 10,
+    borderRadius: 5,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 1,
+    height: 70,
+  },
+  polygonRefContainer: {
+    borderRadius: 5,
+    backgroundColor: palette.lighterPurple,
+    height: '100%',
+    width: 50,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  polygonRefText: {
+    textAlign: 'center',
+    color: '#f4f4f4',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  annotationListItemTitle: {
+    color: '#333333',
+  },
+  annotationListItemLabel: {
+    color: '#999999',
+  },
+  annotationListItemLabelContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 3,
+  },
+  annotationListItemTitleContainer: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexGrow: 1,
+    height: '100%',
+  },
+  areaAndLabelContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 2,
+    flexDirection: 'row',
+  },
+});
+
+export const slopeRendererStyle = StyleSheet.create({
+  image: {
+    objectFit: 'contain',
+    height: 60,
+    width: 60,
+    marginRight: 10,
+  },
+});

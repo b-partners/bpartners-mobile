@@ -1,5 +1,5 @@
-import * as FileSystem from 'expo-file-system';
 import { Platform } from 'react-native';
+import RNFS from 'react-native-fs';
 
 import { Invoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 import { AuthStore } from '../../models/stores/auth-store/auth-store';
@@ -31,13 +31,18 @@ export async function sendEmail(
   const invoiceUrl = createFileUrl(fileId, currentAccount.id, accessToken, 'INVOICE');
 
   // Download the invoice into a cache dir of bp-app
-  const fileUri = FileSystem.cacheDirectory + fileName;
+  const fileUri = `${RNFS.DocumentDirectoryPath}/${fileName}`;
   let downloadedFileUri = null;
-  const downloadResumable = FileSystem.createDownloadResumable(invoiceUrl, fileUri, {});
   try {
-    const { uri } = await downloadResumable.downloadAsync();
-    downloadedFileUri = uri;
-    __DEV__ && console.tron.log('Finished downloading to ' + uri);
+    const downloadResult = await RNFS.downloadFile({
+      fromUrl: invoiceUrl,
+      toFile: fileUri,
+    }).promise;
+
+    if (downloadResult.statusCode === 200) {
+      downloadedFileUri = fileUri;
+    }
+    __DEV__ && console.tron.log('Finished downloading to ' + fileUri);
   } catch (e) {
     __DEV__ && console.tron.error(e.message, e.stacktrace);
     sendError({ message: 'Error occured while downloading file: ' + fileUri, exception: e }, {});

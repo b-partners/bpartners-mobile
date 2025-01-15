@@ -6,7 +6,7 @@ export default {
   get isCi() {
     return this.scheme === 'ci';
   },
-  apiBaseUrl: config.API_URL || '',
+  apiBaseUrl: new URL(config.API_URL).href || '',
   successUrl: config.SUCCESS_URL || '',
   failureUrl: config.FAILURE_URL || '',
   swanUrl: config.SWAN_URL || '',

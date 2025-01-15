@@ -6,7 +6,6 @@ import { BpTabNavigation } from '../../components';
 import { translate } from '../../i18n';
 import {
   HomeScreen,
-  InvoiceFormScreen,
   InvoicesScreen,
   MarketPlaceScreen,
   PaymentInitiationScreen,
@@ -15,7 +14,6 @@ import {
   ProspectScreen,
   SupportContactScreen,
 } from '../../screens';
-import { AnnotatorScreen } from '../../screens/annotator/annotator-screen';
 import { TabNavigatorParamList } from '../utils';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
@@ -23,6 +21,7 @@ const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 export const AppTabStack = observer(function () {
   return (
     <Tab.Navigator
+      id={undefined}
       screenOptions={{
         tabBarStyle: { backgroundColor: 'white' },
         headerShown: false,
@@ -39,8 +38,6 @@ export const AppTabStack = observer(function () {
         <Tab.Screen name='paymentList' component={PaymentListScreen} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
-        <Tab.Screen name='invoiceForm' component={InvoiceFormScreen} />
-        <Tab.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
       </>
     </Tab.Navigator>
   );

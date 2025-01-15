@@ -16,11 +16,11 @@ export const InvoiceCreationButton: React.FC<InvoiceCreationProps> = props => {
   const handlePress = () => {
     invoiceStore.saveInvoiceInit();
     if (invoiceStatus === InvoiceStatus.PROPOSAL) {
-      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.PROPOSAL });
+      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.PROPOSAL } as any);
     } else if (invoiceStatus === InvoiceStatus.CONFIRMED) {
-      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED });
+      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.CONFIRMED } as any);
     } else {
-      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.DRAFT });
+      navigation.navigate('invoiceForm', { initialStatus: InvoiceStatus.DRAFT } as any);
     }
   };
 
