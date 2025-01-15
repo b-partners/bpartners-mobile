@@ -3,6 +3,7 @@ import debounceFn from 'debounce-fn';
 import { useEffect, useMemo, useState } from 'react';
 
 import { PAGE_SIZE, ProspectListParam, prospectProvider } from '../provider';
+import { draftAnnotationProvider } from '../provider/draft-annotation-provider';
 import { TUseQueryListFetcher, useQueryList } from './use-query-list';
 
 export const useQueryProspect = (defaultParams: ProspectListParam) => {
@@ -20,6 +21,9 @@ export const useQueryProspect = (defaultParams: ProspectListParam) => {
   }, [name]);
 
   const fetcher: TUseQueryListFetcher<any> = async (page = 1, filters = {}) => {
+    if ((status as any) === 'DRAFT') {
+      return await draftAnnotationProvider.getList({ page, pageSize: PAGE_SIZE });
+    }
     return await prospectProvider.getList({ filters: { ...filters, ...defaultParams, name: searchQuery, status }, page, pageSize: PAGE_SIZE });
   };
 

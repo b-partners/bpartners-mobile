@@ -14,6 +14,7 @@ import { translate } from '../../../i18n';
 import { prospectMapper } from '../../../mappers';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
 import { TabNavigatorParamList } from '../../../navigators/utils';
+import { useQueryProspectById } from '../../../queries';
 import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { datePipe } from '../../../utils/pipes';
@@ -34,11 +35,21 @@ const IconGroup = {
 
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
   const { navigate } = useNavigation<NavigationProp<TabNavigatorParamList>>();
-  const { prospect, setCurrentStatus, menuItem } = props;
+  const { prospect: prospectOrAreaPicture, setCurrentStatus, menuItem } = props;
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState<ProspectStatus | null>(null);
   const { open: openSheetModal, close: closeSheetModal } = useSheetModal();
+  const { prospect: prospectByAreaPicture, queryProspectById } = useQueryProspectById();
+
+  const prospect = prospectByAreaPicture || prospectOrAreaPicture;
+
+  useEffect(() => {
+    const prospectIdFromAreaPicture = (prospectOrAreaPicture as any)?.areaPicture?.prospectId;
+    if (prospectIdFromAreaPicture) {
+      queryProspectById(prospectIdFromAreaPicture);
+    }
+  }, [prospectOrAreaPicture]);
 
   useEffect(() => {
     status != null && setShowModal(true);
@@ -117,7 +128,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
           <ProcessModal
             showModal={showModal}
             setShowModal={setShowModal}
-            prospect={prospect}
+            prospect={prospect as any}
             setCurrentStatus={setCurrentStatus}
             status={status}
             setStatus={setStatus}

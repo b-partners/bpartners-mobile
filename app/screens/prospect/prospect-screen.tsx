@@ -1,7 +1,7 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Dimensions, ScrollView, View } from 'react-native';
 import { Menu, Provider, Searchbar } from 'react-native-paper';
 
 import { Header, Loader, NoDataProvided } from '../../components';
@@ -51,9 +51,12 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
     { id: 'toContact', title: translate('prospectScreen.tab.toContact'), label: ProspectStatus.TO_CONTACT },
     { id: 'contacted', title: translate('prospectScreen.tab.contacted'), label: ProspectStatus.CONTACTED },
     { id: 'converted', title: translate('prospectScreen.tab.converted'), label: ProspectStatus.CONVERTED },
+    { id: 'draft', title: 'Avec brouillons', label: 'DRAFT' },
   ];
 
   const prospectWithoutCurrentStatus = PROSPECT_STATUS.filter(s => s.label !== status);
+
+  const { width } = Dimensions.get('screen');
 
   return (
     <Provider>
@@ -82,19 +85,21 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
             />
             <CreationPortal />
           </View>
-          <View style={styles.menuContainer}>
-            {PROSPECT_STATUS.map(s => {
-              return (
-                <Menu.Item
-                  onPress={() => handleClickMenu(s.label)}
-                  key={s.id}
-                  title={s.title}
-                  titleStyle={{ color: palette.secondaryColor }}
-                  style={{ ...getActiveClassName(s.label), width: '28%' }}
-                />
-              );
-            })}
-          </View>
+          <ScrollView horizontal style={[{ width: width - 10 }, styles.menuScrollContainer]}>
+            <View style={styles.menuContainer}>
+              {PROSPECT_STATUS.map(s => {
+                return (
+                  <Menu.Item
+                    onPress={() => handleClickMenu(s.label as any)}
+                    key={s.id}
+                    title={s.title}
+                    titleStyle={{ color: palette.secondaryColor }}
+                    style={{ ...getActiveClassName(s.label) }}
+                  />
+                );
+              })}
+            </View>
+          </ScrollView>
           <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
             {loadingProspect && (
               <View style={styles.loader}>

@@ -6,3 +6,4 @@ export * from './use-query-customers';
 export * from './use-query-invoice';
 export * from './use-query-list';
 export * from './use-query-prospect';
+export * from './use-query-prospect-by-id';

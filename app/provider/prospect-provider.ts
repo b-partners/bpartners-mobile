@@ -18,7 +18,7 @@ export const prospectProvider = {
     const api = await prospectingApi();
     const accountHId = await storage.loadAccountHolderId();
     const { data } = await api.getProspectById(accountHId, id);
-    return data || [];
+    return data || {};
   },
   async crupdateProspect(prospect: UpdateProspect) {
     const api = await prospectingApi();
