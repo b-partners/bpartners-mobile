@@ -27,7 +27,7 @@ export const ProspectStoreModel = types
   }))
   .actions(self => ({
     getProspectsFail: error => {
-      __DEV__ && console.tron.log(error.message);
+      __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
   }))

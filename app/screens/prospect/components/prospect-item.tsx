@@ -1,22 +1,26 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { DraftAreaPictureAnnotation, FileType, Prospect } from '@bpartners/typescript-client';
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { Card, Button as IButton, Paragraph, Portal, Title } from 'react-native-paper';
-import Popover from 'react-native-popover-view';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { Card, Paragraph, Portal, Title } from 'react-native-paper';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
-import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import { default as MaterialCommunity, default as MaterialCommunityIcons } from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Text } from '../../../components';
+import { useSheetModal } from '../../../hook';
 import { translate } from '../../../i18n';
+import { prospectMapper } from '../../../mappers';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
-import { color, spacing } from '../../../theme';
+import { useQueryProspectById } from '../../../queries';
+import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { getFileUrl } from '../../../utils/file-utils';
 import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
 import { ProcessModal } from './process-modal';
+import { ProspectStatusModal } from './prospect-status-modal';
 
 const IconGroup = {
   email: <MaterialCommunity name='email' size={18} color={color.palette.secondaryColor} />,
@@ -29,28 +33,46 @@ const IconGroup = {
 };
 
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
-  const { prospect, setCurrentStatus, menuItem } = props;
+  const { prospect: prospectOrAreaPicture, setCurrentStatus, menuItem, navigate } = props;
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isPopOverOpen, setIsPopOverOpen] = useState(false);
   const [status, setStatus] = useState<ProspectStatus | null>(null);
+  const { open: openSheetModal, close: closeSheetModal } = useSheetModal();
+  const { prospect: prospectByAreaPicture, queryProspectById } = useQueryProspectById();
+
+  const prospect = prospectByAreaPicture || prospectOrAreaPicture;
+
+  useEffect(() => {
+    const prospectIdFromAreaPicture = (prospectOrAreaPicture as any)?.areaPicture?.prospectId;
+    if (prospectIdFromAreaPicture) {
+      queryProspectById(prospectIdFromAreaPicture);
+    }
+  }, [prospectOrAreaPicture]);
 
   useEffect(() => {
     status != null && setShowModal(true);
   }, [status]);
 
   const onEditing = () => {
-    setShowModal(true);
-    setIsEditing(true);
-    setIsPopOverOpen(false);
+    closeSheetModal();
+    navigate('prospectForm', { prospect: prospectMapper.prospectToUpdateProspect(prospect as any as Prospect) });
   };
 
-  const openPopover = () => {
-    setIsPopOverOpen(true);
-  };
-
-  const closePopover = () => {
-    setIsPopOverOpen(false);
+  const handleEdit = async () => {
+    if ((prospectOrAreaPicture as any)?.areaPicture?.prospectId) {
+      const { areaPicture, id, annotations } = prospectOrAreaPicture as any as DraftAreaPictureAnnotation;
+      const pictureUrl = await getFileUrl(areaPicture.fileId, FileType.AREA_PICTURE);
+      navigate('annotatorEdition', {
+        areaPictureDetails: areaPicture,
+        pictureUrl,
+        annotations,
+        draftAnnotationId: id,
+      } as any);
+      return;
+    }
+    openSheetModal(<ProspectStatusModal menuItems={menuItem} onEditing={onEditing} setStatus={setStatus} />, {
+      containerStyle: { height: Dimensions.get('screen').height * 0.4 },
+    });
   };
 
   return (
@@ -104,60 +126,9 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
             </View>
           </View>
           <View style={styles.menuContainer}>
-            <Popover
-              isVisible={isPopOverOpen}
-              onRequestClose={closePopover}
-              from={
-                <TouchableOpacity onPress={openPopover}>
-                  <Text tx={'common.edit'} style={styles.editButton} />
-                </TouchableOpacity>
-              }
-            >
-              <View style={styles.popOverContainer}>
-                <Text
-                  tx={'prospectScreen.process.onProspectChangingStatus'}
-                  style={{
-                    color: palette.black,
-                    padding: spacing[3],
-                    textAlign: 'center',
-                  }}
-                />
-                {menuItem.map(item => {
-                  return (
-                    <IButton
-                      key={item.id}
-                      compact={true}
-                      buttonColor={palette.secondaryColor}
-                      textColor={palette.white}
-                      style={styles.processButton}
-                      onPress={() => {
-                        setStatus(ProspectStatus[item.label]);
-                        closePopover();
-                      }}
-                    >
-                      <Text text={item.title} style={styles.processButtonText} />
-                    </IButton>
-                  );
-                })}
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{ ...styles.separatorCommonStyle, marginLeft: spacing[4] }} />
-                  <View>
-                    <Text
-                      style={{
-                        color: palette.black,
-                        padding: spacing[2],
-                        textAlign: 'center',
-                      }}
-                      tx={'common.or'}
-                    />
-                  </View>
-                  <View style={{ ...styles.separatorCommonStyle, marginRight: spacing[4] }} />
-                </View>
-                <IButton compact={true} buttonColor={palette.secondaryColor} textColor={palette.white} style={styles.processButton} onPress={onEditing}>
-                  <Text tx={'prospectScreen.process.editProspect'} style={styles.processButtonText} />
-                </IButton>
-              </View>
-            </Popover>
+            <TouchableOpacity onPress={handleEdit}>
+              <Text tx={'common.edit'} style={styles.editButton} />
+            </TouchableOpacity>
           </View>
         </Card.Content>
       </Card>
@@ -166,7 +137,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
           <ProcessModal
             showModal={showModal}
             setShowModal={setShowModal}
-            prospect={prospect}
+            prospect={prospect as any}
             setCurrentStatus={setCurrentStatus}
             status={status}
             setStatus={setStatus}

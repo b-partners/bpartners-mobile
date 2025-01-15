@@ -1,7 +1,7 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import { Observer } from 'mobx-react-lite';
 import React from 'react';
 import { View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {
   Button,

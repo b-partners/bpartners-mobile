@@ -1,5 +1,7 @@
 import { QueryKey, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useStores } from '../models';
 
 export type TUseQueryListFetcher<T> = (page: number, filters: Record<any, any>) => Promise<T[]>;
 
@@ -23,6 +25,7 @@ const defaultQueryListState: QueryListState = { page: 1, filters: {} };
 
 export const useQueryList = <T>(fetcher: TUseQueryListFetcher<T>, queryKey: QueryKey, defaultOptions?: QueryListState) => {
   const [options, setOptions] = useState(defaultOptions || defaultQueryListState);
+  const { authStore } = useStores();
 
   const customFetcher = async () => {
     const currentResult = (await fetcher(options.page, options.filters)) || [];
@@ -34,9 +37,15 @@ export const useQueryList = <T>(fetcher: TUseQueryListFetcher<T>, queryKey: Quer
     };
   };
 
-  const query = useQuery<IQueryResult<T>>({ queryFn: customFetcher, queryKey: [...queryKey, options] });
+  const { error, ...query } = useQuery<IQueryResult<T>>({ queryFn: customFetcher, queryKey: [...queryKey, options] });
   const setPage = (page: number) => setOptions(prev => ({ ...prev, page }));
   const setFilters = (filters: Record<any, any>) => setOptions(prev => ({ ...prev, filters: { ...prev.filters, ...filters } }));
+
+  useEffect(() => {
+    if (error?.message?.includes('Request failed with status code 403')) {
+      authStore.logout();
+    }
+  }, [error]);
 
   return {
     query,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions, ViewStyle } from 'react-native';
 import Pdf from 'react-native-pdf';
 
-type TSource = { uri: string; cache?: boolean } | number;
+type TSource = { uri: string; cache?: boolean };
 
 interface IPDFView {
   source: TSource;
@@ -15,14 +15,14 @@ interface IPDFView {
   renderActivityIndicator: (progress?: number) => React.ReactElement;
 }
 
-export function PDFView(props: IPDFView) {
+export const PDFView = (props: IPDFView) => {
   const { source, onPageChanged, onLoadComplete, onError, style, onLoadProgress, renderActivityIndicator, enablePaging = true } = props;
 
   return (
     <Pdf
       enablePaging={enablePaging}
       trustAllCerts={false}
-      source={source}
+      source={{ uri: source?.uri, cache: false }}
       onLoadComplete={onLoadComplete}
       onPageChanged={onPageChanged}
       onError={onError}
@@ -31,7 +31,7 @@ export function PDFView(props: IPDFView) {
       renderActivityIndicator={renderActivityIndicator}
     />
   );
-}
+};
 
 const PDF_STYLE: ViewStyle = {
   height: 500,

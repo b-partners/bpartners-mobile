@@ -1,6 +1,6 @@
-import { Foundation } from '@expo/vector-icons';
 import React, { FC } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import Foundation from 'react-native-vector-icons/Foundation';
 
 import { Text } from '../../../components';
 import { spacing } from '../../../theme';

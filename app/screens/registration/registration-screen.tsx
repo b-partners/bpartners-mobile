@@ -1,6 +1,5 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
-import * as WebBrowser from 'expo-web-browser';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -17,8 +16,6 @@ import { palette } from '../../theme/palette';
 import { showMessage } from '../../utils/snackbar';
 import { UnderlineText } from '../welcome/components/underline-text';
 import { styles } from './utils/styles';
-
-WebBrowser.maybeCompleteAuthSession();
 
 Amplify.configure(awsExports);
 

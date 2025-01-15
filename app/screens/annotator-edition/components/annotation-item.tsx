@@ -1,7 +1,7 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { FC, useState } from 'react';
 import { ScrollView, TextStyle, TouchableOpacity, View } from 'react-native';
 import { List } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Text } from '../../../components';
 import { spacing } from '../../../theme';
