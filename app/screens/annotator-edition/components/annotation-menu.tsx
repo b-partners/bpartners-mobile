@@ -2,9 +2,9 @@ import { AreaPictureDetails, AreaPictureMapLayer, CrupdateAreaPictureDetails } f
 import React, { FC } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { Dimensions, ScrollView, View } from 'react-native';
-import { Button } from 'react-native-paper';
 
 import { BpSheetSelect } from '../../../components';
+import { BpButton as Button } from '../../../components/bp-button';
 import { BpInputSelectSimpleTextRenderer } from '../../../components/bp-input';
 import { ZOOM_LEVEL, useAnnotationMenu } from '../../../form';
 import { useSheetModal } from '../../../hook';
@@ -84,8 +84,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
           />
         </FormProvider>
         <Button
-          loading={isLoading}
-          disabled={isAreaPictureLoading}
+          loading={isLoading || isAreaPictureLoading}
           buttonColor={palette.purple}
           textColor='white'
           style={{ marginVertical: 5 }}
@@ -95,8 +94,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
         </Button>
         <View style={{ marginVertical: 10, borderBottomColor: palette.greyDarker, borderBottomWidth: 2 }} />
         <Button
-          loading={isLoading}
-          disabled={isAreaPictureLoading}
+          loading={isLoading || isAreaPictureLoading}
           buttonColor={palette.purple}
           textColor='white'
           style={{ marginVertical: 5 }}
@@ -105,8 +103,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
           {areaPictureDetails?.isExtended ? "Réinitialiser l'image" : "Recentrer l'image"}
         </Button>
         <Button
-          loading={isLoading}
-          disabled={isAreaPictureLoading}
+          loading={isLoading || isAreaPictureLoading}
           buttonColor={palette.purple}
           textColor='white'
           style={{ marginVertical: 5 }}
@@ -115,8 +112,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
           Annuler toute l'annotation
         </Button>
         <Button
-          loading={isLoading}
-          disabled={isAreaPictureLoading}
+          loading={isLoading || isAreaPictureLoading}
           buttonColor={palette.purple}
           textColor='white'
           style={{ marginVertical: 5 }}
@@ -125,8 +121,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
           Générer un devis
         </Button>
         <Button
-          loading={isLoading}
-          disabled={isAreaPictureLoading}
+          loading={isLoading || isAreaPictureLoading}
           buttonColor={palette.purple}
           textColor='white'
           style={{ marginVertical: 5 }}
