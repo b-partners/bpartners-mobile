@@ -1,6 +1,6 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
 import { TextStyle, TouchableOpacity, View } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BulletSeparator, Menu, Text } from '../../../components';
 import { palette } from '../../../theme/palette';
@@ -26,7 +26,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
 
   return (
     <View style={styles.viewContainer}>
-      <TouchableOpacity style={styles.container} onPress={() => invoiceAction && invoiceAction(item)}>
+      <TouchableOpacity style={styles.container} onPress={() => invoiceAction?.(item)}>
         <View style={styles.header}>
           <Text text={props.item.customer.firstName} style={HEADER_TEXT_STYLE} />
           <Text text={printCurrencyToMajors(item.totalPriceWithVat)} style={styles.totalPrice} />
@@ -37,7 +37,7 @@ export const Invoice: React.FC<InvoiceProps> = props => {
             <Text text={`#${props.item.ref}`} style={BODY_TEXT_STYLE} />
             <View style={DATE_CONTAINER}>
               <BulletSeparator style={BULLET_SEPARATOR_STYLE} containerStyle={BULLET_SEPARATOR_CONTAINER_STYLE} />
-              <Text text={datePipe(props.item.sendingDate).split(' ')[0]} style={[BODY_TEXT_STYLE, DATE_TEXT_STYLE]} />
+              <Text text={datePipe(props.item.createdAt).split(' ')[0]} style={[BODY_TEXT_STYLE, DATE_TEXT_STYLE]} />
             </View>
           </View>
           <View style={STATUS_CONTAINER}>

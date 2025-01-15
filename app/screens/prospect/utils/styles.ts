@@ -32,14 +32,15 @@ export const prospectStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  menuScrollContainer: {
+    marginVertical: 0,
+    marginHorizontal: 'auto',
+  },
   menuContainer: {
-    width: '100%',
-    height: '10%',
-    marginVertical: spacing[1],
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    width: '100%',
   },
   searchbar: {
     backgroundColor: palette.solidGrey,

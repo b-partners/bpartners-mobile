@@ -27,7 +27,7 @@ export const CustomerStoreModel = types
   }))
   .actions(self => ({
     getCustomersFail: error => {
-      __DEV__ && console.tron.log(error.message());
+      __DEV__ && console.tron.log(error);
       self.catchOrThrow(error);
     },
   }))

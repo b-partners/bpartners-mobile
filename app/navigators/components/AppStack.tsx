@@ -24,10 +24,12 @@ import {
   TransactionListScreen,
   WelcomeScreen,
 } from '../../screens';
+import { AnnotatorScreen } from '../../screens/annotator/annotator-screen';
 import { CalendarScreen } from '../../screens/calendar/calendar-screen';
 import { CustomersScreen } from '../../screens/customer/customers-screen';
 import { ProductScreen } from '../../screens/product/products-screen';
 import { ProfileEditionScreen } from '../../screens/profile-edition/profile-edition-screen';
+import { ProspectFormScreen } from '../../screens/prospect/ProspectFromScreen';
 import { NavigatorParamList } from '../utils';
 import { AppTabStack } from './AppTabStack';
 
@@ -52,6 +54,7 @@ export const AppStack = observer(function () {
 
   return (
     <Drawer.Navigator
+      id={undefined}
       screenOptions={{
         headerShown: false,
         drawerStyle: {
@@ -77,8 +80,10 @@ export const AppStack = observer(function () {
           <Drawer.Screen name='configuration' component={ConfigurationScreen} />
           <Drawer.Screen name='partners' component={PartnersScreen} />
           <Drawer.Screen name='profileEdition' component={ProfileEditionScreen} />
+          <Drawer.Screen name='prospectForm' component={ProspectFormScreen} />
           <Drawer.Screen name='calendar' component={CalendarScreen} />
-          <Drawer.Screen name='annotatorEdition' component={AnnotatorEditionScreen} />
+          <Drawer.Screen name='annotatorEdition' component={AnnotatorEditionScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
         </>
       )}
 

@@ -146,7 +146,6 @@ export const ProcessModal: React.FC<ProcessModalProps> = props => {
     } finally {
       setIsButtonLoading(false);
       closeModal();
-      await prospectStore.getProspects();
       setCurrentStatus(handleStatus());
     }
   };

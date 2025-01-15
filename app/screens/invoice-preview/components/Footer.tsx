@@ -1,7 +1,8 @@
-import { FontAwesome, Octicons } from '@expo/vector-icons';
 import React, { FC, useEffect, useState } from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Text } from '../../../components';
 import { translate } from '../../../i18n';

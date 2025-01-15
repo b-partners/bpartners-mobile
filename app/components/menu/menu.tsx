@@ -1,12 +1,12 @@
 import { MenuView } from '@react-native-menu/menu';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 export type MenuItem = { id: string; title: string; subItems?: MenuItem[]; label?: string };
 
 export type MenuAction = Record<string, (...args: any) => void>;
 
-export type MenuProps = { items: MenuItem[]; actions: MenuAction };
+export type MenuProps = { items: MenuItem[]; actions: MenuAction; children: ReactNode };
 
 export const Menu: React.FC<MenuProps> = props => {
   const { items, children, actions } = props;

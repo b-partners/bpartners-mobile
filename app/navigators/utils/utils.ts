@@ -1,3 +1,5 @@
+import { AreaPictureAnnotationInstance, AreaPictureDetails, UpdateProspect } from '@bpartners/typescript-client';
+
 import { Invoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 
 export type NavigatorParamList = {
@@ -29,18 +31,49 @@ export type NavigatorParamList = {
   bank: undefined;
   configuration: undefined;
   partners: undefined;
+  prospectForm: undefined;
   changePassword: {
     userName: string;
     password: string;
   };
   profileEdition: undefined;
   calendar: undefined;
-  annotatorEdition: undefined;
+  annotatorEdition: {
+    areaPictureDetails: AreaPictureDetails | undefined;
+    pictureUrl: string | undefined;
+    draftAnnotationId: string | undefined;
+    annotations: AreaPictureAnnotationInstance[] | undefined;
+  };
+  annotator: {};
 };
 
 export type TabNavigatorParamList = {
-  annotator: undefined;
+  home: {
+    screen:
+      | 'bp_home'
+      | 'marketplace'
+      | 'paymentInitiation'
+      | 'prospect'
+      | 'prospectConfiguration'
+      | 'paymentList'
+      | 'supportContact'
+      | 'invoices'
+      | 'invoiceForm'
+      | 'annotator';
+  };
+  annotator: {
+    invoiceID?: string;
+    initialStatus?: InvoiceStatus;
+    areaPictureId: string | undefined;
+  };
+  annotatorEdition: {
+    pictureUrl: string | undefined;
+    areaPictureDetails: AreaPictureDetails | undefined;
+  };
   prospect: undefined;
+  prospectForm: {
+    prospect: UpdateProspect | undefined;
+  };
   prospectConfiguration: undefined;
   forgotPassword: undefined;
   bp_home: undefined;
@@ -54,7 +87,7 @@ export type TabNavigatorParamList = {
   invoiceForm: {
     invoiceID?: string;
     initialStatus?: InvoiceStatus;
-    areaPictureId?: string;
+    areaPictureId: string | undefined;
   };
   invoicePreview: {
     fileId: string;

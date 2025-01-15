@@ -1,5 +1,5 @@
-import * as MailCompose from 'expo-mail-composer';
-import { Alert, Platform } from 'react-native';
+import { Alert } from 'react-native';
+import MailCompose from 'react-native-mail';
 
 import { translate } from '../i18n';
 import { sendError } from '../services/logs/logs';
@@ -24,27 +24,20 @@ type SendEmailParams = {
   isHTML?: boolean;
   attachments?: string[];
 };
+
 /**
  * **[ios]** User must log in to Mail app of iPhone(the default one).
  * https://developer.apple.com/documentation/messageui/mfmailcomposeviewcontroller
  * https://github.com/expo/expo/pull/5622
  * */
 export const sendEmail = async (email: SendEmailParams) => {
-  let mailIsAvailable = false;
+  const { attachments, ...emailData } = email || {};
+
   try {
-    mailIsAvailable = await MailCompose.isAvailableAsync();
-    await MailCompose.composeAsync({ ...email });
+    MailCompose.mail({ ...emailData, attachments: attachments.map(path => ({ path })) }, () => {});
   } catch (e) {
     __DEV__ && console.tron.error(e.message, e.stacktrace);
-    if (!mailIsAvailable) {
-      const title = translate('components.mailAlert.noMailClientFound.title');
-      const message =
-        Platform.OS === 'ios' ? translate('components.mailAlert.noMailClientFound.iosMessage') : translate('components.mailAlert.noMailClientFound.message');
-
-      Alert.alert(title, message);
-    } else {
-      Alert.alert(translate('errors.somethingWentWrong'), e.message);
-    }
+    Alert.alert(translate('errors.somethingWentWrong'), e.message);
     sendError(e);
     throw e;
   }

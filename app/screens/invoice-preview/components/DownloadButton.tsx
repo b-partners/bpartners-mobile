@@ -1,6 +1,8 @@
-import { AntDesign, Ionicons, Octicons } from '@expo/vector-icons';
 import React from 'react';
 import { TouchableOpacity, ViewStyle } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Loader } from '../../../components';
 import { color } from '../../../theme';
@@ -21,7 +23,7 @@ const DOWNLOAD_BUTTON_STYLE: ViewStyle = {
 };
 type TDownloadButton = { onPress: () => Promise<void>; loading: boolean; downloadFinished: boolean; downloadError };
 
-export function DownloadButton(props: TDownloadButton) {
+export const DownloadButton = (props: TDownloadButton) => {
   const { downloadFinished, loading, onPress, downloadError } = props;
   if (loading) {
     return (
@@ -49,4 +51,4 @@ export function DownloadButton(props: TDownloadButton) {
       <AntDesign name='download' size={24} color={color.primary} />
     </TouchableOpacity>
   );
-}
+};
