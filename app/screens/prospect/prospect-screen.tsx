@@ -110,7 +110,13 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
             {!loadingProspect && filteredProspect.length > 0 && (
               <>
                 {filteredProspect.map((item: Prospect) => (
-                  <ProspectItem key={item.id} menuItem={prospectWithoutCurrentStatus} prospect={item} setCurrentStatus={setCurrentStatus} />
+                  <ProspectItem
+                    navigate={navigation.navigate}
+                    key={item.id}
+                    menuItem={prospectWithoutCurrentStatus}
+                    prospect={item}
+                    setCurrentStatus={setCurrentStatus}
+                  />
                 ))}
                 <Pagination page={page} changePage={setPage} hasNext={hasNext} />
               </>

@@ -111,7 +111,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               <View style={style.annotationListItemTitleContainer}>
                 <Text style={style.annotationListItemTitle} text={labelName} />
                 <View style={style.areaAndLabelContainer}>
-                  {measurementsArea[index] && (
+                  {measurementsArea.length >= index && (
                     <Text style={style.annotationListItemLabel} text={measurementsArea[index]?.value + measurementsArea[index]?.unity + ' | '} />
                   )}
                   {labelType ? (

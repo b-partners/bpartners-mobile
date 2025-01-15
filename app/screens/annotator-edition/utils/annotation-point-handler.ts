@@ -27,6 +27,9 @@ function constraintPoint(point: Point, imageSize: ISize) {
   return currentPoint;
 }
 
+const avoidInfinity = (value: number) => {
+  return Number.isFinite(value) ? value : 0;
+};
 export class AnnotationPointHandler {
   public getSvgPath(points: Point[], scale: number) {
     return points.map(({ x, y }) => `${(x + IMAGE_MARGIN_HALF) * scale},${(y + IMAGE_MARGIN_HALF) * scale}`).join(' ');
@@ -49,7 +52,7 @@ export class AnnotationPointHandler {
 
   public scaleRealPoints(points: Point[], realImageWidth: number, scaledImageWidth: number) {
     const scale = realImageWidth / scaledImageWidth;
-    return points.map(({ x, y }) => ({ x: x / scale, y: y / scale })) as Point[];
+    return points.map(({ x, y }) => ({ x: avoidInfinity(x / scale), y: avoidInfinity(y / scale) })) as Point[];
   }
 
   public createPanResponder(

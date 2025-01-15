@@ -1,5 +1,4 @@
 import { DraftAreaPictureAnnotation, FileType, Prospect } from '@bpartners/typescript-client';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
 import { Card, Paragraph, Portal, Title } from 'react-native-paper';
@@ -13,7 +12,6 @@ import { useSheetModal } from '../../../hook';
 import { translate } from '../../../i18n';
 import { prospectMapper } from '../../../mappers';
 import { ProspectStatus } from '../../../models/entities/prospect/prospect';
-import { TabNavigatorParamList } from '../../../navigators/utils';
 import { useQueryProspectById } from '../../../queries';
 import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
@@ -35,8 +33,7 @@ const IconGroup = {
 };
 
 export const ProspectItem: React.FC<ProspectItemProps> = props => {
-  const { navigate } = useNavigation<NavigationProp<TabNavigatorParamList>>();
-  const { prospect: prospectOrAreaPicture, setCurrentStatus, menuItem } = props;
+  const { prospect: prospectOrAreaPicture, setCurrentStatus, menuItem, navigate } = props;
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState<ProspectStatus | null>(null);
@@ -58,15 +55,16 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
 
   const onEditing = () => {
     closeSheetModal();
-    navigate<keyof TabNavigatorParamList>('prospectForm', { prospect: prospectMapper.prospectToUpdateProspect(prospect as any as Prospect) });
+    navigate('prospectForm', { prospect: prospectMapper.prospectToUpdateProspect(prospect as any as Prospect) });
   };
 
   const handleEdit = async () => {
     if ((prospectOrAreaPicture as any)?.areaPicture?.prospectId) {
       const { areaPicture, id, annotations } = prospectOrAreaPicture as any as DraftAreaPictureAnnotation;
+      const pictureUrl = await getFileUrl(areaPicture.fileId, FileType.AREA_PICTURE);
       navigate('annotatorEdition', {
         areaPictureDetails: areaPicture,
-        pictureUrl: await getFileUrl(areaPicture.fileId, FileType.AREA_PICTURE),
+        pictureUrl,
         annotations,
         draftAnnotationId: id,
       } as any);
