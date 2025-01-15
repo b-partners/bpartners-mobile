@@ -24,8 +24,13 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   navigation,
 }) {
   const { open: openSheetModal } = useSheetModal();
-  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([]);
-  const { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams, draftAnnotationId: draftAnnotationIdParams } = route.params || {};
+  const {
+    areaPictureDetails: areaPictureDetailsParams,
+    pictureUrl: pictureUrlParams,
+    draftAnnotationId: draftAnnotationIdParams,
+    annotations: annotationsParams = [],
+  } = route.params || {};
+  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([...annotationsParams]);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
   const { areaPictureDetails, updateAreaPicture, pictureUrl, isLoading } = useCreateAreaPicture({
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },

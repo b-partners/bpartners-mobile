@@ -1,4 +1,4 @@
-import { Prospect } from '@bpartners/typescript-client';
+import { DraftAreaPictureAnnotation, FileType, Prospect } from '@bpartners/typescript-client';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
@@ -17,6 +17,7 @@ import { TabNavigatorParamList } from '../../../navigators/utils';
 import { useQueryProspectById } from '../../../queries';
 import { color } from '../../../theme';
 import { palette } from '../../../theme/palette';
+import { getFileUrl } from '../../../utils/file-utils';
 import { datePipe } from '../../../utils/pipes';
 import { prospectItemStyles as styles } from '../utils/styles';
 import { ProspectItemProps } from '../utils/utils';
@@ -58,6 +59,22 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
   const onEditing = () => {
     closeSheetModal();
     navigate<keyof TabNavigatorParamList>('prospectForm', { prospect: prospectMapper.prospectToUpdateProspect(prospect as any as Prospect) });
+  };
+
+  const handleEdit = async () => {
+    if ((prospectOrAreaPicture as any)?.areaPicture?.prospectId) {
+      const { areaPicture, id, annotations } = prospectOrAreaPicture as any as DraftAreaPictureAnnotation;
+      navigate('annotatorEdition', {
+        areaPictureDetails: areaPicture,
+        pictureUrl: await getFileUrl(areaPicture.fileId, FileType.AREA_PICTURE),
+        annotations,
+        draftAnnotationId: id,
+      } as any);
+      return;
+    }
+    openSheetModal(<ProspectStatusModal menuItems={menuItem} onEditing={onEditing} setStatus={setStatus} />, {
+      containerStyle: { height: Dimensions.get('screen').height * 0.4 },
+    });
   };
 
   return (
@@ -111,13 +128,7 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
             </View>
           </View>
           <View style={styles.menuContainer}>
-            <TouchableOpacity
-              onPress={() =>
-                openSheetModal(<ProspectStatusModal menuItems={menuItem} onEditing={onEditing} setStatus={setStatus} />, {
-                  containerStyle: { height: Dimensions.get('screen').height * 0.4 },
-                })
-              }
-            >
+            <TouchableOpacity onPress={handleEdit}>
               <Text tx={'common.edit'} style={styles.editButton} />
             </TouchableOpacity>
           </View>

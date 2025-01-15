@@ -1,4 +1,4 @@
-import { AreaPictureDetails, UpdateProspect } from '@bpartners/typescript-client';
+import { AreaPictureAnnotationInstance, AreaPictureDetails, UpdateProspect } from '@bpartners/typescript-client';
 
 import { Invoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 
@@ -42,6 +42,7 @@ export type NavigatorParamList = {
     areaPictureDetails: AreaPictureDetails | undefined;
     pictureUrl: string | undefined;
     draftAnnotationId: string | undefined;
+    annotations: AreaPictureAnnotationInstance[] | undefined;
   };
   annotator: {};
 };
