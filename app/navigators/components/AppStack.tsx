@@ -24,6 +24,7 @@ import {
   TransactionListScreen,
   WelcomeScreen,
 } from '../../screens';
+import { AnnotatorScreen } from '../../screens/annotator/annotator-screen';
 import { CalendarScreen } from '../../screens/calendar/calendar-screen';
 import { CustomersScreen } from '../../screens/customer/customers-screen';
 import { ProductScreen } from '../../screens/product/products-screen';
@@ -82,6 +83,7 @@ export const AppStack = observer(function () {
           <Drawer.Screen name='prospectForm' component={ProspectFormScreen} />
           <Drawer.Screen name='calendar' component={CalendarScreen} />
           <Drawer.Screen name='annotatorEdition' component={AnnotatorEditionScreen} options={HIDE_DRAWER_OPTIONS} />
+          <Drawer.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
         </>
       )}
 

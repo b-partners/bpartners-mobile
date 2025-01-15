@@ -14,7 +14,6 @@ import {
   ProspectScreen,
   SupportContactScreen,
 } from '../../screens';
-import { AnnotatorScreen } from '../../screens/annotator/annotator-screen';
 import { TabNavigatorParamList } from '../utils';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
@@ -39,7 +38,6 @@ export const AppTabStack = observer(function () {
         <Tab.Screen name='paymentList' component={PaymentListScreen} />
         <Tab.Screen name='supportContact' component={SupportContactScreen} />
         <Tab.Screen name='invoices' component={InvoicesScreen} />
-        <Tab.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
       </>
     </Tab.Navigator>
   );

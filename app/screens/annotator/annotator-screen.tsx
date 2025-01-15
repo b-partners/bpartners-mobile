@@ -148,7 +148,13 @@ export const AnnotatorScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'annot
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' leftIcon={'back'} onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header
+          headerTx='annotationScreen.title'
+          leftIcon={'back'}
+          onLeftPress={() => navigation.navigate('invoiceForm')}
+          style={HEADER}
+          titleStyle={HEADER_TITLE}
+        />
         <View testID='AnnotatorScreen' style={{ ...FULL, backgroundColor: color.palette.white, position: 'relative' }}>
           <View style={{ width: '100%', height: 40, alignItems: 'center', padding: 10, marginTop: 10 }}>
             <Text text={`${areaPicture?.filename}`} style={{ color: palette.black, fontFamily: 'Geometria' }} />

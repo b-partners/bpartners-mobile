@@ -667,7 +667,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
               await areaPictureStore.getAreaPictureAnnotations(invoice?.idAreaPicture || areaPictureId);
               await areaPictureStore.getPictureUrl(areaPicture.fileId);
               setAnnotationLoading(false);
-              navigation.navigate('home', { screen: 'annotator' });
+              navigation.navigate('annotator');
             }}
           >
             <View style={{ ...styles.areaPictureButtonContainer, borderColor: hasError ? palette.solidGrey : palette.secondaryColor }}>

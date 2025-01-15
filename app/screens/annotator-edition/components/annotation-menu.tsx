@@ -19,6 +19,7 @@ interface AnnotationMenuProps {
   submitAnnotation: ReturnType<typeof useAnnotationSubmit>['submitAnnotation'];
   draftAnnotationId?: string;
   isLoading?: boolean;
+  initInvoice: () => void;
 }
 
 const getLayerTitle = (map: AreaPictureMapLayer) => {
@@ -34,6 +35,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
   submitAnnotation,
   draftAnnotationId,
   isLoading = false,
+  initInvoice,
 }) => {
   const { width, height } = Dimensions.get('screen');
   const { otherLayers } = areaPictureDetails;
@@ -55,6 +57,7 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
   };
 
   const generateInvoice = () => {
+    initInvoice();
     submitAnnotation({ onDone: close });
   };
 

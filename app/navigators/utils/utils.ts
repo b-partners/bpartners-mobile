@@ -43,6 +43,7 @@ export type NavigatorParamList = {
     pictureUrl: string | undefined;
     draftAnnotationId: string | undefined;
   };
+  annotator: {};
 };
 
 export type TabNavigatorParamList = {
@@ -59,7 +60,11 @@ export type TabNavigatorParamList = {
       | 'invoiceForm'
       | 'annotator';
   };
-  annotator: undefined;
+  annotator: {
+    invoiceID?: string;
+    initialStatus?: InvoiceStatus;
+    areaPictureId: string | undefined;
+  };
   annotatorEdition: {
     pictureUrl: string | undefined;
     areaPictureDetails: AreaPictureDetails | undefined;

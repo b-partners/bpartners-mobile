@@ -9,6 +9,7 @@ import MuiIcon from 'react-native-vector-icons/FontAwesome';
 import { Header, Text } from '../../components';
 import { useSheetModal } from '../../hook';
 import { areaPictureMapper } from '../../mappers';
+import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
 import { useCreateAreaPicture } from '../../queries';
 import { palette } from '../../theme/palette';
@@ -29,6 +30,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const { areaPictureDetails, updateAreaPicture, pictureUrl, isLoading } = useCreateAreaPicture({
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
   });
+  const { invoiceStore } = useStores();
 
   const updateAreaPictureDetails = (currentAreaPictureDetails: AreaPictureDetails) => {
     setAnnotations([]);
@@ -65,6 +67,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
       <AnnotationMenu
         draftAnnotationId={draftAnnotationIdParams}
         submitAnnotation={submitAnnotation}
+        initInvoice={invoiceStore.saveInvoiceInit}
         navigate={navigation.navigate}
         isAreaPictureLoading={isLoading}
         updateAreaPictureDetails={updateAreaPictureDetails}
