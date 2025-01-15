@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { ButtonProps, Button as RNPButton } from 'react-native-paper';
 
 import { MenuItem, Text } from '../../../components';
+import { useSheetModal } from '../../../hook';
 import { TxKeyPath, translate } from '../../../i18n';
 import { palette } from '../../../theme/palette';
 import { prospectStatusModalStyle as styles } from './style';
@@ -23,11 +24,18 @@ interface ProspectStatusModalProps {
 }
 
 export const ProspectStatusModal: FC<ProspectStatusModalProps> = ({ menuItems, onEditing, setStatus }) => {
+  const { close } = useSheetModal();
+
+  const handleChangeStatus = (status: any) => {
+    close();
+    setStatus(status);
+  };
+
   return (
     <View style={styles.container}>
       <Text tx='prospectScreen.process.onProspectChangingStatus' style={styles.title} />
       {menuItems.map(item => (
-        <Button key={item.id} onPress={() => setStatus(ProspectStatus[item.label])} text={item.title} />
+        <Button key={item.id} onPress={() => handleChangeStatus(ProspectStatus[item.label])} text={item.title} />
       ))}
       <View style={styles.orContainer}>
         <View style={styles.separator} />
