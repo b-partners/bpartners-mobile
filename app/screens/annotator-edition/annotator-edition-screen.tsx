@@ -1,7 +1,7 @@
 import { AreaPictureAnnotationInstance, AreaPictureDetails } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
 import { IconButton, Provider } from 'react-native-paper';
 import MuiIcon from 'react-native-vector-icons/FontAwesome';
@@ -36,6 +36,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
   });
   const { invoiceStore } = useStores();
+
+  useEffect(() => {
+    annotationsParams && setAnnotations(annotationsParams);
+  }, [annotationsParams]);
 
   const updateAreaPictureDetails = (currentAreaPictureDetails: AreaPictureDetails) => {
     setAnnotations([]);

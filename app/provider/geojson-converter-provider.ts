@@ -9,11 +9,12 @@ export const pointsToGeoPoints = async (body: Geojson) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(body || {}),
     });
-    return (await res.json()) as GeojsonReturn[];
+    if (res.status === 200) return (await res.json()) as GeojsonReturn[];
+    return null;
   } catch (error) {
-    console.log(error);
+    console.log(`pointsToGeoPoints - ${error}`);
     return null;
   }
 };

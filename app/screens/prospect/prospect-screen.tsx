@@ -45,6 +45,10 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
     setPage(1);
   };
 
+  useEffect(() => {
+    handleRefresh();
+  }, []);
+
   // auto change the tab on specify status by params
   const { status: initialStatus } = route.params ?? {};
   useEffect(() => {
