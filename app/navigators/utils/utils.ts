@@ -1,4 +1,4 @@
-import { AreaPictureAnnotationInstance, AreaPictureDetails, UpdateProspect } from '@bpartners/typescript-client';
+import { AreaPictureAnnotationInstance, AreaPictureDetails, ProspectStatus, UpdateProspect } from '@bpartners/typescript-client';
 
 import { Invoice, InvoiceStatus } from '../../models/entities/invoice/invoice';
 
@@ -70,7 +70,9 @@ export type TabNavigatorParamList = {
     pictureUrl: string | undefined;
     areaPictureDetails: AreaPictureDetails | undefined;
   };
-  prospect: undefined;
+  prospect: {
+    status: (ProspectStatus & { DRAFT: 'DRAFT' }) | undefined;
+  };
   prospectForm: {
     prospect: UpdateProspect | undefined;
   };

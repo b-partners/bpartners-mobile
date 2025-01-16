@@ -1,6 +1,6 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
 import { Menu, Provider, Searchbar } from 'react-native-paper';
 
@@ -19,7 +19,7 @@ import { CreationPortal } from './components/portal-creation';
 import { ProspectItem } from './components/prospect-item';
 import { prospectStyles as styles } from './utils/styles';
 
-export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation }) {
+export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospect'>> = observer(function ProspectScreen({ navigation, route }) {
   const {
     data: prospects,
     isLoading: loadingProspect,
@@ -40,10 +40,20 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
     [status]
   );
 
-  const handleClickMenu = (actualStatus: ProspectStatus) => {
+  const handleClickMenu = (actualStatus: any) => {
     setCurrentStatus(actualStatus);
     setPage(1);
   };
+
+  useEffect(() => {
+    handleRefresh();
+  }, []);
+
+  // auto change the tab on specify status by params
+  const { status: initialStatus } = route.params ?? {};
+  useEffect(() => {
+    initialStatus && handleClickMenu(initialStatus);
+  }, [initialStatus]);
 
   const filteredProspect = prospects;
 
