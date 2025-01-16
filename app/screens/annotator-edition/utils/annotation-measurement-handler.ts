@@ -44,6 +44,6 @@ export const useMeasurement = (
   };
 
   useEffect(() => {
-    setGeojsonDebounced();
-  }, [annotations]);
+    image_size > 0 && setGeojsonDebounced();
+  }, [annotations, image_size]);
 };

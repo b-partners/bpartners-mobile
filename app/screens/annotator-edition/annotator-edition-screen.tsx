@@ -1,7 +1,7 @@
 import { AreaPictureAnnotationInstance, AreaPictureDetails } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
 import { IconButton, Provider } from 'react-native-paper';
 import MuiIcon from 'react-native-vector-icons/FontAwesome';
@@ -17,7 +17,7 @@ import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
 import { AnnotationContainer, AnnotationInfoForm, AnnotationMenu } from './components';
 import { Measurement } from './types';
-import { annotationLabelList, annotatorEditorScreen as style, useAnnotationSubmit } from './utils';
+import { annotationLabelList, annotatorEditorScreen as style } from './utils';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({
   route,
@@ -36,6 +36,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
   });
   const { invoiceStore } = useStores();
+
+  useEffect(() => {
+    annotationsParams && setAnnotations(annotationsParams);
+  }, [annotationsParams]);
 
   const updateAreaPictureDetails = (currentAreaPictureDetails: AreaPictureDetails) => {
     setAnnotations([]);
@@ -65,19 +69,17 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
-  const { submitAnnotation, isLoading: isAnnotationSubmitPending } = useAnnotationSubmit(annotations, measurements, areaPictureDetails, navigation.navigate);
-
   const handleOpenMenu = () => {
     openSheetModal(
       <AnnotationMenu
+        annotations={annotations}
+        measurements={measurements}
         draftAnnotationId={draftAnnotationIdParams}
-        submitAnnotation={submitAnnotation}
         initInvoice={invoiceStore.saveInvoiceInit}
         navigate={navigation.navigate}
         isAreaPictureLoading={isLoading}
         updateAreaPictureDetails={updateAreaPictureDetails}
         areaPictureDetails={areaPictureDetails}
-        isLoading={isAnnotationSubmitPending}
       />,
       {
         containerStyle: { height: height * 0.5 },
