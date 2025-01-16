@@ -62,7 +62,11 @@ export const useAnnotationSubmit = (
 
     const data = await annotatorProvider.annotatePicture(areaPictureDetails.id, annotationIdValue, requestBody);
     onDone?.();
-    navigate('invoiceForm', { areaPictureId: areaPictureDetails.id, invoiceId: uuid(), initialStatus: InvoiceStatus.DRAFT } as any);
+    if (isDraft) {
+      navigate('home', { screen: 'prospect', params: { status: 'DRAFT' } });
+    } else {
+      navigate('invoiceForm', { areaPictureId: areaPictureDetails.id, invoiceId: uuid(), initialStatus: InvoiceStatus.DRAFT } as any);
+    }
     return data;
   };
 
