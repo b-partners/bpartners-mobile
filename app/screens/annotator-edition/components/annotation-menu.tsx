@@ -1,4 +1,4 @@
-import { AreaPictureDetails, AreaPictureMapLayer, CrupdateAreaPictureDetails } from '@bpartners/typescript-client';
+import { AreaPictureAnnotationInstance, AreaPictureDetails, AreaPictureMapLayer, CrupdateAreaPictureDetails } from '@bpartners/typescript-client';
 import React, { FC } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { Dimensions, ScrollView, View } from 'react-native';
@@ -9,6 +9,7 @@ import { BpInputSelectSimpleTextRenderer } from '../../../components/bp-input';
 import { ZOOM_LEVEL, useAnnotationMenu } from '../../../form';
 import { useSheetModal } from '../../../hook';
 import { palette } from '../../../theme/palette';
+import { Measurement } from '../types';
 import { useAnnotationSubmit } from '../utils';
 
 interface AnnotationMenuProps {
@@ -16,10 +17,10 @@ interface AnnotationMenuProps {
   updateAreaPictureDetails: (areaPictureDetails: CrupdateAreaPictureDetails) => void;
   isAreaPictureLoading: boolean;
   navigate: (...params: any[]) => void;
-  submitAnnotation: ReturnType<typeof useAnnotationSubmit>['submitAnnotation'];
   draftAnnotationId?: string;
-  isLoading?: boolean;
   initInvoice: () => void;
+  annotations: AreaPictureAnnotationInstance[];
+  measurements: Measurement[];
 }
 
 const getLayerTitle = (map: AreaPictureMapLayer) => {
@@ -32,15 +33,16 @@ export const AnnotationMenu: FC<AnnotationMenuProps> = ({
   isAreaPictureLoading,
   updateAreaPictureDetails,
   navigate,
-  submitAnnotation,
   draftAnnotationId,
-  isLoading = false,
   initInvoice,
+  annotations,
+  measurements,
 }) => {
   const { width, height } = Dimensions.get('screen');
   const { otherLayers } = areaPictureDetails;
   const form = useAnnotationMenu(areaPictureDetails);
   const { close } = useSheetModal();
+  const { submitAnnotation, isLoading } = useAnnotationSubmit(annotations, measurements, areaPictureDetails, navigate);
   const extendPicture = () => {
     updateAreaPictureDetails({ isExtended: !areaPictureDetails.isExtended });
     close();
