@@ -102,7 +102,6 @@ jobs:
 
           elif ${{ github.event.inputs.env == 'preprod'}}; then
             cd android
-            # TODO: release is broken and that's why we use debug scripts
             ./gradlew assembleDebug && ./gradlew bundleDebug
             cd ..
             mv android/app/build/outputs/bundle/debug/app-debug.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
@@ -110,7 +109,8 @@ jobs:
 
           elif ${{ github.event.inputs.env == 'prod'}}; then
             cd android
-            # TODO: release is broken and that's why we use debug scripts
+            # Temporary fix
+            # TODO: fix release build
             ./gradlew assembleDebug && ./gradlew bundleDebug
             cd ..
             mv android/app/build/outputs/bundle/debug/app-debug.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
