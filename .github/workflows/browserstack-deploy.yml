@@ -109,19 +109,19 @@ jobs:
 
           elif ${{ github.event.inputs.env == 'preprod'}}; then
             cd android
-            ./gradlew assembleDebug && ./gradlew bundleDebug
+            ./gradlew assembleRelease && ./gradlew bundleRelease
             cd ..
-            mv android/app/build/outputs/bundle/debug/app-debug.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
-            mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
+            mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
+            mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
 
           elif ${{ github.event.inputs.env == 'prod'}}; then
             cd android
             # Temporary fix
             # TODO: fix release build
-            ./gradlew assembleDebug && ./gradlew bundleDebug
+            ./gradlew assembleRelease && ./gradlew bundleRelease
             cd ..
-            mv android/app/build/outputs/bundle/debug/app-debug.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
-            mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
+            mv android/app/build/outputs/bundle/release/app-release.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
+            mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
           fi
 
       - name: Deploy to browserstack
