@@ -29,14 +29,13 @@ export const AnnotationMeasurementsRenderer: FC<AnnotationMeasurementsRendererPr
               key={JSON.stringify(position) + index}
               style={{
                 position: 'absolute',
-                top: (position.y + IMAGE_MARGIN_HALF) * scale,
-                left: (position.x + IMAGE_MARGIN_HALF) * scale,
+                top: (position.y + IMAGE_MARGIN_HALF) * scale - containerSize.height / 2,
+                left: (position.x + IMAGE_MARGIN_HALF) * scale - containerSize.width / 2,
                 padding: 2,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: 'black',
-                transform: [{ translateX: -containerSize.width / 2 }, { translateY: -containerSize.height / 2 }],
               }}
             >
               <Text text={value + unity} style={{ color: '#fff' }} />
