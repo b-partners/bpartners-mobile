@@ -109,18 +109,19 @@ jobs:
 
           elif ${{ github.event.inputs.env == 'preprod'}}; then
             cd android
-            ./gradlew assemblePreprod && ./gradlew bundlePreprod
+            # TODO: release is broken and that's why we use debug scripts
+            ./gradlew assembleDebug && ./gradlew bundleDebug
             cd ..
-            mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
-            mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk 
+            mv android/app/build/outputs/bundle/debug/app-debug.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
+            mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
 
           elif ${{ github.event.inputs.env == 'prod'}}; then
             cd android
-            # TODO: release is broken and that's why we use preprod scripts
-            ./gradlew assemblePreprod && ./gradlew bundlePreprod
+            # TODO: release is broken and that's why we use debug scripts
+            ./gradlew assembleDebug && ./gradlew bundleDebug
             cd ..
-            mv android/app/build/outputs/bundle/preprod/app-preprod.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
-            mv android/app/build/outputs/apk/preprod/app-preprod.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
+            mv android/app/build/outputs/bundle/debug/app-debug.aab android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.aab
+            mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/${{ github.event.inputs.env }}-${{ env.sha }}.apk
           fi
 
       - name: Deploy to browserstack

@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { View } from 'react-native';
+import React, { FC, useState } from 'react';
+import { LayoutChangeEvent, View } from 'react-native';
 
 import { Text } from '../../../components';
 import { Measurement } from '../types';
@@ -11,6 +11,13 @@ interface AnnotationMeasurementsRendererProps {
 }
 
 export const AnnotationMeasurementsRenderer: FC<AnnotationMeasurementsRendererProps> = ({ measurements, scale }) => {
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+
+  const handleLayout = (event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout;
+    setContainerSize({ height, width });
+  };
+
   return (
     <>
       {measurements.length !== 0 &&
@@ -18,17 +25,17 @@ export const AnnotationMeasurementsRenderer: FC<AnnotationMeasurementsRendererPr
           if (unity === 'm²') return;
           return (
             <View
+              onLayout={handleLayout}
               key={JSON.stringify(position) + index}
               style={{
                 position: 'absolute',
-                top: (position.y + IMAGE_MARGIN_HALF) * scale,
-                left: (position.x + IMAGE_MARGIN_HALF) * scale,
+                top: (position.y + IMAGE_MARGIN_HALF) * scale - containerSize.height / 2,
+                left: (position.x + IMAGE_MARGIN_HALF) * scale - containerSize.width / 2,
                 padding: 2,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: 'black',
-                transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
               }}
             >
               <Text text={value + unity} style={{ color: '#fff' }} />

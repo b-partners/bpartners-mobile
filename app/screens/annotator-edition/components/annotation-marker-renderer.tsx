@@ -16,9 +16,8 @@ export const AnnotationMarkerRenderer: FC<AnnotationMarkerRendererProps> = ({ ma
       name='location-on'
       style={{
         position: 'absolute',
-        top: (marker.y + IMAGE_MARGIN_HALF) * scale,
-        left: (marker.x + IMAGE_MARGIN_HALF) * scale,
-        transform: [{ translateX: '-50%' }, { translateY: '-100%' }],
+        top: (marker.y + IMAGE_MARGIN_HALF) * scale - 10,
+        left: (marker.x + IMAGE_MARGIN_HALF) * scale - 10,
       }}
       size={20}
       color={palette.red}
