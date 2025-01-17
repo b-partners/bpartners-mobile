@@ -1,7 +1,7 @@
 import { AreaPictureAnnotationInstance, AreaPictureDetails } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
 import { IconButton, Provider } from 'react-native-paper';
 import MuiIcon from 'react-native-vector-icons/FontAwesome';
@@ -24,6 +24,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   navigation,
 }) {
   const { open: openSheetModal } = useSheetModal();
+  const isAnnotationAlreadyInitialized = useRef(false);
   const {
     areaPictureDetails: areaPictureDetailsParams,
     pictureUrl: pictureUrlParams,
@@ -38,7 +39,10 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const { invoiceStore } = useStores();
 
   useEffect(() => {
-    annotationsParams && setAnnotations(annotationsParams);
+    if (annotationsParams && annotationsParams.length > 0 && annotations.length === 0 && !isAnnotationAlreadyInitialized.current) {
+      isAnnotationAlreadyInitialized.current = true;
+      setAnnotations(annotationsParams);
+    }
   }, [JSON.stringify(annotationsParams)]);
 
   const updateAreaPictureDetails = (currentAreaPictureDetails: AreaPictureDetails) => {
