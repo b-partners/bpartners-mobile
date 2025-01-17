@@ -39,7 +39,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
 
   useEffect(() => {
     annotationsParams && setAnnotations(annotationsParams);
-  }, [annotationsParams]);
+  }, [JSON.stringify(annotationsParams)]);
 
   const updateAreaPictureDetails = (currentAreaPictureDetails: AreaPictureDetails) => {
     setAnnotations([]);
