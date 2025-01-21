@@ -189,7 +189,7 @@ export const annotationContainerStyle = StyleSheet.create({
     position: 'absolute',
     height: 10,
     width: 10,
-    borderRadius: '50%',
+    borderRadius: 5,
     backgroundColor: 'black',
     transform: [{ translateX: -5 }, { translateY: -5 }],
   },
