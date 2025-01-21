@@ -6,4 +6,7 @@ export const BpButtonStyle = StyleSheet.create({
   loading: {
     backgroundColor: palette.lightGrey,
   },
+  base: {
+    backgroundColor: palette.purple,
+  },
 });
