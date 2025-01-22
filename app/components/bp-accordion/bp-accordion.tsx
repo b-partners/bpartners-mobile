@@ -23,7 +23,6 @@ export const BpAccordion: FC<BpAccordionProps> = ({ children, title, defaultExpa
       expanded={isExpanded}
       onPress={toggle}
       title={title}
-      rippleColor={palette.white}
     >
       {children}
     </List.Accordion>

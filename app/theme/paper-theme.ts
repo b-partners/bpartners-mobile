@@ -6,8 +6,8 @@ export const RNPaperTheme: typeof DefaultTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: palette.purple,
-    primaryContainer: palette.purple,
+    primary: palette.mulberry,
+    primaryContainer: palette.mulberry,
     secondary: palette.lighterPurple,
     secondaryContainer: palette.lighterPurple,
   },
