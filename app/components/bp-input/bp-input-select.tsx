@@ -14,5 +14,5 @@ export const BpInputSelect: FC<BpInputSelectProps> = ({ name, ...props }) => {
   const value = useWatch({ name });
   const error = errors[name];
   const errorMessage = error ? translate(error.message as TxKeyPath) : null;
-  return <BpInputSelectBase {...props} onChange={value => setValue(name, value)} value={value} errorMessage={errorMessage} name={name} />;
+  return <BpInputSelectBase {...props} onChange={currentValue => setValue(name, currentValue)} value={value} errorMessage={errorMessage} name={name} />;
 };
