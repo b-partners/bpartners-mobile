@@ -22,7 +22,6 @@ export interface BpInputSelectBaseProps
 }
 
 export const BpInputSelectBase: FC<BpInputSelectBaseProps> = ({
-  name,
   label,
   getItemTitle,
   getItemValue,
