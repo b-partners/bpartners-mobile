@@ -3,11 +3,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity, View } from 'react-native';
 import { Checkbox, List } from 'react-native-paper';
 import RNVIcon from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 
 import { Button, DatePickerField, Icon, Loader, Text } from '../../../../components';
+import { BpAccordion } from '../../../../components/bp-accordion';
 import { translate } from '../../../../i18n';
 import { useStores } from '../../../../models';
 import { Customer } from '../../../../models/entities/customer/customer';
@@ -15,7 +15,6 @@ import { InvoiceStatus, createInvoiceDefaultModel } from '../../../../models/ent
 import { PaymentRegulation } from '../../../../models/entities/payment-regulation/payment-regulation';
 import { createProductDefaultModel } from '../../../../models/entities/product/product';
 import { navigate } from '../../../../navigators/navigation-utilities';
-import { useGetAreaPictureById } from '../../../../queries';
 import { color, spacing } from '../../../../theme';
 import { palette } from '../../../../theme/palette';
 import { showMessage } from '../../../../utils/snackbar';
@@ -37,15 +36,15 @@ import { PaymentRegulationDraftField } from '../payment-regulation-form-field/pa
 import { PaymentRegulationFormField } from '../payment-regulation-form-field/payment-regulation-form-field';
 import { ProductFormField } from '../product-form-field/product-form-field';
 import { SelectFormField } from '../select-form-field/select-form-field';
+import { InvoiceAnnotationRenderer } from './invoice-annotation-renderer';
 import { InvoiceCreationModal } from './invoice-creation-modal';
 import { InvoiceFormField } from './invoice-form-field';
 
 export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const { invoice, initialStatus, navigation, areaPictureId } = props;
-  const { invoiceStore, customerStore, draftStore, quotationStore, areaPictureStore } = useStores();
+  const { invoiceStore, customerStore, draftStore, quotationStore } = useStores();
   const { checkInvoice } = invoiceStore;
   const { customers } = customerStore;
-  const { data: areaPicture } = useGetAreaPictureById(areaPictureId);
 
   // recover the most current customer from store and set it to the current selected customer
   const FIRST_CUSTOMER = customers.length > 0 ? customers[0] : null;
@@ -56,7 +55,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
   const [paymentCreation, setPaymentCreation] = useState(false);
   const [invoiceType, setInvoiceType] = useState(InvoiceStatus.DRAFT);
   const [previewLoading, setPreviewLoading] = useState(false);
-  const [annotationLoading, setAnnotationLoading] = useState(false);
   const [creationLoading, setCreationLoading] = useState(false);
   const [allowPaymentDelay, setAllowPaymentDelay] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
   const [payInInstalments, setPayInInstalments] = useState<CheckboxEnum>(CheckboxEnum.UNCHECKED);
@@ -600,6 +598,12 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           </Button>
         </View>
       </List.Accordion>
+
+      {(!!invoice?.idAreaPicture || !!areaPictureId) && (
+        <BpAccordion title='Annotations' defaultExpanded style={styles.accordion} titleStyle={styles.accordionTitle}>
+          <InvoiceAnnotationRenderer areaPictureId={invoice?.idAreaPicture || areaPictureId} />
+        </BpAccordion>
+      )}
       <View style={styles.paymentRegulationContainer}>
         <Checkbox.Item
           status={payInInstalments}
@@ -666,27 +670,6 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
           checkInvoice === false && showMessage(translate('errors.operation'), { backgroundColor: palette.pastelRed });
           return <View />;
         })()}
-
-        {(!!invoice?.idAreaPicture || !!areaPictureId) && (
-          <TouchableOpacity
-            onPress={async () => {
-              setAnnotationLoading(true);
-              await areaPictureStore.getAreaPicture(invoice?.idAreaPicture || areaPictureId);
-              await areaPictureStore.getAreaPictureAnnotations(invoice?.idAreaPicture || areaPictureId);
-              await areaPictureStore.getPictureUrl(areaPicture.fileId);
-              setAnnotationLoading(false);
-              navigation.navigate('annotator');
-            }}
-          >
-            <View style={{ ...styles.areaPictureButtonContainer, borderColor: hasError ? palette.solidGrey : palette.secondaryColor }}>
-              {annotationLoading ? (
-                <Loader size={25} animating={true} color={palette.secondaryColor} />
-              ) : (
-                <MaterialCommunityIcons name='image-area' size={25} color={hasError ? palette.solidGrey : palette.secondaryColor} />
-              )}
-            </View>
-          </TouchableOpacity>
-        )}
 
         {previewLoading ? (
           <View style={styles.previewButtonContainer}>

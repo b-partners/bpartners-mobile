@@ -31,4 +31,5 @@ export interface AnnotationContainerProps {
   measurements: Measurement[];
   setMeasurements: Dispatch<SetStateAction<Measurement[]>>;
   areaPictureDetails: AreaPictureDetails;
+  isEditing?: boolean;
 }

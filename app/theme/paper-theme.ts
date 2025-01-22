@@ -1,14 +1,13 @@
 import { DefaultTheme } from 'react-native-paper';
-import { ThemeProp } from 'react-native-paper/lib/typescript/types';
 
 import { palette } from './palette';
 
-export const RNPaperTheme: ThemeProp = {
+export const RNPaperTheme: typeof DefaultTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: palette.mulberry,
-    primaryContainer: palette.mulberry,
+    primary: palette.purple,
+    primaryContainer: palette.purple,
     secondary: palette.lighterPurple,
     secondaryContainer: palette.lighterPurple,
   },
