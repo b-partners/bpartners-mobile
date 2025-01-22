@@ -273,6 +273,12 @@ export const annotatorEditorScreen = StyleSheet.create({
     gap: 2,
     flexDirection: 'row',
   },
+  actionButtons: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 5,
+    marginBottom: 50,
+  },
 });
 
 export const slopeRendererStyle = StyleSheet.create({

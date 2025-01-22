@@ -7,6 +7,8 @@ import { IconButton, Provider } from 'react-native-paper';
 import MuiIcon from 'react-native-vector-icons/FontAwesome';
 
 import { Header, Text } from '../../components';
+import { BpAccordion } from '../../components/bp-accordion';
+import { BpButton } from '../../components/bp-button';
 import { useSheetModal } from '../../hook';
 import { areaPictureMapper } from '../../mappers';
 import { useStores } from '../../models';
@@ -15,7 +17,7 @@ import { useCreateAreaPicture } from '../../queries';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { AnnotationContainer, AnnotationInfoForm, AnnotationMenu } from './components';
+import { AnnotationContainer, AnnotationEditImageMenu, AnnotationInfoForm, AnnotationNextMenu, getLayerTitle } from './components';
 import { Measurement } from './types';
 import { annotationLabelList, annotatorEditorScreen as style } from './utils';
 
@@ -48,7 +50,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const updateAreaPictureDetails = (currentAreaPictureDetails: AreaPictureDetails) => {
     setAnnotations([]);
     updateAreaPicture({
-      crupdateAreaPictureDetails: areaPictureMapper.areaPicDetailsToCrupdate({ ...areaPictureDetails, ...currentAreaPictureDetails }),
+      crupdateAreaPictureDetails: { ...areaPictureMapper.areaPicDetailsToCrupdate({ ...areaPictureDetails }), ...currentAreaPictureDetails },
       pictureId: areaPictureDetails.id,
     });
   };
@@ -73,21 +75,30 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     });
   };
 
-  const handleOpenMenu = () => {
+  const resetAnnotation = () => {
+    setAnnotations([]);
+    setMeasurements([]);
+  };
+
+  const handleOpenNextMenu = () => {
     openSheetModal(
-      <AnnotationMenu
+      <AnnotationNextMenu
+        resetAnnotation={resetAnnotation}
         annotations={annotations}
         measurements={measurements}
         draftAnnotationId={draftAnnotationIdParams}
         initInvoice={invoiceStore.saveInvoiceInit}
         navigate={navigation.navigate}
         isAreaPictureLoading={isLoading}
-        updateAreaPictureDetails={updateAreaPictureDetails}
         areaPictureDetails={areaPictureDetails}
       />,
-      {
-        containerStyle: { height: height * 0.5 },
-      }
+      { containerStyle: { height: height * 0.5 } }
+    );
+  };
+  const handleOpenEditImageMenu = () => {
+    openSheetModal(
+      <AnnotationEditImageMenu isAreaPictureLoading={isLoading} updateAreaPictureDetails={updateAreaPictureDetails} areaPictureDetails={areaPictureDetails} />,
+      { containerStyle: { height: height * 0.5 } }
     );
   };
 
@@ -96,7 +107,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' onLeftPress={handleOpenMenu} leftIcon='whiteMenu' style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='annotationScreen.title' leftIcon='whiteMenu' style={HEADER} titleStyle={HEADER_TITLE} />
         <AnnotationContainer
           areaPictureDetails={areaPictureDetails}
           measurements={measurements}
@@ -108,32 +119,49 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           annotations={annotations}
           setAnnotations={setAnnotations}
         />
-        <ScrollView style={{ height: 70 }}>
-          {annotations.map(({ labelName, labelType, id: annotationId }, index) => (
-            <View style={style.annotationListContainer} key={annotationId}>
-              <View style={style.polygonRefContainer}>
-                <Text style={style.polygonRefText} text={'P' + (index + 1)} />
-              </View>
-              <View style={style.annotationListItemTitleContainer}>
-                <Text style={style.annotationListItemTitle} text={labelName} />
-                <View style={style.areaAndLabelContainer}>
-                  {measurementsArea.length >= index && (
-                    <Text style={style.annotationListItemLabel} text={measurementsArea[index]?.value + measurementsArea[index]?.unity + ' | '} />
-                  )}
-                  {labelType ? (
-                    <Text style={style.annotationListItemLabel} text={annotationLabelList.filter(({ id }) => id === labelType)[0].name} />
-                  ) : (
-                    <View style={style.annotationListItemLabelContainer}>
-                      <MuiIcon color={palette.yellow} name='warning' size={15} />
-                      <Text style={style.annotationListItemLabel} text='Label requis' />
-                    </View>
-                  )}
-                </View>
-              </View>
-              <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='edit' size={25} />} onPress={() => handleEdit(index)} />
-              <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
+        <ScrollView style={{ height }}>
+          <View style={{ padding: 5, gap: 5 }}>
+            <View style={{ padding: 5 }}>
+              <Text style={style.annotationListItemLabel} text="Source de l'image:" />
+              <Text style={style.annotationListItemTitle} text={getLayerTitle(areaPictureDetails.actualLayer)} />
             </View>
-          ))}
+            <BpAccordion title='Annotations' defaultExpanded>
+              {annotations.map(({ labelName, labelType, id: annotationId }, index) => (
+                <View style={style.annotationListContainer} key={annotationId}>
+                  <View style={style.polygonRefContainer}>
+                    <Text style={style.polygonRefText} text={'P' + (index + 1)} />
+                  </View>
+                  <View style={style.annotationListItemTitleContainer}>
+                    <Text style={style.annotationListItemTitle} text={labelName} />
+                    <View style={style.areaAndLabelContainer}>
+                      {measurementsArea.length >= index && (
+                        <Text style={style.annotationListItemLabel} text={measurementsArea[index]?.value + measurementsArea[index]?.unity + ' | '} />
+                      )}
+                      {labelType ? (
+                        <Text style={style.annotationListItemLabel} text={annotationLabelList.filter(({ id }) => id === labelType)[0].name} />
+                      ) : (
+                        <View style={style.annotationListItemLabelContainer}>
+                          <MuiIcon color={palette.yellow} name='warning' size={15} />
+                          <Text style={style.annotationListItemLabel} text='Label requis' />
+                        </View>
+                      )}
+                    </View>
+                  </View>
+                  <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='edit' size={25} />} onPress={() => handleEdit(index)} />
+                  <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
+                </View>
+              ))}
+            </BpAccordion>
+            <View style={{ marginVertical: 10, borderBottomColor: palette.greyDarker, borderBottomWidth: 2 }} />
+            <View style={style.actionButtons}>
+              <BpButton onPress={handleOpenEditImageMenu} style={{ flexGrow: 1 }}>
+                Modifier l'image
+              </BpButton>
+              <BpButton onPress={handleOpenNextMenu} style={{ flexGrow: 1 }}>
+                Suivant
+              </BpButton>
+            </View>
+          </View>
         </ScrollView>
       </ErrorBoundary>
     </Provider>
