@@ -44,6 +44,11 @@ export const AnnotationEditImageMenu: FC<AnnotationMenuProps> = ({ areaPictureDe
     updateAreaPictureDetails({ layerId: layer.id, zoomLevel: areaPictureDetails.zoomLevel, isExtended: false });
   };
 
+  const handleShiftImage = (toLeft: boolean) => () => {
+    close();
+    updateAreaPictureDetails({ shiftNb: areaPictureDetails.shiftNb + (toLeft ? -1 : 1) });
+  };
+
   return (
     <ScrollView style={{ padding: 10, width, height: height * 0.5 }}>
       <View style={{ height: height * 0.5 }}>
@@ -70,6 +75,16 @@ export const AnnotationEditImageMenu: FC<AnnotationMenuProps> = ({ areaPictureDe
         <Button loading={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={extendPicture}>
           {areaPictureDetails?.isExtended ? "Réinitialiser l'image" : "Recentrer l'image"}
         </Button>
+        {areaPictureDetails.isExtended && (
+          <Button loading={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={handleShiftImage(true)}>
+            Décaler l'image vers la gauche
+          </Button>
+        )}
+        {areaPictureDetails.isExtended && (
+          <Button loading={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={handleShiftImage(false)}>
+            Décaler l'image vers la droite
+          </Button>
+        )}
       </View>
     </ScrollView>
   );

@@ -115,7 +115,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           filename={areaPictureDetails.filename}
           zoom={areaPictureDetails.zoom}
           isLoading={isLoading}
-          pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}`}
+          pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}&shiftNumber=${areaPictureDetails.shiftNb}`}
           annotations={annotations}
           setAnnotations={setAnnotations}
         />
