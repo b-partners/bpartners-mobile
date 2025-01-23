@@ -58,13 +58,13 @@ export const ProspectItem: React.FC<ProspectItemProps> = props => {
     navigate('prospectForm', { prospect: prospectMapper.prospectToUpdateProspect(prospect as any as Prospect) });
   };
 
-  const setParams = useRouteParams(({ setParams }) => setParams);
+  const setRouteParams = useRouteParams(({ setParams }) => setParams);
 
   const handleEdit = async () => {
     if ((prospectOrAreaPicture as any)?.areaPicture?.prospectId) {
       const { areaPicture, id, annotations } = prospectOrAreaPicture as any as DraftAreaPictureAnnotation;
       const pictureUrl = await getFileUrl(areaPicture.fileId, FileType.AREA_PICTURE);
-      setParams('annotatorEdition', { areaPictureDetails: areaPicture, pictureUrl, annotations, draftAnnotationId: id });
+      setRouteParams('annotatorEdition', { areaPictureDetails: areaPicture, pictureUrl, annotations, draftAnnotationId: id });
       navigate('annotatorEdition');
       return;
     }

@@ -36,7 +36,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>(annotationsParams);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
-  useRouteParamsEffect('annotatorEdition', ({ annotations }) => setAnnotations(annotations));
+  useRouteParamsEffect('annotatorEdition', ({ annotations: newAnnotations }) => setAnnotations(newAnnotations));
 
   const { areaPictureDetails, updateAreaPicture, pictureUrl, isLoading } = useCreateAreaPicture({
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
