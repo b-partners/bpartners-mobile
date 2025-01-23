@@ -9,6 +9,7 @@
 // It's easier just to leave it here.
 import notifee from '@notifee/react-native';
 import { AppRegistry } from 'react-native';
+if (typeof BigInt === 'undefined') global.BigInt = require('big-integer');
 
 import App from './app/app.tsx';
 

@@ -49,6 +49,9 @@ export const annotatorSlopeImageList = [
 ];
 
 export const annotationLabelList = [
-  { id: 'roof', name: 'Toit' },
+  { id: 'roof', name: 'Toiture' },
   { id: 'velux', name: 'Velux' },
+  { id: 'obstacle', name: 'Obstacle' },
+  { id: 'solar_panel', name: 'Panneau solaire' },
+  { id: 'vegetation', name: 'Végétation' },
 ];

@@ -42,6 +42,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
   measurements,
   setMeasurements,
   areaPictureDetails,
+  isEditing = true,
 }) => {
   const polygonCount = useRef(0);
   const imageRealWidth = useGetImageSize(pictureUrl);
@@ -67,11 +68,13 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
   useMeasurement(annotations, scaledAnnotations, filename, zoom.number, imageRealWidth, setMeasurements, areaPictureDetails.isExtended);
 
   const handlePress = (event: GestureResponderEvent) => {
-    const { locationX, locationY } = event.nativeEvent;
-    const x = locationX / scale;
-    const y = locationY / scale;
-    const point = constraintPoint({ x, y }, imageNotScaledSize);
-    setPoints(prev => [...prev, point]);
+    if (isEditing) {
+      const { locationX, locationY } = event.nativeEvent;
+      const x = locationX / scale;
+      const y = locationY / scale;
+      const point = constraintPoint({ x, y }, imageNotScaledSize);
+      setPoints(prev => [...prev, point]);
+    }
   };
 
   const handleCancelAnnotation = () => {
@@ -110,9 +113,13 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
         <MuiIconButton onPress={scaleUp} name='zoom-in' />
         <MuiIconButton onPress={scaleReset} name='zoom-in-map' />
         <MuiIconButton onPress={scaleDown} name='zoom-out' />
-        <MuiIconButton disabled={points.length === 0} onPress={handleUndo} name='undo' />
-        <MuiIconButton disabled={annotations.length === 0} onPress={handleCancelAnnotation} name='clear' />
-        <MuiIconButton disabled={points.length <= 2} onPress={handleAddAnnotation} name='check' />
+        {isEditing && (
+          <>
+            <MuiIconButton disabled={points.length === 0} onPress={handleUndo} name='undo' />
+            <MuiIconButton disabled={annotations.length === 0} onPress={handleCancelAnnotation} name='clear' />
+            <MuiIconButton disabled={points.length <= 2} onPress={handleAddAnnotation} name='check' />
+          </>
+        )}
       </View>
       <View style={containerStyle}>
         <ScrollView ref={scrollXRef} overScrollMode='never' bounces={false} horizontal style={[containerStyle, style.scrollView]}>

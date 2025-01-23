@@ -22,7 +22,7 @@ const getCachedAuthConf = async () => {
 
   let basePath = env.apiBaseUrl;
 
-  if (basePath.endsWith('/')) {
+  if (`${basePath}`.endsWith('/')) {
     basePath = basePath.slice(0, basePath.length - 1);
   }
 

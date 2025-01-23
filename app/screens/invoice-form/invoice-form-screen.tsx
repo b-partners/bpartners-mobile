@@ -1,8 +1,7 @@
 import { InvoiceStatus } from '@bpartners/typescript-client';
-import { useFocusEffect, useLinkTo } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { Header, Screen } from '../../components';
@@ -18,15 +17,13 @@ import { CONTAINER, FULL } from './utils/styles';
 export const InvoiceFormScreen: FC<StackScreenProps<TabNavigatorParamList, 'invoiceForm'>> = observer(function InvoiceFormScreen({ navigation, route }) {
   const [{ areaPictureId, initialStatus, invoiceId }, setState] = useState({ invoiceId: '', initialStatus: '', areaPictureId: '' });
 
-  useFocusEffect(
-    useCallback(() => {
-      setState({
-        invoiceId: route.params?.invoiceID,
-        initialStatus: route.params?.initialStatus,
-        areaPictureId: route.params?.areaPictureId,
-      });
-    }, [])
-  );
+  useEffect(() => {
+    setState({
+      invoiceId: route.params?.invoiceID,
+      initialStatus: route.params?.initialStatus,
+      areaPictureId: route.params?.areaPictureId,
+    });
+  }, [route.params]);
 
   const { invoiceStore, productStore } = useStores();
   const { products } = productStore;
@@ -43,12 +40,12 @@ export const InvoiceFormScreen: FC<StackScreenProps<TabNavigatorParamList, 'invo
     invoiceId && getInvoiceById(invoiceId);
   }, [invoiceId]);
 
-  const linkTo = useLinkTo();
+  const goBack = () => navigation.navigate('home', { screen: 'paymentList' });
 
   const saveInvoice = async (values: Invoice) => {
     try {
       await invoiceStore.saveInvoice(values);
-      linkTo('/paymentList');
+      goBack();
     } catch (e) {
       __DEV__ && console.tron.log(e);
     }
@@ -63,9 +60,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<TabNavigatorParamList, 'invo
           titleStyle={HEADER_TITLE}
           leftIcon={'back'}
           // rightIcon={'info'}
-          onLeftPress={async () => {
-            linkTo('/paymentList');
-          }}
+          onLeftPress={goBack}
         />
         <Screen style={CONTAINER} preset='scroll' backgroundColor={palette.white}>
           <InvoiceForm
@@ -74,7 +69,7 @@ export const InvoiceFormScreen: FC<StackScreenProps<TabNavigatorParamList, 'invo
             onSaveInvoice={saveInvoice}
             initialStatus={initialStatus as InvoiceStatus}
             navigation={navigation}
-            areaPictureId={areaPictureId}
+            areaPictureId={toEdit?.idAreaPicture || areaPictureId}
           />
         </Screen>
       </View>

@@ -12,11 +12,19 @@ interface AnnotationBackgroundRendererProps {
   size: ISize;
   isCreating: boolean;
   setAnnotations: Dispatch<SetStateAction<AreaPictureAnnotationInstance[]>>;
+  isEditing?: boolean;
 }
 
 const { getSvgPath, getPointPosition } = new AnnotationPointHandler();
 
-export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps> = ({ annotations, size, scale, isCreating, setAnnotations }) => {
+export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps> = ({
+  annotations,
+  size,
+  scale,
+  isCreating,
+  setAnnotations,
+  isEditing = true,
+}) => {
   const { height, width } = size;
   const [localAnnotations, setLocalAnnotations] = useState(annotations);
 
@@ -39,18 +47,20 @@ export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps>
             onMoveShouldSetPanResponder: () => true,
             onStartShouldSetPanResponder: () => true,
             onPanResponderMove: (_evt, gestureState) => {
-              const currentAnnotations = localAnnotations.slice();
-              const { dx, dy } = gestureState;
+              if (isEditing) {
+                const currentAnnotations = localAnnotations.slice();
+                const { dx, dy } = gestureState;
 
-              currentAnnotations[index].polygon.points[pointIndex].x += dx / scale;
-              currentAnnotations[index].polygon.points[pointIndex].y += dy / scale;
+                currentAnnotations[index].polygon.points[pointIndex].x += dx / scale;
+                currentAnnotations[index].polygon.points[pointIndex].y += dy / scale;
 
-              if (pointIndex === currentAnnotations[index].polygon.points.length - 1) {
-                currentAnnotations[index].polygon.points[0].x += dx / scale;
-                currentAnnotations[index].polygon.points[0].y += dy / scale;
+                if (pointIndex === currentAnnotations[index].polygon.points.length - 1) {
+                  currentAnnotations[index].polygon.points[0].x += dx / scale;
+                  currentAnnotations[index].polygon.points[0].y += dy / scale;
+                }
+                setLocalAnnotations(currentAnnotations);
+                debounceSetAnnotation(currentAnnotations);
               }
-              setLocalAnnotations(currentAnnotations);
-              debounceSetAnnotation(currentAnnotations);
             },
           });
 

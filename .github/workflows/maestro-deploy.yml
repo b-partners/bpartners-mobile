@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.x
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -37,7 +41,7 @@ jobs:
       - name: Connect to BPartners AWS CodeArtifact
         run: |
           sh ./initNpmrc.sh bpartners-store npm-bpartners-app 688605879718
-      - run: npm install --force
+      - run: npm install --legacy-peer-deps
       - name: Retrieve the environment variables from aws and put them in .env
         run: |
           if [[ "${{ github.ref_name }}" == "prod" ]]; then
@@ -45,7 +49,7 @@ jobs:
           else
             export ENV=preprod
           fi
-          echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
+          echo API_URL=$(aws ssm get-parameters --names "/bpartners/mobile/preprod/API_URL" --with-decryption --output text --query "Parameters[*].Value") > .env
           echo WEB_CLIENT_ID=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/WEB_CLIENT_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo USER_POOL_ID=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/USER_POOL_ID" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo OAUTH_DOMAIN=$(aws ssm get-parameters --names "/bpartners/mobile/$ENV/OAUTH_DOMAIN" --with-decryption --output text --query "Parameters[*].Value") >> .env

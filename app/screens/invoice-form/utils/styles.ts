@@ -129,6 +129,17 @@ export const invoiceFormStyles = StyleSheet.create({
     color: palette.darkBlack,
     width: '80%',
   },
+  accordion: {
+    borderWidth: 1,
+    height: 70,
+    justifyContent: 'center',
+    backgroundColor: palette.white,
+    borderColor: '#E1E5EF',
+  },
+  accordionTitle: {
+    textTransform: 'uppercase',
+    color: palette.lightGrey,
+  },
   paymentRegulationAccordion: {
     borderColor: '#E1E5EF',
     borderWidth: 1,

@@ -15,10 +15,10 @@ const { getPointsCenter } = new AnnotationPointHandler();
 export const AnnotationNameRenderer: FC<AnnotationNameRendererProps> = ({ annotations, scale }) => {
   return (
     <>
-      {annotations.map(({ polygon: { points: currentPoints }, id }, index) => {
+      {annotations.map(({ polygon: { points: currentPoints }, id, labelName }, index) => {
         const { y, x } = getPointsCenter(currentPoints, scale);
         return (
-          <Animated.View key={+id + index} style={[{ top: y, left: x }, style.textContainer]}>
+          <Animated.View key={labelName + id + index} style={[{ top: y, left: x }, style.textContainer]}>
             <Text text={'P' + (index + 1)} />
           </Animated.View>
         );

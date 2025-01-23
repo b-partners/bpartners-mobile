@@ -15,4 +15,14 @@ export const draftAnnotationProvider = {
       console.trace(err);
     }
   },
+  async getOneByAReaPictureId(areaPictureId: string) {
+    const api = await areaPictureApi();
+    const accountId = await storage.loadAccountId();
+    try {
+      const { data } = await api.getDraftAnnotationsByAccountIdAndAreaPictureId(accountId, areaPictureId);
+      return data || [];
+    } catch (err) {
+      console.trace(err);
+    }
+  },
 };
