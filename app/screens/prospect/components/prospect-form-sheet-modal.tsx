@@ -14,7 +14,7 @@ interface ProspectFormSheetModalProps {
 }
 
 export const ProspectFormSheetModal: React.FC<ProspectFormSheetModalProps> = ({ prospect: defaultValues }) => {
-  const { form, crupdate, isLoading } = useCrupdateProspect({ defaultValues: defaultValues });
+  const { form, crupdate, isLoading } = useCrupdateProspect({ defaultValues });
   const { width, height } = Dimensions.get('screen');
   return (
     <View style={{ padding: 10, width, maxHeight: height * 0.7 }}>

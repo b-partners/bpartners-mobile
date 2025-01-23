@@ -31,9 +31,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     pictureUrl: pictureUrlParams,
   } = useRouteParams(({ annotatorEdition }) => annotatorEdition);
 
-  console.log(annotationsParams, areaPictureDetailsParams, draftAnnotationIdParams, pictureUrlParams);
-
-  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>(annotationsParams);
+  const [annotations = [], setAnnotations] = useState<AreaPictureAnnotationInstance[]>(annotationsParams);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
   useRouteParamsEffect('annotatorEdition', ({ annotations: newAnnotations }) => setAnnotations(newAnnotations));
@@ -78,6 +76,12 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     setMeasurements([]);
   };
 
+  const handleSetMeasurements = (currentMeasurements: Measurement[]) => {
+    if ((annotations.length > 0 && currentMeasurements.length > 0) || annotations.length === 0) {
+      setMeasurements(currentMeasurements);
+    }
+  };
+
   const handleOpenNextMenu = () => {
     openSheetModal(
       <AnnotationNextMenu
@@ -110,7 +114,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           <AnnotationContainer
             areaPictureDetails={areaPictureDetails}
             measurements={measurements}
-            setMeasurements={setMeasurements}
+            setMeasurements={handleSetMeasurements}
             filename={areaPictureDetails.filename}
             zoom={areaPictureDetails.zoom}
             isLoading={isLoading}
