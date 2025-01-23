@@ -27,7 +27,7 @@ export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'pr
   const { accountHolder, isAccountHolderLoading } = useGetAccountHolder([prospect]);
   const setRouteParams = useRouteParams(({ setParams }) => setParams);
   const onCreateAreaPictureSuccess = (areaPictureDetails: AreaPictureDetails, pictureUrl: string) => {
-    setRouteParams('annotatorEdition', { areaPictureDetails, pictureUrl, draftAnnotationId: undefined });
+    setRouteParams('annotatorEdition', { areaPictureDetails, pictureUrl, draftAnnotationId: undefined, annotations: [] });
     navigation.navigate('annotatorEdition');
   };
   const backHandler = () => navigation.navigate('home', { screen: 'prospect' });
