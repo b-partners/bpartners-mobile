@@ -1,3 +1,4 @@
+import { AreaPictureAnnotationInstance, AreaPictureDetails, InvoiceStatus } from '@bpartners/typescript-client';
 import { ReactNode } from 'react';
 import { ViewStyle } from 'react-native';
 
@@ -28,3 +29,23 @@ interface SheetModalAction {
 }
 
 export type TSheetModalStore = SheetModalState & SheetModalAction;
+
+export interface RouteParamsState {
+  annotatorEdition: {
+    annotations?: AreaPictureAnnotationInstance[];
+    pictureUrl?: string;
+    areaPictureDetails?: AreaPictureDetails;
+    draftAnnotationId?: string;
+  };
+  invoiceForm: {
+    areaPictureId?: string;
+    initialStatus?: InvoiceStatus;
+    invoiceId?: string;
+  };
+}
+interface RouteParamsAction {
+  setParams(key: keyof RouteParamsState, value: RouteParamsState[typeof key]): void;
+  resetParams(key: keyof RouteParamsState): void;
+}
+
+export type TRouteParams = RouteParamsState & RouteParamsAction;

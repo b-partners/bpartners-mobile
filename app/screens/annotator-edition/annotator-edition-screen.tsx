@@ -1,7 +1,7 @@
 import { AreaPictureAnnotationInstance, AreaPictureDetails } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
 import { IconButton, Provider } from 'react-native-paper';
 import MuiIcon from 'react-native-vector-icons/FontAwesome';
@@ -9,7 +9,7 @@ import MuiIcon from 'react-native-vector-icons/FontAwesome';
 import { Header, Text } from '../../components';
 import { BpAccordion } from '../../components/bp-accordion';
 import { BpButton } from '../../components/bp-button';
-import { useSheetModal } from '../../hook';
+import { useResetRouteParams, useRouteParams, useRouteParamsEffect, useSheetModal } from '../../hook';
 import { areaPictureMapper } from '../../mappers';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
@@ -21,31 +21,29 @@ import { AnnotationContainer, AnnotationEditImageMenu, AnnotationInfoForm, Annot
 import { Measurement } from './types';
 import { annotationLabelList, annotatorEditorScreen as style } from './utils';
 
-export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({
-  route,
-  navigation,
-}) {
+export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const { open: openSheetModal } = useSheetModal();
-  const isAnnotationAlreadyInitialized = useRef(false);
+
   const {
+    annotations: annotationsParams,
     areaPictureDetails: areaPictureDetailsParams,
-    pictureUrl: pictureUrlParams,
     draftAnnotationId: draftAnnotationIdParams,
-    annotations: annotationsParams = [],
-  } = route.params || {};
-  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>([...annotationsParams]);
+    pictureUrl: pictureUrlParams,
+  } = useRouteParams(({ annotatorEdition }) => annotatorEdition);
+
+  console.log(annotationsParams, areaPictureDetailsParams, draftAnnotationIdParams, pictureUrlParams);
+
+  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>(annotationsParams);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
+
+  useRouteParamsEffect('annotatorEdition', ({ annotations }) => setAnnotations(annotations));
+
   const { areaPictureDetails, updateAreaPicture, pictureUrl, isLoading } = useCreateAreaPicture({
     defaultValues: { areaPictureDetails: areaPictureDetailsParams, pictureUrl: pictureUrlParams },
   });
   const { invoiceStore } = useStores();
 
-  useEffect(() => {
-    if (annotationsParams && annotationsParams.length > 0 && annotations.length === 0 && !isAnnotationAlreadyInitialized.current) {
-      isAnnotationAlreadyInitialized.current = true;
-      setAnnotations(annotationsParams);
-    }
-  }, [JSON.stringify(annotationsParams)]);
+  useResetRouteParams('annotatorEdition', navigation);
 
   const updateAreaPictureDetails = (currentAreaPictureDetails: AreaPictureDetails) => {
     setAnnotations([]);
@@ -108,17 +106,19 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     <Provider>
       <ErrorBoundary catchErrors='always'>
         <Header headerTx='annotationScreen.title' leftIcon='whiteMenu' style={HEADER} titleStyle={HEADER_TITLE} />
-        <AnnotationContainer
-          areaPictureDetails={areaPictureDetails}
-          measurements={measurements}
-          setMeasurements={setMeasurements}
-          filename={areaPictureDetails.filename}
-          zoom={areaPictureDetails.zoom}
-          isLoading={isLoading}
-          pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}&shiftNumber=${areaPictureDetails.shiftNb}`}
-          annotations={annotations}
-          setAnnotations={setAnnotations}
-        />
+        {Object.keys(areaPictureDetailsParams).length > 0 && (
+          <AnnotationContainer
+            areaPictureDetails={areaPictureDetails}
+            measurements={measurements}
+            setMeasurements={setMeasurements}
+            filename={areaPictureDetails.filename}
+            zoom={areaPictureDetails.zoom}
+            isLoading={isLoading}
+            pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}&shiftNumber=${areaPictureDetails.shiftNb}`}
+            annotations={annotations}
+            setAnnotations={setAnnotations}
+          />
+        )}
         <ScrollView style={{ height }}>
           <View style={{ padding: 5, gap: 5 }}>
             <View style={{ padding: 5 }}>

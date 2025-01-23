@@ -12,7 +12,7 @@ export const useGetAreaPictureById = (areaPictureId: string) => {
       const pictureUrl = await getFileUrl(areaPictureDetails.fileId, FileType.AREA_PICTURE);
       return { areaPictureDetails, pictureUrl };
     },
-    queryKey: ['areaPicture', areaPictureId],
+    queryKey: ['areaPictureById', areaPictureId],
   });
 
   return {

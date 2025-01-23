@@ -30,14 +30,14 @@ export const InvoiceAnnotationRenderer: FC<InvoiceAnnotationRendererProps> = ({ 
   const { data: areaPictureDetails, pictureUrl, isLoading: initialIsLoading } = useGetAreaPictureById(areaPictureId);
 
   const [measurements, setMeasurements] = useState([]);
-  const { annotations, isLoading: isAnnotationLoading } = useQueryAnnotationByAreaPictureId(areaPictureDetails?.id);
+  const { annotations, isLoading: isAnnotationLoading } = useQueryAnnotationByAreaPictureId(areaPictureId);
 
   return (
     <View>
       <AnnotationContainer
         isEditing={false}
         isLoading={initialIsLoading || isAnnotationLoading}
-        pictureUrl={`${pictureUrl}&isExtended=${areaPictureDetails.isExtended}`}
+        pictureUrl={`${pictureUrl}&id=${areaPictureId}&isExtended=${areaPictureDetails?.isExtended}`}
         annotations={annotations || []}
         setAnnotations={() => {}}
         filename={areaPictureDetails.filename}
@@ -46,7 +46,7 @@ export const InvoiceAnnotationRenderer: FC<InvoiceAnnotationRendererProps> = ({ 
         setMeasurements={setMeasurements}
         areaPictureDetails={areaPictureDetails || {}}
       />
-      {annotations.map(({ labelName, labelType, metadata = {}, id }, index) => {
+      {annotations?.map(({ labelName, labelType, metadata = {}, id }, index) => {
         const { area, covering, slope, wearness, wearLevel, moldRate, humidityLevel, obstacle, comment } = metadata;
         return (
           <View style={styles.annotationInfoContainer} key={`${id}-${index}`}>

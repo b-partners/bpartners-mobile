@@ -599,7 +599,7 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = props => {
         </View>
       </List.Accordion>
 
-      {(!!invoice?.idAreaPicture || !!areaPictureId) && (
+      {!!areaPictureId && (
         <BpAccordion title='Annotations' defaultExpanded style={styles.accordion} titleStyle={styles.accordionTitle}>
           <InvoiceAnnotationRenderer areaPictureId={invoice?.idAreaPicture || areaPictureId} />
         </BpAccordion>
