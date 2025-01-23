@@ -8,6 +8,7 @@ import { Button, Text } from 'react-native-paper';
 
 import { Header } from '../../components';
 import { BpInput } from '../../components/bp-input';
+import { useRouteParams } from '../../hook';
 import { TabNavigatorParamList } from '../../navigators/utils';
 import { updateProspectDefaultValues, useCreateAreaPicture, useCrupdateProspect, useGetAccountHolder } from '../../queries';
 import { palette } from '../../theme/palette';
@@ -24,8 +25,11 @@ const getButtonName = (isRoofer: boolean, isCreating: boolean) => {
 export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospectForm'>> = ({ navigation, route }) => {
   const { prospect } = route.params ?? {};
   const { accountHolder, isAccountHolderLoading } = useGetAccountHolder([prospect]);
-  const onCreateAreaPictureSuccess = (areaPictureDetails: AreaPictureDetails, pictureUrl: string) =>
-    navigation.navigate('annotatorEdition', { areaPictureDetails, pictureUrl });
+  const setRouteParams = useRouteParams(({ setParams }) => setParams);
+  const onCreateAreaPictureSuccess = (areaPictureDetails: AreaPictureDetails, pictureUrl: string) => {
+    setRouteParams('annotatorEdition', { areaPictureDetails, pictureUrl, draftAnnotationId: undefined });
+    navigation.navigate('annotatorEdition');
+  };
   const backHandler = () => navigation.navigate('home', { screen: 'prospect' });
   const isRoofer = accountHolder?.businessActivities?.primary === 'Couvreur' || accountHolder?.businessActivities?.secondary === 'Couvreur';
 
