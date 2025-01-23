@@ -20,28 +20,27 @@ export const AnnotationMeasurementsRenderer: FC<AnnotationMeasurementsRendererPr
 
   return (
     <>
-      {measurements.length !== 0 &&
-        measurements.map(({ position, unity, value }, index) => {
-          if (unity === 'm²') return;
-          return (
-            <View
-              onLayout={handleLayout}
-              key={JSON.stringify(position) + index}
-              style={{
-                position: 'absolute',
-                top: (position.y + IMAGE_MARGIN_HALF) * scale - containerSize.height / 2,
-                left: (position.x + IMAGE_MARGIN_HALF) * scale - containerSize.width / 2,
-                padding: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'black',
-              }}
-            >
-              <Text text={value + unity} style={{ color: '#fff' }} />
-            </View>
-          );
-        })}
+      {measurements?.map(({ position, unity, value }, index) => {
+        if (unity === 'm²') return;
+        return (
+          <View
+            onLayout={handleLayout}
+            key={JSON.stringify(position) + index}
+            style={{
+              position: 'absolute',
+              top: (position.y + IMAGE_MARGIN_HALF) * scale - containerSize.height / 2,
+              left: (position.x + IMAGE_MARGIN_HALF) * scale - containerSize.width / 2,
+              padding: 2,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'black',
+            }}
+          >
+            <Text text={value + unity} style={{ color: '#fff' }} />
+          </View>
+        );
+      })}
     </>
   );
 };
