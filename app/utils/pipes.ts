@@ -1,3 +1,6 @@
+import 'intl';
+import 'intl/locale-data/jsonp/fr-FR';
+
 export const currencyPipe = (currency: string): Intl.NumberFormat => {
   if (!currency) {
     return null;

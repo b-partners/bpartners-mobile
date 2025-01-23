@@ -8,7 +8,7 @@ import { IMAGE_MARGIN_HALF } from './annotation-size-handler';
 import { GeojsonMapper, PolygonMapper } from './mappers';
 import { ConverterPayloadGeoJSON } from './types';
 
-const defaultImageShiftSize = 64;
+const defaultImageShiftSize = 256;
 
 const setMarkerOffset = async (areaPictureDetails: AreaPictureDetails, currentImageRealSize: number, currentImageSize: number) => {
   const markerPosition = await storage.loadInitialMarker();
@@ -18,10 +18,10 @@ const setMarkerOffset = async (areaPictureDetails: AreaPictureDetails, currentIm
 
   const offset = (currentImageRealSize - imageRealSize) / 2;
 
-  const horizontalShift = (areaPictureDetails.shiftNb || 0) * defaultImageShiftSize * scale;
+  const horizontalShift = (areaPictureDetails.shiftNb || 0) * defaultImageShiftSize;
 
   return {
-    x: (x + offset) * scale - horizontalShift,
+    x: (x + offset - horizontalShift) * scale,
     y: (y + offset) * scale,
   };
 };

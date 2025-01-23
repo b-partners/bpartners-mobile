@@ -13,7 +13,6 @@ export const sheetModalStyles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
-    minHeight: 200,
     width: '100%',
   },
   fullHeight: {

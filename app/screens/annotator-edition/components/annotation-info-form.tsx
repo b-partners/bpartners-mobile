@@ -79,6 +79,12 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
             renderItem={BpInputSelectSimpleTextRenderer()}
           />
           <BpSheetSelect
+            label="Taux d'humidité"
+            name='humidity'
+            data={new Array(11).fill(0).map((_value, index) => `${index * 10}`)}
+            renderItem={BpInputSelectSimpleTextRenderer()}
+          />
+          <BpSheetSelect
             label="Taux d'usure"
             name='wearLevel'
             data={new Array(11).fill(0).map((_value, index) => `${index * 10}`)}

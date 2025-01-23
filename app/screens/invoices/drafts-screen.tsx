@@ -75,9 +75,12 @@ export const DraftsScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList, '
     }
     try {
       const currentInvoice = await invoiceStore.getInvoice(item.id);
-      __DEV__ && console.tron.log(currentInvoice);
       invoiceStore.saveInvoiceInit();
-      navigation.navigate('invoiceForm', { invoiceID: item.id, initialStatus: InvoiceStatus.DRAFT });
+      navigation.navigate('invoiceForm', {
+        invoiceID: currentInvoice.id,
+        initialStatus: InvoiceStatus.DRAFT,
+        areaPictureId: currentInvoice.idAreaPicture,
+      } as any);
     } catch (e) {
       __DEV__ && console.tron.log(`Failed to edit invoice, ${e}`);
     } finally {

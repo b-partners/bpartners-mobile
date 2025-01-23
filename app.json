@@ -1,43 +1,4 @@
 {
   "name": "BpartnersMobile",
-  "displayName": "BpartnersMobile",
-  "expo": {
-    "name": "BpartnersMobile",
-    "scheme": "app.bpartners",
-    "slug": "bpartners",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/app-icon-all.png",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": ["**/*"],
-    "android": {
-      "icon": "./assets/images/app-icon-android-legacy.png",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/app-icon-android-adaptive-foreground.png",
-        "backgroundImage": "./assets/images/app-icon-android-adaptive-background.png"
-      },
-      "package": "app.bpartners"
-    },
-    "ios": {
-      "icon": "./assets/images/app-icon-ios.png",
-      "supportsTablet": true,
-      "bundleIdentifier": "app.bpartners"
-    },
-    "web": {
-      "favicon": "./assets/images/app-icon-web-favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "e206587f-6ef8-4dbc-879a-1db66e0e5023"
-      }
-    },
-    "owner": "lou_andria"
-  }
+  "displayName": "BpartnersMobile"
 }

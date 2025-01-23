@@ -189,7 +189,7 @@ export const annotationContainerStyle = StyleSheet.create({
     position: 'absolute',
     height: 10,
     width: 10,
-    borderRadius: '50%',
+    borderRadius: 5,
     backgroundColor: 'black',
     transform: [{ translateX: -5 }, { translateY: -5 }],
   },
@@ -272,6 +272,12 @@ export const annotatorEditorScreen = StyleSheet.create({
     alignItems: 'center',
     gap: 2,
     flexDirection: 'row',
+  },
+  actionButtons: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 5,
+    marginBottom: 50,
   },
 });
 

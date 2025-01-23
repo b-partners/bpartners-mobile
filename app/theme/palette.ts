@@ -14,6 +14,7 @@ export const palette = {
   purple: '#7E224A',
   deepPurple: '#5D2555',
   lighterPurple: '#9C255A',
+  highLighterPurple: '#9C255A40',
   purpleCake: '#CAD3F1',
   midnightGreen: '#003f5c',
   purpleNavy: '#58508d',

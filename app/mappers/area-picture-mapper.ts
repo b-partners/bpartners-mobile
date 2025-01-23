@@ -2,8 +2,17 @@ import { AreaPictureDetails, CrupdateAreaPictureDetails } from '@bpartners/types
 
 export const areaPictureMapper = {
   areaPicDetailsToCrupdate(areaPicDetails: AreaPictureDetails): CrupdateAreaPictureDetails {
+    const { address, fileId, filename, isExtended, prospectId, actualLayer, shiftNb, zoomLevel, zoom } = areaPicDetails || {};
     return {
-      ...areaPicDetails,
+      address,
+      fileId,
+      filename,
+      isExtended,
+      prospectId,
+      layerId: actualLayer.id,
+      shiftNb,
+      zoomLevel,
+      zoom,
     };
   },
 };

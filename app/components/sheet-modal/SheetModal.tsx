@@ -1,6 +1,6 @@
 import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { BackHandler, ViewStyle } from 'react-native';
+import { BackHandler, Dimensions, ViewStyle } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useSheetModal } from '../../hook';
@@ -33,11 +33,13 @@ export const SheetModal = () => {
     if (index !== 0) close();
   }, []);
 
+  const { height: minHeight } = Dimensions.get('screen');
+
   return (
     <GestureHandlerRootView style={{ ...sheetModalStyles.container, ...height }}>
       <BottomSheetModalProvider>
         <BottomSheetModal enableContentPanningGesture={panClose} enablePanDownToClose={panClose} ref={bottomSheetModalRef} onChange={handleSheetChanges}>
-          <BottomSheetView style={{ ...sheetModalStyles.contentContainer, ...containerStyle }}>{content}</BottomSheetView>
+          <BottomSheetView style={{ ...sheetModalStyles.contentContainer, minHeight: minHeight * 0.5, ...containerStyle }}>{content}</BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

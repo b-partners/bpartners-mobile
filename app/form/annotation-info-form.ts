@@ -13,6 +13,7 @@ const schema = z.object({
   slope: z.custom(() => true),
   covering: z.custom(() => true),
   comment: z.custom(() => true),
+  humidity: z.custom(() => true),
   fillColor: z.custom(() => true),
   strokeColor: z.custom(() => true),
   obstacle: z.custom(() => true),

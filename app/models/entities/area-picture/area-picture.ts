@@ -1,5 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
+import { ZoomLevelDOmain } from './types';
+
 export enum ZoomLevel {
   WORLD_0 = 'WORLD_0',
   WORLD_1 = 'WORLD_1',
@@ -26,7 +28,7 @@ export enum ZoomLevel {
   HOUSE_PROPERTY = 'HOUSE_PROPERTY',
 }
 
-export const ZOOM_LEVEL = [
+export const ZOOM_LEVEL: ZoomLevelDOmain[] = [
   {
     value: 'BUILDING',
     label: 'Quartier',
