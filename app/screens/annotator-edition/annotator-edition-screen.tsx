@@ -17,7 +17,8 @@ import { useCreateAreaPicture } from '../../queries';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { AnnotationContainer, AnnotationEditImageMenu, AnnotationInfoForm, AnnotationNextMenu, getLayerTitle } from './components';
+import { AnnotationEditImageMenu, AnnotationInfoForm, AnnotationNextMenu, getLayerTitle } from './components';
+import { AnnotationContainer } from './components/annotation-container';
 import { Measurement } from './types';
 import { annotationLabelList, annotatorEditorScreen as style } from './utils';
 
