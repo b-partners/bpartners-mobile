@@ -48,7 +48,6 @@
 		99CC4A31EFDFC43B5CC2B726 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 64C3B8953528FB71566C4266 /* PrivacyInfo.xcprivacy */; };
 		A369022887A46531D6D7DC7E /* libPods-BpartnersMobile-BpartnersMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D30992C0B89E1F3D6890429 /* libPods-BpartnersMobile-BpartnersMobileTests.a */; };
 		D2FBB8E77745C94032746092 /* libPods-BpartnersMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22032326947ACF45859A841F /* libPods-BpartnersMobile.a */; };
-		E03D473878730A340513FD84 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6E91C5BEFA689318C1F11C /* ExpoModulesProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -286,7 +285,6 @@
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "BpartnersMobileTests" */;
 			buildPhases = (
 				C34BB1E02E607328503D421F /* [CP] Check Pods Manifest.lock */,
-				85156CBBBBA287A50B18DB70 /* [Expo] Configure project */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -308,7 +306,6 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "BpartnersMobile" */;
 			buildPhases = (
 				02619CFDC955758B1A279B7C /* [CP] Check Pods Manifest.lock */,
-				5311E7F7479D3BF38904ACF5 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
@@ -455,25 +452,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5311E7F7479D3BF38904ACF5 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-BpartnersMobile/expo-configure-project.sh\"\n";
-		};
 		5EC50ADFECE9827C8C6DA860 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -503,25 +481,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BpartnersMobile-BpartnersMobileTests/Pods-BpartnersMobile-BpartnersMobileTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		85156CBBBBA287A50B18DB70 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-BpartnersMobile-BpartnersMobileTests/expo-configure-project.sh\"\n";
 		};
 		C34BB1E02E607328503D421F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -614,7 +573,6 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				E03D473878730A340513FD84 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,7 +591,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5819BAD4645498E729061BBA /* Pods-BpartnersMobile-BpartnersMobileTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -664,7 +621,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3FDC0B72B37EFD65341A6710 /* Pods-BpartnersMobile-BpartnersMobileTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = BpartnersMobileTests/Info.plist;

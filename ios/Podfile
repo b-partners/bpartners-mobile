@@ -1,4 +1,4 @@
-pod_folder = Pathname.new(__FILE__).dirname.realpath
+# pod_folder = Pathname.new(__FILE__).dirname.realpath
 
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
@@ -7,8 +7,7 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
  
-require File.join(File.dirname(`cd #{pod_folder} && node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
-require File.join(File.dirname(`cd #{pod_folder} && node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
+# require File.join(File.dirname(`cd #{pod_folder} && node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 # require File.join(File.dirname(`cd #{pod_folder} && node --print "require.resolve('@react-native-community/cli-platform-ios/package.json')"`), "native_modules")
 
 platform :ios, min_ios_version_supported
@@ -20,29 +19,16 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-pod 'AppAuth'
 
-pod 'Firebase', :modular_headers => true
-pod 'FirebaseCoreInternal', :modular_headers => true
-pod 'GoogleUtilities', :modular_headers => true
-pod 'FirebaseCore', :modular_headers => true
+
 
 target 'BpartnersMobile' do
-  use_expo_modules!
-
-  post_integrate do |installer|
-    begin
-      expo_patch_react_imports!(installer)
-    rescue => e
-      Pod::UI.warn e
-    end
-    begin
-      expo_patch_react_imports!(installer)
-    rescue => e
-      Pod::UI.warn e
-    end
-  end
   config = use_native_modules!
+
+  pod 'AppAuth'
+  pod 'Firebase', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
 
   use_react_native!(
     :path => config[:reactNativePath],
