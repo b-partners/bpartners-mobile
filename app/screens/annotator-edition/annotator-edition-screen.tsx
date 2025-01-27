@@ -17,12 +17,12 @@ import { useCreateAreaPicture } from '../../queries';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { AnnotationNextMenu } from './components/annotation-next-menu';
-import { AnnotationEditImageMenu, getLayerTitle } from './components/annotation-edit-image-menu';
 import { AnnotationContainer } from './components/annotation-container';
+import { AnnotationEditImageMenu, getLayerTitle } from './components/annotation-edit-image-menu';
+import { AnnotationInfoForm } from './components/annotation-info-form';
+import { AnnotationNextMenu } from './components/annotation-next-menu';
 import { Measurement } from './types';
 import { annotationLabelList, annotatorEditorScreen as style } from './utils';
-import { AnnotationInfoForm } from './components/annotation-info-form';
 
 export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'annotatorEdition'>> = observer(function AnnotatorEditionScreen({ navigation }) {
   const { open: openSheetModal } = useSheetModal();
@@ -34,7 +34,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     pictureUrl: pictureUrlParams,
   } = useRouteParams(({ annotatorEdition }) => annotatorEdition);
 
-  const [annotations = [], setAnnotations] = useState<AreaPictureAnnotationInstance[]>(annotationsParams);
+  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>(annotationsParams || []);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
   useRouteParamsEffect('annotatorEdition', ({ annotations: newAnnotations }) => setAnnotations(newAnnotations));
