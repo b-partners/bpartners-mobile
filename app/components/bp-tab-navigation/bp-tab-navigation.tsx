@@ -39,9 +39,9 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   const BOTTOM_NAVBAR_ICONS: IconProps = {
     account: require('./icons/wallet.png'),
     activity: require('./icons/activity.png'),
-    payment: require('./icons/paiment.png'),
-    facturation: require('./icons/facturation.png'),
-    service: require('./icons/help-free-bg.png'),
+    payment: require('./icons/paiment.bg.png'),
+    facturation: require('./icons/facturation.bg.png'),
+    home: require('./icons/home.png'),
   };
 
   const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
@@ -57,7 +57,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     activity: 'prospect',
     payment: 'paymentInitiation',
     facturation: 'paymentList',
-    service: 'supportContact',
+    home: 'supportContact',
   };
 
   const ROUTE: IconProps = {
@@ -65,7 +65,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     activity: translate('prospectScreen.title'),
     payment: translate('bottomTab.payment'),
     facturation: translate('bottomTab.facturation'),
-    service: translate('bottomTab.service'),
+    home: translate('bottomTab.home'),
   };
 
   return (

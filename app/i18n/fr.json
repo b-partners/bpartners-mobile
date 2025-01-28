@@ -653,7 +653,8 @@
     "service": "services",
     "transfer": "Virement",
     "card": "Cartes",
-    "help": "Aide"
+    "help": "Aide",
+    "home": "Accueil"
   },
   "customerScreen": {
     "title": "Mes clients",

@@ -670,7 +670,8 @@
     "service": "services",
     "transfer": "Transfer",
     "card": "Cards",
-    "help": "Help"
+    "help": "Help",
+    "home": "Home"
   },
   "customerScreen": {
     "title": "My customers",
