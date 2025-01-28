@@ -17,7 +17,10 @@ import { useCreateAreaPicture } from '../../queries';
 import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { HEADER, HEADER_TITLE } from '../payment-initiation/utils/style';
-import { AnnotationContainer, AnnotationEditImageMenu, AnnotationInfoForm, AnnotationNextMenu, getLayerTitle } from './components';
+import { AnnotationContainer } from './components/annotation-container';
+import { AnnotationEditImageMenu, getLayerTitle } from './components/annotation-edit-image-menu';
+import { AnnotationInfoForm } from './components/annotation-info-form';
+import { AnnotationNextMenu } from './components/annotation-next-menu';
 import { Measurement } from './types';
 import { annotationLabelList, annotatorEditorScreen as style } from './utils';
 
@@ -31,7 +34,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     pictureUrl: pictureUrlParams,
   } = useRouteParams(({ annotatorEdition }) => annotatorEdition);
 
-  const [annotations = [], setAnnotations] = useState<AreaPictureAnnotationInstance[]>(annotationsParams);
+  const [annotations, setAnnotations] = useState<AreaPictureAnnotationInstance[]>(annotationsParams || []);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
 
   useRouteParamsEffect('annotatorEdition', ({ annotations: newAnnotations }) => setAnnotations(newAnnotations));
@@ -109,7 +112,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' leftIcon='whiteMenu' style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerTx='annotationScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
         {Object.keys(areaPictureDetailsParams).length > 0 && (
           <AnnotationContainer
             areaPictureDetails={areaPictureDetails}

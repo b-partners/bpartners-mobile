@@ -41,7 +41,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -60,6 +60,108 @@
             ReferencedContainer = "container:BpartnersMobile.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "SCHEME"
+            value = "preprod"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "GEOJSON_URL"
+            value = "https://tile-referencer.azurewebsites.net/api/reference/"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "CONVERTER_URL"
+            value = "https://q1xs10we5d.execute-api.eu-west-3.amazonaws.com/Prod/converter"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "SUCCESS_URL"
+            value = "https://dashboard.preprod.bpartners.app/login/mobile/success/"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "FAILURE_URL"
+            value = "https://dashboard.preprod.bpartners.app/login/mobile/failure/"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "SWAN_URL"
+            value = "https://banking.sandbox.swan.io/projects/4aff311f-c33f-4726-bf7f-b476d251d499"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "CALENDAR_REDIRECTION_URL"
+            value = "https://dashboard.preprod.bpartners.app/redirection"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "SENTRY_ENV"
+            value = "local-amour"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "SENTRY_DSN"
+            value = "https://0f9038795f614d1ca88006dbd086deca@o1341863.ingest.sentry.io/4504246553280512"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "CLIENT_ID"
+            value = "SANDBOX_18b31c42-e966-4758-a211-b4f9f3ba91db"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "CLIENT_SECRET"
+            value = "9S.TBdCVYDHmwKB2k9GNcmEeHr"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "AUTHORIZATION_ENDPOINT"
+            value = "https://oauth.swan.io/oauth2/auth"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "ACCESS_KEY_ID"
+            value = "QUtJQTJBVkEzM1dUQ01WSlRMNVM="
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "SECRET_ACCESS_KEY"
+            value = "NFNDdVhMZ0lweUU2RzRnZGVxOFBzQWUzTkpBdm5Ya0RqSmZGVVhhTA=="
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "REGION"
+            value = "ZXUtd2VzdC0z"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "AWS_REGION"
+            value = "eu-west-3"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "API_URL"
+            value = "https://api.prod.bpartners.app"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "WEB_CLIENT_ID"
+            value = "1rof83p44k83l5lc8gfk6sbtam"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "USER_POOL_ID"
+            value = "eu-west-3_FRKp6Y3Gx"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "OAUTH_DOMAIN"
+            value = "bpartners.auth.eu-west-3.amazoncognito.com"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { Text } from '../../../../components';
 import { BpAccordion } from '../../../../components/bp-accordion';
 import { useGetAreaPictureById, useQueryAnnotationByAreaPictureId } from '../../../../queries';
-import { AnnotationContainer } from '../../../annotator-edition/components';
+import { AnnotationContainer } from '../../../annotator-edition/components/annotation-container';
 import { annotationLabelList } from '../../../annotator-edition/utils';
 import { InvoiceAnnotationRendererStyle as styles } from './styles';
 
