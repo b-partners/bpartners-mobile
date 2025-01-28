@@ -5,7 +5,7 @@ import React from 'react';
 import { BpTabNavigation } from '../../components';
 import { translate } from '../../i18n';
 import {
-  HomeScreen,
+  TransactionScreen,
   InvoicesScreen,
   MarketPlaceScreen,
   PaymentInitiationScreen,
@@ -30,7 +30,7 @@ export const AppTabStack = observer(function () {
       tabBar={props => <BpTabNavigation {...props} />}
     >
       <>
-        <Tab.Screen name='bp_home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
+        <Tab.Screen name='bp_home' component={TransactionScreen} options={{ title: translate('homeScreen.title') }} />
         <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
         <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
         <Tab.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />

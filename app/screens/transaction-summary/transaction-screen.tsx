@@ -37,7 +37,7 @@ export const firebaseConfig = {
   apiKey: 'AIzaSyBDpF1jZq0t3O5XXzvHcHdRYBGpfL9Fw58',
 };
 
-export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
+export const TransactionScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore, authStore, fileStore } = useStores();
   const { fileUrl } = fileStore;
   const { availableBalance } = authStore.currentAccount;
