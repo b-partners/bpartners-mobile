@@ -21,6 +21,7 @@ import {
   ProfileScreen,
   RegistrationScreen,
   ResetPasswordScreen,
+  SupportContactScreen,
   TransactionListScreen,
   WelcomeScreen,
 } from '../../screens';
@@ -84,6 +85,7 @@ export const AppStack = observer(function () {
           <Drawer.Screen name='calendar' component={CalendarScreen} />
           <Drawer.Screen name='annotatorEdition' component={AnnotatorEditionScreen} options={HIDE_DRAWER_OPTIONS} />
           <Drawer.Screen name='annotator' component={AnnotatorScreen} options={{ title: translate('homeScreen.title') }} />
+          <Drawer.Screen name='supportContact' component={SupportContactScreen} options={{ title: translate('supportContactScreen.title') }} />
         </>
       )}
 

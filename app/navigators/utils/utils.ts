@@ -45,6 +45,7 @@ export type NavigatorParamList = {
     annotations: AreaPictureAnnotationInstance[] | undefined;
   };
   annotator: {};
+  supportContact: undefined;
 };
 
 export type TabNavigatorParamList = {

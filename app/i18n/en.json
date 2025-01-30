@@ -707,6 +707,9 @@
       "participants": "Participants"
     }
   },
+  "helpScreen": {
+    "title": "Help"
+  },
   "months": {
     "0": "January",
     "1": "February",
