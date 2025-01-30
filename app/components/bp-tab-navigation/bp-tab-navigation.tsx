@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -68,19 +68,30 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     home: translate('bottomTab.home'),
   };
 
+  const STYLE: Record<keyof IconProps, ViewStyle> = {
+    home: {
+      opacity: 0.8,
+      transform: [{ scale: 0.9 }],
+    },
+    account: {},
+    activity: {},
+    facturation: {},
+    payment: {},
+  };
+
   return (
     <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
       <View style={{ ...styles.container, height: keyboardOpen ? 0 : 110 }} {...props} testID='bottom-tab'>
         <AutoImage source={require('./icons/tab-navigation.png')} style={styles.background} resizeMethod='auto' resizeMode='stretch' />
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
           return (
-            <View key={`bottom-navigation-item-${i}`} style={styles.tabContainer}>
+            <View key={`bottom-navigation-item-${i}-${bottomTavNavItem}`} style={styles.tabContainer}>
               <BottomTab
                 onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
                 testID={`${RouteName[bottomTavNavItem]}Tab`}
                 source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
                 tabStyle={styles.tab}
-                imageStyle={{ width: 65, height: 55 }}
+                imageStyle={{ width: 65, height: 55, ...STYLE[bottomTavNavItem] }}
                 text={ROUTE[bottomTavNavItem]}
                 bottomNavItem={bottomTavNavItem}
               />

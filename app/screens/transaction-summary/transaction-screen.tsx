@@ -109,14 +109,14 @@ export const TransactionScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>
 
       // use to get remote notification message from sns
       messaging().onMessage(async remoteMessage => {
-        const messageData = remoteMessage.data;
+        const messageData = remoteMessage.data as any;
         setMessage(messageData.default.toString());
         setDisplayNotification(true);
         setDisplayNotification(false);
       });
 
       messaging().setBackgroundMessageHandler(async remoteMessage => {
-        const messageData = remoteMessage.data;
+        const messageData = remoteMessage.data as any;
         setMessage(messageData.default.toString());
         setDisplayNotification(true);
         setDisplayNotification(false);
