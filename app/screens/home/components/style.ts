@@ -61,7 +61,7 @@ export const StaticInformationsRendererStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'flex-start',
-    marginBottom: 20,
+    marginBottom: 100,
   },
   title: {
     color: palette.black,

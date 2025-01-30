@@ -6,6 +6,7 @@ import { Divider } from 'react-native-paper';
 import Carousel from 'react-native-reanimated-carousel';
 
 import { AutoImage, Header, Text } from '../../components';
+import { BpButton } from '../../components/bp-button';
 import { TabNavigatorParamList } from '../../navigators/utils';
 import { StaticInformationItem } from './components/StaticInformationItem';
 import { HomeScreenStyle, StaticInformationsRendererStyle } from './components/style';
@@ -13,8 +14,10 @@ import { StaticLeftInformationValues, StaticRightInformationValues } from './uti
 
 const images = [require('./assets/1.png'), require('./assets/2.png'), require('./assets/3.png')];
 
-export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = observer(() => {
+export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { height, width } = Dimensions.get('screen');
+  const createProspect = () => navigation.navigate('prospectForm');
+
   return (
     <View>
       <Header headerText='Accueil' />
@@ -65,6 +68,9 @@ export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = 
           </View>
         </View>
       </ScrollView>
+      <BpButton style={{ position: 'absolute', bottom: 20, right: 10 }} onPress={createProspect}>
+        Analyser la toiture d'un prospect/client
+      </BpButton>
     </View>
   );
 });
