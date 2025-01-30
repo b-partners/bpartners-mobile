@@ -14,6 +14,7 @@ export type IconRouteProps = {
   payment: () => void;
   facturation: () => void;
   service: () => void;
+  home: () => void;
 };
 
 export const hasBusinessActivities = accountHolder =>

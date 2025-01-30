@@ -50,6 +50,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => handleNavigation('supportContact'),
+    home: () => handleNavigation('home'),
   };
 
   const RouteName: IconProps = {
