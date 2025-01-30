@@ -51,6 +51,7 @@ export type TabNavigatorParamList = {
   home: {
     screen:
       | 'bp_home'
+      | 'home'
       | 'marketplace'
       | 'paymentInitiation'
       | 'prospect'

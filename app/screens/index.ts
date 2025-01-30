@@ -24,6 +24,7 @@ export * from './prospect/prospect-screen';
 export * from './prospect-configuration/prospect-configuration-screen';
 export * from './registration/registration-screen';
 export * from './support-contact/support-contact-screen';
+export * from './home/home-screen';
 export { TRANSACTION_BUTTONS_STYLE } from './transaction-summary/utils/styles';
 export { BALANCE_TEXT_STYLE } from './transaction-summary/utils/styles';
 export { CHART_BUTTON_MARGIN_STYLE } from './transaction-summary/utils/styles';

@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 
 import { BpTabNavigation } from '../../components';
+import { HomeScreen } from '../../screens/home/home-screen';
 import { translate } from '../../i18n';
 import {
-  TransactionScreen,
   InvoicesScreen,
   MarketPlaceScreen,
   PaymentInitiationScreen,
@@ -13,6 +13,7 @@ import {
   ProspectConfigurationScreen,
   ProspectScreen,
   SupportContactScreen,
+  TransactionScreen,
 } from '../../screens';
 import { TabNavigatorParamList } from '../utils';
 
@@ -31,6 +32,7 @@ export const AppTabStack = observer(function () {
     >
       <>
         <Tab.Screen name='bp_home' component={TransactionScreen} options={{ title: translate('homeScreen.title') }} />
+        <Tab.Screen name='home' component={HomeScreen} options={{ title: translate('homeScreen.title') }} />
         <Tab.Screen name='marketplace' component={MarketPlaceScreen} options={{ title: translate('marketPlaceScreen.title') }} />
         <Tab.Screen name='paymentInitiation' component={PaymentInitiationScreen} options={{ title: translate('paymentInitiationScreen.label') }} />
         <Tab.Screen name='prospect' component={ProspectScreen} options={{ title: translate('homeScreen.title') }} />
