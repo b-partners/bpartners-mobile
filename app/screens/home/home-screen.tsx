@@ -2,27 +2,28 @@ import notifee, { AndroidImportance } from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import { DrawerActions } from '@react-navigation/native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import { Base64 } from 'js-base64';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Dimensions, ScrollView, View } from 'react-native';
+import { Divider } from 'react-native-paper';
+import Carousel from 'react-native-reanimated-carousel';
 
-import { HeaderWithBalance, Screen } from '../../components';
+import { AutoImage, Header, Text } from '../../components';
+import { BpButton } from '../../components/bp-button';
 import env from '../../config/env';
 import { useStores } from '../../models';
-import { NavigatorParamList } from '../../navigators/utils';
-import { spacing } from '../../theme';
+import { TabNavigatorParamList } from '../../navigators/utils';
 import { palette } from '../../theme/palette';
 import { RTLog } from '../../utils/reactotron-log';
-import { ErrorBoundary } from '../error/error-boundary';
-import { invoicePageSize } from '../invoice-form/utils/utils';
-import { HomeLatestTransactions } from './components/home-latest-transactions';
-import { Logo } from './components/logo';
-import { Menu } from './components/menu';
-import { TransactionSummary } from './components/transaction-summary';
-import { getAttributesAsync } from './utils/function';
-import { FULL } from './utils/styles';
+import { getAttributesAsync } from '../transaction-summary/utils/function';
+import { StaticInformationItem } from './components/StaticInformationItem';
+import { HomeScreenStyle, StaticInformationsRendererStyle } from './components/style';
+import { StaticLeftInformationValues, StaticRightInformationValues } from './utilities/constants';
+
+const images = [require('./assets/1.png'), require('./assets/2.png'), require('./assets/3.png')];
 
 // TODO: convert to environment variable
 // firebase console configuration
@@ -37,24 +38,12 @@ export const firebaseConfig = {
   apiKey: 'AIzaSyBDpF1jZq0t3O5XXzvHcHdRYBGpfL9Fw58',
 };
 
-export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
-  const { transactionStore, authStore, fileStore } = useStores();
-  const { fileUrl } = fileStore;
-  const { availableBalance } = authStore.currentAccount;
-  const { currentAccountHolder, currentUser, accessToken } = authStore;
-  const { loadingTransactions, currentMonthSummary, latestTransactions, transactionsSummary } = transactionStore;
+export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = observer(({ navigation }) => {
+  const { height, width } = Dimensions.get('screen');
+  const createProspect = () => navigation.navigate('prospectForm');
+  const { authStore } = useStores();
 
-  useEffect(() => {
-    // retrieve the necessary data
-    (async () => {
-      const date = new Date();
-      await authStore.whoami(accessToken);
-      await fileStore.getFileUrl(currentUser.logoFileId);
-      await transactionStore.getTransactionCategories();
-      await transactionStore.getTransactionsSummary(date.getFullYear());
-      await transactionStore.getTransactions({ page: 1, pageSize: invoicePageSize });
-    })();
-  }, []);
+  const { currentUser } = authStore;
 
   // initial state used
   const [message, setMessage] = useState<null | string>();
@@ -109,14 +98,14 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
 
       // use to get remote notification message from sns
       messaging().onMessage(async remoteMessage => {
-        const messageData = remoteMessage.data;
+        const messageData = remoteMessage.data as any;
         setMessage(messageData.default.toString());
         setDisplayNotification(true);
         setDisplayNotification(false);
       });
 
       messaging().setBackgroundMessageHandler(async remoteMessage => {
-        const messageData = remoteMessage.data;
+        const messageData = remoteMessage.data as any;
         setMessage(messageData.default.toString());
         setDisplayNotification(true);
         setDisplayNotification(false);
@@ -158,31 +147,63 @@ export const HomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = obs
     }
   }, [displayNotification]);
 
+  const openDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  };
+
   return (
-    <ErrorBoundary catchErrors='always'>
-      <View testID='homeScreen' style={FULL}>
-        <HeaderWithBalance
-          balance={availableBalance}
-          left={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} testID={'craftsmanLogo'} />}
-          right={<Menu navigation={navigation} />}
-        />
-        <Screen preset='scroll' backgroundColor={palette.white}>
-          <View style={{ padding: spacing[3] }}>
-            <TransactionSummary
-              currentMonthSummary={currentMonthSummary}
-              accountHolder={currentAccountHolder}
-              balance={availableBalance}
-              currentYearSummary={transactionsSummary}
-            />
-          </View>
-          <HomeLatestTransactions
-            transactions={latestTransactions}
-            onPress={() => navigation.navigate('transactionList')}
-            loading={loadingTransactions}
-            navigation={navigation}
+    <View>
+      <Header headerText='Accueil' rightIcon='whiteMenu' onRightPress={openDrawer} />
+      <ScrollView style={{ height: height * 0.7 }}>
+        <View style={HomeScreenStyle.textHeaderContainer}>
+          <Text
+            text='Pour démarrer ajoutez une adresse et commencez à analyser les toitures de vos clients et prospects'
+            style={HomeScreenStyle.textHeaderBlack}
           />
-        </Screen>
-      </View>
-    </ErrorBoundary>
+        </View>
+        <View style={{ flex: 1, minHeight: height * 0.4 }}>
+          <Carousel
+            loop
+            width={width}
+            height={height * 0.4}
+            data={images}
+            style={{ margin: 0, padding: 0 }}
+            scrollAnimationDuration={1000}
+            renderItem={({ item }) => (
+              <View style={{ position: 'relative' }}>
+                <AutoImage style={{ width, height: height * 0.4 }} source={item} />
+                <View style={[HomeScreenStyle.imageSource, { width }]}>
+                  <Text text='NOTE DÉGRADATION GLOBALE: 41%' />
+                </View>
+                <View style={HomeScreenStyle.carouselTitleContainer}>
+                  <Text text='Source: Image HD 5cm - Mars 2024' />
+                </View>
+              </View>
+            )}
+            mode='parallax'
+          />
+        </View>
+        <Divider style={StaticInformationsRendererStyle.divider} />
+        <View style={StaticInformationsRendererStyle.titleContainer}>
+          <Text text='ANALYSE DE TOITURE' style={StaticInformationsRendererStyle.title} />
+        </View>
+        <Divider style={StaticInformationsRendererStyle.divider} />
+        <View style={StaticInformationsRendererStyle.container}>
+          <View>
+            {StaticLeftInformationValues.map(item => (
+              <StaticInformationItem staticInformation={item} key={item.title} />
+            ))}
+          </View>
+          <View>
+            {StaticRightInformationValues.map(item => (
+              <StaticInformationItem staticInformation={item} key={item.title} />
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+      <BpButton style={{ position: 'absolute', bottom: 20, right: 10 }} onPress={createProspect}>
+        Analyser la toiture d'un prospect/client
+      </BpButton>
+    </View>
   );
 });

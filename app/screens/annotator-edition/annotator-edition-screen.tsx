@@ -112,7 +112,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerText={areaPictureDetails?.address} leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
         {Object.keys(areaPictureDetailsParams).length > 0 && (
           <AnnotationContainer
             areaPictureDetails={areaPictureDetails}

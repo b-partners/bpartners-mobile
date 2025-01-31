@@ -653,7 +653,8 @@
     "service": "services",
     "transfer": "Virement",
     "card": "Cartes",
-    "help": "Aide"
+    "help": "Aide",
+    "home": "Accueil"
   },
   "customerScreen": {
     "title": "Mes clients",
@@ -688,6 +689,9 @@
       "location": "Adresse",
       "participants": "Participants"
     }
+  },
+  "helpScreen": {
+    "title": "Aide"
   },
   "months": {
     "0": "Janvier",

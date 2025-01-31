@@ -85,7 +85,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
           navigation.navigate('legalFile');
         } else {
           await authStore.getAccounts();
-          navigation.navigate('oauth');
+          navigation.navigate('home', { screen: 'home' } as any);
         }
       } catch {
         showMessage(translate('errors.verifyConnection', errorMessageStyles));

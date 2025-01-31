@@ -72,7 +72,6 @@ const IconRoute: RouteNameProps = {
   configuration: <IoniconIcon name='settings-outline' size={21} color={color.palette.secondaryColor} />,
   partners: <FontAwesomeIcon name='handshake-o' size={17} color={color.palette.secondaryColor} />,
   calendar: <IoniconIcon name='calendar-outline' size={22} color={color.palette.secondaryColor} />,
-  // annotatorEdition: <IoniconIcon name='scan-outline' size={22} color={color.palette.secondaryColor} />,
 };
 
 type TTitleRoute = typeof TitleRoute;

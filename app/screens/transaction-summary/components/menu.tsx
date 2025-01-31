@@ -6,8 +6,6 @@ import { TouchableOpacity, View } from 'react-native';
 
 import { Icon } from '../../../components';
 
-// import { BULLET_STYLE } from '../utils/styles';
-
 export const Menu: FC<{ navigation: DrawerNavigationProp<any> }> = observer(({ navigation }) => {
   return (
     <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())} testID='homeMenuButton'>

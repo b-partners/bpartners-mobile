@@ -670,7 +670,8 @@
     "service": "services",
     "transfer": "Transfer",
     "card": "Cards",
-    "help": "Help"
+    "help": "Help",
+    "home": "Home"
   },
   "customerScreen": {
     "title": "My customers",
@@ -705,6 +706,9 @@
       "location": "Address",
       "participants": "Participants"
     }
+  },
+  "helpScreen": {
+    "title": "Help"
   },
   "months": {
     "0": "January",
