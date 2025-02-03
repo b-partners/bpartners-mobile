@@ -2200,6 +2200,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNVectorIcons (10.2.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - Sentry/HybridSDK (8.37.0)
   - SocketRocket (0.7.1)
   - SwiftyJSON (5.0.0)
@@ -2303,6 +2324,7 @@ DEPENDENCIES:
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2509,6 +2531,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-snackbar"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2618,6 +2642,7 @@ SPEC CHECKSUMS:
   RNSentry: 7a6805aabd54413e582cc7b86f5b60840799f775
   RNSnackbar: 37ce6daf19c8bd35cf6133db5797aa298c8782ac
   RNSVG: ea3e35f0375ac20449384fa89ce056ee0e0690ee
+  RNVectorIcons: 07792a9538e8577c1263fcad187712e90d65d8fb
   Sentry: ee060c09b2f7ec1240e95c766ab44c04c7bdb052
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
