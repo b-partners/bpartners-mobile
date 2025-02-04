@@ -79,12 +79,6 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     setMeasurements([]);
   };
 
-  const handleSetMeasurements = (currentMeasurements: Measurement[]) => {
-    if ((annotations.length > 0 && currentMeasurements.length > 0) || annotations.length === 0) {
-      setMeasurements(currentMeasurements);
-    }
-  };
-
   const imageUrl = `${pictureUrl}&isExtended${areaPictureDetails.isExtended}&shiftNumber=${areaPictureDetails.shiftNb}`;
 
   const handleOpenNextMenu = () => {
@@ -120,7 +114,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
           <AnnotationContainer
             areaPictureDetails={areaPictureDetails}
             measurements={measurements}
-            setMeasurements={handleSetMeasurements}
+            setMeasurements={setMeasurements}
             filename={areaPictureDetails.filename}
             zoom={areaPictureDetails.zoom}
             isLoading={isLoading}

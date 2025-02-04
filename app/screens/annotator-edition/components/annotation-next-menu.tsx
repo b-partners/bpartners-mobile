@@ -18,7 +18,7 @@ interface AnnotationMenuProps {
   annotations: AreaPictureAnnotationInstance[];
   measurements: Measurement[];
   resetAnnotation: () => void;
-  imageUrl: string
+  imageUrl: string;
 }
 
 export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
@@ -30,7 +30,7 @@ export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
   annotations,
   measurements,
   resetAnnotation,
-  imageUrl
+  imageUrl,
 }) => {
   const { width, height } = Dimensions.get('screen');
   const { close } = useSheetModal();
