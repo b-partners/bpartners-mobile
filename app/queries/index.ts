@@ -1,5 +1,6 @@
 export * from './use-create-area-picture';
 export * from './use-crupdate-prospect';
+export * from './use-export-annotation-to-pdf';
 export * from './use-get-account-holder';
 export * from './use-get-area-picture-by-id';
 export * from './use-query-annotation-by-area-picture-id';
@@ -8,3 +9,4 @@ export * from './use-query-invoice';
 export * from './use-query-list';
 export * from './use-query-prospect';
 export * from './use-query-prospect-by-id';
+

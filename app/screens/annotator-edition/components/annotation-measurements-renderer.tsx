@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useRef } from 'react';
 import { LayoutChangeEvent, View } from 'react-native';
 
 import { Text } from '../../../components';
@@ -11,25 +11,25 @@ interface AnnotationMeasurementsRendererProps {
 }
 
 export const AnnotationMeasurementsRenderer: FC<AnnotationMeasurementsRendererProps> = ({ measurements, scale }) => {
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const containerSize = useRef({ width: 0, height: 0 });
 
   const handleLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
-    setContainerSize({ height, width });
+    containerSize.current = { height, width };
   };
 
   return (
     <>
-      {measurements?.map(({ position, unity, value }, index) => {
+      {measurements?.map(({ position, unity, value }) => {
         if (unity === 'm²') return;
         return (
           <View
             onLayout={handleLayout}
-            key={JSON.stringify(position) + index}
+            key={JSON.stringify(position)}
             style={{
               position: 'absolute',
-              top: (position.y + IMAGE_MARGIN_HALF) * scale - containerSize.height / 2,
-              left: (position.x + IMAGE_MARGIN_HALF) * scale - containerSize.width / 2,
+              top: (position.y + IMAGE_MARGIN_HALF) * scale - containerSize.current.height / 2,
+              left: (position.x + IMAGE_MARGIN_HALF) * scale - containerSize.current.width / 2,
               padding: 2,
               display: 'flex',
               justifyContent: 'center',

@@ -85,6 +85,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     }
   };
 
+  const imageUrl = `${pictureUrl}&isExtended${areaPictureDetails.isExtended}&shiftNumber=${areaPictureDetails.shiftNb}`;
+
   const handleOpenNextMenu = () => {
     openSheetModal(
       <AnnotationNextMenu
@@ -96,6 +98,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         navigate={navigation.navigate}
         isAreaPictureLoading={isLoading}
         areaPictureDetails={areaPictureDetails}
+        imageUrl={imageUrl}
       />,
       { containerStyle: { height: height * 0.5 } }
     );
@@ -121,7 +124,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             filename={areaPictureDetails.filename}
             zoom={areaPictureDetails.zoom}
             isLoading={isLoading}
-            pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}&shiftNumber=${areaPictureDetails.shiftNb}`}
+            pictureUrl={imageUrl}
             annotations={annotations}
             setAnnotations={setAnnotations}
           />

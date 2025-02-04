@@ -110,6 +110,7 @@
     "react-native-pdf": "^6.7.5",
     "react-native-popover-view": "^5.1.9",
     "react-native-qrcode-svg": "6.3.2",
+    "react-native-quick-base64": "^2.1.2",
     "react-native-reanimated": "^3.16.7",
     "react-native-reanimated-carousel": "^3.5.1",
     "react-native-redash": "^18.1.3",
