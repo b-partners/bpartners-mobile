@@ -4,10 +4,14 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
+import { Auth } from '@aws-amplify/auth';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import * as Keychain from 'react-native-keychain';
 
 import { Text } from '../components';
+import { useAxiosConfigurer } from '../hook';
+import { useStores } from '../models';
 import { palette } from '../theme/palette';
 import { AppStack } from './components';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
@@ -38,7 +42,15 @@ const navigationContainerConfigLinking = {
 };
 
 export function AppNavigator(props: Readonly<NavigationProps>) {
+  const { authStore } = useStores();
   useBackButtonHandler(canExit);
+  useAxiosConfigurer({
+    onAuthError: async () => {
+      await Auth.signOut();
+      await authStore.logout();
+      await Keychain.resetGenericPassword();
+    },
+  });
 
   return (
     <NavigationContainer
