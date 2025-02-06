@@ -35,7 +35,13 @@ export class AnnotationSizeHandler {
 
   public getContainerStyle() {
     const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
-    return { width: screenWidth - 10, height: screenHeight * 0.5, marginHorizontal: 5, overflow: 'scroll', backgroundColor: palette.lighterGrey } as ViewStyle;
+    return {
+      width: screenWidth - 10,
+      height: screenHeight * 0.5,
+      marginHorizontal: 5,
+      overflow: 'scroll',
+      backgroundColor: palette.lighterGrey,
+    } as ViewStyle;
   }
 }
 

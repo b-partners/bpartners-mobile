@@ -4,9 +4,10 @@ import { Dimensions, ScrollView, View } from 'react-native';
 
 import { BpButton as Button } from '../../../components/bp-button';
 import { useSheetModal } from '../../../hook';
+import { useExportAnnotationToPdf } from '../../../queries';
 import { palette } from '../../../theme/palette';
 import { Measurement } from '../types';
-import { useAnnotationSubmit } from '../utils';
+import { exportAnnotationMapper, useAnnotationSubmit } from '../utils';
 
 interface AnnotationMenuProps {
   areaPictureDetails: AreaPictureDetails;
@@ -17,6 +18,7 @@ interface AnnotationMenuProps {
   annotations: AreaPictureAnnotationInstance[];
   measurements: Measurement[];
   resetAnnotation: () => void;
+  imageUrl: string;
 }
 
 export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
@@ -28,10 +30,16 @@ export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
   annotations,
   measurements,
   resetAnnotation,
+  imageUrl,
 }) => {
   const { width, height } = Dimensions.get('screen');
   const { close } = useSheetModal();
   const { submitAnnotation, isLoading } = useAnnotationSubmit(annotations, measurements, areaPictureDetails, navigate);
+  const { exportAsPdf, isPending: isExportPending } = useExportAnnotationToPdf();
+
+  const handleExport = () => {
+    exportAsPdf(exportAnnotationMapper.toExport(areaPictureDetails, imageUrl, annotations, measurements));
+  };
 
   const cancelAnnotations = () => {
     resetAnnotation();
@@ -59,6 +67,15 @@ export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
           onPress={cancelAnnotations}
         >
           Annuler toute l'annotation
+        </Button>
+        <Button
+          loading={isLoading || isAreaPictureLoading || isExportPending}
+          buttonColor={palette.purple}
+          textColor='white'
+          style={{ marginVertical: 5 }}
+          onPress={handleExport}
+        >
+          Exporter entant que PDF
         </Button>
         <Button
           loading={isLoading || isAreaPictureLoading}

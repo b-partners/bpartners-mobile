@@ -75,7 +75,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
           headerTx='prospectScreen.title'
           leftIcon={'back'}
           rightIcon={'settings'}
-          onLeftPress={() => navigation.navigate('bp_home')}
+          onLeftPress={() => navigation.navigate('home')}
           onRightPress={() => navigation.navigate('prospectConfiguration')}
           style={HEADER}
           titleStyle={HEADER_TITLE}
