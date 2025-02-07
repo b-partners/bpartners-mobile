@@ -16,7 +16,7 @@ import { LogBox } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import { SheetModal } from './components';
+import { Loader, SheetModal } from './components';
 import env from './config/env';
 import './i18n';
 import { RootStore, RootStoreProvider, setupRootStore } from './models';
@@ -27,6 +27,7 @@ import { RNPaperTheme } from './theme';
 import './utils/ignore-warnings';
 // expo
 import * as storage from './utils/storage';
+import { palette } from './theme/palette';
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -70,7 +71,16 @@ function App() {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (!rootStore || !isNavigationStateRestored) return null;
+  if (!rootStore || !isNavigationStateRestored) {
+    return (
+      <Loader
+        size={50}
+        color={palette.lighterPurple}
+        containerStyle={{ paddingHorizontal: 5 }}
+        text="Chargement des données d'authentification..."
+      />
+    )
+  }
 
   // otherwise, we're ready to render the app
   return (
