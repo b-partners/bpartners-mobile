@@ -58,9 +58,6 @@ export const annotatorProvider = {
       },
     });
 
-    // const buffer = Buffer.from(await data.arrayBuffer());
-    // console.log(buffer);
-
-    saveFile(await data.arrayBuffer(), exportAreaPictureAnnotation.address);
+    return await saveFile(await data.arrayBuffer(), `${exportAreaPictureAnnotation.address} - ${new Date().getTime()}`);
   },
 };
