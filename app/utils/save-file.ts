@@ -19,7 +19,7 @@ export const saveFile = async (document: ArrayBuffer, fileName: string) => {
     const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}.pdf`;
     await ReactNativeBlobUtil.fs.writeFile(filePath, arrayBufferToBase64(document), 'base64');
     notify(`Fichier enregistrer sous ${fileName}.pdf`, 'success');
-    return filePath;
+    return { filePath, fileName };
   } catch (error) {
     console.error('Error saving file:', error);
   }

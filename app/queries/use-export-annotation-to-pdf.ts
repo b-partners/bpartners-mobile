@@ -8,7 +8,9 @@ import { annotatorProvider } from '../provider';
 import { notify } from '../utils/snackbar';
 
 export const useExportAnnotationToPdf = () => {
-  const { mutate, isPending, data: filePath } = useMutation({ mutationFn: annotatorProvider.exportToPDF, mutationKey: ['download', 'exportAnnotation'] });
+  const { mutate, isPending, data } = useMutation({ mutationFn: annotatorProvider.exportToPDF, mutationKey: ['download', 'exportAnnotation'] });
+
+  const { fileName, filePath } = data || {};
 
   const openFile = async () => {
     await FileViewer.open(`file://${filePath}`);
@@ -29,7 +31,7 @@ export const useExportAnnotationToPdf = () => {
 
     await notifee.displayNotification({
       title: 'Export terminer',
-      body: 'Cliquez pour ouvrir le fichier',
+      body: `Cliquez pour ouvrir le fichier ${fileName}`,
       android: {
         channelId,
         smallIcon: 'ic_launcher_adaptive_fore',
