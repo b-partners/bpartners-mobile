@@ -2,6 +2,7 @@ import { ExportAreaPictureAnnotation } from '@bpartners/typescript-client';
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
 import FileViewer from 'react-native-file-viewer';
 
 import { annotatorProvider } from '../provider';
@@ -19,24 +20,28 @@ export const useExportAnnotationToPdf = () => {
   useEffect(() => {}, []);
 
   const showNotification = async () => {
-    const channelId = await notifee.createChannel({
-      id: 'export_annotation',
-      name: 'Export annotation notification',
-      lights: false,
-      vibration: true,
-      importance: AndroidImportance.HIGH,
-    });
+    if (Platform.OS === 'android') {
+      const channelId = await notifee.createChannel({
+        id: 'export_annotation',
+        name: 'Export annotation notification',
+        lights: false,
+        vibration: true,
+        importance: AndroidImportance.HIGH,
+      });
 
-    await notifee.requestPermission();
+      await notifee.requestPermission();
 
-    await notifee.displayNotification({
-      title: 'Export terminer',
-      body: `Cliquez pour ouvrir le fichier ${fileName}`,
-      android: {
-        channelId,
-        smallIcon: 'ic_launcher_adaptive_fore',
-      },
-    });
+      await notifee.displayNotification({
+        title: 'Export terminer',
+        body: `Cliquez pour ouvrir le fichier ${fileName}`,
+        android: {
+          channelId,
+          smallIcon: 'ic_launcher_adaptive_fore',
+        },
+      });
+    } else {
+      notify('Document exporté avec succès.', 'success');
+    }
   };
 
   notifee.onForegroundEvent(({ type, detail }) => {
