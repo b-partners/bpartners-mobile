@@ -3,6 +3,7 @@ import RNFS from 'react-native-fs';
 import { btoa } from 'react-native-quick-base64';
 
 import { notify } from './snackbar';
+import { Platform } from 'react-native';
 
 const arrayBufferToBase64 = buffer => {
   let binary = '';
@@ -14,9 +15,11 @@ const arrayBufferToBase64 = buffer => {
   return btoa(binary);
 };
 
+const savingPath = Platform.OS === "android" ? RNFS.DownloadDirectoryPath : RNFS.DocumentDirectoryPath
+
 export const saveFile = async (document: ArrayBuffer, fileName: string) => {
   try {
-    const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}.pdf`;
+    const filePath = `${savingPath}/${fileName}.pdf`;
     await ReactNativeBlobUtil.fs.writeFile(filePath, arrayBufferToBase64(document), 'base64');
     notify(`Fichier enregistrer sous ${fileName}.pdf`, 'success');
     return { filePath, fileName };
