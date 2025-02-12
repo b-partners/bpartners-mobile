@@ -11,6 +11,7 @@ import {
   SecurityApi,
   SheetApi,
   UserAccountsApi,
+  UserSubscriptionApi,
 } from '@bpartners/typescript-client';
 import 'react-native-url-polyfill/auto';
 
@@ -43,3 +44,4 @@ export const calendarApi = async () => new CalendarApi(await getCachedAuthConf()
 export const sheetApi = async () => new SheetApi(await getCachedAuthConf(), undefined, getAxiosInstance());
 export const mailingApi = async () => new MailingApi(await getCachedAuthConf(), undefined, getAxiosInstance());
 export const areaPictureApi = async () => new AreaPictureApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const userSubscriptionApi = async () => new UserSubscriptionApi(await getCachedAuthConf(), undefined, getAxiosInstance());

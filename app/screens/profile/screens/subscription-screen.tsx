@@ -1,8 +1,8 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { View } from 'react-native';
-import { UserSubscriptionStatus } from '@bpartners/typescript-client';
+import { Linking, View } from 'react-native';
+import { Redirection2, UserSubscriptionStatus } from '@bpartners/typescript-client';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Screen, Separator, Text } from '../../../components';
@@ -15,14 +15,30 @@ import { useStores } from '../../../models';
 import { translate, TxKeyPath } from '../../../i18n';
 import { BpButton } from '../../../components/bp-button';
 import { formatDate } from '../../../utils/format-date';
+import { useMutation } from '@tanstack/react-query';
+import { userSubscriptionProvider } from '../../../provider';
+
+
+const doInit = async () => {
+  const { redirectionUrl } = await userSubscriptionProvider.init();
+  Linking.openURL(redirectionUrl)
+}
 
 export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function SubscriptionScreen({ }) {
-  const { authStore } = useStores();
-  const { currentUser } = authStore;
+  const { mutate: doSubscription, error: subscriptionError, isPending: isSubscriptionPending } = useMutation({
+    mutationFn: doInit,
+    mutationKey: ["user-subscription"]
+  });
+
+  const { authStore: { currentUser } } = useStores();
   const { subscription: userSubscription } = currentUser;
   const userSubscriptionStatus = userSubscription.status ?? UserSubscriptionStatus.EMPTY;
   const isActiveSubscription = userSubscriptionStatus === UserSubscriptionStatus.ACTIVE;
   const isEmptySubscription = userSubscriptionStatus === UserSubscriptionStatus.EMPTY;
+  const isCancelledSubscription = userSubscriptionStatus === UserSubscriptionStatus.CANCELLED;
+
+
+  console.log(subscriptionError)
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -115,12 +131,12 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
             <SubscriptionCard iconName={'clock-time-five-outline'} iconColor={palette.green} text={'profileScreen.subscription.support'} />
           </View>
           <View style={{ paddingHorizontal: 10, marginBottom: 50 }}>
-            {isActiveSubscription ? (
+            {(isActiveSubscription || isCancelledSubscription) ? (
               <BpButton>
                 Annuler le renouvellement de mon abonnement
               </BpButton>
             ) : (
-              <BpButton>
+              <BpButton loading={isSubscriptionPending} onPress={() => doSubscription()}>
                 S'abonner
               </BpButton>
             )}

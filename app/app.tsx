@@ -77,7 +77,6 @@ function App() {
         size={50}
         color={palette.lighterPurple}
         containerStyle={{ paddingHorizontal: 5 }}
-        text="Chargement des données d'authentification..."
       />
     )
   }

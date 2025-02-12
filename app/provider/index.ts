@@ -5,3 +5,4 @@ export * from './invoice-provider';
 export * from './product-provider';
 export * from './prospect-provider';
 export * from './utils';
+export * from './user-subscription-provider';
