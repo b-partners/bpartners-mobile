@@ -2,16 +2,28 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { View } from 'react-native';
+import { UserSubscriptionStatus } from '@bpartners/typescript-client';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { Screen, Text } from '../../../components';
+import { Screen, Separator, Text } from '../../../components';
 import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { SubscriptionCard } from '../components/subscription-card';
+import { useStores } from '../../../models';
+import { translate, TxKeyPath } from '../../../i18n';
+import { BpButton } from '../../../components/bp-button';
+import { formatDate } from '../../../utils/format-date';
 
-export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function SubscriptionScreen({}) {
+export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function SubscriptionScreen({ }) {
+  const { authStore } = useStores();
+  const { currentUser } = authStore;
+  const { subscription: userSubscription } = currentUser;
+  const userSubscriptionStatus = userSubscription.status ?? UserSubscriptionStatus.EMPTY;
+  const isActiveSubscription = userSubscriptionStatus === UserSubscriptionStatus.ACTIVE;
+  const isEmptySubscription = userSubscriptionStatus === UserSubscriptionStatus.EMPTY;
+
   return (
     <ErrorBoundary catchErrors='always'>
       <View style={{ flex: 1 }}>
@@ -25,12 +37,7 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
               marginTop: spacing[4],
             }}
           >
-            <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
-              <View style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', backgroundColor: palette.secondaryColor, borderRadius: 5 }}>
-                <MaterialCommunityIcon name='hockey-puck' size={22} color={palette.white} />
-              </View>
-            </View>
-            <View style={{ width: '80%', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ paddingStart: 15, width: '80%', justifyContent: 'center', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 24,
@@ -39,7 +46,7 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
                   width: '100%',
                   marginBottom: spacing[1],
                 }}
-                text={"L'essentiel"}
+                text={translate(`profileScreen.subscription.status.${userSubscriptionStatus}.title`)}
               />
               <Text
                 style={{
@@ -48,10 +55,40 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
                   color: palette.textClassicColor,
                   width: '100%',
                 }}
-                text={"Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant"}
+                text={translate(`profileScreen.subscription.status.${userSubscriptionStatus}.description`)}
               />
             </View>
+            <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', backgroundColor: palette.secondaryColor, borderRadius: 5 }}>
+                <MaterialCommunityIcon name='hockey-puck' size={22} color={palette.white} />
+              </View>
+            </View>
           </View>
+          <Separator style={{ width: 100 }} />
+          {!isEmptySubscription && (
+            <View style={{ paddingHorizontal: 15 }}>
+              <View style={{ marginBottom: 10 }}>
+                <Text
+                  style={{ fontSize: 14, color: palette.black }}
+                  text={translate(`profileScreen.subscription.status.${userSubscriptionStatus}.start` as TxKeyPath)}
+                />
+                <Text
+                  style={{ fontSize: 14, color: palette.greyDarker }}
+                  text={formatDate(userSubscription.start)}
+                />
+              </View>
+              <View>
+                <Text
+                  style={{ fontSize: 14, color: palette.black }}
+                  text={translate(`profileScreen.subscription.status.${userSubscriptionStatus}.end` as TxKeyPath)}
+                />
+                <Text
+                  style={{ fontSize: 14, color: palette.greyDarker }}
+                  text={formatDate(userSubscription.end)}
+                />
+              </View>
+            </View>
+          )}
           <View
             style={{
               width: '100%',
@@ -76,6 +113,17 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
             <SubscriptionCard iconName={'tools'} iconColor={palette.yellow} text={'profileScreen.subscription.tools'} />
             <SubscriptionCard iconName={'qrcode'} iconColor={palette.black} text={'profileScreen.subscription.code'} />
             <SubscriptionCard iconName={'clock-time-five-outline'} iconColor={palette.green} text={'profileScreen.subscription.support'} />
+          </View>
+          <View style={{ paddingHorizontal: 10, marginBottom: 50 }}>
+            {isActiveSubscription ? (
+              <BpButton>
+                Annuler le renouvellement de mon abonnement
+              </BpButton>
+            ) : (
+              <BpButton>
+                S'abonner
+              </BpButton>
+            )}
           </View>
         </Screen>
       </View>

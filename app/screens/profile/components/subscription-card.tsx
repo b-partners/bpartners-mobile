@@ -20,10 +20,11 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = props => {
       <View style={{ width: '20%', justifyContent: 'center', alignItems: 'center' }}>
         <MaterialCommunityIcon name={iconName} size={26} color={iconColor} />
       </View>
-      <View style={{ width: '80%', justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ width: '80%', paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center' }}>
         <Text
           style={{
             fontSize: 14,
+            textAlign: "justify",
             fontFamily: 'Geometria',
             color: palette.greyDarker,
             width: '100%',
