@@ -14,6 +14,7 @@ import {
 } from '@bpartners/typescript-client';
 import 'react-native-url-polyfill/auto';
 
+import { getAxiosInstance } from '../config/axios';
 import env from '../config/env';
 import { storage } from '../utils/storage';
 
@@ -31,14 +32,14 @@ const getCachedAuthConf = async () => {
   return conf;
 };
 
-export const securityApi = async () => new SecurityApi(await getCachedAuthConf());
-export const userAccountsApi = async () => new UserAccountsApi(await getCachedAuthConf());
-export const payingApi = async () => new PayingApi(await getCachedAuthConf());
-export const customerApi = async () => new CustomersApi(await getCachedAuthConf());
-export const fileApi = async () => new FilesApi(await getCachedAuthConf());
-export const prospectingApi = async () => new ProspectingApi(await getCachedAuthConf());
-export const onboardingApi = async () => new OnboardingApi(await getCachedAuthConf());
-export const calendarApi = async () => new CalendarApi(await getCachedAuthConf());
-export const sheetApi = async () => new SheetApi(await getCachedAuthConf());
-export const mailingApi = async () => new MailingApi(await getCachedAuthConf());
-export const areaPictureApi = async () => new AreaPictureApi(await getCachedAuthConf());
+export const securityApi = async () => new SecurityApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const userAccountsApi = async () => new UserAccountsApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const payingApi = async () => new PayingApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const customerApi = async () => new CustomersApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const fileApi = async () => new FilesApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const prospectingApi = async () => new ProspectingApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const onboardingApi = async () => new OnboardingApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const calendarApi = async () => new CalendarApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const sheetApi = async () => new SheetApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const mailingApi = async () => new MailingApi(await getCachedAuthConf(), undefined, getAxiosInstance());
+export const areaPictureApi = async () => new AreaPictureApi(await getCachedAuthConf(), undefined, getAxiosInstance());
