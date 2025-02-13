@@ -47,7 +47,8 @@ export const FreeTrialSubscriptionModal = () => {
         Aucun prélèvement ne se fera avant la fin de votre période d’essai de 14 jours.
       </Text>
       <Text style={{ fontSize: 14, color: 'black', marginTop: 10 }}>
-        Si vous avez la moindre question, appelez-nous au <Text style={{ fontSize: 14, color: 'black', fontWeight: 'bold' }}>06.68.62.48.36</Text> ou par mail à{' '}
+        {'Si vous avez la moindre question, appelez-nous au '}
+        <Text style={{ fontSize: 14, color: 'black', fontWeight: 'bold' }}>06.68.62.48.36</Text> ou par mail à{' '}
         <Text style={{ fontSize: 14, color: 'black', fontWeight: 'bold' }}>contact@bpartners.app</Text>.
       </Text>
       <View style={{ marginVertical: 20, flexDirection: 'column', gap: 10 }}>

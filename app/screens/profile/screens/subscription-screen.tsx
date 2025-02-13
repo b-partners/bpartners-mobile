@@ -24,9 +24,8 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
     authStore: { currentUser },
   } = useStores();
   const { subscription: userSubscription } = currentUser;
-  const userSubscriptionStatus = userSubscription.status ?? UserSubscriptionStatus.EMPTY;
+  const userSubscriptionStatus = userSubscription?.status ?? UserSubscriptionStatus.EMPTY;
   const isActiveSubscription = userSubscriptionStatus === UserSubscriptionStatus.ACTIVE;
-  const isEmptySubscription = userSubscriptionStatus === UserSubscriptionStatus.EMPTY;
   const isCancelledSubscription = userSubscriptionStatus === UserSubscriptionStatus.CANCELLED;
 
   const openCancelSubscriptionRenewModal = () => {
@@ -77,21 +76,21 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
               </View>
             </View>
           </View>
-          {userSubscription.start && userSubscription.end && (
+          {userSubscription?.start && userSubscription?.end && (
             <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
               <View style={{ marginBottom: 10 }}>
                 <Text
                   style={{ fontSize: 14, color: palette.black }}
                   text={translate(`profileScreen.subscription.status.${userSubscriptionStatus}.start` as TxKeyPath)}
                 />
-                <Text style={{ fontSize: 14, color: palette.greyDarker }} text={formatDate(userSubscription.start)} />
+                <Text style={{ fontSize: 14, color: palette.greyDarker }} text={formatDate(userSubscription?.start)} />
               </View>
               <View>
                 <Text
                   style={{ fontSize: 14, color: palette.black }}
                   text={translate(`profileScreen.subscription.status.${userSubscriptionStatus}.end` as TxKeyPath)}
                 />
-                <Text style={{ fontSize: 14, color: palette.greyDarker }} text={formatDate(userSubscription.end)} />
+                <Text style={{ fontSize: 14, color: palette.greyDarker }} text={formatDate(userSubscription?.end)} />
               </View>
             </View>
           )}
