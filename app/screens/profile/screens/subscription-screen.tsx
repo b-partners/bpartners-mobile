@@ -1,8 +1,8 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { Linking, View } from 'react-native';
-import { Redirection2, UserSubscriptionStatus } from '@bpartners/typescript-client';
+import { View } from 'react-native';
+import { UserSubscriptionStatus } from '@bpartners/typescript-client';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Screen, Separator, Text } from '../../../components';
@@ -10,26 +10,15 @@ import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { ErrorBoundary } from '../../error/error-boundary';
-import { SubscriptionCard } from '../components/subscription-card';
+import { SubscriptionCard, SubscriptionModal, CancelSubscriptionModal } from '../components';
 import { useStores } from '../../../models';
 import { translate, TxKeyPath } from '../../../i18n';
 import { BpButton } from '../../../components/bp-button';
 import { formatDate } from '../../../utils/format-date';
-import { useMutation } from '@tanstack/react-query';
-import { userSubscriptionProvider } from '../../../provider';
-
-
-const doInit = async () => {
-  const { redirectionUrl } = await userSubscriptionProvider.init();
-  Linking.openURL(redirectionUrl)
-}
+import { useSheetModal } from '../../../hook';
 
 export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function SubscriptionScreen({ }) {
-  const { mutate: doSubscription, error: subscriptionError, isPending: isSubscriptionPending } = useMutation({
-    mutationFn: doInit,
-    mutationKey: ["user-subscription"]
-  });
-
+  const { open } = useSheetModal();
   const { authStore: { currentUser } } = useStores();
   const { subscription: userSubscription } = currentUser;
   const userSubscriptionStatus = userSubscription.status ?? UserSubscriptionStatus.EMPTY;
@@ -37,8 +26,13 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
   const isEmptySubscription = userSubscriptionStatus === UserSubscriptionStatus.EMPTY;
   const isCancelledSubscription = userSubscriptionStatus === UserSubscriptionStatus.CANCELLED;
 
+  const openCancelSubscriptionRenewModal = () => {
+    open(<CancelSubscriptionModal />);
+  }
 
-  console.log(subscriptionError)
+  const openSubscriptionModal = () => {
+    open(<SubscriptionModal allowClose />);
+  }
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -130,13 +124,13 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
             <SubscriptionCard iconName={'qrcode'} iconColor={palette.black} text={'profileScreen.subscription.code'} />
             <SubscriptionCard iconName={'clock-time-five-outline'} iconColor={palette.green} text={'profileScreen.subscription.support'} />
           </View>
-          <View style={{ paddingHorizontal: 10, marginBottom: 50 }}>
+          <View style={{ paddingHorizontal: 10, marginTop: 10, marginBottom: 50 }}>
             {(isActiveSubscription || isCancelledSubscription) ? (
-              <BpButton>
+              <BpButton onPress={() => openCancelSubscriptionRenewModal()}>
                 Annuler le renouvellement de mon abonnement
               </BpButton>
             ) : (
-              <BpButton loading={isSubscriptionPending} onPress={() => doSubscription()}>
+              <BpButton onPress={() => openSubscriptionModal()}>
                 S'abonner
               </BpButton>
             )}
