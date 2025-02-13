@@ -22,8 +22,8 @@ export const userSubscriptionProvider = {
   },
   async cancelRenew() {
     const userId = await storage.loadUserId();
-    const { cancelUserSubscription } = await userSubscriptionApi();
-    const { data } = await cancelUserSubscription(userId);
+    const userSubscriptionApiValue = await userSubscriptionApi();
+    const { data } = await userSubscriptionApiValue.cancelUserSubscription(userId);
     return data;
   },
 };

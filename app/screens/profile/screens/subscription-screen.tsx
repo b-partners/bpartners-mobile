@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import { View } from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { Screen, Separator, Text } from '../../../components';
+import { Screen, Text } from '../../../components';
 import { BpButton } from '../../../components/bp-button';
 import { CancelSubscriptionModal, SubscriptionModal } from '../../../components/subscription';
 import { useSheetModal } from '../../../hook';
@@ -77,9 +77,8 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
               </View>
             </View>
           </View>
-          <Separator style={{ width: 100 }} />
           {!isEmptySubscription && (
-            <View style={{ paddingHorizontal: 15 }}>
+            <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
               <View style={{ marginBottom: 10 }}>
                 <Text
                   style={{ fontSize: 14, color: palette.black }}
@@ -113,7 +112,7 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
                   width: '100%',
                   marginBottom: spacing[1],
                 }}
-                text={'Pour 7€ HT par mois:'}
+                text={'Pour 49€ par mois:'}
               />
             </View>
             <SubscriptionCard iconName={'robot-outline'} iconColor={palette.greyDarker} text={'profileScreen.subscription.ai'} />
@@ -123,7 +122,9 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
           </View>
           <View style={{ paddingHorizontal: 10, marginTop: 10, marginBottom: 50 }}>
             {isActiveSubscription || isCancelledSubscription ? (
-              <BpButton onPress={() => openCancelSubscriptionRenewModal()}>Annuler le renouvellement de mon abonnement</BpButton>
+              <BpButton disabled={isCancelledSubscription} onPress={() => openCancelSubscriptionRenewModal()}>
+                Annuler le renouvellement de mon abonnement
+              </BpButton>
             ) : (
               <BpButton onPress={() => openSubscriptionModal()}>S'abonner</BpButton>
             )}

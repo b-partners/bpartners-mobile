@@ -20,10 +20,13 @@ export const CancelSubscriptionModal = () => {
 
   const { isPending, mutate: cancelRenew } = useMutation({
     mutationKey: ['subscription', 'layout', 'account', 'cancel'],
-    mutationFn: userSubscriptionProvider.cancelRenew,
+    mutationFn: () => userSubscriptionProvider.cancelRenew(),
+    onError: () => {
+      notify('Une erreur est survenue. Veuillez réessayer.', 'error');
+    },
     onSuccess: () => {
       closeSheetModal();
-      notify(`Votre renouvellement automatique a été annulé avec succès ; vous conserverez l'accès jusqu'au ${formatedEndDate}`, 'success');
+      notify('Votre renouvellement automatique a été annulé avec succès', 'success');
     },
   });
 
