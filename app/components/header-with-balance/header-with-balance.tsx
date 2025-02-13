@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { spacing } from '../../theme';
 import { printCurrencyToMajors } from '../../utils/money';
 import { AutoImage } from '../auto-image/auto-image';
-import { FreeTrialBanner } from '../subscription-banner';
+import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
 import { HEADER_STYLE } from './style';
 

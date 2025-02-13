@@ -9,7 +9,7 @@ import { AutoImage } from '../auto-image/auto-image';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
-import { FreeTrialBanner } from '../subscription-banner';
+import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
 import { HeaderProps } from './header.props';
 

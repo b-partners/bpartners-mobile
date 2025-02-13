@@ -10,7 +10,7 @@ import React from 'react';
 import * as Keychain from 'react-native-keychain';
 
 import { Text } from '../components';
-import { useAxiosConfigurer } from '../hook';
+import { useAxiosConfigurer, userUserSubscriptionCheck } from '../hook';
 import { useStores } from '../models';
 import { palette } from '../theme/palette';
 import { AppStack } from './components';
@@ -44,6 +44,7 @@ const navigationContainerConfigLinking = {
 export function AppNavigator(props: Readonly<NavigationProps>) {
   const { authStore } = useStores();
   useBackButtonHandler(canExit);
+  userUserSubscriptionCheck();
   useAxiosConfigurer({
     onAuthError: async () => {
       await Auth.signOut();

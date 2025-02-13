@@ -4,9 +4,9 @@ import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
 import { useStores } from '../../models';
-import { SubscriptionModal } from '../../screens/profile/components';
 import { BpButton } from '../bp-button';
 import { Text } from '../text/text';
+import { SubscriptionModal } from './subscription-modal';
 
 export const FreeTrialBanner = () => {
   const {

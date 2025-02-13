@@ -2,11 +2,11 @@ import { useMutation } from '@tanstack/react-query';
 import { FC } from 'react';
 import { Linking, View } from 'react-native';
 
-import { Text } from '../../../components';
-import { BpButton } from '../../../components/bp-button';
-import { useSheetModal } from '../../../hook';
-import { userSubscriptionProvider } from '../../../provider';
-import { palette } from '../../../theme/palette';
+import { useSheetModal } from '../../hook';
+import { userSubscriptionProvider } from '../../provider';
+import { palette } from '../../theme/palette';
+import { BpButton } from '../bp-button';
+import { Text } from '../text/text';
 
 const mutationFn = async () => {
   const { redirectionUrl } = await userSubscriptionProvider.init();

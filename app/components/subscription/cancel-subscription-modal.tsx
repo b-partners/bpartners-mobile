@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import { View } from 'react-native';
 
-import { Text } from '../../../components';
-import { BpButton } from '../../../components/bp-button';
-import { useSheetModal } from '../../../hook';
-import { useStores } from '../../../models';
-import { userSubscriptionProvider } from '../../../provider';
-import { palette } from '../../../theme/palette';
-import { formatDate } from '../../../utils/format-date';
-import { notify } from '../../../utils/snackbar';
+import { useSheetModal } from '../../hook';
+import { useStores } from '../../models';
+import { userSubscriptionProvider } from '../../provider';
+import { palette } from '../../theme/palette';
+import { formatDate } from '../../utils/format-date';
+import { notify } from '../../utils/snackbar';
+import { BpButton } from '../bp-button';
+import { Text } from '../text/text';
 
 export const CancelSubscriptionModal = () => {
   const { close: closeSheetModal } = useSheetModal();
