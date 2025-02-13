@@ -1,4 +1,5 @@
 import { differenceInDays } from 'date-fns';
+import React from 'react';
 import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Linking, View } from 'react-native';
 
 import { useSheetModal } from '../../hook';

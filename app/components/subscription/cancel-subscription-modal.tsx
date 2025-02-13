@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import React from 'react';
 import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
@@ -38,8 +39,8 @@ export const CancelSubscriptionModal = () => {
       <Text style={{ color: 'black' }}>En confirmant l'annulation du renouvellement automatique de votre abonnement, voici ce qui se passera:</Text>
       <View style={{ marginTop: 10, display: 'flex', gap: 10, flexDirection: 'column', paddingStart: 15 }}>
         <Text style={{ color: 'black', textAlign: 'justify' }}>
-          • Vous conserverez l'accès à toutes les fonctionnalités de votre abonnement jusqu'au{' '}
-          <Text style={{ color: 'black', fontWeight: 'bold' }}>{formatedEndDate}</Text>
+          • Vous conserverez l'accès à toutes les fonctionnalités de votre abonnement jusqu'
+          <Text style={{ color: 'black', fontWeight: 'bold' }}>{endDate ? `au ${formatedEndDate}` : 'à la fin de la période en cours'}</Text>
         </Text>
         <Text style={{ color: 'black', textAlign: 'justify' }}>
           • À la fin de cette période, votre abonnement ne sera pas renouvelé automatiquement et aucun paiement supplémentaire ne sera débité.

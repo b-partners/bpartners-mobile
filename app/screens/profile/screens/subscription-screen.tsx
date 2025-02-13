@@ -77,7 +77,7 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
               </View>
             </View>
           </View>
-          {!isEmptySubscription && (
+          {userSubscription.start && userSubscription.end && (
             <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
               <View style={{ marginBottom: 10 }}>
                 <Text
@@ -122,9 +122,7 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
           </View>
           <View style={{ paddingHorizontal: 10, marginTop: 10, marginBottom: 50 }}>
             {isActiveSubscription || isCancelledSubscription ? (
-              <BpButton disabled={isCancelledSubscription} onPress={() => openCancelSubscriptionRenewModal()}>
-                Annuler le renouvellement de mon abonnement
-              </BpButton>
+              <BpButton onPress={() => openCancelSubscriptionRenewModal()}>Annuler le renouvellement de mon abonnement</BpButton>
             ) : (
               <BpButton onPress={() => openSubscriptionModal()}>S'abonner</BpButton>
             )}
