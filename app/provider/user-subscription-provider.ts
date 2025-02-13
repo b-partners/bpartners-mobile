@@ -1,6 +1,6 @@
+import env from '../config/env';
 import { storage } from '../utils/storage';
 import { userSubscriptionApi } from './api';
-import env from '../config/env';
 
 const getStripeRedirectionUrl = async () => {
   const userId = await storage.loadUserId();
@@ -12,7 +12,7 @@ const getStripeRedirectionUrl = async () => {
 
 export const userSubscriptionProvider = {
   async init() {
-    const userId = await storage.loadUserId()
+    const userId = await storage.loadUserId();
     const userSubscriptionApiValue = await userSubscriptionApi();
     const { data } = await userSubscriptionApiValue.initiateUserSubscription(userId, {
       redirectionStatusUrls: await getStripeRedirectionUrl(),
@@ -21,7 +21,7 @@ export const userSubscriptionProvider = {
     return data;
   },
   async cancelRenew() {
-    const userId = await storage.loadUserId()
+    const userId = await storage.loadUserId();
     const { cancelUserSubscription } = await userSubscriptionApi();
     const { data } = await cancelUserSubscription(userId);
     return data;

@@ -264,26 +264,26 @@
       "status": {
         "EMPTY": {
           "title": "Aucun abonnement actif",
-          "description": "Vous n'avez actuellement souscrit à aucun abonnement.",
+          "description": "Vous n'avez actuellement souscrit à aucun abonnement."
         },
         "CANCELLED": {
           "title": "Renouvellement abonnment annulé",
           "description": "Vous avez annulé le renouvellement automatique de votre abonnement.",
           "start": "Début de la période d'abonnement en cours",
-          "end": "Fin de la période d'abonnement en cours",
+          "end": "Fin de la période d'abonnement en cours"
         },
         "ACTIVE": {
           "title": "L'essentiel",
           "description": "Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant.",
           "start": "Début de la période d'abonnement en cours",
-          "end": "Fin de la période d'abonnement en cours",
+          "end": "Fin de la période d'abonnement en cours"
         },
         "FREE_TRIAL": {
           "title": "Période d'essai",
           "description": "Vous bénéficiez actuellement d'une période d'essai gratuite.",
           "start": "Début de la période d'essai",
-          "end": "Fin de la période d'essai",
-        },
+          "end": "Fin de la période d'essai"
+        }
       }
     },
     "fields": {

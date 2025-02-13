@@ -9,6 +9,7 @@ import { AutoImage } from '../auto-image/auto-image';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
+import { FreeTrialBanner } from '../subscription-banner';
 import { Text } from '../text/text';
 import { HeaderProps } from './header.props';
 
@@ -45,6 +46,7 @@ export function Header(props: Readonly<HeaderProps>) {
       {!isKeyboardOpen && (
         <View style={{ backgroundColor: color.palette.white }}>
           <AutoImage source={require('./header.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
+          <FreeTrialBanner />
           <View style={[{ ...ROOT, height: +ROOT.height + top }, style]}>
             {leftIcon ? (
               <TouchableOpacity onPress={onLeftPress} testID='header-left-button'>

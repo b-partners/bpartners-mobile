@@ -1,25 +1,27 @@
+import { UserSubscriptionStatus } from '@bpartners/typescript-client';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 import { View } from 'react-native';
-import { UserSubscriptionStatus } from '@bpartners/typescript-client';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Screen, Separator, Text } from '../../../components';
+import { BpButton } from '../../../components/bp-button';
+import { useSheetModal } from '../../../hook';
+import { TxKeyPath, translate } from '../../../i18n';
+import { useStores } from '../../../models';
 import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
-import { ErrorBoundary } from '../../error/error-boundary';
-import { SubscriptionCard, SubscriptionModal, CancelSubscriptionModal } from '../components';
-import { useStores } from '../../../models';
-import { translate, TxKeyPath } from '../../../i18n';
-import { BpButton } from '../../../components/bp-button';
 import { formatDate } from '../../../utils/format-date';
-import { useSheetModal } from '../../../hook';
+import { ErrorBoundary } from '../../error/error-boundary';
+import { CancelSubscriptionModal, SubscriptionCard, SubscriptionModal } from '../components';
 
-export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function SubscriptionScreen({ }) {
+export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function SubscriptionScreen({}) {
   const { open } = useSheetModal();
-  const { authStore: { currentUser } } = useStores();
+  const {
+    authStore: { currentUser },
+  } = useStores();
   const { subscription: userSubscription } = currentUser;
   const userSubscriptionStatus = userSubscription.status ?? UserSubscriptionStatus.EMPTY;
   const isActiveSubscription = userSubscriptionStatus === UserSubscriptionStatus.ACTIVE;
@@ -28,11 +30,11 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
 
   const openCancelSubscriptionRenewModal = () => {
     open(<CancelSubscriptionModal />);
-  }
+  };
 
   const openSubscriptionModal = () => {
     open(<SubscriptionModal allowClose />);
-  }
+  };
 
   return (
     <ErrorBoundary catchErrors='always'>
@@ -82,20 +84,14 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
                   style={{ fontSize: 14, color: palette.black }}
                   text={translate(`profileScreen.subscription.status.${userSubscriptionStatus}.start` as TxKeyPath)}
                 />
-                <Text
-                  style={{ fontSize: 14, color: palette.greyDarker }}
-                  text={formatDate(userSubscription.start)}
-                />
+                <Text style={{ fontSize: 14, color: palette.greyDarker }} text={formatDate(userSubscription.start)} />
               </View>
               <View>
                 <Text
                   style={{ fontSize: 14, color: palette.black }}
                   text={translate(`profileScreen.subscription.status.${userSubscriptionStatus}.end` as TxKeyPath)}
                 />
-                <Text
-                  style={{ fontSize: 14, color: palette.greyDarker }}
-                  text={formatDate(userSubscription.end)}
-                />
+                <Text style={{ fontSize: 14, color: palette.greyDarker }} text={formatDate(userSubscription.end)} />
               </View>
             </View>
           )}
@@ -125,14 +121,10 @@ export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profi
             <SubscriptionCard iconName={'clock-time-five-outline'} iconColor={palette.green} text={'profileScreen.subscription.support'} />
           </View>
           <View style={{ paddingHorizontal: 10, marginTop: 10, marginBottom: 50 }}>
-            {(isActiveSubscription || isCancelledSubscription) ? (
-              <BpButton onPress={() => openCancelSubscriptionRenewModal()}>
-                Annuler le renouvellement de mon abonnement
-              </BpButton>
+            {isActiveSubscription || isCancelledSubscription ? (
+              <BpButton onPress={() => openCancelSubscriptionRenewModal()}>Annuler le renouvellement de mon abonnement</BpButton>
             ) : (
-              <BpButton onPress={() => openSubscriptionModal()}>
-                S'abonner
-              </BpButton>
+              <BpButton onPress={() => openSubscriptionModal()}>S'abonner</BpButton>
             )}
           </View>
         </Screen>

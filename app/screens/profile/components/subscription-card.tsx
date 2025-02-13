@@ -24,7 +24,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = props => {
         <Text
           style={{
             fontSize: 14,
-            textAlign: "justify",
+            textAlign: 'justify',
             fontFamily: 'Geometria',
             color: palette.greyDarker,
             width: '100%',

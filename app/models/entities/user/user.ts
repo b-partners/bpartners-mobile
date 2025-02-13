@@ -17,15 +17,15 @@ export const UserModel = types.model('User').props({
   status: types.maybeNull(types.string),
   activeAccount: types.maybeNull(AccountModel),
   snsArn: types.maybeNull(types.string),
-  subscription: types.maybeNull(SubscriptionModel)
+  subscription: types.maybeNull(SubscriptionModel),
 });
 
-export interface User extends Instance<typeof UserModel> { }
-export interface CreateUser extends Instance<typeof CreateUserModel> { }
+export interface User extends Instance<typeof UserModel> {}
+export interface CreateUser extends Instance<typeof CreateUserModel> {}
 
-export interface UserSnapshotOut extends SnapshotOut<typeof UserModel> { }
+export interface UserSnapshotOut extends SnapshotOut<typeof UserModel> {}
 
-export interface UserSnapshotIn extends SnapshotIn<typeof UserModel> { }
+export interface UserSnapshotIn extends SnapshotIn<typeof UserModel> {}
 
 export const CreateUserModel = types.model('CreateUser').props({
   firstName: types.maybeNull(types.string),

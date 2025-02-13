@@ -24,10 +24,10 @@ import { AppNavigator } from './navigators/app-navigator';
 import { useNavigationPersistence } from './navigators/navigation-utilities';
 import { ErrorBoundary } from './screens';
 import { RNPaperTheme } from './theme';
+import { palette } from './theme/palette';
 import './utils/ignore-warnings';
 // expo
 import * as storage from './utils/storage';
-import { palette } from './theme/palette';
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -72,13 +72,7 @@ function App() {
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
   if (!rootStore || !isNavigationStateRestored) {
-    return (
-      <Loader
-        size={50}
-        color={palette.lighterPurple}
-        containerStyle={{ paddingHorizontal: 5 }}
-      />
-    )
+    return <Loader size={50} color={palette.lighterPurple} containerStyle={{ paddingHorizontal: 5 }} />;
   }
 
   // otherwise, we're ready to render the app
