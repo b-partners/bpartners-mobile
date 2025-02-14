@@ -12,7 +12,7 @@ import { color, spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { showMessage } from '../../../utils/snackbar';
 import { ErrorBoundary } from '../../error/error-boundary';
-import { Logo } from '../../home/components/logo';
+import { Logo } from '../../transaction-summary/components/logo';
 import { getCurrentAccount, getCurrentAccountInfo } from '../utils/get-current-account';
 import AccountConfig from './account-config';
 import { BankEditionModal } from './bank-edition-modal';

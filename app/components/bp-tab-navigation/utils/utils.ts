@@ -1,11 +1,11 @@
-export const BOTTOM_TAB_ROUTES: string[] = ['account', 'activity', 'payment', 'facturation', 'service'];
+export const BOTTOM_TAB_ROUTES: string[] = ['account', 'activity', 'home', 'payment', 'facturation'];
 
 export type IconProps = {
   account: string;
   activity: string;
   payment: string;
   facturation: string;
-  service: string;
+  home: string;
 };
 
 export type IconRouteProps = {
@@ -14,6 +14,7 @@ export type IconRouteProps = {
   payment: () => void;
   facturation: () => void;
   service: () => void;
+  home: () => void;
 };
 
 export const hasBusinessActivities = accountHolder =>

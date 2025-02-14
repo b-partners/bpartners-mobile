@@ -178,6 +178,7 @@ PODS:
     - React-RCTText (= 0.76.6)
     - React-RCTVibration (= 0.76.6)
   - React-callinvoker (0.76.6)
+  - React-Codegen (0.1.0)
   - React-Core (0.76.6):
     - glog
     - hermes-engine
@@ -1561,6 +1562,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-quick-base64 (2.1.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-restart (0.0.27):
     - React-Core
   - react-native-safe-area-context (4.14.0):
@@ -1970,6 +1992,8 @@ PODS:
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
+  - RNFileViewer (2.1.5):
+    - React-Core
   - RNFS (2.20.0):
     - React-Core
   - RNGestureHandler (2.21.2):
@@ -2155,6 +2179,14 @@ PODS:
     - ReactCommon/turbomodule/core
     - Sentry/HybridSDK (= 8.37.0)
     - Yoga
+  - RNShare (10.2.1):
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-RCTFabric
+    - ReactCommon/turbomodule/core
   - RNSnackbar (2.8.0):
     - React-Core
   - RNSVG (15.11.1):
@@ -2180,6 +2212,27 @@ PODS:
     - RNSVG/common (= 15.11.1)
     - Yoga
   - RNSVG/common (15.11.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - RNVectorIcons (10.2.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2260,6 +2313,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
+  - react-native-quick-base64 (from `../node_modules/react-native-quick-base64`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -2294,6 +2348,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
+  - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
@@ -2301,8 +2356,10 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
+  - RNShare (from `../node_modules/react-native-share`)
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2321,6 +2378,7 @@ SPEC REPOS:
     - GoogleUtilities
     - nanopb
     - PromisesObjC
+    - React-Codegen
     - Sentry
     - SocketRocket
     - SwiftyJSON
@@ -2423,6 +2481,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
+  react-native-quick-base64:
+    :path: "../node_modules/react-native-quick-base64"
   react-native-restart:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
@@ -2491,6 +2551,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBMessaging:
     :path: "../node_modules/@react-native-firebase/messaging"
+  RNFileViewer:
+    :path: "../node_modules/react-native-file-viewer"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
@@ -2505,10 +2567,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSentry:
     :path: "../node_modules/@sentry/react-native"
+  RNShare:
+    :path: "../node_modules/react-native-share"
   RNSnackbar:
     :path: "../node_modules/react-native-snackbar"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2540,6 +2606,7 @@ SPEC CHECKSUMS:
   RCTTypeSafety: 0f96bf6c99efc33eb43352212703854933f22930
   React: 1d3d5bada479030961d513fb11e42659b30e97ff
   React-callinvoker: 682c610b9e9d3b93bd8d0075eacb2e6aa304d3e0
+  React-Codegen: 4b8b4817cea7a54b83851d4c1f91f79aa73de30a
   React-Core: 10420b32e62acf6b3aa0a570e45566001175c777
   React-CoreModules: aad977a7dbff83aa707c4045e5db81446a511cca
   React-cxxreact: 1bee1b97e7d537f1a33d9eb68c9426c1fc1a4e3c
@@ -2575,6 +2642,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
   react-native-pager-view: c64a744211a46202619a77509f802765d1659dba
   react-native-pdf: 2e2591ebd39422163850403b1c0cd7d6b351e168
+  react-native-quick-base64: 6ddd4121d8dcb412ad32ca5fa67633dbea8d3761
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
   react-native-safe-area-context: 2500e4fe998caad50ad3bc51ec23ef951308569e
   react-native-slider: 124ce99f9cd2d04c79f020da6dee9f8d38a6b8c7
@@ -2609,6 +2677,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 597673c6086d359029afefef8fd5859f1f35ab87
   RNFBApp: 5f87753a8d8b37d229adf85cd0ff37709ffdf008
   RNFBMessaging: 3fa1114c0868dd21f20dfe186adf42297ea316b1
+  RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 0e5ae8d72ef4afb855e98dcdbe60f27d938abe13
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
@@ -2616,8 +2685,10 @@ SPEC CHECKSUMS:
   RNReanimated: 9ee6347ca0aa3cf78cae715455e781728ae142e2
   RNScreens: 27587018b2e6082f5172b1ecf158c14a0e8842d6
   RNSentry: 7a6805aabd54413e582cc7b86f5b60840799f775
+  RNShare: 0463c31e8c1883bb80afed64066cff3dc7ed4e1a
   RNSnackbar: 37ce6daf19c8bd35cf6133db5797aa298c8782ac
   RNSVG: ea3e35f0375ac20449384fa89ce056ee0e0690ee
+  RNVectorIcons: 07792a9538e8577c1263fcad187712e90d65d8fb
   Sentry: ee060c09b2f7ec1240e95c766ab44c04c7bdb052
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7

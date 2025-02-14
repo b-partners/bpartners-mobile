@@ -35,7 +35,7 @@ export const ProspectFormScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'pr
 
   const onCrupdateProspectSuccess = (data: Prospect) => {
     const shouldGenerateImage = !prospect && isRoofer;
-    notify(`Prospect ${!prospect ? 'créé' : 'modifié'} avec success.${shouldGenerateImage && " Génération de l'image en cours..."}`, 'info');
+    notify(`Prospect ${!prospect ? 'créé' : 'modifié'} avec success.${shouldGenerateImage ? " Génération de l'image en cours..." : ''}`, 'info');
     if (shouldGenerateImage) {
       createAreaPicture({ ...data });
     } else {

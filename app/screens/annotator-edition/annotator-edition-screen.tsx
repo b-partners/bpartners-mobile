@@ -79,11 +79,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
     setMeasurements([]);
   };
 
-  const handleSetMeasurements = (currentMeasurements: Measurement[]) => {
-    if ((annotations.length > 0 && currentMeasurements.length > 0) || annotations.length === 0) {
-      setMeasurements(currentMeasurements);
-    }
-  };
+  const imageUrl = `${pictureUrl}&isExtended${areaPictureDetails.isExtended}&shiftNumber=${areaPictureDetails.shiftNb}`;
 
   const handleOpenNextMenu = () => {
     openSheetModal(
@@ -96,6 +92,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         navigate={navigation.navigate}
         isAreaPictureLoading={isLoading}
         areaPictureDetails={areaPictureDetails}
+        imageUrl={imageUrl}
       />,
       { containerStyle: { height: height * 0.5 } }
     );
@@ -112,16 +109,16 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   return (
     <Provider>
       <ErrorBoundary catchErrors='always'>
-        <Header headerTx='annotationScreen.title' leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
+        <Header headerText={areaPictureDetails?.address} leftIcon='back' onLeftPress={() => navigation.goBack()} style={HEADER} titleStyle={HEADER_TITLE} />
         {Object.keys(areaPictureDetailsParams).length > 0 && (
           <AnnotationContainer
             areaPictureDetails={areaPictureDetails}
             measurements={measurements}
-            setMeasurements={handleSetMeasurements}
+            setMeasurements={setMeasurements}
             filename={areaPictureDetails.filename}
             zoom={areaPictureDetails.zoom}
             isLoading={isLoading}
-            pictureUrl={`${pictureUrl}&isExtended${areaPictureDetails.isExtended}&shiftNumber=${areaPictureDetails.shiftNb}`}
+            pictureUrl={imageUrl}
             annotations={annotations}
             setAnnotations={setAnnotations}
           />

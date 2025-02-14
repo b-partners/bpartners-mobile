@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
@@ -39,9 +39,9 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
   const BOTTOM_NAVBAR_ICONS: IconProps = {
     account: require('./icons/wallet.png'),
     activity: require('./icons/activity.png'),
-    payment: require('./icons/paiment.png'),
-    facturation: require('./icons/facturation.png'),
-    service: require('./icons/help-free-bg.png'),
+    payment: require('./icons/paiment.bg.png'),
+    facturation: require('./icons/facturation.bg.png'),
+    home: require('./icons/home.png'),
   };
 
   const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
@@ -50,6 +50,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     payment: () => handleNavigation('paymentInitiation'),
     facturation: () => handleNavigation('paymentList'),
     service: () => handleNavigation('supportContact'),
+    home: () => handleNavigation('home'),
   };
 
   const RouteName: IconProps = {
@@ -57,7 +58,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     activity: 'prospect',
     payment: 'paymentInitiation',
     facturation: 'paymentList',
-    service: 'supportContact',
+    home: 'home',
   };
 
   const ROUTE: IconProps = {
@@ -65,7 +66,18 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     activity: translate('prospectScreen.title'),
     payment: translate('bottomTab.payment'),
     facturation: translate('bottomTab.facturation'),
-    service: translate('bottomTab.service'),
+    home: translate('bottomTab.home'),
+  };
+
+  const STYLE: Record<keyof IconProps, ViewStyle> = {
+    home: {
+      opacity: 0.8,
+      transform: [{ scale: 0.9 }],
+    },
+    account: {},
+    activity: {},
+    facturation: {},
+    payment: {},
   };
 
   return (
@@ -74,13 +86,13 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
         <AutoImage source={require('./icons/tab-navigation.png')} style={styles.background} resizeMethod='auto' resizeMode='stretch' />
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
           return (
-            <View key={`bottom-navigation-item-${i}`} style={styles.tabContainer}>
+            <View key={`bottom-navigation-item-${i}-${bottomTavNavItem}`} style={styles.tabContainer}>
               <BottomTab
                 onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
                 testID={`${RouteName[bottomTavNavItem]}Tab`}
                 source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
                 tabStyle={styles.tab}
-                imageStyle={{ width: 65, height: 55 }}
+                imageStyle={{ width: 65, height: 55, ...STYLE[bottomTavNavItem] }}
                 text={ROUTE[bottomTavNavItem]}
                 bottomNavItem={bottomTavNavItem}
               />
