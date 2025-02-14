@@ -15,7 +15,7 @@ import { UseFetchOptions } from './type';
  *
  * It encapsulate repetitive pattern when fetching data such as a state variable holding error, loading state, ...
  * */
-function useFetch<T, P>(fetchAction: (params?: P) => Promise<T | any>, options: UseFetchOptions, deps = []) {
+export function useFetch<T, P>(fetchAction: (params?: P) => Promise<T | any>, options: UseFetchOptions, deps = []) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean>();
   const { store, mutateOnly = false, txErrorMessage } = options;
@@ -53,5 +53,3 @@ function useFetch<T, P>(fetchAction: (params?: P) => Promise<T | any>, options: 
 
   return { data, isLoading, error, fetch };
 }
-
-export default useFetch;

@@ -26,7 +26,7 @@ export const AppTabStack = observer(function () {
         tabBarStyle: { backgroundColor: 'white' },
         headerShown: false,
       }}
-      initialRouteName={'bp_home'}
+      initialRouteName='home'
       tabBar={props => <BpTabNavigation {...props} />}
     >
       <Tab.Screen name='bp_home' component={TransactionScreen} options={{ title: translate('homeScreen.title') }} />

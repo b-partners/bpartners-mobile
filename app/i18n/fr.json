@@ -257,10 +257,34 @@
       "subscription": "Mon abonnement"
     },
     "subscription": {
-      "ai": "Activation de notre Intelligence artificielle qui génère des prospects en temps réel pour développer votre activité et obtenir de nouveaux clients.",
+      "ai": "Activation de notre intelligence artificielle qui analyse les toitures de vos prospects et organise le suivi des toitures de vos clients existants. 20 toitures incluses puis 2€ par toiture supplémentaire.",
       "tools": "Accès aux outils de devis/facturation personnalisé, gestion des acomptes, relance impayés CRM, gestion des produits, synchronisation bancaire et suivi de trésorerie.",
       "code": "Initiez la collecte de vos encaissements instantanément par QR code, Mails ou SMS en 1 clic. Lien de paiement intégré à la facture pour seulement 0,99%",
-      "support": "Support 7/7"
+      "support": "Support 7/7",
+      "status": {
+        "EMPTY": {
+          "title": "Aucun abonnement actif",
+          "description": "Vous n'avez actuellement souscrit à aucun abonnement."
+        },
+        "CANCELLED": {
+          "title": "Renouvellement abonnment annulé",
+          "description": "Vous avez annulé le renouvellement automatique de votre abonnement.",
+          "start": "Début de la période d'abonnement en cours",
+          "end": "Fin de la période d'abonnement en cours"
+        },
+        "ACTIVE": {
+          "title": "L'essentiel",
+          "description": "Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant.",
+          "start": "Début de la période d'abonnement en cours",
+          "end": "Fin de la période d'abonnement en cours"
+        },
+        "FREE_TRIAL": {
+          "title": "Période d'essai",
+          "description": "Vous bénéficiez actuellement d'une période d'essai gratuite.",
+          "start": "Début de la période d'essai",
+          "end": "Fin de la période d'essai"
+        }
+      }
     },
     "fields": {
       "logo": "Logo",

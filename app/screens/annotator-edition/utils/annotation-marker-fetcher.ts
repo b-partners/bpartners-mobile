@@ -10,9 +10,10 @@ import { ConverterPayloadGeoJSON } from './types';
 
 const defaultImageShiftSize = 256;
 
-const setMarkerOffset = async (areaPictureDetails: AreaPictureDetails, currentImageRealSize: number, currentImageSize: number) => {
+const setMarkerOffset = async (areaPictureDetails: AreaPictureDetails, _currentImageRealSize: number, currentImageSize: number) => {
   const markerPosition = await storage.loadInitialMarker();
   const imageRealSize = await storage.loadInitialImageRealSize();
+  const currentImageRealSize = imageRealSize * 3;
   const scale = currentImageSize / currentImageRealSize;
   const { x, y } = markerPosition || {};
 

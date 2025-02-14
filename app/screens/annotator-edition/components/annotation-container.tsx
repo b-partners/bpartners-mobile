@@ -148,7 +148,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
                 ))}
                 <AnnotationNameRenderer annotations={scaledAnnotations} scale={scale} />
                 <AnnotationMeasurementsRenderer measurements={measurements} scale={scale} />
-                {!isLoading && annotations.length === 0 && Object.keys(marker).length > 0 && <AnnotationMarkerRenderer marker={marker} scale={scale} />}
+                {!isLoading && annotations.length === 0 && Object.keys(marker).length > 0 && <AnnotationMarkerRenderer marker={marker as any} scale={scale} />}
               </Animated.View>
             </TouchableWithoutFeedback>
           </ScrollView>

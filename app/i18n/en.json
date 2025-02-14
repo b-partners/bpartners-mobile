@@ -277,7 +277,31 @@
       "ai": "Activate our Artificial Intelligence, which generates leads in real time to develop your business and win new customers.",
       "tools": "Access to customized quotation/billing tools, down-payment management, CRM reminders, product management, bank synchronization and cash-flow monitoring.",
       "code": "Start collecting cash instantly by QR code, e-mail or SMS in just 1 click. Invoice-integrated payment link for only 0.99%",
-      "support": "Support 7/7"
+      "support": "Support 7/7",
+      "status": {
+        "EMPTY": {
+          "title": "No active subscription",
+          "description": "You have not subscribed to any plan yet."
+        },
+        "CANCELLED": {
+          "title": "Subscription renewal canceled",
+          "description": "You have canceled the automatic renewal of your subscription.",
+          "start": "Start of the current subscription period",
+          "end": "End of the current subscription period"
+        },
+        "ACTIVE": {
+          "title": "Essential",
+          "description": "All essential services to manage your business as a craftsman or freelancer.",
+          "start": "Start of the current subscription period",
+          "end": "End of the current subscription period"
+        },
+        "FREE_TRIAL": {
+          "title": "Trial period",
+          "description": "You are currently benefiting from a free trial period.",
+          "start": "Start of the trial period",
+          "end": "End of the trial period"
+        }
+      }
     },
     "fields": {
       "logo": "Logo",

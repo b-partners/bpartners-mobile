@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 
 import { AccountModel } from '../account/account';
+import { SubscriptionModel } from '../subscription';
 
 export const UserModel = types.model('User').props({
   id: types.maybeNull(types.string),
@@ -16,6 +17,7 @@ export const UserModel = types.model('User').props({
   status: types.maybeNull(types.string),
   activeAccount: types.maybeNull(AccountModel),
   snsArn: types.maybeNull(types.string),
+  subscription: types.maybeNull(SubscriptionModel),
 });
 
 export interface User extends Instance<typeof UserModel> {}

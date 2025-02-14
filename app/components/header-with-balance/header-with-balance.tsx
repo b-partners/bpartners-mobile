@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { spacing } from '../../theme';
 import { printCurrencyToMajors } from '../../utils/money';
 import { AutoImage } from '../auto-image/auto-image';
+import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
 import { HEADER_STYLE } from './style';
 
@@ -30,6 +31,7 @@ export function HeaderWithBalance(props: { balance: number; left?: React.ReactNo
         resizeMethod='auto'
         resizeMode='stretch'
       />
+      <FreeTrialBanner />
       <View style={{ ...HEADER_STYLE, height: +HEADER_STYLE.height + top }}>
         <View
           style={{
