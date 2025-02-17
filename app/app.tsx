@@ -21,13 +21,12 @@ import env from './config/env';
 import './i18n';
 import { RootStore, RootStoreProvider, setupRootStore } from './models';
 import { AppNavigator } from './navigators/app-navigator';
-import { useNavigationPersistence } from './navigators/navigation-utilities';
 import { ErrorBoundary } from './screens';
 import { RNPaperTheme } from './theme';
 import { palette } from './theme/palette';
 import './utils/ignore-warnings';
+
 // expo
-import * as storage from './utils/storage';
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -52,11 +51,6 @@ const queryClient = new QueryClient();
  */
 function App() {
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined);
-  const {
-    initialNavigationState,
-    onNavigationStateChange,
-    isRestored: isNavigationStateRestored,
-  } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY);
 
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
@@ -71,7 +65,7 @@ function App() {
   // In iOS: application:didFinishLaunchingWithOptions:
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
-  if (!rootStore || !isNavigationStateRestored) {
+  if (!rootStore) {
     return <Loader size={50} color={palette.lighterPurple} containerStyle={{ paddingHorizontal: 5 }} />;
   }
 
@@ -82,7 +76,7 @@ function App() {
         <ErrorBoundary catchErrors='always'>
           <QueryClientProvider client={queryClient}>
             <PaperProvider theme={RNPaperTheme}>
-              <AppNavigator initialState={initialNavigationState} onStateChange={onNavigationStateChange} />
+              <AppNavigator />
               <SheetModal />
             </PaperProvider>
           </QueryClientProvider>
