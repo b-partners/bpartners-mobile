@@ -6,3 +6,4 @@ export * from './product-provider';
 export * from './prospect-provider';
 export * from './utils';
 export * from './user-subscription-provider';
+export * from './auth-provider';

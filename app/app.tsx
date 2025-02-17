@@ -66,7 +66,7 @@ function App() {
   // In Android: https://stackoverflow.com/a/45838109/204044
   // You can replace with your own loading component if you wish.
   if (!rootStore) {
-    return <Loader size={50} color={palette.lighterPurple} containerStyle={{ paddingHorizontal: 5 }} />;
+    return <Loader size={50} color={palette.lighterPurple} containerStyle={{ backgroundColor: palette.white, paddingHorizontal: 5 }} />;
   }
 
   // otherwise, we're ready to render the app
