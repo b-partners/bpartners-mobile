@@ -1,48 +1,48 @@
 appId: com.bpartnersmobile
 ---
 - runFlow:
-      file: login.yml
+    file: login.yml
 - extendedWaitUntil:
-      visible:
-          id: "homeScreen"
-      timeout: 150000
+    visible:
+      id: 'homeScreen'
+    timeout: 150000
 - assertVisible:
-      text: "Pour démarrer, ajoutez une adresse et commencez à analyser les toitures de vos clients et prospects"
+    text: 'Pour démarrer, ajoutez une adresse et commencez à analyser les toitures de vos clients et prospects'
 - assertVisible:
-      text: "ANALYSE DE TOITURE"
+    text: 'ANALYSE DE TOITURE'
 - assertVisible:
-      text: "SURFACE TOTALE"
+    text: 'SURFACE TOTALE'
 - assertVisible:
-      text: "TYPE"
+    text: 'TYPE'
 - assertVisible:
-      text: "Analyser la toiture d'un prospect/client"
+    text: "Analyser la toiture d'un prospect/client"
 - tapOn:
-      id: "header-right-button"
-      waitToSettleTimeoutMs: 100000
+    id: 'header-right-button'
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
-      id: "drawer"
+    id: 'drawer'
 - assertVisible:
-      id: "drawerLogo"
+    id: 'drawerLogo'
 - assertVisible:
-      id: "craftsmanFirstName"
+    id: 'craftsmanFirstName'
 - assertVisible:
-      id: "craftsmanLastName"
+    id: 'craftsmanLastName'
 - back
 - tapOn:
-      text: "Analyser la toiture d'un prospect/client"
-      waitToSettleTimeoutMs: 100000
+    text: "Analyser la toiture d'un prospect/client"
+    waitToSettleTimeoutMs: 100000
 - assertVisible:
-      text: "Renseignez l'adresse de votre prospect ou votre client et analysez les images haute résolution de sa toiture."
+    text: "Renseignez l'adresse de votre prospect ou votre client et analysez les images haute résolution de sa toiture."
 - assertVisible:
-      id: "addressTextInput"
+    id: 'addressTextInput'
 - assertVisible:
-      id: "nameTextInput"
+    id: 'nameTextInput'
 - assertVisible:
-      id: "firstnameTextInput"
+    id: 'firstnameTextInput'
 - assertVisible:
-      id: "emailTextInput"
+    id: 'emailTextInput'
 - assertVisible:
-      id: "commentTextInput"
+    id: 'commentTextInput'
 - back
 - runFlow:
-      file: logout.yml
+    file: logout.yml
