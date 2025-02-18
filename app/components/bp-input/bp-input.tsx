@@ -28,7 +28,7 @@ export const BpInput: FC<BpInputProps> = ({ name, ...props }) => {
         name={name}
         defaultValue=''
         render={({ field: { ref: _ref, ...field } }) => (
-          <InputField {...field} {...props} error={!!error} errorMessage={errorMessage} backgroundColor={palette.white} />
+          <InputField {...field} {...props} name={name} error={!!error} errorMessage={errorMessage} backgroundColor={palette.white} />
         )}
       />
     </View>

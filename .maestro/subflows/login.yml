@@ -6,16 +6,16 @@ appId: com.bpartnersmobile
       id: 'welcomeScreen'
     timeout: 150000
 - assertVisible:
-    id: 'emailInput'
+    id: 'emailTextInput'
 - tapOn:
-    id: 'emailInput'
+    id: 'emailTextInput'
     waitToSettleTimeoutMs: 100000
 - eraseText: 50
 - inputText: ${USER_EMAIL}
 - assertVisible:
-    id: 'passwordInput'
+    id: 'passwordTextInput'
 - tapOn:
-    id: 'passwordInput'
+    id: 'passwordTextInput'
     waitToSettleTimeoutMs: 100000
 - eraseText: 50
 - inputText: ${USER_PASSWORD}

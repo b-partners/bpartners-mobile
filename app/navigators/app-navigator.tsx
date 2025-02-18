@@ -9,9 +9,10 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import * as Keychain from 'react-native-keychain';
 
-import { Text } from '../components';
+import { Loader, Text } from '../components';
 import { useAxiosConfigurer, userUserSubscriptionCheck } from '../hook';
 import { useStores } from '../models';
+import { useGetWhoami } from '../queries';
 import { palette } from '../theme/palette';
 import { AppStack } from './components';
 import { navigationRef, useBackButtonHandler } from './navigation-utilities';
@@ -43,17 +44,29 @@ const navigationContainerConfigLinking = {
 
 export function AppNavigator(props: Readonly<NavigationProps>) {
   const { authStore } = useStores();
+
+  const onAuthError = async () => {
+    await Auth.signOut();
+    await authStore.logout();
+    await Keychain.resetGenericPassword();
+  };
+
   useBackButtonHandler(canExit);
   userUserSubscriptionCheck();
   useAxiosConfigurer({
-    onAuthError: async () => {
-      await Auth.signOut();
-      await authStore.logout();
-      await Keychain.resetGenericPassword();
-    },
+    onAuthError,
   });
+  const { isLoading: isGetWhoamiLoading } = useGetWhoami(onAuthError);
 
-  return (
+  return isGetWhoamiLoading ? (
+    <Loader
+      text='Authentification...'
+      textStyle={{ color: palette.lighterPurple }}
+      size={50}
+      color={palette.lighterPurple}
+      containerStyle={{ paddingHorizontal: 5 }}
+    />
+  ) : (
     <NavigationContainer
       linking={navigationContainerConfigLinking}
       fallback={<Text text={'Loading...'} />}

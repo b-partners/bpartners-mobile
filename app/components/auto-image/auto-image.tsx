@@ -27,7 +27,7 @@ export function AutoImage(props: ImageProps) {
     let mounted = true;
 
     try {
-      if (props.source?.uri) {
+      if (props.source?.uri?.length > 0) {
         RNImage.getSize(props.source.uri as any, (width, height) => {
           if (mounted) setImageSize({ width, height });
         });
