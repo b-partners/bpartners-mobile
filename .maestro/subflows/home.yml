@@ -1,49 +1,48 @@
 appId: com.bpartnersmobile
 ---
 - runFlow:
-    file: login.yml
+      file: login.yml
 - extendedWaitUntil:
-    visible:
-      id: 'homeScreen'
-    timeout: 150000
+      visible:
+          id: "homeScreen"
+      timeout: 150000
 - assertVisible:
-    id: 'homeCurrentBalance'
+      text: "Pour démarrer, ajoutez une adresse et commencez à analyser les toitures de vos clients et prospects"
 - assertVisible:
-    id: 'transactionSummaryChart'
+      text: "ANALYSE DE TOITURE"
 - assertVisible:
-    id: 'homeMenuButton'
+      text: "SURFACE TOTALE"
+- assertVisible:
+      text: "TYPE"
+- assertVisible:
+      text: "Analyser la toiture d'un prospect/client"
 - tapOn:
-    id: 'homeMenuButton'
-    waitToSettleTimeoutMs: 100000
+      id: "header-right-button"
+      waitToSettleTimeoutMs: 100000
 - assertVisible:
-    id: 'drawer'
+      id: "drawer"
 - assertVisible:
-    id: 'drawerLogo'
+      id: "drawerLogo"
 - assertVisible:
-    id: 'craftsmanFirstName'
+      id: "craftsmanFirstName"
 - assertVisible:
-    id: 'craftsmanLastName'
+      id: "craftsmanLastName"
 - back
 - tapOn:
-    id: 'transactionSummarySettingsButton'
-    waitToSettleTimeoutMs: 100000
-- tapOn:
-    text: 'Vue mensuelle'
-    waitToSettleTimeoutMs: 100000
+      text: "Analyser la toiture d'un prospect/client"
+      waitToSettleTimeoutMs: 100000
 - assertVisible:
-    text: '(ce mois)'
+      text: "Renseignez l'adresse de votre prospect ou votre client et analysez les images haute résolution de sa toiture."
 - assertVisible:
-    id: 'craftsmanLogo'
-- scrollUntilVisible:
-    element:
-      id: 'viewAllTransactionsButton'
-    direction: DOWN
-    timeout: 100000
-    speed: 40
-- tapOn:
-    id: 'viewAllTransactionsButton'
+      id: "addressTextInput"
 - assertVisible:
-    id: 'transactionListScreen'
+      id: "nameTextInput"
+- assertVisible:
+      id: "firstnameTextInput"
+- assertVisible:
+      id: "emailTextInput"
+- assertVisible:
+      id: "commentTextInput"
 - back
 - runFlow:
-    file: logout.yml
+      file: logout.yml

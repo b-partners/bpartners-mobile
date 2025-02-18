@@ -23,6 +23,7 @@ interface InputFieldProps {
   keyboardType?: KeyboardTypeOptions;
   endIcon?: ReactElement;
   onPressEndIcon?: () => void;
+  name?: string;
 }
 
 export const InputField: FC<ComponentProps<typeof TextInput> & InputFieldProps> = props => {
@@ -40,13 +41,14 @@ export const InputField: FC<ComponentProps<typeof TextInput> & InputFieldProps> 
           {...others}
           keyboardType={keyboardType ?? 'default'}
           autoCapitalize='none'
-          label={<Text tx={labelTx} style={LABEL_STYLE} />}
+          label={<Text tx={labelTx} style={LABEL_STYLE as any} />}
           textColor={palette.secondaryColor}
           selectionColor={palette.secondaryColor}
           onChangeText={onChange}
           style={TEXT_INPUT_STYLE(error, width, backgroundColor)}
           theme={TEXT_INPUT_THEME}
           right={rightRender && <TextInput.Affix text={rightText} textStyle={RIGHT_TEXT} />}
+          testID={`${others.name}TextInput`}
         />
         {endIcon && (
           <View style={ICON_CONTAINER}>

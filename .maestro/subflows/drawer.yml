@@ -7,9 +7,9 @@ appId: com.bpartnersmobile
       id: 'homeScreen'
     timeout: 150000
 - assertVisible:
-    id: 'homeMenuButton'
+    id: 'header-right-button'
 - tapOn:
-    id: 'homeMenuButton'
+    id: 'header-right-button'
     waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'drawer'
@@ -27,9 +27,9 @@ appId: com.bpartnersmobile
 - assertVisible:
     id: 'homeScreen'
 - assertVisible:
-    id: 'homeMenuButton'
+    id: 'header-right-button'
 - tapOn:
-    id: 'homeMenuButton'
+    id: 'header-right-button'
     waitToSettleTimeoutMs: 100000
 - assertVisible:
     id: 'profileDrawerTab'

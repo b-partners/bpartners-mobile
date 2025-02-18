@@ -152,12 +152,12 @@ export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = 
   };
 
   return (
-    <View>
+    <View testID='homeScreen'>
       <Header headerText='Accueil' rightIcon='whiteMenu' onRightPress={openDrawer} />
       <ScrollView style={{ height: height * 0.7 }}>
         <View style={HomeScreenStyle.textHeaderContainer}>
           <Text
-            text='Pour démarrer ajoutez une adresse et commencez à analyser les toitures de vos clients et prospects'
+            text='Pour démarrer, ajoutez une adresse et commencez à analyser les toitures de vos clients et prospects'
             style={HomeScreenStyle.textHeaderBlack}
           />
         </View>

@@ -1,9 +1,9 @@
 appId: com.bpartnersmobile
 ---
 - assertVisible:
-    id: 'homeMenuButton'
+    id: 'header-right-button'
 - tapOn:
-    id: 'homeMenuButton'
+    id: 'header-right-button'
     waitToSettleTimeoutMs: 100000
 - scrollUntilVisible:
     element:
