@@ -37,7 +37,7 @@ export const TransactionScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <View testID='homeScreen' style={FULL}>
+      <View style={FULL}>
         <HeaderWithBalance
           balance={availableBalance}
           left={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} testID={'craftsmanLogo'} />}
