@@ -10,20 +10,18 @@ import { BpButton } from '../../../components/bp-button';
 import { CancelSubscriptionModal, SubscriptionModal } from '../../../components/subscription';
 import { useSheetModal } from '../../../hook';
 import { TxKeyPath, translate } from '../../../i18n';
-import { useStores } from '../../../models';
 import { NavigatorParamList } from '../../../navigators/utils/utils';
 import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 import { formatDate } from '../../../utils/format-date';
 import { ErrorBoundary } from '../../error/error-boundary';
 import { SubscriptionCard } from '../components';
+import { useZAuthStore } from '../../../stores';
 
-export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function SubscriptionScreen({}) {
+export const SubscriptionScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>> = observer(function SubscriptionScreen({ }) {
   const { open } = useSheetModal();
-  const {
-    authStore: { currentUser },
-  } = useStores();
-  const { subscription: userSubscription } = currentUser;
+  const whoami = useZAuthStore(state => state.whoami);
+  const { subscription: userSubscription } = whoami?.user;
   const userSubscriptionStatus = userSubscription?.status ?? UserSubscriptionStatus.EMPTY;
   const isActiveSubscription = userSubscriptionStatus === UserSubscriptionStatus.ACTIVE;
   const isCancelledSubscription = userSubscriptionStatus === UserSubscriptionStatus.CANCELLED;

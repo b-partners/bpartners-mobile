@@ -4,21 +4,19 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
-import { useStores } from '../../models';
 import { BpButton } from '../bp-button';
 import { Text } from '../text/text';
 import { SubscriptionModal } from './subscription-modal';
+import { useZAuthStore } from '../../stores';
 
 export const FreeTrialBanner = () => {
-  const {
-    authStore: { currentUser },
-  } = useStores();
+  const whoami = useZAuthStore(state => state.whoami);
   const { open } = useSheetModal();
   const handleDoSubscription = () => {
     open(<SubscriptionModal allowClose />);
   };
 
-  const userSubscription = currentUser?.subscription;
+  const userSubscription = whoami?.user?.subscription;
   const userSubscriptionStatus = userSubscription?.status;
   if (userSubscriptionStatus !== UserSubscriptionStatus.FREE_TRIAL) {
     return null;

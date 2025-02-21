@@ -3,20 +3,19 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
-import { useStores } from '../../models';
 import { userSubscriptionProvider } from '../../provider';
 import { palette } from '../../theme/palette';
 import { formatDate } from '../../utils/format-date';
 import { notify } from '../../utils/snackbar';
 import { BpButton } from '../bp-button';
 import { Text } from '../text/text';
+import { useZAuthStore } from '../../stores';
 
 export const CancelSubscriptionModal = () => {
   const { close: closeSheetModal } = useSheetModal();
-  const {
-    authStore: { currentUser },
-  } = useStores();
-  const endDate = currentUser?.subscription?.end;
+  const whoami = useZAuthStore(state => state.whoami);
+
+  const endDate = whoami?.user?.subscription?.end;
   const formatedEndDate = formatDate(endDate);
 
   const { isPending, mutate: cancelRenew } = useMutation({

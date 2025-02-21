@@ -3,21 +3,19 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
-import { useStores } from '../../models';
 import { palette } from '../../theme/palette';
 import { formatDate } from '../../utils/format-date';
 import { BpButton } from '../bp-button';
 import { Text } from '../text/text';
 import { SubscriptionModal } from './subscription-modal';
+import { useZAuthStore } from '../../stores';
 
 export const FreeTrialSubscriptionModal = () => {
   const { close: closeSheetModal, open: openSheetModal } = useSheetModal();
-  const {
-    authStore: { currentUser },
-  } = useStores();
+  const whoami = useZAuthStore(state => state.whoami);
 
-  const startDate = currentUser?.subscription?.start;
-  const endDate = currentUser?.subscription?.end;
+  const startDate = whoami?.user?.subscription?.start;
+  const endDate = whoami?.user?.subscription?.end;
   const remainingDays = differenceInDays(new Date(endDate), new Date());
 
   const handleDoSubscription = () => {
