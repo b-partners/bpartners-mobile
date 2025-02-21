@@ -1,7 +1,7 @@
 import { Auth } from '@aws-amplify/auth';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Amplify } from 'aws-amplify';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -81,6 +81,10 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
   const { fileUrl } = fileStore;
   const { currentUser } = authStore;
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    fileStore.getFileUrl(currentUser?.logoFileId);
+  }, [currentUser?.logoFileId])
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE} testID='drawer'>
