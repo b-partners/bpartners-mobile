@@ -16,6 +16,7 @@ import { translate } from '../../i18n';
 import { BgLayout } from '../../layouts';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
+import { useZAuthStore } from '../../stores';
 import { palette } from '../../theme/palette';
 import { useLoginForm } from '../../utils/resolvers';
 import { showMessage } from '../../utils/snackbar';
@@ -23,7 +24,6 @@ import { storage } from '../../utils/storage';
 import { UnderlineText } from './components/underline-text';
 import { styles } from './utils/styles';
 import { IdentityState, Log } from './utils/utils';
-import { useZAuthStore } from '../../stores';
 
 Amplify.configure(awsExports);
 
@@ -99,7 +99,7 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
   const { fetch, isLoading } = useFetch<void, Credentials>(signIn, { mutateOnly: true, txErrorMessage: 'errors.credentials' });
 
   const handleSubmit = form.handleSubmit(data => {
-    fetch(data as any)
+    fetch(data as any);
   });
 
   return (

@@ -84,7 +84,7 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
 
   useEffect(() => {
     fileStore.getFileUrl(currentUser?.logoFileId);
-  }, [currentUser?.logoFileId])
+  }, [currentUser?.logoFileId]);
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={DRAWER_SCROLLVIEW_STYLE} testID='drawer'>

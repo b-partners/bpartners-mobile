@@ -4,12 +4,12 @@ import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
 import { userSubscriptionProvider } from '../../provider';
+import { useZAuthStore } from '../../stores';
 import { palette } from '../../theme/palette';
 import { formatDate } from '../../utils/format-date';
 import { notify } from '../../utils/snackbar';
 import { BpButton } from '../bp-button';
 import { Text } from '../text/text';
-import { useZAuthStore } from '../../stores';
 
 export const CancelSubscriptionModal = () => {
   const { close: closeSheetModal } = useSheetModal();

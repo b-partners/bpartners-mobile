@@ -4,10 +4,10 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
+import { useZAuthStore } from '../../stores';
 import { BpButton } from '../bp-button';
 import { Text } from '../text/text';
 import { SubscriptionModal } from './subscription-modal';
-import { useZAuthStore } from '../../stores';
 
 export const FreeTrialBanner = () => {
   const whoami = useZAuthStore(state => state.whoami);

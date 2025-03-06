@@ -3,12 +3,12 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
+import { useZAuthStore } from '../../stores';
 import { palette } from '../../theme/palette';
 import { formatDate } from '../../utils/format-date';
 import { BpButton } from '../bp-button';
 import { Text } from '../text/text';
 import { SubscriptionModal } from './subscription-modal';
-import { useZAuthStore } from '../../stores';
 
 export const FreeTrialSubscriptionModal = () => {
   const { close: closeSheetModal, open: openSheetModal } = useSheetModal();
