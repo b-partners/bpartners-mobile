@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, { FC, ReactNode, useState } from 'react';
+import { StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { translate } from '../../i18n';
-import { color, spacing } from '../../theme';
+import { TxKeyPath, translate } from '../../i18n';
+import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
+import { IconTypes } from '../icon/icons';
 import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
 import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
-import { HeaderProps } from './header.props';
 
-// static styles
-const ROOT: ViewStyle = {
+const HEADER_STYLE: ViewStyle = {
   height: 100,
   flexDirection: 'row',
   alignItems: 'center',
@@ -22,52 +21,95 @@ const ROOT: ViewStyle = {
   position: 'relative',
   paddingHorizontal: spacing[5],
 };
-const TITLE: TextStyle = { textAlign: 'center', fontFamily: 'Geometria-Bold', textTransform: 'uppercase', fontSize: 13 };
-const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: 'center' };
-const LEFT: ViewStyle = { width: 32 };
-const RIGHT: ViewStyle = { width: 32 };
-const WAVE_STYLE: ImageStyle = {
-  width: '100%',
-  height: '100%',
-  position: 'absolute',
+const TITLE_STYLE: TextStyle = {
+  textAlign: 'center',
+  fontFamily: 'Geometria-Bold',
+  textTransform: 'uppercase',
+  fontSize: 13,
 };
 
-/**
- * Header that appears on many screens. Will hold navigation buttons and screen title.
- */
-export function Header(props: Readonly<HeaderProps>) {
-  const { onLeftPress, onRightPress, rightIcon, leftIcon, headerText, headerTx, style, titleStyle } = props;
-  const header = headerText || (headerTx && translate(headerTx)) || '';
+export interface HeaderProps {
+  headerBackgroundImage?: ReactNode;
+  headerTx?: TxKeyPath;
+  headerText?: string;
+  leftContent?: ReactNode;
+  rightContent?: ReactNode;
+  leftIcon?: IconTypes;
+  rightIcon?: IconTypes;
+  style?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
+  children?: ReactNode;
+  onLeftPress?(): void;
+  onRightPress?(): void;
+}
+
+export const Header: FC<HeaderProps> = ({
+  onLeftPress,
+  onRightPress,
+  rightIcon,
+  leftIcon,
+  leftContent,
+  rightContent,
+  headerText,
+  headerTx,
+  style,
+  titleStyle,
+  headerBackgroundImage,
+  children,
+}) => {
   const { top } = useSafeAreaInsets();
+  const headerTextValue = headerText || (headerTx && translate(headerTx)) || '';
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   return (
     <KeyboardLayout setKeyboardOpen={setIsKeyboardOpen}>
       {!isKeyboardOpen && (
-        <View style={{ backgroundColor: color.palette.white }}>
-          <AutoImage source={require('./header.png')} style={WAVE_STYLE} resizeMethod='auto' resizeMode='stretch' />
+        <View>
+          {headerBackgroundImage ? (
+            headerBackgroundImage
+          ) : (
+            <AutoImage
+              source={require('./assets/images/header.png')}
+              resizeMethod='auto'
+              resizeMode='stretch'
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+              }}
+            />
+          )}
           <FreeTrialBanner />
-          <View style={[{ ...ROOT, height: +ROOT.height + top }, style]}>
-            {leftIcon ? (
-              <TouchableOpacity onPress={onLeftPress} testID='header-left-button'>
-                <Icon icon={leftIcon} />
-              </TouchableOpacity>
+          <View style={[{ ...HEADER_STYLE, height: +HEADER_STYLE.height + top }, style]}>
+            {leftContent ? (
+              leftContent
             ) : (
-              <View style={LEFT} />
+              <>
+                {leftIcon ? (
+                  <TouchableOpacity onPress={onLeftPress} testID='header-left-button'>
+                    <Icon icon={leftIcon} />
+                  </TouchableOpacity>
+                ) : (
+                  <View style={{ width: 32 }} />
+                )}
+              </>
             )}
-            <View style={TITLE_MIDDLE}>
-              <Text style={[TITLE, titleStyle]} text={header} />
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <Text style={[TITLE_STYLE, titleStyle]} text={headerTextValue} />
             </View>
-            {rightIcon ? (
+            {rightContent ? (
+              rightContent
+            ) : rightIcon ? (
               <Button preset='link' onPress={onRightPress} testID='header-right-button'>
                 <Icon icon={rightIcon} style={{ tintColor: palette.white }} />
               </Button>
             ) : (
-              <View style={RIGHT} />
+              <View style={{ width: 32 }} />
             )}
+            {children}
           </View>
         </View>
       )}
     </KeyboardLayout>
   );
-}
+};

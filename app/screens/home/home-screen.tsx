@@ -11,7 +11,7 @@ import { Dimensions, ScrollView, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import Carousel from 'react-native-reanimated-carousel';
 
-import { AutoImage, Header, Text } from '../../components';
+import { AutoImage, HeaderWithLogo, Text } from '../../components';
 import { BpButton } from '../../components/bp-button';
 import env from '../../config/env';
 import { useStores } from '../../models';
@@ -153,7 +153,7 @@ export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = 
 
   return (
     <View testID='homeScreen'>
-      <Header headerText='Accueil' rightIcon='whiteMenu' onRightPress={openDrawer} />
+      <HeaderWithLogo headerText='Accueil' rightIcon='whiteMenu' onRightPress={openDrawer} />
       <ScrollView style={{ height: height * 0.7 }}>
         <View style={HomeScreenStyle.textHeaderContainer}>
           <Text

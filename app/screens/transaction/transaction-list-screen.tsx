@@ -6,7 +6,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { Searchbar } from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { BpPagination, HeaderWithBalance, Icon, Loader, NoDataProvided, Screen, Separator } from '../../components';
+import { BpPagination, HeaderWithBalance, Loader, NoDataProvided, Screen, Separator } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { Transaction as ITransaction, TransactionStatus } from '../../models/entities/transaction/transaction';
@@ -28,7 +28,7 @@ const FLAT_LIST: ViewStyle = {
   margin: spacing[3],
 };
 
-export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(({ navigation }) => {
+export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'transactionList'>> = observer(() => {
   const { transactionStore, authStore, invoiceStore } = useStores();
   const { invoice, loading, invoices, paidInvoices, loadingInvoice } = invoiceStore;
   const combinedInvoices = invoices.concat(paidInvoices);
@@ -87,14 +87,7 @@ export const TransactionListScreen: FC<DrawerScreenProps<NavigatorParamList, 'tr
 
   return (
     <ErrorBoundary catchErrors='always'>
-      <HeaderWithBalance
-        balance={availableBalance}
-        left={
-          <TouchableOpacity onPress={() => navigation.navigate('home')}>
-            <Icon icon='back' />
-          </TouchableOpacity>
-        }
-      />
+      <HeaderWithBalance balance={availableBalance} />
       <View testID='transactionListScreen' style={{ ...FULL, backgroundColor: color.palette.white }}>
         <Searchbar
           placeholder={translate('common.search')}
