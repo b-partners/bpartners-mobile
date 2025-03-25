@@ -93,6 +93,7 @@ jobs:
           echo SENTRY_DSN=$(aws ssm get-parameters --names "/bpartners/mobile/SENTRY_DSN" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo AUTHORIZATION_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/AUTHORIZATION_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
           echo TOKEN_ENDPOINT=$(aws ssm get-parameters --names "/bpartners/mobile/TOKEN_ENDPOINT" --with-decryption --output text --query "Parameters[*].Value") >> .env
+          echo GEO_REFERENCER_URL= ${{ secrets.GEO_REFERENCER_URL }} >> .env
           echo ACCESS_KEY_ID= ${{ secrets.ACCESS_KEY_ID }} >> .env
           echo REGION= ${{ secrets.REGION }} >> .env
           echo AWS_REGION= ${{ secrets.AWS_REGION }} >> .env
