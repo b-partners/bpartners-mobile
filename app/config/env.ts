@@ -29,4 +29,5 @@ export default {
   aws_web_client_id: config.WEB_CLIENT_ID || '',
   aws_oauth_domain: config.OAUTH_DOMAIN || '',
   dashboardUrl: config.DASHBOARD_URL,
+  geoReferencerUrl: config.GEO_REFERENCER_URL || '',
 };
