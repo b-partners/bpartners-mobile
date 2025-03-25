@@ -128,7 +128,9 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
                     setCurrentStatus={setCurrentStatus}
                   />
                 ))}
-                <Pagination page={page} changePage={setPage} hasNext={hasNext} />
+                <View style={{ width: '100%', backgroundColor: 'white' }}>
+                  <Pagination page={page} changePage={setPage} hasNext={hasNext} />
+                </View>
               </>
             )}
             {!loadingProspect && filteredProspect.length === 0 && <NoDataProvided reload={handleRefresh} />}

@@ -11,14 +11,11 @@ import { palette } from '../../theme/palette';
 import { ErrorBoundary } from '../error/error-boundary';
 import { invoicePageSize } from '../invoice-form/utils/utils';
 import { HomeLatestTransactions } from './components/home-latest-transactions';
-import { Logo } from './components/logo';
-import { Menu } from './components/menu';
 import { TransactionSummary } from './components/transaction-summary';
 import { FULL } from './utils/styles';
 
 export const TransactionScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>> = observer(({ navigation }) => {
   const { transactionStore, authStore, fileStore } = useStores();
-  const { fileUrl } = fileStore;
   const { availableBalance } = authStore.currentAccount;
   const { currentAccountHolder, currentUser, accessToken } = authStore;
   const { loadingTransactions, currentMonthSummary, latestTransactions, transactionsSummary } = transactionStore;
@@ -38,11 +35,7 @@ export const TransactionScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>
   return (
     <ErrorBoundary catchErrors='always'>
       <View style={FULL}>
-        <HeaderWithBalance
-          balance={availableBalance}
-          left={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} testID={'craftsmanLogo'} />}
-          right={<Menu navigation={navigation} />}
-        />
+        <HeaderWithBalance balance={availableBalance} />
         <Screen preset='scroll' backgroundColor={palette.white}>
           <View style={{ padding: spacing[3] }}>
             <TransactionSummary

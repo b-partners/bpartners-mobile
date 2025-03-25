@@ -3,8 +3,8 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useSheetModal } from '../../hook';
-import { useStores } from '../../models';
 import { userSubscriptionProvider } from '../../provider';
+import { useZAuthStore } from '../../stores';
 import { palette } from '../../theme/palette';
 import { formatDate } from '../../utils/format-date';
 import { notify } from '../../utils/snackbar';
@@ -13,10 +13,9 @@ import { Text } from '../text/text';
 
 export const CancelSubscriptionModal = () => {
   const { close: closeSheetModal } = useSheetModal();
-  const {
-    authStore: { currentUser },
-  } = useStores();
-  const endDate = currentUser?.subscription?.end;
+  const whoami = useZAuthStore(state => state.whoami);
+
+  const endDate = whoami?.user?.subscription?.end;
   const formatedEndDate = formatDate(endDate);
 
   const { isPending, mutate: cancelRenew } = useMutation({

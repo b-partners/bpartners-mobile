@@ -16,6 +16,7 @@ import { translate } from '../../i18n';
 import { BgLayout } from '../../layouts';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils/utils';
+import { useZAuthStore } from '../../stores';
 import { palette } from '../../theme/palette';
 import { useLoginForm } from '../../utils/resolvers';
 import { showMessage } from '../../utils/snackbar';
@@ -33,6 +34,7 @@ interface Credentials {
 
 export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> = observer(({ navigation }) => {
   const form = useLoginForm();
+  const setWhoami = useZAuthStore(state => state.setWhoami);
 
   if (env.isCi) {
     navigation.navigate('oauth');
@@ -78,9 +80,10 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
       try {
         const { accessToken } = newIdentity;
         await storage.saveAccessToken(accessToken);
-        await authStore.whoami(accessToken);
+        const whoamiResult = await authStore.whoami(accessToken);
         await legalFilesStore.getLegalFiles();
         const hasApprovedLegalFiles = legalFilesStore.unApprovedFiles.length <= 0;
+        setWhoami(whoamiResult);
         if (!hasApprovedLegalFiles) {
           navigation.navigate('legalFile');
         } else {
@@ -95,7 +98,9 @@ export const WelcomeScreen: FC<DrawerScreenProps<NavigatorParamList, 'oauth'>> =
 
   const { fetch, isLoading } = useFetch<void, Credentials>(signIn, { mutateOnly: true, txErrorMessage: 'errors.credentials' });
 
-  const handleSubmit = form.handleSubmit(data => fetch(data as any));
+  const handleSubmit = form.handleSubmit(data => {
+    fetch(data as any);
+  });
 
   return (
     <BgLayout>

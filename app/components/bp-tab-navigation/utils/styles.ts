@@ -1,28 +1,25 @@
 import { StyleSheet } from 'react-native';
 
-import { palette } from '../../../theme/palette';
-
 export const tabNavigationStyles = StyleSheet.create({
   container: {
     position: 'relative',
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: palette.white,
+    backgroundColor: 'rgba(0,0,0,0)',
   },
   background: {
     width: '100%',
-    height: '95%',
+    height: '100%',
     position: 'absolute',
     bottom: 0,
   },
   tab: {
     width: '100%',
     height: 50,
-    marginTop: 18,
+    marginTop: 13,
     alignItems: 'center',
   },
   icon: {
-    marginHorizontal: '1%',
     width: '100%',
     height: 10,
     position: 'absolute',
@@ -33,5 +30,7 @@ export const tabNavigationStyles = StyleSheet.create({
     width: '20%',
     height: '100%',
     position: 'relative',
+    marginBottom: 20,
+    backgroundColor: 'rgba(0,0,0,0)',
   },
 });

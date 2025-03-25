@@ -82,9 +82,10 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   return (
     <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
-      <View style={{ ...styles.container, height: keyboardOpen ? 0 : 110 }} {...props} testID='bottom-tab'>
-        <AutoImage source={require('./icons/tab-navigation.png')} style={styles.background} resizeMethod='auto' resizeMode='stretch' />
+      <View style={{ ...styles.container, backgroundColor: 'rgba(0,0,0,0)', height: keyboardOpen ? 0 : 100 }} {...props} testID='bottom-tab'>
+        {!keyboardOpen && <AutoImage source={require('./icons/tab-navigation.png')} style={styles.background} resizeMethod='auto' resizeMode='stretch' />}
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
+          const isSelected = currentTab === RouteName[bottomTavNavItem];
           return (
             <View key={`bottom-navigation-item-${i}-${bottomTavNavItem}`} style={styles.tabContainer}>
               <BottomTab
@@ -92,13 +93,11 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
                 testID={`${RouteName[bottomTavNavItem]}Tab`}
                 source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
                 tabStyle={styles.tab}
-                imageStyle={{ width: 65, height: 55, ...STYLE[bottomTavNavItem] }}
+                imageStyle={{ width: 55, height: 45, ...STYLE[bottomTavNavItem] }}
                 text={ROUTE[bottomTavNavItem]}
                 bottomNavItem={bottomTavNavItem}
               />
-              {currentTab === RouteName[bottomTavNavItem] && (
-                <AutoImage source={require('./icons/tab.png')} style={styles.icon} resizeMethod='auto' resizeMode='stretch' />
-              )}
+              {isSelected && <AutoImage source={require('./icons/tab.png')} style={styles.icon} resizeMethod='auto' resizeMode='stretch' />}
             </View>
           );
         })}

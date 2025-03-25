@@ -50,7 +50,7 @@ export const CustomersScreen: FC<DrawerScreenProps<NavigatorParamList, 'customer
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await customerStore.getCustomers();
+        await customerStore.getCustomers({});
       } catch {
         showMessage(translate('errors.somethingWentWrong'), { backgroundColor: palette.pastelRed });
       }
