@@ -1,6 +1,7 @@
+import env from '../config/env';
 import { Geojson, GeojsonReturn } from '../screens/annotator-edition/types';
 
-const converterApiUrl = 'https://tile-referencer.azurewebsites.net/api/reference';
+const converterApiUrl = env.geoReferencerUrl;
 
 export const pointsToGeoPoints = async (body: Geojson) => {
   try {
