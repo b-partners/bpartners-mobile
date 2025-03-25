@@ -4,8 +4,6 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-export const a = 0;
-
 const schema = z.object({
   labelName: z.custom(() => true),
   labelType: z.custom(() => true),

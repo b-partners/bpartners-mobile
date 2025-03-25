@@ -20,8 +20,8 @@ const initialValues: RouteParamsState = {
  * This is here to store params between screen cause react native navigation have problem to reset route params
  */
 export const useRouteParams = create<TRouteParams>()(set => ({
-  annotatorEdition: initialValues['annotatorEdition'],
-  invoiceForm: initialValues['invoiceForm'],
+  annotatorEdition: initialValues.annotatorEdition,
+  invoiceForm: initialValues.invoiceForm,
   resetParams(key) {
     set(() => ({ [key]: initialValues[key] }));
   },

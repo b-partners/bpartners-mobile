@@ -163,6 +163,7 @@ export const AuthStoreModel = types
         yield self.getTokenSuccess({ accessToken });
         const whoAmiResult = yield signInApi.whoami();
         self.currentUser = whoAmiResult.user;
+        return whoAmiResult;
       } catch (e) {
         self.catchOrThrow(e);
         __DEV__ && console.tron.log('Handle who am I error here');

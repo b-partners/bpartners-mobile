@@ -1,50 +1,55 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { spacing } from '../../theme';
 import { printCurrencyToMajors } from '../../utils/money';
 import { AutoImage } from '../auto-image/auto-image';
-import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
-import { HEADER_STYLE } from './style';
+import { HeaderProps } from './header';
+import { HeaderWithLogo } from './header-with-logo';
 
 const CONTAINER_STYLE: ViewStyle = {
-  paddingVertical: spacing[2],
   width: '100%',
   display: 'flex',
   alignItems: 'center',
+  paddingVertical: spacing[2],
   marginVertical: spacing[3],
 };
+
 const MAIN_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 32, fontFamily: 'Geometria-Bold' };
 const SECONDARY_TEXT_STYLE: TextStyle = { textTransform: 'uppercase', fontSize: 11, fontFamily: 'Geometria' };
 
-export function HeaderWithBalance(props: { balance: number; left?: React.ReactNode; right?: React.ReactNode }) {
-  const { balance, left, right } = props;
+export const LOGO_STYLE: TextStyle = { color: '#fff' };
+export const HEADER_STYLE: ViewStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  height: 200,
+  paddingHorizontal: spacing[5],
+  paddingVertical: spacing[5],
+};
+
+export const HeaderWithBalance: FC<Omit<HeaderProps, 'children'> & { balance: number }> = ({ balance, ...props }) => {
   const { top } = useSafeAreaInsets();
 
   return (
     <View>
-      <AutoImage
-        source={require('./fat-header.png')}
-        style={{ width: '100%', height: '100%', position: 'absolute' }}
-        resizeMethod='auto'
-        resizeMode='stretch'
-      />
-      <FreeTrialBanner />
-      <View style={{ ...HEADER_STYLE, height: +HEADER_STYLE.height + top }}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingTop: top,
-          }}
-        >
-          {left}
-          {right}
-        </View>
+      <HeaderWithLogo
+        style={{
+          ...HEADER_STYLE,
+          height: +HEADER_STYLE.height + top,
+        }}
+        headerBackgroundImage={
+          <AutoImage
+            source={require('./assets/images/fat-header.png')}
+            style={{ width: '100%', height: '100%', position: 'absolute' }}
+            resizeMethod='auto'
+            resizeMode='stretch'
+          />
+        }
+        {...props}
+      >
         <View testID='balance-view' style={CONTAINER_STYLE}>
           <Text tx='homeScreen.labels.balance' style={SECONDARY_TEXT_STYLE} />
           <View style={{ marginVertical: spacing[1] }} testID='homeCurrentBalance'>
@@ -52,7 +57,7 @@ export function HeaderWithBalance(props: { balance: number; left?: React.ReactNo
           </View>
           <Text text={new Date().toLocaleDateString()} style={SECONDARY_TEXT_STYLE} />
         </View>
-      </View>
+      </HeaderWithLogo>
     </View>
   );
-}
+};
