@@ -4,13 +4,14 @@ import { GestureResponderEvent, Image, ScrollView, TouchableWithoutFeedback, Vie
 import { IconButton } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Svg, { Polygon } from 'react-native-svg';
+import uuid from 'react-native-uuid';
 import MuiIcon from 'react-native-vector-icons/MaterialIcons';
-import { v4 } from 'uuid';
 
 import { Loader } from '../../../components';
 import { palette } from '../../../theme/palette';
 import { AnnotationContainerProps } from '../types/annotation';
 import { AnnotationPointHandler, AnnotationSizeHandler, useAnnotationMarkerFetcher, useAnnotationScale, useCenterScrollView, useGetImageSize } from '../utils';
+import { getNewPolygonColor } from '../utils/annotation-colors';
 import { useMeasurement } from '../utils/annotation-measurement-handler';
 import { annotationContainerStyle as style } from '../utils/styles';
 import { AnnotationBackgroundRenderer } from './annotation-background-renderer';
@@ -62,10 +63,15 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
 
   const scaledAnnotations: AreaPictureAnnotationInstance[] = annotations.map(annotation => ({
     ...annotation,
-    polygon: { points: scaleRealPoints(annotation.polygon.points, imageRealWidth, imageWidth) },
+    polygon: {
+      points: scaleRealPoints(annotation.polygon.points, imageRealWidth, imageWidth),
+      strokeColor: annotation.metadata?.strokeColor,
+      fillColor: annotation.metadata?.fillColor,
+    },
   }));
 
   useMeasurement(annotations, scaledAnnotations, filename, zoom.number, imageRealWidth, setMeasurements, areaPictureDetails.isExtended);
+  const polygonColor = useMemo(() => getNewPolygonColor(annotations ?? []), [JSON.stringify(annotations)]);
 
   const handlePress = (event: GestureResponderEvent) => {
     if (isEditing) {
@@ -88,11 +94,26 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
   }, [annotations]);
 
   const handleAddAnnotation = () => {
-    if (points.length > 2) {
-      polygonCount.current++;
-      let labelName = `Polygone ${polygonCount.current}`;
-      setAnnotations(p => [...p, { polygon: { points: scalePointsToReal([...points, points[0]], imageRealWidth, imageWidth) }, id: v4(), labelName }]);
+    if (points.length <= 2) {
+      return;
     }
+
+    polygonCount.current++;
+    let labelName = `Polygone ${polygonCount.current}`;
+    setAnnotations(p => [
+      ...p,
+      {
+        polygon: {
+          id: uuid.v4(),
+          labelName,
+          points: scalePointsToReal([...points, points[0]], imageRealWidth, imageWidth),
+        },
+        metadata: {
+          fillColor: polygonColor?.fillColor,
+          strokeColor: polygonColor?.strokeColor,
+        },
+      },
+    ]);
   };
 
   const handleSetAnnotation = (currentAnnotations: AreaPictureAnnotationInstance[]) => {
@@ -134,7 +155,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
                 {(isLoading || imageRealWidth === 0) && <Loader color={palette.lighterPurple} />}
                 {!isLoading && imageRealWidth > 0 && <Image resizeMode='cover' style={imageSize} source={{ uri: pictureUrl }} />}
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
-                  <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
+                  <Polygon points={getSvgPath(points, scale)} fill={polygonColor.fillColor} stroke={polygonColor.strokeColor} strokeWidth='1' />
                 </Svg>
                 <AnnotationBackgroundRenderer
                   setAnnotations={handleSetAnnotation}

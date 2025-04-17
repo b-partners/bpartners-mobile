@@ -3,8 +3,10 @@ import debounceFn from 'debounce-fn';
 import React, { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { Animated, PanResponder } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
+import uuid from 'react-native-uuid';
 
 import { AnnotationPointHandler, ISize, annotationContainerStyle, annotationRendererStyle } from '../utils';
+import { DEFAULT_POLYGON_COLOR } from '../utils/annotation-colors';
 
 interface AnnotationBackgroundRendererProps {
   annotations: AreaPictureAnnotationInstance[];
@@ -36,9 +38,14 @@ export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps>
 
   return (
     <>
-      {localAnnotations.map(({ polygon: { points: currentPoint }, id }) => (
-        <Svg key={id} height={height} width={width} style={annotationContainerStyle.svgContainer}>
-          <Polygon points={getSvgPath(currentPoint, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
+      {localAnnotations.map(({ polygon: { points: currentPoint }, metadata, id }) => (
+        <Svg key={uuid.v4()} height={height} width={width} style={annotationContainerStyle.svgContainer}>
+          <Polygon
+            points={getSvgPath(currentPoint, scale)}
+            fill={metadata?.fillColor ?? DEFAULT_POLYGON_COLOR.fillColor}
+            stroke={metadata?.strokeColor ?? DEFAULT_POLYGON_COLOR.strokeColor}
+            strokeWidth='1'
+          />
         </Svg>
       ))}
       {localAnnotations.map((annotation, index) =>
@@ -69,7 +76,7 @@ export const AnnotationBackgroundRenderer: FC<AnnotationBackgroundRendererProps>
           return (
             <Animated.View
               {...panHandlers}
-              key={`${JSON.stringify(point)}${index}${pointIndex}`}
+              key={`${JSON.stringify(point)}${index}${pointIndex}${uuid.v4()}`}
               style={[getPointPosition(point, scale), annotationRendererStyle.point]}
             />
           );

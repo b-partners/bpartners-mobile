@@ -4,7 +4,6 @@ import { ScrollView, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Modal } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import { v4 as uuidv4 } from 'uuid';
 
 import { Text } from '../../../components';
 import { BpInput } from '../../../components/bp-input';
@@ -46,7 +45,7 @@ export const ProspectCreationModal: React.FC<ProspectCreationModalProps> = props
 
   const onSubmit = async prospectInfos => {
     setIsLoading(true);
-    const prospectId = uuidv4();
+    const prospectId = uuid.v4();
     const fileId = uuid.v4();
     try {
       await prospectStore.creationProspect({

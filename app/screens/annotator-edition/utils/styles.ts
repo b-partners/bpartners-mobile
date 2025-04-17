@@ -187,11 +187,11 @@ export const annotationContainerStyle = StyleSheet.create({
   svgContainer: { position: 'absolute', top: 0, left: 0 },
   point: {
     position: 'absolute',
-    height: 10,
-    width: 10,
+    height: 8,
+    width: 8,
     borderRadius: 5,
     backgroundColor: 'black',
-    transform: [{ translateX: -5 }, { translateY: -5 }],
+    transform: [{ translateX: -4 }, { translateY: -4 }],
   },
 });
 

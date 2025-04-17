@@ -43,7 +43,7 @@ export const FreeTrialBanner = () => {
           fontSize: 14,
         }}
       >
-        Il vous reste {remainingDays} jour{remainingDays > 1 ? 's' : ''} d'essai !
+        Il vous reste {remainingDays} {remainingDays > 1 ? 'jourss' : 'jour'} d'essai !
       </Text>
       <View style={{ flexDirection: 'row', gap: 8 }}>
         <BpButton textColor='white' onPress={handleDoSubscription}>

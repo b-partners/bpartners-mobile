@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
 import { IconButton, Provider } from 'react-native-paper';
+import uuid from 'react-native-uuid';
 import MuiIcon from 'react-native-vector-icons/FontAwesome';
 
 import { Header, Text } from '../../components';
@@ -69,7 +70,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
   const { height } = Dimensions.get('screen');
   const handleEdit = (index: number) => {
     openSheetModal(<AnnotationInfoForm setAnnotation={handleEditAnnotation(index)} annotation={annotations[index]} />, {
-      containerStyle: { height: height * 0.7 },
+      containerStyle: { height: height * 0.7, minHeight: height * 0.7, maxHeight: height * 0.7 },
       panClose: false,
     });
   };
@@ -94,7 +95,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
         areaPictureDetails={areaPictureDetails}
         imageUrl={imageUrl}
       />,
-      { containerStyle: { height: height * 0.5 } }
+      { containerStyle: { height: height * 0.5, minHeight: height * 0.5, maxHeight: height * 0.5 } }
     );
   };
   const handleOpenEditImageMenu = () => {
@@ -131,14 +132,14 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
             </View>
             <BpAccordion title='Annotations' defaultExpanded>
               {annotations.map(({ labelName, labelType, id: annotationId }, index) => (
-                <View style={style.annotationListContainer} key={annotationId}>
+                <View style={style.annotationListContainer} key={uuid.v4()}>
                   <View style={style.polygonRefContainer}>
                     <Text style={style.polygonRefText} text={'P' + (index + 1)} />
                   </View>
                   <View style={style.annotationListItemTitleContainer}>
                     <Text style={style.annotationListItemTitle} text={labelName} />
                     <View style={style.areaAndLabelContainer}>
-                      {measurementsArea.length >= index && (
+                      {measurementsArea.length > index && (
                         <Text style={style.annotationListItemLabel} text={measurementsArea[index]?.value + measurementsArea[index]?.unity + ' | '} />
                       )}
                       {labelType ? (

@@ -1,6 +1,6 @@
 import { AreaPictureDetails, CrupdateAreaPictureDetails, FileType, Prospect, ZoomLevel } from '@bpartners/typescript-client';
 import { useMutation } from '@tanstack/react-query';
-import { v4 as uuid } from 'react-native-uuid/dist/v4';
+import uuid from 'react-native-uuid';
 
 import { annotatorProvider } from '../provider';
 import { getFileUrl } from '../utils/file-utils';
@@ -52,8 +52,8 @@ export const useCreateAreaPicture = (params?: UseCreateAreaPictureParams) => {
 
   const createFn = async (prospect: Prospect) => {
     const { id: prospectId, address } = prospect;
-    const pictureId = uuid();
-    const fileId = uuid();
+    const pictureId = uuid.v4();
+    const fileId = uuid.v4();
     const filename = `Layer ${address}`;
     const zoomLevel = ZoomLevel.HOUSES_0;
     mutate({ pictureId, crupdateAreaPictureDetails: { prospectId, fileId, address, filename, zoomLevel } });

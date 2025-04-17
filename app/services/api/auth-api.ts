@@ -1,5 +1,5 @@
 import { ApiResponse } from 'apisauce';
-import { v4 as uuid } from 'uuid';
+import uuid from 'react-native-uuid';
 
 import env from '../../config/env';
 import { User } from '../../models/entities/user/user';
@@ -34,7 +34,7 @@ export class AuthApi {
   async signIn(phone: string): Promise<SignInResult> {
     const response: ApiResponse<any> = await this.api.apisauce.post('authInitiation', {
       phone,
-      state: uuid(),
+      state: uuid.v4(),
       redirectionStatusUrls: {
         successUrl: env.successUrl,
         failureUrl: env.failureUrl,

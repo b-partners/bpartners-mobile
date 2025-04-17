@@ -14,8 +14,8 @@ export class GeojsonMapper {
     restGeojson.forEach((geojson, index) => {
       const coordinates = geojson.geometry.coordinates[0][0].slice();
       const currentPolygonId = geojson.properties.id;
-      const currentDomainPoints = annotations.filter(({ id }) => geojson.properties.id === id)[0].polygon.points;
-      let area = this.toArea(geojson, currentPolygonId, currentDomainPoints);
+      const currentDomainPoints = annotations.filter(({ id }) => geojson.properties.id === id)[0]?.polygon?.points;
+      let area = this.toArea(geojson, currentPolygonId, currentDomainPoints ?? []);
       if (isExtended) area.value = +(area.value * 9).toFixed(2);
 
       measurements.push(area);

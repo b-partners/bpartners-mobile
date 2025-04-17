@@ -2,7 +2,7 @@ import { Prospect, ProspectStatus, UpdateProspect } from '@bpartners/typescript-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { v4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import { z as Zod } from 'zod';
 
 import { prospectProvider } from '../provider';
@@ -56,7 +56,7 @@ export const useCrupdateProspect = (options?: UseCrupdateProspectOptions) => {
   const crupdate = form.handleSubmit((prospect: UpdateProspect) => {
     mutate({
       ...prospect,
-      id: prospect.id || v4(),
+      id: prospect.id || uuid.v4(),
     });
   });
 
