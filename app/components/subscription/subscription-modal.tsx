@@ -29,7 +29,7 @@ export const SubscriptionModal: FC<SubscriptionModalProps> = ({ allowClose = fal
       <Text style={{ fontSize: 18, fontWeight: 'bold', color: palette.purple, marginBottom: 10 }}>Finalisez votre inscription en toute sérénité !</Text>
 
       <Text style={{ color: 'black', textAlign: 'justify' }}>
-        Vous n’avez pas encore d’abonnement actif. Pour continuer à utiliser l’application BPartners, veuillez enregistrer votre carte bancaire via notre
+        Vous n’avez pas encore d’abonnement actif. Pour continuer à utiliser l’application BIRDIA, veuillez enregistrer votre carte bancaire via notre
         partenaire sécurisé Stripe.
       </Text>
       <Text style={{ marginTop: 10, fontWeight: 'bold', color: 'black' }}>Pas d’inquiétude :</Text>

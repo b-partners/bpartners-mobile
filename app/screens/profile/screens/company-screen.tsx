@@ -166,7 +166,7 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
             <Text style={styles.linkContainer}>
               <Text
                 onPress={() => Linking.openURL('https://www.bpartners.app/home')}
-                text='BPartners, l’assistant intelligent des artisans et indépendants'
+                text='BIRDIA, l’assistant intelligent des artisans et indépendants'
                 style={{ ...styles.footerTitle, color: 'blue' }}
               />
               <Text text=', section mon compte' style={{ ...styles.footerText, color: palette.lighterBlack }} />

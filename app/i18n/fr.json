@@ -50,7 +50,7 @@
     "invalidEmail": "Adresse e-mail invalide",
     "somethingWentWrong": "Un problème s'est produit. Veuillez réessayer plus tard.",
     "paymentInitiation": "Il semblerait que votre banque ne soit pas synchronisée pour supporter la collecte de paiement",
-    "paymentInitM1": "Connectez-vous sur BPartners.app depuis un ordinateur / banque  puis synchroniser.",
+    "paymentInitM1": "Connectez-vous sur BIRDIA.app depuis un ordinateur / banque  puis synchroniser.",
     "paymentInitM2": "En cas de difficulté, contactez le support par mail : contact@bpartners.app ou par téléphone au:",
     "phoneNumber": "01 84 80 31 69",
     "verifyConnection": "Verifier votre connexion",
@@ -227,7 +227,7 @@
     "or": "ou"
   },
   "signInScreen": {
-    "title": "Connectez-vous à BPartners",
+    "title": "Connectez-vous à BIRDIA",
     "description": "Entrez le numéro de téléphone que vous avez utilisé lors de votre inscription",
     "hint": "Téléphone",
     "confirm": "Se connecter",
@@ -250,7 +250,7 @@
     "footer": {
       "essential": "L'Essentiel",
       "service": "Tous les services essentiels pour gérer votre activité d'artisan ou d'indépendant",
-      "modifyInformations": "Pour modifier vos informations de profil; rendez-vous sur la version web de BPartners à l’adresse:"
+      "modifyInformations": "Pour modifier vos informations de profil; rendez-vous sur la version web de BIRDIA à l’adresse:"
     },
     "tabs": {
       "company": "Ma société",
@@ -702,7 +702,7 @@
     "firstLabel": "Votre session Google Agenda a expiré,",
     "secondLabel": "veuillez synchroniser votre agenda pour obtenir",
     "thirdLabel": "de nouveaux à proximité de vos prochains RDV.",
-    "firstText": "En continuant, vous acceptez que BPartners transmette anonymement vos informations à la Base Adresse Nationale afin de générer des nouveaux prospects.",
+    "firstText": "En continuant, vous acceptez que BIRDIA transmette anonymement vos informations à la Base Adresse Nationale afin de générer des nouveaux prospects.",
     "secondText": "Pour plus d'infos, consultez: ",
     "sync": "Synchroniser",
     "eventEditionModal": {
