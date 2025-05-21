@@ -4,6 +4,7 @@ import { View, ViewStyle } from 'react-native';
 
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
+import { palette } from '../../theme/palette';
 import { AutoImage } from '../auto-image/auto-image';
 import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
 import { BottomTab } from './components/bottom-tab';
@@ -82,8 +83,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
 
   return (
     <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
-      <View style={{ ...styles.container, backgroundColor: 'rgba(0,0,0,0)', height: keyboardOpen ? 0 : 100 }} {...props} testID='bottom-tab'>
-        {!keyboardOpen && <AutoImage source={require('./icons/tab-navigation.png')} style={styles.background} resizeMethod='auto' resizeMode='stretch' />}
+      <View style={{ ...styles.container, backgroundColor: palette.neon_orange, height: keyboardOpen ? 0 : 100 }} {...props} testID='bottom-tab'>
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
           const isSelected = currentTab === RouteName[bottomTavNavItem];
           return (

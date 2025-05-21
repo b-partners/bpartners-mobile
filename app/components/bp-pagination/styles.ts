@@ -13,9 +13,9 @@ export const PAGINATION_STYLE = {
     paddingVertical: 5,
     paddingHorizontal: 10,
   } as StyleProp<ViewStyle>,
-  iconColor: (disabled: boolean) => (disabled ? palette.lightGrey : palette.lighterPurple),
+  iconColor: (disabled: boolean) => (disabled ? palette.lightGrey : palette.neon_orange),
   pageText: {
-    color: palette.lighterPurple,
+    color: palette.neon_orange,
     fontSize: 11,
   } as StyleProp<TextStyle>,
 };

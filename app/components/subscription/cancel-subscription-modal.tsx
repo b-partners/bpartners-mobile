@@ -32,7 +32,7 @@ export const CancelSubscriptionModal = () => {
 
   return (
     <View style={{ paddingHorizontal: 10 }}>
-      <Text style={{ color: palette.purple, fontWeight: 'bold', fontSize: 18, marginBottom: 10 }}>
+      <Text style={{ color: palette.neon_orange, fontWeight: 'bold', fontSize: 18, marginBottom: 10 }}>
         Confirmation de l'annulation du renouvellement automatique
       </Text>
       <Text style={{ color: 'black' }}>En confirmant l'annulation du renouvellement automatique de votre abonnement, voici ce qui se passera:</Text>
@@ -49,8 +49,8 @@ export const CancelSubscriptionModal = () => {
       <View style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
         <BpButton
           loading={isPending}
-          textColor={palette.purple}
-          style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: palette.purple }}
+          textColor={palette.neon_orange}
+          style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: palette.neon_orange }}
           onPress={() => cancelRenew()}
         >
           Confirmer

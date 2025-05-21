@@ -21,14 +21,14 @@ export const HomeScreenStyle = StyleSheet.create({
   imageSource: {
     position: 'absolute',
     top: 0,
-    backgroundColor: palette.lighterPurple,
+    backgroundColor: palette.neon_orange,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   carouselTitleContainer: {
     height: 40,
-    backgroundColor: palette.lighterPurple,
+    backgroundColor: palette.neon_orange,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

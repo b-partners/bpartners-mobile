@@ -64,21 +64,7 @@ export const Header: FC<HeaderProps> = ({
   return (
     <KeyboardLayout setKeyboardOpen={setIsKeyboardOpen}>
       {!isKeyboardOpen && (
-        <View>
-          {headerBackgroundImage ? (
-            headerBackgroundImage
-          ) : (
-            <AutoImage
-              source={require('./assets/images/header.png')}
-              resizeMethod='auto'
-              resizeMode='stretch'
-              style={{
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
-              }}
-            />
-          )}
+        <View style={{ backgroundColor: palette.neon_orange }}>
           <FreeTrialBanner />
           <View style={[{ ...HEADER_STYLE, height: +HEADER_STYLE.height + top }, style]}>
             {leftContent ? (

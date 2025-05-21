@@ -131,7 +131,7 @@ export const AnnotationContainer: FC<AnnotationContainerProps> = ({
           >
             <TouchableWithoutFeedback onPress={handlePress}>
               <Animated.View style={[imageContainerSize, style.imageContainer]}>
-                {(isLoading || imageRealWidth === 0) && <Loader color={palette.lighterPurple} />}
+                {(isLoading || imageRealWidth === 0) && <Loader color={palette.neon_orange} />}
                 {!isLoading && imageRealWidth > 0 && <Image resizeMode='cover' style={imageSize} source={{ uri: pictureUrl }} />}
                 <Svg height={imageContainerSize.height} width={imageContainerSize.width} style={style.svgContainer}>
                   <Polygon points={getSvgPath(points, scale)} fill='rgba(144, 248, 10, 0.4)' stroke='#90F80A' strokeWidth='1' />
