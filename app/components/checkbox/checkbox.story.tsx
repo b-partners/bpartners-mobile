@@ -7,10 +7,10 @@ import { palette } from '../../theme/palette';
 import { Toggle } from '../../utils/react-powerplug';
 import { Checkbox } from './checkbox';
 
-declare let module;
+declare let module: any;
 
 const arrayStyle: ViewStyle[] = [{ paddingVertical: 40 }, { alignSelf: 'flex-end' }];
-const arrayOutlineStyle: ViewStyle[] = [{ borderColor: '#b443c9' }, { borderWidth: 25 }];
+const arrayOutlineStyle: ViewStyle[] = [{ borderColor: palette.neon_orange }, { borderWidth: 25 }];
 const arrayFillStyle: ViewStyle[] = [{ backgroundColor: '#55e0ff' }];
 
 storiesOf('Checkbox', module)

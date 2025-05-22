@@ -165,8 +165,8 @@ export const CompanyScreen: FC<DrawerScreenProps<NavigatorParamList, 'profile'>>
 
             <Text style={styles.linkContainer}>
               <Text
-                onPress={() => Linking.openURL('https://www.bpartners.app/home')}
-                text='BIRDIA, l’assistant intelligent des artisans et indépendants'
+                onPress={() => Linking.openURL('https://birdia.fr')}
+                text='BIRDIA, Valorisez ce que vous voyez depuis le ciel.'
                 style={{ ...styles.footerTitle, color: 'blue' }}
               />
               <Text text=', section mon compte' style={{ ...styles.footerText, color: palette.lighterBlack }} />

@@ -13,7 +13,7 @@ import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
 
 const HEADER_STYLE: ViewStyle = {
-  height: 100,
+  height: 70,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'flex-start',

@@ -19,7 +19,7 @@ export const HeaderWithLogo: FC<Omit<HeaderProps, 'leftIcon' | 'leftContent'>> =
   }, []);
 
   return (
-    <Header leftContent={<Logo uri={fileUrl} logoStyle={{ width: 50, height: 50 }} testID={'craftsmanLogo'} />} {...props}>
+    <Header leftContent={<Logo uri={fileUrl} imageStyle={{ borderRadius: 50 }} logoStyle={{ width: 40, height: 40 }} testID={'craftsmanLogo'} />} {...props}>
       {children}
     </Header>
   );
