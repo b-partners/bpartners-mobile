@@ -121,7 +121,7 @@ export const dropDownStyles = StyleSheet.create({
     fontSize: 16,
   },
   itemTextStyle: {
-    color: palette.purple,
+    color: palette.neon_orange,
   },
 });
 
@@ -155,7 +155,7 @@ export const zoomDropDownStyles = StyleSheet.create({
     fontSize: 16,
   },
   itemTextStyle: {
-    color: palette.purple,
+    color: palette.neon_orange,
   },
 });
 
@@ -233,7 +233,7 @@ export const annotatorEditorScreen = StyleSheet.create({
   },
   polygonRefContainer: {
     borderRadius: 5,
-    backgroundColor: palette.lighterPurple,
+    backgroundColor: palette.peach,
     height: '100%',
     width: 50,
     display: 'flex',

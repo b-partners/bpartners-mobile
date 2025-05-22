@@ -4,6 +4,7 @@ import React, { FC, useEffect } from 'react';
 import { Dimensions, Text, View } from 'react-native';
 
 import { Header, Loader, Screen } from '../../components';
+import { BpTabNavigationSpace } from '../../components/bp-tab-navigation/components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
@@ -55,6 +56,7 @@ export const MarketPlaceScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'mar
             <RowList marketplaces={marketplaces} />
           )}
         </Screen>
+        <BpTabNavigationSpace />
       </View>
     </ErrorBoundary>
   );

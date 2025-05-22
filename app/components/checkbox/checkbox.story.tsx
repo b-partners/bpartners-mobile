@@ -3,6 +3,7 @@ import React from 'react';
 import { View, ViewStyle } from 'react-native';
 
 import { Story, StoryScreen, UseCase } from '../../../storybook/views';
+import { palette } from '../../theme/palette';
 import { Toggle } from '../../utils/react-powerplug';
 import { Checkbox } from './checkbox';
 
@@ -52,7 +53,7 @@ storiesOf('Checkbox', module)
                 text='Hello there!'
                 value={on}
                 style={{
-                  backgroundColor: 'purple',
+                  backgroundColor: palette.neon_orange,
                   marginLeft: 40,
                   paddingVertical: 30,
                   paddingLeft: 60,

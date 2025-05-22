@@ -25,7 +25,7 @@ export const palette = {
   oceanBoatBlue: '#007CC3',
   usafaBlue: '#00529B',
   textClassicColor: '#0A1045',
-  secondaryColor: '#9C255A',
+  secondaryColor: '#f26638',
   Khaki: '#FFFBAC',
   lightYellow: '#F5DF4D',
   yellow: '#E7B10A',
@@ -44,4 +44,5 @@ export const palette = {
   black: '#1F1F1F',
   cream: '#F0ECE1',
   forest: '#112717',
+  light_neon_orange: '#fa6637',
 } as const;

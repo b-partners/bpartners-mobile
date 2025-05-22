@@ -38,8 +38,9 @@ export const SubscriptionModal: FC<SubscriptionModalProps> = ({ allowClose = fal
       </View>
 
       <Text style={{ marginTop: 10, color: 'black' }}>
-        Si vous avez la moindre question, n’hésitez pas à nous appeler au <Text style={{ color: palette.neon_orange, fontWeight: 'bold' }}>06.68.62.48.36</Text>{' '}
-        ou par mail à <Text style={{ color: palette.neon_orange, fontWeight: 'bold' }}>contact@bpartners.app</Text>
+        Si vous avez la moindre question, n’hésitez pas à nous appeler au
+        <Text style={{ color: palette.neon_orange, fontWeight: 'bold' }}>06.68.62.48.36</Text> ou par mail à
+        <Text style={{ color: palette.neon_orange, fontWeight: 'bold' }}>contact@bpartners.app</Text>
       </Text>
 
       <View style={{ marginTop: 20, flexDirection: 'column', gap: 10 }}>

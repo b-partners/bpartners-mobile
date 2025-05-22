@@ -59,7 +59,13 @@ export function AppNavigator(props: Readonly<NavigationProps>) {
   const { isLoading: isGetWhoamiLoading } = useGetWhoami(onAuthError);
 
   return isGetWhoamiLoading ? (
-    <Loader text='Authentification...' textStyle={{ color: palette.peach }} size={50} color={palette.peach} containerStyle={{ paddingHorizontal: 5 }} />
+    <Loader
+      text='Authentification...'
+      textStyle={{ color: palette.neon_orange }}
+      size={50}
+      color={palette.neon_orange}
+      containerStyle={{ paddingHorizontal: 5 }}
+    />
   ) : (
     <NavigationContainer
       linking={navigationContainerConfigLinking}

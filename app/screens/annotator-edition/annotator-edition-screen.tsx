@@ -151,8 +151,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                       )}
                     </View>
                   </View>
-                  <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='edit' size={25} />} onPress={() => handleEdit(index)} />
-                  <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
+                  <IconButton icon={() => <MuiIcon color={palette.neon_orange} name='edit' size={25} />} onPress={() => handleEdit(index)} />
+                  <IconButton icon={() => <MuiIcon color={palette.neon_orange} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
                 </View>
               ))}
             </BpAccordion>

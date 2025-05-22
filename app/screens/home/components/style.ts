@@ -21,14 +21,15 @@ export const HomeScreenStyle = StyleSheet.create({
   imageSource: {
     position: 'absolute',
     top: 0,
-    backgroundColor: palette.neon_orange,
+    height: 40,
+    backgroundColor: 'rgba(0,0,0,.3)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   carouselTitleContainer: {
     height: 40,
-    backgroundColor: palette.neon_orange,
+    backgroundColor: 'rgba(0,0,0,.3)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -39,7 +40,7 @@ const { width } = Dimensions.get('screen');
 
 export const StaticInformationRendererStyle = StyleSheet.create({
   container: {
-    backgroundColor: palette.lighterGrey,
+    backgroundColor: palette.white,
     padding: 10,
     margin: 2,
     width: width / 2 - 5,
@@ -47,10 +48,10 @@ export const StaticInformationRendererStyle = StyleSheet.create({
   },
   value: {
     fontWeight: 'bold',
-    color: palette.black,
+    color: palette.lightGrey,
   },
   title: {
-    color: palette.black,
+    color: palette.lightGrey,
     fontSize: 11,
   },
 });

@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   form: {
     marginTop: '5%',
-    padding: 15,
+    padding: 5,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   logo: {
-    width: '100%',
+    width: '95%',
     marginTop: spacing[8],
   },
   label: {
@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
-    color: palette.secondaryColor,
+    color: palette.neon_orange,
   },
   passwordContainer: {
     width: '100%',
@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
     color: 'red',
   },
   textButton: {
-    color: color.palette.secondaryColor,
+    color: color.palette.neon_orange,
     fontFamily: 'Geometria-Bold',
     marginRight: spacing[2],
   },
@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
   button: {
     borderRadius: 50,
     paddingVertical: spacing[3],
-    backgroundColor: '#fff',
+    backgroundColor: palette.white,
     display: 'flex',
     flexDirection: 'row',
     marginTop: spacing[4],

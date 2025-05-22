@@ -29,7 +29,7 @@ interface MuiIconButtonProps {
 
 const MuiIconButton: FC<MuiIconButtonProps> = ({ name, onPress, disabled = false }) => {
   const icon = () => <MuiIcon color='white' name={name} size={20} />;
-  return <IconButton containerColor={disabled ? palette.lightGrey : palette.lighterPurple} disabled={disabled} onPress={onPress} icon={icon} />;
+  return <IconButton containerColor={disabled ? palette.lightGrey : palette.light_neon_orange} disabled={disabled} onPress={onPress} icon={icon} />;
 };
 
 export const AnnotationContainer: FC<AnnotationContainerProps> = ({

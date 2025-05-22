@@ -53,7 +53,7 @@ export const FreeTrialSubscriptionModal = () => {
         <BpButton
           onPress={closeSheetModal}
           textColor={palette.neon_orange}
-          style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: palette.purple }}
+          style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: palette.neon_orange }}
         >
           Plus tard
         </BpButton>
