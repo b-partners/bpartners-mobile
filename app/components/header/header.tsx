@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TxKeyPath, translate } from '../../i18n';
 import { spacing } from '../../theme';
 import { palette } from '../../theme/palette';
-import { AutoImage } from '../auto-image/auto-image';
 import { Button } from '../button/button';
 import { Icon } from '../icon/icon';
 import { IconTypes } from '../icon/icons';
@@ -14,13 +13,14 @@ import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
 
 const HEADER_STYLE: ViewStyle = {
-  height: 100,
+  height: 70,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'flex-start',
   position: 'relative',
   paddingHorizontal: spacing[5],
 };
+
 const TITLE_STYLE: TextStyle = {
   textAlign: 'center',
   fontFamily: 'Geometria-Bold',
@@ -29,7 +29,6 @@ const TITLE_STYLE: TextStyle = {
 };
 
 export interface HeaderProps {
-  headerBackgroundImage?: ReactNode;
   headerTx?: TxKeyPath;
   headerText?: string;
   leftContent?: ReactNode;
@@ -54,7 +53,6 @@ export const Header: FC<HeaderProps> = ({
   headerTx,
   style,
   titleStyle,
-  headerBackgroundImage,
   children,
 }) => {
   const { top } = useSafeAreaInsets();
@@ -64,21 +62,7 @@ export const Header: FC<HeaderProps> = ({
   return (
     <KeyboardLayout setKeyboardOpen={setIsKeyboardOpen}>
       {!isKeyboardOpen && (
-        <View>
-          {headerBackgroundImage ? (
-            headerBackgroundImage
-          ) : (
-            <AutoImage
-              source={require('./assets/images/header.png')}
-              resizeMethod='auto'
-              resizeMode='stretch'
-              style={{
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
-              }}
-            />
-          )}
+        <View style={{ backgroundColor: palette.neon_orange }}>
           <FreeTrialBanner />
           <View style={[{ ...HEADER_STYLE, height: +HEADER_STYLE.height + top }, style]}>
             {leftContent ? (

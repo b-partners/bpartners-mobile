@@ -61,9 +61,9 @@ export function AppNavigator(props: Readonly<NavigationProps>) {
   return isGetWhoamiLoading ? (
     <Loader
       text='Authentification...'
-      textStyle={{ color: palette.lighterPurple }}
+      textStyle={{ color: palette.neon_orange }}
       size={50}
-      color={palette.lighterPurple}
+      color={palette.neon_orange}
       containerStyle={{ paddingHorizontal: 5 }}
     />
   ) : (

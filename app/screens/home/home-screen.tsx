@@ -13,6 +13,7 @@ import Carousel from 'react-native-reanimated-carousel';
 
 import { AutoImage, HeaderWithLogo, Text } from '../../components';
 import { BpButton } from '../../components/bp-button';
+import { BpTabNavigationSpace } from '../../components/bp-tab-navigation/components';
 import env from '../../config/env';
 import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators/utils';
@@ -152,9 +153,9 @@ export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = 
   };
 
   return (
-    <View testID='homeScreen'>
+    <View testID='homeScreen' style={{ backgroundColor: palette.cream }}>
       <HeaderWithLogo headerText='Accueil' rightIcon='whiteMenu' onRightPress={openDrawer} />
-      <ScrollView style={{ height: height * 0.7 }}>
+      <ScrollView style={{ height }}>
         <View style={HomeScreenStyle.textHeaderContainer}>
           <Text
             text='Pour démarrer, ajoutez une adresse et commencez à analyser les toitures de vos clients et prospects'
@@ -171,11 +172,11 @@ export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = 
             scrollAnimationDuration={1000}
             renderItem={({ item }) => (
               <View style={{ position: 'relative' }}>
-                <AutoImage style={{ width, height: height * 0.4 }} source={item} />
-                <View style={[HomeScreenStyle.imageSource, { width }]}>
-                  <Text text='NOTE DÉGRADATION GLOBALE: 41%' />
+                <AutoImage style={{ width, height: height * 0.4, borderTopLeftRadius: 15, borderTopRightRadius: 15 }} source={item} />
+                <View style={[HomeScreenStyle.imageSource, { width, borderTopLeftRadius: 15, borderTopRightRadius: 15 }]}>
+                  <Text text='Note dégradation globale: 41%' />
                 </View>
-                <View style={HomeScreenStyle.carouselTitleContainer}>
+                <View style={[HomeScreenStyle.carouselTitleContainer, { borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }]}>
                   <Text text='Source: Image HD 5cm - Mars 2024' />
                 </View>
               </View>
@@ -200,8 +201,9 @@ export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = 
             ))}
           </View>
         </View>
+        <BpTabNavigationSpace />
       </ScrollView>
-      <BpButton style={{ position: 'absolute', bottom: 20, right: 10 }} onPress={createProspect}>
+      <BpButton style={{ position: 'absolute', bottom: 240, right: 10 }} onPress={createProspect}>
         Analyser la toiture d'un prospect/client
       </BpButton>
     </View>

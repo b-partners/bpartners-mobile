@@ -100,10 +100,10 @@ export const AnnotationInfoForm: FC<AnnotationInfoFormProps> = ({ annotation, se
           <BpSheetInput labelTx='prospectScreen.process.comment' name='comment' multiline />
         </FormProvider>
         <View>
-          <Button buttonColor={palette.purple} textColor='white' style={{ marginTop: 2 }} onPress={close}>
+          <Button buttonColor={palette.light_neon_orange} textColor='white' style={{ marginTop: 2 }} onPress={close}>
             Annuler
           </Button>
-          <Button buttonColor={palette.purple} textColor='white' style={{ marginTop: 2 }} onPress={handlePress}>
+          <Button buttonColor={palette.light_neon_orange} textColor='white' style={{ marginTop: 2 }} onPress={handlePress}>
             Enregistrer
           </Button>
         </View>

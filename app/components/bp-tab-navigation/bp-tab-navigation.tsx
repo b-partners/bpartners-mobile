@@ -1,16 +1,54 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React, { useCallback, useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import React, { FC, ReactNode, useCallback, useState } from 'react';
+import { TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { translate } from '../../i18n';
 import { useStores } from '../../models';
-import { AutoImage } from '../auto-image/auto-image';
+import { palette } from '../../theme/palette';
 import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
-import { BottomTab } from './components/bottom-tab';
-import { tabNavigationStyles as styles } from './utils/styles';
 import { BOTTOM_TAB_ROUTES, IconProps, IconRouteProps } from './utils/utils';
 
-export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
+const BP_TAB_CONTAINER_STYLE: ViewStyle = {
+  width: '98%',
+  bottom: '1%',
+  overflow: 'visible',
+  paddingHorizontal: 20,
+  borderRadius: 30,
+  position: 'absolute',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginHorizontal: '1%',
+  alignItems: 'center',
+  backgroundColor: palette.neon_orange,
+};
+
+const TabNavigationItem: FC<TouchableOpacityProps & { icon: ReactNode; testID: string }> = ({ onPress, testID, icon }) => {
+  return (
+    <>
+      <TouchableOpacity onPress={onPress} testID={testID}>
+        {icon}
+      </TouchableOpacity>
+    </>
+  );
+};
+
+const BOTTOM_NAVBAR_ICONS = {
+  account: (isSelected: boolean) => <Ionicons name='wallet' size={28} color={isSelected ? palette.peach : palette.cream} />,
+  activity: (isSelected: boolean) => <FontAwesome6 name='people-roof' size={28} color={isSelected ? palette.peach : palette.cream} />,
+  payment: (isSelected: boolean) => <Ionicons name='logo-euro' size={28} color={isSelected ? palette.peach : palette.cream} />,
+  facturation: (isSelected: boolean) => <Ionicons name='receipt' size={28} color={isSelected ? palette.peach : palette.cream} />,
+  home: (isSelected: boolean) => (
+    <Ionicons
+      name='home'
+      size={28}
+      color={isSelected ? palette.white : palette.neon_orange}
+      style={{ backgroundColor: isSelected ? palette.peach : palette.cream, borderRadius: 50, padding: 15, transform: 'translateY(-12%)' }}
+    />
+  ),
+} as const;
+
+export const BpTabNavigation: FC<BottomTabBarProps> = props => {
   const {
     state: { routeNames, index },
     navigation: { navigate },
@@ -36,15 +74,7 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     navigate(routeName);
   }, []);
 
-  const BOTTOM_NAVBAR_ICONS: IconProps = {
-    account: require('./icons/wallet.png'),
-    activity: require('./icons/activity.png'),
-    payment: require('./icons/paiment.bg.png'),
-    facturation: require('./icons/facturation.bg.png'),
-    home: require('./icons/home.png'),
-  };
-
-  const BOTTOM_NAVBAR_NAVIGATION_HANDLERS: IconRouteProps = {
+  const NAGIGATION_HANDLER: IconRouteProps = {
     account: () => handleNavigation('bp_home'),
     activity: () => handleNavigationMarketplace('prospect'),
     payment: () => handleNavigation('paymentInitiation'),
@@ -61,43 +91,18 @@ export const BpTabNavigation: React.FC<BottomTabBarProps> = props => {
     home: 'home',
   };
 
-  const ROUTE: IconProps = {
-    account: translate('bottomTab.account'),
-    activity: translate('prospectScreen.title'),
-    payment: translate('bottomTab.payment'),
-    facturation: translate('bottomTab.facturation'),
-    home: translate('bottomTab.home'),
-  };
-
-  const STYLE: Record<keyof IconProps, ViewStyle> = {
-    home: {
-      opacity: 0.8,
-      transform: [{ scale: 0.9 }],
-    },
-    account: {},
-    activity: {},
-    facturation: {},
-    payment: {},
-  };
-
   return (
     <KeyboardLayout setKeyboardOpen={setKeyboardOpen}>
-      <View style={{ ...styles.container, backgroundColor: 'rgba(0,0,0,0)', height: keyboardOpen ? 0 : 100 }} {...props} testID='bottom-tab'>
-        {!keyboardOpen && <AutoImage source={require('./icons/tab-navigation.png')} style={styles.background} resizeMethod='auto' resizeMode='stretch' />}
+      <View style={[BP_TAB_CONTAINER_STYLE, { height: keyboardOpen ? 0 : 55 }]} {...props} testID='bottom-tab'>
         {BOTTOM_TAB_ROUTES.map((bottomTavNavItem: string, i) => {
           const isSelected = currentTab === RouteName[bottomTavNavItem];
           return (
-            <View key={`bottom-navigation-item-${i}-${bottomTavNavItem}`} style={styles.tabContainer}>
-              <BottomTab
-                onPress={BOTTOM_NAVBAR_NAVIGATION_HANDLERS[bottomTavNavItem]}
+            <View key={`bottom-navigation-item-${i}-${bottomTavNavItem}`}>
+              <TabNavigationItem
+                onPress={NAGIGATION_HANDLER[bottomTavNavItem]}
                 testID={`${RouteName[bottomTavNavItem]}Tab`}
-                source={BOTTOM_NAVBAR_ICONS[bottomTavNavItem]}
-                tabStyle={styles.tab}
-                imageStyle={{ width: 55, height: 45, ...STYLE[bottomTavNavItem] }}
-                text={ROUTE[bottomTavNavItem]}
-                bottomNavItem={bottomTavNavItem}
+                icon={BOTTOM_NAVBAR_ICONS[bottomTavNavItem](isSelected)}
               />
-              {isSelected && <AutoImage source={require('./icons/tab.png')} style={styles.icon} resizeMethod='auto' resizeMode='stretch' />}
             </View>
           );
         })}

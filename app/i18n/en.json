@@ -220,7 +220,7 @@
     "title": "Onboarding"
   },
   "signInScreen": {
-    "title": "Connect to BPartners",
+    "title": "Connect to BIRDIA",
     "description": "Enter the phone number you used when you registered",
     "hint": "Phone Number",
     "confirm": "Confirm",
@@ -267,7 +267,7 @@
     "footer": {
       "essential": "The Essential",
       "service": "All the essential services to manage your business as a craftsman or freelancer",
-      "modifyInformations": "To modify your profile information, go to the web version of BPartners at the following address:"
+      "modifyInformations": "To modify your profile information, go to the web version of BIRDIA at the following address:"
     },
     "tabs": {
       "company": "My company",
@@ -719,7 +719,7 @@
     "firstLabel": "Your Google Calendar session has expired,",
     "secondLabel": "synchronize your calendar to get ",
     "thirdLabel": "new prospects close to your next appointments.",
-    "firstText": "By continuing, you agree that BPartners may anonymously transmit your information to the National Address Base in order to generate new leads.",
+    "firstText": "By continuing, you agree that BIRDIA may anonymously transmit your information to the National Address Base in order to generate new leads.",
     "secondText": "For more information, visit: ",
     "sync": "Synchronize",
     "eventEditionModal": {

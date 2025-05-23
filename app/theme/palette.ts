@@ -1,8 +1,6 @@
 export const palette = {
-  black: '#1d1d1d',
   darkBlack: '#000',
   lighterBlack: '#717171',
-  white: '#ffffff',
   offWhite: '#e6e6e6',
   orange: '#FBA928',
   orangeDarker: '#EB9918',
@@ -27,7 +25,7 @@ export const palette = {
   oceanBoatBlue: '#007CC3',
   usafaBlue: '#00529B',
   textClassicColor: '#0A1045',
-  secondaryColor: '#9C255A',
+  secondaryColor: '#f26638',
   Khaki: '#FFFBAC',
   lightYellow: '#F5DF4D',
   yellow: '#E7B10A',
@@ -38,4 +36,13 @@ export const palette = {
   lightBlue: '#caeced',
   solidYellow: '#FAEBD7',
   red: '#FF0000',
-};
+  neon_orange: '#ff521b',
+  pine: '#4A644E',
+  peach: '#FFB179',
+  linen: '#BEB4A4',
+  white: '#FFFFFF',
+  black: '#1F1F1F',
+  cream: '#F0ECE1',
+  forest: '#112717',
+  light_neon_orange: '#fa6637',
+} as const;

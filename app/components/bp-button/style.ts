@@ -4,9 +4,9 @@ import { palette } from '../../theme/palette';
 
 export const BpButtonStyle = StyleSheet.create({
   loading: {
-    backgroundColor: palette.lightGrey,
+    backgroundColor: palette.neon_orange,
   },
   base: {
-    backgroundColor: palette.purple,
+    backgroundColor: palette.neon_orange,
   },
 });
