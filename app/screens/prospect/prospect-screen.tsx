@@ -36,7 +36,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
 
   const getActiveClassName = useCallback(
     (activeStatus: any): object => {
-      return status === activeStatus ? { borderBottomWidth: 2, borderColor: '#9C255A' } : {};
+      return status === activeStatus ? { borderBottomWidth: 2, borderColor: palette.secondaryColor } : {};
     },
     [status]
   );

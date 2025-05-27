@@ -75,7 +75,7 @@ export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
           style={{ marginVertical: 5 }}
           onPress={handleExport}
         >
-          Exporter entant que PDF
+          Exporter en tant que PDF
         </Button>
         <Button
           loading={isLoading || isAreaPictureLoading}
@@ -93,7 +93,7 @@ export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
           style={{ marginVertical: 5 }}
           onPress={saveAnnotation}
         >
-          Enregistrer entant que brouillon
+          Enregistrer en tant que brouillon
         </Button>
       </View>
     </ScrollView>

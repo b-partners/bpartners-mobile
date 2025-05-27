@@ -34,16 +34,16 @@ const TabNavigationItem: FC<TouchableOpacityProps & { icon: ReactNode; testID: s
 };
 
 const BOTTOM_NAVBAR_ICONS = {
-  account: (isSelected: boolean) => <Ionicons name='wallet' size={28} color={isSelected ? palette.peach : palette.cream} />,
-  activity: (isSelected: boolean) => <FontAwesome6 name='people-roof' size={28} color={isSelected ? palette.peach : palette.cream} />,
-  payment: (isSelected: boolean) => <Ionicons name='logo-euro' size={28} color={isSelected ? palette.peach : palette.cream} />,
-  facturation: (isSelected: boolean) => <Ionicons name='receipt' size={28} color={isSelected ? palette.peach : palette.cream} />,
+  account: (isSelected: boolean) => <Ionicons name='wallet' size={28} color={isSelected ? palette.pine : palette.cream} />,
+  activity: (isSelected: boolean) => <FontAwesome6 name='people-roof' size={28} color={isSelected ? palette.pine : palette.cream} />,
+  payment: (isSelected: boolean) => <Ionicons name='logo-euro' size={28} color={isSelected ? palette.pine : palette.cream} />,
+  facturation: (isSelected: boolean) => <Ionicons name='receipt' size={28} color={isSelected ? palette.pine : palette.cream} />,
   home: (isSelected: boolean) => (
     <Ionicons
       name='home'
       size={28}
-      color={isSelected ? palette.white : palette.neon_orange}
-      style={{ backgroundColor: isSelected ? palette.peach : palette.cream, borderRadius: 50, padding: 15, transform: 'translateY(-12%)' }}
+      color={isSelected ? palette.cream : palette.neon_orange}
+      style={{ backgroundColor: isSelected ? palette.pine : palette.cream, borderRadius: 50, padding: 15, transform: 'translateY(-12%)' }}
     />
   ),
 } as const;

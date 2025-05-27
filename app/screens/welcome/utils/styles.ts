@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
     marginBottom: spacing[8],
   },
   form: {
-    marginTop: '5%',
     padding: 5,
     borderRadius: 10,
     shadowColor: '#000',
@@ -75,7 +74,7 @@ export const styles = StyleSheet.create({
     color: 'red',
   },
   textButton: {
-    color: color.palette.neon_orange,
+    color: color.palette.cream,
     fontFamily: 'Geometria-Bold',
     marginRight: spacing[2],
   },
@@ -88,7 +87,7 @@ export const styles = StyleSheet.create({
   button: {
     borderRadius: 50,
     paddingVertical: spacing[3],
-    backgroundColor: palette.white,
+    backgroundColor: palette.pine,
     display: 'flex',
     flexDirection: 'row',
     marginTop: spacing[4],
