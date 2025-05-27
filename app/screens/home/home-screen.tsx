@@ -203,7 +203,7 @@ export const HomeScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'home'>> = 
         </View>
         <BpTabNavigationSpace />
       </ScrollView>
-      <BpButton style={{ position: 'absolute', bottom: 240, right: 10 }} onPress={createProspect}>
+      <BpButton style={{ backgroundColor: palette.pine, position: 'absolute', bottom: 240, right: 10 }} onPress={createProspect}>
         Analyser la toiture d'un prospect/client
       </BpButton>
     </View>

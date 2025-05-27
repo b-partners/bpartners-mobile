@@ -25,7 +25,7 @@ export const palette = {
   oceanBoatBlue: '#007CC3',
   usafaBlue: '#00529B',
   textClassicColor: '#0A1045',
-  secondaryColor: '#f26638',
+  secondaryColor: '#4A644E',
   Khaki: '#FFFBAC',
   lightYellow: '#F5DF4D',
   yellow: '#E7B10A',
