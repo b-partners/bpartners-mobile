@@ -4,6 +4,7 @@ import React, { FC, useEffect } from 'react';
 import { View } from 'react-native';
 
 import { HeaderWithBalance, Screen } from '../../components';
+import { BpTabNavigationSpace } from '../../components/bp-tab-navigation/components';
 import { useStores } from '../../models';
 import { NavigatorParamList } from '../../navigators/utils';
 import { spacing } from '../../theme';
@@ -51,6 +52,7 @@ export const TransactionScreen: FC<DrawerScreenProps<NavigatorParamList, 'home'>
             loading={loadingTransactions}
             navigation={navigation}
           />
+          <BpTabNavigationSpace />
         </Screen>
       </View>
     </ErrorBoundary>

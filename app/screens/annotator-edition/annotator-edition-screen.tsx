@@ -129,7 +129,7 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
               <Text style={style.annotationListItemLabel} text="Source de l'image:" />
               <Text style={style.annotationListItemTitle} text={getLayerTitle(areaPictureDetails.actualLayer)} />
             </View>
-            <BpAccordion title='Annotations' defaultExpanded>
+            <BpAccordion style={{ backgroundColor: palette.pine }} title='Annotations' defaultExpanded>
               {annotations.map(({ labelName, labelType, id: annotationId }, index) => (
                 <View style={style.annotationListContainer} key={annotationId}>
                   <View style={style.polygonRefContainer}>
@@ -151,8 +151,8 @@ export const AnnotatorEditionScreen: FC<DrawerScreenProps<NavigatorParamList, 'a
                       )}
                     </View>
                   </View>
-                  <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='edit' size={25} />} onPress={() => handleEdit(index)} />
-                  <IconButton icon={() => <MuiIcon color={palette.lighterPurple} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
+                  <IconButton icon={() => <MuiIcon color={palette.neon_orange} name='edit' size={25} />} onPress={() => handleEdit(index)} />
+                  <IconButton icon={() => <MuiIcon color={palette.neon_orange} name='trash-o' size={25} onPress={() => handleRemovePolygon(index)} />} />
                 </View>
               ))}
             </BpAccordion>

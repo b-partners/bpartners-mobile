@@ -27,7 +27,7 @@ export const color = {
   /**
    * The main tinting color.
    */
-  primary: palette.lighterPurple,
+  primary: palette.neon_orange,
   /**
    * The main tinting color, but darker.
    */
@@ -47,7 +47,7 @@ export const color = {
   /**
    * Error messages and icons.
    */
-  error: palette.angry,
+  error: palette.forest,
 
   /**
    * Storybook background for Text stories, or any stories where

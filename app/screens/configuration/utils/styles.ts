@@ -50,7 +50,7 @@ export const configurationScreenStyles = StyleSheet.create({
   },
   button: {
     position: 'relative',
-    backgroundColor: palette.secondaryColor,
+    backgroundColor: palette.neon_orange,
     width: '100%',
     height: 40,
     alignSelf: 'center',

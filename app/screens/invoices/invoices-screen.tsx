@@ -91,8 +91,8 @@ export const InvoicesScreen: FC<MaterialTopTabScreenProps<TabNavigatorParamList,
     })();
   }, []);
 
-  const handleScroll = async event => {
-    const offsetY = event.nativeEvent.contentOffset.y;
+  const handleScroll = async (event: any) => {
+    const offsetY = event?.nativeEvent.contentOffset.y;
     if (offsetY <= getThreshold()) {
       try {
         await handleRefresh();

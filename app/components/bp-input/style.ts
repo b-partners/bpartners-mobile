@@ -27,7 +27,7 @@ export const bpInputSelectStyle = StyleSheet.create({
     borderRadius: 5,
   },
   buttonError: {
-    borderColor: color.error,
+    borderColor: color.palette.pine,
     borderStyle: 'solid',
     borderWidth: 1,
   },
@@ -37,10 +37,10 @@ export const bpInputSelectStyle = StyleSheet.create({
   icon: {
     fontSize: 28,
     marginRight: 8,
-    color: palette.purple,
+    color: palette.pine,
   },
   buttonSelectedItem: {
-    color: palette.purple,
+    color: palette.neon_orange,
   },
   buttonLabelStyle: {
     color: palette.greyDarker,

@@ -33,13 +33,13 @@ export const AnnotationHeaderButtons = () => {
           margin: 'auto',
         }}
       >
-        <Button buttonColor={palette.lighterPurple} textColor={palette.white} icon={zoomInProps} mode='contained' onPress={handleOpen}>
+        <Button buttonColor={palette.light_neon_orange} textColor={palette.white} icon={zoomInProps} mode='contained' onPress={handleOpen}>
           Niveau de zoom
         </Button>
-        <Button buttonColor={palette.lighterPurple} textColor={palette.white} icon={pictureProps} mode='contained' onPress={handleOpen}>
+        <Button buttonColor={palette.light_neon_orange} textColor={palette.white} icon={pictureProps} mode='contained' onPress={handleOpen}>
           Source d'image
         </Button>
-        <Button buttonColor={palette.lighterPurple} textColor={palette.white} icon={zoomOutMap} mode='contained' onPress={handleOpen}>
+        <Button buttonColor={palette.light_neon_orange} textColor={palette.white} icon={zoomOutMap} mode='contained' onPress={handleOpen}>
           Recenter l'image
         </Button>
       </ScrollView>

@@ -6,7 +6,7 @@ import { Story, StoryScreen, UseCase } from '../../../storybook/views';
 import { color } from '../../theme';
 import { Header } from './header';
 
-declare let module;
+declare let module: any;
 
 const VIEWSTYLE = {
   flex: 1,

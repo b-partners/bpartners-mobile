@@ -128,7 +128,7 @@ export function HomeLatestTransactions(props: HomeLatestTransactionProps) {
             borderRadius: 25,
             height: 50,
             marginBottom: spacing[4],
-            backgroundColor: '#9C255A',
+            backgroundColor: palette.secondaryColor,
             borderColor: color.transparent,
           }}
           textStyle={{

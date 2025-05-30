@@ -24,7 +24,7 @@ export const FreeTrialSubscriptionModal = () => {
 
   return (
     <View style={{ paddingHorizontal: 10 }}>
-      <Text style={{ fontWeight: 'bold', fontSize: 18, color: palette.purple, marginBottom: 10 }}>
+      <Text style={{ fontWeight: 'bold', fontSize: 18, color: palette.neon_orange, marginBottom: 10 }}>
         Vous bénéficiez actuellement d'une période d'essai gratuite.
       </Text>
       <View style={{ marginBottom: 10 }}>
@@ -50,7 +50,11 @@ export const FreeTrialSubscriptionModal = () => {
         <Text style={{ fontSize: 14, color: 'black', fontWeight: 'bold' }}>contact@bpartners.app</Text>.
       </Text>
       <View style={{ marginVertical: 20, flexDirection: 'column', gap: 10 }}>
-        <BpButton onPress={closeSheetModal} textColor={palette.purple} style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: palette.purple }}>
+        <BpButton
+          onPress={closeSheetModal}
+          textColor={palette.neon_orange}
+          style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: palette.neon_orange }}
+        >
           Plus tard
         </BpButton>
         <BpButton onPress={() => handleDoSubscription()}>M'abonner</BpButton>

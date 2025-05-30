@@ -72,16 +72,28 @@ export const AnnotationEditImageMenu: FC<AnnotationMenuProps> = ({ areaPictureDe
           data={otherLayers}
           renderItem={BpInputSelectSimpleTextRenderer()}
         />
-        <Button loading={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={extendPicture}>
+        <Button loading={isAreaPictureLoading} buttonColor={palette.neon_orange} textColor='white' style={{ marginVertical: 5 }} onPress={extendPicture}>
           {areaPictureDetails?.isExtended ? "Réinitialiser l'image" : "Recentrer l'image"}
         </Button>
         {areaPictureDetails.isExtended && (
-          <Button loading={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={handleShiftImage(true)}>
+          <Button
+            loading={isAreaPictureLoading}
+            buttonColor={palette.neon_orange}
+            textColor='white'
+            style={{ marginVertical: 5 }}
+            onPress={handleShiftImage(true)}
+          >
             Décaler l'image vers la gauche
           </Button>
         )}
         {areaPictureDetails.isExtended && (
-          <Button loading={isAreaPictureLoading} buttonColor={palette.purple} textColor='white' style={{ marginVertical: 5 }} onPress={handleShiftImage(false)}>
+          <Button
+            loading={isAreaPictureLoading}
+            buttonColor={palette.neon_orange}
+            textColor='white'
+            style={{ marginVertical: 5 }}
+            onPress={handleShiftImage(false)}
+          >
             Décaler l'image vers la droite
           </Button>
         )}

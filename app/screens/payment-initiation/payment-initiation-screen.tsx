@@ -4,6 +4,7 @@ import React, { FC, useState } from 'react';
 import { ScrollView, ViewStyle } from 'react-native';
 
 import { Header, Screen } from '../../components';
+import { BpTabNavigationSpace } from '../../components/bp-tab-navigation/components';
 import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
 import { spacing } from '../../theme';
@@ -42,6 +43,7 @@ export const PaymentInitiationScreen: FC<DrawerScreenProps<TabNavigatorParamList
             currentAccount={currentAccount}
             setIbanModal={setIbanModal}
           />
+          <BpTabNavigationSpace />
         </ScrollView>
         <IbanModal ibanModal={ibanModal} setIbanModal={setIbanModal} />
       </Screen>
