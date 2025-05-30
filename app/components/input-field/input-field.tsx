@@ -27,7 +27,21 @@ interface InputFieldProps {
 }
 
 export const InputField: FC<ComponentProps<typeof TextInput> & InputFieldProps> = props => {
-  const { labelTx, error, onChange, errorMessage, width, backgroundColor, rightRender, rightText, keyboardType, endIcon, onPressEndIcon, ...others } = props;
+  const {
+    labelTx,
+    error,
+    onChange,
+    errorMessage,
+    width,
+    backgroundColor,
+    rightRender,
+    rightText,
+    keyboardType,
+    endIcon,
+    onPressEndIcon,
+    style = {},
+    ...others
+  } = props;
 
   const handlePress = () => {
     Log('here');
@@ -45,7 +59,7 @@ export const InputField: FC<ComponentProps<typeof TextInput> & InputFieldProps> 
           textColor={palette.secondaryColor}
           selectionColor={palette.secondaryColor}
           onChangeText={onChange}
-          style={TEXT_INPUT_STYLE(error, width, backgroundColor)}
+          style={[TEXT_INPUT_STYLE(error, width, backgroundColor), style]}
           theme={TEXT_INPUT_THEME}
           right={rightRender && <TextInput.Affix text={rightText} textStyle={RIGHT_TEXT} />}
           testID={`${others.name}TextInput`}

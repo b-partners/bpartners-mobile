@@ -6,6 +6,7 @@ import { Menu, Provider, Searchbar } from 'react-native-paper';
 
 import { Header, Loader, NoDataProvided } from '../../components';
 import { Pagination } from '../../components/bp-pagination';
+import { BpTabNavigationSpace } from '../../components/bp-tab-navigation/components';
 import { translate } from '../../i18n';
 import { Prospect, ProspectStatus } from '../../models/entities/prospect/prospect';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
@@ -35,7 +36,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
 
   const getActiveClassName = useCallback(
     (activeStatus: any): object => {
-      return status === activeStatus ? { borderBottomWidth: 2, borderColor: '#9C255A' } : {};
+      return status === activeStatus ? { borderBottomWidth: 2, borderColor: palette.secondaryColor } : {};
     },
     [status]
   );
@@ -134,6 +135,7 @@ export const ProspectScreen: FC<DrawerScreenProps<TabNavigatorParamList, 'prospe
               </>
             )}
             {!loadingProspect && filteredProspect.length === 0 && <NoDataProvided reload={handleRefresh} />}
+            <BpTabNavigationSpace />
           </ScrollView>
         </View>
       </ErrorBoundary>

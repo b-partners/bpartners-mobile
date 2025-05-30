@@ -15,7 +15,7 @@ export const LOGOUT_CONTAINER_STYLE: ViewStyle = {
   justifyContent: 'center',
   flexDirection: 'row',
   borderWidth: 1,
-  borderColor: palette.secondaryColor,
+  borderColor: palette.neon_orange,
 };
 
 export const NAVIGATION_STYLE: ViewStyle = {

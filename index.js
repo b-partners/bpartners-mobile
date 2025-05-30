@@ -19,5 +19,5 @@ notifee.onBackgroundEvent(async ({ detail }) => {
   await notifee.cancelNotification(notification.id);
 });
 
-AppRegistry.registerComponent('BpartnersMobile', () => App);
+AppRegistry.registerComponent('BirdiaMobile', () => App);
 export default App;

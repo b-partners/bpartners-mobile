@@ -18,7 +18,7 @@ export const BpAccordion: FC<BpAccordionProps> = ({ children, title, defaultExpa
 
   return (
     <List.Accordion
-      style={[{ backgroundColor: palette.purple }, style]}
+      style={[{ backgroundColor: palette.neon_orange }, style]}
       titleStyle={[{ color: palette.white }, titleStyle]}
       expanded={isExpanded}
       onPress={toggle}

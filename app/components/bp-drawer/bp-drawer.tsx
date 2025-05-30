@@ -57,21 +57,21 @@ const TitleRoute: RouteNameProps = {
 };
 
 const IconRoute: RouteNameProps = {
-  home: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
-  profile: <IoniconIcon name='information-circle-outline' size={22} color={color.palette.secondaryColor} />,
-  transactionList: <OcticonsIcon name='checklist' size={22} color={color.palette.secondaryColor} />,
-  customer: <IoniconIcon name='people-outline' size={22} color={color.palette.secondaryColor} />,
-  product: <IoniconIcon name='shapes-outline' size={22} color={color.palette.secondaryColor} />,
-  paymentInitiation: <MaterialCommunityIcon name='cash-multiple' size={22} color={color.palette.secondaryColor} />,
-  paymentList: <MaterialIcon name='format-list-bulleted' size={22} color={color.palette.secondaryColor} />,
-  welcome: <AntDesignIcon name='home' size={22} color={color.palette.secondaryColor} />,
-  oauth: <IoniconIcon name='lock-closed-outline' size={22} color={color.palette.secondaryColor} />,
-  marketplace: <IoniconIcon name='map' size={22} color={color.palette.secondaryColor} />,
-  supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.secondaryColor} />,
-  bank: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.secondaryColor} />,
-  configuration: <IoniconIcon name='settings-outline' size={21} color={color.palette.secondaryColor} />,
-  partners: <FontAwesomeIcon name='handshake-o' size={17} color={color.palette.secondaryColor} />,
-  calendar: <IoniconIcon name='calendar-outline' size={22} color={color.palette.secondaryColor} />,
+  home: <AntDesignIcon name='home' size={22} color={color.palette.neon_orange} />,
+  profile: <IoniconIcon name='information-circle-outline' size={22} color={color.palette.neon_orange} />,
+  transactionList: <OcticonsIcon name='checklist' size={22} color={color.palette.neon_orange} />,
+  customer: <IoniconIcon name='people-outline' size={22} color={color.palette.neon_orange} />,
+  product: <IoniconIcon name='shapes-outline' size={22} color={color.palette.neon_orange} />,
+  paymentInitiation: <MaterialCommunityIcon name='cash-multiple' size={22} color={color.palette.neon_orange} />,
+  paymentList: <MaterialIcon name='format-list-bulleted' size={22} color={color.palette.neon_orange} />,
+  welcome: <AntDesignIcon name='home' size={22} color={color.palette.neon_orange} />,
+  oauth: <IoniconIcon name='lock-closed-outline' size={22} color={color.palette.neon_orange} />,
+  marketplace: <IoniconIcon name='map' size={22} color={color.palette.neon_orange} />,
+  supportContact: <AntDesignIcon name='contacts' size={22} color={color.palette.neon_orange} />,
+  bank: <MaterialCommunityIcon name='bank-outline' size={22} color={color.palette.neon_orange} />,
+  configuration: <IoniconIcon name='settings-outline' size={21} color={color.palette.neon_orange} />,
+  partners: <FontAwesomeIcon name='handshake-o' size={17} color={color.palette.neon_orange} />,
+  calendar: <IoniconIcon name='calendar-outline' size={22} color={color.palette.neon_orange} />,
 };
 
 type TTitleRoute = typeof TitleRoute;
@@ -139,17 +139,13 @@ export const BPDrawer: React.FC<DrawerContentComponentProps> = props => {
         }}
       >
         <View style={POWER_CONTAINER_STYLE}>
-          {isLoading ? (
-            <Loader size={'small'} color={palette.secondaryColor} />
-          ) : (
-            <IoniconIcon name='power-outline' size={18} color={color.palette.secondaryColor} />
-          )}
+          {isLoading ? <Loader size={'small'} color={palette.neon_orange} /> : <IoniconIcon name='power-outline' size={18} color={color.palette.neon_orange} />}
         </View>
         <View style={CENTER_CONTAINER_STYLE}>
           <Text
             style={{
               ...TEXT_STYLE,
-              color: color.palette.secondaryColor,
+              color: color.palette.neon_orange,
               fontFamily: 'Geometria',
             }}
           >

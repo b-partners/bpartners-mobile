@@ -26,10 +26,10 @@ export const SubscriptionModal: FC<SubscriptionModalProps> = ({ allowClose = fal
 
   return (
     <View style={{ paddingHorizontal: 20 }}>
-      <Text style={{ fontSize: 18, fontWeight: 'bold', color: palette.purple, marginBottom: 10 }}>Finalisez votre inscription en toute sérénité !</Text>
+      <Text style={{ fontSize: 18, fontWeight: 'bold', color: palette.neon_orange, marginBottom: 10 }}>Finalisez votre inscription en toute sérénité !</Text>
 
       <Text style={{ color: 'black', textAlign: 'justify' }}>
-        Vous n’avez pas encore d’abonnement actif. Pour continuer à utiliser l’application BPartners, veuillez enregistrer votre carte bancaire via notre
+        Vous n’avez pas encore d’abonnement actif. Pour continuer à utiliser l’application BIRDIA, veuillez enregistrer votre carte bancaire via notre
         partenaire sécurisé Stripe.
       </Text>
       <Text style={{ marginTop: 10, fontWeight: 'bold', color: 'black' }}>Pas d’inquiétude :</Text>
@@ -38,15 +38,16 @@ export const SubscriptionModal: FC<SubscriptionModalProps> = ({ allowClose = fal
       </View>
 
       <Text style={{ marginTop: 10, color: 'black' }}>
-        Si vous avez la moindre question, n’hésitez pas à nous appeler au <Text style={{ color: palette.purple, fontWeight: 'bold' }}>06.68.62.48.36</Text> ou
-        par mail à <Text style={{ color: palette.purple, fontWeight: 'bold' }}>contact@bpartners.app</Text>
+        Si vous avez la moindre question, n’hésitez pas à nous appeler au
+        <Text style={{ color: palette.neon_orange, fontWeight: 'bold' }}>06.68.62.48.36</Text> ou par mail à
+        <Text style={{ color: palette.neon_orange, fontWeight: 'bold' }}>contact@bpartners.app</Text>
       </Text>
 
       <View style={{ marginTop: 20, flexDirection: 'column', gap: 10 }}>
         {allowClose && (
           <BpButton
-            textColor={palette.purple}
-            style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: palette.purple }}
+            textColor={palette.neon_orange}
+            style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: palette.neon_orange }}
             onPress={closeSheetModal}
           >
             Plus tard

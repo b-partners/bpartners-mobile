@@ -61,7 +61,7 @@ export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
       <View style={{ height: height * 0.5 }}>
         <Button
           loading={isLoading || isAreaPictureLoading}
-          buttonColor={palette.purple}
+          buttonColor={palette.light_neon_orange}
           textColor='white'
           style={{ marginVertical: 5 }}
           onPress={cancelAnnotations}
@@ -70,16 +70,16 @@ export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
         </Button>
         <Button
           loading={isLoading || isAreaPictureLoading || isExportPending}
-          buttonColor={palette.purple}
+          buttonColor={palette.light_neon_orange}
           textColor='white'
           style={{ marginVertical: 5 }}
           onPress={handleExport}
         >
-          Exporter entant que PDF
+          Exporter en tant que PDF
         </Button>
         <Button
           loading={isLoading || isAreaPictureLoading}
-          buttonColor={palette.purple}
+          buttonColor={palette.neon_orange}
           textColor='white'
           style={{ marginVertical: 5 }}
           onPress={generateInvoice}
@@ -88,12 +88,12 @@ export const AnnotationNextMenu: FC<AnnotationMenuProps> = ({
         </Button>
         <Button
           loading={isLoading || isAreaPictureLoading}
-          buttonColor={palette.purple}
+          buttonColor={palette.neon_orange}
           textColor='white'
           style={{ marginVertical: 5 }}
           onPress={saveAnnotation}
         >
-          Enregistrer entant que brouillon
+          Enregistrer en tant que brouillon
         </Button>
       </View>
     </ScrollView>
