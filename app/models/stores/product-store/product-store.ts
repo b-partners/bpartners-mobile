@@ -36,7 +36,7 @@ export const ProductStoreModel = types
       const productApi = new ProductApi(self.environment.api);
       self.loadingProduct = true;
       try {
-        const getProductsResult = yield productApi.getProducts(self.currentAccount.id, productFilter);
+        const getProductsResult = yield productApi.getProducts(self.currentAccount?.id, productFilter);
         self.getProductsSuccess(getProductsResult.products);
       } catch (e) {
         self.getProductsFail(e);
@@ -67,7 +67,7 @@ export const ProductStoreModel = types
       self.loadingProductCreation = true;
       const productApi = new ProductApi(self.environment.api);
       try {
-        yield productApi.saveProduct(self.currentAccount.id, product);
+        yield productApi.saveProduct(self.currentAccount?.id, product);
         self.saveProductSuccess();
         __DEV__ && console.tron.log(`Product saved`);
       } catch (e) {
@@ -100,7 +100,7 @@ export const ProductStoreModel = types
       self.loadingProductCreation = true;
       const productApi = new ProductApi(self.environment.api);
       try {
-        yield productApi.updateProduct(self.currentAccount.id, product);
+        yield productApi.updateProduct(self.currentAccount?.id, product);
         self.updateProductSuccess();
         __DEV__ && console.tron.log(`Product updated`);
       } catch (e) {

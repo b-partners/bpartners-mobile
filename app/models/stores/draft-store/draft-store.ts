@@ -36,7 +36,7 @@ export const DraftStoreModel = types
       self.loadingDraft = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, options);
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount?.id, options);
         __DEV__ && console.tron.log(getInvoicesResult.invoices);
         self.getDraftsSuccess(getInvoicesResult.invoices);
       } catch (e) {
@@ -47,7 +47,7 @@ export const DraftStoreModel = types
     }),
     fetchDrafts: async (options: GetListOptions) => {
       const paymentApi = new PaymentApi(self.environment.api);
-      const { invoices } = await paymentApi.getInvoices(self.currentAccount.id, options);
+      const { invoices } = await paymentApi.getInvoices(self.currentAccount?.id, options);
       return invoices || [];
     },
   }));

@@ -37,7 +37,7 @@ export const QuotationStoreModel = types
       self.loadingQuotation = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount?.id, criteria);
         self.getQuotationsSuccess(getInvoicesResult.invoices);
       } catch (e) {
         self.getQuotationsFail(e);
