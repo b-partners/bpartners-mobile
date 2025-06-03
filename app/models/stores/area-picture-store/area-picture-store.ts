@@ -61,7 +61,7 @@ export const AreaPictureStoreModel = types
     getAreaPicture: flow(function* (id: string) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
-        const getAreaPictureResult = yield areaPictureApi.getAreaPicture(self.currentAccount.id, id);
+        const getAreaPictureResult = yield areaPictureApi.getAreaPicture(self.currentAccount?.id, id);
         self.getAreaPictureSuccess(getAreaPictureResult);
       } catch (e) {
         self.getAreaPictureFail(e);
@@ -83,7 +83,7 @@ export const AreaPictureStoreModel = types
     getAreaPictures: flow(function* () {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
-        const getAreaPictureResult = yield areaPictureApi.getAreaPictures(self.currentAccount.id);
+        const getAreaPictureResult = yield areaPictureApi.getAreaPictures(self.currentAccount?.id);
         self.getAreaPicturesSuccess(getAreaPictureResult);
       } catch (e) {
         self.getAreaPicturesFail(e);
@@ -94,7 +94,7 @@ export const AreaPictureStoreModel = types
     getAreaPictureAnnotations: flow(function* (id: string) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
-        const getAreaPictureAnnotationsResult = yield areaPictureApi.getAreaPictureAnnotations(self.currentAccount.id, id);
+        const getAreaPictureAnnotationsResult = yield areaPictureApi.getAreaPictureAnnotations(self.currentAccount?.id, id);
         self.getAreaPictureAnnotationsSuccess(getAreaPictureAnnotationsResult[0].annotations);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
@@ -106,7 +106,7 @@ export const AreaPictureStoreModel = types
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
         const getAreaPictureFileResult = yield areaPictureApi.getAreaPictureFile(
-          self.currentAccount.id,
+          self.currentAccount?.id,
           prospectId,
           address,
           fileId,
@@ -125,7 +125,7 @@ export const AreaPictureStoreModel = types
     updateAreaPictureAnnotations: flow(function* (areaPictureId: string, annotationId: string, annotations: Annotation[]) {
       const areaPictureApi = new AreaPictureApi(self.environment.api);
       try {
-        yield areaPictureApi.updateAreaPictureAnnotations(self.currentAccount.id, areaPictureId, annotationId, annotations);
+        yield areaPictureApi.updateAreaPictureAnnotations(self.currentAccount?.id, areaPictureId, annotationId, annotations);
       } catch (e) {
         self.getAreaPictureAnnotationsFail(e);
       }
@@ -135,7 +135,7 @@ export const AreaPictureStoreModel = types
     getPictureUrl: async (fileId: string) => {
       const fileApi = new FileApi(self.environment.api);
       try {
-        const getPictureUrlResult = await fileApi.getFileURL(fileId, self.currentAccount.id, self.accessToken, 'AREA_PICTURE');
+        const getPictureUrlResult = await fileApi.getFileURL(fileId, self.currentAccount?.id, self.accessToken, 'AREA_PICTURE');
         // @ts-ignore
         self.setCurrentPictureUrl(getPictureUrlResult.fileURL);
       } catch (e) {
