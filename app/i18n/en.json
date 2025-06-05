@@ -85,7 +85,7 @@
     "emailRequired": "your email is required",
     "passwordRequired": "your password is required",
     "checkYourIdentity": "Please check your email or password",
-    "signup": "SIGN UP"
+    "signup": "Sign Up"
   },
   "registrationScreen": {
     "already": "Already have an account",

@@ -37,9 +37,9 @@ const measurementsToRest = (domain: Measurement) => {
 };
 
 const metadataToRest = (annotation: AreaPictureAnnotationInstance): ExportAreaPictureAnnotationInstanceInfo[] => {
-  return Object.keys(annotation.metadata).map(key => ({
+  return Object.keys(annotation?.metadata ?? {}).map(key => ({
     label: key,
-    value: annotation.metadata[key] || 'Non renseigné',
+    value: annotation?.metadata[key] ?? 'Non renseigné',
   }));
 };
 

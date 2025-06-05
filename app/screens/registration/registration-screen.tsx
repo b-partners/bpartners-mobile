@@ -4,9 +4,10 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { View } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 
 import awsExports from '../../../src/aws-exports';
-import { AutoImage, Button, CheckEmailModal, Icon, InputField, Loader, Text } from '../../components';
+import { AutoImage, Button, CheckEmailModal, InputField, Loader, Text } from '../../components';
 import { translate } from '../../i18n';
 import { BgLayout } from '../../layouts';
 import { useStores } from '../../models';
@@ -166,8 +167,8 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
           </View>
           {errors.companyName || errors.phoneNumber || errors.email || errors.lastName || errors.firstName ? (
             <View style={styles.placeholder}>
-              <Text tx='welcomeScreen.signup' style={styles.textPlaceholder} />
-              <Icon icon='user' />
+              <Text tx='welcomeScreen.signup' style={styles.textButton} />
+              <Feather color={palette.cream} size={22} name='user' />
             </View>
           ) : (
             <Button style={styles.button} onPress={handleSubmit(onSubmit)}>
@@ -176,7 +177,7 @@ export const RegistrationScreen: FC<DrawerScreenProps<NavigatorParamList, 'regis
               ) : (
                 <>
                   <Text tx='welcomeScreen.signup' style={styles.textButton} />
-                  <Icon icon='user' />
+                  <Feather color={palette.cream} size={22} name='user' />
                 </>
               )}
             </Button>

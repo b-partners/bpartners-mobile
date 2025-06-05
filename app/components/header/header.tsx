@@ -78,7 +78,7 @@ export const Header: FC<HeaderProps> = ({
                 )}
               </>
             )}
-            <View style={{ flex: 1, justifyContent: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 }}>
               <Text style={[TITLE_STYLE, titleStyle]} text={headerTextValue} />
             </View>
             {rightContent ? (

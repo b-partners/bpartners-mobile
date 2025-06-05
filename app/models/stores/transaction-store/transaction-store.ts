@@ -42,7 +42,7 @@ export const TransactionStoreModel = types
       self.loadingTransactionsSummary = true;
       if (self.currentAccount) {
         try {
-          const getTransactionsSummaryResult = yield transactionApi.getTransactionsSummary(self.currentAccount.id, year);
+          const getTransactionsSummaryResult = yield transactionApi.getTransactionsSummary(self.currentAccount?.id, year);
           self.getTransactionsSummarySuccess(getTransactionsSummaryResult.transactionSummary);
         } catch (e) {
           self.getTransactionsSummaryFail(e);
@@ -69,7 +69,7 @@ export const TransactionStoreModel = types
       self.loadingTransactionCategories = true;
       if (self.currentAccount) {
         try {
-          const getTransactionCategoriesResult = yield transactionApi.getTransactionCategories(self.currentAccount.id);
+          const getTransactionCategoriesResult = yield transactionApi.getTransactionCategories(self.currentAccount?.id);
           self.getTransactionCategoriesSuccess(getTransactionCategoriesResult.transactionCategories);
         } catch (e) {
           self.getTransactionCategoriesFail(e);
@@ -98,7 +98,7 @@ export const TransactionStoreModel = types
       const transactionApi = new TransactionApi(self.environment.api);
       if (self.currentAccount) {
         try {
-          const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount.id, filter);
+          const getTransactionsResult = yield transactionApi.getTransactions(self.currentAccount?.id, filter);
           self.getTransactionsSuccess(getTransactionsResult.transactions);
         } catch (e) {
           self.getTransactionsFail(e);
@@ -118,7 +118,7 @@ export const TransactionStoreModel = types
     updateTransactionCategory: flow(function* (transactionId: string, transactionCategory: TransactionCategory) {
       const transactionApi = new TransactionApi(self.environment.api);
       try {
-        yield transactionApi.updateTransactionCategory(self.currentAccount.id, transactionId, transactionCategory);
+        yield transactionApi.updateTransactionCategory(self.currentAccount?.id, transactionId, transactionCategory);
       } catch (e) {
         self.updateTransactionCategoryFail(e);
       }
@@ -128,7 +128,7 @@ export const TransactionStoreModel = types
     associateTransaction: flow(function* (transactionId: string, invoiceId: string) {
       const transactionApi = new TransactionApi(self.environment.api);
       try {
-        yield transactionApi.associateTransaction(self.currentAccount.id, transactionId, invoiceId);
+        yield transactionApi.associateTransaction(self.currentAccount?.id, transactionId, invoiceId);
       } catch (e) {
         self.updateTransactionCategoryFail(e);
       }

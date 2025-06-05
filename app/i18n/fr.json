@@ -187,7 +187,7 @@
     "emailRequired": "votre email est requis",
     "passwordRequired": "votre mot de passe est requis",
     "checkYourIdentity": "Veuillez vérifier votre email ou votre mot de passe, s'il vous plaît.",
-    "signup": "S'INSCRIRE"
+    "signup": "S'Inscrire"
   },
   "registrationScreen": {
     "already": "Déjà un compte ?",

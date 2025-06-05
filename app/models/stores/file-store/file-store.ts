@@ -29,7 +29,7 @@ export const FileStoreModel = types
     upload: async (fileId: string, fileType: string, type: string, payload: FormData) => {
       try {
         const fileApi = new FileApi(self.environment.api);
-        await fileApi.uploadFile(self.currentAccount.id, fileId, fileType, type, payload);
+        await fileApi.uploadFile(self.currentAccount?.id, fileId, fileType, type, payload);
       } catch (e) {
         self.catchOrThrow(e);
       }
@@ -39,7 +39,7 @@ export const FileStoreModel = types
     getFileUrl: async (logoFileId: string) => {
       try {
         const fileApi = new FileApi(self.environment.api);
-        const getFileUrlResult = await fileApi.getFileURL(logoFileId, self.currentAccount.id, self.accessToken, 'LOGO');
+        const getFileUrlResult = await fileApi.getFileURL(logoFileId, self.currentAccount?.id, self.accessToken, 'LOGO');
         // @ts-ignore
         self.setCurrentFileUrl(getFileUrlResult.fileURL);
       } catch (e) {
