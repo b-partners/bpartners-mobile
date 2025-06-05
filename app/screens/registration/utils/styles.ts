@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { color, spacing } from '../../../theme';
+import { spacing } from '../../../theme';
 import { palette } from '../../../theme/palette';
 
 export const styles = StyleSheet.create({
@@ -9,8 +9,7 @@ export const styles = StyleSheet.create({
     height: 750,
   },
   form: {
-    marginTop: '5%',
-    padding: 15,
+    padding: 10,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -62,21 +61,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: spacing[4],
   },
-  textPlaceholder: {
-    color: color.palette.secondaryColor,
-    fontFamily: 'Geometria-Bold',
-    marginRight: spacing[2],
-  },
   button: {
     borderRadius: 50,
     paddingVertical: spacing[3],
-    backgroundColor: '#fff',
+    backgroundColor: palette.pine,
     display: 'flex',
     flexDirection: 'row',
-    marginTop: spacing[4],
+    gap: 10,
+    marginTop: spacing[3],
   },
   textButton: {
-    color: color.palette.secondaryColor,
+    color: palette.cream,
     fontFamily: 'Geometria-Bold',
     marginRight: spacing[2],
   },

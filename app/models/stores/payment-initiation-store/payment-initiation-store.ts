@@ -40,7 +40,7 @@ export const PaymentInitiationStoreModel = types
       self.paymentUrl = null;
       const paymentInitiationApi = new PaymentApi(self.environment.api);
       try {
-        const initPaymentResult = yield paymentInitiationApi.init(self.currentAccount.id, payload);
+        const initPaymentResult = yield paymentInitiationApi.init(self.currentAccount?.id, payload);
         __DEV__ && console.tron.log(`Payment ${initPaymentResult.paymentInitiation.id} initiated`);
         self.initSuccess(initPaymentResult.paymentInitiation.redirectionUrl);
       } catch (e) {

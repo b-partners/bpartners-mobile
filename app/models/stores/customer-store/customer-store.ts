@@ -36,7 +36,7 @@ export const CustomerStoreModel = types
       self.loadingCustomer = true;
       const customerApi = new CustomerApi(self.environment.api);
       try {
-        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount.id, { filters } as any);
+        const getCustomersResult = yield customerApi.getCustomers(self.currentAccount?.id, { filters } as any);
         self.getCustomersSuccess(getCustomersResult.customers);
         return getCustomersResult.customers;
       } catch (e) {
@@ -71,7 +71,7 @@ export const CustomerStoreModel = types
       self.loadingCustomerCreation = true;
       const customerApi = new CustomerApi(self.environment.api);
       try {
-        yield customerApi.saveCustomer(self.currentAccount.id, customer);
+        yield customerApi.saveCustomer(self.currentAccount?.id, customer);
         self.saveCustomerSuccess();
         __DEV__ && console.tron.log(`Customer saved`);
       } catch (e) {
@@ -107,7 +107,7 @@ export const CustomerStoreModel = types
       self.loadingCustomerCreation = true;
       const customerApi = new CustomerApi(self.environment.api);
       try {
-        yield customerApi.updateCustomer(self.currentAccount.id, customer);
+        yield customerApi.updateCustomer(self.currentAccount?.id, customer);
         self.updateCustomerSuccess();
         __DEV__ && console.tron.log(`Customer updated`);
       } catch (e) {

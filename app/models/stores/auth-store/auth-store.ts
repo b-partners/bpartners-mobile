@@ -247,7 +247,7 @@ export const AuthStoreModel = types
       const bankApi = new BankApi(self.environment.api);
       const successMessageOption = { backgroundColor: palette.green };
       try {
-        const { name, iban, bic } = yield bankApi.updateAccountInfos(self.currentUser.id, self.currentAccount.id, infos);
+        const { name, iban, bic } = yield bankApi.updateAccountInfos(self.currentUser.id, self.currentAccount?.id, infos);
         const accountInfoResult = { name, iban, bic };
         self.updateAccountInfosSuccess(accountInfoResult);
         showMessage(translate('common.registered'), successMessageOption);
@@ -333,7 +333,7 @@ export const AuthStoreModel = types
       try {
         const updateAccountHolderResult = yield accountApi.updateGlobalInfo(
           self.currentUser.id,
-          self.currentAccount.id,
+          self.currentAccount?.id,
           self.currentAccountHolder.id,
           globalInfos
         );
@@ -364,7 +364,7 @@ export const AuthStoreModel = types
       try {
         const updateAccountHolderResult = yield accountApi.updateCompanyInfo(
           self.currentUser.id,
-          self.currentAccount.id,
+          self.currentAccount?.id,
           self.currentAccountHolder.id,
           companyInfos
         );
@@ -382,7 +382,7 @@ export const AuthStoreModel = types
       try {
         const updateAccountHolderResult = yield accountApi.updateRevenueTargets(
           self.currentUser.id,
-          self.currentAccount.id,
+          self.currentAccount?.id,
           self.currentAccountHolder.id,
           revenueTargets
         );
@@ -400,7 +400,7 @@ export const AuthStoreModel = types
       try {
         const updateAccountHolderResult = yield accountApi.updateBusinessActivities(
           self.currentUser.id,
-          self.currentAccount.id,
+          self.currentAccount?.id,
           self.currentAccountHolder.id,
           activity
         );

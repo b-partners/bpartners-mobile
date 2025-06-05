@@ -35,7 +35,7 @@ export const MarketplaceStoreModel = types
       self.loadingMarketplace = true;
       const marketplaceApi = new MarketplaceApi(self.environment.api);
       try {
-        const getMarketplacesResult = yield marketplaceApi.getMarketplaces(self.currentAccount.id, criteria);
+        const getMarketplacesResult = yield marketplaceApi.getMarketplaces(self.currentAccount?.id, criteria);
         self.getMarketplacesSuccess(getMarketplacesResult.marketplaces);
       } catch (e) {
         self.getMarketplaceFail(e);

@@ -56,7 +56,7 @@ export const InvoiceStoreModel = types
       self.loadingInvoice = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
+        const getInvoicesResult = yield paymentApi.getInvoices(self.currentAccount?.id, criteria);
         self.getInvoicesSuccess(getInvoicesResult.invoices);
       } catch (e) {
         self.getInvoicesFail(e);
@@ -82,7 +82,7 @@ export const InvoiceStoreModel = types
       self.loadingInvoice = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getPaidInvoicesResult = yield paymentApi.getInvoices(self.currentAccount.id, criteria);
+        const getPaidInvoicesResult = yield paymentApi.getInvoices(self.currentAccount?.id, criteria);
         self.getPaidInvoicesSuccess(getPaidInvoicesResult.invoices);
       } catch (e) {
         self.getPaidInvoicesFail(e);
@@ -108,7 +108,7 @@ export const InvoiceStoreModel = types
       self.loading = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount.id, invoiceId);
+        const getInvoiceResult = yield paymentApi.getInvoice(self.currentAccount?.id, invoiceId);
         self.getInvoiceSuccess(getInvoiceResult.invoice);
         return getInvoiceResult.invoice;
       } catch (e) {
@@ -142,7 +142,7 @@ export const InvoiceStoreModel = types
       self.loadingCreation = true;
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount.id, invoice);
+        const createOrUpdateInvoiceResult = yield paymentApi.saveInvoice(self.currentAccount?.id, invoice);
         self.saveInvoiceSuccess(createOrUpdateInvoiceResult.invoice);
         return createOrUpdateInvoiceResult.invoice;
       } catch (e) {
@@ -178,7 +178,7 @@ export const InvoiceStoreModel = types
     updatePaymentRegulationStatus: flow(function* (invoiceId: string, paymentId: string, method: MethodModel) {
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getPaymentRegulationStatusResult = yield paymentApi.updatePaymentRegulationStatus(self.currentAccount.id, invoiceId, paymentId, method);
+        const getPaymentRegulationStatusResult = yield paymentApi.updatePaymentRegulationStatus(self.currentAccount?.id, invoiceId, paymentId, method);
         return getPaymentRegulationStatusResult.invoice;
       } catch (e) {
         __DEV__ && console.tron.log(e);
@@ -190,7 +190,7 @@ export const InvoiceStoreModel = types
     relaunchInvoice: flow(function* (invoiceId: string, payload: any) {
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getInvoiceRelaunchesResult = yield paymentApi.relaunchInvoice(self.currentAccount.id, invoiceId, payload);
+        const getInvoiceRelaunchesResult = yield paymentApi.relaunchInvoice(self.currentAccount?.id, invoiceId, payload);
         return getInvoiceRelaunchesResult.invoiceRelaunch;
       } catch (e) {
         RTLog(e.message);
@@ -202,7 +202,7 @@ export const InvoiceStoreModel = types
     getInvoiceRelaunches: flow(function* (invoiceId: string, pageCriteria: PageCriteria) {
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getInvoiceRelaunchesResult = yield paymentApi.getInvoiceRelaunches(self.currentAccount.id, invoiceId, pageCriteria);
+        const getInvoiceRelaunchesResult = yield paymentApi.getInvoiceRelaunches(self.currentAccount?.id, invoiceId, pageCriteria);
         return getInvoiceRelaunchesResult.invoiceRelaunch;
       } catch (e) {
         RTLog(e.message);
@@ -224,7 +224,7 @@ export const InvoiceStoreModel = types
     getInvoiceRelaunchConf: flow(function* () {
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getRelaunchConfResult = yield paymentApi.getInvoiceRelaunchConf(self.currentAccount.id);
+        const getRelaunchConfResult = yield paymentApi.getInvoiceRelaunchConf(self.currentAccount?.id);
         self.saveInvoiceRelaunchConfSuccess(getRelaunchConfResult.RelaunchConf);
         return getRelaunchConfResult.RelaunchConf;
       } catch (e) {
@@ -236,7 +236,7 @@ export const InvoiceStoreModel = types
     updateInvoiceRelaunchConf: flow(function* (relaunchConf: RelaunchConfiguration) {
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const updateRelaunchConfResult = yield paymentApi.updateInvoiceRelaunchConf(self.currentAccount.id, relaunchConf);
+        const updateRelaunchConfResult = yield paymentApi.updateInvoiceRelaunchConf(self.currentAccount?.id, relaunchConf);
         self.saveInvoiceRelaunchConfSuccess(updateRelaunchConfResult.updatedRelaunchConf);
         return updateRelaunchConfResult.updatedRelaunchConf;
       } catch (e) {
@@ -260,7 +260,7 @@ export const InvoiceStoreModel = types
       detach(self.invoicesSummary);
       const paymentApi = new PaymentApi(self.environment.api);
       try {
-        const getInvoicesSummaryResult = yield paymentApi.getInvoiceSummary(self.currentAccount.id);
+        const getInvoicesSummaryResult = yield paymentApi.getInvoiceSummary(self.currentAccount?.id);
         self.getInvoicesSummarySuccess(getInvoicesSummaryResult.invoiceSummary);
       } catch (e) {
         self.getInvoicesSummaryFail(e);
