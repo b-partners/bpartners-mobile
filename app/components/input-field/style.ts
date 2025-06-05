@@ -2,7 +2,7 @@ import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 import { palette } from '../../theme/palette';
 
-export const INPUT_CONTAINER: StyleProp<ViewStyle> = { display: 'flex', flexDirection: 'row', height: 60, position: 'relative' };
+export const INPUT_CONTAINER: StyleProp<ViewStyle> = { display: 'flex', flexDirection: 'row', height: 58, position: 'relative' };
 
 export const ICON_CONTAINER: StyleProp<ViewStyle> = {
   position: 'absolute',

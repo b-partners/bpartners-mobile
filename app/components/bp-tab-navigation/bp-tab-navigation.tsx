@@ -25,11 +25,9 @@ const BP_TAB_CONTAINER_STYLE: ViewStyle = {
 
 const TabNavigationItem: FC<TouchableOpacityProps & { icon: ReactNode; testID: string }> = ({ onPress, testID, icon }) => {
   return (
-    <>
-      <TouchableOpacity onPress={onPress} testID={testID}>
-        {icon}
-      </TouchableOpacity>
-    </>
+    <TouchableOpacity onPress={onPress} testID={testID}>
+      {icon}
+    </TouchableOpacity>
   );
 };
 
