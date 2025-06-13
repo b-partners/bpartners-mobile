@@ -10,15 +10,15 @@ import { KeyboardLayout } from '../keyboard-layout/KeyboardLayout';
 import { BOTTOM_TAB_ROUTES, IconProps, IconRouteProps } from './utils/utils';
 
 const BP_TAB_CONTAINER_STYLE: ViewStyle = {
-  width: '98%',
-  bottom: '1%',
+  width: '94%',
+  bottom: '2%',
   overflow: 'visible',
   paddingHorizontal: 20,
   borderRadius: 30,
   position: 'absolute',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  marginHorizontal: '1%',
+  marginHorizontal: '3%',
   alignItems: 'center',
   backgroundColor: palette.neon_orange,
 };
@@ -41,7 +41,7 @@ const BOTTOM_NAVBAR_ICONS = {
       name='home'
       size={28}
       color={isSelected ? palette.cream : palette.neon_orange}
-      style={{ backgroundColor: isSelected ? palette.pine : palette.cream, borderRadius: 50, padding: 15, transform: 'translateY(-12%)' }}
+      style={{ backgroundColor: isSelected ? palette.pine : palette.cream, borderRadius: 50, padding: 15, transform: 'translateY(-12px)' }}
     />
   ),
 } as const;

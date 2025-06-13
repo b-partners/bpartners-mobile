@@ -62,7 +62,7 @@ export const SCROLLVIEW_CONTAINER_STYLE: ViewStyle = {
   height: '70%',
   zIndex: 2,
   position: 'absolute',
-  top: '22%',
+  top: '25%',
 };
 
 export const DRAWER_SCROLLVIEW_STYLE: ViewStyle = { backgroundColor: palette.white, height: '100%' };
