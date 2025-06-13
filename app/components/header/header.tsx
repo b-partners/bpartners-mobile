@@ -13,11 +13,12 @@ import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
 
 const HEADER_STYLE: ViewStyle = {
-  height: 70,
+  height: 60,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'flex-start',
   position: 'relative',
+  paddingTop: spacing[7],
   paddingHorizontal: spacing[5],
 };
 
