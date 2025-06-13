@@ -15,7 +15,7 @@ export const BgLayout: FC<BgLayoutProps> = ({ children }) => {
   return (
     <ErrorBoundary catchErrors='always'>
       <KeyboardAvoidingWrapper>
-        <Screen backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
+        <Screen unsafe backgroundColor={palette.white} style={{ height: screenHeight, width: '100%' }}>
           <AutoImage
             source={require('./welcome.background.png')}
             resizeMode='stretch'

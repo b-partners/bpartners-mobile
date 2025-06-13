@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { navigate } from '../../navigators/navigation-utilities';
 import { spacing } from '../../theme';
 import { printCurrencyToMajors } from '../../utils/money';
+import { Icon } from '../icon/icon';
 import { Text } from '../text/text';
 import { HeaderProps } from './header';
 import { HeaderWithLogo } from './header-with-logo';
@@ -39,8 +41,12 @@ export const HeaderWithBalance: FC<Omit<HeaderProps, 'children'> & { balance: nu
           ...HEADER_STYLE,
           height: +HEADER_STYLE.height + top,
         }}
+        imageStyle={{ marginTop: 5, width: 50, height: 50 }}
         {...props}
       >
+        <TouchableOpacity style={{ position: 'absolute', top: top + 5, left: 20 }} onPress={() => navigate('home')} testID='header-left-button'>
+          <Icon icon={'back'} />
+        </TouchableOpacity>
         <View testID='balance-view' style={CONTAINER_STYLE}>
           <Text tx='homeScreen.labels.balance' style={SECONDARY_TEXT_STYLE} />
           <View style={{ marginVertical: spacing[1] }} testID='homeCurrentBalance'>

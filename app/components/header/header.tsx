@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useState } from 'react';
-import { StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Platform, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TxKeyPath, translate } from '../../i18n';
@@ -13,7 +13,8 @@ import { FreeTrialBanner } from '../subscription';
 import { Text } from '../text/text';
 
 const HEADER_STYLE: ViewStyle = {
-  height: 70,
+  height: 60,
+  paddingTop: Platform.select({ android: 0, ios: 50 }),
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'flex-start',

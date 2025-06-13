@@ -2,6 +2,7 @@ import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript
 import { DrawerActions } from '@react-navigation/native';
 import React, { FC } from 'react';
 import { Platform, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { User } from '../../../models/entities/user/user';
 import { color, spacing } from '../../../theme';
@@ -16,6 +17,7 @@ type BPDrawerHeaderProps = {
 
 export const BPDrawerHeader: FC<BPDrawerHeaderProps> = props => {
   const { currentUser, navigation, uri } = props;
+  const insests = useSafeAreaInsets();
 
   return (
     <View
@@ -23,7 +25,8 @@ export const BPDrawerHeader: FC<BPDrawerHeaderProps> = props => {
         position: 'absolute',
         zIndex: 3,
         width: '100%',
-        height: '25%',
+        height: '20%',
+        paddingTop: insests.top + 10,
         justifyContent: 'center',
       }}
     >
@@ -44,8 +47,9 @@ export const BPDrawerHeader: FC<BPDrawerHeaderProps> = props => {
               resizeMode='stretch'
               resizeMethod='auto'
               style={{
-                width: 100,
-                height: 100,
+                marginTop: 10,
+                width: 90,
+                height: 90,
                 borderRadius: 100,
               }}
             />

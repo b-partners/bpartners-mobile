@@ -28,11 +28,10 @@ function ScreenWithoutScrolling(props: ScreenProps) {
 }
 
 function ScreenWithScrolling(props: ScreenProps) {
-  const insets = useSafeAreaInsets();
   const preset = presets.scroll;
   const style = props.style || {};
   const backgroundStyle = props.backgroundColor ? { backgroundColor: props.backgroundColor } : {};
-  const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top };
+  const insetStyle = { paddingTop: props.unsafe ? 0 : 0 };
 
   // The followings for <Screen preset='auto'/>
   // This will automatically disables scrolling if content fits the screen.
