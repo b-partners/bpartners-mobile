@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
 
-import { Header, Screen, Text } from '../../components';
+import { Header, Text } from '../../components';
 import { translate } from '../../i18n';
 import { useStores } from '../../models';
 import { TabNavigatorParamList } from '../../navigators/utils/utils';
@@ -46,49 +46,47 @@ export const PaymentListScreen: FC<StackScreenProps<TabNavigatorParamList, 'paym
   return (
     <>
       <Header headerTx='paymentListScreen.title' onLeftPress={() => navigation.navigate('home')} leftIcon='back' style={HEADER} titleStyle={HEADER_TITLE} />
-      <Screen>
-        <Tab.Navigator
-          id={undefined}
-          initialRouteName={initialRoute}
-          style={TAB_BAR_STYLE}
-          screenOptions={({ route: tabRoute }) => ({
-            tabBarIndicatorStyle: { backgroundColor: color.primary },
-            tabBarActiveTintColor: color.primary,
-            tabBarStyle: { backgroundColor: 'white' },
-            tabBarLabel: ({ focused }) => {
-              const activeLabelStyle: TextStyle = { width: 75, color: color.primary, fontWeight: '900' };
-              let labelStyle: TextStyle = { color: palette.textClassicColor };
-              labelStyle = focused ? { ...labelStyle, ...activeLabelStyle } : { ...labelStyle };
-              return <Text text={TabName[tabRoute.name]} style={labelStyle} />;
-            },
-          })}
-        >
-          <Tab.Screen
-            name={'drafts'}
-            component={DraftsScreen}
-            navigationKey='drafts'
-            listeners={{
-              tabPress: () => {},
-            }}
-          />
-          <Tab.Screen
-            name={'quotations'}
-            component={QuotationsScreen}
-            navigationKey='quotations'
-            listeners={{
-              tabPress: () => {},
-            }}
-          />
-          <Tab.Screen
-            name={'invoices'}
-            component={InvoicesScreen}
-            navigationKey='invoices'
-            listeners={{
-              tabPress: () => {},
-            }}
-          />
-        </Tab.Navigator>
-      </Screen>
+      <Tab.Navigator
+        id={undefined}
+        initialRouteName={initialRoute}
+        style={TAB_BAR_STYLE}
+        screenOptions={({ route: tabRoute }) => ({
+          tabBarIndicatorStyle: { backgroundColor: color.primary },
+          tabBarActiveTintColor: color.primary,
+          tabBarStyle: { backgroundColor: 'white' },
+          tabBarLabel: ({ focused }) => {
+            const activeLabelStyle: TextStyle = { width: 75, color: color.primary, fontWeight: '900' };
+            let labelStyle: TextStyle = { color: palette.textClassicColor };
+            labelStyle = focused ? { ...labelStyle, ...activeLabelStyle } : { ...labelStyle };
+            return <Text text={TabName[tabRoute.name]} style={labelStyle} />;
+          },
+        })}
+      >
+        <Tab.Screen
+          name={'drafts'}
+          component={DraftsScreen}
+          navigationKey='drafts'
+          listeners={{
+            tabPress: () => {},
+          }}
+        />
+        <Tab.Screen
+          name={'quotations'}
+          component={QuotationsScreen}
+          navigationKey='quotations'
+          listeners={{
+            tabPress: () => {},
+          }}
+        />
+        <Tab.Screen
+          name={'invoices'}
+          component={InvoicesScreen}
+          navigationKey='invoices'
+          listeners={{
+            tabPress: () => {},
+          }}
+        />
+      </Tab.Navigator>
     </>
   );
 });
