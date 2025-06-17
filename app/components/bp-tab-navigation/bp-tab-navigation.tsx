@@ -23,9 +23,9 @@ const BP_TAB_CONTAINER_STYLE: ViewStyle = {
   backgroundColor: palette.neon_orange,
 };
 
-const TabNavigationItem: FC<TouchableOpacityProps & { icon: ReactNode; testID: string }> = ({ onPress, testID, icon }) => {
+const TabNavigationItem: FC<TouchableOpacityProps & { icon: ReactNode; testID: string; isHome: boolean }> = ({ onPress, isHome, testID, icon }) => {
   return (
-    <TouchableOpacity onPress={onPress} testID={testID}>
+    <TouchableOpacity style={{ transform: isHome ? [{ translateY: -10 }] : undefined }} onPress={onPress} testID={testID}>
       {icon}
     </TouchableOpacity>
   );
@@ -41,7 +41,7 @@ const BOTTOM_NAVBAR_ICONS = {
       name='home'
       size={28}
       color={isSelected ? palette.cream : palette.neon_orange}
-      style={{ backgroundColor: isSelected ? palette.pine : palette.cream, borderRadius: 50, padding: 15, transform: 'translateY(-12px)' }}
+      style={{ backgroundColor: isSelected ? palette.pine : palette.cream, borderRadius: 50, padding: 15 }}
     />
   ),
 } as const;
@@ -100,6 +100,7 @@ export const BpTabNavigation: FC<BottomTabBarProps> = props => {
                 onPress={NAGIGATION_HANDLER[bottomTavNavItem]}
                 testID={`${RouteName[bottomTavNavItem]}Tab`}
                 icon={BOTTOM_NAVBAR_ICONS[bottomTavNavItem](isSelected)}
+                isHome={bottomTavNavItem === 'home'}
               />
             </View>
           );
