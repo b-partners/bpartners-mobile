@@ -41,7 +41,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -159,6 +159,11 @@
          <EnvironmentVariable
             key = "OAUTH_DOMAIN"
             value = "bpartners.auth.eu-west-3.amazoncognito.com"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "GEO_REFERENCER_URL"
+            value = "https://p5bygmsfpy7ep3alfxuia7sgkm0ejkzl.lambda-url.eu-west-3.on.aws/referencer"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
