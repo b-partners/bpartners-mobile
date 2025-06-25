@@ -62,7 +62,7 @@ export const AppStack = observer(function () {
           width: windowWidth,
         },
       }}
-      initialRouteName={accessToken ? 'home' : 'welcome'}
+      initialRouteName={!shouldApproveLegalFiles && isAvailable && accessToken ? 'home' : 'welcome'}
       drawerContent={props => <BPDrawer {...props} />}
     >
       {shouldApproveLegalFiles && <Drawer.Screen name='legalFile' component={LegalFileScreen} options={HIDE_DRAWER_OPTIONS} />}
