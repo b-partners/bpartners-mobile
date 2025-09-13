@@ -65,7 +65,7 @@
     "apisauce": "3.0.1",
     "aws-amplify": "^5.3.12",
     "aws-sdk": "^2.1691.0",
-    "axios": "^1.7.7",
+    "axios": "^1.12.1",
     "core-js": "^3.38.1",
     "date-fns": "^4.1.0",
     "debounce-fn": "^6.0.0",
